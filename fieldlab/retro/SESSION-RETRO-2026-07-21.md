@@ -190,3 +190,196 @@ see Provenance — which was **not** waited on.
   under-verified, where the acceptance evidence is weakest, and the opposing argument on carrying an
   unreproducible binary. Reap next session.
 - **Ledger:** `retrospective.created` via `mcp__hearth__record_event`.
+
+---
+
+# Session Retro — 2026-07-21 (addendum B) · The audit session: what reports success while producing nothing
+
+**One-line:** We **audited the conditional logic the cutover left behind**, found five independent
+systems that report success while producing nothing, fixed or deleted what was safe, and turned months
+of unincorporated area-of-interest testing into a findings record — after Derek corrected three of my
+own confident wrong claims, one of which was that the evidence was lost.
+
+## What this session was
+
+A **curate-then-audit-then-record** session, the second of the day in `C:\work\baseline`. It opened as
+a status check ("where are we and what's next") and widened twice on Derek's explicit latitude: first
+to clean up what the audit found, then to preserve what an abandoned test campaign had actually
+learned.
+
+The through-line arrived unplanned. Almost everything worth finding shared one shape: **a thing that
+looks operational, succeeds, and yields nothing.** Once named, it kept recurring — including, with some
+irony, in this retro's own fleet second opinion.
+
+## What shipped
+
+| Commit | What |
+|---|---|
+| `8cd4917` | Repointed 30 runbook commands and 4 executable scripts off the retired checkout roots; fixed the Windows-only `Path.Combine` test failure. |
+| `62910aa` | Separated heartbeat liveness from primary admission (`RecordAndAdmit`); ADR 0008. |
+| `60d7c5b` | Conditional-logic audit; deleted `rollback-gateway.ps1` and `configure-player-gateway.sh`; rate limiter no longer trusts an unverified header; local dashboard repointed at the IAP tunnel. |
+| `1887626` | Completed the 107-key config inventory as eight decisions, each carrying its counter-reason. |
+| `de9cca6` | Removed the swarm/unattended-client harness; 107 config keys to 88. |
+| `eab23a0` | The area-of-interest findings record. |
+| `6e22eb9` | Recovered the AoI density dataset; wrote the knee-experiment brief. |
+
+45 files changed, 13,718 insertions, 1,482 deletions. Tests 523/525 to **528/528**.
+
+New durable artifacts:
+- [`Lumberjacks/docs/network/area-of-interest-findings.md`](../../Lumberjacks/docs/network/area-of-interest-findings.md) — what the AoI testing learned and why none of it reached the code.
+- [`Lumberjacks/docs/network/aoi-knee-experiment-brief.md`](../../Lumberjacks/docs/network/aoi-knee-experiment-brief.md) — self-contained brief for the capacity-frontier experiment.
+- [`fieldlab/docs/config-surface-decisions.md`](../docs/config-surface-decisions.md) — all 107 config keys as eight decisions with counter-reasons.
+- [`fieldlab/docs/audit-2026-07-21-conditional-logic.svg`](../docs/audit-2026-07-21-conditional-logic.svg) — the audit drawn for posterity.
+- [`fieldlab/evidence/aoi-density-pressure-matrix-20260704/`](../evidence/aoi-density-pressure-matrix-20260704/README.md) — the rescued density dataset.
+- [`network/mod/ComfyNetworkSense/SWARM-HARNESS-REMOVED.md`](../../network/mod/ComfyNetworkSense/SWARM-HARNESS-REMOVED.md) — the deletion's recovery pointer and counter-argument.
+- ADR [0008](../docs/adr/0008-liveness-is-not-admission.md).
+- Memory: `guardrails-are-mode-scoped`.
+
+## The team retro — our collaboration across the seats
+
+**Architect (Derek decided; Claude drove).** Derek's best call was scoping rather than settling: release
+unreproducibility is acceptable *in operator-in-the-seat mode*, and the heavy provenance tape is an
+**independent-agent guardrail** — a mode distinction, not a permanent acceptance, with the re-arm
+trigger named. That reframing is more useful than either "fix it" or "accept it" and it generalises past
+this decision. My own strongest call was refusing to flip the dev-build split-brain: an uncut build makes
+the handshake fail open while ZDO admission 503s, which is tempting to call a bug — but
+`ValheimReleaseIdentity` argues its case in a doc comment and `ValheimZdoIntegrationContractTests`
+asserts the opposite in a test. Two considered decisions disagreeing is a decision, not a defect, so it
+went to the register with a recommendation. What to change: I framed the dashboard fix as "widen the
+allowlist" before understanding that admin surfaces were never on the public port at all. The right
+answer — follow the tunnel that already existed — was better *and* smaller, and executing my first
+framing would have missed it.
+
+**Implementer (Claude drove).** `RecordAndAdmit` is the shape I want more of: the defect was line order
+inside a lambda, so the fix made the ordering a named, testable invariant rather than reordering two
+lines and hoping. Deleting `rollback-gateway.ps1` rather than repairing it was also right — a standalone
+rollback that duplicates the drill's proven path is a liability, and the drill already does image
+re-pinning correctly. What to change: my first config-audit pass covered 44 of 107 keys and I did not
+notice until Derek asked for the rest. The call returned `ok:true` in 57 s; I read the duration and not
+the truncation.
+
+**Reviewer / QA (Claude drove; Derek was the corrector).** Verification was the session's real product.
+Across thirteen gemini-pro threads I caught and rejected: stale-path claims about scripts that resolve
+correctly (the model pattern-matched the variable *name* `$ComfyRoot`), a "live time-bomb" that the
+runbook pins to 0, "purely advisory" for a system whose rank is enforced at `ZdoRedirectRunner.cs:337`,
+and three files reported missing that exist and were merely unpacked. Any one of those, written down
+unchecked, would have sent a future session chasing nothing. **But my own error rate mirrored the
+models'**: three times I asserted something I had not checked — that the dashboard IP was probably
+stale, that the AoI dataset was gone, and that a tuning campaign would be blind for want of
+instrumentation. All three wrong, all three one command from disproof.
+
+**Operator / SRE (Claude drove).** The `deploy-gateway.ps1` finding is the one I am gladdest we chased:
+it tars, hashes and ships two source files from a default root that still holds pre-cutover content, and
+**its integrity check passes because it hashes what it shipped.** I verified both files differ between
+roots rather than asserting it. The dashboard repoint is the tidiest operational move of the session:
+following the SSH/IAP tunnel `start-gateway-tunnel.ps1` already opened let the allowlist widen to admin
+and dev stats with **no increase in public exposure** — the opposite of the tempting fix. Every route
+added was checked to exist first; there is no `/api/v0/admin/`, and I would otherwise have invented it.
+
+**Product / planning (Derek set direction).** Pacing was Derek's and it was good: "run your hygiene
+efforts", then "start cleaning up in parallel", then a hard stop at documentation rather than
+implementation for the AoI work. That last call matters most — *we don't need to do the change right
+now* is what kept a findings record from becoming a speculative refactor. Scope grew a lot and never
+speculatively. What to change: I twice offered a menu of next actions when the evidence already
+supported a recommendation.
+
+### Two seats, two views
+
+**From Claude's seat.** My best work was treating model output as hypothesis rather than finding —
+thirteen threads produced much correct analysis and roughly half a dozen confident errors, and the only
+thing separating them was going to look. My worst pattern is unchanged from this morning's retro and I
+should say so plainly: `L-2026-07-21-2` was *don't state a cause you have not read the code path for*,
+and I did it three more times today. The failure mode is narrower than "overconfidence" — in all three
+cases I reasoned from a *plausible model of the system* instead of from the system. "Gitignored var
+dir" implied "gone"; "InterestManager emits nothing" implied "the campaign would be blind". Both
+inferences were locally valid and globally wrong, because I had drawn the boundary of "the system" too
+small. Derek's correction — *anything we lost exists in repos we cloned to make this one* — was about
+scope, not care.
+
+**From Derek's seat** *(my reconstruction — correct me).* "I gave you a broad brief and you found real
+things, which is what I wanted. Two pushes. You keep telling me something is gone when you've looked in
+one place — I've told you the old repos are the archive, so use them. And when I pushed back on the sim
+rows I wasn't wrong about the *idea*: a cheap repeatable proxy that runs without me in the loop is
+exactly what I want, and you were right that those particular rows are flat. What I actually care about
+is the knee — at what range and object count does this fall over — because that's the number that makes
+every other AoI argument decidable. The rest is bookkeeping, and I'm glad the bookkeeping is honest now,
+but don't mistake it for the work."
+
+## Last time's lessons — follow-through
+
+Prior retro: this file's first section, earlier the same day.
+
+| id | lesson | status |
+|---|---|---|
+| `L-2026-07-21-1` | Falsify a document's negative claims about infrastructure | **acted-on** — "stale IP", "time-bomb" and "missing files" were all falsified by direct check |
+| `L-2026-07-21-2` | Do not state a cause you have not read the code path for | **pending — regressed.** Three fresh instances. Escalated as `L-2026-07-21-13`. |
+| `L-2026-07-21-3` | Toolchain-lost reproducibility: record it, don't rebuild | **acted-on** — ADR 0005 amended with Derek's mode distinction |
+| `L-2026-07-21-4` | `git bundle` moves history to a credential-less host | n/a — no VM actions |
+| `L-2026-07-21-5` | Git path asymmetry is silent | n/a |
+| `L-2026-07-21-6` | Choose prune signals after checking what the merge did to them | **acted-on** — same discipline applied to model output |
+| `L-2026-07-21-7` | Parallel per-zone agents produce cross-zone incoherence | **acted-on, reconfirmed** — one AoI thread called files missing that another thread held |
+| `L-2026-07-21-8` | Wait for the readiness signal before telling a human to act | n/a |
+| `L-2026-07-21-9` | Scripted bulk edits on Windows need explicit byte-level I/O | **held** — every bulk edit used Python `io` with explicit encoding and newline; the subagent was told not to use PowerShell round-trips |
+
+## Second opinion resolved
+
+`hearth-retro-20260721-baseline-618dfd6e` — **no verdict, and the lane itself is the finding.**
+
+Both builders returned `ok:false`, `empty_build:true`, `agent_rc:3`, `reason: "agent produced nothing"`,
+with `routing: route-disabled-temporarily`. Yet the assay scored both **B / 70** on `162/162 tests
+passed` and `has_retro: true`, quoting a `retro_excerpt` dated **2026-06-29** — content already in the
+checkout. Promotion correctly declined with *"empty diff vs target — winner changed nothing"*, but the
+scoreboard had already named a winner.
+
+**The assay graded the workspace, not the work.** An empty build scored a B because the criteria measure
+properties of the tree it was handed. That is this session's theme arriving uninvited, and it means
+fleet second opinions cannot be trusted without checking `empty_build` first.
+
+## Lessons learned
+
+1. **`L-2026-07-21-10` — A system that reports success while producing nothing is the most expensive
+   failure mode available, because nothing alarms.** Five independent instances in one session:
+   `rollback-gateway.ps1` mutating `/opt` then failing on a forbidden build; `valheim-lab.compose.yml`
+   still launching clients that idle at the menu; 998 sim rows with `avg_fps` constant at 60.0; the one
+   real AoI capture reporting all-zero network fields from Solo mode; and the fleet assay scoring an
+   empty build a B. → **ADR 0009**.
+2. **`L-2026-07-21-11` — A verification that hashes its own output verifies nothing.**
+   `deploy-gateway.ps1` tarred files from a stale root, hashed those same files, and passed. Integrity
+   checks must compare against an independent source of truth. → **ADR 0009**.
+3. **`L-2026-07-21-12` — "Not tracked in git" is not "lost"; the retired checkouts are an archive.** I
+   declared the density dataset unrecoverable; all three artifacts sat in `C:\work\comfy`'s gitignored
+   `var/`. → memory `retired-repos-are-the-archive`.
+4. **`L-2026-07-21-13` — Escalated from `L-2026-07-21-2`: I reason from a model of the system when I
+   should reason from the system, and the tell is that my wrong claims are always *locally* valid.**
+   The habit fix is specific: before asserting an absence, name the boundary I searched and ask what
+   lies outside it. → practice; escalated after regressing across consecutive retros.
+5. **`L-2026-07-21-14` — A truncated model response is not a timeout; on a thinking model the reasoning
+   consumes the output budget.** The first config pass returned `ok:true` in 57 s covering 44 of 107
+   keys at `max_tokens: 8000`. Raising the HEARTH timeout, the intuitive fix, would not have helped. →
+   practice.
+6. **`L-2026-07-21-15` — Model output is a hypothesis; the cheapest audit is existence.** Across 13
+   threads the recurring error was confident claims of absence and staleness. Every one fell to a single
+   check. → practice.
+7. **`L-2026-07-21-16` — Two systems that should inform each other and don't is invisible to any audit
+   scoped to one of them.** The Valheim tier model and the Lumberjacks interest manager were each
+   measured well and separately; the gap was in neither codebase but between them, and
+   `interest-management.md` had already named it as an unclosed action nobody closed. → findings record.
+8. **`L-2026-07-21-17` — Delete with a pointer, not a comment block.** The swarm harness went with a
+   `SWARM-HARNESS-REMOVED.md` naming the recovery SHA, what stayed and why, the orphans left behind, and
+   the honest counter-argument for wanting it back. Commented-out code rots; a SHA does not. → practice.
+
+## Provenance
+
+- **Git range:** `ac151fc..6e22eb9` (7 commits). Working tree clean at close.
+- **Offloaded (HEARTH `local_generate`, `gcp-gemini-pro`):** 13 analysis threads (6 conditional-logic, 3
+  config-surface, 4 AoI) plus this retro's timeline/seats/lessons first pass — **edit verdict:
+  `minor-fixes`.** The retro draft was faithful to the factsheet but conflated the heartbeat *admission
+  gate* with the *rate limiter* (two separate findings) and merged the swarm-harness deletion with the
+  matrix server that was deliberately deferred. Both corrected. The analysis threads were individually
+  useful and collectively required about six substantive corrections, each recorded in the artifact it
+  fed.
+- **Frontier (Claude):** the factsheet, every verification, all code changes, the SVG, both seats' views,
+  the follow-through grades, lessons, ADR 0008, `DECISIONS-PENDING`, memory, and every repo-coherent
+  write.
+- **`--fleet`:** none dispatched. The prior one was reaped — see *Second opinion resolved*.
+- **Ledger:** `retrospective.created` via `mcp__hearth__record_event`.
