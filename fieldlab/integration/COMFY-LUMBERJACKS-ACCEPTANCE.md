@@ -224,10 +224,10 @@ are recorded to remove that prior ambiguity.
 
 Prerequisites are the existing stopped headless-client container, running original local server,
 Steam-authenticated client state, Docker network, and local Valheim/BepInEx files described by the
-harness. From `C:\work\comfy`:
+harness. From `C:\work\baseline`:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File C:\work\comfy\fieldlab\scripts\Invoke-ComfyLumberjacksIntegration.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\work\baseline\fieldlab\scripts\Invoke-ComfyLumberjacksIntegration.ps1
 ```
 
 The command rebuilds the current Comfy DLL with an isolated plugin output, rebuilds the Gateway with

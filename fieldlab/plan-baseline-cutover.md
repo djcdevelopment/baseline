@@ -58,10 +58,13 @@ Ordered by how badly they bite if forgotten.
    drift is now visible. The deployed `docker-compose.yml` is clean at 0 lines; the rest
    (`main.tf`, `monitoring.tf`, the systemd unit) is provisioning-era stale, and
    `PROMOTION-DRILL.md` / `New-GatewayReleaseCut.ps1` are not on the box at all.
-5. **`run-promotion-drill.ps1` has stale rollback defaults.** It hardcodes M0-era rollback
-   identities; the documented Phase 3 command overrides neither, so following the runbook
+5. **`run-promotion-drill.ps1` had stale rollback defaults.** It hardcoded M0-era rollback
+   identities; the documented Phase 3 command overrode neither, so following the runbook
    verbatim would overwrite the deployed mod with a historical one and restart the server to
-   verify it had. Direct promotion was used instead. **Still unfixed in the script.**
+   verify it had. Direct promotion was used instead. **Fixed** (`bdf7314`, carried through
+   `807769a`): the three rollback parameters now default to empty and `-Execute` fails closed
+   if any is unset, and the drill refuses to run when the candidate and rollback image ids
+   match — so it can no longer silently "succeed" against the wrong artifact.
 6. **Two-consumer isolation is untested, deliberately pinned** until volunteers exist. It is
    *untested*, not *blocked* — the partitions now exist for it to bite on.
 

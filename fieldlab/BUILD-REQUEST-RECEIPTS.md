@@ -28,10 +28,10 @@ Acceptance:
 - keep the change scoped
 - run the relevant validation
 - report the commit or blocker
-'@ | C:\work\comfy\fieldlab\scripts\new-build-request-receipt.ps1 `
+'@ | C:\work\baseline\fieldlab\scripts\new-build-request-receipt.ps1 `
   -Title "example build request" `
   -Lane "hearth" `
-  -Repo "C:\work\comfy" `
+  -Repo "C:\work\baseline" `
   -PrintPrompt
 ```
 
@@ -48,10 +48,10 @@ Use the request file as the prompt/context for Hearth, Codex, or a manual build 
 After the work lands or blocks, close the receipt:
 
 ```powershell
-C:\work\comfy\fieldlab\scripts\close-build-request-receipt.ps1 `
+C:\work\baseline\fieldlab\scripts\close-build-request-receipt.ps1 `
   -Id "br-YYYYMMDD-HHMMSS-xxxxxxxx" `
   -Status done `
-  -Repo "C:\work\comfy" `
+  -Repo "C:\work\baseline" `
   -Summary "Implemented and validated the requested change." `
   -Commits "abc1234"
 ```

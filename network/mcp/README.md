@@ -38,7 +38,7 @@ X-Comfy-Key: valheim-mod-local
 Use the same Python environment that has `mcp==1.28.1`, such as Hearth's OMEN venv:
 
 ```powershell
-$env:PYTHONPATH = "C:\work\comfy\network\mcp"
+$env:PYTHONPATH = "C:\work\baseline\network\mcp"
 C:\work\commandcenter\fleet-worker-node\.venv-omen\Scripts\python.exe `
   -m comfy_gateway.kernel.gateway
 ```
