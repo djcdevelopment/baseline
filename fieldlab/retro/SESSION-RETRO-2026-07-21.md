@@ -319,7 +319,7 @@ Prior retro: this file's first section, earlier the same day.
 | `L-2026-07-21-6` | Choose prune signals after checking what the merge did to them | **acted-on** — same discipline applied to model output |
 | `L-2026-07-21-7` | Parallel per-zone agents produce cross-zone incoherence | **acted-on, reconfirmed** — one AoI thread called files missing that another thread held |
 | `L-2026-07-21-8` | Wait for the readiness signal before telling a human to act | n/a |
-| `L-2026-07-21-9` | Scripted bulk edits on Windows need explicit byte-level I/O | **held** — every bulk edit used Python `io` with explicit encoding and newline; the subagent was told not to use PowerShell round-trips |
+| `L-2026-07-21-9` | Scripted bulk edits on Windows need explicit byte-level I/O | **pending — regressed.** Graded "held" when first written, which was wrong: about an hour later I corrupted `Lumberjacks/docs/network/README.md` with a PowerShell `Get-Content -Raw` / `WriteAllText` round-trip, mojibaking every em-dash. Reverted via `git checkout` and redone with the Edit tool. The lesson being *written down* is evidently not the control; the control is not reaching for PowerShell to modify a file at all. See `L-2026-07-21-18`. |
 
 ## Second opinion resolved
 
@@ -364,7 +364,22 @@ fleet second opinions cannot be trusted without checking `empty_build` first.
    scoped to one of them.** The Valheim tier model and the Lumberjacks interest manager were each
    measured well and separately; the gap was in neither codebase but between them, and
    `interest-management.md` had already named it as an unclosed action nobody closed. → findings record.
-8. **`L-2026-07-21-17` — Delete with a pointer, not a comment block.** The swarm harness went with a
+8. **`L-2026-07-21-18` — Writing a lesson down is not a control; removing the capability is.**
+   `L-2026-07-21-9` said scripted bulk edits on Windows need explicit byte-level I/O. I wrote it,
+   graded it "held", and broke it an hour later with a PowerShell `Get-Content -Raw` /
+   `WriteAllText` round-trip that mojibaked every em-dash in a README. The rule was known and
+   available and did not fire, because the reach for PowerShell is reflexive. The control is
+   narrower and mechanical: **use the Edit tool for file edits; if a script must do it, `io.open`
+   with explicit encoding and newline.** Never `Get-Content`/`Set-Content`/`WriteAllText` on a file
+   with non-ASCII. → practice, superseding `L-2026-07-21-9`.
+9. **`L-2026-07-21-19` — Re-check a recommendation before executing it; the ground moves.** Three of
+   the config-surface decisions written earlier the same day were wrong by the time they were run.
+   D2 said delete 17 evidence keys — but `LumberjacksPriorityProbeRunner` writes the priority
+   manifest the landmark design later came to depend on, and the Shadow runner turned out entangled
+   with the manual route walk that was deliberately kept. A recommendation is a snapshot of what was
+   known; executing it later without re-reading is how a considered decision becomes a mistake. →
+   practice.
+10. **`L-2026-07-21-17` — Delete with a pointer, not a comment block.** The swarm harness went with a
    `SWARM-HARNESS-REMOVED.md` naming the recovery SHA, what stayed and why, the orphans left behind, and
    the honest counter-argument for wanting it back. Commented-out code rots; a SHA does not. → practice.
 

@@ -25,21 +25,18 @@ Bounded: touch only lines you created or resolved.
   which is the outcome `ValheimReleaseIdentity` explicitly argues against;
   (c) leave both and document the trap loudly.
   Recommend (a). (source: audit 2026-07-21)
-- [ ] 2026-07-21 — **The orphan sweep left by the swarm-harness deletion.** `fieldlab/autonomous/`
-  (compose + env + client-init) still sets `COMFY_AUTOJOIN`/`COMFY_MATRIX_CHECKIN` that nothing reads,
-  and would launch clients that idle at the menu; `network/mcp/comfy_gateway/toolsurface/matrix.py`
-  (~16 KB, 5 MCP tools) has no client for its checkout/report loop. Deleting matrix.py changes the
-  comfy-gateway tool manifest and needs a bounce plus `/checkmcp`, so it wants its own pass rather than
-  being folded into a cleanup. (source: `network/mod/ComfyNetworkSense/SWARM-HARNESS-REMOVED.md`)
-- [ ] 2026-07-21 — **The remaining config-surface decisions.** D2 (17 evidence-scaffolding keys) and
-  D3 (3 probe auto-start keys) are clean deletes off the serving path; D4 (12 P3/P5 experiment keys) is
-  marked defer because the injection pipeline is the only deterministic client-side deserialization
-  test that exists; D5 recommends flipping the `ActiveSeconds` default from 90 to 0 so the safe value is
-  the default. (source: [config-surface-decisions](docs/config-surface-decisions.md))
-- [ ] 2026-07-21 — **Track a reference production mod `.cfg` in the repo.** The production posture for
-  the serving-path flags exists only as VM state plus a runbook paragraph; nothing in version control
-  enforces it, so a VM rebuilt from defaults would silently resume native sync after 90 s.
-  (source: [config-surface-decisions](docs/config-surface-decisions.md) D5/D6)
+- [ ] 2026-07-21 — **Retire the matrix MCP surface.** `network/mcp/comfy_gateway/toolsurface/matrix.py`
+  (~16 KB, 5 tools) has no client since the mod-side checkout/report loop was deleted. It is **not** a
+  simple delete: `kernel/gateway.py` lazily imports it from three custom HTTP routes
+  (`/valheim/matrix/{checkout,report,status}`), and it is named in two `--providers` lists. Removing it
+  is kernel surgery on the **running** `:8720` gateway plus a bounce, so it needs its own pass with a
+  `/checkmcp` after — not a tail-end cleanup. Note the recovered dataset is now committed, so nothing
+  is lost by retiring it. (source: `network/mod/ComfyNetworkSense/SWARM-HARNESS-REMOVED.md`)
+- [ ] 2026-07-21 — **Whether to retire the `clients` profile in `valheim-lab.compose.yml`.** The
+  `valheim-client-NN` services can no longer self-drive and will idle at character select; they are
+  now clearly marked in-file. They are profile-gated so nothing starts them by accident. **Do not
+  delete the file** — it is the live definition of the running `comfy-gateway` on `:8720` and a
+  Valheim server. (source: same)
 - [ ] 2026-07-10 — **Fold the sibling client-side `WebRequest` POSTs onto the raw-socket helper**
   (telemetry, priority-mirror, apply-profile). Low priority — they run client-side where the
   "URI prefix is not recognized" defect is inert; only required if any ever needs to run

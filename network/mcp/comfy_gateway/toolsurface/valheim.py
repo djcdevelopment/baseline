@@ -602,17 +602,11 @@ CONFIG_PROFILES = {
         "benchmarkDurationSeconds": "60",
         "writeTelemetryLogs": "true",
     },
-    "autonomous_route": {
-        "liveSampleIntervalSeconds": "0.5",
-        "serverPulseIntervalSeconds": "2",
-        "benchmarkDurationSeconds": "60",
-        "writeTelemetryLogs": "true",
-        "autoRehearsalEnabled": "true",
-        "autoRehearsalRouteFile": "teleport-route.tsv",
-        "autoRehearsalProfile": "host_full",
-        "autoRehearsalDelaySeconds": "20",
-        "autoRehearsalRunOncePerSession": "true",
-    },
+    # "autonomous_route" was removed 2026-07-21 with the swarm harness. It set five
+    # autoRehearsal* keys that no longer exist in the mod, so applying it would have
+    # written dead entries into the BepInEx cfg and silently done nothing. Run the
+    # route by hand with the network_sense_rehearsal console command instead; see
+    # network/mod/ComfyNetworkSense/SWARM-HARNESS-REMOVED.md.
 }
 
 
