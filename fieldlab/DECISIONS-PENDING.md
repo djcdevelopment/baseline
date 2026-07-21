@@ -6,9 +6,6 @@ Bounded: touch only lines you created or resolved.
 
 ## Open
 
-- [ ] 2026-07-21 — **Trim the gameplay producer's per-hit `[gp]` diagnostic logging before real
-  traffic.** It fires on every combat hit (client + server logs); fine for the alpha, log spam under
-  load. Keep the meaningful lines (sent / received / death). (source: [ADR 0012](docs/adr/0012-gameplay-telemetry-is-client-side.md), retro session d)
 - [ ] 2026-07-21 — **Restore the pruned quest slice as a `QuestTriggerEvaluator` consuming the gameplay
   events** (Increment 4+). Client-side trigger + local-player attribution from the comfy backup
   (`djcdevelopment/comfy`, `handoffs/comfy-control-surface/`), dropping the screenshot/outbox coupling
@@ -109,6 +106,13 @@ Move an item back to `## Open` only when Derek re-opens it.
 
 ## Resolved
 
+- [x] 2026-07-21 — **Trim the gameplay producer's per-hit `[gp]` diagnostic logging before real
+  traffic.** → **gated behind a new `[Gameplay] gameplayEventVerboseLogging` flag (default false),
+  not deleted.** The per-hit damage line and the per-death line — the two firehose sources — now log
+  only when the flag is on; the discrete lifecycle lines (RPC registered / event sent / server
+  received) stay at Info since they fire only on actual routed events. Keeps the diagnostic instrument
+  for the next debugging pass while silent under load. Mod builds clean (0 warnings); flag hot-reloadable.
+  Not yet deployed to P7. (source: `GameplayEventProducer.cs`, `PluginConfig.cs`)
 - [x] 2026-07-21 — **Telemetry heartbeat under sustained load** → **keep the gate strict; separate
   liveness from admission.** The gate's invariant is real — a backlogged primary genuinely is not a
   fully authoritative window — but returning 409 *before* `Record()` meant a correct rejection also
