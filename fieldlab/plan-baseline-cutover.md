@@ -117,6 +117,32 @@ repo tomorrow, it would not come back.
 The point of `baseline` is to make the proven state the *reproducible* state. Item 6 above is
 therefore the only completion criterion that counts.
 
+## 7. Outcome — all six steps closed, 2026-07-21
+
+Steps 1–5 landed earlier the same day. **Step 6 closed on 2026-07-21**: the VM was
+re-provisioned from `baseline` and a real player session met every §9 acceptance criterion
+(100% coverage over 148,892 ZDOs, receipts 75,112 == acknowledged, zero pending,
+`complete=true`, zero native-only/fallback/reject/duplicate/retry).
+
+Two things this plan assumed turned out to be wrong, and both mattered:
+
+- **"If the VM were rebuilt from either repo tomorrow, it would not come back"** understated the
+  problem. `/opt/comfy` on the VM *was* a git checkout — of the retired `comfy` repo at
+  `8ca27eda`, with 471 dirty files, and a compose file that still built three of the five
+  services from VM-local source. The five-service gate this plan asked for (item 3) existed in
+  the repo but had never existed on the VM. Re-provisioning meant re-pointing the deployment
+  source, not copying files. → ADR [0006](docs/adr/0006-git-bundle-transport-no-vm-credentials.md).
+- **"Confirm the result reproduces what was world-tested"** is not fully achievable by rebuild.
+  The mod DLL cannot be rebuilt to its shipped hash at any commit; the .NET 8 SDK embeds the git
+  HEAD sha in the PDB. The tested artifacts were carried forward and the gap recorded, rather
+  than rebuilt into different bytes. → ADR
+  [0005](docs/adr/0005-carry-forward-unreproducible-artifacts.md).
+
+Evidence: `Lumberjacks/docs/roadmap/m5-v3-acceptance-receipt.json` (what passed, and what it
+does **not** cover), `m5-v3-reprovision-receipt.json` (what changed on the VM and how to roll
+it back), `m5-recipients-build-candidate-v3.json` (the manifest).
+Retro: `retro/SESSION-RETRO-2026-07-21.md`.
+
 ## References
 
 - Release manifest: `Lumberjacks/docs/roadmap/m5-recipients-build-candidate.json`

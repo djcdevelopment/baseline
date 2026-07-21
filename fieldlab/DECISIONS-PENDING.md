@@ -6,6 +6,30 @@ Bounded: touch only lines you created or resolved.
 
 ## Open
 
+- [ ] 2026-07-21 — **Stop the P7 VM, or leave it running?** It was started for the step-6
+  re-provision and is still up and billing. Deferred by Derek ("we'll get back to the VM
+  shortly"). (source: [retro 2026-07-21](retro/SESSION-RETRO-2026-07-21.md))
+- [ ] 2026-07-21 — **Fix release reproducibility, or accept it permanently?** Two known remedies,
+  neither chosen: pin `EnableSourceControlManagerQueries=false` in the csproj (hash becomes a
+  function of source alone, loses embedded provenance), or reorder cuts to
+  commit-first-build-second (keeps provenance; rebuild then needs the same origin URL). Until one
+  is chosen, mod artifacts are auditable only by hash continuity, not by rebuild.
+  (source: [ADR 0005](docs/adr/0005-carry-forward-unreproducible-artifacts.md))
+- [ ] 2026-07-21 — **Give the P7 VM a deploy key, or keep it credential-free?** Today every update
+  reaches it as a git bundle or an OCI archive pushed from a workstation. That is deliberate (no
+  secret at rest) but rules out any unattended update path.
+  (source: [ADR 0006](docs/adr/0006-git-bundle-transport-no-vm-credentials.md))
+- [ ] 2026-07-21 — **Telemetry heartbeat under sustained load.** The gateway rejects a
+  `lumberjacks-primary` heartbeat while any queue backlog exists, and staleness trips after 15s —
+  so a continuously busy session could show the dashboard stale while the system is healthy. The
+  mod-side log-noise fix is queued for the next cut; whether the *gate itself* should tolerate
+  load-induced backlog is a design decision, not a patch.
+  (source: [retro 2026-07-21](retro/SESSION-RETRO-2026-07-21.md), lesson `L-2026-07-21-2`)
+- [ ] 2026-07-21 — **Strict roster posture for future acceptance windows.** It is in-memory only
+  and every container recreate disarms it; it was left disarmed for the step-6 world test so it
+  could not block the join. Decide whether acceptance runs should re-arm it via
+  `POST /valheim/handshake/config` as a standard step.
+  (source: `Lumberjacks/docs/roadmap/m5-v3-acceptance-receipt.json`)
 - [ ] 2026-07-10 — **Fold the sibling client-side `WebRequest` POSTs onto the raw-socket helper**
   (telemetry, priority-mirror, apply-profile). Low priority — they run client-side where the
   "URI prefix is not recognized" defect is inert; only required if any ever needs to run
