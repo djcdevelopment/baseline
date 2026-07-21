@@ -58,15 +58,18 @@ Bounded: touch only lines you created or resolved.
   is kernel surgery on the **running** `:8720` gateway plus a bounce, so it needs its own pass with a
   `/checkmcp` after — not a tail-end cleanup. Note the recovered dataset is now committed, so nothing
   is lost by retiring it. (source: `network/mod/ComfyNetworkSense/SWARM-HARNESS-REMOVED.md`)
-- [ ] 2026-07-21 — **Whether to retire the `clients` profile in `valheim-lab.compose.yml`.** The
-  `valheim-client-NN` services can no longer self-drive and will idle at character select; they are
-  now clearly marked in-file. They are profile-gated so nothing starts them by accident. **Do not
-  delete the file** — it is the live definition of the running `comfy-gateway` on `:8720` and a
-  Valheim server. (source: same)
-- [ ] 2026-07-10 — **Fold the sibling client-side `WebRequest` POSTs onto the raw-socket helper**
-  (telemetry, priority-mirror, apply-profile). Low priority — they run client-side where the
-  "URI prefix is not recognized" defect is inert; only required if any ever needs to run
-  server-side. (source: [ADR 0003](docs/adr/0003-server-side-mod-http-raw-socket.md))
+- [x] 2026-07-21 — **Whether to retire the `clients` profile in `valheim-lab.compose.yml`.** →
+  **KEEP as manual noVNC clients**, per Derek (HANDOFF task 9). The four `valheim-client-NN` services
+  stay, profile-gated; the in-file comment now records the KEEP decision and how to drive them by
+  hand (`--profile clients up valheim-client-01` + noVNC) or restore self-drive (commit 1887626).
+  Verified `docker compose config --services` returns only `comfy-gateway` + `valheim-server`. The
+  file is untouched otherwise — it is the live definition of the running gateway + server.
+- [x] 2026-07-10 — **Fold the sibling client-side `WebRequest` POSTs onto the raw-socket helper**
+  (telemetry, priority-mirror, apply-profile). → **done** (HANDOFF task 10). Telemetry heartbeat's
+  bespoke socket copy, the priority-mirror `WebRequest`, and the apply-profile `WebRequest` all route
+  through `BoundedRawHttp` now (`SendBounded` where a credential header is needed, `PostForBody`
+  otherwise). Mod builds net48 0/0; the live dedicated-server POST acceptance stays the low-priority
+  integration step. (source: [ADR 0003](docs/adr/0003-server-side-mod-http-raw-socket.md))
 
 ## Resolved
 
