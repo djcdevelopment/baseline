@@ -6,16 +6,25 @@ Bounded: touch only lines you created or resolved.
 
 ## Open
 
-- [ ] 2026-07-21 — **Validate the far → approach re-sync under band-shaping.** A dropped far ZDO is
+*(none active — the AoI optimization items below are on **hard hold**; see
+[PINNED-aoi-optimization.md](PINNED-aoi-optimization.md). Pivoting to re-establishing the local
+docker dashboard for GCP telemetry.)*
+
+## Pinned — hard hold (2026-07-21)
+
+Full context and Derek's rationale in [PINNED-aoi-optimization.md](PINNED-aoi-optimization.md).
+Move an item back to `## Open` only when Derek re-opens it.
+
+- [~] 2026-07-21 — **Validate the far → approach re-sync under band-shaping.** A dropped far ZDO is
   acked (mandatory, or duplicate storm), so native believes the peer has it; a static far object a
   player leaves and returns to may not be re-offered. Test: fly >64m from a build, return, confirm it
-  reloads. First suspect if "distant builds don't reload" is reported. (source: [ADR 0011](docs/adr/0011-aoi-lives-on-the-producer.md), band-shaping baseline)
-- [ ] 2026-07-21 — **Band-shaping under multi-player density.** Cost is observers × changed-entities;
+  reloads. First suspect if "distant builds don't reload" is reported. **PINNED.** (source: [ADR 0011](docs/adr/0011-aoi-lives-on-the-producer.md), band-shaping baseline)
+- [~] 2026-07-21 — **Band-shaping under multi-player density.** Cost is observers × changed-entities;
   the production validation was single-observer. Two clients in one dense area is the real scaling test
-  (ties into the task-6 two-client isolation gate). (source: [ADR 0011](docs/adr/0011-aoi-lives-on-the-producer.md))
-- [ ] 2026-07-21 — **AoI "v.5": hysteresis at the 30/64m band edges + landmark announcement wiring +
+  (ties into the task-6 two-client isolation gate). **PINNED.** (source: [ADR 0011](docs/adr/0011-aoi-lives-on-the-producer.md))
+- [~] 2026-07-21 — **AoI "v.5": hysteresis at the 30/64m band edges + landmark announcement wiring +
   re-run the baseline.** MVP shipped; the edges still flap without a dead-band (ADR 0010), and the
-  gateway-side `ReachMeters` is dead-carried (populate it on the priority-manifest broadcast). (source:
+  gateway-side `ReachMeters` is dead-carried (populate it on the priority-manifest broadcast). **PINNED.** (source:
   approved AoI plan; folds in old task 5)
 
 - [x] 2026-07-21 — **An uncut dev build is split-brain: which side is wrong?** → **resolved (a)**:
