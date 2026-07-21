@@ -6,29 +6,6 @@ Bounded: touch only lines you created or resolved.
 
 ## Open
 
-- [ ] 2026-07-21 — **Telemetry heartbeat under sustained load.** The gateway rejects a
-  `lumberjacks-primary` heartbeat while any queue backlog exists, and staleness trips after 15s —
-  so a continuously busy session could show the dashboard stale while the system is healthy. The
-  mod-side log-noise fix is queued for the next cut; whether the *gate itself* should tolerate
-  load-induced backlog is a design decision, not a patch.
-  (source: [retro 2026-07-21](retro/SESSION-RETRO-2026-07-21.md), lesson `L-2026-07-21-2`)
-
-  **Recommendation (2026-07-21, for Derek):** do not loosen the gate. Record liveness *before*
-  admission instead — move `service.Record(heartbeat)` in `ValheimTelemetryHeartbeatEndpoints.cs`
-  above the `CanAcceptPrimaryHeartbeat` check, keep returning 409. Rationale: the 409 currently
-  skips `Record()`, so `_lastSeen` never advances and the 15s staleness clock runs out; the
-  coverage numbers that would *prove* the cutover is working freeze at their last accepted values
-  and the headline flips to `stale`, while `redirect.Pending` / `consumer.Pending` keep updating
-  live off the services — the dashboard contradicts itself. `CutoverSnapshot` recomputes
-  `IsAuthoritativeComplete` per request, so recording liveness cannot make it claim completeness;
-  it would read "fresh but draining", which is the truth. The same bug was already fixed once,
-  narrowly, for the `PeerCount == 0` case — see the comment in `CanAcceptPrimaryHeartbeat`
-  ("rejects every heartbeat after a restart and makes the dashboard stale until a player joins").
-  This generalizes that fix rather than inventing a new policy. Client-side risk is nil: the mod's
-  `LumberjacksTelemetryHeartbeatRunner.Post` is fire-and-forget and only logs on throw, so the 409
-  changes no mod behavior. Smallest proof: a heartbeat with `consumer.Pending = 5` gets 409, and
-  `GET /api/v0/telemetry/cutover` then returns `stale = false` with the live pending count.
-
 - [ ] 2026-07-10 — **Fold the sibling client-side `WebRequest` POSTs onto the raw-socket helper**
   (telemetry, priority-mirror, apply-profile). Low priority — they run client-side where the
   "URI prefix is not recognized" defect is inert; only required if any ever needs to run
@@ -36,6 +13,13 @@ Bounded: touch only lines you created or resolved.
 
 ## Resolved
 
+- [x] 2026-07-21 — **Telemetry heartbeat under sustained load** → **keep the gate strict; separate
+  liveness from admission.** The gate's invariant is real — a backlogged primary genuinely is not a
+  fully authoritative window — but returning 409 *before* `Record()` meant a correct rejection also
+  destroyed unrelated liveness information, freezing the coverage figures that prove the cutover is
+  working while the queue counters beside them kept updating live. `RecordAndAdmit` now records then
+  gates; the 409 and its conditions are unchanged. Proved by running the new test against the old
+  ordering, where it fails. (source: [ADR 0008](docs/adr/0008-liveness-is-not-admission.md))
 - [x] 2026-07-21 — **Stop the P7 VM, or leave it running?** → **leave it running**, per Derek.
 - [x] 2026-07-21 — **Fix release reproducibility, or accept it permanently?** → **accept it, in
   operator-in-the-seat mode**, per Derek: "accept unreproducibility when I'm in the seat driving
