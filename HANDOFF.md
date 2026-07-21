@@ -7,6 +7,28 @@ Point a fresh session at this file.
 
 ---
 
+## Progress — 2026-07-21 session 2 (branch `claude/handoff-code-line-2026-07-21`)
+
+The seat-free code line is **done and verified** (sdk:9.0 container for Lumberjacks, net48 host
+build for the mod). Tests 528 → **533** in Lumberjacks; mod contract tests 2 → **23**; mod builds
+0 warnings.
+
+- ✅ **2** — dev-build split-brain resolved option (a): uncut builds admit schema-2 ZDOs unattested. `5f79fd0`
+- ✅ **3** — near/mid/far band population per tick, surfaced at `/tick`. `480849f`
+- ✅ **7** — landmark reach (networking slice): `ZdoIntegrationContract.Admits` + reach field + config. `1dd6c18`
+- ✅ **9** — clients profile KEPT as manual noVNC (Derek's call). `296ceab`
+- ✅ **10** — three sibling POSTs folded onto `BoundedRawHttp`. `7c58e49`
+
+Still open, all needing the seat / infra / a live world — **not** blocked on code:
+
+- **1** — comfy-gateway re-provision: **deferred by Derek this session** (restarts the live world). Still runs matrix off the retired repo.
+- **4** — AoI knee sweep: needs a running server + wandering bots. Task 3 has instrumented it; ready to run.
+- **5** — hysteresis at the two flap points: **gated behind 4** (must measure current behaviour first, then damp). Code path understood; do it right after the sweep.
+- **6** — two-client recipient isolation: needs two real Steam clients + you in the seat. Task 9 kept the noVNC clients available for it.
+- **8** — reference production `.cfg`: needs the P7 VM's live cfg to diff against.
+
+---
+
 ## State in six lines
 
 - 20 commits, `ac151fc..bd6d72f`. Tree clean. `origin/main` is at `f945562`; the last few
