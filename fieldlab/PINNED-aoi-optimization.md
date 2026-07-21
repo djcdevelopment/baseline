@@ -44,5 +44,8 @@ choosing not to do right now.
 ## Un-pinning
 
 When Derek re-opens any of these, move the item back to the `## Open` section of
-`DECISIONS-PENDING.md`. The approved plan for the v.5 items still lives at
-`~/.claude/plans/jolly-doodling-planet.md`. Nothing here is lost — just held.
+`DECISIONS-PENDING.md`. The v.5 increment breakdown (hysteresis / landmark punch-through /
+re-baseline) is captured in item 3 above and in the band-shaping ADR
+(`fieldlab/docs/adr/0011-aoi-lives-on-the-producer.md`); the original scratch plan at
+`~/.claude/plans/jolly-doodling-planet.md` has since been overwritten by the community-telemetry
+plan, so treat this doc as the surviving record. Nothing here is lost — just held.
