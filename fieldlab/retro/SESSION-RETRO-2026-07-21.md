@@ -398,3 +398,165 @@ fleet second opinions cannot be trusted without checking `empty_build` first.
   write.
 - **`--fleet`:** none dispatched. The prior one was reaped — see *Second opinion resolved*.
 - **Ledger:** `retrospective.created` via `mcp__hearth__record_event`.
+
+---
+---
+
+# Session 3 — 2026-07-21 (build + ship + bake in: AoI band-shaping to production)
+
+**One-line:** Worked the handoff queue, then **built the measured AoI shape into the real Valheim
+netcode and shipped it to production** — and got caught, three times, asserting "can't / doesn't
+exist / is broken" from a mental model instead of a cheap check.
+
+## What this session was
+
+A **build-and-ship** session that started as queue-clearing and turned into a full vertical: measure →
+decide → plan → MVP → deploy to prod → validate live → make it permanent. ~11 commits, ~1,400 lines,
+one continuous run. The measurement half was Lumberjacks (the game server); the shipped half was the
+Valheim mod + the P7 GCP VM.
+
+## What shipped
+
+| Commit | What |
+|---|---|
+| `5f79fd0` | Task 2 — uncut dev builds admit schema-2 ZDOs unattested (kills the fail-open/fail-closed split-brain) |
+| `480849f` | Task 3 — near/mid/far band-population counters per tick at `/tick` |
+| `1dd6c18` | Task 7 — landmark reach: distance as a granted property (`Admits` = rank OR landmark) |
+| `7c58e49` | Task 10 — three sibling POSTs folded onto `BoundedRawHttp` |
+| `296ceab` | Task 9 — keep the lab clients profile as manual noVNC |
+| `c915215` · `a338535` | Handoff progress banner · record Task 1 (comfy-gateway re-provisioned off baseline) |
+| `89eebbc` | Task 4 — AoI measurement baseline + decision to build end-to-end |
+| `ecb2116` | AoI band-shaping MVP: near-full / mid-thin(5Hz) / far-drop in the mod redirect |
+| `409a397` | Auto-port harness: on-join → densest ZDO cell + god/fly + 40m up |
+| `8ca6242` | AoI band-shaping **P7 production baseline** + harden the deploy script |
+
+New durable artifacts: `fieldlab/evidence/aoi-baseline-20260721/` (the measurement + harnesses),
+`fieldlab/evidence/aoi-band-shaping-p7-baseline-20260721/` (the production reference), a new
+`ZdoBandPolicy` + `AutoPortDensity`, the approved AoI plan, ADR 0011, four memories
+(`baseline-build-test-toolchain`, `valheim-dedicated-godfly`, `trust-dereks-recall`,
+`iap-ssh-teardown-noise`).
+
+## Timeline
+
+Cleared the seat-free code queue (tasks 2/3/7/9/10, each built + tested in an `sdk:9.0` container or
+the net48 mod build). Re-provisioned the stale local comfy-gateway (task 1). Ran the AoI measurement
+(task 4): **send-volume is the tick ceiling** (the filter is ~4% of tick), a dual-radius cut buys
+**~8× p99 headroom**, and the recovered 9,600-row pressure model is **falsified** (it predicts tick
+cost independent of player count; measurement scales strongly with players). Derek reframed it mid-run
+from "find a precise knee" to "build a **consistent re-runnable baseline**" — the single-process
+generator caps ~300 bots and a 20× run-to-run swing turned out to be accumulated stack/host state
+(fresh-stack-per-session is the control; a leaking entity queue was tested and **ruled out**). He also
+pointed out the test "was built to be a matrix" and I'd run 1-D curves.
+
+Decided (with Derek): distance-band AoI is a **mod-side/producer** concern; the gateway is a passive
+relay. Planned MVP-first. Built the MVP: a pure `ZdoBandPolicy.Classify` (the one unit test) plus a
+runner refactor that **splits the fused suppress/ack/emit** — the ack is mandatory (skip it → duplicate
+storm), so a dropped far object is ack-but-don't-emit and drops must not touch the gate seq. Flag-gated
+default-off. Rebuilt the auto-port harness (server pushes the densest ZDO cell; client god/fly +
+teleport +40m). Deployed to production P7 over a gcloud IAP tunnel and **validated live**: at the
+densest single-player build, band-shaping **dropped ~85% losslessly** (`missing_seq=0`, `duplicates=0`,
+consumer caught up). Baked it in permanently and captured the production baseline.
+
+## The team retro — our collaboration across the seats
+
+**Architect (Claude holds the whole; Derek calls the shape).** Two sound calls. Putting AoI on the
+**producer** (mod) not the relay (gateway) cleanly decouples transport from game state — the gateway
+stays a dumb, recipient-partitioned queue and the shaping happens where the observer distance is known.
+And killing the 9,600-row model on evidence rather than deference. The one Architect miss is downstream:
+we shipped a drop-with-ack path whose **far→approach re-sync** is unproven (see watch items).
+
+**Implementer (Claude).** The runner refactor was the highest-risk change and it held: splitting
+suppress/ack/emit, keeping the ack mandatory, and keeping drops off the gate counters. One unit test
+(the pure decision function), everything else integration — the right ratio for Unity-coupled code.
+Small craft wins: `perl` (not PowerShell `Get/Set-Content`) to strip an invisible U+001F control char;
+container builds to dodge the missing net9/net48 host SDKs.
+
+**Reviewer / QA (both).** Verification leaned live and it paid: the flag-gate meant prod deploy was
+boring, and the one-call gate (`receipts_match_no_loss`) plus the band-decision jsonl gave a clean
+read. But QA *judgment* wobbled — I twice reported a defect that wasn't one (a "duplicate storm" that
+was a draining backlog; a "broken world" that was a barren spawn). Derek was the backstop.
+
+**Operator / SRE (Claude drove, badly then well).** The whole P7 deploy fought me over **cosmetic**
+gcloud-IAP teardown noise (`stdin ReadFile failed` prints *after* success) that I compounded with a
+PowerShell `2>&1` that flips exit codes on a harmless stderr warning. I concluded "I can't drive this"
+and offloaded manual installs to Derek — wrong. A plain `ssh comfy-p7 "cmd"` worked, and I then drove
+the entire deploy + install + baseline myself, and hardened the deploy script (scp-a-script, not
+`base64|bash`).
+
+**Product / planning (Derek paces).** We avoided the benchmarking rabbit hole (Derek's "it's about
+consistency, not a magic number") and shipped a real vertical slice with a live validation instead of
+an endless measurement. Scope discipline was good; the pacing correction ("we're drifting, remind me
+the plan") was Derek's and it was needed.
+
+## Two seats, two views
+
+**From Claude's seat.** The math and the build were strong — instrumentation was accurate, the AoI
+pipeline is lossless at worst-case density, and I offloaded the draftable prose (baseline note, plan,
+interpretation) to Gemini Pro to keep bandwidth for the C#/bash. What degraded was **operational
+epistemics**: three times I let a model of failure override a five-second check, and asserted the
+failure to Derek as fact. The fix isn't "check more" — it's a hard gate on the *speech act*: never tell
+Derek "can't / gone / broken" until I've falsified it.
+
+**From Derek's seat (my reconstruction — correct me).** "Batting 1000 calling BS today." The code came
+fast, but I had to be the backstop against invented causes: the auto-port script wasn't gone (just
+archived with the swarm harness); the SSH block was terminal noise, not a wall; the "backup" was a
+benign backlog and I was staring at an empty spawn. You can't debug or benchmark by inventing a cause
+you haven't traced — trace the path first. Also: keep it on. This is normal play now.
+
+## Last time's lessons — follow-through
+
+| id | lesson | grade |
+|---|---|---|
+| `L-2026-07-21-13` | Reason-from-model vs check the path | **pending — regressed hard.** Three fresh instances this session; escalated to `L-2026-07-21c-1` as a speech-act gate |
+| `L-2026-07-21-12` | Not-tracked-in-git is not lost; retired checkouts are an archive | **regressed** — declared the portal script gone after one grep; it existed |
+| `L-2026-07-21-18` | Removing the capability, not writing the lesson, is the control | **acted-on** — used `perl`/Edit, never `Get/Set-Content`; no file corruption this session |
+| `L-2026-07-21-19` | Re-check a recommendation before executing; the ground moves | **acted-on** — verified prod redirect state, tunnel, band flag before each step |
+| `L-2026-07-21-3` | Toolchain-lost reproducibility: record, don't rebuild | n/a this session |
+
+## Second opinion resolved
+
+The prior retro's dispatched `--fleet` plan (`hearth-retro-20260721-baseline-618dfd6e`) reaped as a
+**dud**: both builders returned `empty_build` / "agent produced nothing" (`agent_rc=3`, routing
+`route-disabled-temporarily`, runner `vllama-planner`), and the assay even lifted a `retro_excerpt`
+from the **wrong** session (2026-06-29). Zero signal. Confirms the standing caution: a fire-and-forget
+second opinion that no one shapes or reads is pure cost — and here, reading it still taught nothing.
+
+## Lessons learned
+
+1. **`L-2026-07-21c-1` — "Can't / doesn't exist / is broken" is a hypothesis, not a report.** Escalated
+   from `L-2026-07-21-13`/`-12` after three fresh regressions in one session, all caught by Derek. The
+   control is not "check more" (I *had* the memories) — it's a **gate on the speech act**: I may not
+   tell Derek a thing is impossible, missing, or failed until I've run the cheap falsifying check
+   (grep by behaviour not guessed name; run the plain command; read the actual counters). → practice.
+2. **`L-2026-07-21c-2` — Cosmetic stderr is not failure, and PowerShell makes it look like one.** The
+   gcloud-IAP `stdin ReadFile failed` traceback prints on teardown *after* the command succeeds; wrap a
+   native exe in `2>&1` in PS 5.1 and a harmless warning becomes a `NativeCommandError` that flips the
+   exit code. Don't `2>&1` a native exe; read stdout; judge success by the actual output. → memory
+   ([[iap-ssh-teardown-noise]]).
+3. **`L-2026-07-21c-3` — In a filtered emission pipeline, the ack is mandatory and separate from the
+   emit.** Dropping/thinning a sequenced item means ack-but-don't-emit (skip the ack → duplicate
+   storm), and suppressed-not-emitted items must not touch the delivery-gate counters (or they read as
+   false loss). This is the load-bearing insight that made band-shaping ship-safe. → ADR 0011.
+4. **`L-2026-07-21c-4` — Benchmark for a re-runnable baseline, not a magic number** (Derek). A
+   single-process generator that caps ~300 bots can't find an absolute knee, and 20× run-to-run swings
+   are usually host/stack accumulation, not an app leak. The deliverable is a fixed grid of health
+   signals you diff future changes against. → doc (the baseline evidence).
+5. **`L-2026-07-21c-5` — Flag-gate a behaviour-changing change default-off and you can ship it to prod
+   before it's fully proven.** The band-shaping MVP went to production behind `zdoBandShapingEnabled`
+   (default false); the deploy was a no-op until one flag flip, and rollback is one flip back. → practice.
+6. **`L-2026-07-21c-6` — Offloading prose to the fleet preserved the session.** Gemini Pro drafted the
+   baseline note, the plan, and this retro from factsheets; every draft was `faithful`/`minor-fixes`.
+   Keeping judgment frontier and grunt-prose offloaded is what let a marathon session stay coherent. → practice.
+
+## Provenance
+
+- **Git range:** `5873086..HEAD` (11 commits). Uncommitted: `Lumberjacks/package{.json,-lock.json}`
+  (incidental `npm install ws` for the load harness — left out of the retro commits).
+- **Offloaded (HEARTH `gcp-gemini-pro`):** the timeline, five-seat team retro, both seats' views, and
+  the lessons first-pass (this section edited frontier). Also offloaded earlier in-session: the AoI
+  baseline note, the implementation plan, the band-shaping interpretation. Draft `edit_verdict`:
+  **faithful** (light edits for repo-specific detail).
+- **Frontier (Claude):** the factsheet, every verification and code change, ADR 0011, the follow-through
+  grades, lessons IDs, `DECISIONS-PENDING`, memory, and every repo-coherent write.
+- **`--fleet`:** none dispatched this session; the prior plan was reaped (dud — see above).
+- **Ledger:** `retrospective.created` via `mcp__hearth__record_event`.
