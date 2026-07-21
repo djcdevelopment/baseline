@@ -6,9 +6,16 @@ Bounded: touch only lines you created or resolved.
 
 ## Open
 
-*(none active — the AoI optimization items below are on **hard hold**; see
-[PINNED-aoi-optimization.md](PINNED-aoi-optimization.md). Pivoting to re-establishing the local
-docker dashboard for GCP telemetry.)*
+- [ ] 2026-07-21 — **Trim the gameplay producer's per-hit `[gp]` diagnostic logging before real
+  traffic.** It fires on every combat hit (client + server logs); fine for the alpha, log spam under
+  load. Keep the meaningful lines (sent / received / death). (source: [ADR 0012](docs/adr/0012-gameplay-telemetry-is-client-side.md), retro session d)
+- [ ] 2026-07-21 — **Restore the pruned quest slice as a `QuestTriggerEvaluator` consuming the gameplay
+  events** (Increment 4+). Client-side trigger + local-player attribution from the comfy backup
+  (`djcdevelopment/comfy`, `handoffs/comfy-control-surface/`), dropping the screenshot/outbox coupling
+  in favour of the RPC→gateway seam. (source: [ADR 0012](docs/adr/0012-gameplay-telemetry-is-client-side.md), plan increment 4)
+
+*(The AoI optimization items below remain on **hard hold**; see
+[PINNED-aoi-optimization.md](PINNED-aoi-optimization.md).)*
 
 ## Pinned — hard hold (2026-07-21)
 

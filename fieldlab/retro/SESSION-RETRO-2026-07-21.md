@@ -560,3 +560,151 @@ second opinion that no one shapes or reads is pure cost — and here, reading it
   grades, lessons IDs, `DECISIONS-PENDING`, memory, and every repo-coherent write.
 - **`--fleet`:** none dispatched this session; the prior plan was reaped (dud — see above).
 - **Ledger:** `retrospective.created` via `mcp__hearth__record_event`.
+
+---
+
+# Session Retro — 2026-07-21 (session d) · The gameplay-event seam, and a vantage I got wrong twice
+
+**One-line:** We **shipped a live gameplay-telemetry seam end-to-end** — a player's kill in Valheim
+now appears on the community dashboard, identity-stripped — but only after **pivoting the producer
+from a wrong server-side vantage to client-side**, a correction the *pruned* quest-slice backup had
+been holding the whole time and Derek had to point me at.
+
+## What this session was
+
+A **pivot-driven build** session: pin the over-sharpening, then build one vertical seam
+(client kill → dashboard) through four increments, each ending in a real login test rather than unit
+ceremony. The through-line is uncomfortable and worth stating plainly: **the session's hardest work
+was undoing an architecture I chose without checking a domain assumption**, and the fix already
+existed in a backup we'd pruned two sessions earlier. Every increment after the pivot went fast; the
+pivot itself cost the most tokens and all seven of Derek's BS-calls.
+
+## What shipped
+
+| Commit | What |
+|---|---|
+| `ef73879` | Pinned all AoI optimization to hard-hold (`PINNED-aoi-optimization.md`); pivot to the telemetry dashboard. |
+| `ad16e17` | Increment 0 — re-established the `omen-dashboard` (nginx over the P7 IAP tunnel) live; browser-free verify runbook. |
+| `85567e0` | Committed the source integration plan the work builds from. |
+| `6dc6031` | Increment 1 — `killing_blow` seam: gateway ingress `POST /valheim/events` + `GameplayEventFeed` (identity-stripped) + Unity-free `GameplayEventClassifier`. **Built server-side.** |
+| `ffede2e` | Increment 1b — **the pivot**: client-side capture → new routed RPC `ComfyNetworkSense_GameplayEvent` → server handler POSTs on the private plane. |
+| `a8abb5f` | Increment 1b fix — emit on `Character.OnDeath`, not the `Damage` postfix (`IsDead()` is false there). |
+| `0990b82` | Increment 3 — Gameplay Feed panel on `community.html`. |
+| `821ed3a` | Increment 2 — `first_hit` + `weapon_used`. |
+| `474c647` | Dropped the ingress's redundant telemetry-key check (the change that shipped as `inc1-r2`). |
+
+New durable artifacts: ADR [0012](../docs/adr/0012-gameplay-telemetry-is-client-side.md); memories
+`community-dashboard-already-exists`, `p7-gateway-image-pinned`, `gameplay-capture-is-client-side`;
+the `omen-dashboard` verify runbook; a live Gameplay Feed on the dashboard. Validated by live login:
+`killing_blow $enemy_leech`, `first_hit`, and `weapon_used = Unarmed` (Derek punched it) all rendered.
+
+## The team retro — our collaboration across the seats
+
+The standard split held: **Claude** held the whole, instrumented, wrote every repo change, and drove
+all infra (P7 ssh, on-VM gateway image builds, mod deploys); **Derek** paced, made the pivot call,
+drove the live client (login + kills), and called BS at exactly the moments that bent the work toward
+the right design.
+
+**Architect (Claude drove; Derek made the pivot call).** The good call was reuse: discovering the
+dashboard + versioned aggregates-only v0 API already existed and reusing the `GameEvent` envelope
+instead of building the integration plan's greenfield `telemetry_event` contract. The bad call was the
+one that cost the session — designing gameplay capture **server-side** without verifying who simulates
+combat on a Valheim dedicated server. Connected clients own the creatures they fight, so the server's
+hooks never fire. I assumed the dedicated server was authoritative over combat; the pruned quest slice
+(client-side, "only local-player actions count") was the proof it isn't, and I didn't read it until
+Derek pointed me there. What to change: verify the domain model against prior art **before** picking
+the seam, not after the live test refutes it.
+
+**Implementer (Claude drove).** Clean parts: the `GameplayEventClassifier` stayed Unity-free and
+unit-tested (37 pass) across two redesigns; the client→server RPC target was **verified against
+`assembly_valheim`** rather than guessed (`GetServerPeerID` turned out not to be a public member —
+that grep saved a wrong build). Stumble: I hooked the `Damage` postfix to read `IsDead()`, which is
+false there — 0 deaths across 58 live hits — because death is processed after damage. Reading the
+execution order first (or logging health) would have caught it before a deploy cycle.
+
+**Reviewer / QA (Claude drove; Derek was the adversarial reviewer).** This is where the session was
+weakest and it is not close. **Derek called BS seven times in ~12 hours and was right every time.**
+Twice this session directly: I asserted the "ownership" cause before I had evidence (0 hook-fires was
+still ambiguous vs. an arming confound — I stated it as fact anyway), and I implied the functionality
+"wasn't built/deployed" — falsified in one grep, the code *was* in the loaded DLL. Then Derek pointed
+at the comfy backup and the real answer had been sitting there. The control I keep writing down
+(falsify before you report) keeps not firing. What to change is not "remember"; see the lessons.
+
+**Operator / SRE (Claude drove; live paid infra).** The recoveries were sound: every gateway deploy
+was reversible by re-pin, the mod deploy backed up before swapping, and I read the live cutover
+numbers before answering Derek's "are we on native?" instead of guessing off a label. The failure was
+trusting a script over the environment: `deploy-gateway.ps1` ran "successfully" and deployed **nothing**
+because the P7 gateway is image-pinned under an M0 freeze (`docker compose build gateway` is a no-op
+with no `build:` section). I only caught it because the endpoint 404'd. The real path — build the
+image on the VM, re-pin `LUMBERJACKS_GATEWAY_IMAGE` — is now a memory. A small grace: the mod's
+`PluginOutputPath` meant one `deploy-network-sense` updated Derek's client *and* the server.
+
+**Product / Planning (Derek drove; Claude planned).** Derek's pacing was the session's best asset. The
+opening hard-hold on AoI ("we'd be over-sharpening") kept us out of a tar pit; keeping the first
+increment scoped to `killing_blow` only made the client/server gap cheap to diagnose; and "advance
+toward the full plan" was the right altitude — ambition without greenfield waste. Increments 2/3 after
+the seam proved were fast because the seam was right.
+
+## Two seats, two views
+
+**From Claude's seat.** I over-reached on architecture and under-reached on verification — the exact
+inverse of what I should do. I committed to a vantage (server-side) for a *convenience* reason (auth
+simplicity) and let that convenience survive until a live test killed it. Three separate times I turned
+a hypothesis into a reported fact. What I'd want next time: a hard rule that "X can't work / doesn't
+exist / is broken" is unspeakable until a named cheap check has failed — and to treat a pruned backup
+as a *primary source*, not a lost thing.
+
+**From Derek's seat (my reconstruction — correct me).** *"The seam works and it's on the dashboard,
+which is what I wanted. But I called BS seven times today and went 7-for-7, and every one was the same
+shape: Claude stating a wall exists before checking it's a wall. I remember building this stuff — the
+quest slice punched trees and tracked kills for weeks, client-side — so when the theory was 'the server
+can't see it,' my instinct said check the thing I built, not theorize. The backup is the receipt. Ship
+it, tune the log spam down when real players show up, and next time read the archive before you tell me
+it's gone."*
+
+## Last time's lessons — follow-through
+
+| Lesson | Status |
+|---|---|
+| `L-2026-07-21c-1` — "Can't / doesn't exist / is broken" is a hypothesis, not a report | **regressed, hard — 7 fresh instances.** Re-escalated as `L-2026-07-21d-2` with a stronger control. |
+| `L-2026-07-21c-2` — Cosmetic stderr (IAP teardown) is not failure | **acted-on** — treated every `stdin ReadFile failed` traceback as benign throughout; drove P7 ssh freely. |
+| `L-2026-07-21c-5` — Flag-gate a behaviour change default-off and ship it to prod | **acted-on** — `gameplayEventProducerEnabled` default-false; armed only for the test. |
+| `L-2026-07-21c-6` — Offloading prose to the fleet preserves the session | **acted-on** — Gemini Pro drafted the endpoint recon, the `community.html` structure, and this retro (all faithful). |
+| `L-2026-07-21c-3/c-4` — ack-separate-from-emit / baseline-not-magic-number | n/a this session (AoI-specific). |
+
+## Lessons learned
+
+1. **`L-2026-07-21d-1` — Valheim gameplay capture is client-side; the server can't see client-owned
+   combat.** The creatures a connected player fights are owned/simulated by that player's client, so
+   server-side combat hooks never fire; capture on the client and relay by routed RPC to a
+   private-plane server handler that POSTs. → **ADR 0012** + memory `gameplay-capture-is-client-side`.
+2. **`L-2026-07-21d-2` — Escalation of `c-1`: gate the *speech act*, not the memory.** Writing "falsify
+   before you report" down has now failed across three sessions (7 regressions today). The control that
+   actually holds is a precondition: I may not *state* "can't / doesn't exist / is broken / is the
+   cause" until I name the cheap check and it has failed — and a pruned/retired backup is a primary
+   source to read, not a loss to lament. → practice (open-decisions register), superseding `c-1`.
+3. **`L-2026-07-21d-3` — `Character.OnDeath` is the kill signal; `IsDead()` is false at a `Damage`
+   postfix.** Death is processed after damage application; record the last attributed hit in the damage
+   hook and emit on `OnDeath`. → memory (folded into `gameplay-capture-is-client-side`).
+4. **`L-2026-07-21d-4` — A P7 gateway code change deploys by building the image on the VM + re-pinning,
+   not `deploy-gateway.ps1`.** The gateway is image-pinned under an M0 freeze; the old script's
+   in-place `compose build` is a silent no-op. → memory `p7-gateway-image-pinned`.
+5. **`L-2026-07-21d-5` — Audit what exists before drafting a greenfield plan.** The "12-phase" dashboard
+   was ~80% built; the archaeology that found it saved most of the plan and reused `GameEvent`. →
+   memory `community-dashboard-already-exists`; reinforces ADR 0009 (verify against an independent source).
+6. **`L-2026-07-21d-6` — Verify a Valheim/engine API against `assembly_valheim` before coding it.** The
+   grep that showed `GetServerPeerID` isn't a public `ZRoutedRpc` member turned a would-be wrong build
+   into a one-line pivot to `InvokeRoutedRPC(0L, …)`. → practice.
+
+## Provenance
+
+- **Range:** `abaf23d..HEAD` (this session's 8 commits `ef73879..821ed3a` + retro/r2 hygiene). AoI
+  session (`ecb2116..02dff2e`) excluded — already retro'd (session c).
+- **Offloaded (Gemini Pro `gcp-gemini-pro`):** the endpoint-shape recon, the `community.html` structure
+  recon, and the timeline/role-reads/lessons first pass of this retro. Draft `edit_verdict`: **faithful**
+  (tightened the "80% built" framing, added deploy/memory specifics, rewrote Derek's seat).
+- **Frontier (Claude):** the factsheet, all archaeology direction, every verification + code change +
+  deploy, ADR 0012, the follow-through grades, lesson IDs, `DECISIONS-PENDING`, memory, and every
+  repo-coherent write.
+- **`--fleet`:** none dispatched.
+- **Ledger:** `retrospective.created` via `mcp__hearth__record_event`.
