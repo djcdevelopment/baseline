@@ -1,0 +1,54 @@
+{
+    "schema":  "comfy-guest-package/v1",
+    "release_id":  "m1-clean-20260717-r1",
+    "created_utc":  "2026-07-16T21:17:27.0000000Z",
+    "manifest_sha256":  "0753c56ec4d99824cc95d42f639f2371e27e23e53f04fa1ffde61ab2b67acfab",
+    "dll_release_identity":  "manifest-only; assembly metadata absent in sealed cut",
+    "files":  [
+                  {
+                      "path":  "scripts/Invoke-GuestPreflight.ps1",
+                      "sha256":  "0ec39f594925288ce95b7987f7bc44653e3448842fdf7aef09c073aa707092ff",
+                      "bytes":  5245
+                  },
+                  {
+                      "path":  "scripts/Install-ComfyGuest.ps1",
+                      "sha256":  "74062e85e9a17e4ef6f5f507718bc5014c8010c4802ae810d273318c9f2e27f7",
+                      "bytes":  4415
+                  },
+                  {
+                      "path":  "scripts/lib/ComfyGuestCommon.psm1",
+                      "sha256":  "0de6ed62b7908756cc24e99d8d6c614c0b8e7b39b8ce0c9d246f83c15e3b5f56",
+                      "bytes":  7463
+                  },
+                  {
+                      "path":  "scripts/Uninstall-ComfyGuest.ps1",
+                      "sha256":  "55b9546874b755bb45925920f8d3436974c4e9054a4829ed5b29d853b3d6f87b",
+                      "bytes":  2734
+                  },
+                  {
+                      "path":  "scripts/Collect-ComfyGuestDiagnostics.ps1",
+                      "sha256":  "8f217926196185c0cd5d9b9641ea39d1e5dfc2e5c9e096634984defcb06c82b0",
+                      "bytes":  1997
+                  },
+                  {
+                      "path":  "GUEST-GUIDE.md",
+                      "sha256":  "3edbe14bcdbe2c10a84d2319712a78901616946e13d8c5980e462ccf461e45f6",
+                      "bytes":  2174
+                  },
+                  {
+                      "path":  "ComfyNetworkSense.dll",
+                      "sha256":  "94a3843ef8042adceaca6bc4d5c0c38c7c8dc5a1aa05b5f2a3019879840ba3a8",
+                      "bytes":  397312
+                  },
+                  {
+                      "path":  "manifest.json",
+                      "sha256":  "0753c56ec4d99824cc95d42f639f2371e27e23e53f04fa1ffde61ab2b67acfab",
+                      "bytes":  3139
+                  },
+                  {
+                      "path":  "guest-package-inputs.json",
+                      "sha256":  "17c4198bf516b56b46f7b2d8cb7748c23fef7e68c607a8481bb6c514014bb295",
+                      "bytes":  469
+                  }
+              ]
+}

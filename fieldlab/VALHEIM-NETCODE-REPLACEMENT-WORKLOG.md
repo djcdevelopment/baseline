@@ -1,0 +1,610 @@
+# Valheim Netcode Replacement — Worklog & Test Program
+
+> **2026-07-09 post-audit note:** state of the world lives in [GROUND-TRUTH.md](GROUND-TRUTH.md);
+> the live phased plan is [TEST-PROGRAM.md](TEST-PROGRAM.md). This file remains the ladder spine
+> (invariant definitions I0–I7 and their gates).
+
+> **2026-07-11 local / 2026-07-12 UTC P7 result:** the combined GCP deployment passed
+> the live P7/I7 loopback gate on `comfy-lumberjacks-p7` in project
+> `lumberjacks-exp-20260711-djc`. Product scope was the Valheim x Lumberjacks netcode
+> replacement, not the original Godot vertical slice. The deployed stack ran
+> `ComfyEra16`, ComfyNetworkSense 0.5.18, Valheim UDP `2456-2457`, and Lumberjacks
+> `postgres`, `gateway`, `eventlog`, `progression`, and `operatorapi`. Gate summary:
+> handshake accepted and reached steady state; ownership pin held 25 captured ZDOs with
+> live negative control; redirect matched 6316 suppressed sends to 6316 gateway receipts
+> with 0 loss/duplicates; injection rendered with the Lumberjacks owner; client log was
+> clean; save integrity passed; GCP memory stayed healthy with swap unused. The server was
+> disarmed back to observe-only baseline after the gate.
+> — **Superseded 2026-07-12 by the archived `i7-w6` close below.** This recorded the pre-archive
+> GCP pass; the redirect `6316` figure here is the **`i7-gcp-w1`** mod-side `auto_stop` seq, whose
+> gateway receipts did **not** survive a gateway bounce — so that window is a *corroborating*
+> occurrence, not a full capture. The authoritative, archived, single-window four-for-four close is
+> the `i7-w6` blockquote immediately below (redirect there is `3474 == 3474`).
+
+> **2026-07-12 UTC — P7/I7 CLOSED (authoritative, archived).** The clean single-window
+> four-for-four capture landed: window **`i7-w6`** (2026-07-12 07:36–07:42 UTC) on the combined GCP
+> deployment `comfy-lumberjacks-p7` (n2-highmem-8, 62 GiB RAM, us-west1-b, project
+> `lumberjacks-exp-20260711-djc`, public IP `8.231.129.249`) running the Steam-only Valheim
+> dedicated server (world `ComfyEra16`, `CROSSPLAY=false`), ComfyNetworkSense 0.5.18 (DLL sha256
+> `827fc6b2…f816d`), and the full Lumberjacks stack (gateway/eventlog/progression/operatorapi/
+> postgres) in one docker-compose. OMEN stayed the rendered native Valheim client + fieldlab
+> controller (SteamID 76561198088711642 / `floooooobcakes` / persona wary.fool / character
+> Durracktu). All four Harmony rungs were armed **simultaneously** and auto-started at 07:39:30
+> after a Lumberjacks-decided ACCEPT (uid 2202545290, net_version 36) + New-peer-connected; clean
+> auto-stop 07:42:01 — **no desync, crash, or OOM; world intact; ~48 GiB free through the window.**
+> Gate verdicts (all via the one-call MCP gates, evidence `fieldlab/evidence/i7-w6/`):
+> **I5** Lumberjacks-decided ACCEPT + logical steady state (`accept_only`); **I2** pin
+> `held_with_negative_control` — 25 pinned, 49 holds (48 `SetOwner` + 1 `SetOwnerInternal`), 15606
+> pass-through negative control, held_owner 2202545290; **I3** redirect `receipts_match_no_loss` —
+> mod suppressed 3474 == gateway `distinct_seq` 3474, missing 0, duplicates 0, mod-authoritative
+> auto_stop; **I4** injection `rendered_with_lumberjacks_owner` — rendered 1, owner 5497853135698
+> matched, 90 polls / 0 errors; **client stability** clean (no `INVALID_MESSAGE`/socket/desync).
+> **Save-integrity across the disarm save→reload is within-tolerance, not literal delta-0:**
+> portals/spawned/locations EXACT, ZDOs −2 (9,155,622 → 9,155,620, 0.00002 %, inside the 1 %
+> tolerance), targets −1 (20258 → 20257). Honest read — **not** composition corruption: the
+> composition persists no ZDO state (pin/redirect/handshake runtime-only, injection client-only;
+> proven byte-identical in P3–P6), so the tiny deltas are normal vanilla churn from a real player
+> walking a dense route ~3 min across two reloads; the tool's exact-match rule prints "fail" only on
+> the −1 target. **What unblocked it:** the weeks-long stall was am4 **host** OOM (`oom_kill=9`)
+> splitting every prior four-armed attempt across windows; migrating the dedicated-server role to a
+> GCP VM with memory headroom removed the pressure. **Repeatability:** independently corroborated by
+> an earlier GCP window **`i7-gcp-w1`** (2026-07-11, `fieldlab/evidence/i7-gcp-w1/`, a *partial*
+> bundle — server-log ACCEPT + pin/redirect armed + clean pin auto-stop, plus a surviving mod-side
+> redirect artifact `auto_stop seq=6316`; its gateway receipts + pin counts didn't survive a gateway
+> bounce). Two independent live GCP windows (`i7-gcp-w1` + `i7-w6`) ⇒ repeatability satisfied.
+> **Honest caveats kept:** `accept_only` this window, not the full 6-code battery live (proven 28/28
+> headless in P6); save-integrity within-tolerance, not literal delta-0; `i7-gcp-w1` is
+> partial-evidence. The two-source rule was honored — server log + gateway JSON + mod jsonl + MCP
+> gates are the independent, non-doc sources.
+
+> **2026-07-12 (local) — post-close addendum: mod 0.5.19 (additive, no rung).** After the I7
+> close the mod head moved `0.5.18 → 0.5.19` (commit `e7057e8`); **I7 stays CLOSED on 0.5.18** —
+> the build that passed the gate is unchanged, and no ladder rung was added or altered. 0.5.19 is
+> client-only and additive: a `network_sense_godfly [on|off]` console command giving an on-demand
+> god + debug-fly toggle to a client joined to a dedicated server, where vanilla `god`/`fly` are
+> cheat-gated (`IsCheatsEnabled() == ZNet.IsServer()`, false on a client) and `fly` is `onlyServer`.
+> It drives the `Player` API directly — the same path the route-walk safeguard already uses — and is
+> a no-op headless. The commit also lands `fieldlab/handoffs/guest-client-pack/` (guest README +
+> host runbook: BepInEx-from-Thunderstore, join-by-IP, host-side VM-start / arm-accept-all / disarm)
+> as groundwork toward the Beyond-I7 **B1** multi-client slice — not the slice itself. CHANGELOG +
+> COMMANDS updated.
+
+Date opened: 2026-07-08. Companion to
+`VALHEIM-NETCODE-REPLACEMENT-FEASIBILITY-RESEARCH.md` (the grounded feasibility
+pass) and `VALHEIM-LUMBERJACKS-FEASIBILITY.md` (the layer matrix).
+
+**Destination:** a 100% swap of Valheim's native network/replication layer for an
+external authoritative server (Lumberjacks), with the Valheim client still running
+and rendering locally. Everything built to date (sidecar probe → projection →
+shadow → priority manifest → datagram lane → in-game consumer) was the
+environment-dialing warm-up. This document is the program to reach the actual
+destination.
+
+---
+
+## Method: isolate one invariant per slice
+
+Same wind-tunnel discipline the priority-manifest work used. The full swap is not
+one build; it is a **ladder of independent yes/no questions**, each of which can be
+proven or killed *in isolation* while holding everything else constant. We never
+"try the whole swap." We prove one invariant, land a fieldlab packet with a
+verifier, then move up. A failed invariant with no untested workaround is the only
+thing that stops the ladder — and per the standing directive, "no workaround left"
+must be *demonstrated*, not assumed.
+
+Each rung below states: **the invariant** (the one thing being proven), **why it
+isolates cleanly**, **prerequisites**, **the probe + pass gate**, and **the offload
+split** (what HEARTH/mechnet does vs. what must be frontier or operator).
+
+### The reusable harness (already built — do not rebuild)
+
+- **ComfyNetworkSense** BepInEx mod (`network/mod/ComfyNetworkSense`) — the
+  in-Valheim agent. Add one console command + one runner per slice, exactly as the
+  priority-manifest work did. Auto-installs to the live plugins folder on build.
+- **Lumberjacks Gateway** (`C:\work\Lumberjacks`) — the external authority. Rebuilt
+  and running on :4000 (WS) / :4005 (UDP), with the priority-manifest + datagram
+  endpoints and the UDP crash fix landed this session.
+- **fieldlab** (`fieldlab/scenarios` + `command-plans` + `run-experiment.ps1`) —
+  every slice produces a signed run packet with pass/fail gates. Reuse the pattern
+  from `valheim-lumberjacks-priority-gateway-plan`.
+- **Telemetry convention** — one `*.jsonl` per runner under
+  `BepInEx/config/comfy-network-sense/`, mirrored to a fieldlab verifier.
+
+---
+
+## The invariant ladder
+
+### I0 — Netcode map (pre-work for everything) — ✅ COMPLETE (2026-07-09)
+
+**Status:** gate satisfied. Deliverable: `NETCODE-MAP.md` (all five funnels mapped with
+verbatim signatures + citations from a decompile of `assembly_valheim.dll` @ 2026-07-01,
+net protocol version 36). Key outcomes: (1) the inlining standing-risk is **bounded** — the
+whole receive/handshake/routed-RPC handler layer is delegate-registered and inlining-proof,
+so residual risk is only three send-side helpers; (2) the connection-handshake sequence the
+feasibility research *refuted* is now re-derived end to end (version gate `num != 36`, full
+error-code order); (3) native boundary confirmed clean — all managed funnels sit above
+`ZSteamSocket`. Fleet-lane reachability (flagged unknown below) **resolved: fleet CAN reach
+GitHub**. Next unblocked rungs: I1 (see `handoffs/HANDOFF-I1-INTERCEPTION-REACHABILITY.md`)
+and I6.
+
+- **Invariant:** we have an accurate, source-grounded map of Valheim's managed
+  replication path: the exact classes/methods/fields for (a) the ZDO send funnel,
+  (b) the ZDO receive/apply funnel, (c) ownership storage + the transfer trigger,
+  (d) the `ZRoutedRpc` dispatch entry/exit, (e) the connection-handshake sequence.
+- **Why it isolates:** pure reading. No game, no build. Produces a reference doc
+  every later rung depends on.
+- **Prerequisites:** none. This is the floor.
+- **Probe + gate:** a `NETCODE-MAP.md` naming, for each of the five funnels above,
+  the real method signature and the mod's intended hook point (prefix/postfix/
+  transpiler), each backed by a source citation from one of: `dnSpy`/`ILSpy`
+  decompile of `assembly_valheim.dll`, `tpill90/ValheimMods/Notes.md`,
+  `ddormer/valheim-serverside` source, `CW_Jesse/BetterNetworking` source. Gate =
+  all five funnels mapped with a citation; no "TODO/unknown" left in the send,
+  receive, or ownership rows.
+- **Offload split — heavily offloadable:**
+  - **local_generate:** feed it pasted decompiled method bodies / source files in
+    chunks; ask it to extract the method signature, the fields it touches, and
+    whether the call bottoms out in a native/`extern` call (which Harmony can't
+    reach). Pure text extraction — its sweet spot. Cold-start tax once, then fast.
+  - **submit_task (fleet):** a self-contained "read these two public GitHub repos
+    (valheim-serverside, BetterNetworking) and produce a structured summary of
+    exactly how each one hooks ZDO ownership and the send queue" brief — *if* fleet
+    workers have outbound internet. Verify that first (see Offload Strategy below);
+    if not, fall back to local_generate over source I fetch and paste.
+  - **frontier (me):** decide the final hook points and Harmony strategy per funnel
+    — judgment over decompiled IL, not offloadable.
+  - **operator:** none.
+
+### I1 — Interception reachability — ✅ PASS (2026-07-09, connected session), one loose end
+
+**Status (post-audit, 2026-07-09 evening):** the gate is **PASS** — cross-verified by the
+ground-truth audit against run artifacts, session logs, live am4 state, and docker logs (see
+`GROUND-TRUTH.md`, verdict 3). A real client↔am4-server session (14:46–14:47 UTC) produced
+1,154 recv + 3,846 send ZDO rows, uid/owner legible on all 5,000 detail rows. Both funnels are
+reachable and legible at runtime.
+
+**⚠️ Caveat that survives the PASS:** the run used `autostop=0`, so **no counters row was ever
+emitted** — every `*_calls` value and `parse_errors=0` in the summary is a verifier fallback
+default, not a measurement. Therefore the "SendZDOs is JIT-inlined — settled" headline in the
+I1 handoff is **unverified** (plausible, but the deciding counter never fired). Attaching later
+rungs at `CreateSyncList` is safe regardless — that seam is proven. The airtight re-run
+(finite `autostop`, real counters, which also genuinely settles inlining) is
+**TEST-PROGRAM.md Phase P2**.
+
+**Discovery (2026-07-09):** the first probe run captured a clean **zero** on all three
+funnels — because it ran in a **singleplayer world**. In the decompile, `SendZDOs` is only
+ever invoked as `SendZDOs(m_peers[m_nextSendPeer], …)` and `RPC_ZDOData` only fires on data
+received *from a peer*; with an empty peer list all three funnels (incl. `CreateSyncList`,
+called only from `SendZDOs`) are dormant no matter how much you move. **I1 requires a
+connected session (client↔dedicated-server), not singleplayer.** This corrects the original
+handoff's "load any world and move around" recipe.
+
+**0.5.6 auto-start:** a `[Netcode]` config auto-start fires once
+`ZNet.GetPeerConnections() > 0` (no local player needed, so it works headless on the dedicated
+server too), runs a bounded window, and auto-stops with a counters row. ~~Next: run
+`run-autonomous-valheim-lab.ps1`~~ **DEAD PATH — the OMEN Docker lab topology cannot work
+(Docker Desktop publishes no UDP; containerized clients llvmpipe-crash). The live recipe is the
+am4 + native-OMEN-client topology in `MULTIPLAYER-NETWORK-SETUP.md`.**
+
+**Build:** probe built, compiled clean, and auto-installed (ComfyNetworkSense **0.5.6**).
+Deliverables: command `network_sense_lumberjacks_netcode_probe [start|stop|status]
+[max-detail-rows]`; runner `NetcodeProbeRunner.cs` with three auto-applied `ZDOMan`
+postfixes — `RPC_ZDOData` (receive), `SendZDOs` (residual-inlining-risk send helper),
+`CreateSyncList` (send-side fallback seam + per-ZDO detail); writes `netcode-probe.jsonl`;
+verifier `fieldlab/scripts/verify-netcode-probe.ps1` + scenario
+`valheim-lumberjacks-netcode-probe.yaml`. Observe-only: the receive side re-parses a *copy*
+of the wire bytes (live read cursor untouched), the send side only reads already-selected
+ZDO objects. **Next: operator runs the ~2-min in-game window; then read the verifier gate.**
+Follow-up (deferred, not blocking): wire the scenario into `run-experiment.ps1`'s dispatcher
+for a full signed packet — the standalone verifier already applies the gate.
+
+- **Invariant:** a ComfyNetworkSense Harmony patch actually fires on the live ZDO
+  send funnel and the receive funnel, and can read the ZDO payload passing through
+  — *observe only, change nothing*.
+- **Why it isolates:** proves the hook point from I0 is real and reachable at
+  runtime, decoupled from any redirect/authority logic. If a target method is
+  inlined (Harmony can't patch it — confirmed research finding), we discover it
+  here, cheaply, before building anything on top.
+- **Prerequisites:** I0.
+- **Probe + gate:** a new command `network_sense_lumberjacks_netcode_probe
+  [start|stop|status]` that counts ZDO sends and receives observed via the patch,
+  writing `netcode-probe.jsonl`. Gate = nonzero observed sends AND receives during
+  normal play, with the ZDO id/owner fields legible. Fieldlab verifier confirms the
+  counts are plausible against a short play window.
+- **Offload split:**
+  - **local_generate:** draft the runner boilerplate + the fieldlab verifier
+    scaffold (it drafted the priority observer well). I edit for correctness.
+  - **frontier:** the Harmony patch itself + reading the ZDO struct.
+  - **operator:** ~2 min in-game — load world, move around, run the command.
+
+### I2 — Ownership seizure
+
+- **Invariant:** we can force the owner field of a chosen ZDO (or all ZDOs in a
+  zone) to a designated authority id and prevent Valheim from handing it back on
+  the normal first-client-in-zone trigger.
+- **Why it isolates:** ownership is a distinct concern from transport. Proving we
+  can *hold* authority (even while traffic still flows over vanilla Steam sockets)
+  is separable from proving we can *redirect* traffic. valheim-serverside targets
+  exactly this; I0 should have mapped its mechanism.
+- **Prerequisites:** I0, I1 (need the read hook to confirm the owner field before/
+  after).
+- **Probe + gate:** command extends the probe to set + re-assert ownership on a test
+  ZDO; `netcode-probe.jsonl` logs owner before, after, and after the next natural
+  transfer trigger. Gate = owner stays pinned across a trigger that would normally
+  reassign it, with zero client crash and no save corruption on quit.
+- **Offload split:**
+  - **local_generate:** extract valheim-serverside's exact ownership-pin approach
+    from its source (paste it in) into a step list I can adapt.
+  - **frontier:** the actual patch + the safety reasoning (not corrupting save).
+  - **operator:** in-game, drive a zone ownership-transfer scenario.
+- **Status: ✅ PASS (2026-07-10, mod 0.5.10).** `OwnershipPinRunner` holds owner on
+  both churn funnels via scoped Harmony prefixes on `ZDO.SetOwner` (release scope) +
+  `ZDO.SetOwnerInternal` (RPC scope). Authoritative gate window: 25 ZDOs pinned, 55
+  holds (34 `SetOwner` + 21 `SetOwnerInternal`), 262 pass-through transfers on unpinned
+  ZDOs as the live negative control, save-integrity PASS with the pin engaged. The
+  mechanism was grounded directly on the decompiled assembly (not the summary doc),
+  which surfaced two corrections: the `RPC_ZDOData:842-844` revision-race hole (so we
+  guard `SetOwnerInternal` directly) and that ZDO ownership is runtime-only (so the pin
+  is inherently save-safe). Evidence: `evidence/i2-pin/` (sha256 `ebeefeb6`). Retro:
+  `retro/SESSION-RETRO-2026-07-10.md`. ADRs 0001, 0002.
+- **Repeatability hardened (2026-07-10 evening, window A of the P4 gate session):** a 2nd
+  fully authoritative window on a fresh join — 25 pinned, **232 holds** (222 SetOwner +
+  10 SetOwnerInternal), **280 pass-through** as the live negative control, clean 150s
+  auto-stop (no idle-restart clipping; join timed to a fresh updater cycle), save-integrity
+  exact across the post-window save→reload. Ran on 0.5.11 with the pin code carried
+  unchanged (mechanism-across-builds; recorded honestly in `evidence/i2-repeat/ANALYSIS.md`,
+  sha256 `b375d9ec`). P3's one soft spot is closed.
+
+### I3 — Outbound redirect
+
+- **Invariant:** we can suppress the native outbound send for a class of ZDO/RPC
+  traffic and emit the equivalent to Lumberjacks instead, without the client
+  erroring.
+- **Why it isolates:** one direction only. The client can tolerate "sent nowhere
+  useful" far better than "received garbage," so outbound is the safer half to prove
+  first. No inbound injection yet.
+- **Prerequisites:** I0, I1. (I2 not strictly required — redirect is separable from
+  ownership.)
+- **Probe + gate:** the send patch drops the native send for tagged ZDOs and posts
+  them to a Lumberjacks endpoint; verifier confirms Lumberjacks received them AND
+  the client logged no `INVALID_MESSAGE`/socket errors during the window. Gate =
+  Lumberjacks receipt count matches suppressed-send count, client stable.
+- **Offload split:**
+  - **local_generate:** draft the Lumberjacks-side receive endpoint handler + the
+    serialization shim (ZPackage → JSON) as boilerplate.
+  - **frontier:** the suppression patch (must not break the send loop's state) +
+    the Gateway endpoint contract.
+  - **operator:** in-game window.
+- **Design (2026-07-10, recorded before code — target mod 0.5.11):** grounded on a fresh
+  decompile of `ZDOMan`/`ZDO` (l-0.221.12), not the map.
+  - **Seam:** Harmony **Postfix on `ZDOMan.CreateSyncList`** (server-side, `IsServer`-guarded),
+    not a prefix on `SendZDOs` — `toSync` is populated *inside* `CreateSyncList` (ZDOMan:893),
+    so only a postfix can filter it before the serialization loop (ZDOMan:761-784) writes and
+    dispatches via `Invoke("ZDOData")` (ZDOMan:787). Same "one funnel, one flag" scoping that
+    kept the pin surgical.
+  - **Suppress-with-ack:** each tagged ZDO removed from `toSync` gets the native bookkeeping
+    replicated — `peer.m_forceSend.Remove(uid)` + `peer.m_zdos[uid] = PeerZDOInfo(DataRevision,
+    OwnerRevision, now)` (mirroring ZDOMan:767/780) — so native re-offers it only on revision
+    change. Without the ack, `ShouldSend` re-selects every tick (duplicate storm, broken gate
+    math); with it, suppressed-count equals exactly what native would have sent.
+    *Implementation risk:* `ZDOPeer.m_zdos`/`PeerZDOInfo` are non-public — AccessTools/reflection;
+    verify at build.
+  - **Tag scheme:** config prefab-hash allowlist, single test prefab first; `redirectEnabled`
+    off by default; windowed auto-stop (probe-style) + stop command = the instant rollback.
+  - **Payload scope:** wire-equivalent envelope — `{seq (per-window monotonic), uid, owner,
+    owner_rev, data_rev, prefab, pos, body_b64 = base64(zdo.Serialize bytes)}` — **not** a full
+    ZPackage→JSON decomposition. The I3 gate needs equivalence + count math, not legibility;
+    the rebuild problem belongs to I4. Batched POSTs (bounded queue, retries) to the Lumberjacks
+    gateway `POST /valheim/zdo-redirect/receipts`; every suppression also appends to a local
+    `redirect-send.jsonl` (the mod-side count of record).
+  - **Observe-during-change (ADR 0002):** the netcode probe's existing `CreateSyncList` postfix
+    stays on; the redirect postfix runs at `HarmonyPriority.High` so the probe logs the
+    *post-filter* list. Three independent measures in one window: mod suppressed rows ==
+    gateway receipts (seq-gap loss detection) AND probe rows show zero tagged native sends.
+    Postfix order is load-bearing (cf. the I2 multi-prefix lesson).
+  - **Save-safety:** decompile-verified — the send path writes no persisted ZDO state (only
+    runtime peer bookkeeping: `peer.m_zdos`, `m_forceSend`, `m_clientChangeQueue`, `m_zdosSent`;
+    `ZDO.Serialize` only reads `ZDOExtraData`; the world save is the separate
+    `PrepareSave`/`SaveAsync` clone path). The redirect adds no ZDO writes → inherits the pin's
+    save-safety class. Save-integrity gate still runs regardless.
+  - **Network path (proven 2026-07-10):** am4 server *container* → tailnet → OMEN `:4000`
+    `/health` answers; the gateway must bind `0.0.0.0:4000` (launch flag — `appsettings.json`
+    default is localhost-only).
+  - **Client-stability read:** the client is untouched (server-side suppression only); it just
+    receives fewer ZDOs — a normal play condition. Gate reads OMEN logs via MCP for
+    `INVALID_MESSAGE`/socket errors.
+- **GATE — PASS (2026-07-10 12:02 PDT, window i3-w4, mod 0.5.12):** `receipts_match_no_loss`,
+  authoritative. **1303 conifer ZDOs** (FirTree_small 559 + FirTree 406 + Pinetree_01 338) removed
+  from `toSync` and delivered to Lumberjacks — `distinct_seq` 1..1303 contiguous, `missing_seq 0`,
+  `duplicates 0`, `ack_failures 0`, `dropped 0`, `posted_ok 1303`. Client log clean. Rollback
+  rehearsal fired (`redirect_auto_stop` at `zdoRedirectActiveSeconds`=90 inside the 150s probe).
+  Save-integrity EXACT across the disarm save→reload (structural counts exact, ZDOS delta 0, `.db`
+  byte-identical) — the redirect writes nothing persisted, as the decompile predicted. Evidence
+  `evidence/i3-redirect/` (redirect-send `6ed610ef`, receipts `7bc6ee7c`).
+- **What it cost — 4 windows + a build fix (honest):**
+  - **i3-w1:** the 90s active window overlapped only `route_01_open_control` (0,0), a deliberately
+    empty control stop → 0 suppressed. Route coverage, not mechanism.
+  - **i3-w2:** a menu *rejoin* ran no walk — the client auto-rehearsal is guarded by
+    `AutoRehearsalRunOncePerSession` and only re-arms on a fresh process **relaunch** → 0 suppressed.
+  - **i3-w3:** route_05_dense (an ocean cell with a small treed island) suppressed **88** conifers
+    correctly (`ack_failures=0`) but **posted 0, dropped all 88** — exposing a **server-only Mono
+    defect**: `WebRequest.Create("http://…")` throws `NotSupportedException("The URI prefix is not
+    recognized.")` on the dedicated server (the stripped runtime's WebRequest prefix table is
+    empty). The client-side siblings (telemetry, priority-mirror) never hit it because the client's
+    table is populated. The live monitor's `supp=0` was a **disk-flush red herring**
+    (`redirect-send.jsonl` buffered on am4); the Lumberjacks receipts are the real-time truth.
+  - **Fix (0.5.12):** replaced the WebRequest POST with a raw `TcpClient` HTTP/1.1 write
+    (`SendHttpPostViaSocket`) — bypasses the prefix table, background-thread safe, throws on non-2xx
+    so the retry/`last_error` path is unchanged. Suppress/ack/rollback semantics identical
+    (0.5.10→0.5.12); only the delivery transport changed.
+  - **Target discipline:** the route "dense" labels were *build*-density, not forest — the telemetry
+    holds **no tree data** at all. The real target came from ground-truthing the parsed world-save
+    (`ComfyEra16.duckdb`, 9.155M ZDOs, tree-prefab hashes computed): a conifer stand at
+    **(9376,544)**, 6447 m from spawn (provably fresh), ground ≈ y79 so the teleport floated at
+    **Y=105** (the route TSV's optional 6th `y` column) to clear the canopy — otherwise the
+    auto-walk wedges in trunks (Derek's live catch) or lands 24 m underground.
+
+### I4 — Inbound injection
+
+**CLOSED — 2026-07-10/11, window i4-w6, ComfyNetworkSense 0.5.15.** The Lumberjacks
+gateway staged one synthetic `Wood` ZDO and the OMEN client polled 90 times with zero
+poll errors. The command was applied through the live `RPC_ZDOData` funnel and rendered
+in-world with `observed_owner=5497853135698` (the configured Lumberjacks authority),
+with one received/applied/rendered row and zero rejects, duplicates, or pending renders.
+The first diagnostic window exposed a local-package cursor bug (`EndOfStreamException`);
+rewinding the locally built `ZPackage` with `SetPos(0)` fixed it. Malformed action,
+out-of-envelope position, and truncated JSON fixtures were rejected before the live run.
+After disarm, the dedicated server restarted and the client rejoined; save-integrity
+was exact across reload (portals 4472, spawned 85439, targets 20255, locations 18004,
+ZDO delta 0, world files byte-identical). Evidence: `fieldlab/evidence/i4-injection/`.
+
+- **Invariant:** authoritative state pushed from Lumberjacks can be injected into
+  the client's ZDOMan such that the client renders it, without going through a real
+  Steam peer.
+- **Why it isolates:** the mirror image of I3, and the higher-risk half — malformed
+  injected state can desync or crash. Proving it alone (with outbound still vanilla)
+  contains the blast radius. Note: the earlier projection spike rendered *proxy
+  primitives*; this is different — it injects into the real ZDO system so real game
+  objects appear.
+- **Prerequisites:** I0, I1, and ideally I3 (shared serialization shim).
+- **Probe + gate:** Lumberjacks pushes a known synthetic ZDO (e.g. a single dropped
+  item at a coordinate); command applies it via the mapped receive/apply funnel.
+  Gate = the object appears in-world and persists a few seconds; no crash; owner
+  reads as the Lumberjacks authority id.
+- **Offload split:**
+  - **local_generate:** draft the JSON → ZPackage rebuild boilerplate.
+  - **frontier:** the apply-path patch + malformed-input hardening (highest-judgment
+    rung so far).
+  - **operator:** in-game confirmation the object renders.
+
+### I5 — Handshake satisfaction
+
+- **Invariant:** the Valheim client can complete a connection whose peer is
+  Lumberjacks (or a Lumberjacks-fronted shim) — version/password/etc. checks
+  satisfied — instead of a vanilla Valheim host.
+- **Why it isolates:** the connection gate is orthogonal to steady-state
+  replication. The research confirmed the gate exists (version/password/ban/
+  whitelist/count/dup) but *refuted* the exact method sequence — so I0 must
+  re-derive the sequence from source, and this rung is where it's proven end to end.
+- **Prerequisites:** I0 (handshake sequence re-derived), and realistically I3+I4
+  (a peer you connect to must be able to exchange state).
+- **Probe + gate:** client initiates a connection that Lumberjacks answers; verifier
+  confirms the client reaches the in-world state (past character/spawn) against the
+  Lumberjacks-fronted peer. Gate = client spawns and stays connected ≥30s.
+- **Offload split:**
+  - **local_generate:** extract the handshake RPC exchange (`RPC_ServerHandshake` /
+    `RPC_PeerInfo` etc.) field-by-field from decompiled source into a checklist.
+  - **frontier:** the Gateway-side handshake responder — protocol-critical, mostly
+    not offloadable.
+  - **operator:** in-game connect attempt.
+
+#### I5 design-ahead — steps 1-4 DONE headless (2026-07-10 eve), architecture resolved
+
+- **Contract (step 1):** [NETCODE-HANDSHAKE-CONTRACT.md](NETCODE-HANDSHAKE-CONTRACT.md) — Funnel 5
+  formalized field-by-field + ordered gate, grounded in **two decompile sources** (I0 map +
+  fresh `ZNet` re-decompile, build 0.221.12). Codes 3/8/8/9/6/7; `max-players` literal **10**
+  (the `c_NetworkVersionMaxPlayerCount=35` const is a catalogued red herring).
+- **Responder + loopback (steps 2-3):** `ValheimHandshakeService` (Lumberjacks `935095b`) — a
+  **logical** decision service (mod owns ZPackage bytes, gateway owns logic, per I3/I4). Proven
+  in a no-game loopback: 28/28 xUnit + an HTTP driver green vs the live gateway. The gate
+  verdict requires all **six distinct check labels** (both code-8 cases kept distinct).
+- **MCP gate (step 4):** `valheim_handshake_trace` + `valheim_handshake_gate` (comfy `56e5178`),
+  verdict `handshake_satisfied`, `scope=logical_headless_no_live_addpeer`.
+- **Honest scope:** steps 1-4 prove the **decision logic only**. Not a live `AddPeer`.
+
+**Step 5 architecture (resolved, thrash-risk retired):** "Lumberjacks-fronted" cannot mean a
+socket-level proxy — `ZSteamSocket` is a Steam P2P peer that an HTTP gateway can't terminate.
+So the only faithful reading (and the I3/I4 precedent) is **mod-mediation on am4**: a server-side
+Harmony hook answers the handshake with Lumberjacks-supplied decisions while the Steam socket
+stays OMEN↔am4. No deeper transport shim is needed. The hook:
+- **Prefix `RPC_ServerHandshake(ZRpc)`** (`ZNet:727`): when armed, answer `ClientHandshake`
+  with the Lumberjacks context's `(needPassword, salt)` instead of the vanilla server's.
+- **Prefix `RPC_PeerInfo(ZRpc, ZPackage)`** (`ZNet:818`): read a **clone** of the package
+  (`SetPos(0)` — the banked i4 read-cursor lesson) to extract logical fields, evaluate the
+  cached Lumberjacks gate, and on reject `Invoke("Error", code)` + skip vanilla; on accept let
+  vanilla complete `AddPeer` so the client truly enters the world.
+- **Runner:** polls Lumberjacks `/valheim/handshake/config` for the emulated context via **raw
+  `TcpClient`** (server Mono HTTP trap, ADR 0003 — NOT `WebRequest`), caches it, records a
+  handshake jsonl, arms/auto-disarms on a window like the redirect/injection runners.
+- **Fail-safe:** `handshakeResponderEnabled=false` + empty endpoint ⇒ never arms; the patch is
+  a pure pass-through when disarmed (CreateAndPatchAll always attaches it).
+- **"Fronted" proof:** configure Lumberjacks with a gate the vanilla am4 server lacks (e.g. a
+  password am4 doesn't require, or a ban) so the client's admission is decided by Lumberjacks.
+- **Save-safety:** the handshake writes no persisted ZDO state (pre-`AddPeer`), same class as
+  the I2 pin / I3 redirect.
+- **Validation boundary:** the runner + gate mirror are headless-testable, but the **Harmony
+  attach + ZPackage wire decode get their first real-client bytes only in-game** — so the
+  interceptor is validated at Derek's single launch (P6 step 6-7), not headlessly.
+
+### I6 — Single-transport constraint (low risk, do early)
+
+- **Invariant:** we can force Steam-only (crossplay/PlayFab disabled) so the swap
+  handles one backend, not two.
+- **Why it isolates:** trivially separable and confirmed feasible — BetterNetworking
+  ships a crossplay toggle. Lands early to shrink every later rung's surface.
+- **Prerequisites:** I0.
+- **Probe + gate:** command asserts crossplay off; verifier confirms only the Steam
+  socket path is active (no PlayFab relay). Gate = binary.
+- **Offload split:** almost entirely **local_generate** (extract BetterNetworking's
+  toggle) + a small frontier patch. No operator step beyond a restart.
+
+### I7 — Single-client loopback integrity (the integration gate) — ✅ PROVEN / CLOSED (2026-07-12, window i7-w6, mod 0.5.18)
+
+**CLOSED — 2026-07-12, window `i7-w6`, ComfyNetworkSense 0.5.18.** All four Harmony rungs
+(I2 pin, I3 redirect, I4 injection, I5 handshake) armed **simultaneously** on the live rig and
+passed their gates in **one clean full window** — no desync, crash, or OOM; world intact. This
+composition gate was blocked for weeks not by the composition but by am4 **host** OOM
+(`oom_kill=9`) killing the dedicated server mid-run; the fix was migrating the server role to a GCP
+VM (`comfy-lumberjacks-p7`, n2-highmem-8, 62 GiB, us-west1-b, project `lumberjacks-exp-20260711-djc`,
+`8.231.129.249`) with memory headroom (~48 GiB free through the window). Capture window
+2026-07-12 07:36–07:42 UTC: handshake ARMED on boot → Lumberjacks-decided ACCEPT (uid 2202545290,
+net_version 36) 07:39:05 → New peer connected → all four auto-started 07:39:30 → clean auto-stop
+07:42:01. Gate verdicts (one-call MCP gates; evidence `fieldlab/evidence/i7-w6/`):
+- **I5 handshake:** Lumberjacks-decided ACCEPT + logical steady state (`accept_only`; the full
+  6-code battery is proven 28/28 headless in P6, not re-run live this window).
+- **I2 pin:** `held_with_negative_control` (authoritative) — 25 pinned, 49 holds (48 `SetOwner` +
+  1 `SetOwnerInternal`), 15606 pass-through negative control, held_owner 2202545290.
+- **I3 redirect:** `receipts_match_no_loss` — mod suppressed 3474 == gateway `distinct_seq` 3474,
+  missing 0, duplicates 0, mod-authoritative auto_stop.
+- **I4 injection:** `rendered_with_lumberjacks_owner` — rendered 1, owner 5497853135698 matched,
+  90 polls / 0 errors.
+- **Client stability:** clean (no `INVALID_MESSAGE`/socket/desync).
+- **Save-integrity** across the disarm save→reload: portals/spawned/locations EXACT, ZDOs −2
+  (9,155,622 → 9,155,620, 0.00002 %, within the 1 % tolerance), targets −1 (20258 → 20257). Honest
+  read — **not** composition corruption: the composition persists no ZDO state (pin/redirect/
+  handshake runtime-only, injection client-only; proven byte-identical in P3–P6), so the tiny deltas
+  are normal vanilla churn from a real player walking a dense route ~3 min across two reloads. The
+  tool's exact-match rule prints "fail" only on the −1 target.
+
+**Repeatability:** corroborated by an earlier GCP window `i7-gcp-w1` (2026-07-11,
+`fieldlab/evidence/i7-gcp-w1/`, a *partial* bundle — the live server log shows ACCEPT + pin/redirect
+ARMED + a clean pin auto-stop, and a mod-side redirect artifact `auto_stop seq=6316` survived; its
+gateway receipts + pin counts did not survive a gateway bounce, so it is a corroborating occurrence,
+not a full capture). Two independent live GCP windows (`i7-gcp-w1` + `i7-w6`) satisfy the
+repeatability requirement. Two-source rule honored: server log + gateway JSON + mod jsonl + MCP
+gates are the independent, non-documentation sources. Driver: `fieldlab/scripts/run-loopback-window.ps1`.
+
+- **Invariant:** with I2 (ownership) + I3 (outbound) + I4 (inbound) + I5 (handshake)
+  all active at once, one client stays in-world, renders authoritative state from
+  Lumberjacks, and quits without save corruption.
+- **Why it's last:** it is the only rung that deliberately does *not* isolate — it
+  composes the proven pieces. Everything before exists to make this rung's failures
+  legible.
+- **Prerequisites:** I2, I3, I4, I5, I6.
+- **Probe + gate:** a full fieldlab packet: client connects to Lumberjacks, moves,
+  interacts with one Lumberjacks-authoritative object, quits. Gate = no desync
+  errors, no crash, world file intact on reload. This is the "proof of concept swap"
+  milestone — not multiplayer, not performance, just *one client fully on
+  Lumberjacks*.
+- **Offload split:** integration reasoning is **frontier**; the packet scaffold is
+  offloadable; verification is **operator** + me.
+- **Pre-close history (2026-07-11, mod 0.5.18) — the am4-OOM stall, kept for the record.**
+  Before the GCP migration closed the gate above, all four rungs armed *simultaneously* on the
+  live rig and passed their gates — split across two windows only because the am4 server kept
+  getting OOM-killed mid-run:
+  - **w4:** I2 pin `held_with_negative_control` (25 pinned, 123 holds across both funnels,
+    618 pass-through) + I5 live Lumberjacks-decided ACCEPT + save-integrity delta 0; the
+    server held the **full window** with no composition-caused desync/crash.
+  - **w5** (true quit-to-desktop relaunch): I3 redirect `receipts_match_no_loss` (1983
+    conifers suppressed → Lumberjacks, missing 0, duplicates 0) + I4 injection
+    `rendered_with_lumberjacks_owner` (90 polls, ack render_confirmed, owner
+    5497853135698) + I5 ACCEPT + save-integrity delta 0; the client window completed
+    normally (probe stop + session export) before the OOM disconnect.
+  - **Root cause of every disconnect:** am4 host memory exhaustion (30 GB ~97 % used +
+    swap 100 % full, cgroup `oom_kill=9`, `OOMKilled=true`) → the kernel OOM-kills the
+    Valheim process under far-sector load, masked as `exit 0 expected`. **Not** the
+    composition. Detours ruled out first: container-updater startup-validate (fixed by
+    `supervisorctl restart valheim-server`, not `docker restart`), the `*/15` idle-validate
+    (fixed by pausing `valheim-updater`), a concurrent Codex `--yolo` agent, and a w4
+    menu-rejoin (client automation re-arms only on a full relaunch). See memory
+    `am4-host-oom-restart`.
+  - **Resolved (2026-07-12):** the migration landed (GCP `comfy-lumberjacks-p7`) and the re-run
+    produced the clean single-window four-for-four capture `i7-w6` + the `i7-gcp-w1` repeatability
+    corroboration — see the CLOSED block at the top of this rung. The code was proven; only host
+    RAM was in the way.
+
+Beyond I7 (explicitly out of scope for this program, now formally opened as a
+post-milestone backlog in [BEYOND-I7-BACKLOG.md](BEYOND-I7-BACKLOG.md)): multi-client /
+concurrent-peer composition, density/scale under Era16, the two-backend problem if I6
+proves insufficient, and the ToS/legitimacy posture for redistribution (unresolved by the
+research — needs a dedicated check before any public release).
+
+---
+
+## Offload strategy — honest split
+
+Derek's goal is to task out as much as possible to HEARTH/mechnet. Here is the
+realistic ceiling, stated plainly rather than oversold.
+
+**Genuinely offloadable to `local_generate` (self-contained text, no repo access
+needed — pass everything in the prompt):**
+- I0 source extraction: signatures, field lists, native-vs-managed classification.
+- Per-slice runner + verifier *boilerplate* drafts (proven to work this session).
+- Serialization-shim boilerplate (ZPackage↔JSON) for I3/I4.
+- Extracting the exact approach of valheim-serverside / BetterNetworking / the
+  handshake RPCs from pasted source into step lists.
+
+**Conditionally offloadable to `submit_task` (fleet):** research-style briefs like
+"summarize how these two public repos seize ZDO ownership." **Blocker to verify
+first:** fleet workers have read-only `~/commandcenter-src` only — **not** the
+`comfy` or `Lumberjacks` repos — and their internet access is unconfirmed. So they
+cannot touch the mod or Gateway directly, and may not be able to fetch GitHub. Test
+one small brief before relying on this lane; if it can't reach the source, this lane
+collapses into "I fetch + paste to local_generate."
+
+**Inherently frontier (me), not offloadable:** every Harmony patch decision over
+decompiled IL, the Gateway protocol/handshake responder, malformed-input hardening
+on the inject path, and all integration reasoning. This is the judgment core and
+it's most of the *hard* work.
+
+**Inherently operator (Derek):** every in-game verification. Each rung needs a live
+Valheim session to fire its probe; that cannot be delegated. Cadence mirrors this
+session: I build + install the DLL, Derek runs one console command, I read the
+telemetry and gate it.
+
+**Deep-research fan-out (the Workflow harness, distinct from HEARTH):** best reserved
+for genuinely open external questions (e.g. "has anyone published a Valheim ZDO
+injection technique") — not for reading source we already have, which is cheaper via
+local_generate.
+
+**Net:** the *reading/extraction/drafting* tier (a real fraction of total effort,
+and the tedious part) offloads well to local_generate. The *patching/protocol/
+integration* tier stays frontier. The *verification* tier stays operator. No amount
+of mechnet removes the operator-in-the-loop or the frontier-judgment core — but the
+grunt tier is exactly what should never burn frontier tokens, and this program routes
+it accordingly.
+
+---
+
+## Sequencing
+
+```
+I0 (map) ──┬─> I1 (observe) ──┬─> I2 (own)  ─────┐
+           │                  ├─> I3 (out)  ──┐  │
+           │                  └─> I4 (in) ────┤  │
+           ├─> I6 (steam-only, early)         │  │
+           └─────────────> I5 (handshake) ◄───┘  │
+                                                  │
+   I2 + I3 + I4 + I5 + I6 ─────> I7 (loopback integrity)
+```
+
+I0 first and hard. I6 is a cheap early win. I1 unlocks the observe hooks everything
+needs. I2/I3/I4 are parallelizable once I1 lands (independent invariants). I5 needs
+the state-exchange pieces. I7 composes.
+
+## Standing risks & kill-criteria
+
+- **Inlining (bounded by I0):** the receive/handshake/routed-RPC handler layer is
+  delegate-registered (`ZRpc.Register`/`ZRoutedRpc.Register`) and therefore inlining-proof —
+  the JIT cannot inline a delegate target. Residual risk is confined to three send-side
+  helpers (`SendZDOs`, `CreateSyncList`, `RouteRPC`), all large/multi-callsite (low). I1
+  tests `SendZDOs` directly. Workaround before declaring dead: postfix `CreateSyncList`, a
+  transpiler patch, or hook a caller one frame up. Only "dead" if *no* reachable seam exists.
+- **Native boundary (confirmed):** Harmony can't touch the native Steamworks send.
+  The whole strategy assumes interception at the *managed* `ZSteamSocket` wrapper
+  above it. If traffic can bypass that wrapper, I3/I4 need rethinking — flag at I0.
+- **Save corruption:** any rung that writes ZDO state (I2/I4/I7) must prove clean
+  quit-and-reload before it counts as passed. Non-negotiable gate.
+- **Legal/ToS:** unresolved. Not a technical blocker to *proving feasibility
+  locally*, but a hard gate before anything ships publicly. Do not skip before
+  release.

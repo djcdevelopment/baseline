@@ -1,0 +1,71 @@
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+
+# scratch / local-only
+scratch/
+*.tmp
+
+# Terraform local state and operator-specific inputs
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+__pycache__/
+
+# generated local bridge outputs
+bridge-review/
+support-report.*
+
+# .NET / mod build outputs
+bin/
+obj/
+*.dll
+*.pdb
+*.zip
+
+# large game data (world saves are found separately, not committed)
+*.db
+*.fwl
+*.fch
+
+# Field-lab runtime + generated (not source): container state (~30GB), run packets, gateway var
+# The run catalog (index.json/CATALOG.md) is tracked M0 evidence; run packets stay local.
+fieldlab/autonomous/state/
+fieldlab/runs/*
+!fieldlab/runs/index.json
+!fieldlab/runs/CATALOG.md
+network/mcp/var/
+network/var/
+
+# Private, non-source analysis of miker's exported staff chat (internal only, do not commit)
+comfy-miker-analysis/
+
+# Private, non-source analysis of Tugcow's own Discord export (internal only, do not commit)
+# Belt-and-suspenders: the whole folder is ignored, and revealed name maps are double-ignored.
+comfy-tugcow-analysis/
+*.revealed.csv
+
+# Private synthesis built ON TOP of the two analyses above (two more abstraction layers).
+# Derived from private material — same stance: internal only, do not commit.
+comfy-ascent-analysis/
+
+# Session-transcript audit extract: contains raw operator voice transcripts - keep private
+fieldlab-session-audit/
+
+# Local operator secrets for the OMEN smoke (Lumberjacks network password) - never commit
+fieldlab/scripts/omen-client-smoke.secrets.ps1
+*.secrets.ps1
+
+# Vendored metadata reader for New-ReleaseCut.ps1's artifact identity check.
+# Windows PowerShell 5.1 has no GAC entry for System.Reflection.Metadata, so the
+# check cannot load it via Add-Type -AssemblyName. These netstandard2.0 builds do
+# load on .NET Framework 4.8. Vendored so a nuget cache clear cannot silently
+# disarm the one gate that stops a mismatched release from shipping.
+!infra/gcp/p7/scripts/lib/*.dll
