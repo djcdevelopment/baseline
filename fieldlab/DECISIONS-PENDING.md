@@ -31,8 +31,16 @@ Bounded: touch only lines you created or resolved.
   which is the outcome `ValheimReleaseIdentity` explicitly argues against;
   (c) leave both and document the trap loudly.
   Recommend (a). (source: audit 2026-07-21)
-- [ ] 2026-07-21 — **The local comfy-gateway still runs from the RETIRED repo.** Discovered while
-  retiring matrix. `docker inspect comfy-valheim-lab-comfy-gateway-1` reports
+- [x] 2026-07-21 — **The local comfy-gateway still runs from the RETIRED repo.** → **re-provisioned
+  off baseline** (HANDOFF task 1). Rebuilt the `comfy-valheim-lab-comfy-gateway` image from
+  `${COMFY_ROOT}/network/mcp` with `COMFY_ROOT=C:/work/baseline`, and recreated only the gateway
+  container. The live world was kept in place — `AUTONOMOUS_ROOT` still points at
+  `C:/work/comfy/fieldlab/autonomous`, so `/lab/state` binds the same `state/server/data` and the
+  valheim-server was never restarted. Verified: `config_files` now
+  `C:\work\baseline\...\valheim-lab.compose.yml`, `.Config.Cmd` providers `valheim,inference` (no
+  `toolsurface.matrix`), `/healthz` `{"ok":true}`, var mount now `C:/work/baseline/network/mcp/var`.
+  The `:8720` surface is now current with this repo. Original write-up: discovered while
+  retiring matrix. `docker inspect comfy-valheim-lab-comfy-gateway-1` reported
   `config_files=C:\work\comfy\fieldlab\autonomous\valheim-lab.compose.yml`,
   `working_dir=C:\work\comfy\fieldlab\autonomous`, `COMFY_ROOT=C:/work/comfy`, and an image built
   **2026-07-15** from that repo's `network/mcp`. Baseline's copy of the compose is a faithful clone

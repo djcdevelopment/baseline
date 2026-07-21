@@ -13,6 +13,7 @@ The seat-free code line is **done and verified** (sdk:9.0 container for Lumberja
 build for the mod). Tests 528 → **533** in Lumberjacks; mod contract tests 2 → **23**; mod builds
 0 warnings.
 
+- ✅ **1** — comfy-gateway re-provisioned off baseline (`COMFY_ROOT=baseline`, world kept in place, no server restart); `:8720` now serves `valheim,inference` only. (infra — no commit)
 - ✅ **2** — dev-build split-brain resolved option (a): uncut builds admit schema-2 ZDOs unattested. `5f79fd0`
 - ✅ **3** — near/mid/far band population per tick, surfaced at `/tick`. `480849f`
 - ✅ **7** — landmark reach (networking slice): `ZdoIntegrationContract.Admits` + reach field + config. `1dd6c18`
@@ -21,7 +22,6 @@ build for the mod). Tests 528 → **533** in Lumberjacks; mod contract tests 2 �
 
 Still open, all needing the seat / infra / a live world — **not** blocked on code:
 
-- **1** — comfy-gateway re-provision: **deferred by Derek this session** (restarts the live world). Still runs matrix off the retired repo.
 - **4** — AoI knee sweep: needs a running server + wandering bots. Task 3 has instrumented it; ready to run.
 - **5** — hysteresis at the two flap points: **gated behind 4** (must measure current behaviour first, then damp). Code path understood; do it right after the sweep.
 - **6** — two-client recipient isolation: needs two real Steam clients + you in the seat. Task 9 kept the noVNC clients available for it.
