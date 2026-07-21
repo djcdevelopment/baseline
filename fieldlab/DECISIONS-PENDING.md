@@ -6,7 +6,13 @@ Bounded: touch only lines you created or resolved.
 
 ## Open
 
-- [ ] 2026-07-21 — **An uncut dev build is split-brain: which side is wrong?** With no baked
+- [x] 2026-07-21 — **An uncut dev build is split-brain: which side is wrong?** → **resolved (a)**:
+  ZDO admission now admits on a null baked release and marks the receipt `LegacyUnadmitted` (unattested),
+  matching the handshake's fail-open. `ValheimZdoRedirectAdmissionPolicy.cs` returns 200 unattested
+  instead of 503 `release_admission_unconfigured` when `expectedModRelease` is null; the deliberately-503
+  assertion in `ValheimZdoIntegrationContractTests` was changed to assert admit-unattested. A cut release
+  always bakes a real id, so null cannot occur in a promoted image. (HANDOFF task 2.) Original write-up:
+  With no baked
   release id (`ValheimReleaseIdentity.ExpectedModRelease == null`, what every local build gets),
   the handshake **fails open** — `ValheimHandshakeService.cs:546` skips the gate when the expected
   id is empty — while ZDO admission **fails closed**, returning 503 `release_admission_unconfigured`
