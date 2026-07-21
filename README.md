@@ -1,3 +1,17 @@
+# baseline
+
+This repo merges the `comfy` repo and mods with the Lumberjacks network
+implementation, per `fieldlab/plan-baseline-cutover.md`. `comfy`'s content
+lives at repo root (history preserved unmodified — original commit SHAs
+resolve, e.g. `git show 433f1cc3`); the Lumberjacks service tree lives under
+[`Lumberjacks/`](Lumberjacks/README.md) (landed via `git subtree`, full
+original history preserved as the second parent of the merge commit — see
+`git log <merge-commit>^2 -- <path>` if `git log --follow` on a
+`Lumberjacks/`-prefixed path stops at the merge boundary, which is expected
+subtree behavior, not lost history).
+
+What follows is `comfy`'s own README, unmodified.
+
 # Comfy
 
 *Shared openly as homework. Part of this repo is a method for understanding a community before building for it. Part of it is the later build sessions where that understanding finally cashed out into some unusually cross-system tools.*
