@@ -6,6 +6,25 @@ Bounded: touch only lines you created or resolved.
 
 ## Open
 
+- [ ] 2026-07-21 — **An uncut dev build is split-brain: which side is wrong?** With no baked
+  release id (`ValheimReleaseIdentity.ExpectedModRelease == null`, what every local build gets),
+  the handshake **fails open** — `ValheimHandshakeService.cs:546` skips the gate when the expected
+  id is empty — while ZDO admission **fails closed**, returning 503 `release_admission_unconfigured`
+  for every schema-2 submission (`ValheimZdoRedirectAdmissionPolicy.cs:30`). So a local dev build
+  connects cleanly and then has every ZDO rejected. This bites operator-in-the-seat work
+  specifically, and costs an hour of confused debugging the first time.
+  Both sides are *deliberate*, which is why this is a decision and not a bug fix:
+  `ValheimReleaseIdentity.cs:26-31` argues null must disable the gate ("a dev Gateway that refuses
+  every join teaches people to switch the flag off and leave it off"), and
+  `ValheimZdoIntegrationContractTests.cs:23-24` asserts the 503 on purpose. Changing either means
+  deleting a considered decision, so pick one:
+  (a) ZDO admission admits on null and marks the receipt unattested, reusing the existing
+  `LegacyUnadmitted` semantics — consistent with the handshake, and safe in production because a
+  cut release always bakes a real id, so null cannot occur in a promoted image;
+  (b) the handshake fails closed on null too — consistent, but dev builds then cannot join at all,
+  which is the outcome `ValheimReleaseIdentity` explicitly argues against;
+  (c) leave both and document the trap loudly.
+  Recommend (a). (source: audit 2026-07-21)
 - [ ] 2026-07-10 — **Fold the sibling client-side `WebRequest` POSTs onto the raw-socket helper**
   (telemetry, priority-mirror, apply-profile). Low priority — they run client-side where the
   "URI prefix is not recognized" defect is inert; only required if any ever needs to run
