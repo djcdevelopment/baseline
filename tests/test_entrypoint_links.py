@@ -5,17 +5,30 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-ENTRYPOINTS = [
-    ROOT / "README.md",
-    ROOT / "data/README.md",
-    ROOT / "docs/README.md",
-    ROOT / "docs/repo-map/HOTSPOTS.md",
-    ROOT / "erasave/README.md",
-    ROOT / "framework/README.md",
-    ROOT / "quest_select_design/README.md",
-    ROOT / "recipes/README.md",
-    ROOT / "tools/README.md",
-]
+
+
+def _entrypoints():
+    """Discover orientation docs instead of hardcoding them.
+
+    The list used to be literal, which meant every directory removed from the repo
+    turned this test red for a reason that had nothing to do with broken links --
+    the 2026-07 prune took out five of the nine named files at once. Discovery keeps
+    the test about link integrity and lets the repo's shape change underneath it.
+    Scope stays deliberately shallow: the root README plus one README per top-level
+    directory, not every README in the tree (Lumberjacks/ alone has dozens, and they
+    are that subtree's concern).
+    """
+    found = [ROOT / "README.md"]
+    for child in sorted(ROOT.iterdir()):
+        if child.name.startswith(".") or not child.is_dir():
+            continue
+        readme = child / "README.md"
+        if readme.is_file():
+            found.append(readme)
+    return [p for p in found if p.is_file()]
+
+
+ENTRYPOINTS = _entrypoints()
 LINK = re.compile(r"!?\[[^]]*\]\(([^)]+)\)")
 
 
