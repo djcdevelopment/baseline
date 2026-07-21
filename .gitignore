@@ -30,6 +30,11 @@ obj/
 *.pdb
 *.zip
 
+# dotnet test result artifacts (TRX loggers write here; nearly committed 16 of
+# these on 2026-07-21 while chasing an intermittent Game.Simulation.Tests failure)
+TestResults/
+*.trx
+
 # large game data (world saves are found separately, not committed)
 *.db
 *.fwl

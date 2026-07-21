@@ -211,39 +211,13 @@ def build_server(
         except json.JSONDecodeError:
             return {}
 
-    @mcp.custom_route("/valheim/matrix/checkout", methods=["POST"])
-    async def valheim_matrix_checkout_route(request):  # noqa: ANN001
-        from comfy_gateway.toolsurface.matrix import valheim_matrix_checkout
-
-        payload = await _json_body(request)
-        client = str(payload.get("client") or request.query_params.get("client") or "unknown")
-        return JSONResponse(valheim_matrix_checkout(client=client))
-
-    @mcp.custom_route("/valheim/matrix/report", methods=["POST"])
-    async def valheim_matrix_report_route(request):  # noqa: ANN001
-        from comfy_gateway.toolsurface.matrix import valheim_matrix_report
-
-        payload = await _json_body(request)
-        return JSONResponse(valheim_matrix_report(
-            client=str(payload.get("client") or "unknown"),
-            cell_id=str(payload.get("cell_id") or ""),
-            metrics=payload.get("metrics") if isinstance(payload.get("metrics"), dict) else {},
-        ))
-
-    @mcp.custom_route("/valheim/matrix/status", methods=["GET"])
-    async def valheim_matrix_status_route(request):  # noqa: ANN001
-        from comfy_gateway.toolsurface.matrix import valheim_matrix_status
-
-        return JSONResponse(valheim_matrix_status())
-
-    @mcp.custom_route("/valheim/matrix/baseline", methods=["GET"])
-    async def valheim_matrix_baseline_route(request):  # noqa: ANN001
-        from comfy_gateway.toolsurface.matrix import valheim_matrix_baseline
-
-        result = valheim_matrix_baseline()
-        if request.query_params.get("summary") in ("1", "true", "yes"):
-            result = {k: v for k, v in result.items() if k != "cells"}
-        return JSONResponse(result)
+    # The /valheim/matrix/* routes (checkout, report, status, baseline) were removed
+    # 2026-07-21 with the matrix toolsurface. They served the swarm check-in loop whose
+    # only client — MatrixCheckinRunner in ComfyNetworkSense — was deleted the same day.
+    # The campaign's data is preserved at
+    # fieldlab/evidence/aoi-density-pressure-matrix-20260704/; recover the code from
+    # commit 8ba6398 if the harness is ever rebuilt. See
+    # network/mod/ComfyNetworkSense/SWARM-HARNESS-REMOVED.md.
 
     key_provider = make_header_key_provider(mcp)
     task_id_provider = make_task_id_provider(mcp)
@@ -268,7 +242,7 @@ def main(argv: Optional[list[str]] = None) -> None:
     parser = argparse.ArgumentParser(description="Comfy Valheim development MCP gateway")
     parser.add_argument(
         "--providers",
-        default="comfy_gateway.toolsurface.valheim,comfy_gateway.toolsurface.matrix,comfy_gateway.toolsurface.inference",
+        default="comfy_gateway.toolsurface.valheim,comfy_gateway.toolsurface.inference",
     )
     parser.add_argument("--host", default=DEFAULT_HOST)
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)

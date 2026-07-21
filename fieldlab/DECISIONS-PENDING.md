@@ -25,7 +25,27 @@ Bounded: touch only lines you created or resolved.
   which is the outcome `ValheimReleaseIdentity` explicitly argues against;
   (c) leave both and document the trap loudly.
   Recommend (a). (source: audit 2026-07-21)
-- [ ] 2026-07-21 — **Retire the matrix MCP surface.** `network/mcp/comfy_gateway/toolsurface/matrix.py`
+- [ ] 2026-07-21 — **The local comfy-gateway still runs from the RETIRED repo.** Discovered while
+  retiring matrix. `docker inspect comfy-valheim-lab-comfy-gateway-1` reports
+  `config_files=C:\work\comfy\fieldlab\autonomous\valheim-lab.compose.yml`,
+  `working_dir=C:\work\comfy\fieldlab\autonomous`, `COMFY_ROOT=C:/work/comfy`, and an image built
+  **2026-07-15** from that repo's `network/mcp`. Baseline's copy of the compose is a faithful clone
+  that has never driven anything. This is the same failure the P7 cutover fixed, for a local service:
+  source edits in `baseline` do not reach the running gateway, so its live command still names
+  `toolsurface.matrix` even though the module is gone from this repo.
+  **This is a re-provision, not a bounce** — the image must be rebuilt and the state root moved, and
+  `${AUTONOMOUS_ROOT}/state/server/data` is a **live Valheim world**. Decide whether to cut it over to
+  baseline (mirroring the P7 approach) or leave the lab gateway sourced from the retired repo
+  deliberately. Until then, treat the running `:8720` surface as stale relative to this repo.
+- [x] 2026-07-21 — **Retire the matrix MCP surface** → **source side done.** `matrix.py` deleted,
+  the four `/valheim/matrix/*` kernel routes removed, three providers lists cleaned (compose,
+  `start-comfy-gateway.ps1`, and the `gateway.py` argparse default). The running `:8720` gateway is
+  unaffected until the retired-root item above is resolved — it serves an image built 2026-07-15
+  from `C:\work\comfy`.
+- [x] 2026-07-21 — **D3 + D4, the P3/P5 lab experiments and probe auto-start** → **done**, per
+  Derek. 15 keys, three runner files, and `TryDriveNetcodeProbeAuto` removed; 88 → 73 keys. The
+  gateway-side injection surface stays (it is wired into `ValheimHandshakeService`).
+  (source: [config-surface-decisions](docs/config-surface-decisions.md)) `network/mcp/comfy_gateway/toolsurface/matrix.py`
   (~16 KB, 5 tools) has no client since the mod-side checkout/report loop was deleted. It is **not** a
   simple delete: `kernel/gateway.py` lazily imports it from three custom HTTP routes
   (`/valheim/matrix/{checkout,report,status}`), and it is named in two `--providers` lists. Removing it
