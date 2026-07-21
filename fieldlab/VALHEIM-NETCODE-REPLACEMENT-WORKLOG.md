@@ -114,6 +114,12 @@ split** (what HEARTH/mechnet does vs. what must be frontier or operator).
 
 ## The invariant ladder
 
+**Historical as of 2026-07-21** (`fieldlab/plan-baseline-cutover.md` cutover step 4):
+I0-I7 below is complete and this record doesn't change further. The program's
+present tense — M-series milestones and gates — lives in
+`Lumberjacks/docs/roadmap/valheim-volunteer-roadmap.json` and
+`Lumberjacks/docs/plan-m1-strict-admission.md`.
+
 ### I0 — Netcode map (pre-work for everything) — ✅ COMPLETE (2026-07-09)
 
 **Status:** gate satisfied. Deliverable: `NETCODE-MAP.md` (all five funnels mapped with

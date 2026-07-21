@@ -28,7 +28,13 @@ this repo already runs an evidence-driven, scenario-oriented test program by han
   [`fieldlab/VALHEIM-NETCODE-REPLACEMENT-WORKLOG.md`](../fieldlab/VALHEIM-NETCODE-REPLACEMENT-WORKLOG.md),
   staged through phases P0–P7 in `TEST-PROGRAM.md`, tracked machine-readably in
   `fieldlab/status/program-status.json` and rendered to a live dashboard by
-  `fieldlab/scripts/render-dashboard.py`.
+  `fieldlab/scripts/render-dashboard.py`. **Retired 2026-07-21** (this document predates the
+  cutover): `program-status.json` is now a frozen historical record, not a live surface, and every
+  reference to it below describes that historical mechanism, not something to keep building
+  against. Any CI design that acts on this should target the Lumberjacks living roadmap
+  (`Lumberjacks/docs/roadmap/valheim-volunteer-roadmap.json`) instead - see
+  `fieldlab/plan-baseline-cutover.md` cutover step 4 for why there is deliberately one status
+  surface now, not two.
 - **An evidence discipline already exists, post-incident**: `TEST-PROGRAM.md`'s operating
   contract states a step is DONE only when its gate artifact is archived under
   `fieldlab/evidence/` or a signed run packet, and the **2-source corroboration rule** — nothing

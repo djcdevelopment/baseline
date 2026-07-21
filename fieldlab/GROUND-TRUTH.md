@@ -1,5 +1,11 @@
 # GROUND TRUTH — Valheim Netcode Replacement
 
+**Historical as of 2026-07-21** (`fieldlab/plan-baseline-cutover.md` cutover step 4): the
+canonical-entrypoint role below passed to the M-series living roadmap
+(`Lumberjacks/docs/roadmap/valheim-volunteer-roadmap.json` +
+`Lumberjacks/docs/plan-m1-strict-admission.md`) once I0-I7 closed. The dashboard this document
+points to is retired/frozen, not live.
+
 **Status date:** 2026-07-09 (evening). **This is the canonical entrypoint.** Read this first;
 every other status doc either feeds it or is superseded by it.
 

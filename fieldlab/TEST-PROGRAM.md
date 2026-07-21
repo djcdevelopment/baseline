@@ -1,5 +1,11 @@
 # TEST PROGRAM — Netcode Replacement, Staged & Gated
 
+**Historical as of 2026-07-21** (`fieldlab/plan-baseline-cutover.md` cutover step 4): I0-I7
+closed and this program's authority passed to the M-series living roadmap
+(`Lumberjacks/docs/roadmap/valheim-volunteer-roadmap.json` +
+`Lumberjacks/docs/plan-m1-strict-admission.md`). The machine-readable status this document
+points to (`program-status.json`, below) is likewise retired/frozen, not live.
+
 **Status date:** 2026-07-09. **This is the only next-step authority.** State of the world:
 [GROUND-TRUTH.md](GROUND-TRUTH.md). Invariant definitions: the
 [worklog ladder](VALHEIM-NETCODE-REPLACEMENT-WORKLOG.md) (I0–I7). Topology + traps:
