@@ -1,0 +1,47 @@
+# Template for /etc/comfy-p7/environment on the P7 VM (mode 0600, root:root).
+#
+# Copy to that path and fill in the CHANGE_ME values before
+# `systemctl start comfy-lumberjacks-p7`. Read by the `docker compose`
+# PROCESS via systemd's EnvironmentFile=, not by the containers themselves —
+# a variable missing from this file reaches nothing even if it looks set on
+# the VM. Keep this shape in sync with infra/gcp/p7/docker-compose.yml: add
+# a line here whenever that file grows a new ${VAR}.
+#
+# Never commit the real file. This example carries no live secrets.
+
+# --- Required — compose fails fast (`:?`) at `docker compose up` if unset ---
+GOOGLE_CLOUD_PROJECT=CHANGE_ME_gcp_project_id
+LUMBERJACKS_VERSION=CHANGE_ME_release_version
+POSTGRES_PASSWORD=CHANGE_ME_strong_password
+LUMBERJACKS_GATEWAY_IMAGE=CHANGE_ME_promoted_gateway_image_ref
+
+# --- Runtime identity / build root ---
+LUMBERJACKS_ROOT=/opt/lumberjacks-ed83bd8
+COMFY_NETWORKSENSE_VERSION=0.5.31
+COMFY_LUMBERJACKS_CUTOVER_MODE=lumberjacks-primary
+COMFY_LUMBERJACKS_ENROLLMENT_MANIFEST_ID=p7-primary-v1
+
+# --- Player-facing Gateway ---
+LUMBERJACKS_PLAYER_PORT=42317
+LUMBERJACKS_PLAYER_GATEWAY_URL=http://CHANGE_ME_vm_public_ip:42317
+LUMBERJACKS_ENROLLMENT_PUBLIC_URL=http://CHANGE_ME_vm_public_ip:42317
+LUMBERJACKS_AUTHORITATIVE_WINDOW_ID=p7-primary-v1
+
+# Recipient cutover flag. Leave false until the mod build that stamps
+# recipients is deployed — flipping this first is silent total delivery
+# loss (producer still files under `legacy`, consumer reads its partition).
+VALHEIM_QUEUE_PRODUCER_EMITS_RECIPIENTS=false
+
+# --- Secrets — CHANGE_ME here always; real values live only on the VM ---
+VALHEIM_TELEMETRY_KEY=CHANGE_ME
+LUMBERJACKS_CLIENT_ACCESS_KEY=CHANGE_ME
+LUMBERJACKS_ADMIN_KEY=CHANGE_ME
+# Valheim join is deliberately password-free (Steam-only, unlisted); leave
+# blank unless that posture changes.
+VALHEIM_SERVER_PASSWORD=
+
+# --- TLS (caddy service, only under COMPOSE_PROFILES=tls) ---
+# Leave blank until a real DNS A record exists; ACME will not issue for a
+# bare IP.
+LUMBERJACKS_PUBLIC_DNS_NAME=
+LUMBERJACKS_ACME_EMAIL=
