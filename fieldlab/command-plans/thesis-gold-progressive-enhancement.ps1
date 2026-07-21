@@ -51,7 +51,7 @@ function Get-FileSummary {
   }
 }
 
-$lumberjacksPath = "C:\work\Lumberjacks"
+$lumberjacksPath = Join-Path $RepoRoot "Lumberjacks"
 $stewardViewPath = "C:\work\ComfyStewardView"
 
 $discovery = [ordered]@{

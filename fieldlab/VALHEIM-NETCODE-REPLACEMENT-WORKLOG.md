@@ -101,7 +101,7 @@ split** (what HEARTH/mechnet does vs. what must be frontier or operator).
 - **ComfyNetworkSense** BepInEx mod (`network/mod/ComfyNetworkSense`) — the
   in-Valheim agent. Add one console command + one runner per slice, exactly as the
   priority-manifest work did. Auto-installs to the live plugins folder on build.
-- **Lumberjacks Gateway** (`C:\work\Lumberjacks`) — the external authority. Rebuilt
+- **Lumberjacks Gateway** (`Lumberjacks`) — the external authority. Rebuilt
   and running on :4000 (WS) / :4005 (UDP), with the priority-manifest + datagram
   endpoints and the UDP crash fix landed this session.
 - **fieldlab** (`fieldlab/scenarios` + `command-plans` + `run-experiment.ps1`) —

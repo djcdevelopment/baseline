@@ -1,7 +1,7 @@
 # Beyond-I7 Backlog — post-milestone invariants
 
 > **Cross-reference (2026-07-18):** the M-series living roadmap
-> (`C:\work\Lumberjacks\docs\roadmap\` + `docs/plan-m1-strict-admission.md`) now owns the
+> (`Lumberjacks/docs/roadmap/` + `docs/plan-m1-strict-admission.md`) now owns the
 > sequencing of most of this backlog and did not previously point back here (nor here, there).
 > Mapping: **B1** (concurrent-peer composition) is absorbed by **M4b** "prove two real Steam
 > clients" (after M4a recipient isolation); **B2** (density/sustained scale) is absorbed by

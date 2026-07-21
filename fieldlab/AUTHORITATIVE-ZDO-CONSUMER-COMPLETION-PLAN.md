@@ -6,8 +6,8 @@
 > pending/gaps/duplicates (ComfyNetworkSense 0.5.27; evidence
 > `fieldlab/evidence/p7-primary-v1-authoritative-zdo-20260715-v0527.md`). Kept for the record;
 > the active program moved to M-series strict admission in
-> `C:\work\Lumberjacks\docs\plan-m1-strict-admission.md` and the living roadmap
-> (`C:\work\Lumberjacks\docs\roadmap\`).
+> `Lumberjacks/docs/plan-m1-strict-admission.md` and the living roadmap
+> (`Lumberjacks/docs/roadmap/`).
 
 ## Objective
 

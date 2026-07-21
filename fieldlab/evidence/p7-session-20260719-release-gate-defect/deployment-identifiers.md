@@ -90,7 +90,7 @@ attribute and no `m<n>-clean-<yyyymmdd>-r<n>` string of any form. Therefore
 disabled — arming `StrictReleaseEnabled` would short-circuit on
 `!string.IsNullOrEmpty(ExpectedModReleaseId)` and never fire.
 
-Cause: `C:\work\Lumberjacks\Dockerfile` (last modified `9068486`, 2026-03-27) does
+Cause: `Lumberjacks/Dockerfile` (last modified `9068486`, 2026-03-27) does
 not pass `-p:LumberjacksExpectedModRelease` to `dotnet publish`; the mechanism landed
 in `9def403` on 2026-07-17, four months later. `Game.Gateway.csproj:13` defaults the
 property to `dev`, which `ReadBakedValue()` maps to `null`.

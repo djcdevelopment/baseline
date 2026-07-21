@@ -26,7 +26,7 @@ $telemetryDir = Join-Path $RunDir "telemetry"
 New-Item -ItemType Directory -Force $rawDir | Out-Null
 New-Item -ItemType Directory -Force $telemetryDir | Out-Null
 
-$lumberjacksPath = if ($env:FIELDLAB_LUMBERJACKS_PATH) { $env:FIELDLAB_LUMBERJACKS_PATH } else { "C:\work\Lumberjacks" }
+$lumberjacksPath = if ($env:FIELDLAB_LUMBERJACKS_PATH) { $env:FIELDLAB_LUMBERJACKS_PATH } else { Join-Path $RepoRoot "Lumberjacks" }
 $dotnetPath = if (Test-Path "C:\work\dotnet9\dotnet.exe") { "C:\work\dotnet9\dotnet.exe" } else { "dotnet" }
 $nodePath = Resolve-CommandPath @("node.exe", "node")
 $npmPath = Resolve-CommandPath @("npm.cmd", "npm.exe", "npm")

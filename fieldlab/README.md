@@ -148,7 +148,7 @@ that case.
 Useful overrides:
 
 ```powershell
-$env:FIELDLAB_LUMBERJACKS_PATH = "C:\work\Lumberjacks"
+$env:FIELDLAB_LUMBERJACKS_PATH = "C:\work\some-other-Lumberjacks-checkout"  # optional: scripts already default to the in-repo Lumberjacks/ subtree
 $env:FIELDLAB_PGHOST = "127.0.0.1"
 $env:FIELDLAB_PGPORT = "5433"
 $env:FIELDLAB_GAME_DB_CONNECTION = "Host=127.0.0.1;Port=5433;Database=game;Username=game;Password=game"
