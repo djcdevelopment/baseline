@@ -19,11 +19,15 @@ build for the mod). Tests 528 → **533** in Lumberjacks; mod contract tests 2 �
 - ✅ **7** — landmark reach (networking slice): `ZdoIntegrationContract.Admits` + reach field + config. `1dd6c18`
 - ✅ **9** — clients profile KEPT as manual noVNC (Derek's call). `296ceab`
 - ✅ **10** — three sibling POSTs folded onto `BoundedRawHttp`. `7c58e49`
+- ✅ **4** — AoI measurement run headless (Lumberjacks stack + wandering bots). **Closed as a measurement phase**, per Derek: the landscape is mapped, `send`-volume is the ceiling (filter ~4% of tick), the aggressive dual radius cut buys ~8× headroom, the recovered pressure model is **falsified** (player-invariant), and the harness is a re-runnable baseline (fresh-stack protocol, ±2× noise). See [`fieldlab/evidence/aoi-baseline-20260721/`](fieldlab/evidence/aoi-baseline-20260721/README.md). Harnesses in `Lumberjacks/scripts/aoi-*.sh`.
 
-Still open, all needing the seat / infra / a live world — **not** blocked on code:
+**Decision (2026-07-21): stop measuring, implement AoI end-to-end.** The findings justify building the
+three-tier full/thinned/dropped shape + landmark reach through the gateway replication path and the
+mod redirect/priority path, then re-running the baseline grid to confirm. This subsumes task 5.
 
-- **4** — AoI knee sweep: needs a running server + wandering bots. Task 3 has instrumented it; ready to run.
-- **5** — hysteresis at the two flap points: **gated behind 4** (must measure current behaviour first, then damp). Code path understood; do it right after the sweep.
+Still open, needing the seat / infra / a live world:
+
+- **NEW · AoI end-to-end implementation** — build the measured shape for real (mod + network). Task 7's landmark-reach contract is the first piece; task 5 (hysteresis) folds in here.
 - **6** — two-client recipient isolation: needs two real Steam clients + you in the seat. Task 9 kept the noVNC clients available for it.
 - **8** — reference production `.cfg`: needs the P7 VM's live cfg to diff against.
 
