@@ -11,8 +11,18 @@ Bounded: touch only lines you created or resolved.
   (`djcdevelopment/comfy`, `handoffs/comfy-control-surface/`), dropping the screenshot/outbox coupling
   in favour of the RPC→gateway seam. (source: [ADR 0012](docs/adr/0012-gameplay-telemetry-is-client-side.md), plan increment 4)
 
+- [ ] 2026-07-21 — **Area co-presence: adopt the ownership/visibility split (ADR 0013).** The live
+  two-human test proved the queue is multi-tenant but co-located players can't share buildings/portals
+  — visibility is expressed by moving the single `recipient` stamp + Valheim ownership. ADR 0013
+  proposes per-observer fan-out onto the existing durable queue (evolve, don't rewrite), Phase 0–5.
+  **Derek-facing call inside it:** per-observer fan-out (recommended) vs region-shared partitions —
+  the latter is cheaper under density but costs independent acks + per-observer band-shaping; deferred
+  to Phase 4, adopted only against measured WAL amplification. Greenlight Phase 0 (shadow
+  instrumentation, no behaviour change) to start the build. (source: [ADR 0013](docs/adr/0013-ownership-visibility-split.md), [findings](FINDINGS-multiplayer-copresence-2026-07-21.md))
+
 *(The AoI optimization items below remain on **hard hold**; see
-[PINNED-aoi-optimization.md](PINNED-aoi-optimization.md).)*
+[PINNED-aoi-optimization.md](PINNED-aoi-optimization.md) — **except** the multi-player-density item,
+now promoted to the active ADR 0013 track above.)*
 
 ## Pinned — hard hold (2026-07-21)
 
@@ -23,9 +33,11 @@ Move an item back to `## Open` only when Derek re-opens it.
   acked (mandatory, or duplicate storm), so native believes the peer has it; a static far object a
   player leaves and returns to may not be re-offered. Test: fly >64m from a build, return, confirm it
   reloads. First suspect if "distant builds don't reload" is reported. **PINNED.** (source: [ADR 0011](docs/adr/0011-aoi-lives-on-the-producer.md), band-shaping baseline)
-- [~] 2026-07-21 — **Band-shaping under multi-player density.** Cost is observers × changed-entities;
-  the production validation was single-observer. Two clients in one dense area is the real scaling test
-  (ties into the task-6 two-client isolation gate). **PINNED.** (source: [ADR 0011](docs/adr/0011-aoi-lives-on-the-producer.md))
+- [x] 2026-07-21 — **Band-shaping under multi-player density.** Cost is observers × changed-entities;
+  the production validation was single-observer. Two clients in one dense area is the real scaling test.
+  → **UNPINNED / promoted:** reproduced live and re-scoped as the ownership/visibility split
+  ([ADR 0013](docs/adr/0013-ownership-visibility-split.md)); tracked as the active co-presence item in
+  `## Open` above, not on hold. (source: [ADR 0011](docs/adr/0011-aoi-lives-on-the-producer.md))
 - [~] 2026-07-21 — **AoI "v.5": hysteresis at the 30/64m band edges + landmark announcement wiring +
   re-run the baseline.** MVP shipped; the edges still flap without a dead-band (ADR 0010), and the
   gateway-side `ReachMeters` is dead-carried (populate it on the priority-manifest broadcast). **PINNED.** (source:

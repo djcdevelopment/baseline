@@ -34,11 +34,13 @@ choosing not to do right now.
    don't reload" is ever reported; not a proactive task while pinned.
 2. **Band-shaping under multi-player density** — single-observer was validated;
    two clients in one dense area is the real scaling test (ties into HANDOFF
-   task 6, two-client isolation). Seat-required. **REPRODUCED 2026-07-21 night:**
-   the single-recipient queue and per-observer AoI collide — the same area ZDO can
-   only be delivered to one player's partition, so co-located players can't share
-   buildings/portals. The keystone fix is an **ownership-vs-visibility split**
-   (single writer, N readers / AoI-aware multicast). See the findings doc.
+   task 6, two-client isolation). Seat-required. **REPRODUCED 2026-07-21 night →
+   now an active architecture track, no longer a hold:** the single-recipient
+   queue and per-observer AoI collide — the same area ZDO can only be delivered to
+   one player's partition, so co-located players can't share buildings/portals. The
+   keystone fix is an **ownership-vs-visibility split** (single writer, N readers /
+   AoI-aware fan-out), now specified in **[ADR 0013](docs/adr/0013-ownership-visibility-split.md)**
+   with an evolutionary Phase 0–5 roadmap. See the findings doc for the live data.
 3. **AoI "v.5"** — hysteresis at the 30/64m band edges (old HANDOFF task 5),
    landmark punch-through, gateway landmark-announcement wiring (light up the
    dead-carried `ReachMeters`), and re-running the baseline grid with the real
