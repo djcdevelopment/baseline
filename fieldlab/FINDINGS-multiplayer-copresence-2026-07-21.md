@@ -79,11 +79,11 @@ copies for all), while **ownership stays single** (one writer). The current mode
 - **Gateway:** `lumberjacks-gateway:inc5-multiuser-20260721-r1` deployed on P7 (built locally,
   shipped via `docker save`/`load`, re-pinned — the VM source roots are stale, do NOT build on the
   VM). Rollback images `inc4-quest-…` and `inc1-…r3` are still loaded on the VM.
-- **⚠️ EPHEMERAL:** the seat gate was disabled **at runtime** (`SeatCapacity=0` on window
-  `p7-primary-v1` via `/valheim/handshake/config`). This is **in-memory** and **resets to 1 on any
-  gateway restart**. To resume multi-player, re-POST it — or make it durable (part of the real
-  N-seat-lease work, which needs per-holder liveness; a bare `>1` is refused by design at
-  `ValheimHandshakeService.cs:361`).
+- **Resolved after this finding:** the alpha seat override is now durable through
+  `VALHEIM_HANDSHAKE_SEAT_CAPACITY=0`, which Gateway applies at startup to `p7-primary-v1`.
+  Runtime `/valheim/handshake/config` still works as an emergency override, but is no longer the
+  normal way to resume two-player testing after a Gateway restart. A bare `>1` remains refused by
+  design at `ValheimHandshakeService.cs` until per-holder liveness exists.
 - **Recipients flag:** `VALHEIM_QUEUE_PRODUCER_EMITS_RECIPIENTS=true` is set in
   `/etc/comfy-p7/environment` (survives restarts). Confirmed live.
 - **5 unpushed commits on `main`** (local only): `a66a7d6` multi-user gate lift · `32b8cb9`/`1f06972`/
