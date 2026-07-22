@@ -3,6 +3,11 @@
 **Status: HARD HOLD. Do not pick these up without Derek re-opening them.**
 Pinned 2026-07-21.
 
+> **Update 2026-07-21 (night):** the first live 2-human authoritative test **reproduced item 2**
+> physically — co-located players cannot share an area because ZDO delivery is single-recipient.
+> Full write-up + the architecture question it raises: [`FINDINGS-multiplayer-copresence-2026-07-21.md`](FINDINGS-multiplayer-copresence-2026-07-21.md).
+> Items 1 and 2 below are no longer hypothetical; they are the confirmed next architecture work.
+
 ## Why this exists
 
 The 2026-07-21 session ran the **complete vertical seam** of the Valheim AoI
@@ -29,7 +34,11 @@ choosing not to do right now.
    don't reload" is ever reported; not a proactive task while pinned.
 2. **Band-shaping under multi-player density** — single-observer was validated;
    two clients in one dense area is the real scaling test (ties into HANDOFF
-   task 6, two-client isolation). Seat-required.
+   task 6, two-client isolation). Seat-required. **REPRODUCED 2026-07-21 night:**
+   the single-recipient queue and per-observer AoI collide — the same area ZDO can
+   only be delivered to one player's partition, so co-located players can't share
+   buildings/portals. The keystone fix is an **ownership-vs-visibility split**
+   (single writer, N readers / AoI-aware multicast). See the findings doc.
 3. **AoI "v.5"** — hysteresis at the 30/64m band edges (old HANDOFF task 5),
    landmark punch-through, gateway landmark-announcement wiring (light up the
    dead-carried `ReachMeters`), and re-running the baseline grid with the real
