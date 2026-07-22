@@ -6,6 +6,12 @@ Bounded: touch only lines you created or resolved.
 
 ## Open
 
+- [ ] 2026-07-22 — **Re-confirm the co-presence ownership bug actually reproduces before deploying/arming
+  the fan-out.** The 2026-07-22 live test showed the "empty world" was an autoport config boolean, not
+  single-recipient starvation; delivery reached both consumers. The fan-out (`c8db19d`) is built + green
+  in tests but may fix a case that isn't triggering. Test: two clients, *both* default configs (autoport
+  off), stand in one base — does the 2nd still see empty? (source: [SESSION-RETRO-2026-07-22](retro/SESSION-RETRO-2026-07-22.md), [ADR 0013 reality check](docs/adr/0013-ownership-visibility-split.md))
+
 - [ ] 2026-07-21 — **Restore the pruned quest slice as a `QuestTriggerEvaluator` consuming the gameplay
   events** (Increment 4+). Client-side trigger + local-player attribution from the comfy backup
   (`djcdevelopment/comfy`, `handoffs/comfy-control-surface/`), dropping the screenshot/outbox coupling
