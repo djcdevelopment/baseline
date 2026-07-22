@@ -14,11 +14,15 @@ Bounded: touch only lines you created or resolved.
 - [ ] 2026-07-21 — **Area co-presence: adopt the ownership/visibility split (ADR 0013).** The live
   two-human test proved the queue is multi-tenant but co-located players can't share buildings/portals
   — visibility is expressed by moving the single `recipient` stamp + Valheim ownership. ADR 0013
-  proposes per-observer fan-out onto the existing durable queue (evolve, don't rewrite), Phase 0–5.
-  **Derek-facing call inside it:** per-observer fan-out (recommended) vs region-shared partitions —
-  the latter is cheaper under density but costs independent acks + per-observer band-shaping; deferred
-  to Phase 4, adopted only against measured WAL amplification. Greenlight Phase 0 (shadow
-  instrumentation, no behaviour change) to start the build. (source: [ADR 0013](docs/adr/0013-ownership-visibility-split.md), [findings](FINDINGS-multiplayer-copresence-2026-07-21.md))
+  adopts per-observer fan-out onto the existing durable queue (evolve, don't rewrite).
+  **Status:** gateway substrate proven headless (`8f92edf`, N=2/10 isolation + WAL replay + dedup);
+  **Phase 0 shadow + Phase 2 fan-out BUILT** (uncommitted, flag-gated default-off, mod builds clean +
+  70 mod / gateway tests green), awaiting the **live two-human test**
+  ([runbook](docs/runbook-copresence-fanout-live-test.md)). Phase 1 proved a no-op (runner already
+  emits per-peer). **Remaining Derek-facing calls:** (a) after the live test, the per-recipient-seq fix
+  to restore `complete=True` under multiple recipients (pre-existing global-seq artifact, not fan-out);
+  (b) fan-out vs region-shared partitions (deferred to Phase 4, only against measured WAL amplification).
+  (source: [ADR 0013](docs/adr/0013-ownership-visibility-split.md), [findings](FINDINGS-multiplayer-copresence-2026-07-21.md))
 
 *(The AoI optimization items below remain on **hard hold**; see
 [PINNED-aoi-optimization.md](PINNED-aoi-optimization.md) — **except** the multi-player-density item,
