@@ -228,9 +228,9 @@ owned clients."
 Current verified state:
 
 - P7 public manifest, Gateway deployment, OMEN Companion install, and i5 Companion
-  install all report `m29-heartbeatage-20260723-r1`.
+  install all report `m30-rolecontrol-20260723-r1`.
 - OMEN and i5 package SHA-256 both match the P7 manifest:
-  `2b3cbb54eccc1860a3e93bc01586c17878cbc5e5ffd6e7d37f0c51cbca256475`.
+  `d1bfcd6f440fe9697cf495eac16923bcc9272225039b2ace69a23d1d302cbb5a`.
 - i5 tailnet SSH deploy lane is up, key-authenticated, and can see the Valheim
   BepInEx plugin directory.
 - Non-human gates are automated:
@@ -238,14 +238,23 @@ Current verified state:
   - runtime release/readiness gate;
   - live gate orchestrator;
   - immutable visual-observation annotator;
+  - two-machine capture bundle collection;
   - return-packet generator.
-- The latest live gate result is `wait_for_two_real_clients`, not a failure.
-  P7 is ready, but peer count is 0, so movement/capture must not start yet.
+- `tools\wave0\Test-Wave0Prelive.ps1` runs those gates as one unattended audit.
+  The latest pre-live audit result is `ready_for_derek_two_client_join`.
+- The latest live gate result is `wait_for_two_real_clients`, not a failure. P7
+  is ready, but peer count is 0, so movement/capture must not start yet.
 
-Next operator-minimal command once OMEN and i5 are both joined to P7:
+Preferred unattended pre-live command:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools\wave0\Start-Wave0LiveGate.ps1 -OutputJson captures\wave0-live-gate\result.json
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools\wave0\Test-Wave0Prelive.ps1 -OutputDirectory captures\wave0-prelive-current
+```
+
+Next operator-minimal live command once OMEN and i5 are both joined to P7:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools\wave0\Start-Wave0LiveGate.ps1 -DesiredApplyClient omen -OutputJson captures\wave0-live-gate\result.json
 ```
 
 Only human observation still required for Wave 0:
