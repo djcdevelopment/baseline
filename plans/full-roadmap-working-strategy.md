@@ -220,6 +220,46 @@ The next active slice is Wave 0:
 Do not begin M1/M2 expansion work until this slice has a sealed receipt or a named
 blocking defect.
 
+## Current status addendum - 2026-07-23
+
+Wave 0 has advanced from "build the diagnostic release" to "wait for the two real
+owned clients."
+
+Current verified state:
+
+- P7 public manifest, Gateway deployment, OMEN Companion install, and i5 Companion
+  install all report `m29-heartbeatage-20260723-r1`.
+- OMEN and i5 package SHA-256 both match the P7 manifest:
+  `2b3cbb54eccc1860a3e93bc01586c17878cbc5e5ffd6e7d37f0c51cbca256475`.
+- i5 tailnet SSH deploy lane is up, key-authenticated, and can see the Valheim
+  BepInEx plugin directory.
+- Non-human gates are automated:
+  - synthetic Gateway motion relay gate;
+  - runtime release/readiness gate;
+  - live gate orchestrator;
+  - immutable visual-observation annotator;
+  - return-packet generator.
+- The latest live gate result is `wait_for_two_real_clients`, not a failure.
+  P7 is ready, but peer count is 0, so movement/capture must not start yet.
+
+Next operator-minimal command once OMEN and i5 are both joined to P7:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools\wave0\Start-Wave0LiveGate.ps1 -OutputJson captures\wave0-live-gate\result.json
+```
+
+Only human observation still required for Wave 0:
+
+- whether the observing screen visibly follows the applying player;
+- whether straight movement is smooth, gliding, or teleporting;
+- whether stutter movement behaves differently;
+- whether the result follows the apply/observe role after reversal.
+
+Do not expand into Wave 1/M1/M2 work until the live gate has either:
+
+- a sealed visual observation packet for both directions; or
+- a named defect packet explaining why visual proof cannot be sealed.
+
 ## Maintenance
 
 Update this document only when sequencing, WIP policy, promotion rules, scope horizon,
