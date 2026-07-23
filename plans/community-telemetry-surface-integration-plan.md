@@ -540,6 +540,26 @@ Create a source ledger:
 
 # 7. Implementation phases
 
+## Alpha preemptive integration seams (2026-07-23)
+
+The immediate alpha objective is to reduce Derek's live testing burden. Before another two-client
+movement course, the release lane must provide automated evidence for the seams most likely to
+produce misleading symptoms:
+
+| Seam | Automated proof | Live test only after |
+|---|---|---|
+| Release alignment | Gateway image, server mod, both Companion packages, and package hashes agree | all four agree |
+| Identity/admission | enrollment/access-key presence, recipient binding, region/partition, capabilities are present without exposing secrets | both clients report ready |
+| Motion transport | recipient isolation, sequence wrap/duplicate rejection, malformed/unauthorized rejection, UDP/WS relay | synthetic cases pass |
+| Valheim binding | direct ZDO, ZDO-object, player-index, unresolved, stale, and applied counters are visible | resolution counters are interpretable |
+| Telemetry truth | client-local readiness, Gateway relay, server ZDO, and visual application remain separate | idle baseline is complete |
+| Network conditions | bounded RTT/jitter observation and explicit timeout/reconnect result | baseline is captured |
+| Operator control | bounded command, receipt, timeout, auto-stop, and no-op when readiness is false | control receipt is present |
+
+The rule is: a live run may validate behavior, but it must not be the first place a contract
+boundary is discovered. Failed automation stops at the named seam and produces a receipt suitable
+for the next code change.
+
 ## Phase 0: Baseline archaeology and contract freeze
 
 ### Goal
