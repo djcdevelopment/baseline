@@ -590,6 +590,11 @@ evidence against the object-resolution fix.
 5. Only after those projections are automated, tune interpolation or exercise the player-index
    fallback deliberately with a controlled object-binding case.
 
+The next non-interactive probe is tools/i5/Test-NetworkCondition.ps1. It analyzes retained
+client-local samples and records the current ZNet.GetServerPing() unit-normalization rule. Its
+output is the evidence gate for deciding whether the i5 condition is persistent path variance,
+stale telemetry, or a client-side sampling/units defect.
+
 ## Phase 0: Baseline archaeology and contract freeze
 
 ### Goal
