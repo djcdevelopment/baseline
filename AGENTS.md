@@ -22,6 +22,19 @@ See [`Lumberjacks/AGENTS.md`](Lumberjacks/AGENTS.md) for the full rule, includin
 The roadmap is public. Never include SteamIDs, invite links, credentials, access
 keys, passwords, or private diagnostic URLs.
 
+### This journal runs as background automation — plan around it
+
+Observed 2026-07-23: the journal is applied by **background automation**, not only by hand.
+Changes touching the Gateway / `network/` / `infra/gcp/p7/` are auto-committed with a generated
+roadmap note and **pushed to `origin/main`**, and `main`'s history is rewritten as releases are
+journaled (SHAs churn within a single session). For an agent working here:
+
+- Don't rely on feature-branch isolation or "hold the commit / don't push" for Gateway- or
+  release-touching work — it lands on `main` and reaches `origin` on its own. (Pure `docs/`-only
+  changes are not auto-committed; but once you commit them, `main` is pushed anyway.)
+- Don't force-push to "undo" an auto-commit — it is the normal release flow. Surface the state to
+  the operator and decide together.
+
 ## Checkout roots
 
 `C:\work\baseline` is the only working root. `C:\work\comfy` and `C:\work\lumberjacks`
