@@ -33,7 +33,7 @@ If you choose to enable the capture tools, the mod observes two specific areas.
 **Gameplay activity.** When you engage in combat, the mod captures events
 (`first_hit`, `killing_blow`, `weapon_used`) along with the creature's category
 (with "(Clone)" stripped), your weapon-skill name (`weapon`), whether the attack
-was `ranged`, and your `playerId`. When you complete a quest (`quest_completed`)
+was `ranged`, and your player id (sent as `actor_id`). When you complete a quest (`quest_completed`)
 it additionally records the `quest_id`, your `guild`, the quest `category`, and
 the `bot_command`. It also captures alpha transport switches
 (`transport_control_changed`). Every event is stamped with an `occurred_at_utc`
