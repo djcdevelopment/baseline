@@ -233,11 +233,18 @@ Current verified state:
   `d1bfcd6f440fe9697cf495eac16923bcc9272225039b2ace69a23d1d302cbb5a`.
 - i5 tailnet SSH deploy lane is up, key-authenticated, and can see the Valheim
   BepInEx plugin directory.
+- Public Companion bootstrap `companion-bootstrap-20260723-r22` is published on
+  P7. Its downloaded package hash matches the public manifest, and fresh installs
+  receive the Companion Wave 0 panel with the full command chain.
+- OMEN and i5 Companion dashboards expose `/api/v0/companion/wave0/status`; both
+  currently report `wait_for_two_real_clients` and include the final visual seal
+  command.
 - Non-human gates are automated:
   - synthetic Gateway motion relay gate;
   - runtime release/readiness gate;
   - live gate orchestrator;
   - immutable visual-observation annotator;
+  - two-direction visual evidence seal verifier;
   - two-machine capture bundle collection;
   - return-packet generator.
 - `tools\wave0\Test-Wave0Prelive.ps1` runs those gates as one unattended audit.
@@ -255,6 +262,16 @@ Next operator-minimal live command once OMEN and i5 are both joined to P7:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools\wave0\Start-Wave0LiveGate.ps1 -DesiredApplyClient omen -OutputJson captures\wave0-live-gate\result.json
+```
+
+Complete return sequence once two peers are joined:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools\wave0\Start-Wave0LiveGate.ps1 -DesiredApplyClient omen -OutputJson captures\wave0-live-gate\result.json
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools\wave0\Add-Wave0VisualObservation.ps1 -ReceiptJson captures\wave0-live-gate\result.json -ApplyClient omen -ObserveClient i5 -VisualResult followed_role -StraightMovement smooth -StutterMovement mixed -RoleReversalRun no
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools\wave0\Start-Wave0LiveGate.ps1 -DesiredApplyClient i5 -OutputJson captures\wave0-live-gate-reversal\result.json
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools\wave0\Add-Wave0VisualObservation.ps1 -ReceiptJson captures\wave0-live-gate-reversal\result.json -ApplyClient i5 -ObserveClient omen -VisualResult followed_role -StraightMovement smooth -StutterMovement mixed -RoleReversalRun yes
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools\wave0\Seal-Wave0VisualEvidence.ps1 -FirstAnnotatedJson captures\wave0-live-gate\result.annotated.json -ReversalAnnotatedJson captures\wave0-live-gate-reversal\result.annotated.json -OutputJson captures\wave0-live-seal\visual-seal.json
 ```
 
 Only human observation still required for Wave 0:
