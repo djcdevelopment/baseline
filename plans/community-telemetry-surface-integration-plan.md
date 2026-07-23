@@ -560,6 +560,36 @@ The rule is: a live run may validate behavior, but it must not be the first plac
 boundary is discovered. Failed automation stops at the named seam and produces a receipt suitable
 for the next code change.
 
+### m20 seam-diagnostics live baseline
+
+The first live A/B after the seam work completed with two peers and zero bad capture samples. OMEN
+was APPLY-enabled; i5 remained OBSERVE-only. During the bounded stutter course:
+
+| Client | Motion transport | Apply | Applied snapshots | Direct ZDO hits | Player-index hits | Interpretation |
+|---|---|---:|---:|---:|---:|---|
+| OMEN / Tugcorp | UDP + WebSocket session | yes | 7,671 | 7,671 | 0 | Lumberjacks presentation is applying through the direct ZDO path |
+| i5 / Durracktu | UDP + WebSocket session | no | 0 | 0 | 0 | Observe-only negative control; no visual attribution claimed |
+
+Both clients reported two peers and advancing Gateway receive/relay counters. The player-index
+fallback was exercised as an instrumented possibility but was not needed in this run. The i5
+client still showed the known high-variance network condition (roughly 80--620 ms RTT with roughly
+500 ms jitter in the sampled tail), so it remains a separate network-condition seam rather than
+evidence against the object-resolution fix.
+
+### Next seams, ordered by information gained per live test
+
+1. Promote client-local motion counters and resolution-path deltas into the Companion summary; raw
+   JSONL already contains them, but the operator verdict currently exposes only Gateway relay
+   deltas.
+2. Fix player-name extraction in capture summaries; the Gateway heartbeat has names, but the live
+   summary recorded an empty `observed_players` list.
+3. Add an explicit APPLY-vs-OBSERVE comparison verdict so a successful transport run cannot be
+   mistaken for successful visual application.
+4. Add a bounded jitter/RTT classification to the capture receipt and compare i5 against OMEN
+   without requiring another movement course.
+5. Only after those projections are automated, tune interpolation or exercise the player-index
+   fallback deliberately with a controlled object-binding case.
+
 ## Phase 0: Baseline archaeology and contract freeze
 
 ### Goal
