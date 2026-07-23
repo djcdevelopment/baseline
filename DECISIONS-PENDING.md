@@ -16,10 +16,6 @@ Bounded: touch only lines a session created or resolved.
   It's the only remaining M2 item and needs its own build/test cycle. (source: SESSION-RETRO-2026-07-23.md)
 - [ ] 2026-07-23 — **Next milestone pick.** Recommendation: **M3-2 tradeoff cards** (unblocked by the
   M2-1 knob inventory, offloads cleanly, no substrate decision) over M2-2. (source: SESSION-RETRO-2026-07-23.md)
-- [ ] 2026-07-23 — **Git automation force-pushing published `main`** — is it intended? It rewrites SHAs
-  already on `origin/main`; harmless if solo, but destructive to anyone who has pulled `baseline`
-  (there's an `agent/boundary-events-build-pipeline` tracking branch). Highest-consequence open item.
-  (source: memory `baseline-repo-auto-commits-and-pushes-main`)
 - [ ] 2026-07-23 — **Adoption/process ADR home.** Netcode ADRs are scoped to the netcode-replacement
   program (`fieldlab/docs/adr/`); adoption/process decisions currently land only in retro + memory +
   this register. Do they need their own ADR track, or is this enough? (source: SESSION-RETRO-2026-07-23.md)
@@ -38,3 +34,6 @@ Bounded: touch only lines a session created or resolved.
 - [x] 2026-07-23 — Journal taxonomy for adoption commits → **added an A1–A6 adoption track**, published
   (`cd5755b`).
 - [x] 2026-07-23 — A-track public visibility → **publish it** (built in the open), re-toned volunteer-facing (Derek).
+- [x] 2026-07-23 — Git automation force-pushing published `main` → **go forward, it's intended** (Derek):
+  `baseline` is a solo open-source working sample, so there are no collaborators for a history rewrite
+  to disrupt. Recorded in memory `baseline-repo-auto-commits-and-pushes-main` (ACCEPTED).
