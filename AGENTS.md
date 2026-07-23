@@ -29,3 +29,19 @@ are retired: they still exist on disk holding pre-cutover content, so a command 
 at them succeeds quietly against stale code instead of failing. Scripts in this repo
 derive their roots from `$PSScriptRoot`; keep it that way rather than reintroducing an
 absolute default.
+
+## i5 deploy lane (remote test client)
+
+The i5 laptop is the second Valheim test client, reachable over the tailnet as
+ssh alias `i5`. To ship it file updates (mod DLLs, configs, test bundles), use
+[`tools/i5/`](tools/i5/README.md):
+
+```powershell
+tools\i5\Test-I5Link.ps1                                # preflight: is the lane up?
+tools\i5\Deploy-ToI5.ps1 -Path <file-or-dir> [-Dest C:/deploy/baseline/...]
+tools\i5\Deploy-ToI5.ps1 -Path <mod.dll> -ValheimPlugins  # straight into BepInEx plugins
+```
+
+Deploys are SHA256-verified on both ends; a green run is the receipt. The i5 is
+a roaming laptop — **offline is a normal state**: report it and stop, never
+retry-loop, and never fall back to password auth (everything runs BatchMode).
