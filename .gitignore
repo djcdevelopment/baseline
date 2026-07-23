@@ -9,6 +9,12 @@ desktop.ini
 scratch/
 *.tmp
 
+# Local generated evidence/artifacts from release cuts, modpack packaging, and
+# Wave 0/live-gate smoke runs. Public-safe summaries that need to persist should
+# be copied into docs/roadmap/ or another explicit source/evidence location.
+captures/
+artifacts/
+
 # Terraform local state and operator-specific inputs
 .terraform/
 *.tfstate
