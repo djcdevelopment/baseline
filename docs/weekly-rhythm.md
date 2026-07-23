@@ -55,3 +55,5 @@ disposition, each with a one-line reason:
   ("you said → we did / won't / later").
 - **Changelog posts** go to the community Discord and the roadmap.
 - **Working notes** (triage, residue) live under `docs/templates/`-derived files.
+- **Tuning changes** need a [netcode tuning-ledger](../network/tuning-ledger.md)
+  entry before they ship — no entry, no ship.
