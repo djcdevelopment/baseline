@@ -13,7 +13,7 @@ be derived from receipts.
 
 | ID | Scope | Human action | Agent-owned prep | Evidence that closes it |
 |---|---|---|---|---|
-| H0-1 | Wave 0 two-client join | Join OMEN and i5 to P7 with the two owned player accounts. | Keep P7, OMEN, and i5 aligned; run `tools\wave0\Test-Wave0Prelive.ps1`; wait with `tools\wave0\Wait-Wave0LiveGate.ps1`. | P7 peer count reaches at least 2 in the live-gate receipt. |
+| H0-1 | Wave 0 two-client join | Join OMEN and i5 to P7 with the two owned player accounts. | Keep P7, OMEN, and i5 aligned; run `tools\wave0\Test-Wave0Prelive.ps1`; generate the expected-result grid with `tools\wave0\New-Wave0ExpectedResultGrid.ps1`; wait with `tools\wave0\Wait-Wave0LiveGate.ps1`. | P7 peer count reaches at least 2 in the live-gate receipt. |
 | H0-2 | Wave 0 first direction | Watch both screens during the bounded OMEN-apply/i5-observe movement. | Set role split, start capture, send bounded motion, write immutable receipt and observation worksheet. | `Add-Wave0VisualObservation.ps1` sidecar records visual result and movement quality. |
 | H0-3 | Wave 0 role reversal | Watch both screens during the bounded i5-apply/OMEN-observe movement. | Repeat live gate with `-DesiredApplyClient i5`. | Second annotated receipt shows the result follows role selection, not machine/account identity. |
 | H0-4 | Wave 0 subjective quality | Classify straight and stutter movement as smooth, glidey, teleporting, mixed, or not observed. | Capture transport and local telemetry bundles from both machines. | `Seal-Wave0VisualEvidence.ps1` produces a sealed visual index, or `Suggest-Wave0DefectPacket.ps1` produces a named defect path. |
@@ -62,3 +62,8 @@ Then follow the generated return packet:
 captures\wave0-prelive-current\return-packet\packet.md
 ```
 
+Use the generated expected-result grid for pre-run bets and observed results:
+
+```text
+captures\wave0-prelive-current\expected-result-grid.md
+```
