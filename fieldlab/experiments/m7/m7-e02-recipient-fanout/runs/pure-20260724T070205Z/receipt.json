@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "experiment_id": "m7-e02-recipient-fanout",
+  "scenario_id": "recipient-isolation-v1",
+  "run_id": "pure-20260724T070205Z",
+  "source_revision": "16a8b7d",
+  "dirty_state": false,
+  "scenario_sha256": "d97d8c3829ac8137ab26b884db0087fc5c6f6ce173c5c0878e627a087b643561",
+  "normalized_input_sha256": "02d21c3a2322d9467520405ebb7d3bfef7925fcb7514073257b959d15db624b4",
+  "policy": {
+    "name": "tiered",
+    "near_meters": 30,
+    "outer_meters": 64,
+    "mid_hz": 5
+  },
+  "driver": "pure",
+  "seed": 412,
+  "started_utc": "2026-07-24T07:02:06.6013898\u002B00:00",
+  "ended_utc": "2026-07-24T07:02:06.6074778\u002B00:00",
+  "duration_seconds": 0.006088,
+  "stop_result": "completed",
+  "event_counts": {
+    "authority.lumberjacks_decision": 112
+  },
+  "invariants": [
+    {
+      "name": "recipient_isolation",
+      "passed": true,
+      "detail": "each recipient/revision has at most one terminal emit within each observer-count case"
+    },
+    {
+      "name": "fanout_scales_with_observers",
+      "passed": true,
+      "detail": "n=2:1,n=10:5,n=100:65"
+    },
+    {
+      "name": "already_delivered_is_local",
+      "passed": true,
+      "detail": "one observer starts at revision 410"
+    }
+  ],
+  "prediction_observations": [
+    {
+      "name": "cross_recipient_activity",
+      "observed": "none expected; slow, duplicate, and already-delivered observers remain local"
+    },
+    {
+      "name": "scaling_shape",
+      "observed": "emissions grow with in-band observers; this is not a 100-player capacity claim"
+    }
+  ],
+  "raw_evidence_paths": [
+    "normalized-input.json",
+    "raw/events.jsonl"
+  ],
+  "normalized_decision_sha256": "f1f8aea6beee7aa229bdcfbe9b667652ecbbed5d83951f6712c4d1aaeee51cae",
+  "result_classification": "supported"
+}

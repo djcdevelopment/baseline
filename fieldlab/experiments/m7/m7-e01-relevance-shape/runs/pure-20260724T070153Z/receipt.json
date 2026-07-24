@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "experiment_id": "m7-e01-relevance-shape",
+  "scenario_id": "relevance-boundaries-v1",
+  "run_id": "pure-20260724T070153Z",
+  "source_revision": "16a8b7d",
+  "dirty_state": false,
+  "scenario_sha256": "217f7582244ec50a50d6bd8e107c82ce0519eeced13ff4a1e9b50245c2ceb4cb",
+  "normalized_input_sha256": "1772c1e0bea3b4f518ef97878218f64c3fb0569cb8c4921e5cc7ca5ea60fdf09",
+  "policy": {
+    "name": "tiered",
+    "near_meters": 30,
+    "outer_meters": 64,
+    "mid_hz": 5
+  },
+  "driver": "pure",
+  "seed": 411,
+  "started_utc": "2026-07-24T07:01:54.2973493\u002B00:00",
+  "ended_utc": "2026-07-24T07:01:54.3016568\u002B00:00",
+  "duration_seconds": 0.0043075,
+  "stop_result": "completed",
+  "event_counts": {
+    "authority.lumberjacks_decision": 42
+  },
+  "invariants": [
+    {
+      "name": "density_response_monotonic",
+      "passed": true,
+      "detail": "1x=5,2x=10,4x=20"
+    },
+    {
+      "name": "boundary_shape",
+      "passed": true,
+      "detail": "observed=EmitFull,EmitFull,EmitThinned,EmitThinned,EmitThinned,Drop"
+    }
+  ],
+  "prediction_observations": [
+    {
+      "name": "radius_and_density_direction",
+      "observed": "near and mid objects emit; far objects drop; higher density increases emitted decisions"
+    },
+    {
+      "name": "boundary_chatter",
+      "observed": "clean crossings are monotonic; repeated noisy samples are retained for later chatter analysis"
+    }
+  ],
+  "raw_evidence_paths": [
+    "normalized-input.json",
+    "raw/events.jsonl"
+  ],
+  "normalized_decision_sha256": "4029f12e50b238532801524b5fa21ba02da822de2080ee5e66ed7a08b4b100e0",
+  "result_classification": "supported"
+}

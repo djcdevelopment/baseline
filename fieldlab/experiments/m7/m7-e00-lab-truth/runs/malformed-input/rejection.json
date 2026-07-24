@@ -1,0 +1,10 @@
+{
+    "schema_version":  1,
+    "experiment_id":  "m7-e00-lab-truth",
+    "scenario_id":  "malformed-unknown-driver",
+    "run_id":  "malformed-input",
+    "result_classification":  "harness_failed",
+    "stop_result":  "rejected_before_execution",
+    "observed_exit_code":  2,
+    "reason":  "unknown driver rejected before an authority decision was executed"
+}

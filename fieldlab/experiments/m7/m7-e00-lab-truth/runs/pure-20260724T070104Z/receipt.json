@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "experiment_id": "m7-e00-lab-truth",
+  "scenario_id": "lab-truth-v1",
+  "run_id": "pure-20260724T070104Z",
+  "source_revision": "16a8b7d",
+  "dirty_state": false,
+  "scenario_sha256": "e99b946a07db42c1ebd4a3869e2e9a95c9700324a03acd221157c5569dbf55d0",
+  "normalized_input_sha256": "712dce8f3683820667b064e836668ea8e65f35de41359642774c993c8c4e10dc",
+  "policy": {
+    "name": "tiered",
+    "near_meters": 30,
+    "outer_meters": 64,
+    "mid_hz": 5
+  },
+  "driver": "pure",
+  "seed": 410,
+  "started_utc": "2026-07-24T07:01:05.7886065\u002B00:00",
+  "ended_utc": "2026-07-24T07:01:05.7904930\u002B00:00",
+  "duration_seconds": 0.0018865,
+  "stop_result": "completed",
+  "event_counts": {
+    "authority.lumberjacks_decision": 12
+  },
+  "invariants": [
+    {
+      "name": "deterministic_event_count",
+      "passed": true,
+      "detail": "expected=12; observed=12"
+    },
+    {
+      "name": "snake_case_payload",
+      "passed": true,
+      "detail": "payload keys are lowercase"
+    }
+  ],
+  "prediction_observations": [
+    {
+      "name": "same_seed_same_input",
+      "observed": "repeated runs should produce byte-identical normalized decisions"
+    }
+  ],
+  "raw_evidence_paths": [
+    "normalized-input.json",
+    "raw/events.jsonl"
+  ],
+  "normalized_decision_sha256": "a2c80999208326b0db02803445f4e6bf094b372a6116c9b5b86ebc856f50f3bd",
+  "result_classification": "supported"
+}

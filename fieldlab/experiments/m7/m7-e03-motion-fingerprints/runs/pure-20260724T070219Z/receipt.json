@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "experiment_id": "m7-e03-motion-fingerprints",
+  "scenario_id": "motion-fingerprints-v1",
+  "run_id": "pure-20260724T070219Z",
+  "source_revision": "16a8b7d",
+  "dirty_state": false,
+  "scenario_sha256": "2b0ea129d99264bf6bb0474694026fcc6e733d1852e54e3f9098a0a789922955",
+  "normalized_input_sha256": "2fca92fcce08db34a400900da4d6c8a117b9c1e1a13834ed3f0d5c3a91de7a7f",
+  "policy": {
+    "name": "motion-observation",
+    "near_meters": 30,
+    "outer_meters": 64,
+    "mid_hz": 5
+  },
+  "driver": "pure",
+  "seed": 413,
+  "started_utc": "2026-07-24T07:02:20.8283368\u002B00:00",
+  "ended_utc": "2026-07-24T07:02:20.8328209\u002B00:00",
+  "duration_seconds": 0.0044841,
+  "stop_result": "completed",
+  "event_counts": {
+    "authority.lumberjacks_decision": 120
+  },
+  "invariants": [
+    {
+      "name": "motion_patterns_present",
+      "passed": true,
+      "detail": "patterns=straight_north,stutter_north,stop_start,turn_90,circle,teleport"
+    },
+    {
+      "name": "motion_fingerprints_distinguishable",
+      "passed": true,
+      "detail": "straight_north=1,stutter_north=13,stop_start=2,turn_90=2.414,circle=9.204,teleport=56.286"
+    }
+  ],
+  "prediction_observations": [
+    {
+      "name": "cadence_vs_interpolation",
+      "observed": "stutter has larger output intervals and sequence lag; this does not identify the live interpolation cause"
+    },
+    {
+      "name": "transport_ordering",
+      "observed": "pure driver preserves logical event order; UDP/WebSocket comparison is deferred to Gateway driver"
+    }
+  ],
+  "raw_evidence_paths": [
+    "normalized-input.json",
+    "raw/events.jsonl"
+  ],
+  "normalized_decision_sha256": "3cb294df63b3b645d92d6f1484589ac3a040ed9948cef108da1a2214c1023f2a",
+  "result_classification": "supported"
+}
