@@ -70,6 +70,8 @@ Implemented after the initial handoff:
 - an operator-touch gate that writes a receipt and refuses ordinary starts until
   the Docker runtime, Compose contract, payload, local server/Gateway, Valheim
   install, Steam manifest, executable, and existing character are all present;
+- a thin multi-client coordinator that refreshes and preflights every selected
+  client before starting any, cleans up partial starts, and aggregates receipts;
 - E04 native JSONL normalizer with raw-source preservation and malformed/ignored
   row receipts.
 
@@ -78,7 +80,8 @@ Still not implemented:
 - higher-volume Gateway reconnect/lease pressure beyond the bounded WAL restart proof;
 - native capture from a real disposable client (the capture wrapper is ready, but
   the current `client01` volume has not been seeded);
-- two-client local shadow/strict execution and independent receipt correlation;
+- two-client local shadow/strict execution and independent receipt correlation (the
+  lifecycle coordinator is ready; the client volumes still need one-time seeding);
 
 Current control-channel reality:
 

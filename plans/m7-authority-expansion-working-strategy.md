@@ -235,6 +235,9 @@ Current shape:
 - `Invoke-HeadlessValheimLab.ps1` owns refresh/start/status/restart/stop and SHA-256
   stages a writable user-init watcher because the Steam-headless image normalizes
   and chowns those scripts;
+- `Invoke-HeadlessValheimScenario.ps1` coordinates N=2..4 disposable clients:
+  refreshes all payloads, gates all clients before any start, cleans up partial
+  starts, and aggregates lifecycle receipts;
 - MCP exposes `valheim_lab_motion_test` and `valheim_lab_motion_status`, which write
   only named, duration-bounded motion/apply commands to the existing mailbox;
 - every movement command remains consumed on Unity's main thread and produces the
@@ -333,7 +336,8 @@ but no second strict authority plane is active during a strict relevance run.
    evidence_exported -> stopped` on one local client using the lifecycle script,
    with the agent issuing only bounded MCP observations/commands between start and
    stop.
-7. Add the second local client, run the same scenario, and prove independent receipts.
+7. Seed the second local client, run the same scenario through the coordinator,
+   and prove independent native/MCP receipts for both clients.
 8. Run relevance shadow locally, then a bounded strict static-object-class canary with
    in-run rollback.
 9. Only then prepare a P7 shadow packet. Do not request a P7 authority promotion yet.
