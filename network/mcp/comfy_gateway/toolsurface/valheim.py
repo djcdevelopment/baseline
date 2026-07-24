@@ -252,6 +252,75 @@ def valheim_tail_swarm_client(client: str = "client01", file_name: str = "teleme
     }
 
 
+def valheim_lab_motion_test(
+    client: str = "client01",
+    action: str = "start",
+    pattern: str = "straight_north",
+    duration_seconds: int = 10,
+    motion_apply_enabled: bool | None = None,
+) -> dict:
+    """Send one bounded allow-listed motion command to a disposable lab client.
+
+    This writes the same atomic mailbox consumed by MotionTestController on the
+    Unity main thread. It is intentionally not a console, shell, or arbitrary
+    script bridge; physical player installs are outside this tool.
+    """
+    if not os.environ.get("COMFY_AUTONOMOUS_STATE"):
+        return {"ok": False, "error": "autonomous_state_not_configured"}
+    normalized_client = _client_name(client)
+    normalized_action = str(action or "").strip().lower()
+    if normalized_action not in {"start", "stop", "set_apply"}:
+        return {"ok": False, "error": "action_not_allowed"}
+    allowed_patterns = {"straight_north", "straight_east", "stutter_north", "circle"}
+    normalized_pattern = str(pattern or "straight_north").strip().lower()
+    if normalized_action == "start" and normalized_pattern not in allowed_patterns:
+        return {"ok": False, "error": "pattern_not_allowed"}
+    if normalized_action == "set_apply" and not isinstance(motion_apply_enabled, bool):
+        return {"ok": False, "error": "motion_apply_enabled_required"}
+    duration = max(1, min(int(duration_seconds), 60))
+    install = _client_install_dir(normalized_client)
+    network_dir = install / "BepInEx" / "config" / "comfy-network-sense"
+    command_path = network_dir / "companion-motion.command"
+    if not install.exists():
+        return {"ok": False, "error": "client_install_not_found", "client": normalized_client, "install": str(install)}
+    network_dir.mkdir(parents=True, exist_ok=True)
+    command = (
+        f"{normalized_client}-{int(time.time() * 1000)}|set_apply|"
+        f"{'true' if motion_apply_enabled else 'false'}"
+        if normalized_action == "set_apply"
+        else f"{normalized_client}-{int(time.time() * 1000)}|{normalized_action}|{normalized_pattern}|{duration}"
+    )
+    temporary = command_path.with_name(command_path.name + ".tmp")
+    temporary.write_text(command + "\n", encoding="utf-8")
+    temporary.replace(command_path)
+    return {
+        "ok": True,
+        "client": normalized_client,
+        "action": normalized_action,
+        "pattern": None if normalized_action == "set_apply" else normalized_pattern,
+        "duration_seconds": None if normalized_action == "set_apply" else duration,
+        "motion_apply_enabled": motion_apply_enabled if normalized_action == "set_apply" else None,
+        "command_path": str(command_path),
+    }
+
+
+def valheim_lab_motion_status(client: str = "client01", lines: int = 10) -> dict:
+    """Read the bounded lab motion mailbox and its JSONL receipts."""
+    if not os.environ.get("COMFY_AUTONOMOUS_STATE"):
+        return {"ok": False, "error": "autonomous_state_not_configured"}
+    normalized_client = _client_name(client)
+    network_dir = _client_install_dir(normalized_client) / "BepInEx" / "config" / "comfy-network-sense"
+    command_path = network_dir / "companion-motion.command"
+    receipt_path = network_dir / "companion-motion-receipts.jsonl"
+    return {
+        "ok": True,
+        "client": normalized_client,
+        "install": str(_client_install_dir(normalized_client)),
+        "pending": command_path.exists(),
+        "last_receipts": _tail_json(receipt_path, max(1, min(int(lines), MAX_TAIL_LINES))),
+    }
+
+
 def valheim_tail_networksense(file_name: str = "telemetry-client.jsonl", lines: int = 20) -> dict:
     """Tail a ComfyNetworkSense JSONL file by plain file name."""
     path = _safe_child(NETWORK_SENSE_DIR, file_name)
@@ -414,6 +483,8 @@ def valheim_mcp_health() -> dict:
             "valheim_networksense_files",
             "valheim_swarm_clients",
             "valheim_tail_swarm_client",
+            "valheim_lab_motion_test",
+            "valheim_lab_motion_status",
             "valheim_networksense_report",
             "valheim_authoritative_status",
             "valheim_session_bundle",
@@ -2163,6 +2234,8 @@ def get_tools() -> list[Callable]:
         valheim_networksense_files,
         valheim_swarm_clients,
         valheim_tail_swarm_client,
+        valheim_lab_motion_test,
+        valheim_lab_motion_status,
         valheim_tail_networksense,
         valheim_tail_bepinex_log,
         valheim_networksense_report,

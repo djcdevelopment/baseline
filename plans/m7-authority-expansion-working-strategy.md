@@ -226,20 +226,23 @@ quality or production scale.
 Restore unattended operation as a separate lab capability, not as production behavior
 hidden in the main mod.
 
-Preferred shape:
+Current shape:
 
-- `ComfyNetworkSense.LabAutomation.dll`, loaded only in lab packages;
-- bounded allowlisted commands: select/create lab character, join configured server,
-  god/fly safeguard, apply profile, start scenario, stop scenario, export receipt;
-- a local file/HTTP command mailbox with command ID, expiry, current state, and result;
-- no arbitrary C# or PowerShell execution inside Valheim;
-- Companion exposes state and forwards allowlisted commands;
-- MCP orchestrates Companion on OMEN and i5 and the local lab driver;
-- every command has a timeout, auto-stop, idempotency key, and receipt.
+- `LabAutoJoinPatches` is a bounded opt-in seam in `ComfyNetworkSense.dll`, loaded
+  only by profile-gated disposable headless/rendered Compose clients;
+- it selects an existing character and calls Valheim's normal start path; it never
+  creates profiles, teleports, or runs arbitrary scripts;
+- `Invoke-HeadlessValheimLab.ps1` owns refresh/start/status/restart/stop and SHA-256
+  stages a writable user-init watcher because the Steam-headless image normalizes
+  and chowns those scripts;
+- MCP exposes `valheim_lab_motion_test` and `valheim_lab_motion_status`, which write
+  only named, duration-bounded motion/apply commands to the existing mailbox;
+- every movement command remains consumed on Unity's main thread and produces the
+  mod's JSONL receipt; no general console or model-output execution is added.
 
-Reuse the approach from `AutoCharacterSelectPatches.cs` and
-`MatrixCheckinRunner.cs` at `1887626`, but do not restore their old config surface or
-infinite poll loop unchanged.
+The old `AutoCharacterSelectPatches.cs` at `1887626` was used as a reference, but
+the matrix runner and profile creation path remain removed. The implementation is
+deliberately narrower than the old harness.
 
 The lab state machine is:
 
@@ -306,8 +309,8 @@ Keep at most two implementation lanes active:
 
 | Lane | First deliverable | Then |
 |---|---|---|
-| A - evidence and synthetic authority lab | Scenario schema, authority JSONL contract, deterministic generator/replay runner, baseline receipt, real Gateway E02/E03 drivers, WAL restart/ACK and bound-UDP proof | Native trace normalizer, comparator; higher-volume reconnect pressure only if native evidence requires it |
-| B - unattended Unity integration | Lab-only autojoin/command mailbox, Companion/MCP orchestration, disposable local server proof | Two local clients, local shadow/strict role switch, automatic bundles |
+| A - evidence and synthetic authority lab | Scenario schema, authority JSONL contract, deterministic generator/replay runner, real Gateway E02/E03 drivers, WAL restart/ACK and bound-UDP proof, native normalizer/replay seam | Real native capture; higher-volume reconnect pressure only if native evidence requires it |
+| B - unattended Unity integration | Lab-only existing-profile autojoin, lifecycle script, MCP command mailbox, graceful stop proof | Seeded client volume, two local clients, local shadow/strict role switch, automatic bundles |
 
 Once both lanes meet, run R2-R5. Ownership and RPC work may build fixtures in parallel,
 but no second strict authority plane is active during a strict relevance run.
@@ -318,13 +321,14 @@ but no second strict authority plane is active during a strict relevance run.
    result, and learning contract.
 2. Reconcile strategy tooling so M7 reports `discovery_active / promotion_gated`
    instead of `explicitly_deferred`.
-3. Keep the schema and receipt contract stable; E00-E03 already retain pure and
-   Gateway evidence.
-4. Reuse the existing synthetic motion smoke as a second receipt-producing seam.
+3. Keep the schema and receipt contract stable; E00-E04 now retain pure, Gateway,
+   normalized-native, and replay evidence.
+4. Seed one disposable client volume with Steam/Valheim and an existing character;
+   this is the one-time environmental prerequisite for an agent-only run.
 5. Capture the first native candidate trace and replay it offline. This is the first
    point at which synthetic equations meet actual Valheim behavior.
-6. Create the lab-only automation assembly from the useful `1887626` patterns and
-   prove it reaches `in_world -> evidence_exported` on one local client.
+6. Prove `artifact_aligned -> steam_ready -> character_selected -> in_world ->
+   evidence_exported -> stopped` on one local client using the lifecycle script.
 7. Add the second local client, run the same scenario, and prove independent receipts.
 8. Run relevance shadow locally, then a bounded strict static-object-class canary with
    in-run rollback.

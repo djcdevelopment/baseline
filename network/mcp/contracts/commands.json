@@ -178,6 +178,24 @@
       "returns": "Compact deterministic telemetry report."
     },
     {
+      "name": "valheim_lab_motion_test",
+      "surface": "mcp_tool",
+      "stability": "dev",
+      "side_effects": ["writes one allow-listed client motion mailbox row"],
+      "requires": ["Comfy MCP gateway", "disposable headless/rendered lab client", "COMFY_AUTONOMOUS_STATE"],
+      "example": "valheim_lab_motion_test(client='client01', action='start', pattern='stutter_north', duration_seconds=10)",
+      "returns": "Bounded command receipt; the mod consumes it on the Unity main thread."
+    },
+    {
+      "name": "valheim_lab_motion_status",
+      "surface": "mcp_tool",
+      "stability": "dev",
+      "side_effects": ["reads local client command and JSONL receipts"],
+      "requires": ["Comfy MCP gateway", "COMFY_AUTONOMOUS_STATE"],
+      "example": "valheim_lab_motion_status(client='client01')",
+      "returns": "Pending mailbox state and recent bounded motion receipts."
+    },
+    {
       "name": "valheim_explain_networksense",
       "surface": "mcp_tool",
       "stability": "dev",

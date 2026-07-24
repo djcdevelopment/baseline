@@ -1,6 +1,8 @@
 # Agent Operating Rules
 
 Use the Comfy MCP gateway as a dev observability surface, not as gameplay logic.
+The only lab mutation seam is the allow-listed motion mailbox for disposable
+headless/rendered clients; it is not available as a general player control path.
 
 Recommended workflow:
 
@@ -15,7 +17,8 @@ Safety boundaries:
 
 - Do not run production gameplay through MCP.
 - Do not require non-dev players to run the gateway.
-- Do not execute arbitrary model output.
+- Do not execute arbitrary model output. `valheim_lab_motion_test` accepts only
+  the documented named patterns, bounded durations, and the motion apply switch.
 - Do not flood the gateway from the game loop.
 - Assume JSONL telemetry is the durable source of truth.
 

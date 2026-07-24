@@ -1,7 +1,7 @@
 # M7 authority experiment execution handoff
 
 Status: ready for a builder after the GCP reconciliation finishes
-First implementation scope: M7-E00 through M7-E03 only
+First implementation scope: M7-E00 through M7-E04 plus the disposable lab-client seam
 Human-touch target: none
 Parent documents:
 
@@ -23,10 +23,12 @@ Then use it to run:
 - E00 lab honesty/determinism;
 - E01 relevance geometry and boundary shape;
 - E02 recipient fan-out at N=2/N=10/N=100;
-- E03 motion-pattern fingerprints.
+- E03 motion-pattern fingerprints;
+- E04 native candidate capture/normalization.
 
-Do not restore Unity autojoin, change P7, deploy a mod, or ask Derek to join during
-this slice. E00-E03 exist to remove basic mistakes before those costs are introduced.
+Do not change P7, deploy to physical player installs, or ask Derek to join during
+this slice. E00-E03 remove basic mistakes before native/client costs are introduced;
+E04 and the lab client seam exist to remove the next human iteration cost.
 
 ## Important current state
 
@@ -58,11 +60,20 @@ Implemented in the first unattended slice:
   `UdpTransport.HandleValheimMotionFrameAsync` for E03;
 - bounded wrappers for pure/Gateway runs, malformed input, and timeout evidence.
 
+Implemented after the initial handoff:
+
+- profile-gated, existing-character-only autojoin for disposable headless/rendered
+  Compose clients; physical OMEN/i5 installs remain off by default;
+- a verified `fieldlab/scripts/Invoke-HeadlessValheimLab.ps1` lifecycle lane for
+  refresh, start, status, restart, and graceful stop;
+- E04 native JSONL normalizer with raw-source preservation and malformed/ignored
+  row receipts.
+
 Still not implemented:
 
 - higher-volume Gateway reconnect/lease pressure beyond the bounded WAL restart proof;
-- lab-only Unity automation;
-- native candidate normalizer/comparator.
+- native capture from a real disposable client;
+- comparator that applies the current Lumberjacks policy to normalized native rows;
 
 Current control-channel reality:
 

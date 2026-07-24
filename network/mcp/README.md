@@ -59,6 +59,10 @@ Or run:
 - `valheim_networksense_report`: compact recent telemetry report.
 - `valheim_explain_networksense`: report plus local Ollama explanation.
 - `valheim_mcp_health`: path/service health for the dev gateway.
+- `valheim_swarm_clients`: list disposable lab client paths and noVNC URLs.
+- `valheim_lab_motion_test`: send one bounded named motion/apply command through
+  a disposable client's atomic mailbox.
+- `valheim_lab_motion_status`: read that client's pending command and receipts.
 - `valheim_list_sessions`: summarize known NetworkSense sessions.
 - `valheim_session_bundle`: gather one session's client/server/events/benchmarks.
 - `valheim_compare_clients`: compare host/client bundles for multiplayer tests.
@@ -74,3 +78,6 @@ Or run:
 - JSONL remains source of truth.
 - Keep MCP calls command-triggered or event-triggered, never per-frame.
 - Treat model output as text or suggestions; do not execute arbitrary returned actions.
+- The lab motion tools are the only gameplay-adjacent mutation seam: they accept
+  only named patterns, bounded durations, and the motion-apply switch, and they
+  require `COMFY_AUTONOMOUS_STATE`. They are not a console or shell bridge.
