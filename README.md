@@ -77,9 +77,12 @@ that is where it went.
 ## License
 
 Current versions are distributed under the [Business Source License
-1.1](LICENSE), with a community-use grant for noncommercial deployments of up
-to 100 active members that publish their complete deployed source. Commercial
-production use requires a separate written license. Each version converts to
+1.1](LICENSE), with an automatic Community Steward grant for eligible small
+operators serving up to 100 active members and earning up to USD 25,000 in
+aggregate community revenue per rolling year while publishing their complete
+deployed source. Qualifying stewards may keep the profit without a separate
+agreement or royalty. Larger production use follows the flexible commercial
+path in [COMMERCIAL.md](COMMERCIAL.md). Each version converts to
 AGPL-3.0-only no later than the Change Date in `LICENSE`.
 
 Earlier versions remain available under the license terms that accompanied

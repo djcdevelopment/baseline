@@ -7,13 +7,14 @@ controlling terms are in [`LICENSE`](LICENSE).
 
 - Reading, testing, modifying, and other non-production use are permitted
   under the Business Source License 1.1.
-- A noncommercial community may operate a deployment for up to 100 active
-  members when it publishes the complete source and reproduction material for
-  the exact version it operates.
-- Voluntary donations may reimburse direct infrastructure expenses only.
-- Paid access, subscriptions, advertising, sponsorship, paid hosting,
-  consulting based substantially on the project, in-game sales, and other
-  commercial use require a separate written commercial license.
+- An eligible small community steward may operate deployments for up to 100
+  active members and earn up to USD 25,000 in aggregate community revenue
+  during any rolling 12-month period.
+- The steward may retain profit and does not owe a royalty inside that safe
+  harbor.
+- The exact deployed source and reproduction material must remain public.
+- Large organizations and operators outside either safe-harbor limit require
+  a separate written commercial license.
 - Each version converts to AGPL-3.0-only no later than the Change Date stated
   in `LICENSE`.
 
@@ -50,8 +51,15 @@ keys, private diagnostics, or material you have no right to redistribute.
 
 ## Commercial licensing
 
-Commercial permission is available by separate written agreement. Contact
-`licensing@djcdevelopment.com` before making commercial production use.
+Commercial permission outside the automatic Community Steward grant is
+designed to be easy to request and approve. The starting point is 8.5% of
+defined Net Receipts, but that percentage is expressly negotiable downward or
+waivable based on public improvements, community benefit, accessible pricing,
+community hardware participation, and the support required.
+
+See [`COMMERCIAL.md`](COMMERCIAL.md) for the intake and current negotiation
+policy. Contact `licensing@djcdevelopment.com` before making production use
+outside the automatic grant.
 
 ## Contributions
 
