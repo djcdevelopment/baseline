@@ -73,3 +73,16 @@ All pruned content remains recoverable from this repo's git history and from the
 two still-existing source repos, `C:\work\comfy` and `C:\work\lumberjacks`. If
 you are looking for something a doc used to reference and cannot find it here,
 that is where it went.
+
+## License
+
+Current versions are distributed under the [Business Source License
+1.1](LICENSE), with a community-use grant for noncommercial deployments of up
+to 100 active members that publish their complete deployed source. Commercial
+production use requires a separate written license. Each version converts to
+AGPL-3.0-only no later than the Change Date in `LICENSE`.
+
+Earlier versions remain available under the license terms that accompanied
+them. See [LICENSING.md](LICENSING.md) for the scope and plain-language
+summary, [NOTICE.md](NOTICE.md) for affiliation and trademark notices, and
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for exclusions.
