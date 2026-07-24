@@ -209,16 +209,19 @@ explicit strategy and authorization.
 
 ## Current active slice
 
-The next active slice is Wave 0:
+The active slice remains Wave 0, but the build/deploy portion is no longer the
+main risk. Current work is the final two-client proof and the tooling that keeps
+that proof from depending on manual file transfer or chat reconstruction:
 
-1. reconcile runtime and roadmap release truth;
-2. cut a new immutable release for the committed heartbeat-semantics correction;
-3. verify through the .NET 9 Docker lane and host net48 mod lane;
-4. deploy through P7, Companion, and the i5 SSH lane;
-5. run one automated two-client confirmation.
+1. keep P7, OMEN, and i5 on the same immutable modpack identity;
+2. keep the public Companion bootstrap and client-pull update lane verified;
+3. run unattended pre-live gates whenever code or package surfaces change;
+4. when both owned clients are joined, run the bounded apply/observe live gate;
+5. annotate both visual directions and seal the evidence, or retain one named
+   defect packet explaining why visual proof could not be sealed.
 
-Do not begin M1/M2 expansion work until this slice has a sealed receipt or a named
-blocking defect.
+Do not begin M1/M2 expansion work until Wave 0 has either a sealed visual
+observation packet for both directions or a named blocking defect.
 
 ## Current status addendum - 2026-07-23
 
@@ -285,6 +288,49 @@ Do not expand into Wave 1/M1/M2 work until the live gate has either:
 
 - a sealed visual observation packet for both directions; or
 - a named defect packet explaining why visual proof cannot be sealed.
+
+## Current status addendum - 2026-07-24
+
+The compacted implementation pass did not invalidate the Wave 0 state. It did
+surface one repository-state issue: a partially applied Companion bootstrap
+verifier was present during context compaction, and the first validation run
+failed because the builder treated a stale `$LASTEXITCODE` value as the verifier
+result. The verifier now fails by throwing only when required package contents
+are actually missing.
+
+Current verified state:
+
+- P7 Gateway and modpack release remain `m30-rolecontrol-20260723-r1`.
+- OMEN and i5 both report installed modpack `m30-rolecontrol-20260723-r1` with
+  package SHA-256
+  `d1bfcd6f440fe9697cf495eac16923bcc9272225039b2ace69a23d1d302cbb5a`.
+- i5 is awake and the tailnet SSH lane is up: key auth works, the Valheim
+  plugin directory exists, and Docker Desktop reports a Linux engine.
+- Public Companion bootstrap is `companion-bootstrap-20260723-r26`, SHA-256
+  `84c6d8437c3f28d0849e545f755577474bc302c4fc9bd4b2fe9afadd5720ad17`,
+  size `606424` bytes.
+- The Companion bootstrap builder now validates that the package contains the
+  static bootstrap files plus every `tools\wave0\*.ps1` command path emitted by
+  the Companion Wave 0 command surface. This prevents a repeat of the r25-style
+  mismatch where the UI exposed commands that the downloaded bundle lacked.
+- The latest unattended pre-live audit result is
+  `ready_for_derek_two_client_join` from
+  `captures\wave0-prelive-bootstrap-verifier\summary.json`.
+- P7 public HTTPS is reachable and serving the r26 manifest. A local sandboxed
+  PowerShell request may fail without elevated network permission; that is a
+  tool-network limitation, not evidence that P7 is down.
+
+Preferred unattended pre-live command remains:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools\wave0\Test-Wave0Prelive.ps1 -OutputDirectory captures\wave0-prelive-current
+```
+
+Preferred low-touch live command once OMEN and i5 are both joined to P7:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools\wave0\Wait-Wave0LiveGate.ps1 -DesiredApplyClient omen -OutputJson captures\wave0-live-gate\result.json
+```
 
 ## Maintenance
 
