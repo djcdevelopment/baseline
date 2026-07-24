@@ -2,7 +2,8 @@
 
 Status: active  
 Horizon: cutover milestones M1-M6 and adoption milestones A1-A6  
-Deferred: M7 network-authority expansion  
+Parallel discovery: M7 authority expansion is active under
+`m7-authority-expansion-working-strategy.md`; P7 gameplay promotion remains gated
 Primary source of milestone truth: `Lumberjacks/docs/roadmap/valheim-volunteer-roadmap.json`
 
 ## Operating objective
@@ -24,6 +25,11 @@ Keep at most two lanes active:
    proof, external canary, and widening.
 2. **Enablement:** only the telemetry, dashboard, replay, documentation, local lab, or
    community work needed by the next critical-path gate.
+
+M7 synthetic, replay, local-lab, and zero-behavior-change shadow work may use the
+enablement lane now. It does not need to wait for M6. A behavior-changing P7
+authority promotion is a separate critical-path decision and remains gated by the
+M7 promotion packet.
 
 Only one lane may change or deploy shared runtime infrastructure at a time. A useful
 idea that does not block the current exit gate or materially reduce the next human
@@ -192,8 +198,10 @@ Complete A6:
 - visibly reject or flag stale, invalid, or tampered peer data;
 - make no cross-node gameplay-authority change.
 
-Exit gate: M1-M6 and A1-A6 satisfy their living-roadmap criteria. M7 requires a new
-explicit strategy and authorization.
+Exit gate: M1-M6 and A1-A6 satisfy their living-roadmap criteria. M7 experiment
+authority is defined in `m7-authority-expansion-working-strategy.md`; each
+behavior-changing P7 promotion still requires its own retained packet and explicit
+owner decision.
 
 ## Promotion rules
 
@@ -288,6 +296,23 @@ Do not expand into Wave 1/M1/M2 work until the live gate has either:
 
 - a sealed visual observation packet for both directions; or
 - a named defect packet explaining why visual proof cannot be sealed.
+
+## M7 priority authorization addendum - 2026-07-24
+
+M7 discovery is now a priority and is no longer globally deferred. The previous
+status collapsed safe learning work and live gameplay promotion into one gate.
+They are now separate:
+
+- active now: capability inventory, append-only authority traces, deterministic
+  synthetic generation, replay, Gateway protocol clients, lab-only Unity
+  automation, disposable local strict tests, and P7 shadow comparisons;
+- still gated: any P7 change that replaces native relevance, ownership,
+  simulation, RPC handling, or presentation.
+
+The execution and promotion rules live in
+`plans/m7-authority-expansion-working-strategy.md`. Wave 0's visual gate remains
+honest evidence debt for current player-motion presentation, but it does not block
+M7 synthetic/replay/local-shadow scaffolding.
 
 ## Current status addendum - 2026-07-24
 
