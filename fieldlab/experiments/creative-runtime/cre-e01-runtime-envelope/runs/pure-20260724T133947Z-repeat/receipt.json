@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "experiment_id": "cre-e01-runtime-envelope",
+  "scenario_id": "combat-budget-bands-v1",
+  "run_id": "pure-20260724T133947Z-repeat",
+  "source_revision": "88f342a",
+  "dirty_state": true,
+  "scenario_sha256": "c98bf4a15e60c74e601e507ae134edcf53c26970910801cf4f2b4b4b0598a837",
+  "normalized_input_sha256": "93c7409a431f9cecb8a3f152cad5a20d7be811b3e487eaf984a2a2eafcc9f951",
+  "policy": {
+    "name": "combat-budget-v1",
+    "near_meters": 30,
+    "outer_meters": 64,
+    "mid_hz": 5
+  },
+  "driver": "pure",
+  "seed": 410,
+  "started_utc": "2026-07-24T13:39:50.4313330\u002B00:00",
+  "ended_utc": "2026-07-24T13:39:50.4377600\u002B00:00",
+  "duration_seconds": 0.006427,
+  "stop_result": "completed",
+  "event_counts": {
+    "performance.gate_decision": 38
+  },
+  "invariants": [
+    {
+      "name": "critical_work_preserved",
+      "passed": true,
+      "detail": "player_death and projectile_hit remained full on binary WebSocket in every pressure band"
+    },
+    {
+      "name": "budget_never_negative",
+      "passed": true,
+      "detail": "minimum_remaining=1"
+    },
+    {
+      "name": "transport_follows_semantics",
+      "passed": true,
+      "detail": "critical mutations used binary WebSocket; emitted presentation used session UDP with binary WebSocket fallback"
+    },
+    {
+      "name": "all_degradation_modes_observed",
+      "passed": true,
+      "detail": "modes=deferred,dropped,full,reduced"
+    },
+    {
+      "name": "degradation_tracks_pressure",
+      "passed": true,
+      "detail": "presentation_full=4,3,0; degraded=0,7,18"
+    },
+    {
+      "name": "deferred_queue_bounded",
+      "passed": true,
+      "detail": "capacity=4; observed_max=4"
+    }
+  ],
+  "prediction_observations": [
+    {
+      "name": "selective_degradation",
+      "observed": "green/amber/red presentation full counts were 4/3/0; protected mutations stayed full"
+    },
+    {
+      "name": "explainable_transport",
+      "observed": "every decision records requested mode, selected mode, reason, cost, route, fallback, and remaining budget"
+    }
+  ],
+  "raw_evidence_paths": [
+    "normalized-input.json",
+    "raw/events.jsonl"
+  ],
+  "normalized_decision_sha256": "96ce78f631a74f06beccfbd660ba8953ec91eb7c1df9ecc07ec9cc14aff930b1",
+  "result_classification": "supported"
+}
