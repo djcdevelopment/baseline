@@ -315,7 +315,13 @@ Current verified state:
   mismatch where the UI exposed commands that the downloaded bundle lacked.
 - The latest unattended pre-live audit result is
   `ready_for_derek_two_client_join` from
-  `captures\wave0-prelive-bootstrap-verifier\summary.json`.
+  `captures\wave0-prelive-current\summary.json` at
+  `2026-07-24T03:15:36Z`.
+- The Wave 0 return packet now includes
+  `tools\wave0\Suggest-Wave0DefectPacket.ps1`. If live visual proof fails or
+  remains inconclusive, agents should run the classifier first and use the exact
+  `New-Wave0DefectPacket.ps1` command it prints, instead of manually choosing a
+  defect kind from chat context.
 - P7 public HTTPS is reachable and serving the r26 manifest. A local sandboxed
   PowerShell request may fail without elevated network permission; that is a
   tool-network limitation, not evidence that P7 is down.
