@@ -7,6 +7,9 @@ so within a milestone, lower `n` generally blocks higher `n`.
 
 Shared context every builder should know:
 
+- **Execution control:** `full-roadmap-working-strategy.md` controls sequencing,
+  and `remaining-human-tests.md` lists the human-only gates that agents must
+  prepare around instead of rediscovering from chat history.
 - **Repo layout:** `network/` (netcode docs, mod `ComfyNetworkSense`, gateway MCP
   in `network/mcp`), `Lumberjacks/` (net9 services — build in the `sdk:9.0`
   container), `fieldlab/`, `docs/`, `infra/`, `tools/`, `data/`, `recipes/`.
