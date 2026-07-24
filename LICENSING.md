@@ -61,6 +61,15 @@ See [`COMMERCIAL.md`](COMMERCIAL.md) for the intake and current negotiation
 policy. Contact `licensing@djcdevelopment.com` before making production use
 outside the automatic grant.
 
+## Stewardship and data
+
+[STEWARDSHIP.md](STEWARDSHIP.md) states the reference operating model:
+publish methods and safe aggregate evidence, keep identifiable player and
+community data private by default, let communities choose stricter sharing
+settings, and provide a narrow independent-review path for material concerns.
+It is a reusable framework, not a substitute for a deployment-specific
+privacy notice or signed data terms.
+
 ## Contributions
 
 Contributions can create additional copyright ownership. Substantive

@@ -62,6 +62,8 @@ Reasons to reduce or waive the percentage include:
 - publishing useful improvements or contributing them upstream;
 - accessible pricing and demonstrated player benefit;
 - enabling players to contribute valuable hardware or local capacity;
+- adopting the project's transparent-stewardship profile and publishing safe,
+  useful trend evidence;
 - nonprofit or public-benefit operation;
 - strong documentation, support, or tooling that helps other communities; and
 - low support burden on the project.
@@ -84,6 +86,19 @@ A commercial request can begin with one email containing:
 8. the percentage or waiver requested.
 
 The goal is a short, plain-language agreement proportional to the use.
+
+## Trust and independent review
+
+Commercial agreements should identify the operator responsible for community
+data, participant controls, security, retention, export, and shutdown. The
+reference defaults are in [STEWARDSHIP.md](STEWARDSHIP.md): public methods and
+safe aggregate evidence, private people, configurable visibility, delayed
+trend releases, and an escalation path to a mutually accepted independent
+reviewer.
+
+Independent review is intended to resolve a narrow material concern without
+turning ordinary community operation into continuous audit. Binding review,
+confidentiality, access, cost, and remedy terms belong in the signed agreement.
 
 This page explains current policy. It is not itself a license, quote, or
 binding commercial offer. Only `LICENSE` or a signed written agreement grants

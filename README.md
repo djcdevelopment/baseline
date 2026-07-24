@@ -87,5 +87,6 @@ AGPL-3.0-only no later than the Change Date in `LICENSE`.
 
 Earlier versions remain available under the license terms that accompanied
 them. See [LICENSING.md](LICENSING.md) for the scope and plain-language
-summary, [NOTICE.md](NOTICE.md) for affiliation and trademark notices, and
+summary, [STEWARDSHIP.md](STEWARDSHIP.md) for the transparent operating
+framework, [NOTICE.md](NOTICE.md) for affiliation and trademark notices, and
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for exclusions.
