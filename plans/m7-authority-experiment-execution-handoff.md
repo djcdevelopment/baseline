@@ -65,15 +65,20 @@ Implemented after the initial handoff:
 - profile-gated, existing-character-only autojoin for disposable headless/rendered
   Compose clients; physical OMEN/i5 installs remain off by default;
 - a verified `fieldlab/scripts/Invoke-HeadlessValheimLab.ps1` lifecycle lane for
-  refresh, start, status, restart, and graceful stop;
+  refresh, preflight, start, status, restart, smoke, graceful stop, and automatic
+  native normalize/replay capture;
+- an operator-touch gate that writes a receipt and refuses ordinary starts until
+  the Docker runtime, Compose contract, payload, local server/Gateway, Valheim
+  install, Steam manifest, executable, and existing character are all present;
 - E04 native JSONL normalizer with raw-source preservation and malformed/ignored
   row receipts.
 
 Still not implemented:
 
 - higher-volume Gateway reconnect/lease pressure beyond the bounded WAL restart proof;
-- native capture from a real disposable client;
-- comparator that applies the current Lumberjacks policy to normalized native rows;
+- native capture from a real disposable client (the capture wrapper is ready, but
+  the current `client01` volume has not been seeded);
+- two-client local shadow/strict execution and independent receipt correlation;
 
 Current control-channel reality:
 
@@ -81,6 +86,8 @@ Current control-channel reality:
   `companion-motion.command`;
 - `MotionTestController` consumes only allowlisted named motion patterns with bounded
   durations and writes receipts;
+- the unattended sequence is `refresh -> preflight -> start -> MCP observe/command
+  -> telemetry -> stop -> capture`; the lifecycle script always verifies closure;
 - the MCP contract currently focuses on reports, bundles, recommendations, and
   whitelisted config profiles. It is not a general arbitrary-script bridge.
 
@@ -442,8 +449,9 @@ Generate:
 
 Use fixed duration and sample cadence. Run pure fingerprints, then the existing
 Gateway motion smoke. The first Gateway run exercises binary WebSocket fallback and
-the UDP follow-up binds both endpoints and exercises `UdpTransport.TrySend`. Replay
-comparison and native capture are next. Do not contact P7.
+the UDP follow-up binds both endpoints and exercises `UdpTransport.TrySend`. The
+replay wrapper is implemented; the remaining gate is a real native probe source
+from a seeded disposable client. Do not contact P7.
 
 Capture:
 
@@ -482,8 +490,8 @@ It answers:
 - What minimum Unity automation is now justified?
 - What should not be built?
 
-E04 does not start until the synthesis names the exact native fields required by the
-comparator.
+The E04 parser/replay seam is already present. A real E04 interpretation starts
+only when the synthesis names the exact native fields required by the comparator.
 
 ## Strategy-status reconciliation
 

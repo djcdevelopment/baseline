@@ -310,7 +310,7 @@ Keep at most two implementation lanes active:
 | Lane | First deliverable | Then |
 |---|---|---|
 | A - evidence and synthetic authority lab | Scenario schema, authority JSONL contract, deterministic generator/replay runner, real Gateway E02/E03 drivers, WAL restart/ACK and bound-UDP proof, native normalizer/replay seam | Real native capture; higher-volume reconnect pressure only if native evidence requires it |
-| B - unattended Unity integration | Lab-only existing-profile autojoin, lifecycle script, MCP command mailbox, graceful stop proof | Seeded client volume, two local clients, local shadow/strict role switch, automatic bundles |
+| B - unattended Unity integration | Lab-only existing-profile autojoin, lifecycle script, operator-touch preflight, MCP command mailbox, graceful stop proof, automatic native normalize/replay wrapper | Seeded client volume, two local clients, local shadow/strict role switch, automatic bundles |
 
 Once both lanes meet, run R2-R5. Ownership and RPC work may build fixtures in parallel,
 but no second strict authority plane is active during a strict relevance run.
@@ -324,11 +324,15 @@ but no second strict authority plane is active during a strict relevance run.
 3. Keep the schema and receipt contract stable; E00-E04 now retain pure, Gateway,
    normalized-native, and replay evidence.
 4. Seed one disposable client volume with Steam/Valheim and an existing character;
-   this is the one-time environmental prerequisite for an agent-only run.
-5. Capture the first native candidate trace and replay it offline. This is the first
-   point at which synthetic equations meet actual Valheim behavior.
+   this is the one-time environmental prerequisite for an agent-only run. The
+   preflight receipt must be green before any ordinary start.
+5. Capture the first native candidate trace with `-Action capture` after the client
+   is stopped, then replay it offline. This is the first point at which synthetic
+   equations meet actual Valheim behavior.
 6. Prove `artifact_aligned -> steam_ready -> character_selected -> in_world ->
-   evidence_exported -> stopped` on one local client using the lifecycle script.
+   evidence_exported -> stopped` on one local client using the lifecycle script,
+   with the agent issuing only bounded MCP observations/commands between start and
+   stop.
 7. Add the second local client, run the same scenario, and prove independent receipts.
 8. Run relevance shadow locally, then a bounded strict static-object-class canary with
    in-run rollback.
