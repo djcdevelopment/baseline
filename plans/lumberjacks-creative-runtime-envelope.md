@@ -192,8 +192,8 @@ These experiments build on the current patch-load and M7 authority work.
 |---|---|---|---|
 | CRE-0 | What is the standing cost of the existing detour? | seeded headless client | inert vs observer A/B has a measured delta |
 | CRE-1 | Can one noncritical callback degrade predictably? | pure driver | **supported:** two 38-row runs matched; all four modes and six invariants passed |
-| CRE-2 | Does pressure cause bounded graceful degradation? | Gateway synthetic burst | queue remains bounded; critical events are preserved |
-| CRE-3 | Does the route matrix preserve semantics? | Gateway UDP/WS fixtures | loss/reorder/duplicate cases produce expected terminal state |
+| CRE-2 | Does pressure cause bounded graceful degradation? | Gateway synthetic burst | **supported for selection/carriage:** 9 selected frames routed; 23 suppressed frames absent; queue-pressure behavior remains separate |
+| CRE-3 | Does the route matrix preserve semantics? | Gateway UDP/WS fixtures | **supported for clean delivery:** both paths delivered the same selected set in order; fault injection remains open |
 | CRE-4 | Does native presentation remain understandable? | local Valheim shadow | native remains authoritative; no critical omission |
 | CRE-5 | Does a human perceive improvement? | one OMEN/i5 window | predicted motion/feel labels match observation |
 | CRE-6 | Does a real mod author understand the result? | Companion workbench | author can identify cost, mode, route, and rollback without log archaeology |
