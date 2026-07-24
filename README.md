@@ -10,6 +10,23 @@ full original history preserved as the second parent of the merge commit — see
 `Lumberjacks/`-prefixed path stops at the merge boundary, which is expected
 subtree behavior, not lost history).
 
+## Repository family and licensing map
+
+[`baseline`](https://github.com/djcdevelopment/baseline) is the canonical,
+integrated repository for current development. The original
+[`Lumberjacks`](https://github.com/djcdevelopment/Lumberjacks) and
+[`comfy`](https://github.com/djcdevelopment/comfy) repositories preserve
+public source lineage; their still-existing local checkouts are retired and
+must not be mistaken for the current working tree.
+
+Repository visibility does not replace the license. The controlling terms are
+in [`LICENSE`](LICENSE), with a plain-language scope summary in
+[`LICENSING.md`](LICENSING.md), the larger-use path in
+[`COMMERCIAL.md`](COMMERCIAL.md), transparent operating principles in
+[`STEWARDSHIP.md`](STEWARDSHIP.md), and exclusions and attribution in
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) and
+[`NOTICE.md`](NOTICE.md).
+
 ## What this repo is
 
 Four load-bearing areas:
