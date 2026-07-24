@@ -306,7 +306,7 @@ Keep at most two implementation lanes active:
 
 | Lane | First deliverable | Then |
 |---|---|---|
-| A - evidence and synthetic authority lab | Scenario schema, authority JSONL contract, deterministic generator/replay runner, baseline receipt | Native trace normalizer, comparator, N=2/N=10/N=100 gateway runs |
+| A - evidence and synthetic authority lab | Scenario schema, authority JSONL contract, deterministic generator/replay runner, baseline receipt, real Gateway E02/E03 drivers, WAL restart/ACK and bound-UDP proof | Native trace normalizer, comparator; higher-volume reconnect pressure only if native evidence requires it |
 | B - unattended Unity integration | Lab-only autojoin/command mailbox, Companion/MCP orchestration, disposable local server proof | Two local clients, local shadow/strict role switch, automatic bundles |
 
 Once both lanes meet, run R2-R5. Ownership and RPC work may build fixtures in parallel,
@@ -318,21 +318,17 @@ but no second strict authority plane is active during a strict relevance run.
    result, and learning contract.
 2. Reconcile strategy tooling so M7 reports `discovery_active / promotion_gated`
    instead of `explicitly_deferred`.
-3. Write `authority-event.schema.json`, `authority-scenario.schema.json`, and one
-   hand-authored relevance fixture.
-4. Build a .NET 9 `AuthorityLab` console tool in the existing SDK container. Commands:
-   `generate`, `run`, `compare`, and `check`.
-5. Adapt existing `InterestManager`, `ZdoBandPolicy`, and `ZdoFanoutPolicy` through
-   pure interfaces; do not copy their equations.
-6. Run M7-E00 through M7-E03 and retain the first synthesis.
-7. Create the lab-only automation assembly from the useful `1887626` patterns and
-   prove it reaches `in_world -> evidence_exported` on one local client.
-8. Add the second local client, run the same scenario, and prove independent receipts.
-9. Capture the first native candidate trace and replay it offline. This is the first
+3. Keep the schema and receipt contract stable; E00-E03 already retain pure and
+   Gateway evidence.
+4. Reuse the existing synthetic motion smoke as a second receipt-producing seam.
+5. Capture the first native candidate trace and replay it offline. This is the first
    point at which synthetic equations meet actual Valheim behavior.
-10. Run relevance shadow locally, then a bounded strict static-object-class canary with
+6. Create the lab-only automation assembly from the useful `1887626` patterns and
+   prove it reaches `in_world -> evidence_exported` on one local client.
+7. Add the second local client, run the same scenario, and prove independent receipts.
+8. Run relevance shadow locally, then a bounded strict static-object-class canary with
    in-run rollback.
-11. Only then prepare a P7 shadow packet. Do not request a P7 authority promotion yet.
+9. Only then prepare a P7 shadow packet. Do not request a P7 authority promotion yet.
 
 ## First decision after evidence
 

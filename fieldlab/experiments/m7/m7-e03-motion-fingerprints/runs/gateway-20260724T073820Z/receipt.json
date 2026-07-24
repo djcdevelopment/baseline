@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "experiment_id": "m7-e03-motion-fingerprints",
+  "scenario_id": "motion-fingerprints-v1",
+  "run_id": "gateway-20260724T073820Z",
+  "source_revision": "f436705",
+  "dirty_state": true,
+  "scenario_sha256": "2b0ea129d99264bf6bb0474694026fcc6e733d1852e54e3f9098a0a789922955",
+  "normalized_input_sha256": "eb9b951856d93764f4bc5b7cefa5258cd67a9c21c769229d3168eaadb60b5df5",
+  "policy": {
+    "name": "motion-observation",
+    "near_meters": 30,
+    "outer_meters": 64,
+    "mid_hz": 5
+  },
+  "driver": "gateway",
+  "seed": 413,
+  "started_utc": "2026-07-24T07:38:21.1763644\u002B00:00",
+  "ended_utc": "2026-07-24T07:38:21.2147743\u002B00:00",
+  "duration_seconds": 0.0384099,
+  "stop_result": "completed",
+  "event_counts": {
+    "authority.lumberjacks_decision": 120
+  },
+  "invariants": [
+    {
+      "name": "gateway_motion_relayed",
+      "passed": true,
+      "detail": "received_websocket=120; relayed_websocket=120; expected=120"
+    },
+    {
+      "name": "gateway_websocket_fallback",
+      "passed": true,
+      "detail": "captured_target_frames=120"
+    },
+    {
+      "name": "gateway_logical_order",
+      "passed": true,
+      "detail": "captured fallback frames have monotonic envelope sequence"
+    },
+    {
+      "name": "gateway_motion_fingerprints",
+      "passed": true,
+      "detail": "straight_north=1,stutter_north=13,stop_start=2,turn_90=2.414,circle=9.204,teleport=56.286"
+    }
+  ],
+  "prediction_observations": [
+    {
+      "name": "gateway_transport_path",
+      "observed": "all frames used the real UdpTransport WebSocket fallback seam because no UDP endpoint was bound"
+    },
+    {
+      "name": "gateway_cadence_vs_interpolation",
+      "observed": "the same synthetic correction fingerprints survive Gateway relay; live interpolation remains unproven"
+    }
+  ],
+  "raw_evidence_paths": [
+    "normalized-input.json",
+    "raw/events.jsonl"
+  ],
+  "normalized_decision_sha256": "971c29ccc9efe4d1e2830f570f471c8f7ea5bc57cf8f95a759e11ae571f7e15b",
+  "result_classification": "supported"
+}

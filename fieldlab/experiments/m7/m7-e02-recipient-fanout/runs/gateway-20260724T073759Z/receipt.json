@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "experiment_id": "m7-e02-recipient-fanout",
+  "scenario_id": "recipient-isolation-v1",
+  "run_id": "gateway-20260724T073759Z",
+  "source_revision": "f436705",
+  "dirty_state": true,
+  "scenario_sha256": "d97d8c3829ac8137ab26b884db0087fc5c6f6ce173c5c0878e627a087b643561",
+  "normalized_input_sha256": "341500cde0aa0e19aa4071f51eb4fb474e70bcdf73df73b4231e10f9af8c61b3",
+  "policy": {
+    "name": "tiered",
+    "near_meters": 30,
+    "outer_meters": 64,
+    "mid_hz": 5
+  },
+  "driver": "gateway",
+  "seed": 412,
+  "started_utc": "2026-07-24T07:38:00.5556408\u002B00:00",
+  "ended_utc": "2026-07-24T07:38:00.5740214\u002B00:00",
+  "duration_seconds": 0.0183806,
+  "stop_result": "completed",
+  "event_counts": {
+    "authority.lumberjacks_decision": 112
+  },
+  "invariants": [
+    {
+      "name": "gateway_recipient_partition",
+      "passed": true,
+      "detail": "ValheimZdoRedirectService kept one pending revision and one terminal ACK per emitted recipient"
+    },
+    {
+      "name": "gateway_duplicate_terminal_apply",
+      "passed": true,
+      "detail": "replayed batches were counted as duplicates without producing a second pending item"
+    },
+    {
+      "name": "gateway_fanout_scales_with_observers",
+      "passed": true,
+      "detail": "n=2:1,n=10:5,n=100:65"
+    }
+  ],
+  "prediction_observations": [
+    {
+      "name": "gateway_queue_partition",
+      "observed": "recipient-local pending and ACK state remains independent through the real redirect service"
+    },
+    {
+      "name": "gateway_duplicate_handling",
+      "observed": "duplicate records are observable and do not double-apply at ACK"
+    }
+  ],
+  "raw_evidence_paths": [
+    "normalized-input.json",
+    "raw/events.jsonl"
+  ],
+  "normalized_decision_sha256": "312f2801dbef79e876fd0c1fcbd65313f819546e495f38d8437a12781a3f418e",
+  "result_classification": "supported"
+}

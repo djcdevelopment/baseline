@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "experiment_id": "m7-e02-recipient-fanout",
+  "scenario_id": "recipient-isolation-v1",
+  "run_id": "gateway_durable-20260724T073340Z",
+  "source_revision": "f436705",
+  "dirty_state": true,
+  "scenario_sha256": "d97d8c3829ac8137ab26b884db0087fc5c6f6ce173c5c0878e627a087b643561",
+  "normalized_input_sha256": "d0e23cd62764fa6574f5ad61113bc1c55682d7e9737a8feb389b77a28d0534de",
+  "policy": {
+    "name": "tiered",
+    "near_meters": 30,
+    "outer_meters": 64,
+    "mid_hz": 5
+  },
+  "driver": "gateway_durable",
+  "seed": 412,
+  "started_utc": "2026-07-24T07:33:41.2520050\u002B00:00",
+  "ended_utc": "2026-07-24T07:33:41.3408159\u002B00:00",
+  "duration_seconds": 0.0888109,
+  "stop_result": "completed",
+  "event_counts": {
+    "authority.lumberjacks_decision": 2
+  },
+  "invariants": [
+    {
+      "name": "gateway_wal_reconnect_pending",
+      "passed": true,
+      "detail": "pending_after_restart=1,1"
+    },
+    {
+      "name": "gateway_wal_duplicate_replay",
+      "passed": true,
+      "detail": "duplicate record batches survived service restart"
+    },
+    {
+      "name": "gateway_wal_ack_recovery",
+      "passed": true,
+      "detail": "acknowledged=1,1;pending_after_ack=0,0"
+    }
+  ],
+  "prediction_observations": [
+    {
+      "name": "gateway_restart_recovery",
+      "observed": "WAL replay reconstructs recipient-local pending state before reconnect"
+    },
+    {
+      "name": "gateway_ack_durability",
+      "observed": "ACK written after reconnect remains terminal after a second service restart"
+    }
+  ],
+  "raw_evidence_paths": [
+    "normalized-input.json",
+    "raw/events.jsonl"
+  ],
+  "normalized_decision_sha256": "0c9d106da0349c5224d9b54760b784446c2555454b29f61194b7f28a962236a4",
+  "result_classification": "supported"
+}

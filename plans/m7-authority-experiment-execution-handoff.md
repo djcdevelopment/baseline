@@ -50,12 +50,17 @@ Already implemented and reusable:
 - `Lumberjacks/tests/Game.Gateway.Tests/ValheimMotionRelayTests.cs`;
 - `tools/wave0/Test-Wave0SyntheticMotion.ps1`.
 
-Not implemented yet:
+Implemented in the first unattended slice:
 
-- M7 scenario and event schemas;
-- `AuthorityLab` CLI;
-- experiment run folders and learning log;
-- Gateway protocol-load driver owned by the new lab;
+- deterministic `AuthorityLab` CLI, scenario/event/receipt schemas, and E00-E03
+  pure receipts;
+- a Gateway driver that invokes `ValheimZdoRedirectService` for E02 and
+  `UdpTransport.HandleValheimMotionFrameAsync` for E03;
+- bounded wrappers for pure/Gateway runs, malformed input, and timeout evidence.
+
+Still not implemented:
+
+- higher-volume Gateway reconnect/lease pressure beyond the bounded WAL restart proof;
 - lab-only Unity automation;
 - native candidate normalizer/comparator.
 
@@ -408,8 +413,10 @@ Exit:
 - slow/reconnect effects remain recipient-local;
 - scaling shape is reported, not promoted as a 100-player capacity claim.
 
-If the real Gateway driver is not ready, classify that run `harness_failed`; do not
-label the pure result as Gateway evidence.
+The current Gateway drivers cover the in-memory E02 seam, the WAL-backed restart/ACK
+seam, the WebSocket fallback path, and a bound UDP loopback path. Higher-volume
+reconnect pressure remains separate. If a future real Gateway driver is not ready,
+classify that run `harness_failed`; do not label the pure result as Gateway evidence.
 
 ## E03 execution
 
@@ -423,8 +430,9 @@ Generate:
 - `teleport`.
 
 Use fixed duration and sample cadence. Run pure fingerprints, then the existing
-Gateway motion smoke. If practical, add binary WebSocket fallback to the local
-Gateway driver; do not contact P7.
+Gateway motion smoke. The first Gateway run exercises binary WebSocket fallback and
+the UDP follow-up binds both endpoints and exercises `UdpTransport.TrySend`. Replay
+comparison and native capture are next. Do not contact P7.
 
 Capture:
 
@@ -531,6 +539,10 @@ roadmap note with its future commit SHA.
 - AuthorityLab builds and runs in the .NET 9 container.
 - E00-E03 each have frozen predictions, retained receipts, result classification,
   and one learning-log row.
+- Gateway E02 and E03 have separate `driver=gateway` receipts that invoke real
+  Gateway services and preserve explicit transport-path evidence.
+- Gateway E02 durable and E03 UDP runs have separate receipts proving WAL restart/ACK
+  recovery and bound-UDP target delivery.
 - E00 proves deterministic normalized output and bounded failure.
 - E01 reports geometry/density/boundary correlations.
 - E02 reports N=2/N=10/N=100 recipient isolation and scaling shape.
