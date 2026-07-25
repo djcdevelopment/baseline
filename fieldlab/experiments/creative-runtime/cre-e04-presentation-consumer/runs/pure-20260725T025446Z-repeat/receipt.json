@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "experiment_id": "cre-e04-presentation-consumer",
+  "scenario_id": "transient-consumer-bursts-v1",
+  "run_id": "pure-20260725T025446Z-repeat",
+  "source_revision": "54baeed",
+  "dirty_state": true,
+  "scenario_sha256": "6aa0c9711634daa7662a380ea53bd470c85f46c49d1d887f6bd5573e02d6aa9a",
+  "normalized_input_sha256": "cebb45e8ddf3eb51548f40be067e30e21542125d7204bf26cc3cba67aea8487f",
+  "policy": {
+    "name": "latest-wins-expiry-v1",
+    "near_meters": 30,
+    "outer_meters": 64,
+    "mid_hz": 5
+  },
+  "driver": "pure",
+  "seed": 413,
+  "started_utc": "2026-07-25T02:54:49.7258275\u002B00:00",
+  "ended_utc": "2026-07-25T02:54:49.7380827\u002B00:00",
+  "duration_seconds": 0.0122552,
+  "stop_result": "completed",
+  "event_counts": {
+    "presentation.consumer_decision": 60
+  },
+  "invariants": [
+    {
+      "name": "consumer_count_shape_matches_prediction",
+      "passed": true,
+      "detail": "direct=applied:19,coalesced:0,expired:0,stale:1; latest_wins=applied:14,coalesced:5,expired:0,stale:1; latest_wins_expiry=applied:12,coalesced:5,expired:2,stale:1"
+    },
+    {
+      "name": "final_fresh_state_preserved",
+      "passed": true,
+      "detail": "direct=source_a:13,source_b:9; latest_wins=source_a:13,source_b:9; latest_wins_expiry=source_a:13,source_b:9"
+    },
+    {
+      "name": "expiry_prevents_old_apply",
+      "passed": true,
+      "detail": "expiry_ms=120; max_applied_age_ms=75; expired=2"
+    },
+    {
+      "name": "apply_work_reduces_monotonically",
+      "passed": true,
+      "detail": "applied=19,14,12; projected_deliveries=57,42,36"
+    },
+    {
+      "name": "fresh_recovery_survives_expiry",
+      "passed": true,
+      "detail": "delayed sequences expired, then the next fresh sample for each source applied"
+    }
+  ],
+  "prediction_observations": [
+    {
+      "name": "bounded_apply_work",
+      "observed": "direct/latest/expiry applied 19/14/12 samples and projected 57/42/36 recipient deliveries"
+    },
+    {
+      "name": "fidelity_boundary",
+      "observed": "latest-wins preserved the final fresh sequence while intentionally coalescing five intermediate burst samples; visual smoothness remains untested"
+    }
+  ],
+  "raw_evidence_paths": [
+    "normalized-input.json",
+    "raw/events.jsonl"
+  ],
+  "normalized_decision_sha256": "3ccb97b8f535578196c73becd4a02af9bf5e8023406bae4410169e93e273aa03",
+  "result_classification": "supported"
+}
