@@ -113,6 +113,42 @@ with expiry while preserving the final fresh sequence. This is policy-shape evid
 not smoothness or capacity evidence. Captured timing and Unity observation must decide
 whether removed intermediate samples help or hurt perceived motion.
 
+### The current client seam is already latest-wins
+
+Source inspection and CRE-E05 narrowed the next optimization target. The checked-in
+`LumberjacksMotionRunner`:
+
+1. enqueues decoded UDP/WebSocket motion;
+2. drains the queue during `Update`;
+3. retains only the newest sequence per remote ZDO;
+4. iterates every fresh remote during every `LateUpdate`;
+5. resolves its Unity object and exponentially Lerps/Slerps toward the last snapshot.
+
+It does not extrapolate velocity. At the default 20 Hz send rate, a 60 FPS client
+models three render applications per accepted snapshot per fresh remote entity. This
+is not automatically three times too much work—smooth interpolation needs render
+evaluation—but lookup/binding and interpolation are currently coupled in the same
+inner loop.
+
+The current motion apply is also an overlay: enabling it does not remove native
+Valheim presentation updates. Until measured otherwise, treat native/Lumberjacks
+transform competition as a separate plausible source of oscillation or correction.
+
+The next implementation should observe before optimizing:
+
+| Phase | Minimum evidence |
+|---|---|
+| receive | source transport, sequence accepted/stale, inter-arrival bucket |
+| drain | queue depth, rows drained, snapshots replaced before render |
+| bind | lookup attempts/hit path, elapsed time, cache/rebind reason |
+| render | fresh remotes, transform writes, elapsed time, target error before/after |
+| next frame | deviation from the prior Lumberjacks write, labeled as possible—not proven—native overwrite |
+
+Rows should be bounded rollups, not per-frame disk spam. The first candidate after
+measurement is a two-snapshot interpolation timeline with current chase-latest kept as
+the instant rollback. Caching object bindings can be tested independently from visual
+math.
+
 ### Route
 
 Use semantics to choose carriage rather than choosing UDP because something is
@@ -222,9 +258,10 @@ These experiments build on the current patch-load and M7 authority work.
 | CRE-2 | Does pressure cause bounded graceful degradation? | Gateway synthetic burst | **supported for selection/carriage:** 9 selected frames routed; 23 suppressed frames absent; queue-pressure behavior remains separate |
 | CRE-3 | Does the route preserve freshness and expose delivery cost? | Gateway UDP/WS fault fixtures | **supported after refinement:** duplicate/old frames dropped, gaps/wrap/resume passed, detached token failed closed, and 10 accepted frames produced 18 topology-derived deliveries |
 | CRE-4 | Can accepted presentation work be bounded without final-state regression? | pure consumer replay | **supported for policy shape:** direct/latest/expiry applied 19/14/12 samples; both final sequences matched; repeat hash matched |
-| CRE-5 | Does native presentation remain understandable? | local Valheim shadow | native remains authoritative; no critical omission |
-| CRE-6 | Does a human perceive improvement? | one OMEN/i5 window | predicted motion/feel labels match observation |
-| CRE-7 | Does a real mod author understand the result? | Companion workbench | author can identify cost, mode, route, and rollback without log archaeology |
+| CRE-5 | What work does the checked-in apply loop request? | source-derived pure model | **supported as a model:** apply calls scale with FPS x fresh remotes; 20 Hz ingress at 60 FPS yields three render applications per snapshot |
+| CRE-6 | Does native presentation remain understandable? | local Valheim shadow | native remains authoritative; no critical omission |
+| CRE-7 | Does a human perceive improvement? | one OMEN/i5 window | predicted motion/feel labels match observation |
+| CRE-8 | Does a real mod author understand the result? | Companion workbench | author can identify cost, mode, route, and rollback without log archaeology |
 
 CRE-1 was intentionally run with synthetic cost units to prove the policy and evidence
 shape without waiting for a client. CRE-0 is now the immediate next technical step

@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "experiment_id": "cre-e05-current-apply-model",
+  "scenario_id": "late-update-amplification-v1",
+  "run_id": "pure-20260725T030434Z",
+  "source_revision": "1fe9f04",
+  "dirty_state": true,
+  "scenario_sha256": "c57e67e0ff07c4468109b68954c509af00eb64556aeb6fdcbcb8178d7ba0fdbd",
+  "normalized_input_sha256": "5ddc1e33e571a4f4fbff380ebcbaa377f199c8d0d037f262284e88da895fa77e",
+  "policy": {
+    "name": "current-late-update-model-v1",
+    "near_meters": 30,
+    "outer_meters": 64,
+    "mid_hz": 5
+  },
+  "driver": "pure",
+  "seed": 414,
+  "started_utc": "2026-07-25T03:04:35.8348789\u002B00:00",
+  "ended_utc": "2026-07-25T03:04:35.8435770\u002B00:00",
+  "duration_seconds": 0.0086981,
+  "stop_result": "completed",
+  "event_counts": {
+    "presentation.apply_model": 12
+  },
+  "invariants": [
+    {
+      "name": "current_apply_rate_is_frame_bound",
+      "passed": true,
+      "detail": "inbound=snapshot_hz*entities; render_apply=fps*entities; ratio=fps/snapshot_hz"
+    },
+    {
+      "name": "remote_entity_cost_scales_linearly",
+      "passed": true,
+      "detail": "modeled entity counts 1,10,100 preserve exact per-frame multiplication"
+    },
+    {
+      "name": "send_interval_convergence_is_frame_rate_stable",
+      "passed": true,
+      "detail": "min=0.593430340; max=0.593430340; rate=18"
+    },
+    {
+      "name": "stale_tail_upper_bound_matches_source_defaults",
+      "passed": true,
+      "detail": "one entity at 20/40/60/120 FPS reuses the last snapshot at most 11/21/31/61 times across 500 ms"
+    }
+  ],
+  "prediction_observations": [
+    {
+      "name": "frame_amplification",
+      "observed": "one_entity_apply_per_second=20,40,60,120; apply_per_snapshot=1,2,3,6"
+    },
+    {
+      "name": "entity_amplification",
+      "observed": "hundred_entity_apply_per_second=2000,4000,6000,12000"
+    },
+    {
+      "name": "source_boundary",
+      "observed": "the checked-in runner already coalesces receive bursts per ZDO, then performs lookup and exponential convergence every LateUpdate without velocity extrapolation"
+    }
+  ],
+  "raw_evidence_paths": [
+    "normalized-input.json",
+    "raw/events.jsonl"
+  ],
+  "normalized_decision_sha256": "8e4bb2f173c99dff003392618003fd5d614da10228f68e9973b2f5147c7bcda7",
+  "result_classification": "supported"
+}
