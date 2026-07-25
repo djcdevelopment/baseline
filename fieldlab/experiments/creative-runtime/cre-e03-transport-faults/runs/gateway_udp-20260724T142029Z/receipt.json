@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "experiment_id": "cre-e03-transport-faults",
+  "scenario_id": "motion-sequence-faults-v1",
+  "run_id": "gateway_udp-20260724T142029Z",
+  "source_revision": "b425810",
+  "dirty_state": true,
+  "scenario_sha256": "cbc656c20571a3a67c4997660c9cd62575a913739a067180c91120216d91be00",
+  "normalized_input_sha256": "7ca048bd4fe48181810b378af9adcef6f7ccc27d36662d4bd9c94c84e69badfe",
+  "policy": {
+    "name": "motion-sequence-half-range-v1",
+    "near_meters": 30,
+    "outer_meters": 64,
+    "mid_hz": 5
+  },
+  "driver": "gateway_udp",
+  "seed": 412,
+  "started_utc": "2026-07-24T14:20:30.7453369\u002B00:00",
+  "ended_utc": "2026-07-24T14:20:30.9720865\u002B00:00",
+  "duration_seconds": 0.2267496,
+  "stop_result": "completed",
+  "event_counts": {
+    "transport.fault_observed": 14
+  },
+  "invariants": [
+    {
+      "name": "duplicate_and_reorder_rejected",
+      "passed": true,
+      "detail": "dropped_stale=3; expected=3"
+    },
+    {
+      "name": "transient_gap_does_not_block_fresh_motion",
+      "passed": true,
+      "detail": "sequence 104 relayed even though sequence 103 was intentionally absent"
+    },
+    {
+      "name": "ushort_sequence_wrap_preserved",
+      "passed": true,
+      "detail": "65534,65535,0,1 relayed; an old 65535 after wrap was rejected"
+    },
+    {
+      "name": "authenticated_session_reconnect_resets_motion_sequence",
+      "passed": true,
+      "detail": "resumed session accepted sequence 1 and detached UDP token produced no motion relay"
+    },
+    {
+      "name": "fault_fixture_delivery_accounted",
+      "passed": false,
+      "detail": "received=11; relayed=18; expected=10"
+    }
+  ],
+  "prediction_observations": [
+    {
+      "name": "sequence_guard_behavior",
+      "observed": "duplicate and old motion is dropped per session; gaps and ushort wrap preserve fresh motion"
+    },
+    {
+      "name": "reconnect_behavior",
+      "observed": "new authenticated session state accepts a fresh sequence and the detached UDP token no longer maps to a session"
+    }
+  ],
+  "raw_evidence_paths": [
+    "normalized-input.json",
+    "raw/events.jsonl"
+  ],
+  "normalized_decision_sha256": "96c27d543de41e86fd3557b21362912a39b3e69c695e289d7ede8943d962c3db",
+  "result_classification": "refuted"
+}

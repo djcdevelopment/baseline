@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "experiment_id": "cre-e03-transport-faults",
+  "scenario_id": "motion-sequence-faults-v1",
+  "run_id": "gateway-20260724T141921Z",
+  "source_revision": "b425810",
+  "dirty_state": true,
+  "scenario_sha256": "cbc656c20571a3a67c4997660c9cd62575a913739a067180c91120216d91be00",
+  "normalized_input_sha256": "606dad8d189b7b4ed6ab48ab93509a31060e03c791cb50c2b8aa50641be3bb30",
+  "policy": {
+    "name": "motion-sequence-half-range-v1",
+    "near_meters": 30,
+    "outer_meters": 64,
+    "mid_hz": 5
+  },
+  "driver": "gateway",
+  "seed": 412,
+  "started_utc": "2026-07-24T14:19:22.8624420\u002B00:00",
+  "ended_utc": "2026-07-24T14:19:22.8972467\u002B00:00",
+  "duration_seconds": 0.0348047,
+  "stop_result": "completed",
+  "event_counts": {
+    "transport.fault_observed": 13
+  },
+  "invariants": [
+    {
+      "name": "duplicate_and_reorder_rejected",
+      "passed": true,
+      "detail": "dropped_stale=3; expected=3"
+    },
+    {
+      "name": "transient_gap_does_not_block_fresh_motion",
+      "passed": true,
+      "detail": "sequence 104 relayed even though sequence 103 was intentionally absent"
+    },
+    {
+      "name": "ushort_sequence_wrap_preserved",
+      "passed": true,
+      "detail": "65534,65535,0,1 relayed; an old 65535 after wrap was rejected"
+    },
+    {
+      "name": "authenticated_session_reconnect_resets_motion_sequence",
+      "passed": true,
+      "detail": "resumed session accepted sequence 1 on the authenticated WebSocket seam"
+    },
+    {
+      "name": "fault_fixture_delivery_accounted",
+      "passed": false,
+      "detail": "received=10; relayed=18; expected=10"
+    }
+  ],
+  "prediction_observations": [
+    {
+      "name": "sequence_guard_behavior",
+      "observed": "duplicate and old motion is dropped per session; gaps and ushort wrap preserve fresh motion"
+    },
+    {
+      "name": "reconnect_behavior",
+      "observed": "new authenticated session state accepts a fresh sequence after resume"
+    }
+  ],
+  "raw_evidence_paths": [
+    "normalized-input.json",
+    "raw/events.jsonl"
+  ],
+  "normalized_decision_sha256": "44fc847ab14bed5c4fa172f10e55f6f3e11b4bf6586e592d7849803be4f250fe",
+  "result_classification": "refuted"
+}

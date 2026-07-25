@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "experiment_id": "cre-e03-transport-faults",
+  "scenario_id": "motion-sequence-faults-v1",
+  "run_id": "gateway-20260725T024205Z",
+  "source_revision": "b425810",
+  "dirty_state": true,
+  "scenario_sha256": "cbc656c20571a3a67c4997660c9cd62575a913739a067180c91120216d91be00",
+  "normalized_input_sha256": "606dad8d189b7b4ed6ab48ab93509a31060e03c791cb50c2b8aa50641be3bb30",
+  "policy": {
+    "name": "motion-sequence-half-range-v1",
+    "near_meters": 30,
+    "outer_meters": 64,
+    "mid_hz": 5
+  },
+  "driver": "gateway",
+  "seed": 412,
+  "started_utc": "2026-07-25T02:42:06.6256073\u002B00:00",
+  "ended_utc": "2026-07-25T02:42:06.6593223\u002B00:00",
+  "duration_seconds": 0.033715,
+  "stop_result": "completed",
+  "event_counts": {
+    "transport.fault_observed": 13
+  },
+  "invariants": [
+    {
+      "name": "duplicate_and_reorder_rejected",
+      "passed": true,
+      "detail": "dropped_stale=3; expected=3"
+    },
+    {
+      "name": "transient_gap_does_not_block_fresh_motion",
+      "passed": true,
+      "detail": "sequence 104 relayed even though sequence 103 was intentionally absent"
+    },
+    {
+      "name": "ushort_sequence_wrap_preserved",
+      "passed": true,
+      "detail": "65534,65535,0,1 relayed; an old 65535 after wrap was rejected"
+    },
+    {
+      "name": "authenticated_session_reconnect_resets_motion_sequence",
+      "passed": true,
+      "detail": "resumed session accepted sequence 1 on the authenticated WebSocket seam"
+    },
+    {
+      "name": "accepted_source_frames_accounted",
+      "passed": true,
+      "detail": "accepted_source_frames=10; expected=10; setup traffic excluded"
+    },
+    {
+      "name": "primary_target_delivery_accounted",
+      "passed": true,
+      "detail": "primary_target_deliveries=10; expected=10"
+    },
+    {
+      "name": "regional_fanout_accounted",
+      "passed": true,
+      "detail": "aggregate_relay_deliveries=18; expected=18; topology=4x1\u002B4x2\u002B1x3\u002B1x3"
+    }
+  ],
+  "prediction_observations": [
+    {
+      "name": "sequence_guard_behavior",
+      "observed": "duplicate and old motion is dropped per session; gaps and ushort wrap preserve fresh motion"
+    },
+    {
+      "name": "reconnect_behavior",
+      "observed": "new authenticated session state accepts a fresh sequence after resume"
+    },
+    {
+      "name": "fanout_cost_behavior",
+      "observed": "10 accepted source frames produced 10 deliveries to the primary target and 18 aggregate deliveries across the changing region topology"
+    }
+  ],
+  "raw_evidence_paths": [
+    "normalized-input.json",
+    "raw/events.jsonl"
+  ],
+  "normalized_decision_sha256": "44fc847ab14bed5c4fa172f10e55f6f3e11b4bf6586e592d7849803be4f250fe",
+  "result_classification": "supported"
+}

@@ -1,6 +1,6 @@
 # Lumberjacks creative runtime envelope
 
-Status: proposed integration direction; CRE-E01 pure policy proof supported, 2026-07-24
+Status: proposed integration direction; CRE-E01 through CRE-E03 lab proofs supported, 2026-07-24
 
 This note integrates the performance-gate and mod-author experience ideas with the
 current M7 authority discovery work. It is a design direction and experiment queue,
@@ -47,6 +47,7 @@ Capture the minimum facts needed to explain cost and outcome:
 - patch and call-site identity;
 - hot-path call count and body time;
 - frame budget and queue pressure;
+- eligible recipient count and projected delivery fanout;
 - object/event class and criticality;
 - selected transport and fallback;
 - result, reason, and rollback state.
@@ -85,6 +86,18 @@ criticality class. A decision row should be explainable without reconstructing I
 
 This is intentionally a decision record, not an authorization token. Gameplay
 authority remains on the current M7 ladder until a claim earns promotion.
+
+CRE-E03 established that selected source work is not the whole cost. Ten accepted
+motion frames produced ten deliveries to one observer but eighteen aggregate
+deliveries as the eligible region topology grew. A practical budget therefore needs
+both local execution cost and projected downstream fanout:
+
+```text
+estimated work = local call cost + (selected payload cost x eligible recipients)
+```
+
+That estimate can remain crude at first, but source acceptance, setup traffic,
+primary-target delivery, and aggregate fanout must remain separate evidence.
 
 ### Route
 
@@ -193,7 +206,7 @@ These experiments build on the current patch-load and M7 authority work.
 | CRE-0 | What is the standing cost of the existing detour? | seeded headless client | inert vs observer A/B has a measured delta |
 | CRE-1 | Can one noncritical callback degrade predictably? | pure driver | **supported:** two 38-row runs matched; all four modes and six invariants passed |
 | CRE-2 | Does pressure cause bounded graceful degradation? | Gateway synthetic burst | **supported for selection/carriage:** 9 selected frames routed; 23 suppressed frames absent; queue-pressure behavior remains separate |
-| CRE-3 | Does the route matrix preserve semantics? | Gateway UDP/WS fixtures | **supported for clean delivery:** both paths delivered the same selected set in order; fault injection remains open |
+| CRE-3 | Does the route preserve freshness and expose delivery cost? | Gateway UDP/WS fault fixtures | **supported after refinement:** duplicate/old frames dropped, gaps/wrap/resume passed, detached token failed closed, and 10 accepted frames produced 18 topology-derived deliveries |
 | CRE-4 | Does native presentation remain understandable? | local Valheim shadow | native remains authoritative; no critical omission |
 | CRE-5 | Does a human perceive improvement? | one OMEN/i5 window | predicted motion/feel labels match observation |
 | CRE-6 | Does a real mod author understand the result? | Companion workbench | author can identify cost, mode, route, and rollback without log archaeology |
