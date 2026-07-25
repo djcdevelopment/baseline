@@ -16,8 +16,9 @@ patch and frame costs must replace them before a live gate is considered.
 | `cre-e03-transport-faults` | supported after refinement | both paths rejected stale motion, accepted gaps/wrap/resume, and exposed recipient fanout as a separate cost multiplier; refuted receipts are retained |
 | `cre-e04-presentation-consumer` | supported | repeat decisions matched; latest-wins reduced 19 applies to 14, expiry reduced them to 12 while preserving both final fresh sequences; Unity feel remains untested |
 | `cre-e05-current-apply-model` | supported model | repeat rows matched; receive is already latest-per-ZDO, while render apply scales at FPS x fresh remotes and exponential convergence is frame-rate stable under the modeled defaults |
+| `cre-e06-motion-phase-rollups` | instrumentation ready | cumulative receive/drain/bind/render/error/displacement rollups flow through existing client JSONL and Companion capture; fixture analysis passes, live timing remains pending |
 
-Next: complete the patch-load A/B run, map measured call cost and projected recipient
-fanout into CRE-E01, measure the current motion receive/drain/bind/render/native-write
-phases, then feed captured timing into interpolation candidates. No P7 gameplay
-change is authorized by these results.
+Next: complete the patch-load A/B run, run the bounded two-client CRE-E06 capture,
+map measured call cost and projected recipient fanout into CRE-E01, then feed captured
+timing into interpolation candidates. No broader P7 gameplay authority change is
+authorized by these results.
