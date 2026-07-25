@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "experiment_id": "cre-e07-presentation-replay",
+  "scenario_id": "chase-latest-vs-buffered-v1",
+  "run_id": "pure-20260725T040311Z",
+  "source_revision": "9ce1324",
+  "dirty_state": true,
+  "scenario_sha256": "a023fc7a8cbea6ad669b93fed489a75c2da2856fb8facd7b8815ffc7594afcd0",
+  "normalized_input_sha256": "25174f150aa8417e421a6d16d127a865f6331342bf7b4d765842f93a510081a1",
+  "policy": {
+    "name": "presentation-replay-v1",
+    "near_meters": 30,
+    "outer_meters": 64,
+    "mid_hz": 5
+  },
+  "driver": "pure",
+  "seed": 416,
+  "started_utc": "2026-07-25T04:03:12.1509534\u002B00:00",
+  "ended_utc": "2026-07-25T04:03:12.1661319\u002B00:00",
+  "duration_seconds": 0.0151785,
+  "stop_result": "completed",
+  "event_counts": {
+    "presentation.replay_result": 24
+  },
+  "invariants": [
+    {
+      "name": "replay_outputs_remain_finite",
+      "passed": true,
+      "detail": "evaluated=24 policy/profile/pattern combinations"
+    },
+    {
+      "name": "replay_consumes_final_sequence",
+      "passed": true,
+      "detail": "expected_final_sequence=40"
+    },
+    {
+      "name": "buffered_interpolation_does_not_extrapolate",
+      "passed": true,
+      "detail": "all interpolation factors stayed within the two bracketing source snapshots"
+    },
+    {
+      "name": "teleport_discontinuity_is_guarded",
+      "passed": true,
+      "detail": "guarded_frames=4,1"
+    }
+  ],
+  "prediction_observations": [
+    {
+      "name": "presentation_smoothness_candidate",
+      "observed": "buffered interpolation reduced mean step-change in 5/10 non-teleport pattern/profile pairs"
+    },
+    {
+      "name": "timeline_fidelity_candidate",
+      "observed": "buffered interpolation reduced error against its declared delayed timeline in 10/10 non-teleport pairs"
+    },
+    {
+      "name": "burst_tradeoff",
+      "observed": "burst pairs=5; buffered delay=100ms; stalls chase/buffered=17/114"
+    },
+    {
+      "name": "authority_limit",
+      "observed": "the replay excludes native transform writes, Unity physics, binding cost, and human feel; it selects candidate equations only"
+    }
+  ],
+  "raw_evidence_paths": [
+    "normalized-input.json",
+    "raw/events.jsonl"
+  ],
+  "normalized_decision_sha256": "93e8169cc90060e1afa516e1fdbcf9d233a9b47d2a9757e6e7666afaee64ed2d",
+  "result_classification": "supported"
+}

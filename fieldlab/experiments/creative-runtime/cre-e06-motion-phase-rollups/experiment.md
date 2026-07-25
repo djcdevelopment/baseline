@@ -148,6 +148,9 @@ step is a bounded capture, not another instrumentation build.
 
 ## Next experiment
 
-Replay captured arrival timing against the current chase-latest presentation and a
-two-snapshot interpolation candidate. Only then choose whether to cache object
-binding, retire stale entries, or change presentation ownership.
+CRE-E07 has now shown that fixed 50/100/150 ms buffers leave burst stalls and that
+fully covering the synthetic burst at 200 ms adds too much timeline delay to justify
+a client build. The next capture should retain enough receive-interval distribution
+shape to replay an adaptive buffer and correlate it with interframe displacement.
+Only then choose whether to change presentation math or prioritize native-writer
+attribution.

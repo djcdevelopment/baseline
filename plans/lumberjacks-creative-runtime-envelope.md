@@ -260,6 +260,7 @@ These experiments build on the current patch-load and M7 authority work.
 | CRE-4 | Can accepted presentation work be bounded without final-state regression? | pure consumer replay | **supported for policy shape:** direct/latest/expiry applied 19/14/12 samples; both final sequences matched; repeat hash matched |
 | CRE-5 | What work does the checked-in apply loop request? | source-derived pure model | **supported as a model:** apply calls scale with FPS x fresh remotes; 20 Hz ingress at 60 FPS yields three render applications per snapshot |
 | CRE-6 | Does native presentation remain understandable? | local Valheim shadow | native remains authoritative; no critical omission |
+| CRE-7 | Does fixed buffered interpolation earn a client build? | deterministic presentation replay | **not promoted:** 50/100/150 ms retained burst stalls; 200 ms removed them only by increasing mean current-time error above chase-latest; repeat hash matched |
 | CRE-7 | Does a human perceive improvement? | one OMEN/i5 window | predicted motion/feel labels match observation |
 | CRE-8 | Does a real mod author understand the result? | Companion workbench | author can identify cost, mode, route, and rollback without log archaeology |
 

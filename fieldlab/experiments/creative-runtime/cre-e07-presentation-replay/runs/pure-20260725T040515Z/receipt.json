@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "experiment_id": "cre-e07-presentation-replay",
+  "scenario_id": "chase-latest-vs-buffered-v1",
+  "run_id": "pure-20260725T040515Z",
+  "source_revision": "9ce1324",
+  "dirty_state": true,
+  "scenario_sha256": "b078152bd9b69d050ddaf43762b1609416dcabb003354f4391e749113a40e53b",
+  "normalized_input_sha256": "c368372c2b0aab3fdb1855ef58f652cd61ae3f95c13be6dda39521592292d3d2",
+  "policy": {
+    "name": "presentation-replay-v1",
+    "near_meters": 30,
+    "outer_meters": 64,
+    "mid_hz": 5
+  },
+  "driver": "pure",
+  "seed": 416,
+  "started_utc": "2026-07-25T04:05:15.9514150\u002B00:00",
+  "ended_utc": "2026-07-25T04:05:15.9714132\u002B00:00",
+  "duration_seconds": 0.0199982,
+  "stop_result": "completed",
+  "event_counts": {
+    "presentation.replay_result": 48
+  },
+  "invariants": [
+    {
+      "name": "replay_outputs_remain_finite",
+      "passed": true,
+      "detail": "evaluated=48 policy/profile/pattern combinations"
+    },
+    {
+      "name": "replay_consumes_final_sequence",
+      "passed": true,
+      "detail": "expected_final_sequence=40"
+    },
+    {
+      "name": "buffered_interpolation_does_not_extrapolate",
+      "passed": true,
+      "detail": "all interpolation factors stayed within the two bracketing source snapshots"
+    },
+    {
+      "name": "teleport_discontinuity_is_guarded",
+      "passed": false,
+      "detail": "guarded_frames=0,4,3,0,1,3"
+    }
+  ],
+  "prediction_observations": [
+    {
+      "name": "buffer_candidate_50ms",
+      "observed": "lower_step_change=0/10; lower_timeline_error=10/10; burst_stalls_chase/buffered=17/342; mean_current_error_buffered=0.898m"
+    },
+    {
+      "name": "buffer_candidate_100ms",
+      "observed": "lower_step_change=5/10; lower_timeline_error=10/10; burst_stalls_chase/buffered=17/114; mean_current_error_buffered=1.207m"
+    },
+    {
+      "name": "buffer_candidate_150ms",
+      "observed": "lower_step_change=8/10; lower_timeline_error=10/10; burst_stalls_chase/buffered=17/44; mean_current_error_buffered=1.678m"
+    },
+    {
+      "name": "authority_limit",
+      "observed": "the replay excludes native transform writes, Unity physics, binding cost, and human feel; it selects candidate equations only"
+    }
+  ],
+  "raw_evidence_paths": [
+    "normalized-input.json",
+    "raw/events.jsonl"
+  ],
+  "normalized_decision_sha256": "6aedfc68ad5a3a38e02eb0e83a88e44712355cc9ff632aa490ea28bf9b08a60f",
+  "result_classification": "refuted"
+}

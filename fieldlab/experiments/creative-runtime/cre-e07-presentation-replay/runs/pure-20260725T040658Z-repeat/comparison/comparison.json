@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "comparison": "normalized_decisions",
+  "left_run_id": "pure-20260725T040658Z",
+  "right_run_id": "pure-20260725T040658Z-repeat",
+  "normalized_input_equal": true,
+  "normalized_decisions_equal": true,
+  "result": "equal"
+}
