@@ -1,6 +1,6 @@
 # CRE-E06 - Where does client motion time and amplification accumulate?
 
-Status: instrumentation and analyzer implemented; live result pending
+Status: instrumentation and role-aware analyzer implemented; live result pending
 
 ## Goal
 
@@ -55,6 +55,13 @@ capture-local means. Maxima are process-lifetime values and are reported as such
 only a maximum that increases during the capture is known to have changed in that
 window.
 
+The two-client adapter treats OBSERVE as a negative control. Attribution uses only
+the final contiguous `motion_apply_enabled` segment from each machine, because the
+workbench starts capture before it assigns roles. Exactly one final APPLY role and
+one final OBSERVE role are required. APPLY must advance both `motion_applied` and
+interframe-check counters while OBSERVE advances neither. OBSERVE-side APPLY
+activity is contradictory evidence, not a warning to ignore.
+
 No player identity, ZDO identity, position, velocity, or raw packet is added to the
 rollup. Receive intervals use a monotonic local clock and therefore describe arrival
 spacing, not one-way latency.
@@ -108,6 +115,8 @@ To prove the entire two-bundle adapter before asking for joined clients:
 ## Limits
 
 - Sampling cannot reconstruct individual frame order.
+- Role attribution proves which configured path emitted the counters, not which
+  engine or mod component moved the transform between APPLY writes.
 - Process-lifetime maxima can predate the capture.
 - Stopwatch measurements add small probe cost to receive, bind, and `LateUpdate`.
 - Interframe displacement can include native presentation, physics, another mod,
@@ -131,7 +140,10 @@ Channel 2, or authorize broader M7 network authority.
 Implementation validation uses a three-row fixture to prove cumulative deltas,
 derived means, lifetime-max labeling, and JSON shape. The same fixture, packaged
 as two Companion-shaped bundles, proves the shared bundle adapter's two-machine
-success path (`received_samples=40`, `applies_per_received_sample=3`). A
+success path (`received_samples=40`, `applies_per_received_sample=3`).
+Role-transition fixtures prove that setup-time APPLY activity is excluded from the
+final OBSERVE segment, either machine can be APPLY, missing or equal roles remain
+inconclusive, and OBSERVE-side APPLY counter movement is contradictory. A
 missing-i5 fixture proves the adapter writes a rejection receipt and exits
 nonzero. A live idle pass with both games closed also failed closed on one cached
 OMEN sample and a pre-contract i5 cache, confirming stale local state is not
@@ -143,8 +155,11 @@ for timing and visual interpretation.
 The existing JSONL and Companion capture contracts already provide the durable
 boundary needed for phase evidence. No new observer service or frame log is needed.
 The formal Wave 0 gate and the physical feel window now use the same bundle adapter,
-so a successful physical window cannot bypass phase analysis. The remaining live
-step is a bounded capture, not another instrumentation build.
+so a successful physical window cannot bypass phase analysis. The formal gate also
+refuses to interpret a movement course unless role attribution is ready; an
+inconclusive or contradictory negative control stops the run before a human visual
+claim is recorded. The remaining live step is a bounded capture, not another
+instrumentation build.
 
 ## Next experiment
 
