@@ -21,6 +21,11 @@
     "mid_hz": 5
   },
   "driver": "companion",
+  "synthetic_baseline": {
+    "command": "fieldlab/experiments/creative-runtime/cre-e06-motion-phase-rollups/Test-BundleAdapter.ps1",
+    "success_fixture_received_samples": 40,
+    "rejection_fixture": "missing_i5_bundle"
+  },
   "stop_rules": [
     "local_motion_missing",
     "phase_measurements_disabled",

@@ -99,6 +99,12 @@ To re-analyze retained JSONL without contacting Companion:
   -OutputPath <capture>\motion-phase-summary.json
 ```
 
+To prove the entire two-bundle adapter before asking for joined clients:
+
+```powershell
+.\fieldlab\experiments\creative-runtime\cre-e06-motion-phase-rollups\Test-BundleAdapter.ps1
+```
+
 ## Limits
 
 - Sampling cannot reconstruct individual frame order.
@@ -123,14 +129,22 @@ Channel 2, or authorize broader M7 network authority.
 ## Results
 
 Implementation validation uses a three-row fixture to prove cumulative deltas,
-derived means, lifetime-max labeling, and JSON shape. A real two-client capture is
-still required for timing and visual interpretation.
+derived means, lifetime-max labeling, and JSON shape. The same fixture, packaged
+as two Companion-shaped bundles, proves the shared bundle adapter's two-machine
+success path (`received_samples=40`, `applies_per_received_sample=3`). A
+missing-i5 fixture proves the adapter writes a rejection receipt and exits
+nonzero. A live idle pass with both games closed also failed closed on one cached
+OMEN sample and a pre-contract i5 cache, confirming stale local state is not
+promoted to phase evidence. A real joined two-client capture is still required
+for timing and visual interpretation.
 
 ## What changed in our understanding
 
 The existing JSONL and Companion capture contracts already provide the durable
 boundary needed for phase evidence. No new observer service or frame log is needed.
-The remaining live step is a bounded capture, not another instrumentation build.
+The formal Wave 0 gate and the physical feel window now use the same bundle adapter,
+so a successful physical window cannot bypass phase analysis. The remaining live
+step is a bounded capture, not another instrumentation build.
 
 ## Next experiment
 
