@@ -50,3 +50,20 @@ python .\recipes\quest-submission-bridge\bridge-consumer\review_inbox.py .\recip
 
 The `bridge-review/` output folder those commands create is deliberately
 untracked.
+
+### Camera gallery (raw material)
+
+[`camera-gallery/`](camera-gallery/) is the recovered raw material of the
+Camera Flythrough → Gallery Pipeline workbench tool: segment 1's working
+waypoint extractor, the segment 2–4 briefs, segment 4's `video_to_gallery.py`,
+and two sample fixtures, byte-exact from the public comfy archive. Provenance,
+license boundary, segment status, and the privacy note on the samples are in
+[`PROVENANCE.md`](camera-gallery/PROVENANCE.md). Segment 3 — the flight-path
+mod itself — has no code anywhere and is the real gap; reviving segment 1 is
+claiming task CG-1 on the workbench.
+
+```powershell
+python .\recipes\camera-gallery\video_to_gallery.py flythrough.mp4 .\recipes\camera-gallery\timeline.sample.json --dry-run --duration 60
+```
+
+The dry run prints what it would cut without needing a real video or ffmpeg.
