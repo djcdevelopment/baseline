@@ -44,13 +44,17 @@ Open `Lumberjacks/src/Game.Gateway/Community/workbench.html` **directly in a bro
   access to that piece only; baseline stays private otherwise.
 → `[ ] approved  [ ] edits needed:` _______________
 
-## 4. Discord (only you can): channel + threads
-1. Create a forum channel (suggest: `#workbench`).
-2. Create 6 threads and paste the seeds from `Lumberjacks/docs/workbench/discord/`:
+## 4. Discord (only you can): channel + threads + tags — one session covers all
+1. Create `#workbench` as a **Forum channel** with **required tags** — exact 8-tag
+   taxonomy + click-path in `Lumberjacks/docs/workbench/discord/07-forum-tags-setup.md`.
+   (Timing matters: Discord can't convert threads→forum later; now is the cheap moment.)
+2. Create 6 posts from the seeds in `Lumberjacks/docs/workbench/discord/`:
    01 quest-picker · 02 steward-view · 03 community-telemetry · 04 steam-join ·
-   05 pinned-how-this-works (pin it) · 06 recoverable-pieces.
-3. **Do NOT post `00-announcement.md` yet** — that's Batch 2, after the deploy.
-4. Paste the 6 thread URLs here (or just tell the agent):
+   05 pinned-how-this-works (pin it — now includes the tags explainer) · 06 recoverable-pieces.
+3. Optional 10 min while you're in settings: load the 7 saved replies from
+   `discord/08-saved-replies.md` (or just keep that file open during batch passes).
+4. **Do NOT post `00-announcement.md` yet** — that's Batch 2, after the deploy.
+5. Paste the 6 thread URLs here (or just tell the agent):
    - quest-picker: ______
    - steward-view: ______
    - community-telemetry: ______
@@ -89,7 +93,20 @@ roadmap mount. After this, every catalog update is a file copy — no more image
 Rollback = re-pin previous image. **No terraform, no compose changes.**
 → `[ ] go — schedule it  [ ] hold`
 
-## 8. Batch 2 preview (after deploy): post `00-announcement.md`, first reply pass (~30 min).
+## 8. Cognitive-lift portfolio — built, two optional touches
+Your "find 5–10 ideas, matrix them, build top 5" ask is done: 13 researched ideas scored in
+[plans/cognitive-lift-portfolio.md](plans/cognitive-lift-portfolio.md) (sources included),
+top 5 built: **announcement drafter** (journal → Discord draft skeleton, never auto-posted:
+`tools/workbench/new_announcement_draft.py`), **forum tags** (item 4 above), **bug-fix-shaped
+first-task lens** (in the one-pager template), **Already-answered section + saved replies**,
+**feedback distiller** (`tools/workbench/distill_feedback.py` → candidate-issues journal).
+Optional touches, whenever:
+- `[ ]` 10 min: create the read-only Discord bot (`discord/09-discord-bot-setup.md`) —
+  activates the feedback distiller. Skippable until threads have traffic.
+- `[ ]` Skim the portfolio's ranks 6–13 backlog — several are deliberately parked until
+  your first real volunteer exists (waves, showcase, credit line).
+
+## 9. Batch 2 preview (after deploy): post `00-announcement.md`, first reply pass (~30 min).
 
 ---
 *Generated 2026-07-28/29 during the rollout session. The full plan is at
