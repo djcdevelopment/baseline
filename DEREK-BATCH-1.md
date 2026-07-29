@@ -45,24 +45,42 @@ Open `Lumberjacks/src/Game.Gateway/Community/workbench.html` **directly in a bro
   access to that piece only; baseline stays private otherwise.
 → `[ ] approved  [ ] edits needed:` _______________
 
-## 4. Discord — NEW SERVER created 2026-07-29 (id `1531911987074957442`); a bot task is spawned (chip pending) to provision the forum/tags/posts FROM the repo's seed files, which may shrink this section to dry-run approval only. If you'd rather do it by hand tonight, the manual steps below still work as written.
-1. Create `#workbench` as a **Forum channel** with **required tags** — exact 8-tag
-   taxonomy + click-path in `Lumberjacks/docs/workbench/discord/07-forum-tags-setup.md`.
-   (Timing matters: Discord can't convert threads→forum later; now is the cheap moment.)
-2. Create 6 posts from the seeds in `Lumberjacks/docs/workbench/discord/`:
-   01 quest-picker · 02 steward-view · 03 community-telemetry · 04 steam-join ·
-   05 pinned-how-this-works (pin it — now includes the tags explainer) · 06 recoverable-pieces.
-3. Optional 10 min while you're in settings: load the 7 saved replies from
+## 4. Discord — NEW SERVER (id `1531911987074957442`). The bot is built; this is now approval + ~10 min of portal clicking.
+`tools/workbench/discord/workbench_discord.py` provisions the forum, the 8 tags, the
+guidelines box and the posts **from the repo's seed files**, and re-running it syncs drift
+instead of duplicating. It does structure only — it can never reply, react, DM, mention
+anyone, or post `00-announcement.md` (hardcoded denylist, no flag). Setup walkthrough:
+`Lumberjacks/docs/workbench/discord/09-discord-bot-setup.md`.
+
+1. **~10 min, one time:** create the app + token, put the token in
+   `%USERPROFILE%\.baseline\workbench-discord.token`, invite the bot with the URL from
+   `workbench_discord.py invite --app-id ...` (minimum permissions — no admin).
+2. **Approve the dry run.** Pre-generated, no token needed:
+   [`tools/workbench/discord/receipts/2026-07-29-plan-offline.md`](tools/workbench/discord/receipts/2026-07-29-plan-offline.md)
+   — exact channel settings, all 8 tags, every post title/tag/length. Re-run `plan` once
+   the bot is invited to confirm against the live server, then `apply --yes`.
+   → `[ ] approved  [ ] changes:` _______________
+3. **Timing finding — this changes the order, and it applies to the manual path too:**
+   seeds 01–04 still contain `<ONEPAGER-URL>` / `<ACCESS-URL>`. Pasting them tonight (by
+   hand or by bot) would put literal placeholders — or links to a page that 404s — in
+   front of the community. The bot **blocks** those four until `/workbench` is live. So:
+   - **Tonight:** forum channel + 8 tags + required-tags + guidelines + the pinned
+     "How this works" post + "Recoverable pieces" (no links in it).
+   - **Right after item 7's deploy:** re-run with
+     `--site-base-url https://comfy-p7.duckdns.org` and the other four post themselves.
+     Preview receipt: `receipts/2026-07-29-plan-offline-after-deploy.md`.
+   Doing the whole thing after the deploy in one pass is equally fine — the server has no
+   members yet, and the run is idempotent either way.
+4. **Do NOT post `00-announcement.md`** — Batch 2, after the deploy. Now enforced in code.
+5. Optional 10 min while you're in settings: load the 7 saved replies from
    `discord/08-saved-replies.md` (or just keep that file open during batch passes).
-4. **Do NOT post `00-announcement.md` yet** — that's Batch 2, after the deploy.
-5. Paste the 6 thread URLs here (or just tell the agent):
-   - quest-picker: ______
-   - steward-view: ______
-   - community-telemetry: ______
-   - steam-join: ______
-   - how-this-works: ______
-   - recoverable: ______
-⏳ Agent then fills `discussion.href` per tool, re-renders, re-checks.
+6. ~~Paste the 6 thread URLs~~ — no longer needed. `apply` records thread ids + URLs in
+   `tools/workbench/discord/provision-state.json`.
+   ⏳ Agent reads that file, fills `discussion.href` per tool, re-renders, re-checks.
+
+*If you'd rather paste the posts by hand: the manual steps in `07-forum-tags-setup.md`
+still work, but a bot can only edit its own messages — hand-pasted posts lose the
+diff-and-update pass forever. Let the bot create them.*
 
 ## 5. Roadmap public links point into the PRIVATE baseline repo
 `valheim-volunteer-roadmap.json` `links[]` (rendered on the public /roadmap) href to
@@ -102,8 +120,9 @@ top 5 built: **announcement drafter** (journal → Discord draft skeleton, never
 first-task lens** (in the one-pager template), **Already-answered section + saved replies**,
 **feedback distiller** (`tools/workbench/distill_feedback.py` → candidate-issues journal).
 Optional touches, whenever:
-- `[ ]` 10 min: create the read-only Discord bot (`discord/09-discord-bot-setup.md`) —
-  activates the feedback distiller. Skippable until threads have traffic.
+- ✅ Superseded 2026-07-29: the read-only export bot grew into the provisioning bot in
+  item 4. Same one-time setup, same token; `workbench_discord.py export` now produces the
+  distiller's input directly (DiscordChatExporter still works if you prefer it).
 - `[ ]` Skim the portfolio's ranks 6–13 backlog — several are deliberately parked until
   your first real volunteer exists (waves, showcase, credit line).
 

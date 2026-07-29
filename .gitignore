@@ -74,6 +74,18 @@ fieldlab-session-audit/
 fieldlab/scripts/omen-client-smoke.secrets.ps1
 *.secrets.ps1
 
+# Discord bot token and any local env file. The canonical home for the token is OUTSIDE
+# this repo (%USERPROFILE%\.baseline\workbench-discord.token) and the provisioning script
+# refuses to read one from inside it - these patterns are the backstop, not the policy.
+*.token
+.env
+.env.*
+
+# Discord thread exports: real display names next to what people said. Same stance as
+# the candidate-issues journal - internal only. Keep exports outside the repo; this
+# catches the case where someone points --out at it anyway.
+workbench-exports/
+
 # Vendored metadata reader for New-ReleaseCut.ps1's artifact identity check.
 # Windows PowerShell 5.1 has no GAC entry for System.Reflection.Metadata, so the
 # check cannot load it via Add-Type -AssemblyName. These netstandard2.0 builds do
