@@ -49,6 +49,18 @@ Or run:
 .\network\mcp\etc\start-comfy-gateway.cmd
 ```
 
+`start-comfy-gateway.cmd` picks its interpreter in this order:
+
+1. `%COMFY_GATEWAY_PYTHON%`, if that environment variable is set -- point it at
+   any `python.exe` that has `mcp==1.28.1` installed.
+2. `C:\work\commandcenter\fleet-worker-node\.venv-omen\Scripts\python.exe`, if
+   that file still exists on this machine (Hearth's OMEN venv, the historical
+   default).
+3. Plain `python` on `PATH` otherwise.
+
+Whichever interpreter is selected still needs `mcp==1.28.1` installed; the env
+var only changes which interpreter is used, not the dependency requirement.
+
 ## Tools
 
 - `comfy_gateway_status`: gateway identity, providers, ledger, caller.

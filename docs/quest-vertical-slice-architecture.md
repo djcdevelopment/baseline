@@ -1,5 +1,22 @@
 # Quest vertical slice architecture
 
+> **Archive notice (added 2026-07-28):** this document was written 2026-07-02, before
+> the 2026-07-21 repo prune, and everything below this notice is left exactly as
+> originally written -- it describes the pre-prune state, not necessarily today's.
+>
+> - Layers 1-3 (source absorption -> canonical catalog contract -> player selection
+>   UI, i.e. harvest -> catalog -> picker) are live in this repo under
+>   `recipes/quest-catalogs/`.
+> - Layers 4-5 (inbound mod ingestion + trigger listening/auto-capture, i.e. quest
+>   ingestion and hit/kill trigger capture) now live in the mod at
+>   `network/mod/ComfyNetworkSense/Core/Services/QuestViewLoader.cs` and
+>   `QuestTriggerEvaluator.cs`, with tests in
+>   `network/mod/ComfyNetworkSense.Tests/`.
+> - Layers 6-7 (submission packaging + review/export bridge) were PRUNED along with
+>   the rest of `handoffs/comfy-control-surface/` referenced throughout this doc, and
+>   are recoverable from the public archive at
+>   <https://github.com/djcdevelopment/comfy/tree/main/handoffs/comfy-control-surface>.
+
 This is the first serious end-to-end build in this repo where the understanding, the
 absorption layer, the local UI, the in-game mod, and the review/export plumbing all
 locked together in one loop.
