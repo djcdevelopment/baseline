@@ -144,9 +144,14 @@ Genuinely new:
   (+ ~7 other docs) advertise the server IP as **Steam-unlisted but password-free** — any
   reader can direct-connect to the world without the invite flow. The IP itself is
   derivable from the public DNS name, so redaction is theater; the real decision is:
-  `[ ] set a Valheim server password (invite flow bakes it into the zip)  [ ] accept
-  open direct-join while the cohort is you+friends`. VM is currently stopped, so nothing
-  is joinable today — decide before the deploy brings it back up.
+  `[ ] set a Valheim server password (invite flow bakes it into the zip)  [x] accept
+  open direct-join while the cohort is you+friends`. **RESOLVED 2026-07-29 — accept open
+  direct-join, no password.** The cohort is Derek + name-known friends and this round of
+  stabilization runs on local hardware, not GCP. Nothing is joinable today regardless: the
+  P7 VM is stopped and the local host runs the Gateway only, no Valheim server. The public
+  docs describing the server as password-free are accurate as written. The Workbench
+  steam-join card now says the invite gates enrollment, not the world. Revisit at the first
+  external cohort — the same gate that makes TLS and rate limiting non-optional.
 Say **"run the cleanup batch"** for the agent-executable fixes (stale-handoff banners,
 era-1 doc banners, ~15 pruned-path link footnotes, register wording fix, START-HERE page,
 BUILDING.md, glossary) — no Derek time needed.

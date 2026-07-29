@@ -61,6 +61,14 @@ Bounded: touch only lines a session created or resolved.
 - [x] 2026-07-28 — **RESOLVED by the same flip** (links now resolve for everyone) —
   **Public roadmap `links` point into the private baseline repo.**
   (source: valheim-volunteer-roadmap.json links[])
+- [x] 2026-07-29 — **RESOLVED: accept open direct-join, no server password.** Derek's call
+  while the cohort is himself and name-known friends, and while this round of stabilization
+  runs on local hardware rather than GCP. Nothing is joinable today either way — the P7 VM
+  is stopped and no Valheim server runs on the local host, only the Gateway. The ~7 docs
+  that describe the server as Steam-unlisted but password-free are therefore accurate and
+  need no change. The Workbench's steam-join card now states the consequence a volunteer
+  would otherwise miss: the invite gates the enrollment flow, not the world. Revisit at the
+  first external cohort, which is also when TLS and rate limiting stop being optional.
 - [ ] 2026-07-29 — **Password-free direct-join is now advertised in a PUBLIC repo.**
   `infra/gcp/p7/README.md` (+ ~7 docs) state the server is Steam-unlisted but
   password-free; any reader can direct-connect without the invite flow once the VM is up
