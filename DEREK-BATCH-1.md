@@ -99,7 +99,7 @@ is MIT; baseline tools BSL 1.1). Decide the posture:
 `comfy-control/` config path while the live mod reads `comfy-network-sense/` — silent
 failure for any volunteer. Corrected in the picker + schema doc before the zip build.
 
-## 7. Deploy — ◐ LOCAL LANE CONFIRMED 2026-07-29; P7/GCP is the later lean step
+## 7. ✅ PUBLIC via the AM4 funnel 2026-07-29 — `https://am4.tail8e749c.ts.net/workbench` (root redirects there). Gallery auth intact at its deep paths (index → /gallery/). Threads + announcement are UNBLOCKED: run item 4 step 3 with `--site-base-url https://am4.tail8e749c.ts.net`. P7/GCP below stays the later step for the game world (UDP can't ride the funnel).
 **AM4 is the server/gateway for this stabilization round and every loop is verified**
 (page hash-exact, downloads hash-exact + cold-start through the wire, live telemetry via
 the kit's poller, nav sweep green, ops surface correctly fail-closed). The P7/GCP deploy
