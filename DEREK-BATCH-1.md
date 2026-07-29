@@ -52,6 +52,9 @@ instead of duplicating. It does structure only — it can never reply, react, DM
 anyone, or post `00-announcement.md` (hardcoded denylist, no flag). Setup walkthrough:
 `Lumberjacks/docs/workbench/discord/09-discord-bot-setup.md`.
 
+0. **Tick-box version of everything below:**
+   [`tools/workbench/discord/WORKBOOK.md`](tools/workbench/discord/WORKBOOK.md) — also
+   carries the paste-ready handoff block for the dashboard agent.
 1. **~10 min, one time:** create the app + token, put the token in
    `%USERPROFILE%\.baseline\workbench-discord.token`, invite the bot with the URL from
    `workbench_discord.py invite --app-id ...` (minimum permissions — no admin).
