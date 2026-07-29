@@ -84,6 +84,10 @@ fieldlab/scripts/omen-client-smoke.secrets.ps1
 *.env
 .env
 .env.*
+# Called out by name as well as by pattern: this is the Discord bot token file, it
+# landed at the repo root once, and a bare pattern is easy to miss when skimming.
+discord.env
+**/discord.env
 
 # Discord thread exports: real display names next to what people said. Same stance as
 # the candidate-issues journal - internal only. Keep exports outside the repo; this
