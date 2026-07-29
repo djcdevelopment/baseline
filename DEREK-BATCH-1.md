@@ -41,8 +41,8 @@ Open `Lumberjacks/src/Game.Gateway/Community/workbench.html` **directly in a bro
 (self-contained file, no server needed). Check:
 - The four first-wave statuses read true to you (live / local-only / dev-only / recoverable).
 - The **"not a verdict"** line (the positioning rule) sounds like you.
-- The ladder (Curious → Ran it → Fixed one thing → Contributor → Owner) — Contributor = code
-  access to that piece only; baseline stays private otherwise.
+- The ladder (Curious → Ran it → Fixed one thing → Contributor → Owner) — Contributor =
+  commit access to that piece; the repo is public now, so reading was never the gate.
 → `[ ] approved  [ ] edits needed:` _______________
 
 ## 4. ◐ Discord — PARTIALLY DONE 2026-07-29T07:31Z. `#workbench` forum is LIVE on the new server: 8 tags, required-tags ON, guidelines set, **How this works** pinned, **Recoverable pieces** posted. The four catalog threads are held until the deploy (step 3 below). Remaining: run C1 after item 7.
@@ -81,16 +81,11 @@ anyone, or post `00-announcement.md` (hardcoded denylist, no flag). Setup walkth
 still work, but a bot can only edit its own messages — hand-pasted posts lose the
 diff-and-update pass forever. Let the bot create them.*
 
-## 5. Roadmap public links point into the PRIVATE baseline repo
-`valheim-volunteer-roadmap.json` `links[]` (rendered on the public /roadmap) href to
-`github.com/djcdevelopment/baseline/...` → 404 for the public. Pre-existing.
-→ `[ ] accept for now  [ ] site-serve those docs later (backlog)  [ ] adjust links now`
+## 5. ✅ RESOLVED 2026-07-29 by the visibility flip — the repo is PUBLIC, so the roadmap's `github.com/djcdevelopment/baseline/...` links now resolve for everyone. No action left.
 
-## 6. Licensing wording tension (acknowledge only) + StewardView license
-`LICENSING.md` says "Baseline is public source" + "deployed source must remain public"
-while baseline is private. No agent action taken. The public roadmap's old "open source"
-journal wording got an appended correction + a generator guard (BSL 1.1 stated accurately).
-→ `[ ] acknowledged`
+## 6. ✅ Licensing tension RESOLVED by the flip ("Baseline is public source" is now literally true) — StewardView license still open below
+The public roadmap's old "open source" journal wording got an appended correction + a
+generator guard (BSL 1.1 stated accurately).
 
 **New finding:** `ComfyStewardView/LICENSE.md` is **proprietary/all-rights-reserved**
 ("no permission... without explicit written permission and a paid license") — but the
@@ -105,10 +100,19 @@ is MIT; baseline tools BSL 1.1). Decide the posture:
 failure for any volunteer. Corrected in the picker + schema doc before the zip build.
 
 ## 7. Deploy go/no-go (Phase 5 — ~30–45 min, agent drives)
-One image cut + promote (adds `/workbench` + `/workbench/downloads/*` routes; admitted mod
-release UNCHANGED at m30-rolecontrol), then publish `workbench.html` + zips to the P7
-roadmap mount. After this, every catalog update is a file copy — no more image builds.
-Rollback = re-pin previous image. **No terraform, no compose changes.**
+**Step 0 (new): the VM is TERMINATED — stopped since 2026-07-25 23:44 PT; the whole site
+has been down since. You start it** (agent is classifier-blocked from cloud mutations):
+```powershell
+gcloud compute instances start comfy-lumberjacks-p7 --project=lumberjacks-exp-20260711-djc --zone=us-west1-b
+```
+Wait for Gateway `/health` + the Valheim log's "Game server connected" (~1 min world
+reload). Then: one image cut + promote (adds `/workbench` + `/workbench/downloads/*`
+routes; admitted mod release UNCHANGED at m30-rolecontrol), publish `workbench.html` +
+zips to the roadmap mount, then the bot posts the four held tool threads
+(item 4 step 3). After this, every catalog update is a file copy — no more image builds.
+Rollback = re-pin previous image. **No terraform, no compose changes.** At session end:
+stop the VM again or leave it up — your lean-and-mean call, decided with item 9's
+password question.
 → `[ ] go — schedule it  [ ] hold`
 
 ## 8. Cognitive-lift portfolio — built, two optional touches
@@ -130,15 +134,19 @@ Your review brief ran as a context-starved fresh-eyes agent; annotated results (
 already-queued vs design-not-defect) in
 `docs/audit/2026-07-29-contributor-onboarding-review.md` (uncommitted, like its siblings).
 Genuinely new:
-- `[ ]` **`ENDtoEND.txt`** — 324 KB tracked raw terminal transcript at repo root, your email
-  in the banner. Untrack now? (History still holds it; full scrub only matters at a
-  visibility change.)
+- ✅ **`ENDtoEND.txt`** — RESOLVED: untracked with ZERO git history (verified
+  `git log --all` empty) — it never reached the public repo. Lives on disk only.
 - ◐ **CLA gap vs the ladder** — POSTURE RESOLVED 2026-07-29: PRs open to anyone, you are
   the sole approval gate (CONTRIBUTING.md updated); ladder stage 3 renamed
   Steward→Contributor. **Still open:** pick the legal instrument (CLA text vs DCO) before
   the first substantial external PR lands. Agent can draft either on your word.
-- `[ ]` Noted for the visibility-change gate (no action now): `infra/gcp/p7/README.md`
-  advertises the live IP as password-free + plain-HTTP.
+- `[!]` **NOW LIVE (the visibility gate fired):** the PUBLIC repo's `infra/gcp/p7/README.md`
+  (+ ~7 other docs) advertise the server IP as **Steam-unlisted but password-free** — any
+  reader can direct-connect to the world without the invite flow. The IP itself is
+  derivable from the public DNS name, so redaction is theater; the real decision is:
+  `[ ] set a Valheim server password (invite flow bakes it into the zip)  [ ] accept
+  open direct-join while the cohort is you+friends`. VM is currently stopped, so nothing
+  is joinable today — decide before the deploy brings it back up.
 Say **"run the cleanup batch"** for the agent-executable fixes (stale-handoff banners,
 era-1 doc banners, ~15 pruned-path link footnotes, register wording fix, START-HERE page,
 BUILDING.md, glossary) — no Derek time needed.

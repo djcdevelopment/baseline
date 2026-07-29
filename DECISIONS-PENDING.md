@@ -54,12 +54,21 @@ Bounded: touch only lines a session created or resolved.
   already public in several forms (asking was politeness before scraping); Derek reviewed
   and corrected misattributions players reported. "This is how the sausage is made — live
   quest data was donated by active volunteer GMs." (source: rollout plan F5, DEREK-BATCH-1 §2)
-- [ ] 2026-07-28 — **Licensing wording tension.** `LICENSING.md` says "Baseline is public
+- [x] 2026-07-28 — **RESOLVED by the 2026-07-29 visibility flip** (baseline is now PUBLIC,
+  so "Baseline is public source" is literally true) — **Licensing wording tension.** `LICENSING.md` says "Baseline is public
   source" and "the exact deployed source ... must remain public" while the baseline repo is
   private. Acknowledge/schedule; no action taken by agents. (source: rollout plan F10)
-- [ ] 2026-07-28 — **Public roadmap `links` point into the private baseline repo** (404 for
-  the public). Site-serve those docs, adjust the links, or accept until a visibility change.
-  Pre-existing; surfaced during the Workbench work. (source: valheim-volunteer-roadmap.json links[])
+- [x] 2026-07-28 — **RESOLVED by the same flip** (links now resolve for everyone) —
+  **Public roadmap `links` point into the private baseline repo.**
+  (source: valheim-volunteer-roadmap.json links[])
+- [ ] 2026-07-29 — **Password-free direct-join is now advertised in a PUBLIC repo.**
+  `infra/gcp/p7/README.md` (+ ~7 docs) state the server is Steam-unlisted but
+  password-free; any reader can direct-connect without the invite flow once the VM is up
+  (it is currently STOPPED, since 07-25). IP redaction is theater (public DNS resolves it);
+  the real call: set a Valheim server password (the invite flow can bake it into the
+  personalized zip) vs accept open direct-join while the cohort is Derek + name-known
+  friends. Decide before the deploy brings the VM back up. (source: onboarding review N3,
+  DEREK-BATCH-1 §9)
 
 ## Resolved
 
