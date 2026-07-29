@@ -75,9 +75,13 @@ fieldlab/scripts/omen-client-smoke.secrets.ps1
 *.secrets.ps1
 
 # Discord bot token and any local env file. The canonical home for the token is OUTSIDE
-# this repo (%USERPROFILE%\.baseline\workbench-discord.token) and the provisioning script
-# refuses to read one from inside it - these patterns are the backstop, not the policy.
+# this repo (%USERPROFILE%\.baseline\) and the provisioning script refuses to read one
+# from inside it - these patterns are the backstop, not the policy.
+# `*.env` and not just `.env`: a token file landed at the repo root as `discord.env` on
+# 2026-07-29, which `.env` does not match, and this repo's automation commits and pushes
+# on its own. Nothing tracked matches these patterns.
 *.token
+*.env
 .env
 .env.*
 
