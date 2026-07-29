@@ -69,6 +69,16 @@ Workbench catalog page edits follow the same shape, different commands: edit
 `npm run workbench:render` and `npm run workbench:check`. **Never hand-edit**
 a generated HTML file (`roadmap.html`, `workbench.html`).
 
+The workbench render is **two-phase** since 2026-07-29: commit the inputs
+(`workbench.json` + `scripts/workbench.mjs`) first, then render — a clean
+tree stamps `Published from <sha7>` naming that commit — then commit the
+regenerated HTML. A dirty-tree render stamps an unpublishable
+`Preview rendered …` line, and `workbench:check` fails a clean tree whose
+artifact still carries one. Guard tests: `npm run workbench:test`. Live
+destinations (Discord invite/threads, GitHub URLs, site routes, downloads):
+`npm run workbench:verify-live -- --pre-publish` — run automatically as a
+publish gate by `tools/workbench/Publish-WorkbenchAssets.ps1`.
+
 ## 3. `main` has no long-lived branches
 
 Background automation auto-commits and **force-pushes `origin/main`** for any
