@@ -1,5 +1,9 @@
 # Handoff - Lumberjacks Priority Path - 2026-07-08
 
+> **Stale handoff (redirect added 2026-07-29):** superseded by `HANDOFF-2026-07-29.md`
+> at the repo root, the current canonical handoff. This file is retained as a
+> historical record of the 2026-07-08 session and must not be used for cold pickup.
+
 ## Decision
 
 Do not make shadow movement the next gating build. It has done its job as a

@@ -69,5 +69,6 @@ Bounded: touch only lines a session created or resolved.
   (`cd5755b`).
 - [x] 2026-07-23 — A-track public visibility → **publish it** (built in the open), re-toned volunteer-facing (Derek).
 - [x] 2026-07-23 — Git automation force-pushing published `main` → **go forward, it's intended** (Derek):
-  `baseline` is a solo open-source working sample, so there are no collaborators for a history rewrite
+  `baseline` is a solo public-source (BSL 1.1) working sample *(wording corrected 2026-07-29 —
+  this entry predates the licensing-term lint)*, so there are no collaborators for a history rewrite
   to disrupt. Recorded in memory `baseline-repo-auto-commits-and-pushes-main` (ACCEPTED).

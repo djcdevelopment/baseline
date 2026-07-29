@@ -10,6 +10,9 @@ full original history preserved as the second parent of the merge commit — see
 `Lumberjacks/`-prefixed path stops at the merge boundary, which is expected
 subtree behavior, not lost history).
 
+**New here?** Read [`START-HERE.md`](START-HERE.md) next — it tags every area
+live / paused / built-not-deployed / historical, so you don't act on the wrong era.
+
 ## Repository family and licensing map
 
 [`baseline`](https://github.com/djcdevelopment/baseline) is the canonical,

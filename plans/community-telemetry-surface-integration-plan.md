@@ -206,7 +206,9 @@ Important implementation files named by the architecture:
 - `handoffs/comfy-control-surface/Core/TraceWriter.cs`
 - `handoffs/comfy-control-surface/Core/StatusFiles.cs`
 
-These should be searched for in Baseline before consulting or copying from Comfy.
+*(`comfy-control-surface` was pruned from baseline 2026-07 — these will not be found there. Recover
+from the public archive <https://github.com/djcdevelopment/comfy/tree/main/handoffs/comfy-control-surface>
+instead of searching Baseline.)*
 
 ---
 

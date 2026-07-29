@@ -106,7 +106,24 @@ Optional touches, whenever:
 - `[ ]` Skim the portfolio's ranks 6–13 backlog — several are deliberately parked until
   your first real volunteer exists (waves, showcase, credit line).
 
-## 9. Batch 2 preview (after deploy): post `00-announcement.md`, first reply pass (~30 min).
+## 9. Fresh-eyes onboarding review — 3 new items for your radar
+Your review brief ran as a context-starved fresh-eyes agent; annotated results (new vs
+already-queued vs design-not-defect) in
+`docs/audit/2026-07-29-contributor-onboarding-review.md` (uncommitted, like its siblings).
+Genuinely new:
+- `[ ]` **`ENDtoEND.txt`** — 324 KB tracked raw terminal transcript at repo root, your email
+  in the banner. Untrack now? (History still holds it; full scrub only matters at a
+  visibility change.)
+- `[ ]` **CLA gap vs the ladder**: CONTRIBUTING.md blocks PR merges (no CLA published) while
+  ladder stage 3 promises code access — needs a CLA-or-DCO call before the FIRST stage-2
+  volunteer. Agent can draft either.
+- `[ ]` Noted for the visibility-change gate (no action now): `infra/gcp/p7/README.md`
+  advertises the live IP as password-free + plain-HTTP.
+Say **"run the cleanup batch"** for the agent-executable fixes (stale-handoff banners,
+era-1 doc banners, ~15 pruned-path link footnotes, register wording fix, START-HERE page,
+BUILDING.md, glossary) — no Derek time needed.
+
+## 10. Batch 2 preview (after deploy): post `00-announcement.md`, first reply pass (~30 min).
 
 ---
 *Generated 2026-07-28/29 during the rollout session. The full plan is at

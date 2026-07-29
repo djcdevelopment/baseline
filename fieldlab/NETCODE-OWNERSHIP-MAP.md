@@ -120,5 +120,7 @@ matched by stable hash). Enforcement: two Harmony prefixes returning `false` (sk
 normally = the built-in negative control. Rollback: `[Netcode] ownershipPinEnabled=false`. Read via
 `valheim_ownership_pin_status`; the observe seam stays on to log the negative-control transfers.
 
-See `TEST-PROGRAM.md` P3, `GROUND-TRUTH.md`. Related: [[netcode-program-dashboard]],
+See `TEST-PROGRAM.md` P3, `GROUND-TRUTH.md` *(both pruned 2026-07 — fieldlab-native docs,
+recoverable at baseline pre-prune ref `57654fd`; superseded by the living roadmap, see
+`fieldlab/status/README.md`)*. Related: [[netcode-program-dashboard]],
 [[post-i0-distrust-rule]], [[kvm-elimination-guardrail]].

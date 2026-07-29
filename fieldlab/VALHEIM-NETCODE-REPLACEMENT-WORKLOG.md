@@ -1,8 +1,9 @@
 # Valheim Netcode Replacement — Worklog & Test Program
 
-> **2026-07-09 post-audit note:** state of the world lives in [GROUND-TRUTH.md](GROUND-TRUTH.md);
-> the live phased plan is [TEST-PROGRAM.md](TEST-PROGRAM.md). This file remains the ladder spine
-> (invariant definitions I0–I7 and their gates).
+> **2026-07-09 post-audit note:** state of the world lived in `GROUND-TRUTH.md`; the live phased
+> plan was `TEST-PROGRAM.md` *(both pruned 2026-07 — fieldlab-native docs, recoverable at baseline
+> pre-prune ref `57654fd`; superseded by the living roadmap, see `fieldlab/status/README.md`)*.
+> This file remains the ladder spine (invariant definitions I0–I7 and their gates).
 
 > **2026-07-11 local / 2026-07-12 UTC P7 result:** the combined GCP deployment passed
 > the live P7/I7 loopback gate on `comfy-lumberjacks-p7` in project
@@ -165,7 +166,8 @@ and I6.
 
 **Status (post-audit, 2026-07-09 evening):** the gate is **PASS** — cross-verified by the
 ground-truth audit against run artifacts, session logs, live am4 state, and docker logs (see
-`GROUND-TRUTH.md`, verdict 3). A real client↔am4-server session (14:46–14:47 UTC) produced
+`GROUND-TRUTH.md`, verdict 3 — pruned 2026-07, recoverable at baseline pre-prune ref `57654fd`).
+A real client↔am4-server session (14:46–14:47 UTC) produced
 1,154 recv + 3,846 send ZDO rows, uid/owner legible on all 5,000 detail rows. Both funnels are
 reachable and legible at runtime.
 
@@ -175,7 +177,8 @@ default, not a measurement. Therefore the "SendZDOs is JIT-inlined — settled" 
 I1 handoff is **unverified** (plausible, but the deciding counter never fired). Attaching later
 rungs at `CreateSyncList` is safe regardless — that seam is proven. The airtight re-run
 (finite `autostop`, real counters, which also genuinely settles inlining) is
-**TEST-PROGRAM.md Phase P2**.
+**TEST-PROGRAM.md Phase P2** *(TEST-PROGRAM.md pruned 2026-07, recoverable at baseline pre-prune
+ref `57654fd`)*.
 
 **Discovery (2026-07-09):** the first probe run captured a clean **zero** on all three
 funnels — because it ran in a **singleplayer world**. In the decompile, `SendZDOs` is only

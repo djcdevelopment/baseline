@@ -1,5 +1,9 @@
 # Handoff — the queue after the 2026-07-21 audit
 
+> **Stale handoff (redirect added 2026-07-29):** superseded by `HANDOFF-2026-07-29.md`
+> at the repo root, the current canonical handoff. This file is retained as a
+> historical record of the 2026-07-21 session and must not be used for cold pickup.
+
 Ten tasks, ordered. Each states **what to do**, **why it matters**, and **how you'll know it
 worked**. Every one traces to something found on 2026-07-21; nothing here is speculative.
 
