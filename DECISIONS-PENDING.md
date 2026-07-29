@@ -12,8 +12,14 @@ Bounded: touch only lines a session created or resolved.
   more. Burn memo: ~$95–115/mo, ~80% the always-on n2-highmem-2 VM, plus ~250GB orphaned
   snapshots. Options + staged commands in `infra/gcp/p7/RUNBOOK-cost-and-cycle.md`
   (agent-staged; Derek runs the gcloud — classifier blocks agent-side cloud mutations).
-  Constraint to weigh: the VM hosts the LIVE alpha Valheim server — scheduling it off
-  affects the cohort. (source: docs/audit/2026-07-25-gcp-burn-rate-review.md, Derek 2026-07-28)
+  **Direction set by Derek 2026-07-29:** local-first dev; GCP lean-and-mean tonight (lever A
+  only), full shakedown at end of night (B → E dev-backup-posture → C aggressive schedule →
+  D-prime e2 family swap only if invoiced data supports it). 2vCPU/16GB is the floor (the
+  early overspec was deliberate 800+-headless limit testing); today's "cohort" is his own 3
+  accounts + name-known friends, so downtime is a ping, not a commitment. Remaining open:
+  executing the shakedown + watching the first restart. (source:
+  docs/audit/2026-07-25-gcp-burn-rate-review.md, infra/gcp/p7/RUNBOOK-cost-and-cycle.md,
+  Derek 2026-07-28/29)
 - [ ] 2026-07-23 — **Substrate-gap policy for the adoption backlog.** Three plans rest on missing
   substrate; each needs a call (recommendations in the retro): (a) **M3-1 replay** — capture one real
   session JSONL as a fixture (piggyback a live playtest) vs. build against a labeled synthetic fixture;
