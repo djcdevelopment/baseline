@@ -38,10 +38,15 @@ today, not forgotten):
 - **Server password**, baked into the personalized zip by the invite flow.
 - **Rate limiting on the steam-join/enroll path** (none exists today; the runbook says
   so truthfully).
-- **Contributor agreement instrument enforced** — PD-1's open slot must be closed.
+- **Contributor agreement given a real review** — the instrument shipped 2026-07-29
+  ([`CLA.md`](../../CLA.md), agent-drafted under delegation; see PD-1); the gate adds
+  a counsel pass if contribution volume warrants it.
 - **Moderation / code-of-conduct posture** for the forum.
 - **Telemetry retention & deletion posture** beyond the aggregates-only v0 API.
-- **Security disclosure response promise** (channel decision tracked in the register).
+- **Security disclosure SLA re-checked** — [`SECURITY.md`](../../SECURITY.md) is live
+  (GitHub private vulnerability reporting, enabled 2026-07-29, plus the tagged
+  mailbox); the gate re-validates the solo-maintainer response promise against real
+  traffic.
 - **Prod backup cadence re-armed** (cost runbook lever E's re-arm rule).
 - **Duty-cycle courtesy upgraded** from "ping the friends" to real service hours
   (cost runbook lever C's "loud version" warning).

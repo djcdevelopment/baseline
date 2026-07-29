@@ -15,15 +15,30 @@ on maintainer approval alone.
 
 Baseline uses a public community license (BSL 1.1) and may also offer separate
 commercial licenses. To preserve that model, a **substantive** copyrightable
-contribution (code, documentation, art) still needs the licensing side agreed before
-merge — the formal contributor agreement text (CLA or DCO) is not yet published, so
-until it ships:
+contribution (code, documentation, art) needs the licensing side agreed before merge:
 
-- for anything substantial, contact `licensing@djcdevelopment.com` (or ask in the
-  tool's Workbench thread) *before* investing serious effort, so the licensing
-  conversation happens before the work does;
-- merge of substantial third-party work remains at the maintainer's discretion until
-  the agreement and acceptance workflow exist.
+- **sign the [Contributor License Agreement](CLA.md)** — one sentence in your first
+  PR description (or an email); the maintainer records it in
+  [`docs/legal/cla-signatures.md`](docs/legal/cla-signatures.md) at merge. Trivial
+  fixes can be waived at the maintainer's discretion.
+- for anything substantial, contacting `licensing@djcdevelopment.com` (or the tool's
+  Workbench thread) *before* investing serious effort is still the recommended first
+  move — the licensing conversation is cheaper before the work than after.
+
+## AI-assisted contributions
+
+This project is built by one human directing many AI agents, so AI-assisted work is
+welcome here — under the same honesty bar the project holds itself to: disclose
+appreciable AI-generated material (see the representations below), understand and
+stand behind every line you sign, and expect to be judged on verification (tests,
+repro steps, receipts) rather than tooling. A PR its author cannot answer questions
+about will be declined. Rationale:
+[PD-1](docs/decisions/pd-1-governance-and-contributions.md).
+
+## Security issues
+
+Do not open a public issue for a suspected vulnerability — see
+[SECURITY.md](SECURITY.md) for the private reporting path and what to expect.
 
 ## Contributor representations
 

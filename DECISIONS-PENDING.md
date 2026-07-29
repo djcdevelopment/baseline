@@ -11,37 +11,30 @@ to runbooks/checklists, plans to handoffs, blocked work to the backlog.
 
 ## Open
 
-- [ ] 2026-07-29 — **Contributor agreement instrument: CLA vs DCO.** Due before the first
-  substantial external PR (PD-1's open slot; equivalently the First Stranger gate, for
-  code). Standing recommendation: lightweight click-through CLA, trivial/docs PRs exempt
-  — "we sell licenses, so we must own the tree." Interim rights bridge already in
-  CONTRIBUTING. (source: [PD-1](docs/decisions/pd-1-governance-and-contributions.md))
-- [ ] 2026-07-29 — **Security disclosure path.** The 36h audit is public (committed
-  `92445fb`, repo public) and enumerates the MEDs — timing-unsafe key comparisons,
-  unauthenticated internal endpoints — but there is no SECURITY.md or private-report
-  channel. Pick the channel (GitHub private vulnerability reporting vs a mailbox à la
-  licensing@) + a response promise; agent drafts SECURITY.md on the word. (source:
-  docs/audit/2026-07-24-independent-36h-audit.md; review 2026-07-29)
-- [ ] 2026-07-29 — **Audit findings disposition.** Each public 36h-audit MED needs an
-  explicit accepted-risk vs fix-by-gate call (timing-unsafe comparisons, unauth internal
-  endpoints, floating base-image tags, zero Companion test coverage). Findings without
-  dispositions are decisions made silently by default. Natural gate for most:
-  [First Stranger](docs/decisions/pd-2-security-posture-first-stranger-gate.md).
-  (source: docs/audit/2026-07-24-independent-36h-audit.md)
-- [ ] 2026-07-29 — **AI-contribution acceptance bar.** CONTRIBUTING already requires
-  disclosure of appreciable AI-generated material; undecided is the maintainer-side
-  workflow — what provenance is requested, and when disclosure gates merge. Decide
-  before the first disclosed-AI PR arrives (deciding after is deciding under pressure).
-  (source: CONTRIBUTING.md; 36h-audit provenance finding)
-- [ ] 2026-07-29 — **Public reply-cadence commitment.** `e5b0089` trimmed reply-rhythm
-  promises to match reality; the affirmative half — what cadence is sustainable solo,
-  stated once publicly (e.g. batch passes 2×/week) — is unmade. Converts a burnout
-  vector into a managed expectation. (source: e5b0089; CONTRIBUTING "days, not minutes")
-- [ ] 2026-07-29 — **Posted-content URL migration at P7 cutover.** The live threads +
-  announcement carry the AM4 funnel URL; the cutover changes the public origin.
-  Bot-created posts are re-syncable by design — decide that the cutover checklist
-  includes a `--site-base-url` re-sync pass, plus a manual edit of the human-posted
-  announcement. (source: DEREK-BATCH-1 §4/§7)
+- [x] 2026-07-29 — **Delegation event.** Derek delegated the six entries below as
+  future-facing ("we're still building"); the agent decided + documented each against
+  the license, capacity (one human + 16 agents), and near-term goals. Rubber stamp
+  recorded in each home; **circle back at the
+  [First Stranger gate](docs/decisions/pd-2-security-posture-first-stranger-gate.md)'s
+  first firing** ("after first alpha tester is live or when someone asks about
+  contributing").
+- [x] 2026-07-29 — **Contributor agreement instrument** → lightweight CLA v1.0
+  ([`CLA.md`](CLA.md) + [signature ledger](docs/legal/cla-signatures.md)); why in
+  [PD-1](docs/decisions/pd-1-governance-and-contributions.md).
+- [x] 2026-07-29 — **Security disclosure path** → GitHub private vulnerability
+  reporting (enabled 2026-07-29) primary, `[SECURITY]`-tagged mailbox fallback;
+  promises in [`SECURITY.md`](SECURITY.md).
+- [x] 2026-07-29 — **Audit findings disposition** → recorded per finding in
+  [`docs/audit/2026-07-29-findings-disposition.md`](docs/audit/2026-07-29-findings-disposition.md).
+- [x] 2026-07-29 — **AI-contribution acceptance bar** → symmetric, disclosure-based;
+  the *what* in [CONTRIBUTING.md](CONTRIBUTING.md), the *why* in
+  [PD-1](docs/decisions/pd-1-governance-and-contributions.md).
+- [x] 2026-07-29 — **Public reply-cadence commitment** → affirm the existing truth,
+  promise no calendar: batch rhythm, days not minutes (already in CONTRIBUTING);
+  deliberately no fixed schedule while the army is one human. Revisit at the gate.
+- [x] 2026-07-29 — **Posted-content URL migration at P7 cutover** → yes: bot re-sync
+  pass + manual announcement edit, written into the cutover checklist
+  (DEREK-BATCH-1 §7).
 - [x] 2026-07-29 — **GCP spend + cycle time** → direction set by Derek 2026-07-29
   (local-first dev; lean levers A → B → E → C → D-prime; 2vCPU/16GB is the floor). What
   remains is execution, not decision — operator keyboard time tracked in

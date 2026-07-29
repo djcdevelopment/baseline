@@ -117,6 +117,10 @@ reload). Then: one image cut + promote (adds `/workbench` + `/workbench/download
 routes; admitted mod release UNCHANGED at m30-rolecontrol), publish `workbench.html` +
 zips to the roadmap mount, then the bot posts the four held tool threads
 (item 4 step 3). After this, every catalog update is a file copy — no more image builds.
+**URL migration (decided 2026-07-29, delegated):** in the same cutover session, re-run
+the provisioning bot with the new `--site-base-url` so every bot-created post re-syncs
+to the new origin, and hand-edit the human-posted announcement's links — posted links
+must never rot.
 Rollback = re-pin previous image. **No terraform, no compose changes.** At session end:
 stop the VM again or leave it up — your lean-and-mean call, decided with item 9's
 password question.
