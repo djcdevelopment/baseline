@@ -68,7 +68,7 @@ patterns, R3: agent-automation leverage — with sources)*
 ### From R1 — solo-maintainer practices (landed)
 
 - **R1-1 Forum status tags for pre-batch triage.** Require member category tags on the
-  #workbench forum (question/bug/claiming/feature); Derek or a Stage-3 Steward applies
+  #workbench forum (question/bug/claiming/feature); Derek or a Stage-3 Contributor applies
   status tags (needs-derek/answered/resolved); batch pass filters by `needs-derek` instead
   of reading everything. Evidence: practitioner guides (no rigorous study), triage
   principle corroborated by Homebrew + External Secrets burnout docs. Build ~0.5–1h ·
@@ -107,7 +107,7 @@ patterns, R3: agent-automation leverage — with sources)*
 
 - **R2-1 Forum channel + ladder tags** (merges with R1-1): one forum post per tool tagged
   with the EXISTING ladder states (Unclaimed/Trying/Claimed/Owned) + member tags; Stage-3
-  Stewards re-tag their own tool. Timing finding: Discord cannot convert threads→forum
+  Contributors re-tag their own tool. Timing finding: Discord cannot convert threads→forum
   later — cheap NOW (zero history), expensive after threads fill.
 - **R2-2 Time-boxed test waves** via r2modman profile-code export/import (the real
   modding-world mechanism — no config hand-editing); ✅ reaction = opt-in roster; rides the

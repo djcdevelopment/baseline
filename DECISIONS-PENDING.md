@@ -41,15 +41,19 @@ Bounded: touch only lines a session created or resolved.
 - [ ] 2026-07-23 — **Web-serve `docs/alpha-expectations.md` on `/community`** (same cheap pattern as the
   data-trust page) — optional; batch with the next Gateway-facing change. (source: SESSION-RETRO-2026-07-23.md)
 
-- [ ] 2026-07-28 — **Commit `docs/audit/`?** Two independent review memos (36h audit +
-  GCP burn-rate review) sit untracked, self-marked "left uncommitted for review." Yes/no is
-  Derek's call; the GCP memo also has cost implications he hasn't read yet.
-  (source: docs/audit/, DEREK-BATCH-1)
-- [ ] 2026-07-28 — **Public comfy repo carries other people's data.** `data/raw/*.xlsx` guild
-  trackers, `data/processed/quest-picker.html` (real catalogs), `waypoints.json` (real player
-  handles) are tracked in the PUBLIC `djcdevelopment/comfy`; the Workbench rollout points
-  community attention there. Leave / prune / link-only-into-`recipes/`+`handoffs/`.
-  (source: rollout plan F5, DEREK-BATCH-1)
+- [x] 2026-07-28 — **Commit `docs/audit/`?** → **Committed** (Derek, 2026-07-29; commit
+  `92445fb` — all four files incl. the onboarding review + brief). (source: DEREK-BATCH-1 §1)
+- [x] 2026-07-29 — **PR posture** → **Open to anyone; Derek is the sole approval gate**
+  (his call, 2026-07-29). CONTRIBUTING.md updated; ladder stage 3 renamed
+  Steward→Contributor ("Steward" is overloaded on the server; the license-suite
+  "Community Steward" grant and the ComfyStewardView product name are unaffected).
+  **Still open (narrowed):** pick the legal instrument — CLA text vs DCO — before the
+  first substantial external PR. (source: Derek 2026-07-29, onboarding review N2)
+- [x] 2026-07-28 — **Public comfy repo carries other people's data.** → **Leave as-is**
+  (Derek, 2026-07-29): everyone whose info appears was talked to and knows; the data is
+  already public in several forms (asking was politeness before scraping); Derek reviewed
+  and corrected misattributions players reported. "This is how the sausage is made — live
+  quest data was donated by active volunteer GMs." (source: rollout plan F5, DEREK-BATCH-1 §2)
 - [ ] 2026-07-28 — **Licensing wording tension.** `LICENSING.md` says "Baseline is public
   source" and "the exact deployed source ... must remain public" while the baseline repo is
   private. Acknowledge/schedule; no action taken by agents. (source: rollout plan F10)

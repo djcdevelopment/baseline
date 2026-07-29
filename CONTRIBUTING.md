@@ -7,21 +7,23 @@ material you do not have permission to share.
 
 ## Code and other copyrightable contributions
 
-Baseline uses a public community license and may also offer separate
-commercial licenses. To preserve that model, a substantive third-party code,
-documentation, art, or other copyrightable contribution requires a completed
-contributor license agreement accepted by the maintainer before merge.
+**Pull requests are open to anyone with something to contribute** (posture set
+2026-07-29). The maintainer is the sole gatekeeper: every PR is reviewed and approved or
+declined by him, on the batch rhythm this project runs on — expect responses in days,
+not minutes. Small fixes, documentation corrections, and minimal reproductions can land
+on maintainer approval alone.
 
-Until the project publishes that agreement and acceptance workflow:
+Baseline uses a public community license (BSL 1.1) and may also offer separate
+commercial licenses. To preserve that model, a **substantive** copyrightable
+contribution (code, documentation, art) still needs the licensing side agreed before
+merge — the formal contributor agreement text (CLA or DCO) is not yet published, so
+until it ships:
 
-- opening a pull request does not authorize its merge;
-- maintainers may discuss or review a proposal without incorporating it;
-- factual bug reports and independently written minimal reproductions remain
-  welcome; and
-- contributors should not send large patches expecting immediate acceptance.
-
-Contact `licensing@djcdevelopment.com` before preparing a substantial
-contribution.
+- for anything substantial, contact `licensing@djcdevelopment.com` (or ask in the
+  tool's Workbench thread) *before* investing serious effort, so the licensing
+  conversation happens before the work does;
+- merge of substantial third-party work remains at the maintainer's discretion until
+  the agreement and acceptance workflow exist.
 
 ## Contributor representations
 

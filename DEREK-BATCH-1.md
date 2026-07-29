@@ -7,7 +7,7 @@ finalized by the agent after your answers. Status of the wider rollout when you 
 Workbench page, one-pagers, zips, Discord drafts) ran autonomously — this checklist is the
 gate before anything DEPLOYS or gets ANNOUNCED.
 
-## 1. Commit `docs/audit/`? — yes / no
+## 1. ✅ RESOLVED 2026-07-29 — Commit `docs/audit/`? → COMMITTED (`92445fb`, all four files incl. the onboarding review)
 Two memos sit untracked, self-marked "left uncommitted for review":
 - `docs/audit/2026-07-24-independent-36h-audit.md` — 36h/184-commit audit. One HIGH
   (terraform apply from baseline would destroy the P7 VM — already a standing memory),
@@ -20,7 +20,8 @@ Two memos sit untracked, self-marked "left uncommitted for review":
   one — it has cost implications.**
 → Decision: `[ ] commit both  [ ] commit 36h only  [ ] leave uncommitted`
 
-## 2. Public comfy repo carries other people's data — pick one
+## 2. ✅ RESOLVED 2026-07-29 — LEAVE AS-IS: everyone named was talked to and knows; data already public in several forms; misattributions corrected on player request; live quest data donated by volunteer GMs. Comfy-side pushes unnecessary.
+*(original options below, kept for the record)*
 `github.com/djcdevelopment/comfy` (PUBLIC) tracks `data/raw/*guild-tracker*.xlsx`,
 `data/processed/quest-picker.html` (real catalogs incl. member names),
 `waypoints.json` (real player handles). The Workbench points community attention there
@@ -40,11 +41,11 @@ Open `Lumberjacks/src/Game.Gateway/Community/workbench.html` **directly in a bro
 (self-contained file, no server needed). Check:
 - The four first-wave statuses read true to you (live / local-only / dev-only / recoverable).
 - The **"not a verdict"** line (the positioning rule) sounds like you.
-- The ladder (Curious → Ran it → Fixed one thing → Steward → Owner) — Steward = code
+- The ladder (Curious → Ran it → Fixed one thing → Contributor → Owner) — Contributor = code
   access to that piece only; baseline stays private otherwise.
 → `[ ] approved  [ ] edits needed:` _______________
 
-## 4. Discord (only you can): channel + threads + tags — one session covers all
+## 4. Discord — NEW SERVER created 2026-07-29 (id `1531911987074957442`); a bot task is spawned (chip pending) to provision the forum/tags/posts FROM the repo's seed files, which may shrink this section to dry-run approval only. If you'd rather do it by hand tonight, the manual steps below still work as written.
 1. Create `#workbench` as a **Forum channel** with **required tags** — exact 8-tag
    taxonomy + click-path in `Lumberjacks/docs/workbench/discord/07-forum-tags-setup.md`.
    (Timing matters: Discord can't convert threads→forum later; now is the cheap moment.)
@@ -114,9 +115,10 @@ Genuinely new:
 - `[ ]` **`ENDtoEND.txt`** — 324 KB tracked raw terminal transcript at repo root, your email
   in the banner. Untrack now? (History still holds it; full scrub only matters at a
   visibility change.)
-- `[ ]` **CLA gap vs the ladder**: CONTRIBUTING.md blocks PR merges (no CLA published) while
-  ladder stage 3 promises code access — needs a CLA-or-DCO call before the FIRST stage-2
-  volunteer. Agent can draft either.
+- ◐ **CLA gap vs the ladder** — POSTURE RESOLVED 2026-07-29: PRs open to anyone, you are
+  the sole approval gate (CONTRIBUTING.md updated); ladder stage 3 renamed
+  Steward→Contributor. **Still open:** pick the legal instrument (CLA text vs DCO) before
+  the first substantial external PR lands. Agent can draft either on your word.
 - `[ ]` Noted for the visibility-change gate (no action now): `infra/gcp/p7/README.md`
   advertises the live IP as password-free + plain-HTTP.
 Say **"run the cleanup batch"** for the agent-executable fixes (stale-handoff banners,
