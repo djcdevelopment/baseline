@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "experiment_id": "cre-e08-adaptive-presentation-replay",
+  "scenario_id": "relative-transit-bracket-floor-v2",
+  "run_id": "pure-20260725T045003Z",
+  "source_revision": "103986b",
+  "dirty_state": true,
+  "scenario_sha256": "8b405a4f838cfb618ff3b5169760a1efd6c3082206d39ea0b122c441300ad52b",
+  "normalized_input_sha256": "22b5e1f42b30a42e00e3f0aad3ce5449ca4df1bbb6d499f0920a92b31d279b35",
+  "policy": {
+    "name": "relative-transit-bracket-floor-v2",
+    "near_meters": 30,
+    "outer_meters": 64,
+    "mid_hz": 5
+  },
+  "driver": "pure",
+  "seed": 417,
+  "started_utc": "2026-07-25T04:50:04.1525638\u002B00:00",
+  "ended_utc": "2026-07-25T04:50:04.1920998\u002B00:00",
+  "duration_seconds": 0.039536,
+  "stop_result": "completed",
+  "event_counts": {
+    "presentation.adaptive_replay_result": 180
+  },
+  "invariants": [
+    {
+      "name": "adaptive_replay_outputs_remain_finite",
+      "passed": true,
+      "detail": "evaluated=180 policy/profile/pattern combinations"
+    },
+    {
+      "name": "adaptive_replay_consumes_final_sequence",
+      "passed": true,
+      "detail": "expected_final_sequence=40; loss profile always delivers the final sample"
+    },
+    {
+      "name": "adaptive_and_fixed_interpolation_do_not_extrapolate",
+      "passed": true,
+      "detail": "all interpolation factors stayed within delivered source brackets"
+    },
+    {
+      "name": "adaptive_delay_stays_inside_declared_bounds",
+      "passed": true,
+      "detail": "declared_bounds_ms=100..200"
+    },
+    {
+      "name": "adaptive_replay_does_not_smooth_teleports",
+      "passed": true,
+      "detail": "guarded_frames=0,4,3,3,4,0,1,3,3,3,0,4,3,3,4,0,3,3,3,3,0,4,3,3,4; maximum_steps=28.284,28.379,28.379,28.379,28.379,28.850,28.379,28.379,28.379,28.298,28.284,28.379,28.379,28.379,28.379,28.284,28.284,28.379,28.379,28.296,28.284,28.379,28.379,28.379,28.381"
+    }
+  ],
+  "prediction_observations": [
+    {
+      "name": "adaptive_profile_stable",
+      "observed": "stalls_chase/adaptive/fixed200=17/0/0; large_steps_chase/adaptive/fixed200=0/0/0; mean_delay_adaptive=100.0ms; mean_current_error_adaptive=1.185m"
+    },
+    {
+      "name": "adaptive_profile_three_sample_burst",
+      "observed": "stalls_chase/adaptive/fixed200=17/21/0; large_steps_chase/adaptive/fixed200=11/0/0; mean_delay_adaptive=186.0ms; mean_current_error_adaptive=2.103m"
+    },
+    {
+      "name": "adaptive_profile_isolated_burst",
+      "observed": "stalls_chase/adaptive/fixed200=17/21/0; large_steps_chase/adaptive/fixed200=2/0/0; mean_delay_adaptive=155.5ms; mean_current_error_adaptive=1.825m"
+    },
+    {
+      "name": "adaptive_profile_deterministic_jitter",
+      "observed": "stalls_chase/adaptive/fixed200=23/0/0; large_steps_chase/adaptive/fixed200=0/0/0; mean_delay_adaptive=181.5ms; mean_current_error_adaptive=2.117m"
+    },
+    {
+      "name": "adaptive_profile_periodic_loss",
+      "observed": "stalls_chase/adaptive/fixed200=17/9/0; large_steps_chase/adaptive/fixed200=0/2/0; mean_delay_adaptive=184.5ms; mean_current_error_adaptive=2.166m"
+    },
+    {
+      "name": "adaptive_candidate_gate",
+      "observed": "verdict=earns_reversible_live_ab; lower_stalls_vs_chase=True; lower_delay_vs_fixed200=True; lower_current_error_vs_fixed200=True; large_steps_not_above_chase=True"
+    },
+    {
+      "name": "adaptive_clock_contract",
+      "observed": "candidate inputs are relative arrival-minus-send deltas and sequence gaps; synchronized client clocks are not required"
+    },
+    {
+      "name": "authority_limit",
+      "observed": "the replay excludes native transform writes, Unity physics, binding cost, and human feel; passing only permits a reversible live A/B candidate"
+    }
+  ],
+  "raw_evidence_paths": [
+    "normalized-input.json",
+    "raw/events.jsonl"
+  ],
+  "normalized_decision_sha256": "358e2d5b3d8687cb4e0a74a73ca888eb3a86fe9e4084976bcb00b9cab7c0ba21",
+  "result_classification": "supported"
+}
