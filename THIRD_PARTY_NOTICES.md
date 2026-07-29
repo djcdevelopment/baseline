@@ -35,6 +35,15 @@ relicense those dependencies.
   government attribution and confirm the status of every included asset
   before redistribution.
 
+- `recipes/quest-submission-bridge/`
+
+  Byte-exact copies recovered 2026-07-29 from the project's public comfy
+  archive (`github.com/djcdevelopment/comfy`, commit `ae81c83`), which is
+  MIT-licensed. The copies retain their MIT terms — full license text and the
+  file-by-file mapping are in `recipes/quest-submission-bridge/PROVENANCE.md`.
+  The authored additions in that directory (`PROVENANCE.md`, `.gitattributes`)
+  are project material under the root license.
+
 - `Lumberjacks/oldimages/`
 
   These image files have OpenArt-style source names but no repository license

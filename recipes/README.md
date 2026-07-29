@@ -6,7 +6,8 @@ understandable enough to use, create, and repair.
 
 The July 2026 prune removed the `rank-ladders` recipe and the `framework/`
 operating-rules kit this file used to open with. Both are recoverable from git
-history and from `C:\work\comfy`.
+history (last present at pre-prune ref `57654fd`) and from the public archive
+at [`github.com/djcdevelopment/comfy`](https://github.com/djcdevelopment/comfy).
 
 ## Available recipes
 
@@ -30,3 +31,22 @@ so the `validate.py` lines above operate on files that `harvest.py` regenerates
 (`data/raw/*-guild-tracker.xlsx`) and its rendered picker
 ([`../data/processed/quest-picker.html`](../data/processed/quest-picker.html))
 are still committed.
+
+### Quest submission bridge (raw material)
+
+[`quest-submission-bridge/`](quest-submission-bridge/) is the recovered,
+unwired back half of the Quest Submission → Review Bridge workbench tool:
+`bridge_consumer.py` and `review_inbox.py`, their fixtures, and the original
+`QUEST.md` / `PROOF.md` briefs, byte-exact from the public comfy archive.
+Provenance, license boundary, and the file-by-file mapping are in
+[`PROVENANCE.md`](quest-submission-bridge/PROVENANCE.md). It runs against its
+own fixtures today and is not wired to the live mod — that port is claiming
+task QB-1 on the workbench.
+
+```powershell
+python .\recipes\quest-submission-bridge\bridge-consumer\bridge_consumer.py .\recipes\quest-submission-bridge\bridge-consumer\mikers-demo
+python .\recipes\quest-submission-bridge\bridge-consumer\review_inbox.py .\recipes\quest-submission-bridge\bridge-consumer\mikers-demo list
+```
+
+The `bridge-review/` output folder those commands create is deliberately
+untracked.
