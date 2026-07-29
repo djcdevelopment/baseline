@@ -27,8 +27,28 @@ Bounded: touch only lines a session created or resolved.
 - [ ] 2026-07-23 — **Web-serve `docs/alpha-expectations.md` on `/community`** (same cheap pattern as the
   data-trust page) — optional; batch with the next Gateway-facing change. (source: SESSION-RETRO-2026-07-23.md)
 
+- [ ] 2026-07-28 — **Commit `docs/audit/`?** Two independent review memos (36h audit +
+  GCP burn-rate review) sit untracked, self-marked "left uncommitted for review." Yes/no is
+  Derek's call; the GCP memo also has cost implications he hasn't read yet.
+  (source: docs/audit/, DEREK-BATCH-1)
+- [ ] 2026-07-28 — **Public comfy repo carries other people's data.** `data/raw/*.xlsx` guild
+  trackers, `data/processed/quest-picker.html` (real catalogs), `waypoints.json` (real player
+  handles) are tracked in the PUBLIC `djcdevelopment/comfy`; the Workbench rollout points
+  community attention there. Leave / prune / link-only-into-`recipes/`+`handoffs/`.
+  (source: rollout plan F5, DEREK-BATCH-1)
+- [ ] 2026-07-28 — **Licensing wording tension.** `LICENSING.md` says "Baseline is public
+  source" and "the exact deployed source ... must remain public" while the baseline repo is
+  private. Acknowledge/schedule; no action taken by agents. (source: rollout plan F10)
+- [ ] 2026-07-28 — **Public roadmap `links` point into the private baseline repo** (404 for
+  the public). Site-serve those docs, adjust the links, or accept until a visibility change.
+  Pre-existing; surfaced during the Workbench work. (source: valheim-volunteer-roadmap.json links[])
+
 ## Resolved
 
+- [x] 2026-07-28 — Networking lane pause posture → **hard hold with a pin doc**
+  ([fieldlab/PINNED-networking-lane-2026-07.md](fieldlab/PINNED-networking-lane-2026-07.md));
+  no human Steam tests scheduled; effort to adoption A7 (Community Workbench). Per Derek's
+  rollout direction 2026-07-28.
 - [x] 2026-07-23 — Scope of the `/plans/` pass → **M1 only, then reassess** (Derek).
 - [x] 2026-07-23 — How to handle false-premise plans → **document the truth, don't fake substrate** (Derek).
 - [x] 2026-07-23 — Journal taxonomy for adoption commits → **added an A1–A6 adoption track**, published

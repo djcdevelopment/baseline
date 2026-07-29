@@ -1,7 +1,12 @@
 # Remaining Human Test Register
 
-Status: active  
-Last reviewed: 2026-07-24  
+> **PAUSED 2026-07-28 — the networking lane is on hard hold.** Every gate below is pinned in
+> [`fieldlab/PINNED-networking-lane-2026-07.md`](../fieldlab/PINNED-networking-lane-2026-07.md);
+> no human test is scheduled, and none should be prepped or proposed until Derek re-opens the
+> lane. The table stays as the authoritative register for when that happens.
+
+Status: paused (register retained; see banner)  
+Last reviewed: 2026-07-28  
 Controlling strategy: `plans/full-roadmap-working-strategy.md`
 
 This register exists to keep Derek out of file-transfer, deployment, log-gathering,

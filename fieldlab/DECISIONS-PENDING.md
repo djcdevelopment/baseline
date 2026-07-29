@@ -6,7 +6,9 @@ Bounded: touch only lines you created or resolved.
 
 ## Open
 
-- [ ] 2026-07-22 — **Re-confirm the co-presence ownership bug actually reproduces before deploying/arming
+- [~] 2026-07-22 — **PINNED 2026-07-28** (networking-lane hard hold — see
+  [PINNED-networking-lane-2026-07.md](PINNED-networking-lane-2026-07.md); return here on re-open):
+  **Re-confirm the co-presence ownership bug actually reproduces before deploying/arming
   the fan-out.** The 2026-07-22 live test showed the "empty world" was an autoport config boolean, not
   single-recipient starvation; delivery reached both consumers. The fan-out (`c8db19d`) is built + green
   in tests but may fix a case that isn't triggering. Test: two clients, *both* default configs (autoport
@@ -33,6 +35,15 @@ Bounded: touch only lines you created or resolved.
 *(The AoI optimization items below remain on **hard hold**; see
 [PINNED-aoi-optimization.md](PINNED-aoi-optimization.md) — **except** the multi-player-density item,
 now promoted to the active ADR 0013 track above.)*
+
+## Pinned — hard hold (2026-07-28, networking lane)
+
+The whole networking/ComfyNetworkSense lane is paused at a green machine-state:
+[PINNED-networking-lane-2026-07.md](PINNED-networking-lane-2026-07.md) holds the Wave 0 human
+gates (H0-1…H0-4), the ADR 0013 co-presence live test (+ its reproduce-first precondition above),
+the patch-load A/B benchmark run, the CRE-E08 candidate→DLL step, and the client01/02 Steam
+seeding. No human Steam test is scheduled by the pause. Effort moved to adoption track A7
+(Community Workbench).
 
 ## Pinned — hard hold (2026-07-21)
 
