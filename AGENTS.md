@@ -1,5 +1,16 @@
 # Repository working notes
 
+## TEMP RULE — expires 2026-07-29 05:00 PT (12:00 UTC) — delete this section after expiry
+
+Active while Derek is in the driver's seat tonight: **any builder session in this repo
+forgoes unit tests when there is a high likelihood the contract or seam will shortly be
+integration-tested by Derek himself.** This is a per-change judgment call, not a blanket
+skip: if Derek won't be exercising that seam soon, or the change is irreversible or
+production-critical, tests still apply. Rationale: operator-in-the-seat mode — his live
+pass IS the test tonight, and unit-test ceremony would double-pay (same mode distinction
+as the ADR 0005 amendment: heavy tape is for unattended agents). Recorded at Derek's
+instruction, 2026-07-28 evening PT.
+
 ## Lumberjacks / Valheim roadmap journal
 
 Any non-merge commit that changes the Lumberjacks cutover program under `fieldlab/`,

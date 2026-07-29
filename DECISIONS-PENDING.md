@@ -6,6 +6,14 @@ Bounded: touch only lines a session created or resolved.
 
 ## Open
 
+- [ ] 2026-07-29 — **GCP spend + cycle time: pick the lever.** Derek's read (2026-07-28
+  night): the GCP deploy is baked and predictable and the VM/Gateway limitations are well
+  marked, so the always-on posture can be revisited and his keyboard-minutes made worth
+  more. Burn memo: ~$95–115/mo, ~80% the always-on n2-highmem-2 VM, plus ~250GB orphaned
+  snapshots. Options + staged commands in `infra/gcp/p7/RUNBOOK-cost-and-cycle.md`
+  (agent-staged; Derek runs the gcloud — classifier blocks agent-side cloud mutations).
+  Constraint to weigh: the VM hosts the LIVE alpha Valheim server — scheduling it off
+  affects the cohort. (source: docs/audit/2026-07-25-gcp-burn-rate-review.md, Derek 2026-07-28)
 - [ ] 2026-07-23 — **Substrate-gap policy for the adoption backlog.** Three plans rest on missing
   substrate; each needs a call (recommendations in the retro): (a) **M3-1 replay** — capture one real
   session JSONL as a fixture (piggyback a live playtest) vs. build against a labeled synthetic fixture;
