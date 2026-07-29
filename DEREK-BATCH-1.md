@@ -45,7 +45,7 @@ Open `Lumberjacks/src/Game.Gateway/Community/workbench.html` **directly in a bro
   access to that piece only; baseline stays private otherwise.
 → `[ ] approved  [ ] edits needed:` _______________
 
-## 4. Discord — NEW SERVER (id `1531911987074957442`). The bot is built; this is now approval + ~10 min of portal clicking.
+## 4. ◐ Discord — PARTIALLY DONE 2026-07-29T07:31Z. `#workbench` forum is LIVE on the new server: 8 tags, required-tags ON, guidelines set, **How this works** pinned, **Recoverable pieces** posted. The four catalog threads are held until the deploy (step 3 below). Remaining: run C1 after item 7.
 `tools/workbench/discord/workbench_discord.py` provisions the forum, the 8 tags, the
 guidelines box and the posts **from the repo's seed files**, and re-running it syncs drift
 instead of duplicating. It does structure only — it can never reply, react, DM, mention
@@ -55,25 +55,21 @@ anyone, or post `00-announcement.md` (hardcoded denylist, no flag). Setup walkth
 0. **Tick-box version of everything below:**
    [`tools/workbench/discord/WORKBOOK.md`](tools/workbench/discord/WORKBOOK.md) — also
    carries the paste-ready handoff block for the dashboard agent.
-1. **~10 min, one time:** create the app + token, put the token in
-   `%USERPROFILE%\.baseline\workbench-discord.token`, invite the bot with the URL from
-   `workbench_discord.py invite --app-id ...` (minimum permissions — no admin).
-2. **Approve the dry run.** Pre-generated, no token needed:
-   [`tools/workbench/discord/receipts/2026-07-29-plan-offline.md`](tools/workbench/discord/receipts/2026-07-29-plan-offline.md)
-   — exact channel settings, all 8 tags, every post title/tag/length. Re-run `plan` once
-   the bot is invited to confirm against the live server, then `apply --yes`.
-   → `[ ] approved  [ ] changes:` _______________
-3. **Timing finding — this changes the order, and it applies to the manual path too:**
-   seeds 01–04 still contain `<ONEPAGER-URL>` / `<ACCESS-URL>`. Pasting them tonight (by
-   hand or by bot) would put literal placeholders — or links to a page that 404s — in
-   front of the community. The bot **blocks** those four until `/workbench` is live. So:
-   - **Tonight:** forum channel + 8 tags + required-tags + guidelines + the pinned
-     "How this works" post + "Recoverable pieces" (no links in it).
-   - **Right after item 7's deploy:** re-run with
-     `--site-base-url https://comfy-p7.duckdns.org` and the other four post themselves.
-     Preview receipt: `receipts/2026-07-29-plan-offline-after-deploy.md`.
-   Doing the whole thing after the deploy in one pass is equally fine — the server has no
-   members yet, and the run is idempotent either way.
+1. ✅ **Done.** Bot `Baseline-helper` created and authorized; token at
+   `%USERPROFILE%\.baseline\discord.env`. `whoami` green.
+2. ✅ **Done.** Dry run approved and applied — the live plan hash matched the
+   pre-approved offline receipt exactly (`6aba648cba55`), so what was read is what
+   shipped. Receipt: [`receipts/2026-07-29-plan.md`](tools/workbench/discord/receipts/2026-07-29-plan.md).
+   Thread URLs recorded in `tools/workbench/discord/provision-state.json`.
+3. ⏳ **STILL OPEN — the four catalog threads.** Seeds 01–04 contain `<ONEPAGER-URL>` /
+   `<ACCESS-URL>`; posting them before `/workbench` is live would put literal
+   placeholders, or links to a 404, in front of the community, so the bot holds them.
+   Right after item 7's deploy:
+   ```powershell
+   python tools\workbench\discord\workbench_discord.py --site-base-url https://comfy-p7.duckdns.org plan
+   ```
+   then `apply --yes --expect-plan <hash>`. Preview:
+   `receipts/2026-07-29-plan-offline-after-deploy.md`.
 4. **Do NOT post `00-announcement.md`** — Batch 2, after the deploy. Now enforced in code.
 5. Optional 10 min while you're in settings: load the 7 saved replies from
    `discord/08-saved-replies.md` (or just keep that file open during batch passes).
