@@ -4,35 +4,65 @@ One place for open decisions that need Derek. Append as
 `- [ ] <date> — <decision> (source: <link>)`; check off with a link when resolved.
 Bounded: touch only lines a session created or resolved.
 
+Lifecycle (adopted 2026-07-29): this register is a **queue, not an archive**. Resolved
+entries compress to one line + a link; rationale with lasting value graduates to
+[`docs/decisions/`](docs/decisions/README.md) — one decision, one home. Execution goes
+to runbooks/checklists, plans to handoffs, blocked work to the backlog.
+
 ## Open
 
-- [ ] 2026-07-29 — **GCP spend + cycle time: pick the lever.** Derek's read (2026-07-28
-  night): the GCP deploy is baked and predictable and the VM/Gateway limitations are well
-  marked, so the always-on posture can be revisited and his keyboard-minutes made worth
-  more. Burn memo: ~$95–115/mo, ~80% the always-on n2-highmem-2 VM, plus ~250GB orphaned
-  snapshots. Options + staged commands in `infra/gcp/p7/RUNBOOK-cost-and-cycle.md`
-  (agent-staged; Derek runs the gcloud — classifier blocks agent-side cloud mutations).
-  **Direction set by Derek 2026-07-29:** local-first dev; GCP lean-and-mean tonight (lever A
-  only), full shakedown at end of night (B → E dev-backup-posture → C aggressive schedule →
-  D-prime e2 family swap only if invoiced data supports it). 2vCPU/16GB is the floor (the
-  early overspec was deliberate 800+-headless limit testing); today's "cohort" is his own 3
-  accounts + name-known friends, so downtime is a ping, not a commitment. Remaining open:
-  executing the shakedown + watching the first restart. (source:
-  docs/audit/2026-07-25-gcp-burn-rate-review.md, infra/gcp/p7/RUNBOOK-cost-and-cycle.md,
-  Derek 2026-07-28/29)
+- [ ] 2026-07-29 — **Contributor agreement instrument: CLA vs DCO.** Due before the first
+  substantial external PR (PD-1's open slot; equivalently the First Stranger gate, for
+  code). Standing recommendation: lightweight click-through CLA, trivial/docs PRs exempt
+  — "we sell licenses, so we must own the tree." Interim rights bridge already in
+  CONTRIBUTING. (source: [PD-1](docs/decisions/pd-1-governance-and-contributions.md))
+- [ ] 2026-07-29 — **Security disclosure path.** The 36h audit is public (committed
+  `92445fb`, repo public) and enumerates the MEDs — timing-unsafe key comparisons,
+  unauthenticated internal endpoints — but there is no SECURITY.md or private-report
+  channel. Pick the channel (GitHub private vulnerability reporting vs a mailbox à la
+  licensing@) + a response promise; agent drafts SECURITY.md on the word. (source:
+  docs/audit/2026-07-24-independent-36h-audit.md; review 2026-07-29)
+- [ ] 2026-07-29 — **Audit findings disposition.** Each public 36h-audit MED needs an
+  explicit accepted-risk vs fix-by-gate call (timing-unsafe comparisons, unauth internal
+  endpoints, floating base-image tags, zero Companion test coverage). Findings without
+  dispositions are decisions made silently by default. Natural gate for most:
+  [First Stranger](docs/decisions/pd-2-security-posture-first-stranger-gate.md).
+  (source: docs/audit/2026-07-24-independent-36h-audit.md)
+- [ ] 2026-07-29 — **AI-contribution acceptance bar.** CONTRIBUTING already requires
+  disclosure of appreciable AI-generated material; undecided is the maintainer-side
+  workflow — what provenance is requested, and when disclosure gates merge. Decide
+  before the first disclosed-AI PR arrives (deciding after is deciding under pressure).
+  (source: CONTRIBUTING.md; 36h-audit provenance finding)
+- [ ] 2026-07-29 — **Public reply-cadence commitment.** `e5b0089` trimmed reply-rhythm
+  promises to match reality; the affirmative half — what cadence is sustainable solo,
+  stated once publicly (e.g. batch passes 2×/week) — is unmade. Converts a burnout
+  vector into a managed expectation. (source: e5b0089; CONTRIBUTING "days, not minutes")
+- [ ] 2026-07-29 — **Posted-content URL migration at P7 cutover.** The live threads +
+  announcement carry the AM4 funnel URL; the cutover changes the public origin.
+  Bot-created posts are re-syncable by design — decide that the cutover checklist
+  includes a `--site-base-url` re-sync pass, plus a manual edit of the human-posted
+  announcement. (source: DEREK-BATCH-1 §4/§7)
+- [x] 2026-07-29 — **GCP spend + cycle time** → direction set by Derek 2026-07-29
+  (local-first dev; lean levers A → B → E → C → D-prime; 2vCPU/16GB is the floor). What
+  remains is execution, not decision — operator keyboard time tracked in
+  `infra/gcp/p7/RUNBOOK-cost-and-cycle.md` (watch the first restart once). Posture
+  revisit at the [First Stranger gate](docs/decisions/pd-2-security-posture-first-stranger-gate.md).
 - [ ] 2026-07-23 — **Substrate-gap policy for the adoption backlog.** Three plans rest on missing
   substrate; each needs a call (recommendations in the retro): (a) **M3-1 replay** — capture one real
   session JSONL as a fixture (piggyback a live playtest) vs. build against a labeled synthetic fixture;
   (b) **M6-2 signing** — write the honest threat-model doc now and defer building keyed signing vs.
   build real crypto signing; (c) **M4 lab** — do M4-1 inventory now and gate M4-2/3/4 on whether a
   turnkey demo is imminent. (source: fieldlab/retro/SESSION-RETRO-2026-07-23.md)
-- [ ] 2026-07-23 — **M2-2 decision-provenance** (net48 hot-path trace + tests): take it next, or defer.
-  It's the only remaining M2 item and needs its own build/test cycle. (source: SESSION-RETRO-2026-07-23.md)
-- [ ] 2026-07-23 — **Next milestone pick.** Recommendation: **M3-2 tradeoff cards** (unblocked by the
-  M2-1 knob inventory, offloads cleanly, no substrate decision) over M2-2. (source: SESSION-RETRO-2026-07-23.md)
-- [ ] 2026-07-23 — **Adoption/process ADR home.** Netcode ADRs are scoped to the netcode-replacement
-  program (`fieldlab/docs/adr/`); adoption/process decisions currently land only in retro + memory +
-  this register. Do they need their own ADR track, or is this enough? (source: SESSION-RETRO-2026-07-23.md)
+- [x] 2026-07-23 — **M2-2 decision-provenance: take or defer** → RECLASSIFIED 2026-07-29:
+  a priority ranking, not a decision (register lifecycle). Re-rank at adoption-lane
+  resume; don't pre-commit from the 07-23 snapshot. (source: review 2026-07-29)
+- [x] 2026-07-23 — **Next milestone pick** → RECLASSIFIED 2026-07-29, same treatment: the
+  07-23 M3-2 recommendation predates the Workbench pivot; re-rank at adoption-lane
+  resume. (source: review 2026-07-29)
+- [x] 2026-07-23 — **Adoption/process ADR home** → RESOLVED 2026-07-29: no second ADR
+  track. The registers + retros + the
+  [docs/decisions/ promotion path](docs/decisions/README.md) are the record. Revisit at
+  the second regular contributor. (source: Derek 2026-07-29)
 - [ ] 2026-07-23 — **Residue backfills** (`docs/residue/gm-a`, `gm-b`) need Derek's real GM-session
   recall (or a VOD to draft from); they ship as honest placeholders until then. (source: docs/residue/)
 - [ ] 2026-07-23 — **`--redact` log-tail toggle** (mask `playerId`/`owner_id`/names in the noisy tails
@@ -43,12 +73,9 @@ Bounded: touch only lines a session created or resolved.
 
 - [x] 2026-07-28 — **Commit `docs/audit/`?** → **Committed** (Derek, 2026-07-29; commit
   `92445fb` — all four files incl. the onboarding review + brief). (source: DEREK-BATCH-1 §1)
-- [x] 2026-07-29 — **PR posture** → **Open to anyone; Derek is the sole approval gate**
-  (his call, 2026-07-29). CONTRIBUTING.md updated; ladder stage 3 renamed
-  Steward→Contributor ("Steward" is overloaded on the server; the license-suite
-  "Community Steward" grant and the ComfyStewardView product name are unaffected).
-  **Still open (narrowed):** pick the legal instrument — CLA text vs DCO — before the
-  first substantial external PR. (source: Derek 2026-07-29, onboarding review N2)
+- [x] 2026-07-29 — **PR posture** → open to anyone, Derek sole approval gate; rationale
+  promoted to [PD-1](docs/decisions/pd-1-governance-and-contributions.md). The
+  instrument (CLA vs DCO) is its own open entry above.
 - [x] 2026-07-28 — **Public comfy repo carries other people's data.** → **Leave as-is**
   (Derek, 2026-07-29): everyone whose info appears was talked to and knows; the data is
   already public in several forms (asking was politeness before scraping); Derek reviewed
@@ -61,22 +88,13 @@ Bounded: touch only lines a session created or resolved.
 - [x] 2026-07-28 — **RESOLVED by the same flip** (links now resolve for everyone) —
   **Public roadmap `links` point into the private baseline repo.**
   (source: valheim-volunteer-roadmap.json links[])
-- [x] 2026-07-29 — **RESOLVED: accept open direct-join, no server password.** Derek's call
-  while the cohort is himself and name-known friends, and while this round of stabilization
-  runs on local hardware rather than GCP. Nothing is joinable today either way — the P7 VM
-  is stopped and no Valheim server runs on the local host, only the Gateway. The ~7 docs
-  that describe the server as Steam-unlisted but password-free are therefore accurate and
-  need no change. The Workbench's steam-join card now states the consequence a volunteer
-  would otherwise miss: the invite gates the enrollment flow, not the world. Revisit at the
-  first external cohort, which is also when TLS and rate limiting stop being optional.
-- [ ] 2026-07-29 — **Password-free direct-join is now advertised in a PUBLIC repo.**
-  `infra/gcp/p7/README.md` (+ ~7 docs) state the server is Steam-unlisted but
-  password-free; any reader can direct-connect without the invite flow once the VM is up
-  (it is currently STOPPED, since 07-25). IP redaction is theater (public DNS resolves it);
-  the real call: set a Valheim server password (the invite flow can bake it into the
-  personalized zip) vs accept open direct-join while the cohort is Derek + name-known
-  friends. Decide before the deploy brings the VM back up. (source: onboarding review N3,
-  DEREK-BATCH-1 §9)
+- [x] 2026-07-29 — **Accept open direct-join, no server password** (pre-gate posture);
+  rationale + due-list promoted to
+  [PD-2](docs/decisions/pd-2-security-posture-first-stranger-gate.md). Revisit trigger
+  is the First Stranger gate, defined there.
+- [x] 2026-07-29 — ~~Password-free direct-join advertised in a PUBLIC repo~~ → duplicate
+  of the entry above; resolved the same way, canonical home
+  [PD-2](docs/decisions/pd-2-security-posture-first-stranger-gate.md).
 
 ## Resolved
 

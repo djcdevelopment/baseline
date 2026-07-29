@@ -1,15 +1,14 @@
 # Repository working notes
 
-## TEMP RULE — expires 2026-07-29 05:00 PT (12:00 UTC) — delete this section after expiry
+## Decision lifecycle
 
-Active while Derek is in the driver's seat tonight: **any builder session in this repo
-forgoes unit tests when there is a high likelihood the contract or seam will shortly be
-integration-tested by Derek himself.** This is a per-change judgment call, not a blanket
-skip: if Derek won't be exercising that seam soon, or the change is irreversible or
-production-critical, tests still apply. Rationale: operator-in-the-seat mode — his live
-pass IS the test tonight, and unit-test ceremony would double-pay (same mode distinction
-as the ADR 0005 amendment: heavy tape is for unattended agents). Recorded at Derek's
-instruction, 2026-07-28 evening PT.
+Open decisions queue in `DECISIONS-PENDING.md` (root; fieldlab keeps its own).
+**Registers are queues, not archives:** a resolved entry is one line + a link, and
+rationale with lasting value graduates to a Project Decision doc under
+[`docs/decisions/`](docs/decisions/README.md). **One decision, one home** — link the
+canonical doc, never restate its rationale. Execution steps belong in
+runbooks/checklists, plans in handoffs, blocked work in the backlog — not in the
+registers. (Adopted 2026-07-29.)
 
 ## Lumberjacks / Valheim roadmap journal
 
