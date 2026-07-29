@@ -99,9 +99,16 @@ is MIT; baseline tools BSL 1.1). Decide the posture:
 `comfy-control/` config path while the live mod reads `comfy-network-sense/` — silent
 failure for any volunteer. Corrected in the picker + schema doc before the zip build.
 
-## 7. Deploy go/no-go (Phase 5 — ~30–45 min, agent drives)
-**Step 0 (new): the VM is TERMINATED — stopped since 2026-07-25 23:44 PT; the whole site
-has been down since. You start it** (agent is classifier-blocked from cloud mutations):
+## 7. Deploy — ◐ LOCAL LANE CONFIRMED 2026-07-29; P7/GCP is the later lean step
+**AM4 is the server/gateway for this stabilization round and every loop is verified**
+(page hash-exact, downloads hash-exact + cold-start through the wire, live telemetry via
+the kit's poller, nav sweep green, ops surface correctly fail-closed). The P7/GCP deploy
+below happens when you take it back to the cloud, lean-and-mean; the threads + announcement
+wait for the PUBLIC site either way (AM4 is tailnet-only — its URLs mean nothing to the
+community).
+
+**P7 step 0 (when that day comes): the VM is TERMINATED — stopped since 2026-07-25 23:44
+PT. You start it** (agent is classifier-blocked from cloud mutations):
 ```powershell
 gcloud compute instances start comfy-lumberjacks-p7 --project=lumberjacks-exp-20260711-djc --zone=us-west1-b
 ```
