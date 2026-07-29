@@ -159,3 +159,141 @@ notices cross-refs). This retro drafted frontier by doctrine (whole-conversation
 Discord apply ran only after Derek's explicit "approve", pinned to plan hash `ba37ecab31d2`.
 The exporter packaging remains staged-but-uncommitted in comfy behind the classifier block —
 Derek's to land.
+
+---
+
+# Addendum — second session (decision lifecycle & delegated governance)
+
+## One-line
+**Turned the decision backlog into a governed system** — a review pass found that most
+"pending decisions" weren't decisions at all, Derek adopted the lifecycle it implied
+(registers are queues, one decision one home, the named First Stranger gate), and then
+delegated the six real ones — CLA, disclosure, audit dispositions, AI bar, cadence, URL
+migration — which now exist as shipped, rubber-stamped artifacts with one circle-back trigger.
+
+## What this session was
+A **review-then-govern** session, no product code. It started as a status pickup ("where are
+we at?"), became a decision grid with recommendations, then a meta-review of that grid at
+Derek's ask — and the meta-review's structural finding (only 4 of 12 items were true
+decisions; the rest were tasks, approvals, and priority rankings wearing decision costumes)
+became the session's actual product. Derek endorsed the lifecycle, staged the scope
+deliberately (PD-1 + PD-2 only, no hierarchy before need, "one decision, one home"), and
+then delegated the six registered future-facing calls with criteria, a rubber stamp, and a
+circle-back ("we are a development army of one human and 16 agents").
+
+## What shipped
+
+| Commit | What |
+|---|---|
+| `22f7f60` | `docs/decisions/` born: README (lifecycle + species table), PD-1 governance, PD-2 First Stranger gate; register realigned (one-liner resolutions, two stale rankings reclassified, duplicate closed, six true decisions registered); AGENTS.md sheds the expired TEMP RULE per its own instruction and states the lifecycle; cost-runbook wording pointed at the named gate |
+| `9fe12f1` | The delegated batch decided + shipped: `CLA.md` v1.0 + signature ledger, `SECURITY.md`, `docs/audit/2026-07-29-findings-disposition.md` (every public finding now carries a disposition), AI-contribution bar in CONTRIBUTING + PD-1, reply-cadence posture, cutover URL re-sync step in DEREK-BATCH-1 §7 |
+| *(this commit)* | This retro addendum |
+
+Off-ledger but load-bearing: **GitHub private vulnerability reporting enabled** on the repo
+via `gh api` (verified `{"enabled":true}`) — a repo-settings mutation recorded here, in
+SECURITY.md, and in the register; and the live roadmap page republished twice, served body
+sha256-equal to the local render both times.
+
+## The team retro — our collaboration across the seats
+
+**Architect (Claude proposed, Derek shaped).** The load-bearing design came out of the
+meta-review: the species split (decision / execution / plan / blocked work, each with its own
+home), durable principles over perishable rationales, and one named trigger replacing five
+scattered wordings. Derek's shaping was the part that will age best — staging to two PDs
+("don't create another documentation hierarchy before the project actually needs it") and
+adding "one decision, one home." *What to change:* nothing structural; the promotion rule
+gets its first real test when PD-3 earns its way into existence.
+
+**Implementer (Claude).** The register realignment stayed inside its own bounded rule —
+touch only lines created or resolved — and both commits ran the full ceremony cleanly. The
+delegated batch mapped each call to the stated criteria (license, capacity, near-term goals)
+rather than to generic best practice: that's why the CLA is a sentence-plus-ledger instead of
+a bot, and why SECURITY.md promises days, not minutes. *What to change:* audit the repo
+before registering gaps — CONTRIBUTING already carried a proto-CLA ("use *and relicense*")
+and LICENSING.md had already pinned the Change License, so two candidate "missing decisions"
+were partly settled before they were filed. One mechanical note: a four-line Edit anchor
+failed on an em-dash-adjacent mismatch; the two-line anchor landed — prefer short anchors.
+
+**Reviewer / QA (Claude on Claude, at Derek's ask).** The meta-review was the QA pass, and
+turning it on my own grid caught a real overclaim: I'd written "the pin forces the synthetic
+fixture" when the pin bans netcode Steam tests, not all play — the fixture could ride any
+session that happens anyway. The offload draft then garbled that same correction in the
+retelling (inverted its direction), which is exactly why drafts get graded against the
+factsheet. *What to change:* the grid's first draft filed tasks as decisions — the very
+disease the review then named; classify before recommending, not after.
+
+**Operator / SRE (Claude).** Three small potholes, all now known lanes: `gh api` under Git
+Bash rewrites a leading-slash endpoint into a filesystem path (omit the slash — the error
+message says so and is right); the AM4 roadmap mount is root-owned so plain `scp` overwrite
+is denied (`sudo -n install -m 0644` from /tmp is the lane); the gateway answers GET only, so
+liveness is proven by GET-body sha equality, not HEAD. The HEARTH door behaved: one flash
+call, `tokens_out` 998, complete document with the `max_tokens` cap omitted — the morning's
+root-cause holds. The Skill tool couldn't resolve this very retro skill by either name;
+reading `SKILL.md` directly and following it manually was the fallback.
+
+**Product / planning (Derek).** Six future-facing calls closed in one delegated batch, each
+with its why on file and a single revisit trigger — the register queue is now genuinely short
+(the substrate trio and parked task items). The delegation mode itself is the product
+insight: at army-of-one-plus-16-agents scale, the operator's leverage is auditing decisions
+in one sitting at the gate, not making each one in real time. *What to change:* nothing yet;
+the gate's first firing is the test.
+
+## Two seats, two views
+
+**From Claude's seat.** The most useful thing I did was disagree with myself in public — the
+meta-review demoted eight of my own twelve grid items and caught my own overclaim, and that
+honesty is what made the delegation trustworthy an hour later. Where the delegated batch
+could have gone wrong was fabricating authority: the CLA says in its own text that it's
+agent-drafted, operator-ratified, and not yet counsel-reviewed, because a stranger reading it
+deserves to know. Where I under-reached: the initial grid leaned on perishable rationales
+(dollar figures, vendor precedents) until the review named the pattern.
+
+**From Derek's seat (my reconstruction — correct me).** "The classification rule is the
+keeper — that single split will keep the register healthy for years. The PDs are small and
+linked, not a new bureaucracy, which is the only way I'd accept them. Delegating the six was
+the right use of the 16-agent side: they're all reversible-enough, the why is written down,
+and I audit the whole batch once at the gate instead of context-switching six times now. The
+CLA admitting it hasn't seen a lawyer is the right kind of honest — it invites the
+conversation instead of faking the authority."
+
+## Last time's lessons — follow-through (morning retro, same day)
+| Lesson | Status |
+|---|---|
+| `L-2026-07-29-1` — prove bytes with shas, never narrative | **acted-on** (both republishes verified local = remote = served-body sha) |
+| `L-2026-07-29-2` — omit `max_tokens` on thinking rungs | **acted-on** (this retro's offload: cap omitted, 998 tokens, complete; no clip) |
+| `L-2026-07-29-3` — pave the path, don't do the claiming task | **n/a** (no recovery work this session) |
+| `L-2026-07-29-4` — never commit nondeterministic goldens | **n/a** |
+| `L-2026-07-29-5` — when the harness blocks, surface it | **n/a strictly**; nearest analogs handled in its spirit (Skill resolution failure → read the file and said so; the one settings mutation done openly under delegation and reported) |
+
+## Lessons learned
+6. **`L-2026-07-29-6` — Classify before you decide.** Of twelve "pending decisions," eight
+   were tasks, approvals, or priority rankings. Species first (decision / execution / plan /
+   blocked), then homes (register / runbook / handoff / backlog); only decisions queue in the
+   register. → **doc** (encoded in `docs/decisions/README.md`).
+7. **`L-2026-07-29-7` — Write rationale in principles that outlive their numbers.** "We sell
+   licenses, so we must own the tree" beats a vendor-precedent citation; "stopped is the
+   default; running is booked" beats a burn figure. Perishable rationales rot into
+   re-litigation. → **practice** (the PDs are written this way).
+8. **`L-2026-07-29-8` — Name a shared trigger once.** Five docs restated "a real external
+   cohort" in five wordings; that's how trigger drift happens. The First Stranger gate is one
+   definition, one due-list, referenced by name. → **practice** (PD-2 is the encoding).
+9. **`L-2026-07-29-9` — Delegated decisions need three things in the artifact itself:** the
+   why against the stated criteria, an explicit rubber-stamp note, and a named circle-back
+   trigger — plus provenance honesty (agent-drafted, operator-ratified, counsel-pending)
+   where a stranger will read it. → **memory** (`derek-decision-lifecycle`, delegation
+   precedent).
+10. **`L-2026-07-29-10` — Verify the repo before registering a gap.** Two candidate missing
+    decisions were already partly settled in-repo; reading CONTRIBUTING/LICENSING first
+    shrank the decision surface, and the same read-first habit caught the pin overclaim.
+    → **practice.**
+
+## Provenance
+Git range `d8337dc..9fe12f1` (2 commits) plus this retro commit; all lived this session, no
+reconstruction. Offload per doctrine: one `gcp-gemini` flash call drafted the timeline,
+implementer/operator seat first-passes, and candidate lessons (`tokens_out` 998,
+`routed_by pinned:gcp-gemini`, cap omitted per `L-2026-07-29-2`); **edit verdict:
+minor-fixes** — it inverted the pin-overclaim correction and imported "ADR pipeline / task
+board" vocabulary this repo doesn't use; both fixed against the factsheet. Architect,
+Reviewer, Product seats and both views drafted frontier (whole-conversation judgment). No
+`--fleet` second opinion dispatched. The `.docx` at repo root belongs to another agent's
+in-flight session and was deliberately untouched.
