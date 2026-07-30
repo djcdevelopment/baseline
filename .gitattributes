@@ -1,0 +1,39 @@
+# Line endings for bytes that are load-bearing.
+#
+# The repo had no .gitattributes, so with core.autocrlf=true (the default on
+# Derek's Windows checkouts) git rewrote LF to CRLF on checkout for everything.
+# For most sources that is harmless. For two classes of file it is not:
+#
+#   1. Generated artifacts that get HASHED and PUBLISHED. workbench.html is
+#      sha256'd and compared against the live X-Workbench-Sha256 header by
+#      scripts/workbench-verify-live.mjs, which reads the local file as a raw
+#      Buffer. A CRLF working copy makes that check report a false mismatch
+#      against a deployment that is byte-correct — measured 2026-07-30: raw
+#      local 2bb23be9…, LF-normalized 976f51cc…, and 976f51cc… is exactly what
+#      AM4 was serving. A false "stale" reading invites an unnecessary
+#      republish and, worse, teaches the operator to distrust a passing gate.
+#
+#   2. Files that ship to Linux and are parsed there. A systemd unit with CRLF
+#      passes a literal carriage return into ExecStart=; a shell script with
+#      CRLF fails on the shebang. These currently survive only because
+#      autocrlf=true normalizes on commit — that is a property of one
+#      contributor's git config, not of the repo. Now it is the repo's.
+
+*                     text=auto
+
+# Generated, hashed, published — LF always.
+*.html                text eol=lf
+
+# Linux-destined infrastructure — LF always.
+*.sh                  text eol=lf
+*.sh.tftpl            text eol=lf
+*.service             text eol=lf
+Caddyfile             text eol=lf
+*.yml                 text eol=lf
+*.yaml                text eol=lf
+
+# Hashed release artifacts and binaries — never transform.
+*.zip                 binary
+*.dll                 binary
+*.png                 binary
+*.jpg                 binary
