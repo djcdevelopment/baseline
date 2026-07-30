@@ -5,6 +5,16 @@
 > pre-prune ref `57654fd`; superseded by the living roadmap, see `fieldlab/status/README.md`)*.
 > This file remains the ladder spine (invariant definitions I0–I7 and their gates).
 
+> **2026-07-30 final-cutover addendum:** C0-C3 of
+> `plan-native-network-final-cutover.md` are accepted on AM4. C3's retained
+> `native-20260730-c3-sixth` run proved a durable Lumberjacks ZDO journal,
+> Gateway-process replay, explicit two-recipient interest, late snapshot, valid delta,
+> stale/malformed rejection before mutation, typed tombstone, zero selected native
+> `CreateSyncList` candidates, and zero network `RPC_ZDOData`. The mandatory C3
+> replan makes durable logical-peer identity and canonical C1 semantic carriage the
+> first C4 cell before ownership leases. This addendum supersedes “next” statements
+> in the historical I0-I7 narrative below; it does not rewrite that evidence.
+
 > **2026-07-11 local / 2026-07-12 UTC P7 result:** the combined GCP deployment passed
 > the live P7/I7 loopback gate on `comfy-lumberjacks-p7` in project
 > `lumberjacks-exp-20260711-djc`. Product scope was the Valheim x Lumberjacks netcode
