@@ -1,7 +1,11 @@
-# PINNED — Networking / ComfyNetworkSense lane (hard hold)
+# SUPERSEDED — Networking / ComfyNetworkSense hard hold
 
-**Status: HARD HOLD. Do not pick these up without Derek re-opening them.**
-Pinned 2026-07-28.
+**Status: SUPERSEDED 2026-07-30.** Derek reopened the native-network replacement
+lane after the unattended OMEN+i5 harness removed the KVM dependency. The canonical
+execution sequence is now
+[`plan-native-network-final-cutover.md`](plan-native-network-final-cutover.md).
+This file remains only as the historical record of why the lane was paused on
+2026-07-28; its task list and resume command are not current instructions.
 
 ## Why this exists
 
@@ -78,8 +82,8 @@ ComfyStewardView, the live analytics pages, the Steam self-service join — each
 status, a cold-start package, one Discord thread, and a named first task. Data file:
 `Lumberjacks/docs/workbench/workbench.json`.
 
-## Un-pinning
+## Historical un-pinning rule
 
-When Derek re-opens an item, move it back to the `## Open` section of
-[`DECISIONS-PENDING.md`](DECISIONS-PENDING.md) (the co-presence item returns to its original
-2026-07-22 wording there). Nothing here is lost — just held, with its receipts.
+The hold was lifted by Derek's 2026-07-30 direction to plan and drive the native
+network cutover to final completion. Current work is classified and sequenced in the
+new plan rather than restated in the decision queue.
