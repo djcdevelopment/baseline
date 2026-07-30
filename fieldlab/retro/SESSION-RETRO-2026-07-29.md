@@ -297,3 +297,193 @@ board" vocabulary this repo doesn't use; both fixed against the factsheet. Archi
 Reviewer, Product seats and both views drafted frontier (whole-conversation judgment). No
 `--fleet` second opinion dispatched. The `.docx` at repo root belongs to another agent's
 in-flight session and was deliberately untouched.
+
+---
+
+# Addendum — third session (bar demo, teardown, and cleaning up after myself)
+
+## One-line
+**Ran a live demo honestly and then cleaned up an orphan I had created an hour earlier** —
+brought the P7 stack up from a bar, corrected three of my own claims mid-session, declined
+the fun-but-pinned "make agents fight each other" ask with receipts, and while deleting a
+379 MB orphaned save discovered a second one that my own `gcloud instances stop` had
+manufactured, in exactly the way a memory file predicts verbatim.
+
+## What this session was
+A **live-operations** session — no design, no build. Derek was at a bar on his phone,
+remote-driving OMEN, showing people the work. **Zero commits; no repo file changed.** The
+durable output is this addendum plus six memory writes and two filed defects. Five asks in
+sequence: bring it up · explain it · can agents play each other · shut the spend down · clean
+the dead weight.
+
+## What shipped
+No commit table — the git range is empty and that is the honest shape of the session.
+
+| Artifact | What |
+|---|---|
+| `hearth-gemini-truncation` (rewritten) | Root cause replaces "cause undiagnosed": `max_tokens` starves thinking output. Proved twice tonight — cap 2000 → 76 tokens; cap omitted → 1230 tokens, same prompt and rung |
+| `valheim-graceful-stop-save-timeout` (updated) | `gcloud compute instances stop` counts as "the stop"; cheapest-correct teardown ordering added |
+| `multiplayer-copresence-needs-multicast` (updated) | ADR-0013 fan-out is BUILT and flag-gated off, not blocked — phrasing guard added |
+| `gcp-spend-truth` (updated) | The static IP bills *because* the VM is stopped (~$7/mo) and is correct to keep; Vertex AI swept clean |
+| `omen-dashboard-is-a-proxy` (new) | The "local telemetry dashboard" needs the cloud VM; chain is VM → tunnel → compose; the `!override` ports trap |
+| `p7-boot-and-schema-gaps` (new) | Stack doesn't reliably start on boot; gateway DB has no `regions`/`events` tables |
+| Task chips `task_6b462711`, `task_8a979515` | The two defects above, self-contained, each told not to start the VM without asking |
+
+Operationally: VM up and demo-ready, 699 MB of orphaned partials removed, world verified
+intact (1,330,077,725 bytes, md5 `6301a5019a1fe720cce7bece44cce32d`), VM back to `TERMINATED`.
+
+## Timeline
+- Ask 1 arrived as two items; they were one chain. `omen-dashboard`'s nginx conf is
+  `proxy_pass` to the P7 tunnel for everything but `/roadmap`, so "start the local telemetry
+  docker" could not be satisfied without the cloud VM. Started VM → tunnel → dashboard.
+- Port 8080 was held by the companion container. Override to 8081 failed first pass because
+  compose **merges** `ports` lists; `!override` fixed it. Liveness proven by `current_tick`
+  advancing 1216 → 1286 through the proxy, not by the container being up.
+- World `ComfyEra16` loaded 9.16M ZDOs; `Game server connected` at 17:57:23; public TLS 200.
+- Ask 2: mapped all 9 panels to endpoints. Only 3–4 had data (`peer_count: 0`). Corrected my
+  own read of `stability:"unstable"` — it is an API schema-maturity label beside
+  `api_version:"v0"`, not health. Framed the tick numbers as an empty-world floor.
+- Ask 3: answered no, with the removal commit (`1887626`), the scoped `LabAutoJoinPatches`
+  restoration, the unseeded lab clients, and the pinned hold's own "do not propose one as a
+  quick check" language. Corrected a stale co-presence claim by searching wider.
+- Ask 4: stopped VM, tunnel, dashboard; swept Vertex AI clean; flagged the static-IP-while-
+  stopped charge as deliberate, not waste.
+- Ask 5: asked scope before deleting (Derek chose the conservative option), restarted the VM,
+  and found a *second* partial. Spent eight minutes watching it "write" before noticing the
+  byte count was identical across 18 samples — then found the valheim container had never
+  started at all. Postgres's clean-shutdown log at `02:47:24 UTC` matched the orphan's mtime
+  exactly: my own earlier instance stop made it.
+
+## The team retro — our collaboration across the seats
+
+**Architect (Claude).** Two calls carried the session and both were about refusing a
+comfortable frame. First: the dashboard is a proxy, so there is no such thing as a
+zero-spend local telemetry demo — saying that up front prevented a demo that would have
+been all 502s. Second: the tick numbers are an *empty-world floor* (p99 0.023 ms against a
+50 ms budget, 0 overruns, zero players), and presenting them as evidence of scale would have
+been the easiest and most dishonest move available at a bar. *What to change:* nothing
+structural — but both calls were reactive. The proxy topology should have been in memory
+before tonight; it is now.
+
+**Implementer (Claude).** Small surface, two real potholes. Docker compose merges `ports`
+across `-f` files rather than replacing, so the first 8081 override silently kept the
+conflicting 8080 binding and failed to bind — `!override` is the fix, and it is now in
+memory. The `awk` in a remote poll broke through the PowerShell → ssh → sh quoting layers
+and produced empty output. *What to change:* stop pushing text-munging into the remote shell
+across three quoting layers; `ls -la` over the wire and parse locally, which is what the
+rewrite did and it worked first try.
+
+**Reviewer / QA (Claude, on Claude).** The good half: I checked whether the `.aborted-` file
+was retained evidence for a finding before deleting it (it wasn't — no repo reference), asked
+Derek for scope before an irreversible delete rather than assuming, and verified the world
+with `md5sum` and byte counts rather than trusting logs — which is exactly what the hazard
+memory instructs. The bad half is worse than it looks: my first poll loop reported
+`SAVE_SETTLED=True` when its command had *failed*, because empty output matched the
+"file is gone" branch. A verification loop that treats a broken command as a passing
+condition is not a check, it is a rubber stamp. I caught it, but only because the result
+looked too fast. *What to change:* a poll must assert its probe succeeded before
+interpreting the probe's silence.
+
+**Operator / SRE (Claude — this seat owns the failure).** I stopped the VM without first
+letting Valheim finish a save, and manufactured a 320 MB orphan `.db.new` at the exact
+second postgres logged `received fast shutdown request`. The memory file
+`valheim-graceful-stop-save-timeout` describes this outcome literally, down to the phrase
+"a truncated orphan `.db.new` is left behind (379 MB in the 07-25 case)" — and 379 MB was
+the file I had come back to delete. I recalled that memory's *reassurance* ("the `.db`
+survives via atomic write") and acted on it, while skipping its *instruction* ("trigger a
+save and wait for `World saved` BEFORE issuing the stop"). Then I compounded it by spending
+eight minutes polling a file with no writer: I watched the artifact and never asked whether
+a process existed to change it. *What to change:* memory updated to say an instance stop
+counts as "the stop" and to give the cheapest correct teardown order; and when a file is
+not changing, check for the producer before extending the wait.
+
+**Product / planning (Derek asked, Claude held the line).** The right product call was
+declining ask 3. "Can we make agents play against each other" is the most fun question of the
+night, and the honest answer had three layers — co-presence built but unproven, autonomous
+play deliberately deleted, adversarial AI never existing at all — plus a blocker only Derek
+can clear (a manual Steam login on four unseeded clients). The pinned hold anticipates this
+exact moment in its own words: *do not propose one as a "quick check," do not prep one "so
+it's ready."* Quoting it back was better than quietly setting up the thing he wrote that
+sentence to prevent. *What to change:* nothing. The redirect to `/roadmap` — fully populated,
+zero players required — was the demo that should have been offered first.
+
+## Two seats, two views
+
+**From Claude's seat.** The session's honest through-line is that I was a good reviewer of the
+system and a poor reviewer of myself. Every claim I made *about the repo* got checked, revised,
+and in three cases publicly corrected — the `stability` label, the stale co-presence memory,
+the incomplete "no players" explanation for the empty panels. But the two things that actually
+cost time were both self-inflicted and both had prior warnings sitting in memory: the shutdown
+hazard and the `max_tokens` trap. I read memory as reassurance and acted on the half that let
+me proceed. Where I'd want help next time: a nudge that reads "you are about to do the thing
+this memory is about."
+
+**From Derek's seat (my reconstruction — correct me).** "The demo worked and I didn't get
+handed a broken dashboard, which is the whole job. Being told the tick numbers are an
+empty-world floor before I quoted them to somebody is worth more than the numbers. Saying no
+to the agents thing was right — I wrote that pin three days ago precisely so a good mood at a
+bar couldn't restart the worst lane in the program. The orphan file thing is annoying but
+it's the kind of annoying I want surfaced: it cost a VM cycle and a cent, and now the memory
+actually tells the next session what to do instead of just reassuring it. The two chips mean
+the postgres finding doesn't die in a bar transcript."
+
+## Last time's lessons — follow-through
+| Lesson | Status |
+|---|---|
+| `L-2026-07-29-1` — prove bytes with shas, never narrative | **acted-on** (world verified by `md5sum` + byte count, not by log lines; the whole cleanup was gated on file evidence) |
+| `L-2026-07-29-2` — omit `max_tokens` on thinking rungs | **dropped, and it bit** — graded "acted-on" this morning, but the memory it named (`hearth-gemini-max-tokens-truncation`) was **never written**. The stale file still said "cause undiagnosed", I passed `max_tokens: 2000`, got 76 tokens, and called it known clipping. Root cause now written into the file that already existed |
+| `L-2026-07-29-3` — pave the path | **n/a** (no recovery work) |
+| `L-2026-07-29-4` — never commit nondeterministic goldens | **n/a** |
+| `L-2026-07-29-5` — when the harness blocks, surface it | **n/a strictly**; nearest analog handled in spirit (Steam seeding is a human-only step — named it and stopped rather than improvising around it) |
+| `L-2026-07-29-6` — classify before you decide | **acted-on** (the agents answer was classified into three distinct layers instead of one flat "no") |
+| `L-2026-07-29-7` — principles that outlive their numbers | **acted-on** ("stopped is the default; running is booked" is why the VM restart was posed as a question, not assumed) |
+| `L-2026-07-29-8` — name a shared trigger once | **n/a** |
+| `L-2026-07-29-9` — delegated decisions need the why in the artifact | **acted-on** (both task chips carry the evidence and the do-not-start-the-VM constraint inline) |
+| `L-2026-07-29-10` — verify the repo before registering a gap | **acted-on** (searched for references to the `.aborted-` file before deleting; searched wider when the co-presence memory smelled stale, and it was) |
+
+## Lessons learned
+11. **`L-2026-07-29-11` — A lesson is only as durable as the artifact it names; verify the
+    artifact exists.** This morning's retro recorded the `max_tokens` root cause, said it
+    would live in a new memory file, graded itself **acted-on** — and the file was never
+    created. Twelve hours later the same bug fired and the stale memory steered the
+    misdiagnosis. Follow-through audits must check the filesystem, not the previous retro's
+    own claim. Corollary: prefer **updating the file that already covers the topic** over
+    minting a new name; a rename is a chance to write nothing. → **practice** (and the fix
+    landed in `hearth-gemini-truncation`, not a new file).
+12. **`L-2026-07-29-12` — Read the hazard memory's instruction, not its reassurance.** I
+    recalled "the `.db` survives via atomic write" and skipped "save and verify BEFORE
+    stopping." Reassurance tells you the blast radius; the instruction is the part that
+    prevents the blast. → **memory** (`valheim-graceful-stop-save-timeout` updated with the
+    `gcloud`-stop case and the correct teardown order).
+13. **`L-2026-07-29-13` — An unchanging byte count is not progress; check for a writer.** I
+    polled a frozen file for eight minutes. The file was real, the size was real, and no
+    process existed to change it. Watch the producer, not just the artifact. → **practice.**
+14. **`L-2026-07-29-14` — A poll loop must prove its probe ran before trusting its silence.**
+    Broken `awk` → empty output → matched the success branch → `SAVE_SETTLED=True`. Absence
+    of evidence became evidence of absence in one line of shell. Assert the probe's exit
+    status, or parse locally where failures are visible. → **practice.**
+15. **`L-2026-07-29-15` — "Nothing is showing" usually has more than one cause; check the
+    write path, not just the read.** I explained the empty Gameplay Feed with `peer_count: 0`
+    and stopped. The `events` table doesn't exist, so the INSERT fails regardless of players —
+    a complete answer required reading the DB's own error log. → **memory**
+    (`p7-boot-and-schema-gaps`).
+16. **`L-2026-07-29-16` — A proxy that looks like a local service is a demo trap.**
+    `omen-dashboard` reads as local telemetry and is a tunnel-dependent view of a cloud VM.
+    Anything that renders someone else's data should say so at the top of its own compose
+    file. → **memory** (`omen-dashboard-is-a-proxy`).
+
+## Provenance
+**Git range: none — zero commits, no repo files changed.** This was live operations; the
+artifacts are six memory writes, two task chips, and this addendum. Working tree carries only
+the pre-existing untracked `.docx` belonging to another agent's session, untouched.
+Offload per doctrine: one `gcp-gemini` flash call drafted the timeline, the Implementer and
+Operator seat first-passes, and candidate lessons — **cap omitted per `L-2026-07-29-2`,
+`tokens_out` 1230, `routed_by pinned:gcp-gemini`, complete document**, which is itself
+tonight's proof of that root cause. **Edit verdict: `hallucinated`** — it invented a precise
+wall-clock timestamp for nearly every timeline entry (only `17:57:23` and `02:47:24 UTC` were
+real) and inverted the central finding by calling postgres's clean SIGTERM shutdown a "crash";
+both corrected against the factsheet, structure and substance kept. Architect, Reviewer and
+Product seats plus both views drafted frontier. No `--fleet` second opinion dispatched, and
+none was pending from the previous two retros. No ADR written: this session produced
+operational facts and practices, not architectural decisions — per the skill's own rule,
+those belong in memory and docs.
