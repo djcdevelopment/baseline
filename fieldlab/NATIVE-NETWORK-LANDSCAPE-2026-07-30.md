@@ -28,8 +28,10 @@ The replacement is not 100% complete.
 - Motion has a Lumberjacks observe/apply lane, but production apply is off. Native
   player replication therefore remains authoritative.
 - A canonical Lumberjacks game-session control lane is now ordered, acknowledged,
-  bounded, and socket-resumable on AM4. Only its typed C1 control probe uses it so far;
-  gameplay RPC and state semantics have not moved.
+  bounded, and socket-resumable on AM4. C2a now carries one selected typed direct
+  control pulse on that lane, applies it on Unity `Update`, and suppresses the matching
+  native `ZRpc.Invoke`. Remaining direct controls and gameplay RPC/state semantics have
+  not moved.
 - Co-presence fan-out's ack-without-emit defect is corrected and proven on the AM4
   development lane with two physical clients. It remains off on P7 until that build
   is promoted.
@@ -93,7 +95,7 @@ manifest `p7-primary-v1`, and an armed consumer.
 | ZDO inbound carriage/apply | **Partial** | Clients poll/drain recipient-scoped Lumberjacks envelopes | The consumer reconstructs a `ZPackage` and invokes Valheim `RPC_ZDOData` for revision checks, object creation, ownership fields and deserialize/apply | **Verified:** source plus both clients armed on the live pair run |
 | Co-presence ZDO fan-out | **Corrected and integration-proven on AM4; disabled on P7 pending promotion** | Emits native-selected revisions to the exposing recipient and any in-band observer that is behind | Candidate discovery and delivered-revision bookkeeping remain native | **Verified:** two unattended physical clients, 1,340/1,340 native-selected `Emit`, zero non-emit, and successful inventory return on both clients |
 | Routed gameplay RPC (`ZRoutedRpc`) | **Native** | Some mod events are mirrored or originated as side effects | `InvokeRoutedRPC`, `RouteRPC`, `RPC_RoutedRPC`, server relay and `ZNetView` dispatch carry gameplay calls | **Verified:** no suppression/replacement patch exists; current producers call `ZRoutedRpc` |
-| Direct peer/control RPC | **Native except handshake decision hook** | Handshake verdict only | Error, player/global/admin lists, reference position and the remaining `ZRpc` control exchange | **Verified:** source map and absence of a replacement interceptor |
+| Direct peer/control RPC | **Partial; one C2a pulse swapped on AM4** | One selected post-join direct pulse crosses C1's reliable lane and dispatches on Unity `Update` | Error, player/global/admin lists, reference position, disconnect, and every other `ZRpc` control class | **Verified:** `native-20260730-c2a-final` delivered exactly one typed pulse per client; both withheld copies became stale; native tripwires were registered; all 107 selected server-native attempts were suppressed before `ZRpc.Invoke`; zero native copies arrived |
 | Player motion | **Partial, observe-only in production** | Client motion can publish over Lumberjacks WebSocket/UDP and can be resolved to a Valheim player | Apply is off; visible authoritative movement still arrives through native player/ZDO replication | **Verified:** live config and motion runner apply gate |
 | ZDO ownership transfer | **Native** | Owner metadata is carried in redirected envelopes | Assignment/release, owner revision and action authority remain `ZDOMan`/`ZDO` decisions | **Verified:** no active `ReleaseNearbyZDOS` replacement in the current mod |
 | World identity/bootstrap | **Native** | No complete Lumberjacks world bootstrap | Server-shaped `PeerInfo` supplies world name/seed/uid/version/time; vanilla initializes the connected world | **Verified:** handshake source and live vanilla AddPeer path |
@@ -112,7 +114,7 @@ mode. None requires two humans driving game windows.
 | ZDO selection/cadence | Add a Lumberjacks-owned changed-object queue for one prefab and deliver an update that Valheim `CreateSyncList` did not select | Native candidate count stays zero while the recipient applies the Lumberjacks revision | 2-3 days |
 | ZDO apply semantics | Deliver one recipient revision through a typed Lumberjacks apply adapter rather than invoking `RPC_ZDOData`; compare object/revision/owner state to the existing path | Malformed or stale revision is rejected without entering native RPC dispatch | 2 days |
 | Routed gameplay RPC | Replace one idempotent request/response RPC (a bounded boundary echo) in both directions and suppress only that native method hash | Drop the Lumberjacks response and require a deterministic timeout; no native fallback for the selected hash | 1-2 days |
-| Direct peer/control RPC | Replace one post-AddPeer control message, such as a bounded server pulse, and suppress its native invocation | Client must mark the pulse stale when the Lumberjacks copy is withheld | 1 day |
+| Remaining direct peer/control RPCs | Extend C2a's fixed typed dispatch to player/global/admin lists, reference position, error, and disconnect classes, suppressing each matching native invocation only in cutover mode | Withhold each selected Lumberjacks class and require bounded stale/fail-closed behavior rather than a native copy | 1-2 days, folded into C2b/C7 |
 | Player motion authority | For one source player and one short allow-listed movement command, suppress native motion delivery and enable Lumberjacks apply on the observer | Withhold a numbered motion frame and prove bounded stale/drop behavior instead of native correction | 2-3 days; do before any smoothing/tuning |
 | Ownership | Assign one spawned item through a Lumberjacks ownership lease while suppressing the matching native transfer trigger; perform one pickup | Expired/wrong lease must reject the action and must not mutate inventory | 2-3 days |
 | World bootstrap | Supply a minimal server-shaped world descriptor from Lumberjacks and prove the client reaches the same world identity without consuming vanilla server `PeerInfo` world fields | Wrong network/world version must stop before scene entry with a deterministic reason | 3-5 days and depends on connection/control work |
@@ -213,13 +215,20 @@ client logs, autotest receipts, and a Steam-identifier-free P7 correlation:
   physical clients passed stable-id/epoch resume, exact sequence replay, one accepted
   response, the bounded no-receipt timeout, fresh Valheim process resume, and shutdown;
   `c1-machine-summary.json` passed.
+- `native-valheim/native-20260730-c2a-final/` — accepted C2a AM4 composition: both
+  physical clients registered the native negative-control tripwire, applied exactly one
+  typed Lumberjacks direct pulse on the main thread, marked the intentionally withheld
+  copy stale, relaunched, rejoined, and stopped. The server attempted and suppressed
+  107/107 selected native sends before `ZRpc.Invoke`; no native copy was delivered;
+  `c2a-machine-summary.json` passed.
 
 ## Replan recommendation
 
 Do not start the motion tuning or transpiling lab yet. C0 is complete: native use is
 measured, poison is enforceable, and the two-client reconnect composition is
 unattended. C1 is also complete: both clients proved the durable reliable substrate and
-its no-native-fallback timeout. The mandatory C1 replan now puts a typed direct control
-pulse before routed RPC inside C2, then keeps C3-C10 in dependency order. Replan again
-after C3, C5, and C7. Only after the native poison gate reaches zero does motion tuning
-measure the system intended to ship.
+its no-native-fallback timeout. C2a is complete: one typed direct control class is
+Lumberjacks-carried, main-thread-applied, and native-suppressed under both delivery and
+withhold cells. C2b routed RPC is next, then C3-C10 remain in dependency order. Replan
+again after C3, C5, and C7. Only after the native poison gate reaches zero does motion
+tuning measure the system intended to ship.
