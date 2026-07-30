@@ -34,6 +34,28 @@ The replacement is not 100% complete.
 The shortest honest description is: **ZDO transport is swapped; connection, control,
 ownership, world bootstrap, and motion authority are not.**
 
+## C0 measured baseline and poison gate
+
+C0 is complete on the AM4 development lane. The native-use ledger now names every
+remaining native funnel, records exact per-run totals, and can poison those funnels
+before their original method runs. It also records connection-stage timing, including
+the separate pre-`PeerInfo` native stall. The ledger writer is bounded and
+off-main-thread.
+
+The retained `native-20260730-c0-clean` composition used the same plugin artifact on
+the server and both physical clients. Both clients joined, executed allow-listed
+movement, disconnected, launched a fresh Valheim process, rejoined, and stopped
+without an operator driving either game. The exact final native totals were 4,360 on
+OMEN, 2,957 on i5, and 12,339 on the server, with zero ledger drops or writer faults.
+Those non-zero counts are the measured removal ledger for C1-C7; they are not a claim
+that the cutover is complete.
+
+The retained `native-20260730-c0-poison` cell stopped at the first forbidden native
+connection boundary and blocked all 76 observed native calls. The poison gate is
+therefore capable of falsifying a native-zero claim instead of merely reporting it.
+The unattended lane also recovered one completed Steam Cloud `.fch.new` transaction
+through Valheim's Cloud API and subsequently rejoined with the final character file.
+
 ## Live configuration observed on P7
 
 Read directly from the server config on 2026-07-30:
@@ -176,25 +198,20 @@ client logs, autotest receipts, and a Steam-identifier-free P7 correlation:
   old/effective-value receipts with unchanged container start time and PID.
 - `native-valheim/native-20260730-174910-am4-handshake-accept/` — off-thread
   Lumberjacks ACCEPT, vanilla AddPeer resume, and successful world entry.
+- `native-valheim/native-20260730-c0-ledger-baseline/` — first exact P7 native-use
+  baseline: 10,446 client-side calls and the native pre-`PeerInfo` stage stall.
+- `native-valheim/native-20260730-c0-poison/` — poison proof: the first native
+  connection boundary was blocked and all 76 observed calls were poison trips.
+- `native-valheim/native-20260730-c0-clean/` — accepted C0 AM4 composition: both
+  physical clients joined, moved, disconnected, relaunched, rejoined, and stopped;
+  `machine-summary.json` passed with exact server/client ledgers and no writer loss.
 
 ## Replan recommendation
 
-Do not start the motion tuning or transpiling lab yet. The build order supported by
-this landscape is:
-
-1. **Completed on AM4:** fix co-presence ack/emit safety and prove real inventory
-   updates with the unattended pair; promote only after the remaining evidence is
-   reviewed;
-2. **Completed on AM4:** remove synchronous handshake HTTP from the main thread and
-   prove delayed fail-open plus normal Lumberjacks ACCEPT;
-3. **Completed on AM4:** add narrow live flag control and prove applied values without
-   a server restart;
-4. replace one routed RPC end to end;
-5. replace one ownership/action boundary;
-6. make Lumberjacks motion authoritative for one player while native motion is
-   suppressed;
-7. then tackle world/bootstrap and zone membership, which are the expensive
-   dependencies for removing the vanilla server peer.
-
-Only after those native paths are gone does transport/transpiling tuning measure the
-system intended to ship.
+Do not start the motion tuning or transpiling lab yet. C0 is complete: native use is
+measured, poison is enforceable, and the two-client reconnect composition is
+unattended. C1 is next: establish one durable, ordered, resumable Lumberjacks game
+session while the native session remains present as a measured control. Replan the
+remaining C2-C10 ladder immediately after C1 evidence is retained, and again after
+C3, C5, and C7. Only after the native poison gate reaches zero does motion tuning
+measure the system intended to ship.
