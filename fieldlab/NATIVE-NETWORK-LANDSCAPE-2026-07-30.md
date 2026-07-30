@@ -27,6 +27,9 @@ The replacement is not 100% complete.
   underlying Steam socket are still native.
 - Motion has a Lumberjacks observe/apply lane, but production apply is off. Native
   player replication therefore remains authoritative.
+- A canonical Lumberjacks game-session control lane is now ordered, acknowledged,
+  bounded, and socket-resumable on AM4. Only its typed C1 control probe uses it so far;
+  gameplay RPC and state semantics have not moved.
 - Co-presence fan-out's ack-without-emit defect is corrected and proven on the AM4
   development lane with two physical clients. It remains off on P7 until that build
   is promoted.
@@ -83,6 +86,7 @@ manifest `p7-primary-v1`, and an armed consumer.
 | Path | Current state | What crosses Lumberjacks now | What is still native | Confidence |
 | --- | --- | --- | --- | --- |
 | Steam connection and packet transport | **Native** | Nothing that can establish or maintain the Valheim peer | `ZSteamSocket`, Steamworks identity/session, UDP/P2P connection state, reliability and packet framing | **Verified:** source map plus live Steam connection logs |
+| Lumberjacks reliable game session | **Swapped substrate; no gameplay semantics yet** | Stable connection id, server/world descriptor, ordered reliable request/response, cumulative ack, bounded replay queue, UDP binding, and socket resume | Fresh-process logical-peer identity and every Valheim gameplay/control message remain outside this lane | **Verified:** both physical clients forced the WebSocket down before ack/response, resumed at epoch 1, received the same sequence, and Gateway accepted one response |
 | Handshake and admission | **Partial; off-thread authority proven on AM4, prior build still live on P7** | Server prefix defers decoded `PeerInfo` fields to Lumberjacks and enforces accept/reject on Unity's main thread after the worker verdict | `ServerHandshake`/`ClientHandshake`, Steam ticket verification, password crypto, vanilla checks on accept, `SendPeerInfo`, `AddPeer` | **Verified:** delayed fail-open and normal ACCEPT both reached vanilla AddPeer and world entry; the 2,034 ms authority wait produced no ≥250 ms wall hitch |
 | ZDO candidate selection and cadence | **Native with Lumberjacks policy layered on** | Rank, landmark, band and recipient policy run after Valheim builds `toSync` | `ZDOMan.Update`, `CreateSyncList`, sector query, `ShouldSend`, force-send and base priority ordering | **Verified:** redirect is a `CreateSyncList` postfix; cadence override is off |
 | ZDO outbound carriage | **Swapped** | Selected `*` prefabs are serialized to Lumberjacks recipient envelopes; native entries are removed and acknowledged | Valheim still supplies the candidate and serialization fields | **Verified:** live config, source suppression path, prior redirect receipts, and working real-client state |
@@ -205,13 +209,17 @@ client logs, autotest receipts, and a Steam-identifier-free P7 correlation:
 - `native-valheim/native-20260730-c0-clean/` — accepted C0 AM4 composition: both
   physical clients joined, moved, disconnected, relaunched, rejoined, and stopped;
   `machine-summary.json` passed with exact server/client ledgers and no writer loss.
+- `native-valheim/native-20260730-c1-final/` — accepted C1 AM4 composition: both
+  physical clients passed stable-id/epoch resume, exact sequence replay, one accepted
+  response, the bounded no-receipt timeout, fresh Valheim process resume, and shutdown;
+  `c1-machine-summary.json` passed.
 
 ## Replan recommendation
 
 Do not start the motion tuning or transpiling lab yet. C0 is complete: native use is
 measured, poison is enforceable, and the two-client reconnect composition is
-unattended. C1 is next: establish one durable, ordered, resumable Lumberjacks game
-session while the native session remains present as a measured control. Replan the
-remaining C2-C10 ladder immediately after C1 evidence is retained, and again after
-C3, C5, and C7. Only after the native poison gate reaches zero does motion tuning
+unattended. C1 is also complete: both clients proved the durable reliable substrate and
+its no-native-fallback timeout. The mandatory C1 replan now puts a typed direct control
+pulse before routed RPC inside C2, then keeps C3-C10 in dependency order. Replan again
+after C3, C5, and C7. Only after the native poison gate reaches zero does motion tuning
 measure the system intended to ship.
