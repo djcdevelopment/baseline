@@ -14,6 +14,15 @@
 > replan makes durable logical-peer identity and canonical C1 semantic carriage the
 > first C4 cell before ownership leases. This addendum supersedes “next” statements
 > in the historical I0-I7 narrative below; it does not rewrite that evidence.
+>
+> **2026-07-30 C4a addendum:** `native-20260730-c4a-second` completed that first
+> C4 cell. Gateway now derives stable opaque logical peers for the AM4 server, OMEN,
+> and i5; those ids survived Gateway and fresh-Valheim-process turnover while
+> transport connection ids changed. C3 mutation/interest/delivery/ACK semantics ran
+> only on the canonical C1 session, replayed from WAL, reached both clients, and
+> drained to zero pending with no HTTP fallback rows. C4 remains open for the
+> server-issued ownership lease, wrong/expired-epoch rejection, reconnect reclaim,
+> native-transfer suppression, and authoritative pickup in both directions.
 
 > **2026-07-11 local / 2026-07-12 UTC P7 result:** the combined GCP deployment passed
 > the live P7/I7 loopback gate on `comfy-lumberjacks-p7` in project
