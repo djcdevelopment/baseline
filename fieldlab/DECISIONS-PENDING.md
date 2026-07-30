@@ -32,6 +32,45 @@ Bounded: touch only lines you created or resolved.
   (b) fan-out vs region-shared partitions (deferred to Phase 4, only against measured WAL amplification).
   (source: [ADR 0013](docs/adr/0013-ownership-visibility-split.md), [findings](FINDINGS-multiplayer-copresence-2026-07-21.md))
 
+- [ ] 2026-07-30 — **What is P7 still for, and does it come back?** This session narrowed the
+  answer to **exactly one thing: the Valheim UDP world** (2456-2457). The community surface is
+  already live and green on AM4 behind the Tailscale Funnel (`verify-live` PASS, 69/0/0), and
+  Funnel is TCP/HTTPS-only so the dedicated server cannot ride it — that, and only that, is what
+  still needs a cloud VM. Demos no longer need it either (see [[demo-streaming-sunshine-moonlight]]).
+  The open call is whether P7 returns as a booked play/UAT window, gets replaced for the world role,
+  or stays down; the boot fixes below only matter under the first two.
+  (source: [SESSION-RETRO-2026-07-30](retro/SESSION-RETRO-2026-07-30.md), [ADR 0014](docs/adr/0014-boot-must-converge-or-say-so.md))
+
+- [ ] 2026-07-30 — **When to spend a cold stop/start proving the P7 boot fixes, and how to land the
+  half that needs terraform?** The boot work is committed but **UNVERIFIED** — deliberately, since
+  the VM stays stopped. Two parts with different costs: the systemd unit can be applied by hand over
+  SSH on any future boot (steps staged in
+  [RUNBOOK-boot-determinism.md](../infra/gcp/p7/RUNBOOK-boot-determinism.md)), but the
+  `bootstrap.sh.tftpl` half is the GCE `metadata_startup_script` and needs terraform, which is off
+  the table from this checkout (a plan here would destroy the VM + 4 live resources —
+  [RECONCILE-GAP.md](../infra/gcp/p7/RECONCILE-GAP.md)). So the durable fix for a rebuilt VM is
+  blocked on the same reconcile that has been deferred all along. Runbook step 1 captures evidence
+  the fix destroys, so it must run **before** the fix is applied.
+  (source: [SESSION-RETRO-2026-07-30](retro/SESSION-RETRO-2026-07-30.md), [ADR 0014](docs/adr/0014-boot-must-converge-or-say-so.md))
+
+- [ ] 2026-07-29 — **Prune the stale P7 world auto-backups?** Four
+  `ComfyEra16_backup_auto-*.db` at ~1.33 GB each (~5.3 GB); three are from 07-25/07-26. Pruning
+  those three reclaims ~4.4 GB on a disk at 67% (`/mnt/comfy-p7` 21G/32G; `/` is tighter at 79%).
+  **Deliberately declined 2026-07-29** in favour of the conservative option — the save-abort
+  hazard has fired twice on this box, so backup copies of a 9.16M-ZDO heirloom world have real
+  recovery value. Revisit only under actual disk pressure, and note the backups are env-driven
+  (see [[p7-world-backups-dev-prod-split]]) so the durable fix is cadence, not deletion.
+  (source: [SESSION-RETRO-2026-07-29 addendum 3](retro/SESSION-RETRO-2026-07-29.md))
+
+- [ ] 2026-07-29 — **Restore the swarm harness from `1887626`?** Offered and not taken up while
+  Derek was out. It is the only ready-made multi-client harness in the repo, and its own removal
+  doc argues the counter-case ("a real capability that was dropped, not merely dead code"). Note
+  restoring it does **not** by itself produce agents that play, let alone play *against* each
+  other: `AutoCharacterSelectPatches` gets a container past the menu and `MatrixCheckinRunner`
+  drives benchmark cells; no adversarial or combat logic ever existed. It is also gated behind
+  the unseeded lab clients (pinned item 5, a manual Steam login only Derek can do).
+  (source: [SWARM-HARNESS-REMOVED.md](../network/mod/ComfyNetworkSense/SWARM-HARNESS-REMOVED.md), [SESSION-RETRO-2026-07-29 addendum 3](retro/SESSION-RETRO-2026-07-29.md))
+
 *(The AoI optimization items below remain on **hard hold**; see
 [PINNED-aoi-optimization.md](PINNED-aoi-optimization.md) — **except** the multi-player-density item,
 now promoted to the active ADR 0013 track above.)*
