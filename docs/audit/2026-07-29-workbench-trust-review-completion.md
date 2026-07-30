@@ -131,9 +131,9 @@ site-download streams with exact `size_bytes`, exact SHA-256, and a matching
 `X-Download-Sha256`. **Served artifact (post):** `X-Workbench-Sha256` equals the local
 committed render's hash.
 
-## 8. Negative tests — the guards are load-bearing (37 total, all green)
+## 8. Negative tests — the guards are load-bearing (28 total, all green)
 
-`npm run workbench:test` = 28 generator cases + 9 verifier cases. The ten mandated negatives,
+`npm run workbench:test` = 19 generator cases + 9 verifier cases. The ten mandated negatives,
 each asserting its specific failure then restoring and proving byte-identical deterministic
 re-render: (1) thread task + null href → three-options message; (2) blocked task excluded from
 the hero, rendered visibly, and a hand-tampered hero count fails the byte compare; (3) wrong
