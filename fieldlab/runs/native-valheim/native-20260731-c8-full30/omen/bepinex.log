@@ -1,0 +1,312 @@
+[Message:   BepInEx] BepInEx 5.4.23.3 - valheim (7/1/2026 1:45:56 AM)
+[Message:   BepInEx] User is running BepInExPack Valheim version 5.4.2333 from Thunderstore
+[Info   :   BepInEx] Running under Unity v6000.0.61.7643309
+[Info   :   BepInEx] CLR runtime version: 4.0.30319.42000
+[Info   :   BepInEx] Supports SRE: True
+[Info   :   BepInEx] System platform: Bits64, Windows
+[Message:   BepInEx] Preloader started
+[Info   :   BepInEx] Loaded 1 patcher method from [BepInEx.Preloader 5.4.23.3]
+[Info   :   BepInEx] 1 patcher plugin loaded
+[Info   :   BepInEx] Patching [UnityEngine.CoreModule] with [BepInEx.Chainloader]
+[Message:   BepInEx] Preloader finished
+[Message:   BepInEx] Chainloader ready
+[Message:   BepInEx] Chainloader started
+[Info   :   BepInEx] 3 plugins to load
+[Info   :   BepInEx] Loading [Comfy Camera Proof 0.1.0]
+[Info   :Comfy Camera Proof] Comfy Camera Proof loaded. F8/status and F9/move proof commands are available.
+[Info   :   BepInEx] Loading [ComfyControlSurface 0.6.0]
+[Info   :ComfyControlSurface] [07/31/2026 07:53:03] Comfy control surface loaded.
+[Info   :   BepInEx] Loading [ComfyNetworkSense 0.5.45]
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:03] Authoritative consumer init: enabled=True, manifest=p7-primary-v1, gateway=http://8.231.129.249:42317
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:03] Authoritative consumer init: authoritative consumer armed
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:03] Panel input patch applied: GameCamera.UpdateMouseCapture
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:03] Panel input patch applied: Character.TakeInput
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:03] GameplayEventPatches: patched Character.RPC_Damage
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:03] GameplayEventPatches: patched Character.Damage
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:03] GameplayEventPatches: patched Character.OnDeath
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:03] Lab auto-join patch applied: FejdStartup.Start
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:03] Quest view loaded: 4 tracked quest(s) for Derek from C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\config\comfy-network-sense\quest-view.json
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:03] Telemetry scaffold ready.
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:03] Lumberjacks contract release=m30-rolecontrol-20260723-r1 schema_version=2 operation=zdo_redirect
+[Message:   BepInEx] Chainloader startup complete
+[Info   : Unity Log] 07/31/2026 07:53:03: Using environment steamid 892970
+
+[Info   : Unity Log] 07/31/2026 07:53:03: Using steam APPID:892970
+
+[Info   : Unity Log] 07/31/2026 07:53:03: Authentication:k_ESteamNetworkingAvailability_Attempting
+
+[Info   : Unity Log] 07/31/2026 07:53:03: Platform doesn't implement Process Lifetime Management! Don't initialize suspend manager.
+
+[Info   : Unity Log] 07/31/2026 07:53:03: Initialized platform!
+
+[Info   : Unity Log] 07/31/2026 07:53:03: Platform doesn't implement matchmaking! Don't initialize matchmaking manager.
+
+[Info   : Unity Log] 07/31/2026 07:53:03: All files in local storage save data:
+C:/Users/derek/AppData/LocalLow/IronGate/Valheim\adminlist.txt (40)
+C:/Users/derek/AppData/LocalLow/IronGate/Valheim\bannedlist.txt (41)
+C:/Users/derek/AppData/LocalLow/IronGate/Valheim\permittedlist.txt (43)
+C:/Users/derek/AppData/LocalLow/IronGate/Valheim\Player-prev.log (334066)
+C:/Users/derek/AppData/LocalLow/IronGate/Valheim\Player.log (4356)
+
+[Info   : Unity Log] 07/31/2026 07:53:03: All files in platform save data:
+characters/durracktu.fch (29392463)
+characters/durracktu.fch.old (29391517)
+serverlist/favorite (331)
+serverlist/favorite.old (292)
+serverlist/recent (500)
+serverlist/recent.old (500)
+characters/durracktu_backup_auto-20260721144325.fch (29391516)
+characters/durracktu_backup_auto-20260715013753.fch (29390697)
+characters/durracktu_backup_auto-20260715033754.fch (29390697)
+characters/durracktu_backup_auto-20260721103453.fch (29390870)
+characters/tugcorp_backup_auto-20260723002552.fch (8402422)
+characters/tugcorp_backup_auto-20260723103120.fch (8402611)
+characters/tugcorp_backup_auto-20260729185603.fch (8402640)
+characters/tugcorp.fch (8402928)
+characters/tugcorp.fch.old.stmp (0)
+characters/tugcorp_backup_auto-20260730233300.fch (8402907)
+characters/tugcorp.fch.old (8402928)
+
+[Info   : Unity Log] 07/31/2026 07:53:03: Initializing preferences provider...
+
+[Info   : Unity Log] 07/31/2026 07:53:03: No preference provider available for this platform!
+
+[Info   : Unity Log] 07/31/2026 07:53:03: Set background loading budget to Low
+
+[Info   : Unity Log] 07/31/2026 07:53:03: Loading first scene!
+
+[Info   : Unity Log] 07/31/2026 07:53:03: Preferences initialized! Activating first scene!
+
+[Info   : Unity Log] 07/31/2026 07:53:04: 
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Starting to load scene:start.unity (169d7618616154c03be07e9ad3af5893)
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Set background loading budget to Normal
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Loaded localization file #0 - 'localization' language: 'English'
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Loaded localization file #1 - 'localization_extra' language: 'English'
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Loaded localization file #2 - 'heightmap_message' language: 'English'
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Loaded localization file #3 - 'localization_witch' language: 'English'
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Loaded localization file #4 - 'localization_ashlands' language: 'English'
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Loaded localization file #5 - 'localization_captions' language: 'English'
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Loaded localization file #6 - 'localization_combatupdate' language: 'English'
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Loaded localization file #7 - 'localization_celebrationupdate' language: 'English'
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Loaded localization file #0 - 'localization' language: 'English'
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Loaded localization file #1 - 'localization_extra' language: 'English'
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Loaded localization file #2 - 'heightmap_message' language: 'English'
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Loaded localization file #3 - 'localization_witch' language: 'English'
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Loaded localization file #4 - 'localization_ashlands' language: 'English'
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Loaded localization file #5 - 'localization_captions' language: 'English'
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Loaded localization file #6 - 'localization_combatupdate' language: 'English'
+
+[Info   : Unity Log] 07/31/2026 07:53:04: Loaded localization file #7 - 'localization_celebrationupdate' language: 'English'
+
+[Info   : Unity Log] 07/31/2026 07:53:08: Set background loading budget to High
+
+[Info   : Unity Log] 07/31/2026 07:53:08: GPU Device: 10DE:2F04 (NVIDIA)
+
+[Info   : Unity Log] 07/31/2026 07:53:08: Set background loading budget to Low
+
+[Warning: Unity Log] Only custom filters can be played. Please add a custom filter or an audioclip to the audiosource (Amb_MainMenu).
+[Warning: Unity Log] 07/31/2026 07:53:08: Missing audio clip in music respawn
+
+[Info   : Unity Log] 07/31/2026 07:53:08: Steam initialized, persona:wary.fool
+
+[Info   : Unity Log] 07/31/2026 07:53:08: Valheim version: 0.221.12 (network version 36)
+
+[Info   : Unity Log] 07/31/2026 07:53:08: Worldgenerator version setup:2
+
+[Info   : Unity Log] 07/31/2026 07:53:08: Render threading mode:LegacyJobified
+
+[Info   : Unity Log] 07/31/2026 07:53:08: Checking for installed DLCs
+
+[Info   : Unity Log] 07/31/2026 07:53:08: DLC:beta installed:False
+
+[Info   : Unity Log] 07/31/2026 07:53:08:   failed to load: /characters/tugcorp.fch.old.stmp.fch (Unable to find the specified file.)
+
+[Warning: Unity Log] 07/31/2026 07:53:08: No player data
+
+[Info   : Unity Log] 07/31/2026 07:53:08: Failed to load tugcorp.fch.old.stmp
+
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:09] AUTOTEST_READY run_id=native-20260731-c8-full30 client=omen character=Tugcorp server=100.116.82.60:2456 renderer=NVIDIA_GeForce_RTX_5070 renderer_type=Direct3D11 native_poison=true
+[Info   : Unity Log] 07/31/2026 07:53:09: Sending PlayFab login request (attempt 1)
+
+[Info   : Unity Log] 07/31/2026 07:53:09: Starting music menu
+
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:09] CUTOVER_SCENARIO state=scenario_loaded run_id=native-20260731-c8-full30 client=omen action=none detail=actions=25
+[Info   : Unity Log] 07/31/2026 07:53:09: Session auth respons callback
+
+[Info   : Unity Log] 07/31/2026 07:53:10: Logged in PlayFab user via Steam auth session ticket
+
+[Info   : Unity Log] 07/31/2026 07:53:10: PlayFab local entity ID is BA21E16F96FD7DF7
+
+[Info   : Unity Log] 07/31/2026 07:53:10: Released session ticket
+
+[Info   : Unity Log] 07/31/2026 07:53:17: OnCharacterStart
+
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:17] AUTOTEST_STEAM_FREE_SCENE_REQUESTED run_id=native-20260731-c8-full30 client=omen character=Tugcorp server=100.116.82.60:2456 native_connect=false native_handshake=false
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:17] Lab auto-join started existing character 'Tugcorp' at profile index 0.
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:17] AUTOTEST_CHARACTER_SELECTED run_id=native-20260731-c8-full30 client=omen character=Tugcorp server=100.116.82.60:2456 profile_index=0
+[Info   : Unity Log] 07/31/2026 07:53:18: Audioman already exist, destroying self
+
+[Info   : Unity Log] 07/31/2026 07:53:18: Steam initialized, persona:wary.fool
+
+[Info   : Unity Log] 07/31/2026 07:53:18: Loading player profile tugcorp
+
+[Info   : Unity Log] 07/31/2026 07:53:18: isModded: True
+
+[Info   : Unity Log] 07/31/2026 07:53:18: Zonesystem Awake 759
+
+[Info   : Unity Log] 07/31/2026 07:53:18: DungeonDB Awake 759
+
+[Info   : Unity Log] 07/31/2026 07:53:18: Steam initialized, persona:wary.fool
+
+[Info   : Unity Log] 07/31/2026 07:53:18: Checking for installed DLCs
+
+[Info   : Unity Log] 07/31/2026 07:53:18: DLC:beta installed:False
+
+[Info   : Unity Log] 07/31/2026 07:53:18: Zonesystem Start 759
+
+[Info   : Unity Log] 07/31/2026 07:53:18: Added 3 locations, 0 vegetations, 0 environments, 0 biome env-setups, 0 clutter  from main
+
+[Info   : Unity Log] 07/31/2026 07:53:18: Added 1 locations, 0 vegetations, 2 environments, 0 biome env-setups, 0 clutter  from main
+
+[Info   : Unity Log] 07/31/2026 07:53:18: Added 27 locations, 25 vegetations, 5 environments, 1 biome env-setups, 3 clutter  from main
+
+[Info   : Unity Log] 07/31/2026 07:53:18: Added 4 locations, 0 vegetations, 1 environments, 0 biome env-setups, 0 clutter  from main
+
+[Info   : Unity Log] 07/31/2026 07:53:18: Added 25 locations, 33 vegetations, 8 environments, 2 biome env-setups, 2 clutter  from main
+
+[Info   : Unity Log] 07/31/2026 07:53:18: DungeonDB Start 759
+
+[Info   : Unity Log] 07/31/2026 07:53:18: ZRpc timeout set to 30s 
+
+[Info   : Unity Log] 07/31/2026 07:53:18: ZNET START
+
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:18] LOGICAL_PEER_CUTOVER state=native_client_connect_suppressed run_id=native-20260731-c8-full30 detail=source=request_manifest_native_target=false_logical_connection_status=connecting
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:18] Registered routed RPC: ComfyNetworkSense_ServerPulse
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:18] Registered routed RPC: ComfyNetworkSense_GameplayEvent
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:18] LUMBERJACKS_SESSION state=session_started run_id=native-20260731-c8-full30 client=omen action=none detail=sequence=0_connection_id=59fad220d7824a55953faa5ab707b878_resumed=false_reincarnated=false_logical_peer_id=lp_c63184ad7fe2fd0616f8f0cd84f7c6150d9687b039d568454b911e5f7dd544f1_server_instance_id=am4-gateway-dev_world_id=am4-cutover-world_udp_ready=true
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:18] LUMBERJACKS_SESSION state=peer_bind_queued run_id=native-20260731-c8-full30 client=omen action=none detail=sequence=0_connection_id=59fad220d7824a55953faa5ab707b878_role=client_peer_uid=527508953
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:18] LUMBERJACKS_SESSION state=motion_region_join_queued run_id=native-20260731-c8-full30 client=omen action=none detail=sequence=0_connection_id=59fad220d7824a55953faa5ab707b878_region_id=region-spawn
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:18] WORLD_ZONE_CUTOVER state=descriptor_requested run_id=native-20260731-c8-full30 client=client detail=fault_mode=none
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:18] LOGICAL_PEER_CUTOVER state=logical_server_announced run_id=native-20260731-c8-full30 detail=peer_uid=1179166357_logical_peer_id=lp_c9b96e29024c30948164b6025b7d6b67ef3e40eb243b767a108cf27e4657b0da
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:18] WORLD_ZONE_CUTOVER state=descriptor_accepted run_id=native-20260731-c8-full30 client=client detail=world_epoch=world-ffffffff63e5be34_world_generation_version=2_initial_zone=35,-1_global_keys=8_location_icons=10
+[Info   : Unity Log] 07/31/2026 07:53:18: Worldgenerator version setup:2
+
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:20] LOGICAL_PEER_CUTOVER state=logical_peer_constructed run_id=native-20260731-c8-full30 detail=role=server_peer_uid=1179166357_logical_peer_id=lp_c9b96e29024c30948164b6025b7d6b67ef3e40eb243b767a108cf27e4657b0da_socket_type=LogicalSocket_native_socket=false
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:20] LOGICAL_PEER_CUTOVER state=client_logical_peer_ready run_id=native-20260731-c8-full30 detail=remote_peer_uid=1179166357_remote_logical_peer_id=lp_c9b96e29024c30948164b6025b7d6b67ef3e40eb243b767a108cf27e4657b0da_world_epoch=world-ffffffff63e5be34_native_socket=false_native_handshake=false
+[Info   : Unity Log] 07/31/2026 07:53:25: Generating new world minimap done [4791ms]
+
+[Info   : Unity Log] 07/31/2026 07:53:25: Minimap: unpacking compressed mapData 8644 => 8388789 bytes
+
+[Info   : Unity Log] 07/31/2026 07:53:25: Starting respawn
+
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:25] WORLD_ZONE_CUTOVER state=world_bootstrap_applied_typed run_id=native-20260731-c8-full30 client=client detail=start_location=StartTemple_global_keys=8_location_icons=10_native_routed_rpc=false
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:25] WORLD_ZONE_CUTOVER state=bootstrap_progress run_id=native-20260731-c8-full30 client=omen detail=bootstrap_applied=True_start_icon=True_start_position=2211,33,-69_reference_position=3194.35,31.53,2324.08_reference_zone=50,36_zone_loaded=False_area_ready=False_local_player=False_banked=0_inbound=0_applied=0_superseded=0_apply_failures=0
+[Info   : Unity Log] 07/31/2026 07:53:25: tip:$loadscreen_tip04
+
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:26] LOGICAL_PEER_CUTOVER state=logical_native_invoke_suppressed run_id=native-20260731-c8-full30 detail=count=1_method=ServerSyncedPlayerData_semantic_fallback=false
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:27] WORLD_ZONE_CUTOVER state=bootstrap_progress run_id=native-20260731-c8-full30 client=omen detail=bootstrap_applied=True_start_icon=True_start_position=2211,33,-69_reference_position=3194.35,31.53,2324.08_reference_zone=50,36_zone_loaded=True_area_ready=False_local_player=False_banked=3944_inbound=0_applied=3944_superseded=0_apply_failures=0
+[Info   : Unity Log] 07/31/2026 07:53:27: Failed to find item prefab $PlumgaPlantItShovel
+
+[Info   : Unity Log] 07/31/2026 07:53:28: Loading dungeon
+
+[Info   : Unity Log] 07/31/2026 07:53:28: Dungeon loaded with 34 rooms in 1.5134 ms.
+
+[Info   : Unity Log] 07/31/2026 07:53:28: Loading room prefabs asynchronously
+
+[Info   : Unity Log] 07/31/2026 07:53:28: Loading dungeon
+
+[Info   : Unity Log] 07/31/2026 07:53:28: Dungeon loaded with 25 rooms in 1.0021 ms.
+
+[Info   : Unity Log] 07/31/2026 07:53:28: Loading room prefabs asynchronously
+
+[Info   : Unity Log] 07/31/2026 07:53:28: Force generating hmap (3072.00, 0.00, 2176.00)
+
+[Info   : Unity Log] 07/31/2026 07:53:28: Spawning dungeon
+
+[Info   : Unity Log] 07/31/2026 07:53:28: Spawning dungeon
+
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:28] LOGICAL_PEER_CUTOVER state=logical_native_invoke_suppressed run_id=native-20260731-c8-full30 detail=count=2_method=ServerSyncedPlayerData_semantic_fallback=false
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:29] WORLD_ZONE_CUTOVER state=bootstrap_progress run_id=native-20260731-c8-full30 client=omen detail=bootstrap_applied=True_start_icon=True_start_position=2211,33,-69_reference_position=3194.35,31.53,2324.08_reference_zone=50,36_zone_loaded=True_area_ready=True_local_player=False_banked=3944_inbound=0_applied=3944_superseded=0_apply_failures=0
+[Warning:ComfyNetworkSense] [07/31/2026 07:53:30] Authoritative consumer poll failed: TimeoutException: connect timeout to 8.231.129.249:42317
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:30] LOGICAL_PEER_CUTOVER state=logical_native_invoke_suppressed run_id=native-20260731-c8-full30 detail=count=3_method=ServerSyncedPlayerData_semantic_fallback=false
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:31] WORLD_ZONE_CUTOVER state=bootstrap_progress run_id=native-20260731-c8-full30 client=omen detail=bootstrap_applied=True_start_icon=True_start_position=2211,33,-69_reference_position=3194.35,31.53,2324.08_reference_zone=50,36_zone_loaded=True_area_ready=True_local_player=False_banked=3944_inbound=0_applied=3944_superseded=0_apply_failures=0
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:32] LOGICAL_PEER_CUTOVER state=logical_native_invoke_suppressed run_id=native-20260731-c8-full30 detail=count=4_method=ServerSyncedPlayerData_semantic_fallback=false
+[Info   : Unity Log] 07/31/2026 07:53:33: Spawned after 8.019993
+
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:33] LOGICAL_PEER_CUTOVER state=character_id_queued run_id=native-20260731-c8-full30 detail=target_logical_peer_id=lp_c9b96e29024c30948164b6025b7d6b67ef3e40eb243b767a108cf27e4657b0da_character_id=527508953:1
+[Error  : Unity Log] 07/31/2026 07:53:33: Failed to get player info for player Steam_76561198088711642 who sent the chat message "I HAVE ARRIVED!"!
+
+[Info   : Unity Log] 07/31/2026 07:53:33: Skipping unloading unused assets
+
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:33] AUTOTEST_JOINED run_id=native-20260731-c8-full30 client=omen character=Tugcorp server=100.116.82.60:2456 peer_count=1 player=Tugcorp renderer=NVIDIA_GeForce_RTX_5070 renderer_type=Direct3D11 graphics_memory_mb=11943
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:33] WORLD_ZONE_CUTOVER state=bootstrap_ready run_id=native-20260731-c8-full30 client=omen detail=bootstrap_applied=True_start_icon=True_start_position=2211,33,-69_reference_position=3194.35,31.78,2324.08_reference_zone=50,36_zone_loaded=True_area_ready=True_local_player=True_banked=3944_inbound=0_applied=3944_superseded=0_apply_failures=0
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:33] MOTION_AUTHORITY state=local_motion_identity run_id=native-20260731-c8-full30 client=omen action=none detail=uid=527508953:1_position=3194.354,31.782,2324.076
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:33] CUTOVER_SCENARIO state=teleport_safeguard_enabled run_id=native-20260731-c8-full30 client=omen action=none detail=god=True_fly=False_dead=False
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:33] CUTOVER_SCENARIO state=action_started run_id=native-20260731-c8-full30 client=omen action=omen-resumed detail=kind=wait
+[Info   : Unity Log] 07/31/2026 07:53:33: Minimap: Adding unique location (-4269.00, 40.00, 4415.00)
+
+[Info   : Unity Log] 07/31/2026 07:53:33: Minimap: Adding unique location (-4424.00, 42.00, 4431.00)
+
+[Info   : Unity Log] 07/31/2026 07:53:33: Minimap: Adding unique location (2211.00, 33.00, -69.00)
+
+[Info   : Unity Log] 07/31/2026 07:53:33: Minimap: Adding unique location (-4357.00, 49.00, 4361.00)
+
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:33] LOGICAL_PEER_CUTOVER state=logical_native_invoke_suppressed run_id=native-20260731-c8-full30 detail=count=8_method=ZDOData_semantic_fallback=false
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:33] LOGICAL_PEER_CUTOVER state=logical_native_invoke_suppressed run_id=native-20260731-c8-full30 detail=count=16_method=ZDOData_semantic_fallback=false
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:34] LOGICAL_PEER_CUTOVER state=logical_native_invoke_suppressed run_id=native-20260731-c8-full30 detail=count=32_method=RoutedRPC_semantic_fallback=false
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:35] CUTOVER_SCENARIO state=completed run_id=native-20260731-c8-full30 client=omen action=omen-resumed detail=wait_elapsed
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:35] CUTOVER_SCENARIO state=scenario_complete run_id=native-20260731-c8-full30 client=omen action=none detail=all_actions_completed
+[Info   : Unity Log] 07/31/2026 07:53:35: Starting music meadows
+
+[Info   : Unity Log] 07/31/2026 07:53:35: Resumed music meadows at 0
+
+[Warning:ComfyNetworkSense] [07/31/2026 07:53:35] Authoritative consumer telemetry failed: TimeoutException: connect timeout to 8.231.129.249:42317
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:35] LOGICAL_PEER_CUTOVER state=logical_native_invoke_suppressed run_id=native-20260731-c8-full30 detail=count=64_method=ZDOData_semantic_fallback=false
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:38] LOGICAL_PEER_CUTOVER state=logical_native_invoke_suppressed run_id=native-20260731-c8-full30 detail=count=128_method=ZDOData_semantic_fallback=false
+[Warning:ComfyNetworkSense] [07/31/2026 07:53:40] Authoritative consumer poll failed: TimeoutException: connect timeout to 8.231.129.249:42317
+[Info   : Unity Log] 07/31/2026 07:53:40: Game - OnApplicationQuit
+
+[Info   : Unity Log] 07/31/2026 07:53:40: Available space to current user: 175828066304. Saving is blocked if below: 226521056 bytes. Warnings are given if below: 453042112
+
+[Info   : Unity Log] 07/31/2026 07:53:40: Shutting down
+
+[Info   : Unity Log] 07/31/2026 07:53:41: Minimap: compressed mapData 8388789 => 8644 bytes
+
+[Info   : Unity Log] 07/31/2026 07:53:41: Cloud Save: 8402928 bytes. /characters/tugcorp.fch.new
+
+[Info   : Unity Log] Steam writing file chunks 1 / 1, (8402928 bytes)
+[Info   : Unity Log] Steam writing file chunks 1 / 1, (8402928 bytes)
+[Info   : Unity Log] Steam writing file chunks 1 / 1, (8402928 bytes)
+[Info   : Unity Log] 07/31/2026 07:53:41: Considering autobackup. World time: 16.05999, short time: 7200, long time: 43200, backup count: 4
+
+[Info   : Unity Log] 07/31/2026 07:53:41: Skipping backup. World session not long enough.
+
+[Info   : Unity Log] 07/31/2026 07:53:41: ZNet Shutdown
+
+[Info   : Unity Log] 07/31/2026 07:53:41: Unloading unused assets
+
+[Info   : Unity Log] 07/31/2026 07:53:41: Sending disconnect msg
+
+[Info   : Unity Log] 07/31/2026 07:53:41: Sent to lumberjacks:lp_c9b96e29024c30948164b6025b7d6b67ef3e40eb243b767a108cf27e4657b0da
+
+[Info   :ComfyNetworkSense] [07/31/2026 07:53:41] LOGICAL_PEER_CUTOVER state=disconnect_queued run_id=native-20260731-c8-full30 detail=target_logical_peer_id=lp_c9b96e29024c30948164b6025b7d6b67ef3e40eb243b767a108cf27e4657b0da
+[Info   : Unity Log] ZPlayFabMatchmaking::UnregisterServer - unregistering server now. State: Uninitialized
+[Info   : Unity Log] 07/31/2026 07:53:41: Stopping build thread
+
