@@ -1,5 +1,9 @@
 # M4-1 — Turnkey Stack: Inventory & Gap Pass
 
+Status: roadmap discovery, not an operator decision. Run this inventory when the
+adoption lane resumes. M4-2/3/4 remain gated until a turnkey demonstration is
+actually booked or imminent.
+
 ## Objective
 A complete inventory of every service in the system with its containerization
 status, config/secret needs, and the gap list standing between today and

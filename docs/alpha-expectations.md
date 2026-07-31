@@ -1,5 +1,12 @@
 # Alpha Expectations — how we build this together
 
+> **HISTORICAL — do not publish or serve.** Written 2026-07-23 for the former
+> P7-centered alpha: its P7 origin and promised weekly sweep no longer describe the
+> live program. Current public status and feedback language live at
+> <https://am4.tail8e749c.ts.net/workbench>; the durable response policy is
+> [PD-1](decisions/pd-1-governance-and-contributions.md)
+> (batch rhythm, days rather than minutes).
+
 This is an alpha environment for a community of creators, builders, and players.
 The goal of the tools tested here is simple: make it easier to keep caring, and
 give you back the hours you'd otherwise spend on maintenance so you get to be a

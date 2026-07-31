@@ -10,10 +10,15 @@ canonical doc, never restate its rationale. Execution steps belong in
 runbooks/checklists, plans in handoffs, blocked work in the backlog — not in the
 registers. (Adopted 2026-07-29.)
 
+Admit an item to a decision register only when it has at least two currently viable
+alternatives with materially different consequences, a decision owner, and a named
+deadline or trigger. If an existing policy already determines the answer, classify
+the work instead of reopening the policy.
+
 ## Lumberjacks / Valheim roadmap journal
 
 Any non-merge commit that changes the Lumberjacks cutover program under `fieldlab/`,
-`network/`, or `infra/gcp/p7/` must be represented on the living roadmap, which is
+`network/`, or `infra/gcp/p7/` must be at least append the decision to the living roadmap, which is
 generated into `Lumberjacks/src/Game.Gateway/Community/roadmap.html` from the
 append-only journal at `Lumberjacks/docs/roadmap/`.
 
@@ -24,26 +29,13 @@ the same commit as the change itself:
 cd Lumberjacks
 node scripts/roadmap.mjs note --milestone <M> --kind <kind> --summary "..." --impact "..."
 node scripts/roadmap.mjs check --staged
-```
-
-See [`Lumberjacks/AGENTS.md`](Lumberjacks/AGENTS.md) for the full rule, including when
-`docs/roadmap/valheim-volunteer-roadmap.json` must change alongside the note.
-
-The roadmap is public. Never include SteamIDs, invite links, credentials, access
-keys, passwords, or private diagnostic URLs.
+`
 
 ### This journal runs as background automation — plan around it
 
-Observed 2026-07-23: the journal is applied by **background automation**, not only by hand.
-Changes touching the Gateway / `network/` / `infra/gcp/p7/` are auto-committed with a generated
-roadmap note and **pushed to `origin/main`**, and `main`'s history is rewritten as releases are
-journaled (SHAs churn within a single session). For an agent working here:
-
-- Don't rely on feature-branch isolation or "hold the commit / don't push" for Gateway- or
-  release-touching work — it lands on `main` and reaches `origin` on its own. (Pure `docs/`-only
-  changes are not auto-committed; but once you commit them, `main` is pushed anyway.)
-- Don't force-push to "undo" an auto-commit — it is the normal release flow. Surface the state to
-  the operator and decide together.
+favor local loops for development and save GCP for production deploys.
+I own 3 steam accounts with valhiem.  the server should run on AM4
+player1 (wary.fool) runs on OMEN and player2 durracktu runs on i5
 
 ## Checkout roots
 
