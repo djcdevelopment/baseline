@@ -1,0 +1,34 @@
+{
+    "schema_version":  1,
+    "receipt_type":  "c8_scenario_coverage",
+    "generated_utc":  "2026-07-31T15:22:54.6142276+00:00",
+    "run_id":  "native-20260731-c8-full32",
+    "scenario_sha256":  "2d842f4848c0f0adafff5eaf5333a9874c13e000982e92df4f0af2f8860ea594",
+    "action_count":  49,
+    "checks":  {
+                   "profile_is_c8":  true,
+                   "run_id_matches":  true,
+                   "steam_free_cold_join_declared":  true,
+                   "co_presence_declared":  true,
+                   "direct_control_both":  true,
+                   "routed_request_both":  true,
+                   "routed_broadcast_both":  true,
+                   "target_zdo_both":  true,
+                   "zdo_journal_both":  true,
+                   "motion_both_directions":  true,
+                   "udp_drop_range":  true,
+                   "pickup_both_clients":  true,
+                   "two_peer_ownership_contention":  true,
+                   "zone_exit_enter":  true,
+                   "gateway_restart_declared":  true,
+                   "websocket_resume_declared":  true,
+                   "clean_disconnect_rejoin":  true,
+                   "client_server_poison_declared":  true,
+                   "save_integrity_declared":  true,
+                   "action_ids_unique_per_client":  true
+               },
+    "result":  "passed",
+    "failed_checks":  [
+
+                      ]
+}
