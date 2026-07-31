@@ -55,6 +55,18 @@
 > advertised UDP path. This is binary authority evidence, not a feel or smoothing
 > claim. C7's early socket-quarantine falsifier and Steam-free cold join are next,
 > followed immediately by the mandatory C7 replan.
+>
+> **2026-07-30 C7 early-falsifier addendum:** `native-20260731-c7-fourth`
+> passed the deliberately narrower socket-quarantine cell on both physical clients.
+> After the canonical Lumberjacks session and C5 descriptor were ready, OMEN and i5
+> closed their selected `ZSteamSocket` and held the live scene for 60,001 ms and
+> 60,004 ms respectively. Native funnel deltas remained zero while the adapter
+> suppressed thousands of native socket/RPC calls, and neither client reported a
+> native fallback. Both then completed a fresh-process resume and stopped unattended.
+> This falsifies the claim that the running Valheim scene inherently requires a live
+> native socket. It is not the C7 cold-join receipt: initial world entry still used
+> `+connect`, the native handshake, and native peer construction. C7 remains open for
+> construction of that state directly from C1/C2/C5, followed by its mandatory replan.
 
 > **2026-07-11 local / 2026-07-12 UTC P7 result:** the combined GCP deployment passed
 > the live P7/I7 loopback gate on `comfy-lumberjacks-p7` in project

@@ -1,0 +1,54 @@
+[Message:   BepInEx] BepInEx 5.4.23.3 - valheim (7/9/2026 6:56:24 AM)
+[Message:   BepInEx] User is running BepInExPack Valheim version 5.4.2333 from Thunderstore
+[Info   :   BepInEx] Running under Unity v6000.0.61.7643309
+[Info   :   BepInEx] CLR runtime version: 4.0.30319.42000
+[Info   :   BepInEx] Supports SRE: True
+[Info   :   BepInEx] System platform: Bits64, Windows
+[Message:   BepInEx] Preloader started
+[Info   :   BepInEx] Loaded 1 patcher method from [BepInEx.Preloader 5.4.23.3]
+[Info   :   BepInEx] 1 patcher plugin loaded
+[Info   :   BepInEx] Patching [UnityEngine.CoreModule] with [BepInEx.Chainloader]
+[Message:   BepInEx] Preloader finished
+[Message:   BepInEx] Chainloader ready
+[Message:   BepInEx] Chainloader started
+[Info   :   BepInEx] 3 plugins to load
+[Info   :   BepInEx] Loading [Comfy Camera Proof 0.1.0]
+[Info   :Comfy Camera Proof] Comfy Camera Proof loaded. F8/status and F9/move proof commands are available.
+[Info   :   BepInEx] Loading [ComfyControlSurface 0.6.0]
+[Info   :ComfyControlSurface] [07/30/2026 22:33:33] Comfy control surface loaded.
+[Info   :   BepInEx] Loading [ComfyNetworkSense 0.5.45]
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] Authoritative consumer init: enabled=True, manifest=p7-primary-v1, gateway=http://8.231.129.249:42317
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] Authoritative consumer init: authoritative consumer armed
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] Panel input patch applied: GameCamera.UpdateMouseCapture
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] Panel input patch applied: Character.TakeInput
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] GameplayEventPatches: patched Character.RPC_Damage
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] GameplayEventPatches: patched Character.Damage
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] GameplayEventPatches: patched Character.OnDeath
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] Lab auto-join patch applied: FejdStartup.Start
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] Quest view loaded: 4 tracked quest(s) for Derek from C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\config\comfy-network-sense\quest-view.json
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] Telemetry scaffold ready.
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] Lumberjacks contract release=m30-rolecontrol-20260723-r1 schema_version=2 operation=zdo_redirect
+[Message:   BepInEx] Chainloader startup complete
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:39] AUTOTEST_READY run_id=native-20260731-c7-fourth client=i5 character=durracktu server=100.116.82.60:2456 renderer=Intel(R)_Iris(R)_Xe_Graphics renderer_type=Direct3D11 native_poison=false
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:39] CUTOVER_SCENARIO state=scenario_loaded run_id=native-20260731-c7-fourth client=i5 action=none detail=actions=5
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:48] Lab auto-join started existing character 'Durracktu' at profile index 0.
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:48] AUTOTEST_CHARACTER_SELECTED run_id=native-20260731-c7-fourth client=i5 character=durracktu server=100.116.82.60:2456 profile_index=0
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:50] Registered routed RPC: ComfyNetworkSense_ServerPulse
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:50] Registered routed RPC: ComfyNetworkSense_GameplayEvent
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:50] WORLD_ZONE_CUTOVER state=native_blank_world_payload_observed run_id=native-20260731-c7-fourth client=client detail=world_name_length=0_seed=0_seed_name_length=0_world_uid=0_world_generation_version=0_network_time=0
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:50] WORLD_ZONE_CUTOVER state=peer_info_held_for_descriptor run_id=native-20260731-c7-fourth client=client detail=scene_entry_withheld=true
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:50] LUMBERJACKS_SESSION state=session_started run_id=native-20260731-c7-fourth client=i5 action=none detail=sequence=0_connection_id=db06e2a3b36e4a25a0f94829c7e1b7d0_resumed=false_reincarnated=false_logical_peer_id=lp_19f2670527be6f633c140c5938e5ff4c85d4bbe309e63007f20327439f837d5c_server_instance_id=am4-gateway-dev_world_id=am4-cutover-world_udp_ready=true
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:50] LUMBERJACKS_SESSION state=peer_bind_queued run_id=native-20260731-c7-fourth client=i5 action=none detail=sequence=0_connection_id=db06e2a3b36e4a25a0f94829c7e1b7d0_role=client_peer_uid=2113375443
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:50] WORLD_ZONE_CUTOVER state=descriptor_requested run_id=native-20260731-c7-fourth client=client detail=fault_mode=none
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:50] WORLD_ZONE_CUTOVER state=descriptor_accepted run_id=native-20260731-c7-fourth client=client detail=world_epoch=world-ffffffff63e5be34_world_generation_version=2_initial_zone=0,0
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:52] WORLD_ZONE_CUTOVER state=peer_info_resumed_from_descriptor run_id=native-20260731-c7-fourth client=client detail=source=lumberjacks_world_epoch=world-ffffffff63e5be34
+[Warning:ComfyNetworkSense] [07/30/2026 22:33:55] Authoritative consumer poll failed: TimeoutException: connect timeout to 8.231.129.249:42317
+[Warning:ComfyNetworkSense] [07/30/2026 22:34:00] Authoritative consumer telemetry failed: TimeoutException: connect timeout to 8.231.129.249:42317
+[Warning:ComfyNetworkSense] [07/30/2026 22:34:05] Authoritative consumer poll failed: TimeoutException: connect timeout to 8.231.129.249:42317
+[Info   :ComfyNetworkSense] [07/30/2026 22:34:07] AUTOTEST_JOINED run_id=native-20260731-c7-fourth client=i5 character=durracktu server=100.116.82.60:2456 peer_count=1 player=Durracktu renderer=Intel(R)_Iris(R)_Xe_Graphics renderer_type=Direct3D11 graphics_memory_mb=16226
+[Info   :ComfyNetworkSense] [07/30/2026 22:34:07] MOTION_AUTHORITY state=local_motion_identity run_id=native-20260731-c7-fourth client=i5 action=none detail=uid=2113375443:1_position=2827.78,27.729,-59.84
+[Info   :ComfyNetworkSense] [07/30/2026 22:34:07] CUTOVER_SCENARIO state=action_started run_id=native-20260731-c7-fourth client=i5 action=i5-resumed detail=kind=wait
+[Info   :ComfyNetworkSense] [07/30/2026 22:34:07] LUMBERJACKS_SESSION state=motion_transport_fallback run_id=native-20260731-c7-fourth client=i5 action=none detail=sequence=0_connection_id=db06e2a3b36e4a25a0f94829c7e1b7d0_udp_receive_failed=ConnectionReset_fallback=binary_websocket
+[Info   :ComfyNetworkSense] [07/30/2026 22:34:09] CUTOVER_SCENARIO state=completed run_id=native-20260731-c7-fourth client=i5 action=i5-resumed detail=wait_elapsed
+[Info   :ComfyNetworkSense] [07/30/2026 22:34:09] CUTOVER_SCENARIO state=scenario_complete run_id=native-20260731-c7-fourth client=i5 action=none detail=all_actions_completed
+[Warning:ComfyNetworkSense] [07/30/2026 22:34:15] Authoritative consumer poll failed: TimeoutException: connect timeout to 8.231.129.249:42317

@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "run_id": "native-20260731-c7-fourth",
+  "created_utc": "2026-07-31T05:31:01.8667641+00:00",
+  "expires_utc": "2026-07-31T06:31:01.8698686+00:00",
+  "profile": "c7",
+  "actions": [
+    {
+      "id": "omen-settle",
+      "client": "omen",
+      "kind": "wait",
+      "deadline_seconds": 10,
+      "duration_seconds": 2,
+      "distance_meters": 0,
+      "radius_meters": 0,
+      "direction": "",
+      "target_tag": ""
+    },
+    {
+      "id": "i5-settle",
+      "client": "i5",
+      "kind": "wait",
+      "deadline_seconds": 10,
+      "duration_seconds": 2,
+      "distance_meters": 0,
+      "radius_meters": 0,
+      "direction": "",
+      "target_tag": ""
+    },
+    {
+      "id": "omen-move",
+      "client": "omen",
+      "kind": "move",
+      "deadline_seconds": 15,
+      "duration_seconds": 3,
+      "distance_meters": 6,
+      "radius_meters": 0,
+      "direction": "east",
+      "target_tag": ""
+    },
+    {
+      "id": "i5-move",
+      "client": "i5",
+      "kind": "move",
+      "deadline_seconds": 15,
+      "duration_seconds": 3,
+      "distance_meters": 6,
+      "radius_meters": 0,
+      "direction": "north",
+      "target_tag": ""
+    },
+    {
+      "id": "omen-c7-socket-quarantine",
+      "client": "omen",
+      "kind": "socket_quarantine",
+      "deadline_seconds": 90,
+      "duration_seconds": 60,
+      "distance_meters": 0,
+      "radius_meters": 0,
+      "direction": "",
+      "target_tag": ""
+    },
+    {
+      "id": "i5-c7-socket-quarantine",
+      "client": "i5",
+      "kind": "socket_quarantine",
+      "deadline_seconds": 90,
+      "duration_seconds": 60,
+      "distance_meters": 0,
+      "radius_meters": 0,
+      "direction": "",
+      "target_tag": ""
+    },
+    {
+      "id": "omen-disconnect-resume",
+      "client": "omen",
+      "kind": "disconnect_resume",
+      "deadline_seconds": 15,
+      "duration_seconds": 0,
+      "distance_meters": 0,
+      "radius_meters": 0,
+      "direction": "",
+      "target_tag": ""
+    },
+    {
+      "id": "i5-disconnect-resume",
+      "client": "i5",
+      "kind": "disconnect_resume",
+      "deadline_seconds": 15,
+      "duration_seconds": 0,
+      "distance_meters": 0,
+      "radius_meters": 0,
+      "direction": "",
+      "target_tag": ""
+    },
+    {
+      "id": "omen-resumed",
+      "client": "omen",
+      "kind": "wait",
+      "deadline_seconds": 10,
+      "duration_seconds": 2,
+      "distance_meters": 0,
+      "radius_meters": 0,
+      "direction": "",
+      "target_tag": ""
+    },
+    {
+      "id": "i5-resumed",
+      "client": "i5",
+      "kind": "wait",
+      "deadline_seconds": 10,
+      "duration_seconds": 2,
+      "distance_meters": 0,
+      "radius_meters": 0,
+      "direction": "",
+      "target_tag": ""
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+    "schema_version":  1,
+    "receipt_type":  "native_valheim_lifecycle",
+    "generated_utc":  "2026-07-31T05:34:20.9768500+00:00",
+    "run_id":  "native-20260731-c7-fourth",
+    "client":  "i5",
+    "action":  "smoke",
+    "result":  "joined_held_and_stopped",
+    "error":  "",
+    "server":  "100.116.82.60:2456",
+    "character":  "durracktu",
+    "process_id":  null,
+    "process_session":  null,
+    "joined":  {
+                   "schema_version":  1,
+                   "timestamp_utc":  "2026-07-31T05:34:07.5399179+00:00",
+                   "state":  "joined",
+                   "run_id":  "native-20260731-c7-fourth",
+                   "client":  "i5",
+                   "character":  "durracktu",
+                   "server":  "100.116.82.60:2456",
+                   "detail":  "peer_count=1 player=Durracktu renderer=Intel(R)_Iris(R)_Xe_Graphics renderer_type=Direct3D11 graphics_memory_mb=16226"
+               },
+    "native_poison":  null,
+    "scenario_terminal":  {
+                              "schema_version":  1,
+                              "timestamp_utc":  "2026-07-31T05:34:09.5195136+00:00",
+                              "state":  "scenario_complete",
+                              "run_id":  "native-20260731-c7-fourth",
+                              "client":  "i5",
+                              "action_id":  "",
+                              "detail":  "all_actions_completed"
+                          },
+    "resume_count":  1,
+    "profile_recovery_count":  0,
+    "native_network_poison_requested":  false,
+    "routed_rpc_cutover_requested":  true,
+    "zdo_journal_cutover_requested":  true,
+    "zdo_journal_canonical_session_requested":  true,
+    "ownership_lease_cutover_requested":  false,
+    "world_zone_cutover_requested":  true,
+    "motion_authority_cutover_requested":  false,
+    "socket_quarantine_cutover_requested":  true,
+    "world_descriptor_fault":  "",
+    "preflight":  {
+                      "schema_version":  1,
+                      "receipt_type":  "native_valheim_preflight",
+                      "generated_utc":  "2026-07-31T05:31:37.2242501+00:00",
+                      "client":  "i5",
+                      "server":  "100.116.82.60:2456",
+                      "character":  "durracktu",
+                      "result":  "ready",
+                      "blockers":  [
+
+                                   ],
+                      "checks":  [
+                                     {
+                                         "name":  "valheim_root",
+                                         "passed":  true,
+                                         "detail":  "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Valheim"
+                                     },
+                                     {
+                                         "name":  "valheim_exe",
+                                         "passed":  true,
+                                         "detail":  "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Valheim\\valheim.exe"
+                                     },
+                                     {
+                                         "name":  "steam_exe",
+                                         "passed":  true,
+                                         "detail":  "C:\\Program Files (x86)\\Steam\\steam.exe"
+                                     },
+                                     {
+                                         "name":  "bepinex_plugin",
+                                         "passed":  true,
+                                         "detail":  "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Valheim\\BepInEx\\plugins\\ComfyNetworkSense.dll"
+                                     },
+                                     {
+                                         "name":  "interactive_session",
+                                         "passed":  true,
+                                         "detail":  "{\"current\":2,\"explorer\":[2],\"steam\":[2],\"interactive_available\":true,\"current_is_interactive\":true}"
+                                     },
+                                     {
+                                         "name":  "current_session_interactive",
+                                         "passed":  true,
+                                         "detail":  "required=True current=2"
+                                     },
+                                     {
+                                         "name":  "character_profile",
+                                         "passed":  true,
+                                         "detail":  "durracktu"
+                                     },
+                                     {
+                                         "name":  "gpu_present",
+                                         "passed":  true,
+                                         "detail":  "Intel(R) Iris(R) Xe Graphics"
+                                     }
+                                 ],
+                      "sessions":  {
+                                       "current":  2,
+                                       "explorer":  [
+                                                        2
+                                                    ],
+                                       "steam":  [
+                                                     2
+                                                 ],
+                                       "interactive_available":  true,
+                                       "current_is_interactive":  true
+                                   },
+                      "profiles":  [
+                                       "durracktu"
+                                   ],
+                      "gpu":  [
+                                  {
+                                      "name":  "Intel(R) Iris(R) Xe Graphics",
+                                      "driver_version":  "32.0.101.7077",
+                                      "status":  "OK"
+                                  }
+                              ],
+                      "valheim_running":  false,
+                      "steam_running":  true,
+                      "plugin_version":  "0.5.45"
+                  },
+    "deployment":  {
+                       "mod":  null,
+                       "scenario":  {
+                                        "source":  "C:\\deploy\\baseline\\fieldlab\\scenarios\\baseline-c7-fourth.json",
+                                        "target":  "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Valheim\\BepInEx\\config\\comfy-network-sense\\native-cutover-scenario.json",
+                                        "sha256":  "d0eafb1ad56406280feba7e7d80ef3c1bbec83e19772d7bda1527f54bdfdbc8a",
+                                        "action_count":  10
+                                    }
+                   },
+    "plugin_sha256":  "3711955bd0099817e63fdc06a0a718b6267cfa77a3e3567647e220a507306e17",
+    "request_consumed":  true,
+    "valheim_running":  false,
+    "evidence":  {
+                     "bep_inex_log":  "C:\\deploy\\baseline\\fieldlab\\runs\\native-valheim\\native-20260731-c7-fourth\\i5\\bepinex.log",
+                     "player_log":  "C:\\deploy\\baseline\\fieldlab\\runs\\native-valheim\\native-20260731-c7-fourth\\i5\\player.log",
+                     "autotest_receipts":  "C:\\deploy\\baseline\\fieldlab\\runs\\native-valheim\\native-20260731-c7-fourth\\i5\\native-autotest-receipts.jsonl",
+                     "native_network_use":  "C:\\deploy\\baseline\\fieldlab\\runs\\native-valheim\\native-20260731-c7-fourth\\i5\\native-network-use.jsonl",
+                     "cutover_scenario_receipts":  "C:\\deploy\\baseline\\fieldlab\\runs\\native-valheim\\native-20260731-c7-fourth\\i5\\native-cutover-scenario-receipts.jsonl",
+                     "lumberjacks_game_session":  "C:\\deploy\\baseline\\fieldlab\\runs\\native-valheim\\native-20260731-c7-fourth\\i5\\lumberjacks-game-session.jsonl",
+                     "direct_control_cutover":  "C:\\deploy\\baseline\\fieldlab\\runs\\native-valheim\\native-20260731-c7-fourth\\i5\\direct-control-cutover.jsonl",
+                     "routed_rpc_cutover":  "C:\\deploy\\baseline\\fieldlab\\runs\\native-valheim\\native-20260731-c7-fourth\\i5\\routed-rpc-cutover.jsonl",
+                     "zdo_journal_cutover":  "C:\\deploy\\baseline\\fieldlab\\runs\\native-valheim\\native-20260731-c7-fourth\\i5\\zdo-journal-cutover.jsonl",
+                     "ownership_lease_cutover":  "C:\\deploy\\baseline\\fieldlab\\runs\\native-valheim\\native-20260731-c7-fourth\\i5\\ownership-lease-cutover.jsonl",
+                     "world_zone_cutover":  "C:\\deploy\\baseline\\fieldlab\\runs\\native-valheim\\native-20260731-c7-fourth\\i5\\world-zone-cutover.jsonl",
+                     "motion_authority_cutover":  "C:\\deploy\\baseline\\fieldlab\\runs\\native-valheim\\native-20260731-c7-fourth\\i5\\motion-authority-cutover.jsonl",
+                     "socket_quarantine_cutover":  "C:\\deploy\\baseline\\fieldlab\\runs\\native-valheim\\native-20260731-c7-fourth\\i5\\socket-quarantine-cutover.jsonl"
+                 }
+}

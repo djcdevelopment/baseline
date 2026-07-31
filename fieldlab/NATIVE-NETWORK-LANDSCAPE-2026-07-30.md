@@ -374,11 +374,20 @@ membership with native selection suppressed; C6 proves selected binary motion
 authority, native-writer suppression, bounded hold, and reliable resync. The full
 prefab and method surface is still not promoted to “swapped.”
 
-C7 is next. Run its early falsifier before filling out cold join: establish the
-canonical Lumberjacks session and descriptor, quarantine the native `ZSteamSocket`,
-and require the client to remain in-world for 60 seconds. If Valheim requires a
-concrete native socket, replan the adapter seam rather than accepting an opaque
-packet tunnel. The mandatory C7 replan follows the real cold-join receipt. Revised
-remaining cost is **7–16 focused engineering days**, including remaining
-ownership/direct/routed/zone breadth folded into C7–C8. Only after the native poison
-gate reaches zero does motion tuning measure the system intended to ship.
+C7's early falsifier passed in `native-20260731-c7-fourth`. After the canonical
+Lumberjacks session and descriptor were ready, both physical clients closed their
+selected native `ZSteamSocket`, held the live scene for at least 60 seconds with zero
+native funnel delta, exercised thousands of suppressed native socket/RPC calls, and
+reported no native fallback. Both then completed the manifest's fresh-process resume.
+This removes the feared “engine requires a continuously live native socket” branch;
+it does not prove cold join because native `+connect`, handshake, and peer construction
+still preceded quarantine.
+
+Continue C7 by starting C1 from the request manifest, reconstructing the minimal
+logical peer/session from C1/C2/C5 without `+connect`, and reaching character scene
+entry with native poison armed. Invalid enrollment/release, unavailable Gateway, and
+wrong descriptor must fail closed without trying the native server. Do not introduce
+an opaque packet tunnel. The mandatory C7 replan follows that real cold-join receipt.
+Keep the remaining **7–16 focused engineering day** estimate until that replan; only
+after the native poison gate reaches zero does motion tuning measure the system
+intended to ship.

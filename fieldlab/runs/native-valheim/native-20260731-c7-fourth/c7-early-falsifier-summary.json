@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "receipt_type": "c7_socket_quarantine_early_falsifier_summary",
+  "run_id": "native-20260731-c7-fourth",
+  "source_commit": "850a7a6",
+  "result": "passed",
+  "scope": "C7 early socket-quarantine falsifier on the AM4 two-client composition",
+  "c7_status": "in_progress",
+  "artifacts": {
+    "plugin_version": "0.5.45",
+    "plugin_sha256": "3711955bd0099817e63fdc06a0a718b6267cfa77a3e3567647e220a507306e17",
+    "deployed_scenario_sha256": "d0eafb1ad56406280feba7e7d80ef3c1bbec83e19772d7bda1527f54bdfdbc8a",
+    "retained_scenario_sha256": "a1d555505269a6a7645c6b3f56d5fceab2bd19c4a9da88058fac6463c661b14e",
+    "gateway_image": "sha256:6fede52178c0c23cc449623f5192dd1c3bb37d4925f65ced014106b9f632a9c1",
+    "compose_sha256": "11dea4257ef6768fbb7e4fb4824b04d85500f40a3f066489f514f07db65f9492",
+    "compose_dev_sha256": "ba331a16fb9459ae3eb5cce51905f08ed65242f4a83f8bb47a1d88199cb761c8"
+  },
+  "world": {
+    "world_id": "am4-cutover-world",
+    "world_epoch": "world-ffffffff63e5be34",
+    "world_generation_version": 2,
+    "initial_zone": "0,0"
+  },
+  "composition": {
+    "result": "completed",
+    "omen": {
+      "character": "Tugcorp",
+      "renderer": "NVIDIA GeForce RTX 5070",
+      "result": "joined_held_and_stopped",
+      "resume_count": 1,
+      "logical_peer_id": "lp_c63184ad7fe2fd0616f8f0cd84f7c6150d9687b039d568454b911e5f7dd544f1"
+    },
+    "i5": {
+      "character": "Durracktu",
+      "renderer": "Intel Iris Xe Graphics",
+      "result": "joined_held_and_stopped",
+      "resume_count": 1,
+      "logical_peer_id": "lp_19f2670527be6f633c140c5938e5ff4c85d4bbe309e63007f20327439f837d5c"
+    }
+  },
+  "verified": {
+    "canonical_lumberjacks_session_before_quarantine": true,
+    "world_descriptor_accepted_before_quarantine": true,
+    "underlying_native_socket_disconnected_before_hold": true,
+    "both_clients_held_live_scene_at_least_60_seconds": true,
+    "both_clients_native_funnel_delta_zero_during_hold": true,
+    "native_socket_and_rpc_interception_exercised": true,
+    "native_fallback_during_hold": false,
+    "fresh_process_resume_each_client": true,
+    "operator_keyboard_or_mouse_actions": 0
+  },
+  "quarantine_receipts": {
+    "omen": {
+      "held_ms": 60001,
+      "native_total_baseline": 3799,
+      "native_total_delta": 0,
+      "rpc_update_suppressed": 7961,
+      "rpc_connected_virtualized": 7961,
+      "rpc_invoke_suppressed": 1168,
+      "socket_send_suppressed": 7962,
+      "socket_recv_suppressed": 0,
+      "native_fallback": false
+    },
+    "i5": {
+      "held_ms": 60004,
+      "native_total_baseline": 3546,
+      "native_total_delta": 0,
+      "rpc_update_suppressed": 7030,
+      "rpc_connected_virtualized": 7030,
+      "rpc_invoke_suppressed": 1129,
+      "socket_send_suppressed": 7031,
+      "socket_recv_suppressed": 0,
+      "native_fallback": false
+    }
+  },
+  "inferred": [
+    "The running Valheim scene does not inherently require a continuously live native socket when selected connection and RPC dependencies are supplied by the logical adapter.",
+    "Gateway WebSocket EOF errors during the run align with deliberate client disconnect/relaunch operations."
+  ],
+  "not_verified": [
+    "Steam-free cold join or construction of the initial logical peer without +connect.",
+    "Removal of ServerHandshake, ClientHandshake, network PeerInfo, or Steam ticket verification.",
+    "C7 fail-closed behavior for invalid enrollment, wrong release, unavailable Gateway, or wrong descriptor.",
+    "Native-zero full composition, motion quality, or P7 promotion."
+  ]
+}

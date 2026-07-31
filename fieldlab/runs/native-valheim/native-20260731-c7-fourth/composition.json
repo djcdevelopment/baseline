@@ -1,0 +1,39 @@
+{
+    "schema_version":  1,
+    "receipt_type":  "native_cutover_composition",
+    "generated_utc":  "2026-07-31T05:34:26.5290692+00:00",
+    "run_id":  "native-20260731-c7-fourth",
+    "server":  "100.116.82.60:2456",
+    "result":  "completed",
+    "scenario_sha256":  "d0eafb1ad56406280feba7e7d80ef3c1bbec83e19772d7bda1527f54bdfdbc8a",
+    "clients":  [
+                    {
+                        "client":  "omen",
+                        "result":  "joined_held_and_stopped",
+                        "resume_count":  1,
+                        "scenario_terminal":  {
+                                                  "schema_version":  1,
+                                                  "timestamp_utc":  "2026-07-31T05:33:59.6286520+00:00",
+                                                  "state":  "scenario_complete",
+                                                  "run_id":  "native-20260731-c7-fourth",
+                                                  "client":  "omen",
+                                                  "action_id":  "",
+                                                  "detail":  "all_actions_completed"
+                                              }
+                    },
+                    {
+                        "client":  "i5",
+                        "result":  "joined_held_and_stopped",
+                        "resume_count":  1,
+                        "scenario_terminal":  {
+                                                  "schema_version":  1,
+                                                  "timestamp_utc":  "2026-07-31T05:34:09.5195136+00:00",
+                                                  "state":  "scenario_complete",
+                                                  "run_id":  "native-20260731-c7-fourth",
+                                                  "client":  "i5",
+                                                  "action_id":  "",
+                                                  "detail":  "all_actions_completed"
+                                              }
+                    }
+                ]
+}

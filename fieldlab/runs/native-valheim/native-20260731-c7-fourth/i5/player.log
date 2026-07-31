@@ -1,0 +1,263 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/Valheim/valheim_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/Valheim/MonoBleedingEdge/etc'
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.0.61f1 (74a0adb02c31)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/Valheim/valheim_Data/UnitySubsystems
+kGfxThreadingModeSplitJobs is not supported on Direct3D 11. Reverting to kGfxThreadingModeClientWorkerJobs instead.
+GfxDevice: creating device client; kGfxThreadingModeClientWorkerJobs
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: Intel(R) Iris(R) Xe Graphics (ID=0x46a6)
+    Vendor:   Intel
+    VRAM:     16226 MB
+    Driver:   32.0.101.7077
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.073 seconds
+- Finished resetting the current domain, in  0.002 seconds
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+[Message:   BepInEx] BepInEx 5.4.23.3 - valheim (7/9/2026 6:56:24 AM)
+[Message:   BepInEx] User is running BepInExPack Valheim version 5.4.2333 from Thunderstore
+[Info   :   BepInEx] Running under Unity v6000.0.61.7643309
+[Info   :   BepInEx] CLR runtime version: 4.0.30319.42000
+[Info   :   BepInEx] Supports SRE: True
+[Info   :   BepInEx] System platform: Bits64, Windows
+[Message:   BepInEx] Preloader started
+[Info   :   BepInEx] Loaded 1 patcher method from [BepInEx.Preloader 5.4.23.3]
+[Info   :   BepInEx] 1 patcher plugin loaded
+[Info   :   BepInEx] Patching [UnityEngine.CoreModule] with [BepInEx.Chainloader]
+[Message:   BepInEx] Preloader finished
+[Message:   BepInEx] Chainloader ready
+[Message:   BepInEx] Chainloader started
+[Info   :   BepInEx] 3 plugins to load
+[Info   :   BepInEx] Loading [Comfy Camera Proof 0.1.0]
+[Info   :Comfy Camera Proof] Comfy Camera Proof loaded. F8/status and F9/move proof commands are available.
+[Info   :   BepInEx] Loading [ComfyControlSurface 0.6.0]
+[Info   :ComfyControlSurface] [07/30/2026 22:33:33] Comfy control surface loaded.
+[Info   :   BepInEx] Loading [ComfyNetworkSense 0.5.45]
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] Authoritative consumer init: enabled=True, manifest=p7-primary-v1, gateway=http://8.231.129.249:42317
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] Authoritative consumer init: authoritative consumer armed
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] Panel input patch applied: GameCamera.UpdateMouseCapture
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] Panel input patch applied: Character.TakeInput
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] GameplayEventPatches: patched Character.RPC_Damage
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] GameplayEventPatches: patched Character.Damage
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] GameplayEventPatches: patched Character.OnDeath
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] Lab auto-join patch applied: FejdStartup.Start
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] Quest view loaded: 4 tracked quest(s) for Derek from C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\config\comfy-network-sense\quest-view.json
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] Telemetry scaffold ready.
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:33] Lumberjacks contract release=m30-rolecontrol-20260723-r1 schema_version=2 operation=zdo_redirect
+[Message:   BepInEx] Chainloader startup complete
+<RI> Initializing input.
+Using Windows.Gaming.Input
+XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
+<RI> Input initialized.
+UnloadTime: 0.503700 ms
+07/30/2026 22:33:34: Using environment steamid 892970
+07/30/2026 22:33:34: Using steam APPID:892970
+07/30/2026 22:33:34: Authentication:k_ESteamNetworkingAvailability_Attempting
+07/30/2026 22:33:34: Platform doesn't implement Process Lifetime Management! Don't initialize suspend manager.
+07/30/2026 22:33:34: Initialized platform!
+07/30/2026 22:33:34: Platform doesn't implement matchmaking! Don't initialize matchmaking manager.
+07/30/2026 22:33:34: All files in local storage save data:
+C:/Users/Admin/AppData/LocalLow/IronGate/Valheim\Player-prev.log (26975)
+C:/Users/Admin/AppData/LocalLow/IronGate/Valheim\Player.log (4361)
+07/30/2026 22:33:34: All files in platform save data:
+characters/durracktu.fch (11276)
+characters/durracktu_backup_auto-20260721235906.fch (792)
+serverlist/recent.old (192)
+serverlist/favorite (192)
+serverlist/recent (192)
+characters/durracktu.fch.old (11276)
+characters/durracktu_backup_auto-20260722042716.fch (10690)
+characters/durracktu_backup_auto-20260723103121.fch (10764)
+07/30/2026 22:33:34: Initializing preferences provider...
+07/30/2026 22:33:34: No preference provider available for this platform!
+07/30/2026 22:33:34: Set background loading budget to Low
+07/30/2026 22:33:34: Loading first scene!
+07/30/2026 22:33:34: Preferences initialized! Activating first scene!
+[Debug  :   BepInEx] [UnityInput] Using LegacyInputSystem
+Unloading 5 Unused Serialized files (Serialized files now loaded: 8)
+UnloadTime: 0.061600 ms
+07/30/2026 22:33:34: 
+07/30/2026 22:33:34: Starting to load scene:start.unity (169d7618616154c03be07e9ad3af5893)
+07/30/2026 22:33:34: Set background loading budget to Normal
+07/30/2026 22:33:34: Loaded localization file #0 - 'localization' language: 'English'
+07/30/2026 22:33:34: Loaded localization file #1 - 'localization_extra' language: 'English'
+07/30/2026 22:33:34: Loaded localization file #2 - 'heightmap_message' language: 'English'
+07/30/2026 22:33:34: Loaded localization file #3 - 'localization_witch' language: 'English'
+07/30/2026 22:33:34: Loaded localization file #4 - 'localization_ashlands' language: 'English'
+07/30/2026 22:33:34: Loaded localization file #5 - 'localization_captions' language: 'English'
+07/30/2026 22:33:34: Loaded localization file #6 - 'localization_combatupdate' language: 'English'
+07/30/2026 22:33:34: Loaded localization file #7 - 'localization_celebrationupdate' language: 'English'
+07/30/2026 22:33:35: Loaded localization file #0 - 'localization' language: 'English'
+07/30/2026 22:33:35: Loaded localization file #1 - 'localization_extra' language: 'English'
+07/30/2026 22:33:35: Loaded localization file #2 - 'heightmap_message' language: 'English'
+07/30/2026 22:33:35: Loaded localization file #3 - 'localization_witch' language: 'English'
+07/30/2026 22:33:35: Loaded localization file #4 - 'localization_ashlands' language: 'English'
+07/30/2026 22:33:35: Loaded localization file #5 - 'localization_captions' language: 'English'
+07/30/2026 22:33:35: Loaded localization file #6 - 'localization_combatupdate' language: 'English'
+07/30/2026 22:33:35: Loaded localization file #7 - 'localization_celebrationupdate' language: 'English'
+Unloading 174 unused Assets to reduce memory usage. Loaded Objects now: 2507.
+Total: 7.410700 ms (FindLiveObjects: 0.121000 ms CreateObjectMapping: 0.054500 ms MarkObjects: 7.082400 ms  DeleteObjects: 0.152300 ms)
+
+The referenced script on this Behaviour (Game Object '<null>') is missing!
+The referenced script on this Behaviour (Game Object '<null>') is missing!
+The referenced script on this Behaviour (Game Object '<null>') is missing!
+Unloading 3 Unused Serialized files (Serialized files now loaded: 20)
+07/30/2026 22:33:39: Set background loading budget to High
+07/30/2026 22:33:39: GPU Device: 8086:46A6 (Intel)
+07/30/2026 22:33:39: Set background loading budget to Low
+UnloadTime: 5.620200 ms
+Only custom filters can be played. Please add a custom filter or an audioclip to the audiosource (Amb_MainMenu).
+07/30/2026 22:33:39: Missing audio clip in music respawn
+07/30/2026 22:33:39: Steam initialized, persona:derek
+07/30/2026 22:33:39: Valheim version: 0.221.12 (network version 36)
+07/30/2026 22:33:39: Worldgenerator version setup:2
+07/30/2026 22:33:39: Render threading mode:LegacyJobified
+07/30/2026 22:33:39: Checking for installed DLCs
+07/30/2026 22:33:39: DLC:beta installed:False
+07/30/2026 22:33:39: Builder started
+07/30/2026 22:33:39: JOIN 100.116.82.60:2456
+07/30/2026 22:33:39: connect to ip:100.116.82.60 port:2456
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:39] AUTOTEST_READY run_id=native-20260731-c7-fourth client=i5 character=durracktu server=100.116.82.60:2456 renderer=Intel(R)_Iris(R)_Xe_Graphics renderer_type=Direct3D11 native_poison=false
+07/30/2026 22:33:39: Sending PlayFab login request (attempt 1)
+07/30/2026 22:33:39: show character selection
+07/30/2026 22:33:39: Starting music menu
+Unloading 93736 unused Assets to reduce memory usage. Loaded Objects now: 208949.
+Total: 85.792000 ms (FindLiveObjects: 10.796800 ms CreateObjectMapping: 17.961500 ms MarkObjects: 36.924700 ms  DeleteObjects: 20.108400 ms)
+
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:39] CUTOVER_SCENARIO state=scenario_loaded run_id=native-20260731-c7-fourth client=i5 action=none detail=actions=5
+07/30/2026 22:33:39: Session auth respons callback
+07/30/2026 22:33:40: Logged in PlayFab user via Steam auth session ticket
+07/30/2026 22:33:40: PlayFab local entity ID is 57A0988EB3CAD566
+07/30/2026 22:33:40: Released session ticket
+07/30/2026 22:33:48: OnCharacterStart
+07/30/2026 22:33:48: Determined backend of dedicated server to be Steamworks
+07/30/2026 22:33:48: Cloud Save: 192 bytes. /serverlist/recent.new
+Steam writing file chunks 1 / 1, (192 bytes)
+Steam writing file chunks 1 / 1, (192 bytes)
+Steam writing file chunks 1 / 1, (192 bytes)
+07/30/2026 22:33:48: Added server 100.116.82.60:2456 to server list
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:48] Lab auto-join started existing character 'Durracktu' at profile index 0.
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:48] AUTOTEST_CHARACTER_SELECTED run_id=native-20260731-c7-fourth client=i5 character=durracktu server=100.116.82.60:2456 profile_index=0
+07/30/2026 22:33:49: Loading main scene
+The referenced script on this Behaviour (Game Object '<null>') is missing!
+Unloading 3 Unused Serialized files (Serialized files now loaded: 21)
+UnloadTime: 10.454600 ms
+07/30/2026 22:33:50: Audioman already exist, destroying self
+07/30/2026 22:33:50: Steam initialized, persona:derek
+07/30/2026 22:33:50: Loading player profile durracktu
+07/30/2026 22:33:50: isModded: True
+07/30/2026 22:33:50: Zonesystem Awake 848
+07/30/2026 22:33:50: DungeonDB Awake 848
+07/30/2026 22:33:50: Steam initialized, persona:derek
+07/30/2026 22:33:50: Checking for installed DLCs
+07/30/2026 22:33:50: DLC:beta installed:False
+Unloading 376 unused Assets to reduce memory usage. Loaded Objects now: 207682.
+Total: 74.646500 ms (FindLiveObjects: 6.343800 ms CreateObjectMapping: 11.859500 ms MarkObjects: 55.916300 ms  DeleteObjects: 0.526600 ms)
+
+07/30/2026 22:33:50: Zonesystem Start 848
+07/30/2026 22:33:50: Added 3 locations, 0 vegetations, 0 environments, 0 biome env-setups, 0 clutter  from main
+07/30/2026 22:33:50: Added 1 locations, 0 vegetations, 2 environments, 0 biome env-setups, 0 clutter  from main
+07/30/2026 22:33:50: Added 27 locations, 25 vegetations, 5 environments, 1 biome env-setups, 3 clutter  from main
+07/30/2026 22:33:50: Added 4 locations, 0 vegetations, 1 environments, 0 biome env-setups, 0 clutter  from main
+07/30/2026 22:33:50: Added 25 locations, 33 vegetations, 8 environments, 2 biome env-setups, 2 clutter  from main
+07/30/2026 22:33:50: DungeonDB Start 848
+07/30/2026 22:33:50: ZRpc timeout set to 30s 
+07/30/2026 22:33:50: ZNET START
+07/30/2026 22:33:50: Connecting to server with Steam-backend 100.116.82.60:2456:2456
+07/30/2026 22:33:50: Starting to connect to 100.116.82.60:2456
+07/30/2026 22:33:50: [ComfyNetworkSense][native-ledger] OBSERVED funnel=native_peer_connection direction=bidirectional count=1 run=native-20260731-c7-fourth
+07/30/2026 22:33:50: [ComfyNetworkSense][native-ledger] OBSERVED funnel=steam_send_queued_packages direction=outbound count=1 run=native-20260731-c7-fourth
+07/30/2026 22:33:50: [ComfyNetworkSense][native-ledger] OBSERVED funnel=steam_recv direction=inbound count=1 run=native-20260731-c7-fourth
+07/30/2026 22:33:50: [ComfyNetworkSense][native-ledger] OBSERVED funnel=client_handshake direction=server_to_client count=1 run=native-20260731-c7-fourth
+07/30/2026 22:33:50: [ComfyNetworkSense][native-ledger] OBSERVED funnel=peer_info_send direction=outbound count=1 run=native-20260731-c7-fourth
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:50] Registered routed RPC: ComfyNetworkSense_ServerPulse
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:50] Registered routed RPC: ComfyNetworkSense_GameplayEvent
+07/30/2026 22:33:50: Got status changed msg k_ESteamNetworkingConnectionState_Connecting
+07/30/2026 22:33:50: New connection
+07/30/2026 22:33:50: Got status changed msg k_ESteamNetworkingConnectionState_Connected
+07/30/2026 22:33:50: Connected
+07/30/2026 22:33:50: Got connection SteamID 90289940962191361
+07/30/2026 22:33:50: [ComfyNetworkSense][native-ledger] OBSERVED funnel=peer_info_receive direction=inbound count=1 run=native-20260731-c7-fourth
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:50] WORLD_ZONE_CUTOVER state=native_blank_world_payload_observed run_id=native-20260731-c7-fourth client=client detail=world_name_length=0_seed=0_seed_name_length=0_world_uid=0_world_generation_version=0_network_time=0
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:50] WORLD_ZONE_CUTOVER state=peer_info_held_for_descriptor run_id=native-20260731-c7-fourth client=client detail=scene_entry_withheld=true
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:50] LUMBERJACKS_SESSION state=session_started run_id=native-20260731-c7-fourth client=i5 action=none detail=sequence=0_connection_id=db06e2a3b36e4a25a0f94829c7e1b7d0_resumed=false_reincarnated=false_logical_peer_id=lp_19f2670527be6f633c140c5938e5ff4c85d4bbe309e63007f20327439f837d5c_server_instance_id=am4-gateway-dev_world_id=am4-cutover-world_udp_ready=true
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:50] LUMBERJACKS_SESSION state=peer_bind_queued run_id=native-20260731-c7-fourth client=i5 action=none detail=sequence=0_connection_id=db06e2a3b36e4a25a0f94829c7e1b7d0_role=client_peer_uid=2113375443
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:50] WORLD_ZONE_CUTOVER state=descriptor_requested run_id=native-20260731-c7-fourth client=client detail=fault_mode=none
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:50] WORLD_ZONE_CUTOVER state=descriptor_accepted run_id=native-20260731-c7-fourth client=client detail=world_epoch=world-ffffffff63e5be34_world_generation_version=2_initial_zone=0,0
+07/30/2026 22:33:50: Network version check, their:36, mine:36
+07/30/2026 22:33:50: Worldgenerator version setup:2
+[Info   :ComfyNetworkSense] [07/30/2026 22:33:52] WORLD_ZONE_CUTOVER state=peer_info_resumed_from_descriptor run_id=native-20260731-c7-fourth client=client detail=source=lumberjacks_world_epoch=world-ffffffff63e5be34
+07/30/2026 22:33:52: Session auth respons callback
+[Warning:ComfyNetworkSense] [07/30/2026 22:33:55] Authoritative consumer poll failed: TimeoutException: connect timeout to 8.231.129.249:42317
+07/30/2026 22:33:59: Generating new world minimap done [6647ms]
+07/30/2026 22:33:59: Minimap: unpacking compressed mapData 8531 => 8388660 bytes
+07/30/2026 22:33:59: Starting respawn
+07/30/2026 22:33:59: [ComfyNetworkSense][native-ledger] OBSERVED funnel=zdo_data_receive direction=inbound count=1 run=native-20260731-c7-fourth
+07/30/2026 22:33:59: [ComfyNetworkSense][native-ledger] OBSERVED funnel=routed_rpc_receive direction=inbound count=1 run=native-20260731-c7-fourth
+07/30/2026 22:33:59: tip:$loadscreen_tip18
+[Warning:ComfyNetworkSense] [07/30/2026 22:34:00] Authoritative consumer telemetry failed: TimeoutException: connect timeout to 8.231.129.249:42317
+07/30/2026 22:34:04: Cloud Save: 11276 bytes. /characters/durracktu.fch.new
+Steam writing file chunks 1 / 1, (11276 bytes)
+Steam writing file chunks 1 / 1, (11276 bytes)
+Steam writing file chunks 1 / 1, (11276 bytes)
+07/30/2026 22:34:05: Considering autobackup. World time: 5.519998, short time: 7200, long time: 43200, backup count: 4
+07/30/2026 22:34:05: Skipping backup. World session not long enough.
+[Warning:ComfyNetworkSense] [07/30/2026 22:34:05] Authoritative consumer poll failed: TimeoutException: connect timeout to 8.231.129.249:42317
+07/30/2026 22:34:07: Spawned after 8.019993
+07/30/2026 22:34:07: Character ID for player ([Durracktu, 0:0], [derek, 0:0], derek) was 0:0. Skipping.
+07/30/2026 22:34:07: Skipping unloading unused assets
+[Info   :ComfyNetworkSense] [07/30/2026 22:34:07] AUTOTEST_JOINED run_id=native-20260731-c7-fourth client=i5 character=durracktu server=100.116.82.60:2456 peer_count=1 player=Durracktu renderer=Intel(R)_Iris(R)_Xe_Graphics renderer_type=Direct3D11 graphics_memory_mb=16226
+[Info   :ComfyNetworkSense] [07/30/2026 22:34:07] MOTION_AUTHORITY state=local_motion_identity run_id=native-20260731-c7-fourth client=i5 action=none detail=uid=2113375443:1_position=2827.78,27.729,-59.84
+[Info   :ComfyNetworkSense] [07/30/2026 22:34:07] CUTOVER_SCENARIO state=action_started run_id=native-20260731-c7-fourth client=i5 action=i5-resumed detail=kind=wait
+[Info   :ComfyNetworkSense] [07/30/2026 22:34:07] LUMBERJACKS_SESSION state=motion_transport_fallback run_id=native-20260731-c7-fourth client=i5 action=none detail=sequence=0_connection_id=db06e2a3b36e4a25a0f94829c7e1b7d0_udp_receive_failed=ConnectionReset_fallback=binary_websocket
+[Info   :ComfyNetworkSense] [07/30/2026 22:34:09] CUTOVER_SCENARIO state=completed run_id=native-20260731-c7-fourth client=i5 action=i5-resumed detail=wait_elapsed
+[Info   :ComfyNetworkSense] [07/30/2026 22:34:09] CUTOVER_SCENARIO state=scenario_complete run_id=native-20260731-c7-fourth client=i5 action=none detail=all_actions_completed
+07/30/2026 22:34:09: Starting music blackforest
+07/30/2026 22:34:09: Resumed music blackforest at 0
+07/30/2026 22:34:14: Game - OnApplicationQuit
+07/30/2026 22:34:14: Available space to current user: 105215848448. Saving is blocked if below: 209737752 bytes. Warnings are given if below: 419475504
+07/30/2026 22:34:14: Shutting down
+07/30/2026 22:34:15: Minimap: compressed mapData 8388660 => 8531 bytes
+07/30/2026 22:34:15: Cloud Save: 11276 bytes. /characters/durracktu.fch.new
+Steam writing file chunks 1 / 1, (11276 bytes)
+Steam writing file chunks 1 / 1, (11276 bytes)
+Steam writing file chunks 1 / 1, (11276 bytes)
+07/30/2026 22:34:15: Considering autobackup. World time: 15.45999, short time: 7200, long time: 43200, backup count: 4
+07/30/2026 22:34:15: Skipping backup. World session not long enough.
+07/30/2026 22:34:15: ZNet Shutdown
+07/30/2026 22:34:15: Unloading unused assets
+Unloading 2 Unused Serialized files (Serialized files now loaded: 21)
+07/30/2026 22:34:15: Sending disconnect msg
+07/30/2026 22:34:15: Sent to 90289940962191361
+07/30/2026 22:34:15: Released session ticket
+ZPlayFabMatchmaking::UnregisterServer - unregistering server now. State: Uninitialized
+07/30/2026 22:34:15: Disposing socket
+07/30/2026 22:34:15: Closing socket 90289940962191361
+07/30/2026 22:34:15:   send queue size:0
+07/30/2026 22:34:15: Last socket, unregistering callback
+07/30/2026 22:34:15: ZSteamSocket  UnregisterGlobalCallbacks, existing sockets:0
+07/30/2026 22:34:15: Disposing socket
+07/30/2026 22:34:15: Last socket, unregistering callback
+07/30/2026 22:34:15: ZSteamSocket  UnregisterGlobalCallbacks, existing sockets:0
+07/30/2026 22:34:15: Stopping build thread
+[Warning:ComfyNetworkSense] [07/30/2026 22:34:15] Authoritative consumer poll failed: TimeoutException: connect timeout to 8.231.129.249:42317
+Unloading 7 unused Assets to reduce memory usage. Loaded Objects now: 231885.
+Total: 88.699300 ms (FindLiveObjects: 8.763400 ms CreateObjectMapping: 10.232200 ms MarkObjects: 69.311900 ms  DeleteObjects: 0.391300 ms)
+
+07/30/2026 22:34:17: Local player destroyed
+07/30/2026 22:34:17: Steam manager on destroy
+07/30/2026 22:34:17: ZNet OnDestroy
+07/30/2026 22:34:17: Net scene destroyed
+[Physics::Module] Cleanup current backned.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.

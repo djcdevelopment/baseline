@@ -1,0 +1,39 @@
+{
+    "schema_version":  1,
+    "run_id":  "native-20260731-c7-fourth",
+    "receipts":  [
+                     {
+                         "schema_version":  1,
+                         "event":  "server_runtime_control",
+                         "timestamp_utc":  "2026-07-31T05:31:21.6111130Z",
+                         "request_id":  "native-20260731-c7-fourth-world-zone-arm",
+                         "setting":  "worldZoneCutoverEnabled",
+                         "requested_value":  "true",
+                         "result":  "applied",
+                         "reason":  "ok",
+                         "old_value":  "false",
+                         "effective_value":  "true",
+                         "effect":  "lumberjacks_world_descriptor_and_zone_membership_armed",
+                         "auth_context":  "authenticated_host_filesystem",
+                         "session_id":  "20260731-020353-6ba24dff",
+                         "build_version":  "0.5.44"
+                     },
+                     {
+                         "schema_version":  1,
+                         "event":  "server_runtime_control",
+                         "timestamp_utc":  "2026-07-31T05:34:28.3857170Z",
+                         "request_id":  "native-20260731-c7-fourth-world-zone-disarm",
+                         "setting":  "worldZoneCutoverEnabled",
+                         "requested_value":  "false",
+                         "result":  "applied",
+                         "reason":  "ok",
+                         "old_value":  "true",
+                         "effective_value":  "false",
+                         "effect":  "native_world_and_zone_paths_restored",
+                         "auth_context":  "authenticated_host_filesystem",
+                         "session_id":  "20260731-020353-6ba24dff",
+                         "build_version":  "0.5.44"
+                     }
+                 ],
+    "disarm_error":  null
+}
