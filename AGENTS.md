@@ -60,3 +60,22 @@ tools\i5\Deploy-ToI5.ps1 -Path <mod.dll> -ValheimPlugins  # straight into BepInE
 Deploys are SHA256-verified on both ends; a green run is the receipt. The i5 is
 a roaming laptop — **offline is a normal state**: report it and stop, never
 retry-loop, and never fall back to password auth (everything runs BatchMode).
+
+## Landing verified work — one ask, not a relay race
+
+Once a change has passed build+test verification (this includes work landing
+from a spawned/tick task), a single "go" / "push" / "land it" / "ship it"
+authorizes the *whole* remaining chain for that piece of work — commit → push
+→ open PR — in one pass. Do not stop mid-chain to ask again at each step
+("want me to push now?", "want me to open the PR?"); that turns one decision
+into three or four and defeats the point of asking at all.
+
+Why: Derek said it plainly on 2026-07-31 after a routine spawned-task landing
+needed four separate yeses in a row for one intent — commit, push, open-PR,
+(would-be) merge.
+
+Still gate separately, every time: force-push, and merging a PR into main.
+Main is deploy-adjacent here and already carries background automation that
+touches it (see the repo's roadmap-journal automation note above) — don't
+stack more unattended authority on top of that without being asked
+point-blank.
