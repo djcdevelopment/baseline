@@ -60,3 +60,26 @@ tools\i5\Deploy-ToI5.ps1 -Path <mod.dll> -ValheimPlugins  # straight into BepInE
 Deploys are SHA256-verified on both ends; a green run is the receipt. The i5 is
 a roaming laptop — **offline is a normal state**: report it and stop, never
 retry-loop, and never fall back to password auth (everything runs BatchMode).
+
+## Landing verified work — one ask, not a relay race
+
+Once a change has passed build+test verification (this includes work landing
+from a spawned/tick task), a single "go" / "push" / "land it" / "ship it"
+authorizes the *whole* remaining chain for that piece of work — commit → push
+→ open PR → merge into main — in one pass. Do not stop mid-chain to ask
+again at each step; that turns one decision into three or four and defeats
+the point of asking at all.
+
+Why: Derek said it plainly on 2026-07-31 after a routine spawned-task landing
+needed four separate yeses in a row for one intent — commit, push, open-PR,
+merge. He then corrected the merge-to-main carve-out specifically: this is an
+R&D repo where he's putting laps in and actively generating test data, not a
+24/7 production system — treating a main-branch merge with production-grade
+caution was miscalibrated for what's actually here. Main already carries its
+own background roadmap automation pushing directly to it; a reviewed,
+verified PR merge is comparatively mild next to that.
+
+Still gate separately, every time: force-push. That one isn't a
+production-vs-R&D judgment call — force-push can silently discard commits
+and rewrite history someone else may have already pulled, which is a real
+risk in any repo, R&D or not.
