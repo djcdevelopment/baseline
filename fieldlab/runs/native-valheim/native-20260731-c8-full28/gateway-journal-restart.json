@@ -1,0 +1,50 @@
+{
+    "schema_version":  1,
+    "run_id":  "native-20260731-c8-full28",
+    "restarted_utc":  "2026-07-31T14:06:07.1093355+00:00",
+    "mutation":  {
+                     "schema_version":  1,
+                     "timestamp_utc":  "2026-07-31T14:06:03.0838150Z",
+                     "state":  "mutation_posted",
+                     "run_id":  "native-20260731-c8-full28",
+                     "role":  "server",
+                     "client":  "",
+                     "action_id":  "server",
+                     "world_epoch":  "world-ffffffff63e5be34",
+                     "transport":  "canonical_session",
+                     "logical_peer_id":  "lp_c9b96e29024c30948164b6025b7d6b67ef3e40eb243b767a108cf27e4657b0da",
+                     "watched_zdo":  "1179166357:9155603",
+                     "native_create_sync_candidates":  35,
+                     "native_rpc_zdo_data":  0,
+                     "detail":  "transport=canonical_session source_seq=18074 object_revision=196609 tombstone=True delivery_only=False"
+                 },
+    "before":  {
+                   "persistence_enabled":  true,
+                   "persistence_healthy":  true,
+                   "wal_bytes":  27931240,
+                   "durable_objects":  21920,
+                   "mutations":  17,
+                   "delivery_only":  2,
+                   "snapshots":  7143,
+                   "deltas":  36,
+                   "tombstones":  1,
+                   "acknowledged":  7263,
+                   "pending":  2,
+                   "interests":  2
+               },
+    "after":  {
+                  "persistence_enabled":  true,
+                  "persistence_healthy":  true,
+                  "wal_bytes":  27931240,
+                  "durable_objects":  21920,
+                  "mutations":  0,
+                  "delivery_only":  0,
+                  "snapshots":  2932,
+                  "deltas":  0,
+                  "tombstones":  0,
+                  "acknowledged":  499,
+                  "pending":  2450,
+                  "interests":  2
+              },
+    "durable_replay_verified":  true
+}

@@ -1,0 +1,197 @@
+{
+    "schema_version":  1,
+    "receipt_type":  "c8_scenario_coverage",
+    "generated_utc":  "2026-07-31T14:03:56.0278271+00:00",
+    "run_id":  "native-20260731-c8-full28",
+    "scenario_sha256":  "f2a8ff1774d9bab2065460fafa5b5da32e5ddc89cf4aeb7161dec707234b9bd5",
+    "action_count":  49,
+    "checks":  {
+                   "profile_is_c8":  true,
+                   "run_id_matches":  true,
+                   "steam_free_cold_join_declared":  true,
+                   "co_presence_declared":  true,
+                   "direct_control_both":  true,
+                   "routed_request_both":  true,
+                   "routed_broadcast_both":  true,
+                   "target_zdo_both":  true,
+                   "zdo_journal_both":  true,
+                   "motion_both_directions":  true,
+                   "udp_drop_range":  true,
+                   "pickup_both_clients":  true,
+                   "two_peer_ownership_contention":  true,
+                   "zone_exit_enter":  true,
+                   "gateway_restart_declared":  true,
+                   "websocket_resume_declared":  true,
+                   "clean_disconnect_rejoin":  true,
+                   "client_server_poison_declared":  true,
+                   "save_integrity_declared":  true,
+                   "action_ids_unique_per_client":  true
+               },
+    "result":  "passed",
+    "failed_checks":  [
+
+                      ]
+}
+[PASS] tailnet peer online - 100.125.141.110 i5-laptop derek.ciula@ windows active; direct 192.168.12.224:41641, tx 191671876 rx 189994932
+[PASS] ssh port 22 reachable - i5-laptop.tail8e749c.ts.net
+[PASS] ssh key auth via alias 'i5' - remote user: desktop-t685kei\admin
+[INFO] staging root C:\deploy\baseline present: True (auto-created on first deploy)
+[INFO] Valheim BepInEx plugins dir present: True
+[INFO] free disk on C:: 96.8 GB
+[INFO] Docker Desktop Linux engine ready: 29.6.2
+i5 lane: UP
+deploy -> i5:C:/deploy/baseline/fieldlab/scripts   [1 file(s)]
+  C:/deploy/baseline/fieldlab/scripts/Invoke-NativeValheimClient.ps1
+  OK    C:/deploy/baseline/fieldlab/scripts/Invoke-NativeValheimClient.ps1  sha256:c3027f51f7da
+deploy verified: 1/1 file(s) match on the i5
+deploy -> i5:C:/Program Files (x86)/Steam/steamapps/common/Valheim/BepInEx/plugins   [1 file(s)]
+  C:/Program Files (x86)/Steam/steamapps/common/Valheim/BepInEx/plugins/ComfyNetworkSense.dll
+  OK    C:/Program Files (x86)/Steam/steamapps/common/Valheim/BepInEx/plugins/ComfyNetworkSense.dll  sha256:90104c9a34a1
+deploy verified: 1/1 file(s) match on the i5
+deploy -> i5:C:/deploy/baseline/fieldlab/scenarios   [1 file(s)]
+  C:/deploy/baseline/fieldlab/scenarios/scenario.json
+  OK    C:/deploy/baseline/fieldlab/scenarios/scenario.json  sha256:f2a8ff1774d9
+deploy verified: 1/1 file(s) match on the i5
+#1 [internal] load local bake definitions
+#1 reading from stdin 566B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 5.92kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for mcr.microsoft.com/dotnet/sdk:9.0
+#3 DONE 0.1s
+
+#4 [internal] load metadata for mcr.microsoft.com/dotnet/aspnet:9.0
+#4 DONE 0.4s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 454B done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 DONE 0.0s
+
+#7 [gateway 1/3] FROM mcr.microsoft.com/dotnet/aspnet:9.0@sha256:86085bc68dde4a8cdfd8c2342acc3bf843eade855092879a85e3f3adb56e55c7
+#7 resolve mcr.microsoft.com/dotnet/aspnet:9.0@sha256:86085bc68dde4a8cdfd8c2342acc3bf843eade855092879a85e3f3adb56e55c7 0.1s done
+#7 DONE 0.1s
+
+#8 [source  1/18] FROM mcr.microsoft.com/dotnet/sdk:9.0@sha256:24fe7c00719afc72e2b67cace264dea2ee39ae45f5b553bd59493fe3ddfc920f
+#8 resolve mcr.microsoft.com/dotnet/sdk:9.0@sha256:24fe7c00719afc72e2b67cace264dea2ee39ae45f5b553bd59493fe3ddfc920f 0.1s done
+#8 DONE 0.1s
+
+#6 [internal] load build context
+#6 transferring context: 17.36kB 0.0s done
+#6 DONE 0.0s
+
+#9 [verify 2/2] RUN dotnet test Game.sln -c Release --no-build --no-restore --logger "console;verbosity=minimal"
+#9 CACHED
+
+#10 [source  5/18] COPY src/Game.Persistence/Game.Persistence.csproj src/Game.Persistence/
+#10 CACHED
+
+#11 [source 11/18] COPY src/Game.OperatorApi/Game.OperatorApi.csproj src/Game.OperatorApi/
+#11 CACHED
+
+#12 [verify 1/2] RUN dotnet build Game.sln -c Release --no-restore
+#12 CACHED
+
+#13 [source  8/18] COPY src/Game.Simulation/Game.Simulation.csproj src/Game.Simulation/
+#13 CACHED
+
+#14 [build 3/7] RUN dotnet publish src/Game.Progression -c Release -o /app/progression --no-restore
+#14 CACHED
+
+#15 [source 14/18] COPY tests/Game.Simulation.Tests/Game.Simulation.Tests.csproj tests/Game.Simulation.Tests/
+#15 CACHED
+
+#16 [source  3/18] COPY Game.sln Directory.Build.props Directory.Packages.props ./
+#16 CACHED
+
+#17 [build 4/7] RUN dotnet publish src/Game.OperatorApi -c Release -o /app/operatorapi --no-restore
+#17 CACHED
+
+#18 [build 6/7] RUN set -eu;     if [ "0" = "1" ]; then       case "dev" in         ''|dev)           echo "ERROR: a promotable Gateway build requires a real LUMBERJACKS_EXPECTED_MOD_RELEASE;" >&2;           echo "       got 'dev'." >&2;           exit 1 ;;       esac;       if ! echo "dev"            | grep -Eq '^m[0-9]+-[a-z0-9]+-[0-9]{8}-r[0-9]+$'; then         echo "ERROR: 'dev' is not <milestone>-<label>-<yyyymmdd>-r<n>." >&2;         exit 1;       fi;       echo "promotable Gateway build; admitted mod release: dev";     fi
+#18 CACHED
+
+#19 [source 12/18] COPY src/Game.Companion/Game.Companion.csproj src/Game.Companion/
+#19 CACHED
+
+#20 [source  4/18] COPY src/Game.Contracts/Game.Contracts.csproj src/Game.Contracts/
+#20 CACHED
+
+#21 [source  9/18] COPY src/Game.EventLog/Game.EventLog.csproj src/Game.EventLog/
+#21 CACHED
+
+#22 [build 5/7] RUN dotnet publish src/Game.Companion -c Release -o /app/companion --no-restore
+#22 CACHED
+
+#23 [build 2/7] RUN dotnet publish src/Game.EventLog -c Release -o /app/eventlog --no-restore
+#23 CACHED
+
+#24 [source 13/18] COPY tests/Game.Contracts.Tests/Game.Contracts.Tests.csproj tests/Game.Contracts.Tests/
+#24 CACHED
+
+#25 [source 18/18] COPY tests/ tests/
+#25 CACHED
+
+#26 [source  7/18] COPY src/Game.Gateway/Game.Gateway.csproj src/Game.Gateway/
+#26 CACHED
+
+#27 [source  6/18] COPY src/Game.ServiceDefaults/Game.ServiceDefaults.csproj src/Game.ServiceDefaults/
+#27 CACHED
+
+#28 [source 10/18] COPY src/Game.Progression/Game.Progression.csproj src/Game.Progression/
+#28 CACHED
+
+#29 [gateway 2/3] WORKDIR /app
+#29 CACHED
+
+#30 [source 16/18] RUN dotnet restore Game.sln
+#30 CACHED
+
+#31 [build 1/7] RUN dotnet publish src/Game.Simulation -c Release -o /app/simulation --no-restore
+#31 CACHED
+
+#32 [source 17/18] COPY src/ src/
+#32 CACHED
+
+#33 [source 15/18] COPY tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj tests/Game.Gateway.Tests/
+#33 CACHED
+
+#34 [source  2/18] WORKDIR /src
+#34 CACHED
+
+#35 [build 7/7] RUN dotnet publish src/Game.Gateway -c Release -o /app/gateway --no-restore       -p:LumberjacksExpectedModRelease="dev"
+#35 CACHED
+
+#36 [gateway 3/3] COPY --from=build /app/gateway .
+#36 CACHED
+
+#37 exporting to image
+#37 exporting layers done
+#37 exporting manifest sha256:b3d6c3d56b722d913f369d2fcde6a0a0c4c5fd18c3f4750d217e1f338a2c2097 done
+#37 exporting config sha256:d4406c641358452e3fa7814dcc9bd82a428c84cf3a3019ef46f93b9644156a64 done
+#37 exporting attestation manifest sha256:c1bcecdb457e8eb307f2bf1fcee0ec6140258d922b4f6e229aa03b4754dbb36c 0.1s done
+#37 exporting manifest list sha256:b9516b2b45be178b6200d67f77702f23310461008cfc15e3ada506e168ab2d4a
+#37 exporting manifest list sha256:b9516b2b45be178b6200d67f77702f23310461008cfc15e3ada506e168ab2d4a 0.0s done
+#37 naming to docker.io/library/lumberjacks-local-gateway:latest done
+#37 unpacking to docker.io/library/lumberjacks-local-gateway:latest 0.0s done
+#37 DONE 0.3s
+
+#38 resolving provenance for metadata file
+#38 DONE 0.0s
+{
+    "schema_version":  1,
+    "receipt_type":  "native_valheim_task_queue",
+    "generated_utc":  "2026-07-31T14:04:36.1842492+00:00",
+    "task_name":  "BaselineNativeValheimClient",
+    "task_state":  "Running",
+    "run_id":  "native-20260731-c8-full28",
+    "client":  "i5",
+    "server":  "100.116.82.60:2456",
+    "character":  "durracktu",
+    "evidence_directory":  "C:\\deploy\\baseline\\fieldlab\\runs\\native-valheim\\native-20260731-c8-full28\\i5",
+    "pending_request":  "C:\\deploy\\baseline\\fieldlab\\scripts\\pending-native-valheim.json"
+}

@@ -1,0 +1,9 @@
+{
+    "ready":  true,
+    "canonical_server_connected":  true,
+    "server_heartbeat_fresh":  true,
+    "server_heartbeat_freshness_ms":  5000,
+    "descriptor_published":  true,
+    "descriptor_run_id":  "native-20260731-c8-full28",
+    "server_last_inbound_age_ms":  74
+}
