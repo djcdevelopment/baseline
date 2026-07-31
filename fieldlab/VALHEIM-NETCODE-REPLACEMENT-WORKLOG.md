@@ -20,9 +20,30 @@
 > and i5; those ids survived Gateway and fresh-Valheim-process turnover while
 > transport connection ids changed. C3 mutation/interest/delivery/ACK semantics ran
 > only on the canonical C1 session, replayed from WAL, reached both clients, and
-> drained to zero pending with no HTTP fallback rows. C4 remains open for the
+> drained to zero pending with no HTTP fallback rows. At that point C4 remained open for the
 > server-issued ownership lease, wrong/expired-epoch rejection, reconnect reclaim,
 > native-transfer suppression, and authoritative pickup in both directions.
+>
+> **2026-07-30 C4 final addendum:** `native-20260730-c4b-tenth` closed that
+> ownership/action boundary. The server created one real Raspberry ZDO per client;
+> Lumberjacks issued and reclaimed logical-peer lease epochs, rejected wrong and
+> expired epochs, authorized one action, suppressed the selected native
+> ownership/pickup/destroy paths, and returned one acknowledged inventory increment
+> to each client. OMEN changed 9→10 and i5 11→12 exactly once. The earlier
+> ownership-completion assertion failure is retained as a falsifier, not the current
+> result.
+>
+> **2026-07-30 C5 addendum and mandatory replan:** C5 is accepted in
+> `native-20260730-c5-final`. Both physical clients entered from a complete
+> Lumberjacks descriptor while native `PeerInfo` world fields were blank. Each
+> received three typed run-tagged membership objects, deliberately dropped the
+> canonical socket after applying chunk 1 but before ACK, replayed the same reliable
+> sequence idempotently, completed exactly once, unloaded all three objects, and
+> spawned none when membership was withheld. AM4 suppressed every selected native
+> `CreateSyncList` candidate. Separate wrong-protocol and wrong-world-generation
+> cells stopped before scene entry. The replan advances to C6's binary
+> motion-authority proof; general-prefab breadth, Steam-free join, native-zero
+> composition, tuning, and P7 promotion remain open.
 
 > **2026-07-11 local / 2026-07-12 UTC P7 result:** the combined GCP deployment passed
 > the live P7/I7 loopback gate on `comfy-lumberjacks-p7` in project
