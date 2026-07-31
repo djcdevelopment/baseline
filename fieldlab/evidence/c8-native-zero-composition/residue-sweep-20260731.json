@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "event": "server_runtime_control",
+  "timestamp_utc": "2026-07-31T23:22:23.4795410Z",
+  "request_id": "sweep-20260731-zone35",
+  "setting": "cutoverResidueCleanup",
+  "requested_value": "all-cutover-tagged",
+  "result": "applied",
+  "reason": "ok",
+  "old_value": "zone_35,-1_before=1236",
+  "effective_value": "zone_35,-1_after=1234",
+  "effect": "residue_cleanup mode=all scanned=9155599 matched=5 destroyed=5 skipped_live_owner=0 c3_probe=0 c5_zone_probe=0 ownership_item=5 tags=native-20260731-c8-full24|native-20260730-c4b-sixth|native-20260730-c4b-tenth zones=35,-1:2|37,-1:2|34,1:1",
+  "auth_context": "authenticated_host_filesystem",
+  "session_id": "20260731-232102-77911a65",
+  "build_version": "0.5.45",
+  "operator_note": "One-time world sweep before the C8 acceptance pair. The container restart that loaded 0.5.45 had already cleared the non-persistent C3/C5 probe residue (zone 35,-1 was back to 1236 from the receipted 1790); the verb destroyed the 5 persistent run-tagged ownership items the restart could not (full24 and two 07-30 c4b runs). Steady-state hygiene now rides the orchestrator cleanup path, restart-free."
+}
