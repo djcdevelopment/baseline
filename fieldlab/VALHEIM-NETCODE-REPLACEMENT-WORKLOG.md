@@ -67,6 +67,20 @@
 > native socket. It is not the C7 cold-join receipt: initial world entry still used
 > `+connect`, the native handshake, and native peer construction. C7 remains open for
 > construction of that state directly from C1/C2/C5, followed by its mandatory replan.
+>
+> **2026-07-31 C7 final addendum and mandatory replan:**
+> `native-20260731-c7-cold-final` closed the Steam-free bootstrap boundary. OMEN
+> and i5 launched without `+connect`, authenticated through the canonical session,
+> consumed the validated descriptor, constructed the logical server peer, queued
+> their typed character ids, reached the joined scene, and repeated from fresh
+> processes. Client native poison remained armed across four ledger sessions with
+> zero native use. AM4 recorded zero selected peer/handshake/`PeerInfo`/`ZDOData`/
+> routed ingress. `native-20260731-c7-negative-second` passed invalid enrollment,
+> unavailable Gateway, wrong release, and wrong descriptor/protocol fail-closed
+> cells; none joined or attempted native fallback. The replan splits C8 into
+> candidate closure/coverage audit, first complete fault composition, and an
+> independent repeat with save-integrity comparison. C9 remains locked until both
+> C8 compositions pass.
 
 > **2026-07-11 local / 2026-07-12 UTC P7 result:** the combined GCP deployment passed
 > the live P7/I7 loopback gate on `comfy-lumberjacks-p7` in project

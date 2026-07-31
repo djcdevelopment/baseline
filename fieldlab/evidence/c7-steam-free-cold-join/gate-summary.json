@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "receipt_type": "c7_steam_free_cold_join_retained_gate",
+  "accepted_utc": "2026-07-31T07:22:06.2365986+00:00",
+  "result": "passed",
+  "source_commit": "d99b9daa905e027eb26bddeb6ca981f9a8092806",
+  "artifacts": {
+    "mod_sha256": "85c23b2d473fee9da8b0efd5e5f601915fad9bcab1d34820f0370581cfacbade",
+    "gateway_image_id": "sha256:ebbae8737c89f7267b508ad409d6ddea136c45c49d4e54db9781814d6c749e29",
+    "config_sha256": {
+      "omen": "29f297ae490cb0a46d18164e1c65a64ce0be50153020196ec7a98f6530d51e3f",
+      "i5": "2fa8cfef782a89d4f942995263c2362cd3014ffa5b8eff255b3e99d8b24b8664",
+      "am4": "70e94812bab80204edd1d501f8aa1414eefab7c0353f2faf38c623e87e22deac"
+    }
+  },
+  "positive": {
+    "run_id": "native-20260731-c7-cold-final",
+    "world_epoch": "world-ffffffff63e5be34",
+    "world_generation_version": 2,
+    "clients": {
+      "omen": {
+        "renderer": "NVIDIA GeForce RTX 5070 Direct3D 11.0",
+        "native_ledger_sessions": 2,
+        "native_total": 0,
+        "joined_receipts": 2,
+        "fresh_process_resumes": 1
+      },
+      "i5": {
+        "renderer": "Intel(R) Iris(R) Xe Graphics Direct3D 11.0",
+        "native_ledger_sessions": 2,
+        "native_total": 0,
+        "joined_receipts": 2,
+        "fresh_process_resumes": 1
+      }
+    },
+    "server": {
+      "distinct_logical_clients": 2,
+      "logical_client_constructions": 4,
+      "typed_character_ids_applied": 4,
+      "selected_native_ingress_total": 0,
+      "native_total_including_idle_host_poll": 4357
+    },
+    "source_receipts": {
+      "c7_logical_peer_summary": {
+        "path": "fieldlab/runs/native-valheim/native-20260731-c7-cold-final/c7-logical-peer-summary.json",
+        "sha256": "5fca99be2e683b06496c3735bd0c2bfdb8bceed392e4c3241e32b0ef4fefc5c7"
+      },
+      "composition": {
+        "path": "fieldlab/runs/native-valheim/native-20260731-c7-cold-final/composition.json",
+        "sha256": "178c19be6d2ff45c64de1fa746515d9eb7cab62b8fbb685cdb03e16cc3efe6e5"
+      },
+      "scenario": {
+        "path": "fieldlab/runs/native-valheim/native-20260731-c7-cold-final/scenario.json",
+        "sha256": "44b887aba566594ea57316d81659fe34fe13935a49c9f1ff549e94abc7732f6c"
+      }
+    }
+  },
+  "negative": {
+    "run_id": "native-20260731-c7-negative-second",
+    "cells": {
+      "invalid_enrollment": "failed_closed_without_join_or_native_use",
+      "gateway_unavailable": "failed_closed_without_join_or_native_use",
+      "wrong_release": "descriptor_rejected_before_scene_without_native_use",
+      "wrong_descriptor": "descriptor_rejected_before_scene_without_native_use"
+    },
+    "all_cells_poison_armed": true,
+    "all_cells_native_zero": true,
+    "no_cell_joined": true,
+    "source_receipts": {
+      "negative_summary": {
+        "path": "fieldlab/runs/native-valheim/native-20260731-c7-negative-second/c7-cold-join-negative-summary.json",
+        "sha256": "3099cddd2d98417d43f3074fd119062cf992adf53b086f1a50ab04480fe0691f"
+      },
+      "server_runtime_controls": {
+        "path": "fieldlab/runs/native-valheim/native-20260731-c7-negative-second/server-runtime-controls.json",
+        "sha256": "59848a06200635b71c0bb33c511c1f05a3de1f8104da1cf38cd39ef998abf909"
+      }
+    }
+  },
+  "verified": [
+    "both physical clients cold-joined without a native server target",
+    "both physical clients completed one fresh-process repeat",
+    "native poison was armed and client native-use totals were zero",
+    "selected AM4 native peer, handshake, PeerInfo, ZDOData, and routed-RPC ingress was zero",
+    "all four required negative cells failed closed without joining or native fallback",
+    "runtime cutover controls were disarmed after the negative window"
+  ],
+  "inferred": [
+    "AM4 idle host accept polls are outside the selected C7 logical-client ingress boundary"
+  ],
+  "unverified": [
+    "full C8 gameplay composition and general method/prefab breadth",
+    "unconditional server poison during the complete composition",
+    "subjective motion quality",
+    "P7 promotion and fallback deletion"
+  ]
+}
