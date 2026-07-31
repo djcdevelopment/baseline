@@ -13,6 +13,9 @@ ADRs (`fieldlab/docs/adr/`); PDs are the governance/product/posture track.
 3. Rationale with lasting value → graduates into a PD here.
 4. The register links to the PD; the PD is the last word on *why*.
 
+Resolved links age out of the queue after the immediate handoff window. Git history
+and this index are the archive; the active register is not.
+
 Promotion threshold: the rationale runs past ~5 lines, or a stranger would later ask
 "why is it this way?" — then it deserves a PD. Otherwise the one-liner is enough.
 
@@ -41,3 +44,4 @@ beats a taxonomy of ten empty ones.
 
 - [PD-1 — Governance & contributions](pd-1-governance-and-contributions.md)
 - [PD-2 — Security posture & the First Stranger gate](pd-2-security-posture-first-stranger-gate.md)
+- [PD-3 — Public community-data posture](pd-3-public-community-data.md)

@@ -1,5 +1,10 @@
 # M3-1 — Counterfactual Replay Notebook
 
+Status: roadmap work, not an operator decision. A labeled synthetic fixture may
+scaffold loaders and scoring tests, but acceptance requires a real session JSONL.
+Capture that fixture during the next legitimate live playtest rather than
+scheduling a separate human window.
+
 ## Objective
 An offline notebook/workbook that loads a recorded session's JSONL logs from
 git, re-runs the scoring equations (owner election, priority/shedding) under
@@ -14,6 +19,8 @@ becomes: replay → adjust → diff → then apply live. No game or server neede
 - First locate the real session logs in git (`data/`, `network/`, or fieldlab
   outputs) — pick the richest single session as the demo dataset and record
   its path in the notebook header.
+- If no real session is committed yet, synthetic input must be labeled
+  `synthetic` and cannot satisfy the reproduction acceptance check.
 
 ## Steps
 1. Build `tools/replay/` (Python, stdlib + pandas/matplotlib acceptable):

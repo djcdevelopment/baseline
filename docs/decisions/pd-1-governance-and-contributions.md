@@ -18,6 +18,8 @@ one sentence.
 ## Decisions recorded
 
 - **The repo is public** (flipped 2026-07-29). Reading was never meant to be the gate.
+- **ComfyStewardView remains proprietary** (affirmed by the operator 2026-07-30);
+  its Workbench contribution path is documentation and feedback, not code contribution.
 - **PRs are open to anyone; the maintainer is the sole approval gate**, on a batch
   rhythm — responses in days, not minutes (2026-07-29).
 - **Ladder stage 3 is "Contributor"** (renamed from Steward, which is overloaded on the

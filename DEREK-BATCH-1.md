@@ -36,14 +36,14 @@ Two memos sit untracked, self-marked "left uncommitted for review":
 `quest-vertical-slice-architecture.md` (baseline's copy is already bannered).
 `[ ] approve comfy pushes  [ ] baseline only`
 
-## 3. Review the Workbench page — approve statuses + framing
+## 3. ✅ APPROVED 2026-07-30 — Workbench statuses + framing
 Open `Lumberjacks/src/Game.Gateway/Community/workbench.html` **directly in a browser**
 (self-contained file, no server needed). Check:
 - The four first-wave statuses read true to you (live / local-only / dev-only / recoverable).
 - The **"not a verdict"** line (the positioning rule) sounds like you.
 - The ladder (Curious → Ran it → Fixed one thing → Contributor → Owner) — Contributor =
   commit access to that piece; the repo is public now, so reading was never the gate.
-→ `[ ] approved  [ ] edits needed:` _______________
+→ **Approved by Derek as deployed, 2026-07-30.**
 
 ## 4. ◐ Discord — PARTIALLY DONE 2026-07-29T07:31Z. `#workbench` forum is LIVE on the new server: 8 tags, required-tags ON, guidelines set, **How this works** pinned, **Recoverable pieces** posted. The four catalog threads are held until the deploy (step 3 below). Remaining: run C1 after item 7.
 `tools/workbench/discord/workbench_discord.py` provisions the forum, the 8 tags, the
@@ -83,17 +83,8 @@ diff-and-update pass forever. Let the bot create them.*
 
 ## 5. ✅ RESOLVED 2026-07-29 by the visibility flip — the repo is PUBLIC, so the roadmap's `github.com/djcdevelopment/baseline/...` links now resolve for everyone. No action left.
 
-## 6. ✅ Licensing tension RESOLVED by the flip ("Baseline is public source" is now literally true) — StewardView license still open below
-The public roadmap's old "open source" journal wording got an appended correction + a
-generator guard (BSL 1.1 stated accurately).
-
-**New finding:** `ComfyStewardView/LICENSE.md` is **proprietary/all-rights-reserved**
-("no permission... without explicit written permission and a paid license") — but the
-Workbench catalogs it with community first-tasks (SV-2 asks someone to write its docs).
-Per-tool license fields now state the truth (StewardView proprietary; the comfy archive
-is MIT; baseline tools BSL 1.1). Decide the posture:
-→ `[ ] keep proprietary (contributions = docs/feedback only — catalog says so)
-   [ ] relicense StewardView (e.g. BSL like baseline)  [ ] pull it from the first wave`
+## 6. ✅ RESOLVED 2026-07-30 — retain ComfyStewardView's proprietary license
+Canonical decision: [`docs/decisions/pd-1-governance-and-contributions.md`](docs/decisions/pd-1-governance-and-contributions.md).
 
 *FYI, already fixed:* the quest picker's save instructions pointed at the pruned
 `comfy-control/` config path while the live mod reads `comfy-network-sense/` — silent
