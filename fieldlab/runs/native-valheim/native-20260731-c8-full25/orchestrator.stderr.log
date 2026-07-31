@@ -1,0 +1,10 @@
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+Server Gateway URL control failed.
+At C:\work\baseline\fieldlab\scripts\Invoke-NativeValheimCutoverScenario.ps1:503 char:36
++ ...  ($LASTEXITCODE -ne 0) { throw 'Server Gateway URL control failed.' }
++                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Server Gateway URL control failed.:String) [], RuntimeException
+    + FullyQualifiedErrorId : Server Gateway URL control failed.
+ 

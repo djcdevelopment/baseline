@@ -1,0 +1,39 @@
+{
+    "schema_version":  1,
+    "run_id":  "native-20260731-c8-full25",
+    "receipts":  [
+                     {
+                         "schema_version":  1,
+                         "event":  "server_runtime_control",
+                         "timestamp_utc":  "2026-07-31T13:08:31.6227430Z",
+                         "request_id":  "native-20260731-c8-full25-motion-arm",
+                         "setting":  "motionAuthorityCutoverEnabled",
+                         "requested_value":  "true",
+                         "result":  "applied",
+                         "reason":  "ok",
+                         "old_value":  "false",
+                         "effective_value":  "true",
+                         "effect":  "canonical_motion_authority_armed",
+                         "auth_context":  "authenticated_host_filesystem",
+                         "session_id":  "20260731-121108-88084ab6",
+                         "build_version":  "0.5.45"
+                     },
+                     {
+                         "schema_version":  1,
+                         "event":  "server_runtime_control",
+                         "timestamp_utc":  "2026-07-31T13:09:13.6401750Z",
+                         "request_id":  "native-20260731-c8-full25-motion-disarm",
+                         "setting":  "motionAuthorityCutoverEnabled",
+                         "requested_value":  "false",
+                         "result":  "applied",
+                         "reason":  "ok",
+                         "old_value":  "true",
+                         "effective_value":  "false",
+                         "effect":  "canonical_motion_authority_disarmed",
+                         "auth_context":  "authenticated_host_filesystem",
+                         "session_id":  "20260731-121108-88084ab6",
+                         "build_version":  "0.5.45"
+                     }
+                 ],
+    "disarm_error":  null
+}

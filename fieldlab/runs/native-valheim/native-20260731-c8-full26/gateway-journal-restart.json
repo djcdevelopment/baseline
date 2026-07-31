@@ -1,0 +1,50 @@
+{
+    "schema_version":  1,
+    "run_id":  "native-20260731-c8-full26",
+    "restarted_utc":  "2026-07-31T13:17:34.2482267+00:00",
+    "mutation":  {
+                     "schema_version":  1,
+                     "timestamp_utc":  "2026-07-31T13:17:30.2984090Z",
+                     "state":  "drive_complete",
+                     "run_id":  "native-20260731-c8-full26",
+                     "role":  "server",
+                     "client":  "",
+                     "action_id":  "omen-c8-zdo-journal-drive",
+                     "world_epoch":  "world-ffffffff63e5be34",
+                     "transport":  "canonical_session",
+                     "logical_peer_id":  "lp_c9b96e29024c30948164b6025b7d6b67ef3e40eb243b767a108cf27e4657b0da",
+                     "watched_zdo":  "1179166357:9155600",
+                     "native_create_sync_candidates":  0,
+                     "native_rpc_zdo_data":  0,
+                     "detail":  "uid=1179166357:9155600 create_sync_lists=1359 native_candidates=0"
+                 },
+    "before":  {
+                   "persistence_enabled":  true,
+                   "persistence_healthy":  true,
+                   "wal_bytes":  27903486,
+                   "durable_objects":  21917,
+                   "mutations":  38,
+                   "delivery_only":  2,
+                   "snapshots":  8406,
+                   "deltas":  54,
+                   "tombstones":  0,
+                   "acknowledged":  8553,
+                   "pending":  0,
+                   "interests":  2
+               },
+    "after":  {
+                  "persistence_enabled":  true,
+                  "persistence_healthy":  true,
+                  "wal_bytes":  27911442,
+                  "durable_objects":  21918,
+                  "mutations":  14,
+                  "delivery_only":  0,
+                  "snapshots":  0,
+                  "deltas":  0,
+                  "tombstones":  0,
+                  "acknowledged":  0,
+                  "pending":  0,
+                  "interests":  0
+              },
+    "durable_replay_verified":  true
+}

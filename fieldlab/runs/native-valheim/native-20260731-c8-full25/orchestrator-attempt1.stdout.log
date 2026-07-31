@@ -1,0 +1,36 @@
+{
+    "schema_version":  1,
+    "receipt_type":  "c8_scenario_coverage",
+    "generated_utc":  "2026-07-31T13:04:24.6582198+00:00",
+    "run_id":  "native-20260731-c8-full25",
+    "scenario_sha256":  "bec28ffb348dae0aaae4d4bab07c4f6d3a1eefe0bdc196c9877295f477beff46",
+    "action_count":  49,
+    "checks":  {
+                   "profile_is_c8":  true,
+                   "run_id_matches":  true,
+                   "steam_free_cold_join_declared":  true,
+                   "co_presence_declared":  true,
+                   "direct_control_both":  true,
+                   "routed_request_both":  true,
+                   "routed_broadcast_both":  true,
+                   "target_zdo_both":  true,
+                   "zdo_journal_both":  true,
+                   "motion_both_directions":  true,
+                   "udp_drop_range":  true,
+                   "pickup_both_clients":  true,
+                   "two_peer_ownership_contention":  true,
+                   "zone_exit_enter":  true,
+                   "gateway_restart_declared":  true,
+                   "websocket_resume_declared":  true,
+                   "clean_disconnect_rejoin":  true,
+                   "client_server_poison_declared":  true,
+                   "save_integrity_declared":  true,
+                   "action_ids_unique_per_client":  true
+               },
+    "result":  "passed",
+    "failed_checks":  [
+
+                      ]
+}
+[PASS] tailnet peer online - 100.125.141.110 i5-laptop derek.ciula@ windows active; direct 192.168.12.224:41641, tx 175373068 rx 154865908
+[PASS] ssh port 22 reachable - i5-laptop.tail8e749c.ts.net

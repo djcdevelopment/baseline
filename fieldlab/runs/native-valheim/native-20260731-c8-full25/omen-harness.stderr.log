@@ -1,0 +1,6 @@
+C:\work\baseline\fieldlab\scripts\Invoke-NativeValheimClient.ps1 : Cannot validate argument on parameter 
+'WaitSeconds'. The 1800 argument is greater than the maximum allowed range of 1200. Supply an argument that is less 
+than or equal to 1200 and then try the command again.
+    + CategoryInfo          : InvalidData: (:) [Invoke-NativeValheimClient.ps1], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,Invoke-NativeValheimClient.ps1
+ 

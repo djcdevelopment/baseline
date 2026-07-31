@@ -1,0 +1,39 @@
+{
+    "schema_version":  1,
+    "run_id":  "native-20260731-c8-full25",
+    "receipts":  [
+                     {
+                         "schema_version":  1,
+                         "event":  "server_runtime_control",
+                         "timestamp_utc":  "2026-07-31T13:08:34.1228210Z",
+                         "request_id":  "native-20260731-c8-full25-native-poison-arm",
+                         "setting":  "nativeNetworkPoisonEnabled",
+                         "requested_value":  "true",
+                         "result":  "applied",
+                         "reason":  "ok",
+                         "old_value":  "false",
+                         "effective_value":  "true",
+                         "effect":  "effective_on_next_native_funnel_call",
+                         "auth_context":  "authenticated_host_filesystem",
+                         "session_id":  "20260731-121108-88084ab6",
+                         "build_version":  "0.5.45"
+                     },
+                     {
+                         "schema_version":  1,
+                         "event":  "server_runtime_control",
+                         "timestamp_utc":  "2026-07-31T13:09:10.6398360Z",
+                         "request_id":  "native-20260731-c8-full25-native-poison-disarm",
+                         "setting":  "nativeNetworkPoisonEnabled",
+                         "requested_value":  "false",
+                         "result":  "applied",
+                         "reason":  "ok",
+                         "old_value":  "true",
+                         "effective_value":  "false",
+                         "effect":  "effective_on_next_native_funnel_call",
+                         "auth_context":  "authenticated_host_filesystem",
+                         "session_id":  "20260731-121108-88084ab6",
+                         "build_version":  "0.5.45"
+                     }
+                 ],
+    "disarm_error":  null
+}

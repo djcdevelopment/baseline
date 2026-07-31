@@ -1,0 +1,296 @@
+{
+    "schema_version":  1,
+    "receipt_type":  "c8_scenario_coverage",
+    "generated_utc":  "2026-07-31T13:08:10.3982206+00:00",
+    "run_id":  "native-20260731-c8-full25",
+    "scenario_sha256":  "ef47fefdd49f899381477a81d4032bff916e315af6389eab80185c595676e751",
+    "action_count":  49,
+    "checks":  {
+                   "profile_is_c8":  true,
+                   "run_id_matches":  true,
+                   "steam_free_cold_join_declared":  true,
+                   "co_presence_declared":  true,
+                   "direct_control_both":  true,
+                   "routed_request_both":  true,
+                   "routed_broadcast_both":  true,
+                   "target_zdo_both":  true,
+                   "zdo_journal_both":  true,
+                   "motion_both_directions":  true,
+                   "udp_drop_range":  true,
+                   "pickup_both_clients":  true,
+                   "two_peer_ownership_contention":  true,
+                   "zone_exit_enter":  true,
+                   "gateway_restart_declared":  true,
+                   "websocket_resume_declared":  true,
+                   "clean_disconnect_rejoin":  true,
+                   "client_server_poison_declared":  true,
+                   "save_integrity_declared":  true,
+                   "action_ids_unique_per_client":  true
+               },
+    "result":  "passed",
+    "failed_checks":  [
+
+                      ]
+}
+[PASS] tailnet peer online - 100.125.141.110 i5-laptop derek.ciula@ windows active; direct 192.168.12.224:41641, tx 175613708 rx 154978972
+[PASS] ssh port 22 reachable - i5-laptop.tail8e749c.ts.net
+[PASS] ssh key auth via alias 'i5' - remote user: desktop-t685kei\admin
+[INFO] staging root C:\deploy\baseline present: True (auto-created on first deploy)
+[INFO] Valheim BepInEx plugins dir present: True
+[INFO] free disk on C:: 96.9 GB
+[INFO] Docker Desktop Linux engine ready: 29.6.2
+i5 lane: UP
+deploy -> i5:C:/deploy/baseline/fieldlab/scripts   [1 file(s)]
+  C:/deploy/baseline/fieldlab/scripts/Invoke-NativeValheimClient.ps1
+  OK    C:/deploy/baseline/fieldlab/scripts/Invoke-NativeValheimClient.ps1  sha256:c3027f51f7da
+deploy verified: 1/1 file(s) match on the i5
+deploy -> i5:C:/Program Files (x86)/Steam/steamapps/common/Valheim/BepInEx/plugins   [1 file(s)]
+  C:/Program Files (x86)/Steam/steamapps/common/Valheim/BepInEx/plugins/ComfyNetworkSense.dll
+  OK    C:/Program Files (x86)/Steam/steamapps/common/Valheim/BepInEx/plugins/ComfyNetworkSense.dll  sha256:e6634af7912a
+deploy verified: 1/1 file(s) match on the i5
+deploy -> i5:C:/deploy/baseline/fieldlab/scenarios   [1 file(s)]
+  C:/deploy/baseline/fieldlab/scenarios/scenario.json
+  OK    C:/deploy/baseline/fieldlab/scenarios/scenario.json  sha256:ef47fefdd49f
+deploy verified: 1/1 file(s) match on the i5
+#1 [internal] load local bake definitions
+#1 reading from stdin 566B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 5.92kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for mcr.microsoft.com/dotnet/sdk:9.0
+#3 DONE 0.1s
+
+#4 [internal] load metadata for mcr.microsoft.com/dotnet/aspnet:9.0
+#4 DONE 0.4s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 454B done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 DONE 0.0s
+
+#7 [gateway 1/3] FROM mcr.microsoft.com/dotnet/aspnet:9.0@sha256:86085bc68dde4a8cdfd8c2342acc3bf843eade855092879a85e3f3adb56e55c7
+#7 resolve mcr.microsoft.com/dotnet/aspnet:9.0@sha256:86085bc68dde4a8cdfd8c2342acc3bf843eade855092879a85e3f3adb56e55c7 0.1s done
+#7 DONE 0.1s
+
+#8 [source  1/18] FROM mcr.microsoft.com/dotnet/sdk:9.0@sha256:24fe7c00719afc72e2b67cace264dea2ee39ae45f5b553bd59493fe3ddfc920f
+#8 resolve mcr.microsoft.com/dotnet/sdk:9.0@sha256:24fe7c00719afc72e2b67cace264dea2ee39ae45f5b553bd59493fe3ddfc920f 0.1s done
+#8 DONE 0.1s
+
+#6 [internal] load build context
+#6 transferring context: 865.90kB 0.1s done
+#6 DONE 0.1s
+
+#9 [source  2/18] WORKDIR /src
+#9 CACHED
+
+#10 [source 12/18] COPY src/Game.Companion/Game.Companion.csproj src/Game.Companion/
+#10 CACHED
+
+#11 [source  5/18] COPY src/Game.Persistence/Game.Persistence.csproj src/Game.Persistence/
+#11 CACHED
+
+#12 [source  9/18] COPY src/Game.EventLog/Game.EventLog.csproj src/Game.EventLog/
+#12 CACHED
+
+#13 [source 11/18] COPY src/Game.OperatorApi/Game.OperatorApi.csproj src/Game.OperatorApi/
+#13 CACHED
+
+#14 [source 13/18] COPY tests/Game.Contracts.Tests/Game.Contracts.Tests.csproj tests/Game.Contracts.Tests/
+#14 CACHED
+
+#15 [source  4/18] COPY src/Game.Contracts/Game.Contracts.csproj src/Game.Contracts/
+#15 CACHED
+
+#16 [source  7/18] COPY src/Game.Gateway/Game.Gateway.csproj src/Game.Gateway/
+#16 CACHED
+
+#17 [source  8/18] COPY src/Game.Simulation/Game.Simulation.csproj src/Game.Simulation/
+#17 CACHED
+
+#18 [source  6/18] COPY src/Game.ServiceDefaults/Game.ServiceDefaults.csproj src/Game.ServiceDefaults/
+#18 CACHED
+
+#19 [source 15/18] COPY tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj tests/Game.Gateway.Tests/
+#19 CACHED
+
+#20 [source 10/18] COPY src/Game.Progression/Game.Progression.csproj src/Game.Progression/
+#20 CACHED
+
+#21 [source 14/18] COPY tests/Game.Simulation.Tests/Game.Simulation.Tests.csproj tests/Game.Simulation.Tests/
+#21 CACHED
+
+#22 [source  3/18] COPY Game.sln Directory.Build.props Directory.Packages.props ./
+#22 CACHED
+
+#23 [source 16/18] RUN dotnet restore Game.sln
+#23 CACHED
+
+#24 [source 17/18] COPY src/ src/
+#24 DONE 0.2s
+
+#25 [source 18/18] COPY tests/ tests/
+#25 DONE 0.2s
+
+#26 [verify 1/2] RUN dotnet build Game.sln -c Release --no-restore
+#26 2.671   Game.Contracts -> /src/src/Game.Contracts/bin/Release/net8.0/Game.Contracts.dll
+#26 2.672   Game.Contracts -> /src/src/Game.Contracts/bin/Release/net9.0/Game.Contracts.dll
+#26 2.976   Game.Companion -> /src/src/Game.Companion/bin/Release/net9.0/Lumberjacks.Companion.dll
+#26 3.045   Game.ServiceDefaults -> /src/src/Game.ServiceDefaults/bin/Release/net9.0/Game.ServiceDefaults.dll
+#26 3.138   Game.Persistence -> /src/src/Game.Persistence/bin/Release/net9.0/Game.Persistence.dll
+#26 3.153   Game.Contracts.Tests -> /src/tests/Game.Contracts.Tests/bin/Release/net9.0/Game.Contracts.Tests.dll
+#26 3.805   Game.EventLog -> /src/src/Game.EventLog/bin/Release/net9.0/Game.EventLog.dll
+#26 3.811   Game.Progression -> /src/src/Game.Progression/bin/Release/net9.0/Game.Progression.dll
+#26 3.841   Game.OperatorApi -> /src/src/Game.OperatorApi/bin/Release/net9.0/Game.OperatorApi.dll
+#26 3.880   Game.Simulation -> /src/src/Game.Simulation/bin/Release/net9.0/Game.Simulation.dll
+#26 4.481   Game.Simulation.Tests -> /src/tests/Game.Simulation.Tests/bin/Release/net9.0/Game.Simulation.Tests.dll
+#26 5.041   Game.Gateway -> /src/src/Game.Gateway/bin/Release/net9.0/Game.Gateway.dll
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277: Found conflicts between different versions of "Microsoft.EntityFrameworkCore" that could not be resolved. [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277: There was a conflict between "Microsoft.EntityFrameworkCore, Version=9.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" and "Microsoft.EntityFrameworkCore, Version=9.0.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60". [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:     "Microsoft.EntityFrameworkCore, Version=9.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" was chosen because it was primary and "Microsoft.EntityFrameworkCore, Version=9.0.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" was not. [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:     References which depend on "Microsoft.EntityFrameworkCore, Version=9.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" [/root/.nuget/packages/microsoft.entityframeworkcore/9.0.1/lib/net8.0/Microsoft.EntityFrameworkCore.dll]. [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:         /root/.nuget/packages/microsoft.entityframeworkcore/9.0.1/lib/net8.0/Microsoft.EntityFrameworkCore.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:           Project file item includes which caused reference "/root/.nuget/packages/microsoft.entityframeworkcore/9.0.1/lib/net8.0/Microsoft.EntityFrameworkCore.dll". [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:             /root/.nuget/packages/microsoft.entityframeworkcore/9.0.1/lib/net8.0/Microsoft.EntityFrameworkCore.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:     References which depend on or have been unified to "Microsoft.EntityFrameworkCore, Version=9.0.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" []. [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:         /src/src/Game.Gateway/bin/Release/net9.0/Game.Gateway.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:           Project file item includes which caused reference "/src/src/Game.Gateway/bin/Release/net9.0/Game.Gateway.dll". [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:             /src/src/Game.Gateway/bin/Release/net9.0/Game.Gateway.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:         /src/src/Game.Persistence/bin/Release/net9.0/Game.Persistence.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:           Project file item includes which caused reference "/src/src/Game.Persistence/bin/Release/net9.0/Game.Persistence.dll". [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:             /src/src/Game.Persistence/bin/Release/net9.0/Game.Persistence.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:             /src/src/Game.Gateway/bin/Release/net9.0/Game.Gateway.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:             /src/src/Game.Simulation/bin/Release/net9.0/Game.Simulation.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:         /src/src/Game.Simulation/bin/Release/net9.0/Game.Simulation.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:           Project file item includes which caused reference "/src/src/Game.Simulation/bin/Release/net9.0/Game.Simulation.dll". [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:             /src/src/Game.Simulation/bin/Release/net9.0/Game.Simulation.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.116 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:             /src/src/Game.Gateway/bin/Release/net9.0/Game.Gateway.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.422 /src/tests/Game.Gateway.Tests/ValheimZdoAuthoritativeTelemetryTests.cs(96,9): warning CS8631: The type 'string?' cannot be used as type parameter 'T' in the generic type or method 'Assert.Equal<T>(ReadOnlySpan<T>, T[])'. Nullability of type argument 'string?' doesn't match constraint type 'System.IEquatable<string?>'. [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.500   Game.Gateway.Tests -> /src/tests/Game.Gateway.Tests/bin/Release/net9.0/Game.Gateway.Tests.dll
+#26 5.535 
+#26 5.536 Build succeeded.
+#26 5.536 
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277: Found conflicts between different versions of "Microsoft.EntityFrameworkCore" that could not be resolved. [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277: There was a conflict between "Microsoft.EntityFrameworkCore, Version=9.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" and "Microsoft.EntityFrameworkCore, Version=9.0.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60". [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:     "Microsoft.EntityFrameworkCore, Version=9.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" was chosen because it was primary and "Microsoft.EntityFrameworkCore, Version=9.0.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" was not. [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:     References which depend on "Microsoft.EntityFrameworkCore, Version=9.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" [/root/.nuget/packages/microsoft.entityframeworkcore/9.0.1/lib/net8.0/Microsoft.EntityFrameworkCore.dll]. [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:         /root/.nuget/packages/microsoft.entityframeworkcore/9.0.1/lib/net8.0/Microsoft.EntityFrameworkCore.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:           Project file item includes which caused reference "/root/.nuget/packages/microsoft.entityframeworkcore/9.0.1/lib/net8.0/Microsoft.EntityFrameworkCore.dll". [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:             /root/.nuget/packages/microsoft.entityframeworkcore/9.0.1/lib/net8.0/Microsoft.EntityFrameworkCore.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:     References which depend on or have been unified to "Microsoft.EntityFrameworkCore, Version=9.0.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" []. [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:         /src/src/Game.Gateway/bin/Release/net9.0/Game.Gateway.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:           Project file item includes which caused reference "/src/src/Game.Gateway/bin/Release/net9.0/Game.Gateway.dll". [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:             /src/src/Game.Gateway/bin/Release/net9.0/Game.Gateway.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:         /src/src/Game.Persistence/bin/Release/net9.0/Game.Persistence.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:           Project file item includes which caused reference "/src/src/Game.Persistence/bin/Release/net9.0/Game.Persistence.dll". [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:             /src/src/Game.Persistence/bin/Release/net9.0/Game.Persistence.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:             /src/src/Game.Gateway/bin/Release/net9.0/Game.Gateway.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:             /src/src/Game.Simulation/bin/Release/net9.0/Game.Simulation.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:         /src/src/Game.Simulation/bin/Release/net9.0/Game.Simulation.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:           Project file item includes which caused reference "/src/src/Game.Simulation/bin/Release/net9.0/Game.Simulation.dll". [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:             /src/src/Game.Simulation/bin/Release/net9.0/Game.Simulation.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /usr/share/dotnet/sdk/9.0.315/Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3277:             /src/src/Game.Gateway/bin/Release/net9.0/Game.Gateway.dll [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536 /src/tests/Game.Gateway.Tests/ValheimZdoAuthoritativeTelemetryTests.cs(96,9): warning CS8631: The type 'string?' cannot be used as type parameter 'T' in the generic type or method 'Assert.Equal<T>(ReadOnlySpan<T>, T[])'. Nullability of type argument 'string?' doesn't match constraint type 'System.IEquatable<string?>'. [/src/tests/Game.Gateway.Tests/Game.Gateway.Tests.csproj]
+#26 5.536     2 Warning(s)
+#26 5.536     0 Error(s)
+#26 5.536 
+#26 5.536 Time Elapsed 00:00:04.90
+#26 DONE 5.6s
+
+#27 [verify 2/2] RUN dotnet test Game.sln -c Release --no-build --no-restore --logger "console;verbosity=minimal"
+#27 1.001 Test run for /src/tests/Game.Simulation.Tests/bin/Release/net9.0/Game.Simulation.Tests.dll (.NETCoreApp,Version=v9.0)
+#27 1.003 Test run for /src/tests/Game.Gateway.Tests/bin/Release/net9.0/Game.Gateway.Tests.dll (.NETCoreApp,Version=v9.0)
+#27 1.007 Test run for /src/tests/Game.Contracts.Tests/bin/Release/net9.0/Game.Contracts.Tests.dll (.NETCoreApp,Version=v9.0)
+#27 1.035 VSTest version 17.14.1 (x64)VSTest version 17.14.1 (x64)
+#27 1.035 
+#27 1.037 
+#27 1.037 
+#27 1.044 VSTest version 17.14.1 (x64)
+#27 1.046 
+#27 1.089 Starting test execution, please wait...
+#27 1.089 Starting test execution, please wait...
+#27 1.094 Starting test execution, please wait...
+#27 1.103 A total of 1 test files matched the specified pattern.
+#27 1.104 A total of 1 test files matched the specified pattern.
+#27 1.109 A total of 1 test files matched the specified pattern.
+#27 1.581 
+#27 1.583 Passed!  - Failed:     0, Passed:   126, Skipped:     0, Total:   126, Duration: 45 ms - Game.Contracts.Tests.dll (net9.0)
+#27 1.613 
+#27 1.615 Passed!  - Failed:     0, Passed:   250, Skipped:     0, Total:   250, Duration: 82 ms - Game.Simulation.Tests.dll (net9.0)
+#27 1.767 
+#27 1.769 Passed!  - Failed:     0, Passed:   213, Skipped:     0, Total:   213, Duration: 247 ms - Game.Gateway.Tests.dll (net9.0)
+#27 DONE 1.9s
+
+#28 [build 1/7] RUN dotnet publish src/Game.Simulation -c Release -o /app/simulation --no-restore
+#28 1.107   Game.Contracts -> /src/src/Game.Contracts/bin/Release/net9.0/Game.Contracts.dll
+#28 1.293   Game.Persistence -> /src/src/Game.Persistence/bin/Release/net9.0/Game.Persistence.dll
+#28 1.322   Game.ServiceDefaults -> /src/src/Game.ServiceDefaults/bin/Release/net9.0/Game.ServiceDefaults.dll
+#28 1.477   Game.Simulation -> /src/src/Game.Simulation/bin/Release/net9.0/Game.Simulation.dll
+#28 1.512   Game.Simulation -> /app/simulation/
+#28 DONE 1.6s
+
+#29 [build 2/7] RUN dotnet publish src/Game.EventLog -c Release -o /app/eventlog --no-restore
+#29 1.067   Game.Contracts -> /src/src/Game.Contracts/bin/Release/net9.0/Game.Contracts.dll
+#29 1.252   Game.Persistence -> /src/src/Game.Persistence/bin/Release/net9.0/Game.Persistence.dll
+#29 1.285   Game.ServiceDefaults -> /src/src/Game.ServiceDefaults/bin/Release/net9.0/Game.ServiceDefaults.dll
+#29 1.444   Game.EventLog -> /src/src/Game.EventLog/bin/Release/net9.0/Game.EventLog.dll
+#29 1.474   Game.EventLog -> /app/eventlog/
+#29 DONE 1.6s
+
+#30 [build 3/7] RUN dotnet publish src/Game.Progression -c Release -o /app/progression --no-restore
+#30 1.053   Game.Contracts -> /src/src/Game.Contracts/bin/Release/net9.0/Game.Contracts.dll
+#30 1.231   Game.Persistence -> /src/src/Game.Persistence/bin/Release/net9.0/Game.Persistence.dll
+#30 1.275   Game.ServiceDefaults -> /src/src/Game.ServiceDefaults/bin/Release/net9.0/Game.ServiceDefaults.dll
+#30 1.460   Game.Progression -> /src/src/Game.Progression/bin/Release/net9.0/Game.Progression.dll
+#30 1.492   Game.Progression -> /app/progression/
+#30 DONE 1.6s
+
+#31 [build 4/7] RUN dotnet publish src/Game.OperatorApi -c Release -o /app/operatorapi --no-restore
+#31 1.084   Game.Contracts -> /src/src/Game.Contracts/bin/Release/net9.0/Game.Contracts.dll
+#31 1.228   Game.Persistence -> /src/src/Game.Persistence/bin/Release/net9.0/Game.Persistence.dll
+#31 1.295   Game.ServiceDefaults -> /src/src/Game.ServiceDefaults/bin/Release/net9.0/Game.ServiceDefaults.dll
+#31 1.461   Game.OperatorApi -> /src/src/Game.OperatorApi/bin/Release/net9.0/Game.OperatorApi.dll
+#31 1.490   Game.OperatorApi -> /app/operatorapi/
+#31 DONE 1.6s
+
+#32 [build 5/7] RUN dotnet publish src/Game.Companion -c Release -o /app/companion --no-restore
+#32 0.876   Game.Companion -> /src/src/Game.Companion/bin/Release/net9.0/Lumberjacks.Companion.dll
+#32 0.919   Game.Companion -> /app/companion/
+#32 DONE 1.0s
+
+#33 [build 6/7] RUN set -eu;     if [ "0" = "1" ]; then       case "dev" in         ''|dev)           echo "ERROR: a promotable Gateway build requires a real LUMBERJACKS_EXPECTED_MOD_RELEASE;" >&2;           echo "       got 'dev'." >&2;           exit 1 ;;       esac;       if ! echo "dev"            | grep -Eq '^m[0-9]+-[a-z0-9]+-[0-9]{8}-r[0-9]+$'; then         echo "ERROR: 'dev' is not <milestone>-<label>-<yyyymmdd>-r<n>." >&2;         exit 1;       fi;       echo "promotable Gateway build; admitted mod release: dev";     fi
+#33 DONE 0.4s
+
+#34 [build 7/7] RUN dotnet publish src/Game.Gateway -c Release -o /app/gateway --no-restore       -p:LumberjacksExpectedModRelease="dev"
+#34 1.102   Game.Contracts -> /src/src/Game.Contracts/bin/Release/net9.0/Game.Contracts.dll
+#34 1.273   Game.Persistence -> /src/src/Game.Persistence/bin/Release/net9.0/Game.Persistence.dll
+#34 1.312   Game.ServiceDefaults -> /src/src/Game.ServiceDefaults/bin/Release/net9.0/Game.ServiceDefaults.dll
+#34 1.523   Game.Simulation -> /src/src/Game.Simulation/bin/Release/net9.0/Game.Simulation.dll
+#34 1.751   Game.Gateway -> /src/src/Game.Gateway/bin/Release/net9.0/Game.Gateway.dll
+#34 1.879   Game.Gateway -> /app/gateway/
+#34 DONE 2.0s
+
+#35 [gateway 2/3] WORKDIR /app
+#35 CACHED
+
+#36 [gateway 3/3] COPY --from=build /app/gateway .
+#36 DONE 0.1s
+
+#37 exporting to image
+#37 exporting layers
+#37 exporting layers 0.4s done
+#37 exporting manifest sha256:4027bef0e6040ddccdce976d9a61342a675a11d90c5c89e035a42aa3fb1d7342 0.1s done
+#37 exporting config sha256:94b415eb791011754c9a9fcf4b1d7bda6073891c3b4d136c1d878a8bc11ac7df 0.0s done
+#37 exporting attestation manifest sha256:07ee9febdf58e470987ce930a918afe566d9a2c5c02eeefc48f52a04b3f198af 0.1s done
+#37 exporting manifest list sha256:ead2bb5d2e354d3b3879635df6c2dc6f4f87c58bd23d150125389c5d1710c0a2
+#37 exporting manifest list sha256:ead2bb5d2e354d3b3879635df6c2dc6f4f87c58bd23d150125389c5d1710c0a2 0.0s done
+#37 naming to docker.io/library/lumberjacks-local-gateway:latest done
+#37 unpacking to docker.io/library/lumberjacks-local-gateway:latest 0.1s done
+#37 DONE 0.8s
+
+#38 resolving provenance for metadata file
+#38 DONE 0.0s

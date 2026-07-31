@@ -1,0 +1,10 @@
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+ssh : ** WARNING: connection is not using a post-quantum key exchange algorithm.
+At C:\work\baseline\tools\i5\Test-I5Link.ps1:53 char:8
++ $who = ssh -o BatchMode=yes -o ConnectTimeout=8 $SshAlias "whoami" 2> ...
++        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (** WARNING: con...ange algorithm.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

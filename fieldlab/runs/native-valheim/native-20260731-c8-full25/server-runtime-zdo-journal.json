@@ -1,0 +1,71 @@
+{
+    "schema_version":  1,
+    "run_id":  "native-20260731-c8-full25",
+    "receipts":  [
+                     {
+                         "schema_version":  1,
+                         "event":  "server_runtime_control",
+                         "timestamp_utc":  "2026-07-31T13:08:25.1217550Z",
+                         "request_id":  "native-20260731-c8-full25-journal-arm",
+                         "setting":  "zdoJournalCutoverEnabled",
+                         "requested_value":  "true",
+                         "result":  "applied",
+                         "reason":  "ok",
+                         "old_value":  "false",
+                         "effective_value":  "true",
+                         "effect":  "mutation_journal_and_typed_apply_armed",
+                         "auth_context":  "authenticated_host_filesystem",
+                         "session_id":  "20260731-121108-88084ab6",
+                         "build_version":  "0.5.45"
+                     },
+                     {
+                         "schema_version":  1,
+                         "event":  "server_runtime_control",
+                         "timestamp_utc":  "2026-07-31T13:08:26.6217800Z",
+                         "request_id":  "native-20260731-c8-full25-journal-canonical-arm",
+                         "setting":  "zdoJournalCanonicalSessionEnabled",
+                         "requested_value":  "true",
+                         "result":  "applied",
+                         "reason":  "ok",
+                         "old_value":  "false",
+                         "effective_value":  "true",
+                         "effect":  "zdo_semantics_bound_to_canonical_session",
+                         "auth_context":  "authenticated_host_filesystem",
+                         "session_id":  "20260731-121108-88084ab6",
+                         "build_version":  "0.5.45"
+                     },
+                     {
+                         "schema_version":  1,
+                         "event":  "server_runtime_control",
+                         "timestamp_utc":  "2026-07-31T13:09:20.1403380Z",
+                         "request_id":  "native-20260731-c8-full25-journal-canonical-disarm",
+                         "setting":  "zdoJournalCanonicalSessionEnabled",
+                         "requested_value":  "false",
+                         "result":  "applied",
+                         "reason":  "ok",
+                         "old_value":  "true",
+                         "effective_value":  "false",
+                         "effect":  "zdo_semantics_restored_to_http_lab_seam",
+                         "auth_context":  "authenticated_host_filesystem",
+                         "session_id":  "20260731-121108-88084ab6",
+                         "build_version":  "0.5.45"
+                     },
+                     {
+                         "schema_version":  1,
+                         "event":  "server_runtime_control",
+                         "timestamp_utc":  "2026-07-31T13:09:21.1408790Z",
+                         "request_id":  "native-20260731-c8-full25-journal-disarm",
+                         "setting":  "zdoJournalCutoverEnabled",
+                         "requested_value":  "false",
+                         "result":  "applied",
+                         "reason":  "ok",
+                         "old_value":  "true",
+                         "effective_value":  "false",
+                         "effect":  "mutation_journal_capture_stopped",
+                         "auth_context":  "authenticated_host_filesystem",
+                         "session_id":  "20260731-121108-88084ab6",
+                         "build_version":  "0.5.45"
+                     }
+                 ],
+    "disarm_error":  null
+}

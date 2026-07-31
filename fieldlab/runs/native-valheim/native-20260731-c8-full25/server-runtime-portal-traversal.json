@@ -1,0 +1,24 @@
+{
+    "schema_version":  1,
+    "run_id":  "native-20260731-c8-full25",
+    "persistence":  "runtime_only",
+    "receipts":  [
+                     {
+                         "schema_version":  1,
+                         "event":  "server_runtime_control",
+                         "timestamp_utc":  "2026-07-31T13:08:30.6147420Z",
+                         "request_id":  "native-20260731-c8-full25-portal-traversal-arm",
+                         "setting":  "portalTraversalEnabled",
+                         "requested_value":  "true",
+                         "result":  "applied",
+                         "reason":  "ok",
+                         "old_value":  "true",
+                         "effective_value":  "true",
+                         "effect":  "runtime_only_unchanged_descriptor_republish_requested",
+                         "auth_context":  "authenticated_host_filesystem",
+                         "session_id":  "20260731-121108-88084ab6",
+                         "build_version":  "0.5.45"
+                     }
+                 ],
+    "restore_error":  null
+}

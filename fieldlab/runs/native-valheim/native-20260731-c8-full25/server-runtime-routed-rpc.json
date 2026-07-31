@@ -1,0 +1,23 @@
+{
+    "schema_version":  1,
+    "run_id":  "native-20260731-c8-full25",
+    "receipts":  [
+                     {
+                         "schema_version":  1,
+                         "event":  "server_runtime_control",
+                         "timestamp_utc":  "2026-07-31T13:08:18.1104950Z",
+                         "request_id":  "native-20260731-c8-full25-routed-run",
+                         "setting":  "nativeNetworkEvidenceRunId",
+                         "requested_value":  "native-20260731-c8-full25",
+                         "result":  "applied",
+                         "reason":  "ok",
+                         "old_value":  "native-20260731-c8-full25",
+                         "effective_value":  "native-20260731-c8-full25",
+                         "effect":  "effective_on_next_native_ledger_row",
+                         "auth_context":  "authenticated_host_filesystem",
+                         "session_id":  "20260731-121108-88084ab6",
+                         "build_version":  "0.5.45"
+                     }
+                 ],
+    "disarm_error":  null
+}
