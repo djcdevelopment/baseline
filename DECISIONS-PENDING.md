@@ -10,7 +10,13 @@ policy already determines the answer, it is not an open decision.
 
 ## Open
 
-- **Lumberjacks RPC Admission Gaps**: The synthetic baseline gap analysis identified 18 missing `RoutedRPCs` and 21 missing `DirectRPCs` (bypassing Lumberjacks admission control). 
-  - *Alternatives*: (1) Whitelist them in `MessageRouter.cs` and pipe them through `ComfyNetworkSense` (incurs more dev effort but full coverage). (2) Continue ignoring them if they are non-critical to ZDO and gameplay telemetry.
-  - *Deadline/Trigger*: Evaluate before the next C8 protocol freeze.
-  - *Owner*: Derek
+_None._
+
+## Resolved
+
+- [x] 2026-07-31 — **Lumberjacks RPC Admission Gaps** — resolved per-RPC by the
+  [C8 breadth audit](fieldlab/C8-BREADTH-AUDIT-2026-07-31.md): the true surface is
+  160 RPCs (extractor v2 found the 120 instance RPCs the gap analysis missed);
+  21 superseded by design, 129 admitted-to-lane before C10 (29 P1), 9 deferred
+  behind the poison tripwire. Any single row can be reopened without reopening
+  the audit. (Owner: Derek)
