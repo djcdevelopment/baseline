@@ -44,6 +44,17 @@
 > cells stopped before scene entry. The replan advances to C6's binary
 > motion-authority proof; general-prefab breadth, Steam-free join, native-zero
 > composition, tuning, and P7 promotion remain open.
+>
+> **2026-07-30 C6 addendum:** C6 is accepted in
+> `native-20260730-c6-eighth`. OMEN and i5 applied authenticated numbered motion to
+> the real remote player in both directions while the selected native transform
+> writer and remote-position writes were suppressed. OMEN withheld sequences
+> 600–619; i5 held without native fallback, applied the reliable sequence-619 resync,
+> and queued its ACK. Both physical GPU clients completed a fresh-process resume and
+> stopped unattended; i5 also proved binary-WebSocket fallback for an unreachable
+> advertised UDP path. This is binary authority evidence, not a feel or smoothing
+> claim. C7's early socket-quarantine falsifier and Steam-free cold join are next,
+> followed immediately by the mandatory C7 replan.
 
 > **2026-07-11 local / 2026-07-12 UTC P7 result:** the combined GCP deployment passed
 > the live P7/I7 loopback gate on `comfy-lumberjacks-p7` in project

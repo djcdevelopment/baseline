@@ -4,7 +4,7 @@
 **Development topology:** headless dedicated server on AM4; native Windows clients on
 OMEN (Tugcorp, RTX 5070) and i5 (Durracktu, Intel Iris Xe).
 **Reference deployment:** P7 remains running as the production-reference server and is
-unchanged; C0-C5 final-cutover acceptance is on AM4.
+unchanged; C0-C6 final-cutover acceptance is on AM4.
 
 This is a present-tense boundary inventory, not a restatement of the historical I0-I7
 ladder. “Swapped” means the live payload crosses Lumberjacks and the corresponding
@@ -29,8 +29,10 @@ The replacement is not 100% complete.
   shapes through Lumberjacks and suppresses the selected native methods. Unselected
   method hashes, most direct peer controls, general ownership/world/zone breadth, and
   the underlying Steam socket are still native or partial.
-- Motion has a Lumberjacks observe/apply lane, but production apply is off. Native
-  player replication therefore remains authoritative.
+- C6 makes Lumberjacks the selected remote-transform authority on AM4. Both physical
+  clients applied numbered motion to the real remote player while native transform
+  writes were suppressed; a 20-frame gap held without native correction and recovered
+  through reliable resync. P7 still runs the earlier observe-only configuration.
 - A canonical Lumberjacks game-session control lane is now ordered, acknowledged,
   bounded, and socket-resumable on AM4. C2a now carries one selected typed direct
   control pulse on that lane, applies it on Unity `Update`, and suppresses the matching
@@ -54,8 +56,9 @@ The shortest honest description is: **the C3 ZDO semantic boundary and selected
 control/RPC classes are swapped on AM4, and C3 semantics now ride the canonical
 session with process-durable logical peers; C4 also swaps one selected real ownership
 and pickup boundary; C5 swaps the selected world descriptor and run-tagged
-zone-membership boundary. General-prefab semantics, connection, remaining control,
-motion authority, and Steam-free cold join are not complete.**
+zone-membership boundary; C6 swaps selected two-player motion authority. General-prefab
+semantics, connection, remaining control breadth, Steam-free cold join, native-zero
+composition, and P7 promotion are not complete.**
 
 ## C0 measured baseline and poison gate
 
@@ -137,7 +140,28 @@ object that appeared in native `CreateSyncList` before delivery.
 `native-20260730-c5-fault-worldgen` stopped before scene entry with deterministic
 protocol and world-generation mismatch reasons. This promotes the selected
 run-tagged descriptor/membership boundary. The enclosing native connection and
-`PeerInfo` delivery, arbitrary prefab/zone breadth, motion, and P7 promotion remain.
+`PeerInfo` delivery, arbitrary prefab/zone breadth, and P7 promotion remain.
+
+## C6 selected motion-authority boundary
+
+C6 is complete at its selected AM4 boundary in
+`native-20260730-c6-eighth`. OMEN and i5 rendezvoused without operator input,
+resolved the real remote player scene instance, and applied numbered Lumberjacks
+motion in both directions. After canonical apply, the selected native
+`ZSyncTransform` remote writer was suppressed and native position writes for that
+canonical remote identity were masked.
+
+OMEN deliberately withheld sequences 600 through 619. i5 held the last valid state
+with no native fallback, received a reliable hard resync at sequence 619, applied it,
+and queued its ACK. Both clients then relaunched once in fresh Valheim processes and
+completed the manifest. OMEN exercised UDP; i5's unreachable advertised UDP endpoint
+failed over to binary WebSocket without ending the session.
+
+The Gateway received 1,469 motion frames: 709 over UDP and 760 over WebSocket. It
+recorded zero unauthorized and zero stale drops, plus two invalid early frames whose
+exact source remains unproven. Subjective feel and all smoothing/tuning remain
+unverified and deliberately locked. The enclosing native peer/scene admission remains
+until C7, and general breadth/native-zero composition remain C8 work.
 
 ## Live configuration observed on P7
 
@@ -166,7 +190,7 @@ manifest `p7-primary-v1`, and an armed consumer.
 | Path | Current state | What crosses Lumberjacks now | What is still native | Confidence |
 | --- | --- | --- | --- | --- |
 | Steam connection and packet transport | **Native** | Nothing that can establish or maintain the Valheim peer | `ZSteamSocket`, Steamworks identity/session, UDP/P2P connection state, reliability and packet framing | **Verified:** source map plus live Steam connection logs |
-| Lumberjacks reliable game session | **Swapped substrate with selected C2–C5 semantics** | Stable opaque logical peer, replaceable connection incarnation, ordered reliable control/RPC, ZDO mutation/interest/delivery/ACK, ownership lease/action/result, world descriptor, and selected zone snapshot/leave frames, plus cumulative ACK, bounded replay, UDP binding, and socket resume | Remaining direct/routed classes, general ownership/zone breadth, motion and cold-join semantics remain outside this lane | **Verified:** C1 resume/replay, C4a logical identity, C4b lease reclaim/result, and C5 interrupted membership replay all used the same canonical session |
+| Lumberjacks reliable game session | **Swapped substrate with selected C2–C6 semantics** | Stable opaque logical peer, replaceable connection incarnation, ordered reliable control/RPC, ZDO mutation/interest/delivery/ACK, ownership lease/action/result, world descriptor, selected zone snapshot/leave, motion binding, and reliable motion-resync frames, plus cumulative ACK, bounded replay, UDP binding, and socket resume | Remaining direct/routed classes, general ownership/zone breadth, and cold-join semantics remain outside this lane | **Verified:** C1 resume/replay, C4a logical identity, C4b lease reclaim/result, C5 interrupted membership replay, and C6 motion resync all used the same canonical session |
 | Handshake and admission | **Partial; off-thread admission and C5 descriptor substitution proven on AM4, prior build still live on P7** | Admission verdict and the selected complete world descriptor cross Lumberjacks; blank native world fields are held and substituted only after descriptor validation | `ServerHandshake`/`ClientHandshake`, Steam ticket verification, password crypto, native `PeerInfo` delivery, vanilla checks on accept, and `AddPeer` | **Verified:** delayed fail-open and normal ACCEPT reached vanilla AddPeer without a main-thread HTTP stall; C5 blanked native world fields but still used the enclosing native peer lifecycle |
 | ZDO candidate selection and cadence | **Partial; C3 journal boundary swapped on AM4** | A mutation-seam journal and explicit recipient interest delivered the C3 object independently of `CreateSyncList` | Legacy/general-prefab delivery still uses `ZDOMan.Update`, `CreateSyncList`, sector query, `ShouldSend`, force-send and base priority ordering | **Verified:** C3 object had zero selected candidates across 1,198 native selection passes but reached both clients |
 | ZDO outbound carriage | **Swapped for legacy redirect and C3 semantic boundary** | Selected `*` prefabs use the redirect; C3 authoritative mutation bodies, revisions and tombstones use the durable journal over C1 | C3 body capture still observes Valheim's authoritative mutation seams; semantic breadth remains | **Verified:** C4a accepted six canonical mutations, replayed WAL across Gateway restart, retained two isolated logical recipients and ended zero pending |
@@ -174,7 +198,7 @@ manifest `p7-primary-v1`, and an armed consumer.
 | Co-presence ZDO fan-out | **Corrected and integration-proven on AM4; disabled on P7 pending promotion** | Emits native-selected revisions to the exposing recipient and any in-band observer that is behind | Candidate discovery and delivered-revision bookkeeping remain native | **Verified:** two unattended physical clients, 1,340/1,340 native-selected `Emit`, zero non-emit, and successful inventory return on both clients |
 | Routed gameplay RPC (`ZRoutedRpc`) | **Partial; fixed C2b registry swapped on AM4** | Full `RoutedRPCData` envelopes for the selected request, response, broadcast, target receipt, and `RPC_ResetCloth` hashes cross C1 and dispatch through `HandleRoutedRPC` on Unity `Update` | Unselected method hashes still use native `RouteRPC`/`RPC_RoutedRPC`; the fixed registry is not yet the whole gameplay surface | **Verified:** `native-20260730-c2b-final` completed both directions, broadcast, real target-ZDO dispatch, withhold, and reconnect; all 43 selected native attempts were suppressed with zero native copies, duplicates, or dispatch failures |
 | Direct peer/control RPC | **Partial; one C2a pulse swapped on AM4** | One selected post-join direct pulse crosses C1's reliable lane and dispatches on Unity `Update` | Error, player/global/admin lists, reference position, disconnect, and every other `ZRpc` control class | **Verified:** `native-20260730-c2a-final` delivered exactly one typed pulse per client; both withheld copies became stale; native tripwires were registered; all 107 selected server-native attempts were suppressed before `ZRpc.Invoke`; zero native copies arrived |
-| Player motion | **Partial, observe-only in production** | Client motion can publish over Lumberjacks WebSocket/UDP and can be resolved to a Valheim player | Apply is off; visible authoritative movement still arrives through native player/ZDO replication | **Verified:** live config and motion runner apply gate |
+| Player motion | **Selected boundary swapped on AM4; prior observe-only build remains on P7** | Authenticated numbered position/rotation/velocity frames use UDP with binary-WebSocket fallback; reliable hard resync uses C1. The real remote player applies them while the selected native transform and position writers are suppressed | Native join still creates the enclosing remote player scene instance until C7; general identity/prefab breadth and P7 promotion remain | **Verified:** `native-20260730-c6-eighth` applied both directions, suppressed 300 native writer calls in each observer probe, held a 20-frame gap without native fallback, applied reliable resync, and resumed both clients |
 | ZDO ownership transfer and pickup action | **Partial; selected C4 boundary swapped on AM4** | Server-originated leases bind run/world/ZDO/logical holder/epoch/expiry; Gateway validates actions; the dedicated server performs the authoritative destroy and returns inventory through Lumberjacks | General-prefab ownership/action admission remains; the cutover is gated and P7 still runs the prior path | **Verified:** `native-20260730-c4b-tenth` rejected reclaimed/wrong/expired leases, poisoned selected native owner/pickup/destroy paths, and credited exactly one Raspberry to each client |
 | World identity/bootstrap | **Partial; selected descriptor swapped on AM4** | Protocol/release, world id/epoch, seed/name, world-generation version, network time, save epoch, and initial zone cross Lumberjacks and substitute for blank native world fields | The native handshake and `PeerInfo` callback still trigger the enclosing peer/scene lifecycle; Steam-free cold join is C7 | **Verified:** both C5 clients entered the intended world from the descriptor; wrong protocol/world generation stopped before scene |
 | Zone/interest lifecycle | **Partial; selected run-tagged membership swapped on AM4** | Explicit enter/leave, monotonic snapshot epoch, three complete typed bodies, semantic chunk ACK, resume, complete-once, and typed release cross Lumberjacks | General-prefab/zone interest breadth, reference-position integration, and terrain generation remain Valheim; terrain is intentionally local engine work | **Verified:** both C5 clients resumed after chunk-1 socket loss, completed once, unloaded to zero, spawned none on withhold, and every selected native candidate was suppressed |
@@ -192,7 +216,6 @@ mode. None requires two humans driving game windows.
 | C3 ZDO semantic breadth | Canonical carriage is complete; now exercise pickup/ownership plus zone-membership prefab semantics before removing the legacy consumer | Restart Gateway/client mid-delivery; the logical recipient resumes from WAL with no `RPC_ZDOData` fallback or duplicate mutation | 1-2 days folded into remaining C4-C5 |
 | Remaining routed gameplay RPC | Inventory runtime method hashes by semantic class, add typed codecs/handlers to the fixed registry, and delete the native selected-method fallback as each class crosses | Withhold one member of each newly selected class and require deterministic stale/fail-closed behavior with no native copy | 1-2 days, folded into the C3-C7 burn-down |
 | Remaining direct peer/control RPCs | Extend C2a's fixed typed dispatch to player/global/admin lists, reference position, error, and disconnect classes, suppressing each matching native invocation only in cutover mode | Withhold each selected Lumberjacks class and require bounded stale/fail-closed behavior rather than a native copy | 1-2 days, folded into C2b/C7 |
-| Player motion authority | For one source player and one short allow-listed movement command, suppress native motion delivery and enable Lumberjacks apply on the observer | Withhold a numbered motion frame and prove bounded stale/drop behavior instead of native correction | 2-3 days; do before any smoothing/tuning |
 | Ownership breadth | Expand C4's admitted lease/action contract from the run-tagged Raspberry to every ownership-bearing prefab/action found by the native-use ledger, then delete the selected-only gate | An unadmitted owner or pickup method must trip poison rather than fall back to Valheim | 1–2 days folded into C5–C8 |
 | Steam-free world bootstrap | Start C1 without `+connect`, create the minimal logical Valheim peer with no `ZSteamSocket`, consume C5's descriptor, and remain in-world for 60 seconds before expanding the adapter | Unavailable Gateway, invalid enrollment/release, or wrong descriptor must fail closed and never try the native server | 4–7 days; C7 and the highest remaining architecture risk |
 | General zone/interest breadth | Compose C5 membership with the real C8 zone-crossing/pickup/ownership scenario under native poison, then remove selected-only gates | Any unadmitted prefab or stale membership must trip poison/reopen C5 rather than fall back to native selection | 1–2 days folded into C8 |
@@ -332,21 +355,30 @@ client logs, autotest receipts, and a Steam-identifier-free P7 correlation:
 - `native-valheim/native-20260730-c5-fault-protocol/` and
   `native-valheim/native-20260730-c5-fault-worldgen/` — deterministic pre-scene
   rejection for the two descriptor compatibility failures.
+- `native-valheim/native-20260730-c6-eighth/` — accepted C6 AM4 composition:
+  both physical clients applied numbered Lumberjacks motion to the real remote
+  player in both directions while selected native transform/position writers were
+  suppressed. i5 held through OMEN's exact 20-frame gap, applied the reliable
+  sequence-619 resync, queued its ACK, and used binary-WebSocket fallback when UDP
+  was unreachable. Both clients completed fresh-process resume and stopped on the
+  intended GPU; `c6-boundary-summary.json` records the caveats and hashes.
 
 ## Replan recommendation
 
-Do not start the motion tuning or transpiling lab yet. C0-C5 are complete at their
+Do not start the motion tuning or transpiling lab yet. C0-C6 are complete at their
 retained AM4 boundaries. C3/C4a prove durable ZDO selection, canonical carriage and
 typed apply without selected native selection or network `RPC_ZDOData`; C4 proves
 logical-peer lease/action authority and exactly-once inventory for one real pickup
 per client; C5 proves selected descriptor substitution and resumable run-tagged
-membership with native selection suppressed. The full prefab and method surface is
-still not promoted to “swapped.”
+membership with native selection suppressed; C6 proves selected binary motion
+authority, native-writer suppression, bounded hold, and reliable resync. The full
+prefab and method surface is still not promoted to “swapped.”
 
-C6 is next: bind the existing motion lane to the canonical connection and real player
-entity, make it the sole remote transform writer, then prove numbered delivery and
-bounded hold/reliable resync under an injected gap. This is binary authority proof,
-not tuning. Replan again after C7. Revised remaining cost is **9–20 focused
-engineering days**, including remaining ownership/direct/routed/zone breadth folded
-into C7–C8. Only after the native poison gate reaches zero does motion tuning measure
-the system intended to ship.
+C7 is next. Run its early falsifier before filling out cold join: establish the
+canonical Lumberjacks session and descriptor, quarantine the native `ZSteamSocket`,
+and require the client to remain in-world for 60 seconds. If Valheim requires a
+concrete native socket, replan the adapter seam rather than accepting an opaque
+packet tunnel. The mandatory C7 replan follows the real cold-join receipt. Revised
+remaining cost is **7–16 focused engineering days**, including remaining
+ownership/direct/routed/zone breadth folded into C7–C8. Only after the native poison
+gate reaches zero does motion tuning measure the system intended to ship.
