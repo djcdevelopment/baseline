@@ -30,7 +30,7 @@ Against C9's four acceptance criteria, measured across both runs and both client
 - **Recovery from injected loss is bounded.** Hold recovery is 0.4–1.7 s in the ordinary
   case; the longest is 10.866 s, and every recovery beyond ~9 s sits inside a deliberate
   interruption (the Gateway restart, or a portal leg).
-- **No apply-attributable wall-clock hitch (OMEN).** Every frame hitch in both windows is
+- **No apply-attributable wall-clock hitch, on both clients.** Every frame hitch in both windows is
   Valheim's own lifecycle — `Starting respawn` (6.7 s, twice per run, once per session),
   `Starting music menu`, `Sending PlayFab login request`, `ZNET START`, character-file
   load. None is explained by a Lumberjacks section.
@@ -52,25 +52,42 @@ verdict would most likely react to, and it is why the clip still matters.
 
 ## Open finding — not resolved
 
-`LumberjacksMotionRunner.Update` blocks for **~1.87 s exactly once per game session**,
-about 4.8 s before Valheim logs `Starting respawn`, and never during steady motion.
-Reproduced 4/4 across both runs with under 20 ms variance (1878.4, 1861.8, 1867.1,
-1863.2 ms).
+`LumberjacksMotionRunner.Update` blocks for multiple seconds **once per game session**,
+and never during steady motion. Reproduced **8/8**:
+
+| Client | Sessions | Section elapsed |
+| --- | --- | --- |
+| OMEN | 4 | 1878.4, 1861.8, 1867.1, 1863.2 ms |
+| i5 | 4 | 2256.6, 2459.3, 2241.1, 2460.4 ms |
+
+The surrounding pattern is identical on both machines, in all eight sessions:
+
+1. two ordinary frame hitches (~430–550 ms), both logging **`ZNET START`**, immediately
+   before the section opens;
+2. the long section itself, with **zero frame hitches recorded anywhere inside it**;
+3. Valheim's `Starting respawn` severe hitch (6.7 s on OMEN, 8.5–9.5 s on the i5)
+   4.8–7.1 s later.
+
+Two discriminators now hold that did not when this was first written:
+
+- **It fires on the first `Update` after Valheim's ZNet initialises**, not at arbitrary
+  session setup.
+- **Its duration tracks machine class** (OMEN ~1.87 s, the slower i5 ~2.25–2.46 s) rather
+  than staying fixed. A network or connect timeout would be roughly machine-independent;
+  CPU-bound one-shot work would scale. That weakens the synchronous
+  `udp.Connect(host, port)` DNS candidate at `LumberjacksMotionRunner.cs:517` and favours
+  a one-shot initialisation bound to newly available ZNet state.
 
 It sits on the session/transport **setup** path, not the motion apply path (apply runs in
-`LateUpdate`). Two candidates remain open: the synchronous `udp.Connect(host, port)`
-hostname resolution at `LumberjacksMotionRunner.cs:517`, and the legacy motion-lane
-teardown when the canonical session takes over. **Which one is unproven** — and notably no
-frame hitch is recorded inside those 1.87 s spans, which is itself unexplained. Resolving
-it needs one instrumented run with a lowered `sectionWarnThresholdMs`, not another guess.
+`LateUpdate`). The root cause is **still unproven**, and the absence of any frame hitch
+inside a multi-second main-thread section is itself unexplained — the probe calls
+`UpdateFrame` on the following frame from a `Stopwatch` baseline, so a genuine block of
+that length should have produced one. Both questions are open; neither is guessed at here.
 
 ## What this does not prove
 
 - **No rendered observer clip exists**, so no subjective verdict has been taken. C9's
   `smooth`/`rough`/`mixed` question is still unanswered.
-- **Frame timing on the i5 is unmeasured, not clean.** The orchestrator never collected
-  `perf-hitches.jsonl`/`perf-sections.jsonl` (now fixed), and the i5 lane went offline
-  before the existing files could be lifted. Hitch attribution above is OMEN only.
 - Motion windows in the C8 composition are 6 s each — long enough for a binary authority
   proof, short for judging rendered quality. The C9 scenario
   (`fieldlab/scenarios/native-20260801-c9-motion1.json`) widens them to 24 s.

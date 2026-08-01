@@ -15,6 +15,7 @@
     "max_hold_recovery_seconds": 10.866,
     "no_apply_attributable_frame_hitch": true,
     "perf_measured_on": [
+      "i5",
       "omen"
     ]
   },
@@ -22,8 +23,7 @@
     "teleport_freeze_then_snap": "each divergence burst is one far target repeatedly refused by the 30m correction guard for about half a second until the reliable teleport announcement lands; the observer therefore holds, then snaps. Bounded and explained, but visible."
   },
   "unverified": {
-    "motion_runner_startup_stall": "LumberjacksMotionRunner.Update blocks about 1.87s exactly once per session, roughly 4.8s before Valheim logs Starting respawn, and never during steady motion. Reproduced 4/4 across both runs with under 20ms variance. Candidates are the synchronous udp.Connect hostname resolution and the legacy-lane teardown when the canonical session takes over. NOT resolved: needs one instrumented run with a lowered section threshold.",
-    "i5_frame_timing": "the i5's perf-hitches/perf-sections were never collected into the run bundle and the lane went offline before they could be lifted, so hitch attribution is measured on OMEN only. This is unmeasured on the i5, not clean.",
+    "motion_runner_startup_stall": "LumberjacksMotionRunner.Update blocks once per game session and never during steady motion. Reproduced 8/8: four sessions on OMEN at 1861-1878ms and four on the i5 at 2241-2460ms. The pattern is identical on both machines - two ordinary frame hitches logging 'ZNET START' immediately before the section opens, zero frame hitches anywhere inside it, then Valheim's 'Starting respawn' severe hitch 4.8-7.1s later. Two discriminators now hold: it fires on the first Update after ZNet initialises, and its duration tracks machine class rather than staying fixed, which argues for CPU-bound one-shot work over a network timeout. Root cause NOT resolved, and the absence of any frame hitch inside a multi-second main-thread section is itself unexplained.",
     "rendered_motion_quality": "no observer clip exists yet; the two-client capture run is still outstanding, so no subjective verdict has been taken."
   },
   "per_run": {
@@ -339,12 +339,37 @@
           ]
         },
         "perf": {
-          "measured": false,
-          "hitch_rows": 0,
+          "measured": true,
+          "hitch_rows": 18,
           "apply_attributable_hitches": [],
-          "max_frame_ms": 0,
-          "hitch_causes": {},
-          "motion_runner_sections": []
+          "max_frame_ms": 9506.401,
+          "hitch_causes": {
+            "Loaded localization file #7 - 'localiza": 4,
+            "ZNET START": 4,
+            "Preferences initialized! Activating fir": 2,
+            "Sending PlayFab login request (attempt": 2,
+            "Starting music menu": 2,
+            "Starting respawn": 2,
+            "Teleporting Durracktu": 1,
+            "DLC:beta installed:False": 1
+          },
+          "motion_runner_sections": [
+            {
+              "timestamp_utc": "2026-08-01T01:27:08.3541487Z",
+              "elapsed_ms": 2256.6,
+              "session_id": "20260801-012650-999f4387"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:29:31.3015734Z",
+              "elapsed_ms": 2459.3,
+              "session_id": "20260801-012913-4e51675a"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:29:38.3804476Z",
+              "elapsed_ms": 31.0,
+              "session_id": "20260801-012913-4e51675a"
+            }
+          ]
         }
       }
     },
@@ -609,12 +634,37 @@
           ]
         },
         "perf": {
-          "measured": false,
-          "hitch_rows": 0,
+          "measured": true,
+          "hitch_rows": 20,
           "apply_attributable_hitches": [],
-          "max_frame_ms": 0,
-          "hitch_causes": {},
-          "motion_runner_sections": []
+          "max_frame_ms": 9244.564,
+          "hitch_causes": {
+            "Loaded localization file #7 - 'localiza": 4,
+            "ZNET START": 4,
+            "Sending PlayFab login request (attempt": 2,
+            "Starting music menu": 2,
+            "Starting respawn": 2,
+            "adding Raspberry  1": 2,
+            "Preferences initialized! Activating fir": 1,
+            "Failed to get attach prefab for item Ar": 1
+          },
+          "motion_runner_sections": [
+            {
+              "timestamp_utc": "2026-08-01T01:32:10.6463474Z",
+              "elapsed_ms": 2241.1,
+              "session_id": "20260801-013152-fc2bdc3c"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:34:33.8467890Z",
+              "elapsed_ms": 2460.4,
+              "session_id": "20260801-013415-d6c4ec2c"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:34:40.6631628Z",
+              "elapsed_ms": 31.4,
+              "session_id": "20260801-013415-d6c4ec2c"
+            }
+          ]
         }
       }
     }
