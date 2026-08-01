@@ -47,6 +47,9 @@ cd Lumberjacks; node scripts/roadmap.mjs note --milestone <M> --kind <kind> --su
 cd ..; git add -A; git commit -F <message-file>; git pull --ff-only; git push origin main
 ```
 
+In Claude sessions the `/land` skill runs this whole protocol — including the blocker
+handling above — in one invocation. It is user-scoped, so it works from any repo.
+
 Adopted 2026-07-31, **moved to the top of this file and expanded 2026-08-01**. The rule
 already existed and the stall kept happening anyway, because it sat at line ~107 below
 four other sections — a worker that reads far enough to find it has usually already
