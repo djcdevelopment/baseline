@@ -8,30 +8,29 @@ Detailed requirement evidence: [verification matrix](workbench-v1-verification-m
 Checkpoint staging scope: [workbench-v1-checkpoint-scope.md](workbench-v1-checkpoint-scope.md).
 
 This is the execution handoff for the current implementation session. It is
-deliberately not a completion claim: the dirty-checkout MCP identity gate has
-passed, but clean-checkpoint attribution and rendered AM4 + OMEN + i5 acceptance
-still require their final machine receipt and operator observation.
+deliberately not a completion claim: clean-checkpoint MCP and Companion
+attribution has passed, while rendered AM4 + OMEN + i5 acceptance still requires
+its machine receipt and operator observation.
 
 ## Adapted next slice
 
-1. Complete the reviewed WB-1 checkpoint plus the generator-required
-   production Workbench HTML publication commit.
-2. Rebuild Companion and Dev MCP from that clean commit, record their final
-   image digests, and repeat the authenticated identity check on `8721`.
-3. Re-run the rendered pre-live source/image gate, then open the bounded Lab
+1. Rebuild Companion and Dev MCP from the final documentation HEAD and repeat
+   the already-passing authenticated identity check on `8721`.
+2. Switch explicitly to Lab, re-run the rendered pre-live source/image gate,
+   then open the bounded
    AM4 + OMEN + i5 C6 window and collect Derek's typed observation.
-4. Close M6 by recording the final receipt and classifying remaining work.
+3. Close M6 by recording the final receipt and classifying remaining work.
 
 ## Milestone status
 
 | Milestone | Status | Receipt/evidence |
 |---|---|---|
-| M0 baseline | partial — clean checkpoint pending | The claimed installation and retained companion-data volume are proven. The dirty-checkout Baseline Dev MCP identity passed on `8721`; the stale `ComfyGatewayBoot` task was disabled and PID 14164 stopped without touching HEARTH. Final clean-commit source/image attribution remains. |
+| M0 baseline | passed | Claimed installation `wb-4285b4fd66f442e598886b861ed1bd44` and the retained companion-data volume are proven. Clean HEAD `0444fe90fac8928d486ebd2186fabe4b94b86d2a` produced identity-matched Companion and Dev MCP images with `source_dirty=false`; the stale `ComfyGatewayBoot` task remains disabled and HEARTH remains independent. |
 | M1 kernel | passed | Lumberjacks/tools/companion/Test-WorkbenchApi.ps1 passed browser token, target/profile rejection, jobs, events, receipts, runner auth, and heartbeat checks. |
 | M2 product shell | passed | /, /workbench, and legacy /companion return 200; Workbench V1 shell, Standard/Advanced presentation, claim flow, live topology, job cards, receipt links, and observation form are present. |
 | M3 local slices | partial — Operate dependency remains open | Containerized net48 mod build passed with read-only Valheim mount, no host SDK, no plugin copy; support export passed the existing privacy scanner; safe Compose recreate preserved installation ID/claim/volume. `operate.mod.check` correctly failed closed while Gateway was unavailable. |
 | M4 distribution boundary | passed | Compose profile checks prove default/Production exclude Dev MCP and the SDK runner; Dev/Lab publish the identity-attested Baseline MCP on loopback `8721`; no Docker socket exists. The mod side channel is default-off, loopback-configured, and cannot be UI-enabled without Dev/Lab opt-in. The stale logon task is disabled and host `8720` is free. |
-| M5 rendered acceptance | operator-gated after clean checkpoint | AM4 and the two rendered client nodes are ready in the latest runner heartbeat. The clean source/image checkpoint and pre-live gate must pass before the physical role-reversal job begins. |
+| M5 rendered acceptance | operator-gated | AM4 and the two rendered client nodes are ready in the latest runner heartbeat. The clean source/image checkpoint passed; repeat it after the documentation commit, switch to Lab, and begin the physical role-reversal job. |
 | M6 closeout | pending | Run after the rendered window and observation; classify any failure as a new defect/follow-on story. |
 
 ## Implemented surfaces
@@ -129,6 +128,15 @@ Latest runtime receipts from the rebuilt image:
   `valheim_handshake_trace` evidence on identity-verified `8721`.
 - `ComfyGatewayBoot` was disabled without deletion; audited PID 14164 was
   stopped, host `8720` was released, and HEARTH remained on `8710` as PID 39328.
+- Clean checkpoint `0444fe90fac8928d486ebd2186fabe4b94b86d2a` rebuilt with
+  `source_dirty=false`. Companion image
+  `sha256:0260d9e78c73f3f3315b06423bb48afab3bb1411dfa8dd4c3e28bb353b062c62`
+  and Dev MCP image
+  `sha256:f2777cde901587eed5fabf5fbe2b514caf64ee48477862bdbf6734f4de3dff37`
+  were recorded. The authenticated `8721` identity matched Baseline, Dev,
+  revision, provider set, caller registry, and ledger. The claimed installation
+  ID remained unchanged; `ComfyGatewayBoot` remained disabled, host `8720`
+  remained free, and HEARTH remained on `8710`.
 - Boundary-audit bootstrap package `workbench-v1-boundary-audit` passed with 20
   required files, including the read-only profile-boundary checker.
 - Runner/Gateway bootstrap package `workbench-v1-runner-gateway` passed with 20
@@ -172,6 +180,16 @@ and Dev MCP image
 `sha256:18af8f8d19f10ecb9bcf996ec49507f5a11230821882d14b7831bc02dc6e6b10`.
 The clean checkpoint rebuild will produce and record new acceptance digests;
 these test IDs are retained instead of being overwritten.
+
+## Checkpoint commit provenance
+
+The shared checkout advanced while the reviewed Workbench index was staged.
+Concurrent guide commit `76b01b9` therefore contains both the guide work and the
+complete Workbench implementation plus A7 roadmap receipt. No history was
+rewritten. Generator publication remains independently attributable:
+`9913629` contains only the production-stamped Workbench HTML, and `0444fe9`
+contains only receipt whitespace normalization. The clean identity receipt above
+is tied to the resulting `0444fe9` tree, not to the earlier dirty image.
 
 The read-only boundary audit identified it as PID 14164, `python.exe` running
 the older `comfy_gateway` matrix provider, and returned
