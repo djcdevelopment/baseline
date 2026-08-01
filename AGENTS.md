@@ -1,5 +1,63 @@
 # Repository working notes
 
+## Landing work — one ask, not a relay race (read before asking anything procedural)
+
+**"Go" / "push" / "land it" / "ship it" / "good work, merge it in" authorizes the
+whole remaining chain for that work — commit → push → open PR → merge into `main` —
+in one pass.** Do not stop mid-chain to ask again at each step, and do not park the
+last step as an offer in your closing summary ("not pushed — say the word"). That is
+the same relay race with better manners: it still costs a turn.
+
+Every one of those turns re-charges the operator for the entire conversation, at the
+end of a session when it is largest. Four yeses for one intent is the most expensive
+possible way to finish, and it lands the cost at the worst possible moment. One
+instruction in, work on `main` out.
+
+`main` here is an R&D trunk that already takes direct pushes from background roadmap
+automation. Committing straight to it is normal; a feature-branch-and-PR plan is wrong
+unless asked for. Treating a merge here with production-grade caution is miscalibrated
+for what is actually here — Derek's correction, 2026-07-31, after a routine
+spawned-task landing needed four separate yeses for one intent.
+
+**Stop and ask only for:** force-push, history rewrite, deleting work you did not
+create, or anything reaching outside this repo. Force-push is not a
+production-vs-R&D judgment call — it can silently discard commits and rewrite history
+someone else already pulled, which is a real risk in any repo.
+
+**When a hook or rule blocks you, fix the cause and retry — do not hand the failure
+back.** Hitting a rule is not a new question; it is part of the work you were already
+told to finish. The four you will actually hit:
+
+1. **Roadmap-note ceremony.** Touching `fieldlab/`, `network/`, or `infra/gcp/p7/`
+   without a journal note fails `pre-commit`. Fix: run the note command below; it
+   regenerates the HTML for you. Never `--no-verify`.
+2. **`main` moves under you.** Background automation commits and pushes here. Pull
+   before you start and again before you push; a rejected push usually just needs
+   `git pull --ff-only`.
+3. **Push protection on `origin`.** Realistic-looking credential *fixtures* are
+   rejected even though the UI suggests scanning is off. Fix by rewriting the fixture,
+   never by the allow-this-secret URL.
+4. **`core.hooksPath` points at the main checkout.** Editing `.githooks/` from inside
+   a worktree changes nothing for your commit; fix the script the hook calls instead.
+
+The whole chain, when the ceremony applies:
+
+```powershell
+cd Lumberjacks; node scripts/roadmap.mjs note --milestone <M> --kind <kind> --summary "..." --impact "..." --verification "..."
+cd ..; git add -A; git commit -F <message-file>; git pull --ff-only; git push origin main
+```
+
+Adopted 2026-07-31, **moved to the top of this file and expanded 2026-08-01**. The rule
+already existed and the stall kept happening anyway, because it sat at line ~107 below
+four other sections — a worker that reads far enough to find it has usually already
+asked. Placement was the bug; the blocker list above is the other half, since the
+authorization alone never covered "tried to merge, hit a rule, came back to ask."
+
+**Unverified** (see [PD-4](docs/decisions/pd-4-evidence-standard.md)): this is proven
+the first time a fresh worker session lands a change from a single "merge it in" with
+no follow-up question. If you are that session and you still had to ask, the gap you
+hit belongs in the list above — add it.
+
 ## Decision lifecycle
 
 Open decisions queue in `DECISIONS-PENDING.md` (root; fieldlab keeps its own).
@@ -61,25 +119,3 @@ Deploys are SHA256-verified on both ends; a green run is the receipt. The i5 is
 a roaming laptop — **offline is a normal state**: report it and stop, never
 retry-loop, and never fall back to password auth (everything runs BatchMode).
 
-## Landing verified work — one ask, not a relay race
-
-Once a change has passed build+test verification (this includes work landing
-from a spawned/tick task), a single "go" / "push" / "land it" / "ship it"
-authorizes the *whole* remaining chain for that piece of work — commit → push
-→ open PR → merge into main — in one pass. Do not stop mid-chain to ask
-again at each step; that turns one decision into three or four and defeats
-the point of asking at all.
-
-Why: Derek said it plainly on 2026-07-31 after a routine spawned-task landing
-needed four separate yeses in a row for one intent — commit, push, open-PR,
-merge. He then corrected the merge-to-main carve-out specifically: this is an
-R&D repo where he's putting laps in and actively generating test data, not a
-24/7 production system — treating a main-branch merge with production-grade
-caution was miscalibrated for what's actually here. Main already carries its
-own background roadmap automation pushing directly to it; a reviewed,
-verified PR merge is comparatively mild next to that.
-
-Still gate separately, every time: force-push. That one isn't a
-production-vs-R&D judgment call — force-push can silently discard commits
-and rewrite history someone else may have already pulled, which is a real
-risk in any repo, R&D or not.
