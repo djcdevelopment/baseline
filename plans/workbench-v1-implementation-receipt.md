@@ -1,7 +1,7 @@
 # Workbench v1 implementation receipt
 
-Date: 2026-08-01  
-Strategy: [Saga WB-1](workbench-v1-saga-strategy.md)  
+Date: 2026-08-01
+Strategy: [Saga WB-1](workbench-v1-saga-strategy.md)
 Owner: Derek
 
 Detailed requirement evidence: [verification matrix](workbench-v1-verification-matrix.md).
