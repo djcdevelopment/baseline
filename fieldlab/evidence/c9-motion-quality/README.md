@@ -93,10 +93,14 @@ that has nothing to do with motion apply.
 
 ## Still open
 
-- **The perf section label misattributes cost.** `ComfyNetworkSense.cs:301` reports seven other
-  runners' time under the motion runner's name. That is an observability defect — it is what
-  sent the first pass of this analysis at the wrong component — and it is unfixed, because the
-  build is frozen for C9.
+- **The perf section label misattributes cost — fixed in source, not yet in the build.** The
+  single section that reported seven other runners' time under the motion runner's name is now
+  eight per-runner sections inside an honestly named `ComfyNetworkSense.CutoverRunners.Update`
+  roll-up. That is a source change only: the C9 build freeze holds, the deployed artifact is
+  still mod SHA-256 `765090d1…` from `c0db122`, and **every number in this document was measured
+  under the old single-section label**. The new labels first appear in whatever build C10a cuts;
+  from that build on, `ComfyNetworkSense.LumberjacksMotionRunner.Update` rows mean the motion
+  runner alone and are not comparable to the same-named rows in the C8/C9 receipts.
 
 ## What this does not prove
 
