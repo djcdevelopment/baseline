@@ -50,39 +50,53 @@ this way range from 72 m (zone cross) to 4.9 km (portal). This is correct fail-c
 behaviour and never falls back to native — but it is the artefact a `smooth`/`rough`
 verdict would most likely react to, and it is why the clip still matters.
 
-## Open finding — not resolved
+## Resolved — the once-per-session stall is vanilla's own world pregeneration
 
-`LumberjacksMotionRunner.Update` blocks for multiple seconds **once per game session**,
-and never during steady motion. Reproduced **8/8**:
+An earlier revision of this document recorded a multi-second once-per-session stall as an
+unresolved finding "in `LumberjacksMotionRunner.Update`", and flagged the absence of a frame
+hitch inside it as an anomaly. **Both of those were wrong.** The corrected account:
 
-| Client | Sessions | Section elapsed |
+**It is not the motion runner.** `ComfyNetworkSense.cs:301` opens a single perf section named
+`ComfyNetworkSense.LumberjacksMotionRunner.Update` that in fact wraps **eight** cutover
+runners and names only the last. The motion runner is provably inert here — its `ShouldRun()`
+requires `Player.m_localPlayer`, which does not exist before respawn.
+
+**The cost is Valheim's own.** It is `WorldGenerator.Initialize(world)` — river/lake
+pregeneration (`FindLakes`, `PlaceRivers`, `PlaceStreams`) — called synchronously on the main
+thread from `LogicalPeerCutoverRunner.ConstructPeer`
+([LogicalPeerCutoverRunner.cs:238](../../../network/mod/ComfyNetworkSense/Core/Services/LogicalPeerCutoverRunner.cs:238)).
+
+**It is not a regression.** Vanilla does exactly the same thing at the same point:
+`ZNet.RPC_PeerInfo` calls `WorldGenerator.Initialize(m_world)` immediately before setting
+`ConnectionStatus.Connected` (decompiled `ZNet.cs:304`), which is the sequence `ConstructPeer`
+reproduces at lines 238–240. The Steam-free cold join **pays vanilla's join cost rather than
+adding one.**
+
+Corroborated 8/8 by an independent clock — every section end matches a
+`logical_peer_constructed` receipt to ~1 ms, and the announce→constructed gap matches the
+section elapsed within ~20 ms:
+
+| Client | Section elapsed | Announce→constructed gap |
 | --- | --- | --- |
-| OMEN | 4 | 1878.4, 1861.8, 1867.1, 1863.2 ms |
-| i5 | 4 | 2256.6, 2459.3, 2241.1, 2460.4 ms |
+| OMEN | 1878.4, 1861.8, 1867.1, 1863.2 ms | 1.899, 1.867, 1.878, 1.873 s |
+| i5 | 2256.6, 2459.3, 2241.1, 2460.4 ms | 2.250, 2.526, 2.268, 2.525 s |
 
-The surrounding pattern is identical on both machines, in all eight sessions:
+**There was no missing hitch.** Both `perf-hitches.jsonl` and `perf-sections.jsonl` stamp
+`timestamp_utc` at *completion*, so spans must be reconstructed backwards from their duration.
+Done that way, the section and the large `Starting respawn` frame **start at the same instant**
+in all eight occurrences (delta +0.03 ms to +0.77 ms), and the section is 26–28 % of that frame
+(6.7 s on OMEN, 8.5–9.5 s on the i5). The stall was always inside a hitch that had been
+recorded correctly; the earlier analysis compared the hitch's *end* against the section's span.
 
-1. two ordinary frame hitches (~430–550 ms), both logging **`ZNET START`**, immediately
-   before the section opens;
-2. the long section itself, with **zero frame hitches recorded anywhere inside it**;
-3. Valheim's `Starting respawn` severe hitch (6.7 s on OMEN, 8.5–9.5 s on the i5)
-   4.8–7.1 s later.
+Bearing on C9: **none.** This is one-time cold-join cost, before the player spawns, on a path
+that has nothing to do with motion apply.
 
-Two discriminators now hold that did not when this was first written:
+## Still open
 
-- **It fires on the first `Update` after Valheim's ZNet initialises**, not at arbitrary
-  session setup.
-- **Its duration tracks machine class** (OMEN ~1.87 s, the slower i5 ~2.25–2.46 s) rather
-  than staying fixed. A network or connect timeout would be roughly machine-independent;
-  CPU-bound one-shot work would scale. That weakens the synchronous
-  `udp.Connect(host, port)` DNS candidate at `LumberjacksMotionRunner.cs:517` and favours
-  a one-shot initialisation bound to newly available ZNet state.
-
-It sits on the session/transport **setup** path, not the motion apply path (apply runs in
-`LateUpdate`). The root cause is **still unproven**, and the absence of any frame hitch
-inside a multi-second main-thread section is itself unexplained — the probe calls
-`UpdateFrame` on the following frame from a `Stopwatch` baseline, so a genuine block of
-that length should have produced one. Both questions are open; neither is guessed at here.
+- **The perf section label misattributes cost.** `ComfyNetworkSense.cs:301` reports seven other
+  runners' time under the motion runner's name. That is an observability defect — it is what
+  sent the first pass of this analysis at the wrong component — and it is unfixed, because the
+  build is frozen for C9.
 
 ## What this does not prove
 
