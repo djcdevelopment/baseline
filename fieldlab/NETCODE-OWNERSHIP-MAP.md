@@ -16,6 +16,21 @@ implementation caveats at the end are flagged as confirm-at-implementation.
 `ReleaseNearbyZDOS` once for the server's own ref position and once for **each connected peer's** ref
 position. Clients never run this path. So the I2 pin is a **server-side (am4) patch at one seam**.
 
+> **CORRECTION — 2026-08-01.** The bolded headline above is **false as a general claim** and must
+> not be relied on when planning C10a. The paragraph under it is accurate: the *proximity-release*
+> funnel (`ReleaseZDOS` → `ReleaseNearbyZDOS`) really is server-only, and the I2 pin really is one
+> server-side seam. What does not follow is the generalisation to **all** ownership change.
+>
+> Vanilla mutates ZDO ownership from client-side RPC handlers, on whichever peer owns the object,
+> in at least five verified places: `Ship.cs:696` (crewed-boat handoff on a 2 s timer),
+> `Sadle.cs:349` (mount control grant), `Vagon.cs:141` (cart ownership request),
+> `ArmorStand.cs:347`, and `ItemStand.cs:385`. None of these passes through `ReleaseNearbyZDOS`.
+>
+> Downstream consequence to check before reuse: `OwnershipPinRunner` was designed against the
+> single-funnel thesis, so its auto-capture selector has never been evaluated against a funnel it
+> cannot see. Detail and the full source survey are in
+> [`docs/RESEARCH-vehicles-mounts-ownership-2026-08-01.md`](docs/RESEARCH-vehicles-mounts-ownership-2026-08-01.md).
+
 ## Ownership storage & API (ZDO type)
 
 - **Storage**: ownership lives in the `ZDOExtraData` side-table keyed by `m_uid`
