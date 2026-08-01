@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Custom Fields — Anatomy of a Piece: Fireplace</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page:      #f9f9f7;
+    --surface:   #fcfcfb;
+    --ink:       #0b0b0b;
+    --ink-2:     #52514e;
+    --muted:     #898781;
+    --grid:      #e1e0d9;
+    --axis:      #c3c2b7;
+    --border:    rgba(11,11,11,0.10);
+    --s1:        #2a78d6;  /* series 1: blue  */
+    --s2:        #eb6834;  /* series 2: orange */
+    --s1-soft:   #cde2fb;
+    --card:      #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page:    #0d0d0d;
+      --surface: #1a1a19;
+      --ink:     #ffffff;
+      --ink-2:   #c3c2b7;
+      --muted:   #898781;
+      --grid:    #2c2c2a;
+      --axis:    #383835;
+      --border:  rgba(255,255,255,0.10);
+      --s1:      #3987e5;
+      --s2:      #d95926;
+      --s1-soft: #184f95;
+      --card:    #222220;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page:    #0d0d0d;
+    --surface: #1a1a19;
+    --ink:     #ffffff;
+    --ink-2:   #c3c2b7;
+    --muted:   #898781;
+    --grid:    #2c2c2a;
+    --axis:    #383835;
+    --border:  rgba(255,255,255,0.10);
+    --s1:      #3987e5;
+    --s2:      #d95926;
+    --s1-soft: #184f95;
+    --card:    #222220;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--page); color: var(--ink);
+    font: 15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 32px 20px 64px; }
+  header h1 { font-size: 28px; margin: 0 0 4px; }
+  header .sub { color: var(--ink-2); }
+  .prov { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .level {
+    display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--s1); border: 1px solid var(--border);
+    border-radius: 999px; padding: 2px 10px; margin: 40px 0 6px; background: var(--surface);
+  }
+  h2 { font-size: 21px; margin: 6px 0 10px; }
+  h3 { font-size: 15px; margin: 22px 0 8px; }
+  p  { margin: 8px 0; color: var(--ink); }
+  p.soft { color: var(--ink-2); }
+  .fig {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 18px 18px 12px; margin: 14px 0;
+  }
+  .fig .cap { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+  .fig svg { display: block; width: 100%; height: auto; }
+  svg text { font: 13px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+  svg text.t2 { fill: var(--ink-2); font-size: 12px; }
+  svg text.tm { fill: var(--muted); font-size: 11.5px; }
+  svg text.code { font: 12.5px Consolas, monospace; }
+  svg .box   { fill: var(--card); stroke: var(--border); rx: 8; }
+  svg .chip  { fill: var(--surface); stroke: var(--s1); stroke-width: 1.2; rx: 7; }
+  svg .chip2 { fill: var(--surface); stroke: var(--s2); stroke-width: 1.2; rx: 7; }
+  svg .wire  { stroke: var(--axis); stroke-width: 1.5; fill: none; }
+  svg .wireA { stroke: var(--s1); stroke-width: 1.5; fill: none; }
+  svg .wireB { stroke: var(--s2); stroke-width: 1.5; fill: none; }
+  code, .mono { font-family: Consolas, monospace; font-size: 0.92em; }
+  code { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; }
+
+  /* stat tiles */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 14px 0; }
+  .tile { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .tile .n { font-size: 34px; font-weight: 650; line-height: 1.1; }
+  .tile .l { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+  .tile .d { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+  /* charts */
+  .chart { margin: 6px 0 2px; }
+  .legend { display: flex; gap: 18px; font-size: 12.5px; color: var(--ink-2); margin: 2px 0 12px; }
+  .legend .key { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  .row { display: grid; grid-template-columns: 108px 1fr 52px; align-items: center; gap: 10px; margin: 7px 0; }
+  .row .name { font-family: Consolas, monospace; font-size: 13px; text-align: right; color: var(--ink); }
+  .row .total { font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .track { position: relative; height: 18px; }
+  .seg {
+    position: absolute; top: 0; height: 18px; border-radius: 0 4px 4px 0; cursor: default;
+    transition: filter .1s;
+  }
+  .seg.first { border-radius: 4px; }
+  .seg:hover { filter: brightness(1.12); }
+  .gpair .track { height: 14px; }
+  .gpair .seg { height: 14px; }
+  .gpair .row { margin: 3px 0; }
+  .gpair .row.gap { margin-bottom: 12px; }
+  .axisline { border-top: 1px solid var(--axis); margin-top: 10px; position: relative; height: 18px; }
+  .axisline span { position: absolute; top: 3px; font-size: 11px; color: var(--muted); transform: translateX(-50%); font-variant-numeric: tabular-nums; }
+
+  /* tooltip */
+  #tip {
+    position: fixed; pointer-events: none; z-index: 10; display: none;
+    background: var(--ink); color: var(--page); font-size: 12.5px; line-height: 1.35;
+    border-radius: 6px; padding: 6px 9px; max-width: 260px; box-shadow: 0 2px 10px rgba(0,0,0,.25);
+  }
+  table.fields { border-collapse: collapse; width: 100%; font-size: 13.5px; margin: 10px 0; }
+  table.fields th { text-align: left; color: var(--muted); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--grid); padding: 4px 10px 4px 0; }
+  table.fields td { border-bottom: 1px solid var(--grid); padding: 5px 10px 5px 0; vertical-align: top; }
+  table.fields td.k { font-family: Consolas, monospace; white-space: nowrap; color: var(--ink); }
+  table.fields td.t { color: var(--muted); white-space: nowrap; }
+  footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--grid); font-size: 12.5px; color: var(--muted); }
+  footer a, a { color: var(--s1); }
+</style>
+</head>
+<body data-palette="#2a78d6,#eb6834">
+<div class="wrap">
+
+<header>
+  <h1>Custom fields: anatomy of a <span class="mono">Fireplace</span></h1>
+  <div class="sub">One campfire, three levels deep — from "what is a custom field" to the multiplayer contract underneath.</div>
+  <div class="prov">Every field name, type, and count on this page is extracted from <span class="mono">assembly_valheim.dll</span> (2026-08-01), not written from memory. Regenerate after game patches.</div>
+</header>
+
+<!-- ============================================================ L1 -->
+<div class="level">Level 1 — the concept</div>
+<h2>Everything is a prefab. Fields live on components.</h2>
+<p>Every object in Valheim — a wood wall, a goblin, a campfire — is a <b>prefab</b>. A prefab is a bag of <b>components</b>, and each component carries the <b>fields</b> that make the object behave the way it does. That's the whole trick behind custom fields:</p>
+<p class="soft"><b>A custom field belongs to a component, not to any one prefab.</b> If you know a field on <span class="mono">WearNTear</span>, you can apply it to <i>every</i> prefab that has a <span class="mono">WearNTear</span> — walls, doors, carts, beehives.</p>
+
+<div class="fig">
+  <svg viewBox="0 0 840 300" role="img" aria-label="Two prefabs sharing components; fields live on the components">
+    <!-- prefab boxes -->
+    <rect class="box" x="20"  y="30" width="180" height="110"/>
+    <text x="110" y="55" text-anchor="middle" font-weight="600">Wood wall</text>
+    <text class="tm" x="110" y="74" text-anchor="middle">prefab</text>
+    <rect class="box" x="20"  y="170" width="180" height="110"/>
+    <text x="110" y="195" text-anchor="middle" font-weight="600">Campfire</text>
+    <text class="tm" x="110" y="214" text-anchor="middle">prefab</text>
+
+    <!-- component chips -->
+    <rect class="chip"  x="330" y="20"  width="150" height="44"/>
+    <text class="code" x="405" y="47" text-anchor="middle">Piece</text>
+    <rect class="chip"  x="330" y="84"  width="150" height="44"/>
+    <text class="code" x="405" y="111" text-anchor="middle">WearNTear</text>
+    <rect class="chip2" x="330" y="216" width="150" height="44"/>
+    <text class="code" x="405" y="243" text-anchor="middle">Fireplace</text>
+    <text class="tm" x="405" y="290" text-anchor="middle">components (C# classes)</text>
+
+    <!-- wires: wood wall -> Piece, WearNTear -->
+    <path class="wire" d="M200 70 C 260 60, 280 46, 330 42"/>
+    <path class="wire" d="M200 95 C 260 100, 280 104, 330 106"/>
+    <!-- campfire -> Piece, WearNTear, Fireplace -->
+    <path class="wire" d="M200 200 C 270 170, 290 60, 330 50"/>
+    <path class="wire" d="M200 215 C 260 200, 290 120, 330 112"/>
+    <path class="wireB" d="M200 238 C 250 240, 280 238, 330 238"/>
+
+    <!-- fields card -->
+    <rect class="box" x="600" y="60" width="220" height="180"/>
+    <text class="t2" x="616" y="86" font-weight="600">fields on WearNTear</text>
+    <text class="code" x="616" y="112">m_health: float</text>
+    <text class="code" x="616" y="134">m_noSupportWear: bool</text>
+    <text class="code" x="616" y="156">m_burnable: bool</text>
+    <text class="code" x="616" y="178">m_broken: GameObject</text>
+    <text class="tm" x="616" y="208">…24 more</text>
+    <text class="tm" x="616" y="228">set one → affects every</text>
+    <text class="tm" x="616" y="244">prefab with WearNTear</text>
+    <path class="wireA" d="M480 106 C 540 106, 550 110, 600 118"/>
+  </svg>
+  <div class="cap">Both prefabs carry <span class="mono">Piece</span> and <span class="mono">WearNTear</span>; only the campfire adds <span class="mono">Fireplace</span>. The fields live on the components — that's why one field reaches many prefabs.</div>
+</div>
+
+<!-- ============================================================ L2 -->
+<div class="level">Level 2 — the breakdown</div>
+<h2>Where the fields actually live</h2>
+<p>Components inherit from base classes, and the fields you're looking for are often declared <i>up the chain</i>. The classic trap: the goblin's health and run speed are not on <span class="mono">Humanoid</span> — they're on <span class="mono">Character</span>, its base class.</p>
+
+<div class="fig">
+  <div class="legend">
+    <span class="key"><span class="swatch" style="background:var(--s1)"></span>Declared on the component</span>
+    <span class="key"><span class="swatch" style="background:var(--s2)"></span>Inherited from base classes</span>
+  </div>
+  <div class="chart" id="fieldsChart"></div>
+  <div class="axisline" id="fieldsAxis"></div>
+  <div class="cap">Tunable fields per component, split by declaring class. 83&nbsp;% of <span class="mono">Humanoid</span>'s fields — including <span class="mono">m_health</span> and <span class="mono">m_runSpeed</span> — come from <span class="mono">Character</span>. Hover any bar for the breakdown.</div>
+</div>
+
+<div class="fig">
+  <svg viewBox="0 0 840 235" role="img" aria-label="Humanoid inherits from Character; MonsterAI inherits from BaseAI">
+    <!-- Humanoid stack -->
+    <rect class="chip" x="60" y="25" width="300" height="62"/>
+    <text class="code" x="80" y="50" font-weight="600">Humanoid</text>
+    <text class="t2" x="80" y="72">15 fields — equipment, blocking, spawn gear</text>
+    <path class="wire" d="M210 87 L210 117"/>
+    <polygon points="210,87 205,97 215,97" fill="var(--axis)"/>
+    <rect class="chip2" x="60" y="117" width="300" height="80"/>
+    <text class="code" x="80" y="142" font-weight="600">Character</text>
+    <text class="t2" x="80" y="164">75 fields — m_health, m_runSpeed, m_faction,</text>
+    <text class="t2" x="80" y="182">swim, jump, damage modifiers…</text>
+
+    <!-- MonsterAI stack -->
+    <rect class="chip" x="480" y="25" width="300" height="62"/>
+    <text class="code" x="500" y="50" font-weight="600">MonsterAI</text>
+    <text class="t2" x="500" y="72">37 fields — aggression, fleeing, sleep, eating</text>
+    <path class="wire" d="M630 87 L630 117"/>
+    <polygon points="630,87 625,97 635,97" fill="var(--axis)"/>
+    <rect class="chip2" x="480" y="117" width="300" height="80"/>
+    <text class="code" x="500" y="142" font-weight="600">BaseAI</text>
+    <text class="t2" x="500" y="164">42 fields — m_viewRange, m_hearRange,</text>
+    <text class="t2" x="500" y="182">m_mistVision, pathing, flight…</text>
+
+    <text class="tm" x="420" y="225" text-anchor="middle">arrows read "inherits from" — look up the chain or you'll miss the field you want</text>
+  </svg>
+  <div class="cap">The guide's field dictionaries flatten this chain with a "declared by" column, so a beginner looking up Humanoid finds <span class="mono">m_health</span> anyway.</div>
+</div>
+
+<!-- ============================================================ worked example -->
+<div class="level">Worked example</div>
+<h2>The <span class="mono">Fireplace</span> component, by the numbers</h2>
+<p>A campfire looks simple. Extracted, it splits cleanly into <b>config</b> (fields you tune, never synced), <b>state</b> (the few values that are saved and networked), and <b>verbs</b> (how other players change that state).</p>
+
+<div class="tiles">
+  <div class="tile"><div class="n">33</div><div class="l">config fields</div><div class="d">m_startFuel, m_maxFuel, m_secPerFuel… tuned per prefab, never synced</div></div>
+  <div class="tile"><div class="n" style="color:var(--s1)">3</div><div class="l">synced ZDO fields</div><div class="d">fuel · state · lastTime — the entire saved, networked state of a fire</div></div>
+  <div class="tile"><div class="n" style="color:var(--s2)">4</div><div class="l">instance RPCs</div><div class="d">all registered in Awake — how non-owners request changes</div></div>
+</div>
+
+<h3>Who touches the synced state — reads vs writes per ZDO field</h3>
+<div class="fig">
+  <div class="legend">
+    <span class="key"><span class="swatch" style="background:var(--s1)"></span>Methods reading</span>
+    <span class="key"><span class="swatch" style="background:var(--s2)"></span>Methods writing</span>
+  </div>
+  <div class="chart gpair" id="zdoChart"></div>
+  <div class="axisline" id="zdoAxis"></div>
+  <div class="cap"><span class="mono">fuel</span> is read everywhere (hover text, interaction checks, burn logic) but written in only five places — three of which are RPC handlers. Few writers, many readers is the healthy shape for synced state.</div>
+</div>
+
+<h3>The three ZDO fields</h3>
+<table class="fields">
+  <tr><th>key</th><th>type</th><th>what it holds</th></tr>
+  <tr><td class="k">fuel</td><td class="t">float</td><td>Live fuel level. Seeded in <span class="mono">Awake</span> from the <span class="mono">m_startFuel</span> config field — config and state meet exactly once.</td></tr>
+  <tr><td class="k">state</td><td class="t">int</td><td>On/off toggle, flipped by <span class="mono">RPC_ToggleOn</span>.</td></tr>
+  <tr><td class="k">lastTime</td><td class="t">long</td><td>Last simulated tick — when the zone loads back in, the fire burns down the fuel that "should have" burned while nobody was there.</td></tr>
+</table>
+
+<!-- ============================================================ L3 -->
+<div class="level">Level 3 — the code underneath</div>
+<h2>Lifecycle and the ownership contract</h2>
+<p>Only the <b>owner</b> of an object's ZDO may write its state. Everyone else asks. That single rule is why the RPCs exist, and it's the seam a Harmony mod hooks into.</p>
+
+<div class="fig">
+  <svg viewBox="0 0 840 330" role="img" aria-label="Fireplace lifecycle: Awake registers RPCs; interactions branch on ownership">
+    <!-- lifecycle rail -->
+    <rect class="chip" x="20" y="30" width="170" height="52"/>
+    <text class="code" x="105" y="52" text-anchor="middle" font-weight="600">Awake()</text>
+    <text class="tm" x="105" y="70" text-anchor="middle">registers 4 RPCs, seeds fuel</text>
+    <path class="wire" d="M190 56 L250 56"/>
+    <polygon points="250,56 240,51 240,61" fill="var(--axis)"/>
+    <rect class="chip" x="250" y="30" width="120" height="52"/>
+    <text class="code" x="310" y="52" text-anchor="middle" font-weight="600">Start()</text>
+    <text class="tm" x="310" y="70" text-anchor="middle">no Update loop</text>
+    <path class="wire" d="M370 56 L430 56"/>
+    <polygon points="430,56 420,51 420,61" fill="var(--axis)"/>
+    <rect class="box" x="430" y="30" width="180" height="52"/>
+    <text x="520" y="52" text-anchor="middle">event-driven</text>
+    <text class="tm" x="520" y="70" text-anchor="middle">InvokeRepeating + RPCs</text>
+
+    <!-- harmony seam -->
+    <path class="wireB" d="M105 30 L105 12"/>
+    <text class="t2" x="120" y="16" fill="var(--s2)">Harmony seam: prefix/postfix here</text>
+
+    <!-- interaction flow -->
+    <text class="t2" x="20" y="130" font-weight="600">A player presses E on someone else's campfire:</text>
+    <rect class="box" x="20" y="150" width="150" height="46"/>
+    <text x="95" y="178" text-anchor="middle">Interact()</text>
+    <path class="wire" d="M170 173 L228 173"/>
+    <polygon points="228,173 218,168 218,178" fill="var(--axis)"/>
+    <!-- decision diamond -->
+    <polygon points="310,145 395,173 310,201 225,173" fill="var(--card)" stroke="var(--border)"/>
+    <text x="310" y="170" text-anchor="middle">am I the</text>
+    <text x="310" y="186" text-anchor="middle">ZDO owner?</text>
+    <!-- yes branch -->
+    <path class="wireA" d="M395 173 L470 173"/>
+    <polygon points="470,173 460,168 460,178" fill="var(--s1)"/>
+    <text class="tm" x="418" y="165">yes</text>
+    <rect class="chip" x="470" y="150" width="180" height="46"/>
+    <text class="code" x="560" y="178" text-anchor="middle">zdo.Set("fuel", …)</text>
+    <!-- no branch -->
+    <path class="wireB" d="M310 201 L310 245"/>
+    <polygon points="310,245 305,235 315,235" fill="var(--s2)"/>
+    <text class="tm" x="322" y="228">no</text>
+    <rect class="chip2" x="200" y="245" width="220" height="46"/>
+    <text class="code" x="310" y="273" text-anchor="middle">InvokeRPC("RPC_AddFuel")</text>
+    <path class="wireB" d="M420 268 C 500 268, 530 220, 552 200"/>
+    <text class="tm" x="536" y="240">owner runs the handler,</text>
+    <text class="tm" x="536" y="256">owner writes the ZDO</text>
+
+    <text class="tm" x="20" y="318">The RPC names (RPC_AddFuel, RPC_AddFuelAmount, RPC_SetFuelAmount, RPC_ToggleOn) are extracted, not guessed.</text>
+  </svg>
+  <div class="cap">Request-then-owner-writes is the whole multiplayer contract, visible in one component. Custom-field mods that write state directly on non-owners are the #1 source of "works solo, breaks in multiplayer."</div>
+</div>
+
+<footer>
+  Generated from the <a href="../../../tools/component-packets/README.md">component-packets</a> extract pipeline ·
+  field dictionaries for Piece, WearNTear, Humanoid(+Character), MonsterAI(+BaseAI) in
+  <span class="mono">tools/component-packets/samples/</span> ·
+  project orientation in <a href="STARTHERE.md">STARTHERE.md</a>.
+  Verified facts are extracted from the assembly; prose is human-edited. Ask for any component by name.
+</footer>
+</div>
+
+<div id="tip"></div>
+<script>
+(function () {
+  const tip = document.getElementById('tip');
+  function showTip(e, html) {
+    tip.innerHTML = html; tip.style.display = 'block';
+    const pad = 12, w = tip.offsetWidth, h = tip.offsetHeight;
+    let x = e.clientX + pad, y = e.clientY - h - pad;
+    if (x + w > innerWidth - 8) x = e.clientX - w - pad;
+    if (y < 8) y = e.clientY + pad;
+    tip.style.left = x + 'px'; tip.style.top = y + 'px';
+  }
+  function hideTip() { tip.style.display = 'none'; }
+
+  // --- chart 1: fields per component, declared vs inherited (stacked) ---
+  const fields = [
+    { name: 'Humanoid',  declared: 15, inherited: 75, base: 'Character' },
+    { name: 'MonsterAI', declared: 37, inherited: 42, base: 'BaseAI' },
+    { name: 'Piece',     declared: 51, inherited: 2,  base: 'StaticTarget' },
+    { name: 'WearNTear', declared: 28, inherited: 0,  base: null },
+  ];
+  const fMax = 90, GAP = 2;
+  const fc = document.getElementById('fieldsChart');
+  fields.forEach(d => {
+    const row = document.createElement('div'); row.className = 'row';
+    const total = d.declared + d.inherited;
+    const wD = d.declared / fMax * 100, wI = d.inherited / fMax * 100;
+    row.innerHTML = '<div class="name">' + d.name + '</div>' +
+      '<div class="track">' +
+        '<div class="seg first" data-tip="<b>' + d.name + '</b><br>' + d.declared + ' fields declared on ' + d.name + '" style="left:0;width:calc(' + wD + '% - ' + (d.inherited ? GAP : 0) + 'px);background:var(--s1)"></div>' +
+        (d.inherited ? '<div class="seg" data-tip="<b>' + d.name + '</b><br>' + d.inherited + ' fields inherited from ' + d.base + '" style="left:calc(' + wD + '% + 0px);width:calc(' + wI + '% - 0px);background:var(--s2)"></div>' : '') +
+      '</div>' +
+      '<div class="total">' + total + '</div>';
+    fc.appendChild(row);
+  });
+  [0, 30, 60, 90].forEach(v => {
+    const s = document.createElement('span'); s.textContent = v;
+    s.style.left = 'calc(118px + (100% - 170px) * ' + (v / fMax) + ')';
+    document.getElementById('fieldsAxis').appendChild(s);
+  });
+
+  // --- chart 2: ZDO reads/writes per key (grouped pairs) ---
+  const zdo = [
+    { key: 'fuel',     reads: 12, writes: 5, note: 'read by hover text, interaction, burn logic; written by Awake, UpdateFireplace and the RPC handlers' },
+    { key: 'state',    reads: 4,  writes: 1, note: 'written only by RPC_ToggleOn' },
+    { key: 'lastTime', reads: 1,  writes: 1, note: 'the catch-up-while-unloaded clock' },
+  ];
+  const zMax = 12;
+  const zc = document.getElementById('zdoChart');
+  zdo.forEach(d => {
+    [['reads', 'var(--s1)', d.reads + ' method' + (d.reads > 1 ? 's' : '') + ' read'],
+     ['writes', 'var(--s2)', d.writes + ' method' + (d.writes > 1 ? 's' : '') + ' write']].forEach(([kind, color, verb], i) => {
+      const row = document.createElement('div'); row.className = 'row' + (i === 1 ? ' gap' : '');
+      const v = d[kind], w = v / zMax * 100;
+      row.innerHTML = '<div class="name">' + (i === 0 ? d.key : '') + '</div>' +
+        '<div class="track"><div class="seg first" data-tip="<b>' + d.key + '</b> — ' + verb + ' it<br><span style=opacity:.8>' + d.note + '</span>" style="left:0;width:' + w + '%;background:' + color + '"></div></div>' +
+        '<div class="total">' + v + '</div>';
+      zc.appendChild(row);
+    });
+  });
+  [0, 4, 8, 12].forEach(v => {
+    const s = document.createElement('span'); s.textContent = v;
+    s.style.left = 'calc(118px + (100% - 170px) * ' + (v / zMax) + ')';
+    document.getElementById('zdoAxis').appendChild(s);
+  });
+
+  document.querySelectorAll('.seg').forEach(el => {
+    el.addEventListener('mousemove', e => showTip(e, el.dataset.tip));
+    el.addEventListener('mouseleave', hideTip);
+  });
+})();
+</script>
+</body>
+</html>
