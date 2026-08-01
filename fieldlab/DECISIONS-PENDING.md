@@ -1,5 +1,14 @@
 # Decisions pending — netcode-replacement program
 
+> **2026-08-01 provenance correction and resolution:** the old resolved gateway
+> note below is historical, not current workstation truth. The stale
+> `ComfyGatewayBoot` task was disabled without deletion and its retired
+> `C:\work\comfy` listener was stopped; active Baseline Dev/Lab launchers/config
+> use explicit `:8721`. See the canonical
+> [MCP endpoint provenance audit](../docs/audit/2026-08-01-mcp-endpoint-provenance-audit.md)
+> and root [decision queue](../DECISIONS-PENDING.md). Do not promote `:8720`
+> receipts or treat the retired task as Baseline evidence.
+
 The single place to look when batching decisions. Append open items as
 `- [ ] <date> — <decision> (source: <link>)`; check off with a link to where it was resolved.
 Bounded: touch only lines you created or resolved.

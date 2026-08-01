@@ -46,3 +46,5 @@ beats a taxonomy of ten empty ones.
 - [PD-2 — Security posture & the First Stranger gate](pd-2-security-posture-first-stranger-gate.md)
 - [PD-3 — Public community-data posture](pd-3-public-community-data.md)
 - [PD-4 — What counts as proof: evidence paths and falsifiable guards](pd-4-evidence-standard.md)
+- [PD-5 — The local Workbench is Baseline's ownership appliance](pd-5-local-workbench-ownership-appliance.md)
+- [PD-6 — The Baseline Dev MCP is a development/lab-only control plane](pd-6-development-mcp-lifecycle.md)

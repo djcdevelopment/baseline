@@ -1,5 +1,19 @@
 # Milestone plans — builder-agent briefs
 
+## Active product build strategy
+
+- [`workbench-v1-saga-strategy.md`](workbench-v1-saga-strategy.md) — the
+  decision-complete, single-session Saga/Epic/Feature/Story strategy for the
+  ownable Docker Workbench v1.
+- [`workbench-v1-implementation-receipt.md`](workbench-v1-implementation-receipt.md) —
+  execution evidence, implemented surfaces, and the remaining operator gate.
+- [`workbench-v1-verification-matrix.md`](workbench-v1-verification-matrix.md) —
+  requirement-by-requirement evidence status, including intentional pending gates.
+- [`workbench-v1-checkpoint-scope.md`](workbench-v1-checkpoint-scope.md) —
+  reviewed file scope and safe staging/roadmap handoff for the eventual checkpoint.
+- [`../docs/audit/2026-08-01-mcp-endpoint-provenance-audit.md`](../docs/audit/2026-08-01-mcp-endpoint-provenance-audit.md) —
+  the read-only endpoint/process/task/ledger audit that gates MCP-sensitive work.
+
 Each file is a self-contained brief a builder agent can execute without this
 conversation. Naming: `{milestone}-{n}-{feature}.md`. Milestones come from the
 strategy roadmap (M1 Trust & Rhythm → M6 Projection); unlocks compound downhill,

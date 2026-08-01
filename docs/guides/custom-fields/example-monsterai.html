@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Custom Fields — Anatomy of MonsterAI</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page:      #f9f9f7;
+    --surface:   #fcfcfb;
+    --ink:       #0b0b0b;
+    --ink-2:     #52514e;
+    --muted:     #898781;
+    --grid:      #e1e0d9;
+    --axis:      #c3c2b7;
+    --border:    rgba(11,11,11,0.10);
+    --s1:        #2a78d6;
+    --s2:        #eb6834;
+    --card:      #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page:    #0d0d0d;
+      --surface: #1a1a19;
+      --ink:     #ffffff;
+      --ink-2:   #c3c2b7;
+      --muted:   #898781;
+      --grid:    #2c2c2a;
+      --axis:    #383835;
+      --border:  rgba(255,255,255,0.10);
+      --s1:      #3987e5;
+      --s2:      #d95926;
+      --card:    #222220;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page:    #0d0d0d;
+    --surface: #1a1a19;
+    --ink:     #ffffff;
+    --ink-2:   #c3c2b7;
+    --muted:   #898781;
+    --grid:    #2c2c2a;
+    --axis:    #383835;
+    --border:  rgba(255,255,255,0.10);
+    --s1:      #3987e5;
+    --s2:      #d95926;
+    --card:    #222220;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--ink);
+         font: 15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 32px 20px 64px; }
+  header h1 { font-size: 28px; margin: 0 0 4px; }
+  header .sub { color: var(--ink-2); }
+  .prov { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .level { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--s1); border: 1px solid var(--border);
+    border-radius: 999px; padding: 2px 10px; margin: 40px 0 6px; background: var(--surface); }
+  h2 { font-size: 21px; margin: 6px 0 10px; }
+  h3 { font-size: 15px; margin: 22px 0 8px; }
+  p  { margin: 8px 0; }
+  p.soft { color: var(--ink-2); }
+  .fig { background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+         padding: 18px 18px 12px; margin: 14px 0; }
+  .fig .cap { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+  .fig svg { display: block; width: 100%; height: auto; }
+  svg text { font: 13px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+  svg text.t2 { fill: var(--ink-2); font-size: 12px; }
+  svg text.tm { fill: var(--muted); font-size: 11.5px; }
+  svg text.code { font: 11.5px Consolas, monospace; }
+  svg text.codeB { font: 12.5px Consolas, monospace; font-weight: 600; }
+  svg .state { fill: var(--card); stroke: var(--border); rx: 10; }
+  svg .stateZ { fill: var(--surface); stroke: var(--s1); stroke-width: 1.2; rx: 10; }
+  svg .wire  { stroke: var(--axis); stroke-width: 1.5; fill: none; }
+  svg .wireA { stroke: var(--s1); stroke-width: 1.5; fill: none; }
+  svg .wireB { stroke: var(--s2); stroke-width: 1.5; fill: none; }
+  code, .mono { font-family: Consolas, monospace; font-size: 0.92em; }
+  code { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 14px 0; }
+  .tile { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .tile .n { font-size: 34px; font-weight: 650; line-height: 1.1; }
+  .tile .l { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+  .tile .d { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .chart { margin: 6px 0 2px; }
+  .legend { display: flex; gap: 18px; font-size: 12.5px; color: var(--ink-2); margin: 2px 0 12px; }
+  .legend .key { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  .row { display: grid; grid-template-columns: 148px 1fr 52px; align-items: center; gap: 10px; margin: 7px 0; }
+  .row .name { font-size: 12.5px; text-align: right; }
+  .row .total { font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .track { position: relative; height: 18px; }
+  .seg { position: absolute; top: 0; height: 18px; border-radius: 0 4px 4px 0; cursor: default; transition: filter .1s; }
+  .seg.first { border-radius: 4px; }
+  .seg:hover { filter: brightness(1.12); }
+  .axisline { border-top: 1px solid var(--axis); margin-top: 10px; position: relative; height: 18px; }
+  .axisline span { position: absolute; top: 3px; font-size: 11px; color: var(--muted); transform: translateX(-50%); font-variant-numeric: tabular-nums; }
+  #tip { position: fixed; pointer-events: none; z-index: 10; display: none;
+    background: var(--ink); color: var(--page); font-size: 12.5px; line-height: 1.35;
+    border-radius: 6px; padding: 6px 9px; max-width: 280px; box-shadow: 0 2px 10px rgba(0,0,0,.25); }
+  table.fields { border-collapse: collapse; width: 100%; font-size: 13.5px; margin: 10px 0; }
+  table.fields th { text-align: left; color: var(--muted); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--grid); padding: 4px 10px 4px 0; }
+  table.fields td { border-bottom: 1px solid var(--grid); padding: 5px 10px 5px 0; vertical-align: top; }
+  table.fields td.k { font-family: Consolas, monospace; white-space: nowrap; }
+  table.fields td.t { color: var(--muted); white-space: nowrap; }
+  .rpcs { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .rpc { font-family: Consolas, monospace; font-size: 13px; background: var(--surface); border: 1px solid var(--s2); border-radius: 6px; padding: 4px 10px; }
+  footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--grid); font-size: 12.5px; color: var(--muted); }
+  footer a, a { color: var(--s1); }
+</style>
+</head>
+<body data-palette="#2a78d6,#eb6834">
+<div class="wrap">
+
+<header>
+  <h1>Custom fields: anatomy of <span class="mono">MonsterAI</span></h1>
+  <div class="sub">Mess with your enemies, vanilla-friendly — the behavior component and the fields on its transitions.</div>
+  <div class="prov">Field names, types, ZDO keys, and RPCs on this page are extracted from <span class="mono">assembly_valheim.dll</span> (2026-08-01). What each field <i>does</i> is the reviewed-description layer — behavioral effects are the part to playtest.</div>
+</header>
+
+<!-- ============================================================ L1 -->
+<div class="level">Level 1 — the concept</div>
+<h2>A creature is a state machine; the fields are knobs on its transitions</h2>
+<p>Every hostile creature carries <span class="mono">MonsterAI</span> (behavior) on top of <span class="mono">Humanoid</span>/<span class="mono">Character</span> (body and stats). The AI moves between a handful of states — sleeping, calm, alerted, engaged, fleeing — and nearly every one of its <b>79 fields</b> tunes either a state or the trigger that leaves it.</p>
+<p class="soft">That's why custom fields are the perfect prank toolkit: you're not scripting new behavior, you're re-tuning the transitions vanilla already has — deaf guards, cowardly trolls, greylings that never wake up.</p>
+
+<div class="fig">
+  <svg viewBox="0 0 840 335" role="img" aria-label="MonsterAI state machine with the fields that govern each transition">
+    <!-- states -->
+    <rect class="stateZ" x="20" y="40" width="150" height="54"/>
+    <text class="codeB" x="95" y="63" text-anchor="middle">Sleeping</text>
+    <text class="tm" x="95" y="81" text-anchor="middle">synced: sleeping</text>
+
+    <rect class="state" x="250" y="40" width="150" height="54"/>
+    <text x="325" y="63" text-anchor="middle" font-weight="600">Calm</text>
+    <text class="tm" x="325" y="81" text-anchor="middle">wander, idle sounds</text>
+
+    <rect class="state" x="490" y="40" width="150" height="54"/>
+    <text x="565" y="63" text-anchor="middle" font-weight="600">Alerted</text>
+    <text class="tm" x="565" y="81" text-anchor="middle">target acquired</text>
+
+    <rect class="state" x="690" y="180" width="130" height="54"/>
+    <text x="755" y="203" text-anchor="middle" font-weight="600">Engaged</text>
+    <text class="tm" x="755" y="221" text-anchor="middle">chase, circle, attack</text>
+
+    <rect class="state" x="250" y="235" width="150" height="54"/>
+    <text x="325" y="258" text-anchor="middle" font-weight="600">Fleeing</text>
+    <text class="tm" x="325" y="276" text-anchor="middle">run away, re-path</text>
+
+    <!-- transitions -->
+    <path class="wireA" d="M170 67 L250 67"/>
+    <polygon points="250,67 240,62 240,72" fill="var(--s1)"/>
+    <text class="code" x="210" y="30" text-anchor="middle">m_wakeupRange</text>
+    <text class="code" x="210" y="46" text-anchor="middle">m_noiseWakeup</text>
+    <text class="code" x="210" y="112" text-anchor="middle">RPC_Wakeup</text>
+
+    <path class="wire" d="M400 67 L490 67"/>
+    <polygon points="490,67 480,62 480,72" fill="var(--axis)"/>
+    <text class="code" x="445" y="30" text-anchor="middle">m_viewRange · m_viewAngle</text>
+    <text class="code" x="445" y="46" text-anchor="middle">m_hearRange · m_alertRange</text>
+
+    <path class="wire" d="M640 80 C 700 100, 730 140, 750 180"/>
+    <polygon points="750,180 740,172 748,167" fill="var(--axis)"/>
+    <text class="code" x="740" y="120" text-anchor="middle">m_maxChaseDistance</text>
+    <text class="code" x="740" y="136" text-anchor="middle">m_minAttackInterval</text>
+
+    <path class="wireB" d="M690 225 C 560 275, 470 268, 400 262"/>
+    <polygon points="400,262 410,257 410,267" fill="var(--s2)"/>
+    <text class="code" x="545" y="296" text-anchor="middle">m_fleeIfLowHealth · m_afraidOfFire</text>
+    <text class="code" x="545" y="312" text-anchor="middle">m_fleeIfHurtWhenTargetCantBeReached</text>
+
+    <path class="wire" d="M250 250 C 180 230, 160 160, 300 94"/>
+    <polygon points="300,94 292,101 297,107" fill="var(--axis)"/>
+    <text class="code" x="130" y="185" text-anchor="middle">m_fleeTimeSinceHurt</text>
+
+    <text class="tm" x="20" y="325">Blue chips = the sleep seam (synced + RPCs). Field names verified; wire them to states via the dictionary.</text>
+  </svg>
+  <div class="cap">The prank recipes are just transition edits: <code>m_hearRange = 0</code> is a deaf sentry, <code>m_fleeIfLowHealth = 1.0</code> is a total coward, <code>m_wakeupRange = 0.5</code> sleeps until you're standing on it. Vanilla logic, your numbers.</div>
+</div>
+
+<!-- ============================================================ L2 -->
+<div class="level">Level 2 — the breakdown</div>
+<h2>79 fields, and where they live</h2>
+<p>Same inheritance lesson as <a href="example-fireplace.html">Humanoid/Character</a>: <span class="mono">MonsterAI : BaseAI</span>, and more than half the surface — the senses, all pathing and flight, hazard avoidance — is declared on <span class="mono">BaseAI</span>, shared with <span class="mono">AnimalAI</span>. Tame-animal behavior and monster behavior are the same fields.</p>
+
+<div class="fig">
+  <div class="legend">
+    <span class="key"><span class="swatch" style="background:var(--s1)"></span>Declared on MonsterAI (37)</span>
+    <span class="key"><span class="swatch" style="background:var(--s2)"></span>Inherited from BaseAI (42)</span>
+  </div>
+  <div class="chart" id="clusterChart"></div>
+  <div class="axisline" id="clusterAxis"></div>
+  <div class="cap">The 79 fields clustered by job. Hover a segment for the field list. Sleep, eating, and the aggression package are MonsterAI's own; movement, flight, and every sense it has come from BaseAI.</div>
+</div>
+
+<table class="fields">
+  <tr><th>headline field</th><th>type</th><th>declared by</th><th>why pranksters touch it</th></tr>
+  <tr><td class="k">m_sleeping</td><td class="t">bool</td><td class="t">MonsterAI</td><td>Spawns the creature asleep. Pairs with wakeup range and noise.</td></tr>
+  <tr><td class="k">m_hearRange</td><td class="t">float</td><td class="t">BaseAI</td><td>How far it hears. Zero = sneak past anything.</td></tr>
+  <tr><td class="k">m_viewRange</td><td class="t">float</td><td class="t">BaseAI</td><td>How far it sees. Tiny = functionally blind.</td></tr>
+  <tr><td class="k">m_fleeIfLowHealth</td><td class="t">float</td><td class="t">MonsterAI</td><td>Health fraction that triggers flight. High = comedy coward.</td></tr>
+  <tr><td class="k">m_enableHuntPlayer</td><td class="t">bool</td><td class="t">MonsterAI</td><td>The relentless-stalker switch.</td></tr>
+  <tr><td class="k">m_afraidOfFire</td><td class="t">bool</td><td class="t">BaseAI</td><td>Campfire moat, now effective against anything.</td></tr>
+</table>
+
+<!-- ============================================================ worked example -->
+<div class="level">Worked example</div>
+<h2><span class="mono">MonsterAI</span> by the numbers</h2>
+
+<div class="tiles">
+  <div class="tile"><div class="n">37<span style="font-size:18px;color:var(--muted)"> +42</span></div><div class="l">config fields</div><div class="d">37 declared + 42 inherited from BaseAI — senses and movement live upstairs</div></div>
+  <div class="tile"><div class="n" style="color:var(--s1)">3</div><div class="l">synced ZDO fields</div><div class="d">sleeping · DespawnInDay · EventCreature — all booleans</div></div>
+  <div class="tile"><div class="n" style="color:var(--s2)">2</div><div class="l">instance RPCs</div><div class="d">RPC_Wakeup · RPC_Sleep — registered in Awake</div></div>
+</div>
+
+<h3>The three ZDO fields</h3>
+<table class="fields">
+  <tr><th>key</th><th>type</th><th>what it holds</th></tr>
+  <tr><td class="k">sleeping</td><td class="t">bool</td><td>The live sleep state — read in <span class="mono">Awake</span>, written by <span class="mono">Wakeup</span> and <span class="mono">Sleep</span>. This is why a sleeping troll stays asleep across save/load and for every player.</td></tr>
+  <tr><td class="k">DespawnInDay</td><td class="t">bool</td><td>Night-creature flag — despawn at dawn.</td></tr>
+  <tr><td class="k">EventCreature</td><td class="t">bool</td><td>Marks raid-event spawns so the event system can find its own.</td></tr>
+</table>
+<p class="soft">Spot the detail: <span class="mono">sleeping</span> is lowercase (a hashed <span class="mono">ZDOVars</span> key) while <span class="mono">DespawnInDay</span> and <span class="mono">EventCreature</span> are capitalized — legacy raw-string keys. The atlas indexes 21 such stragglers across the game; the naming convention is the tell.</p>
+
+<!-- ============================================================ L3 -->
+<div class="level">Level 3 — the code underneath</div>
+<h2>The sleep seam</h2>
+<p>Compare the RPC surface with <a href="example-wearntear.html">WearNTear's six</a>: <span class="mono">MonsterAI</span> registers exactly two, both in <span class="mono">Awake</span>, both about one thing:</p>
+<div class="rpcs">
+  <span class="rpc">RPC_Wakeup</span>
+  <span class="rpc">RPC_Sleep</span>
+</div>
+<p>Same ownership contract as everything else: whoever owns the creature's ZDO runs the AI and writes <span class="mono">sleeping</span>; any other client that needs to wake it sends the RPC. Most AI state (current target, path, timers) never syncs at all — it lives in the owner's memory and is recomputed on ownership transfer. Only the three booleans above are durable.</p>
+<p class="soft">Harmony seam: <span class="mono">Awake</span>, as always — that's where both RPCs register and the synced flags are first read. Lifecycle is <span class="mono">Awake</span> → <span class="mono">Start</span>; the per-frame work rides <span class="mono">BaseAI</span>'s update path rather than a <span class="mono">MonsterAI</span> <span class="mono">Update</span> method.</p>
+
+<footer>
+  Generated from the <a href="../../../tools/component-packets/README.md">component-packets</a> extract pipeline ·
+  full field dictionary: <span class="mono">tools/component-packets/samples/monsterai-field-dictionary.md</span> ·
+  companion lessons: <a href="example-fireplace.html">Fireplace</a>, <a href="example-wearntear.html">WearNTear</a> ·
+  <a href="index.html">guide home</a> · <a href="atlas-explorer.html">atlas explorer</a>.
+</footer>
+</div>
+
+<div id="tip"></div>
+<script>
+(function () {
+  const tip = document.getElementById('tip');
+  function showTip(e, html) {
+    tip.innerHTML = html; tip.style.display = 'block';
+    const pad = 12, w = tip.offsetWidth, h = tip.offsetHeight;
+    let x = e.clientX + pad, y = e.clientY - h - pad;
+    if (x + w > innerWidth - 8) x = e.clientX - w - pad;
+    if (y < 8) y = e.clientY + pad;
+    tip.style.left = x + 'px'; tip.style.top = y + 'px';
+  }
+  function hideTip() { tip.style.display = 'none'; }
+
+  // 79 fields clustered by job, split declared (MonsterAI) vs inherited (BaseAI)
+  const clusters = [
+    { name: 'aggression & chase', m: 13, b: 3,
+      mf: 'm_alertRange, m_enableHuntPlayer, m_attackPlayerObjects, m_privateAreaTriggerTreshold, m_interceptTimeMin/Max, m_maxChaseDistance, m_minAttackInterval, m_circleTarget*, m_circulateWhileCharging*',
+      bf: 'm_aggravatable, m_passiveAggresive, m_onBecameAggravated' },
+    { name: 'movement & flight', m: 1, b: 19,
+      mf: 'm_avoidLand',
+      bf: 'm_pathAgentType, m_smoothMovement, m_serpentMovement*, m_jumpInterval, m_randomMove*, m_randomFly, m_chanceToTakeoff/Land, m_flyAltitude*, …' },
+    { name: 'fear & avoidance', m: 9, b: 9,
+      mf: 'm_fleeIfLowHealth, m_fleeIfNotAlerted, m_fleeIfHurtWhenTargetCantBeReached, m_fleeUnreachable*, m_fleeTimeSinceHurt, m_fleeInLava, m_fleePheromone*',
+      bf: 'm_fleeRange, m_fleeAngle, m_fleeInterval, m_avoidFire, m_afraidOfFire, m_avoidWater, m_avoidLava, m_skipLavaTargets, m_avoidLavaFlee' },
+    { name: 'sleep & wake', m: 9, b: 0,
+      mf: 'm_sleeping, m_wakeupRange, m_noiseWakeup, m_maxNoiseWakeupRange, m_wakeUpDelayMin/Max, m_fallAsleepDistance, m_wakeupEffects, m_sleepEffects', bf: '' },
+    { name: 'sounds & messages', m: 0, b: 7,
+      mf: '', bf: 'm_idleSound, m_idleSoundInterval, m_idleSoundChance, m_alertedEffects, m_spawnMessage, m_deathMessage, m_alertedMessage' },
+    { name: 'eating', m: 5, b: 0,
+      mf: 'm_consumeItems, m_consumeRange, m_consumeSearchRange, m_consumeSearchInterval, m_onConsumedItem', bf: '' },
+    { name: 'senses', m: 0, b: 4,
+      mf: '', bf: 'm_viewRange, m_viewAngle, m_hearRange, m_mistVision' },
+  ];
+  const cMax = 20, GAP = 2;
+  const cc = document.getElementById('clusterChart');
+  clusters.forEach(d => {
+    const row = document.createElement('div'); row.className = 'row';
+    const total = d.m + d.b, wM = d.m / cMax * 100, wB = d.b / cMax * 100;
+    let bars = '';
+    if (d.m) bars += '<div class="seg first" data-tip="<b>' + d.name + '</b> — ' + d.m + ' on MonsterAI<br><span style=opacity:.85>' + d.mf + '</span>" style="left:0;width:calc(' + wM + '% - ' + (d.b ? GAP : 0) + 'px);background:var(--s1)"></div>';
+    if (d.b) bars += '<div class="seg' + (d.m ? '' : ' first') + '" data-tip="<b>' + d.name + '</b> — ' + d.b + ' inherited from BaseAI<br><span style=opacity:.85>' + d.bf + '</span>" style="left:' + wM + '%;width:' + wB + '%;background:var(--s2)"></div>';
+    row.innerHTML = '<div class="name">' + d.name + '</div><div class="track">' + bars + '</div><div class="total">' + total + '</div>';
+    cc.appendChild(row);
+  });
+  [0, 5, 10, 15, 20].forEach(v => {
+    const s = document.createElement('span'); s.textContent = v;
+    s.style.left = 'calc(158px + (100% - 210px) * ' + (v / cMax) + ')';
+    document.getElementById('clusterAxis').appendChild(s);
+  });
+
+  document.querySelectorAll('.seg').forEach(el => {
+    el.addEventListener('mousemove', e => showTip(e, el.dataset.tip));
+    el.addEventListener('mouseleave', hideTip);
+  });
+})();
+</script>
+</body>
+</html>

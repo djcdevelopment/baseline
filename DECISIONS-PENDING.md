@@ -10,9 +10,9 @@ policy already determines the answer, it is not an open decision.
 
 ## Open
 
-_None._
-
 ## Resolved
+
+- [x] 2026-08-01 — **Legacy ComfyGatewayBoot disposition and Baseline Dev MCP port** — resolved by retiring the stale logon task and reserving explicit Dev/Lab port `8721`; see [PD-6](docs/decisions/pd-6-development-mcp-lifecycle.md).
 
 - [x] 2026-07-31 — **Lumberjacks RPC Admission Gaps** — resolved per-RPC by the
   [C8 breadth audit](fieldlab/C8-BREADTH-AUDIT-2026-07-31.md): the true surface is

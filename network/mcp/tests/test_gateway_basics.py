@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from comfy_gateway.kernel.auth import AuthRegistry
+from comfy_gateway.kernel.context import ComfyContext
+from comfy_gateway.kernel.gateway import gateway_identity
 from comfy_gateway.kernel.ledger import Ledger, new_event
 from comfy_gateway.toolsurface import valheim
 
@@ -36,6 +40,44 @@ class GatewayBasicsTest(unittest.TestCase):
             caller = AuthRegistry(callers_path=callers).resolve("key")
             self.assertIsNotNone(caller)
             self.assertEqual("tester", caller.id)
+
+    def test_identity_attestation_contains_runtime_boundary(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            callers = root / "callers.json"
+            callers.write_text(
+                json.dumps({"key": {"id": "tester", "runner_class": "human", "node": "omen"}}),
+                encoding="utf-8",
+            )
+            ledger = Ledger(root / "ledger")
+            auth = AuthRegistry(callers_path=callers, ledger=ledger)
+            context = ComfyContext(repo_root=root, ledger=ledger)
+            with patch.dict(
+                os.environ,
+                {
+                    "COMFY_MCP_ROOT": str(root / "network" / "mcp"),
+                    "COMFY_MCP_PROFILE": "Dev",
+                    "COMFY_MCP_HOST_PORT": "8721",
+                    "COMFY_MCP_SOURCE_REVISION": "abc123",
+                    "COMFY_MCP_SOURCE_DIRTY": "false",
+                },
+                clear=False,
+            ):
+                identity = gateway_identity(
+                    context,
+                    auth,
+                    ["comfy_gateway.kernel.gateway#builtin", "comfy_gateway.toolsurface.workbench"],
+                    host="0.0.0.0",
+                    port=8720,
+                )
+
+            self.assertEqual("baseline.mcp.identity.v1", identity["schema"])
+            self.assertEqual("baseline", identity["project"])
+            self.assertEqual("Dev", identity["profile"])
+            self.assertEqual(8721, identity["published_port"])
+            self.assertEqual("abc123", identity["source_revision"])
+            self.assertIn("comfy_gateway.toolsurface.workbench", identity["providers"])
+            self.assertEqual(str(callers), identity["caller_registry"])
 
     def test_valheim_report_from_temp_jsonl(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

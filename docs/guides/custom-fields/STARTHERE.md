@@ -38,7 +38,10 @@ not on `Humanoid`. Dictionaries therefore flatten inheritance with a
 |---|---|
 | [`tools/component-packets/`](../../../tools/component-packets/README.md) | The pipeline: dll → extract packet (JSON) → LLM-drafted, human-reviewed annotations → markdown field dictionary. Three scripted steps, ~1 min per component. |
 | `tools/component-packets/samples/` | Worked packets + dictionaries: `Piece`, `WearNTear`, `Humanoid`(+`Character`), `MonsterAI`(+`BaseAI`), `Fireplace` (packet only). 250 annotated fields. |
-| [`example-fireplace.html`](example-fireplace.html) (this directory) | Sample guide webpage: the L1→L3 layered approach worked end-to-end on one component, with SVG concept diagrams and charts. The template for "what a published lesson looks like." |
+| [`index.html`](index.html) (this directory) | The guide front door: lessons + reference, GitHub-Pages-ready. |
+| [`example-fireplace.html`](example-fireplace.html), [`example-wearntear.html`](example-wearntear.html), [`example-monsterai.html`](example-monsterai.html) | The lesson pages — L1→L3 layered, SVG diagrams + hover charts, one component each. The template for new lessons. |
+| [`atlas-explorer.html`](atlas-explorer.html) (+ `build_explorer.py`) | Interactive search over the full atlas — 336 components, 194 ZDO keys, 119 RPCs, cross-linked. Rebuild after re-sweeping the atlas. |
+| `tools/component-packets/diff_atlas.py` | Patch-day changelog: diff the committed atlas against a fresh sweep; the output is the guide's update worklist. |
 | `fieldlab/NETCODE-MAP.md`, `fieldlab/REMOTE-PLAYER-LIFECYCLE-MAP.md` | The evidence discipline this guide inherits: every claim cites the decompiled source; regenerate, don't re-research. |
 
 ## The confidence contract (non-negotiable)

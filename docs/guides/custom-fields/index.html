@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Valheim Custom Fields — the guide</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --border:rgba(11,11,11,0.10); --s1:#2a78d6; --s2:#eb6834;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink-2:#c3c2b7; --muted:#898781;
+      --grid:#2c2c2a; --border:rgba(255,255,255,0.10); --s1:#3987e5; --s2:#d95926;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink-2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --border:rgba(255,255,255,0.10); --s1:#3987e5; --s2:#d95926;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--page); color:var(--ink);
+         font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  .wrap { max-width:880px; margin:0 auto; padding:40px 20px 64px; }
+  h1 { font-size:30px; margin:0 0 6px; }
+  .sub { color:var(--ink-2); font-size:16px; max-width:640px; }
+  .prov { font-size:12px; color:var(--muted); margin-top:8px; }
+  h2 { font-size:14px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted);
+       margin:36px 0 12px; font-weight:600; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px; }
+  a.card { display:block; background:var(--surface); border:1px solid var(--border);
+           border-radius:12px; padding:18px 20px; text-decoration:none; color:var(--ink);
+           transition:border-color .12s; }
+  a.card:hover { border-color:var(--s1); }
+  .card .t { font-size:17px; font-weight:650; margin-bottom:4px; }
+  .card .t .mono { color:var(--s2); }
+  .card .d { font-size:13.5px; color:var(--ink-2); }
+  .card .tag { display:inline-block; font-size:11px; font-weight:600; letter-spacing:.06em;
+               text-transform:uppercase; color:var(--s1); margin-bottom:8px; }
+  .mono { font-family:Consolas,monospace; font-size:.93em; }
+  .idea { background:var(--surface); border:1px solid var(--border); border-radius:12px;
+          padding:16px 20px; margin:12px 0; font-size:14.5px; color:var(--ink-2); }
+  .idea b { color:var(--ink); }
+  footer { margin-top:44px; padding-top:16px; border-top:1px solid var(--grid);
+           font-size:12.5px; color:var(--muted); }
+  footer a { color:var(--s1); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Valheim custom fields</h1>
+  <div class="sub">A community guide built on one idea: <b>a custom field belongs to a component, not a prefab.</b> Learn a component's fields once and you can apply them to every prefab that carries it.</div>
+  <div class="prov">Every field name, type, and count in this guide is extracted from <span class="mono">assembly_valheim.dll</span> — regenerated after game patches, never re-researched.</div>
+
+  <div class="idea">The guide is layered: <b>Level 1</b> teaches the prefab→component→field concept with no C# at all,
+    <b>Level 2</b> gives per-component field dictionaries, and <b>Level 3</b> opens the machinery —
+    synced ZDO state, instance RPCs, the ownership contract, and where Harmony hooks land.</div>
+
+  <h2>Lessons</h2>
+  <div class="cards">
+    <a class="card" href="example-fireplace.html">
+      <span class="tag">Lesson</span>
+      <div class="t">Anatomy of a <span class="mono">Fireplace</span></div>
+      <div class="d">The full tour: config vs synced state, three ZDO fields, four RPCs, and the request-then-owner-writes contract in one campfire.</div>
+    </a>
+    <a class="card" href="example-wearntear.html">
+      <span class="tag">Lesson</span>
+      <div class="t">Anatomy of <span class="mono">WearNTear</span></div>
+      <div class="d">Durability for everything that breaks — and the invisible-wall trick explained as a three-field state machine.</div>
+    </a>
+    <a class="card" href="example-monsterai.html">
+      <span class="tag">Lesson</span>
+      <div class="t">Anatomy of <span class="mono">MonsterAI</span></div>
+      <div class="d">Mess with your enemies, vanilla-friendly: sleep and wake, senses, fear, and the fields on the transitions.</div>
+    </a>
+  </div>
+
+  <h2>Reference</h2>
+  <div class="cards">
+    <a class="card" href="atlas-explorer.html">
+      <span class="tag">Interactive</span>
+      <div class="t">Component atlas explorer</div>
+      <div class="d">Search all 336 components, 3,000+ fields, 194 ZDO keys, and 119 RPCs — extracted from the assembly, cross-linked.</div>
+    </a>
+    <a class="card" href="../../../tools/component-packets/README.md">
+      <span class="tag">Tooling</span>
+      <div class="t">The extract pipeline</div>
+      <div class="d">How the packets, dictionaries, and atlas are generated — and how to rebuild everything after a game patch.</div>
+    </a>
+    <a class="card" href="STARTHERE.md">
+      <span class="tag">Contributors</span>
+      <div class="t">START HERE</div>
+      <div class="d">Project orientation: the pedagogy, the confidence contract, what's pending, and how to add a component.</div>
+    </a>
+  </div>
+
+  <footer>
+    Built with <a href="https://github.com/djcdevelopment/baseline">Baseline</a>'s component-packets tooling.
+    Verified facts are extracted; prose is human-edited. Descriptions marked <span class="mono">(?)</span> are pending review.
+  </footer>
+</div>
+</body>
+</html>

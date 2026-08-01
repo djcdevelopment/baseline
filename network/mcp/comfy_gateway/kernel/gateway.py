@@ -4,7 +4,7 @@ Runs a local FastMCP streamable-http server for Valheim mod development:
 
   python -m comfy_gateway.kernel.gateway --providers comfy_gateway.toolsurface.valheim,comfy_gateway.toolsurface.inference
 
-Default endpoint: http://127.0.0.1:8720/mcp
+Legacy direct-launch endpoint: http://127.0.0.1:8720/mcp
 Auth header: X-Comfy-Key
 """
 
@@ -15,6 +15,7 @@ import importlib
 import inspect
 import json
 import logging
+import os
 import time
 import typing
 from pathlib import Path
@@ -25,7 +26,7 @@ from starlette.responses import JSONResponse
 
 from comfy_gateway.kernel.auth import HEADER_NAME, AuthRegistry
 from comfy_gateway.kernel.context import ComfyContext
-from comfy_gateway.kernel.ledger import REPO_ROOT, Ledger, new_event
+from comfy_gateway.kernel.ledger import REPO_ROOT, Ledger, comfy_mcp_root, new_event
 
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8720
@@ -126,19 +127,68 @@ def make_wrapper(
     return wrapper
 
 
-def builtin_get_tools(context: ComfyContext, mounted: list[str]) -> list[Callable]:
+def builtin_get_tools(
+    context: ComfyContext,
+    mounted: list[str],
+    auth: AuthRegistry,
+    *,
+    host: str,
+    port: int,
+) -> list[Callable]:
     def comfy_gateway_status() -> dict[str, Any]:
         """Return gateway identity, mounted providers, ledger path, and caller."""
+        identity = gateway_identity(context, auth, mounted, host=host, port=port)
         return {
-            "kernel": "comfy_gateway",
-            "repo_root": str(context.repo_root),
-            "providers": list(mounted),
-            "ledger_dir": str(context.ledger.dir),
+            **identity,
             "event_count": len(context.ledger.query(limit=1000000)),
             "caller": context.caller.as_dict() if context.caller else None,
         }
 
     return [comfy_gateway_status]
+
+
+def gateway_identity(
+    context: ComfyContext,
+    auth: AuthRegistry,
+    mounted: list[str],
+    *,
+    host: str,
+    port: int,
+) -> dict[str, Any]:
+    """Return non-secret runtime identity for the Workbench preflight gate.
+
+    A loopback URL and a successful health response are not project identity. The
+    launcher/Compose profile supplies the optional source and image metadata;
+    ``source_revision`` is the Git commit SHA when available. Direct legacy
+    launches report ``None``/``unknown`` instead of inventing provenance.
+    """
+
+    def env_value(name: str) -> Optional[str]:
+        value = os.environ.get(name)
+        if value is None or value.strip() == "" or value.strip().lower() == "unknown":
+            return None
+        return value.strip()
+
+    published_port = env_value("COMFY_MCP_HOST_PORT")
+    return {
+        "schema": "baseline.mcp.identity.v1",
+        "project": "baseline",
+        "kernel": "comfy_gateway",
+        "source_root": str(context.repo_root),
+        "mcp_root": str(comfy_mcp_root()),
+        "source_revision": env_value("COMFY_MCP_SOURCE_REVISION"),
+        "source_branch": env_value("COMFY_MCP_SOURCE_BRANCH"),
+        "source_dirty": env_value("COMFY_MCP_SOURCE_DIRTY"),
+        "image": env_value("COMFY_MCP_IMAGE"),
+        "profile": env_value("COMFY_MCP_PROFILE"),
+        "listen_host": host,
+        "listen_port": port,
+        "published_host": "127.0.0.1",
+        "published_port": int(published_port) if published_port and published_port.isdigit() else None,
+        "providers": list(mounted),
+        "caller_registry": str(auth.callers_path),
+        "ledger_dir": str(context.ledger.dir),
+    }
 
 
 def load_providers(spec: str) -> dict[str, list[Callable]]:
@@ -170,6 +220,15 @@ def build_server(
     @mcp.custom_route("/healthz", methods=["GET"])
     async def healthz(request):  # noqa: ANN001
         return JSONResponse({"ok": True, "gateway": "comfy-gateway"})
+
+    @mcp.custom_route("/identity", methods=["GET"])
+    async def identity(request):  # noqa: ANN001
+        # Identity includes local filesystem/provenance fields, so keep it behind
+        # the same caller key used by the MCP surface. This remains read-only.
+        caller = auth.resolve(request.headers.get(HEADER_NAME))
+        if caller is None:
+            return JSONResponse({"ok": False, "error": "unauthorized"}, status_code=401)
+        return JSONResponse(gateway_identity(context, auth, mounted, host=host, port=port))
 
     @mcp.custom_route("/valheim/report", methods=["GET"])
     async def valheim_report(request):  # noqa: ANN001
@@ -224,7 +283,13 @@ def build_server(
 
     providers = load_providers(providers_spec)
     mounted = [BUILTIN_PROVIDER, *providers]
-    providers[BUILTIN_PROVIDER] = builtin_get_tools(context, mounted)
+    providers[BUILTIN_PROVIDER] = builtin_get_tools(
+        context,
+        mounted,
+        auth,
+        host=host,
+        port=port,
+    )
 
     registered: set[str] = set()
     for module_name, tools in providers.items():

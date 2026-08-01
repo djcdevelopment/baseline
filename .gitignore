@@ -102,3 +102,4 @@ workbench-exports/
 !infra/gcp/p7/scripts/lib/*.dll
 # Local Docker override that grants the Companion write access to a specific Valheim install.
 Lumberjacks/tools/companion/docker-compose.valheim.yml
+Lumberjacks/tools/companion/runner-token

@@ -54,6 +54,12 @@ package, page, zip, doc, or walkthrough intended for the community.** Concretely
   mod-dev tool and stays in the toolkit; don't confuse the two. It ships in Baseline's
   own Docker image alongside the rest of the build tooling. That is where project MCP
   surface belongs: **in the product, containerized** — never bolted onto HEARTH.
+- A loopback port is not a project identity. Baseline Dev MCP must self-attest its
+  source root, revision/hash, image, profile, provider set, caller registry, ledger,
+  and selected port; a healthy listener from another checkout is a provenance failure.
+  Baseline Dev/Lab uses the explicit project-owned port `8721`. The legacy
+  `ComfyGatewayBoot` task is disabled without deletion and its retired `:8720`
+  listener is stopped; rollback requires an explicit operator action.
 - **The rule runs in BOTH directions, and the inbound one is the easier to miss.**
   Everything above forbids HEARTH leaking *out* into Baseline. The reverse is equally
   forbidden: **Baseline must not report into, register with, or depend on HEARTH as a
@@ -75,3 +81,10 @@ hired him to solve — almost always after they were already in production. The 
 was deliberate practice at scale, not naivety. That's why identity, telemetry, and
 testing verticals are the first-class citizens here: they are the professional-grade
 substrate hobbyist communities never get — and they're the thing Baseline demonstrates.
+
+## Related product decisions and operating model
+
+- [PD-5 — The local Workbench is Baseline's ownership appliance](decisions/pd-5-local-workbench-ownership-appliance.md)
+- [PD-6 — The Baseline Dev MCP is a development/lab-only control plane](decisions/pd-6-development-mcp-lifecycle.md)
+- [Baseline Workbench operating model](workbench-operating-model.md)
+- [2026-08-01 product and development-loop review](audit/2026-08-01-workbench-product-review.md)

@@ -9,6 +9,17 @@ from git history and from `C:\work\comfy`.
 
 What remains is the cross-boundary architecture and dataset notes:
 
+- **Product boundary:** [`baseline-vision-and-boundary.md`](baseline-vision-and-boundary.md).
+- **Workbench operating model:** [`workbench-operating-model.md`](workbench-operating-model.md),
+  implementing [PD-5 and PD-6](decisions/README.md).
+- **Dated product review:**
+  [`audit/2026-08-01-workbench-product-review.md`](audit/2026-08-01-workbench-product-review.md),
+  preserving the conversation, historical lineage, classifications, and source audit
+  behind the Workbench decisions.
+- **MCP endpoint provenance:**
+  [`audit/2026-08-01-mcp-endpoint-provenance-audit.md`](audit/2026-08-01-mcp-endpoint-provenance-audit.md),
+  recording the retired `:8720` task collision, split ledgers, and the identity-first
+  replan.
 - **Built quest slice:** [`quest-vertical-slice-architecture.md`](quest-vertical-slice-architecture.md).
   Note that it describes source under `handoffs/comfy-control-surface/`, which
   the prune removed; read it as a record of how that slice worked, not as a map
@@ -19,11 +30,14 @@ What remains is the cross-boundary architecture and dataset notes:
 
 ## What belongs here
 
-Explanations and decisions that cross implementation boundaries. Runnable code,
+Explanations and decisions that cross implementation boundaries. Project-level
+governance/product/posture decisions live in [`decisions/`](decisions/README.md).
+Runnable code,
 operator commands, raw evidence and generated data belong in the area they serve
 — `infra/`, `network/`, `Lumberjacks/`, or `fieldlab/`.
 
-Durable decision records for the live systems do **not** live here. They live
-with their system: ADRs under [`../fieldlab/docs/adr/`](../fieldlab/docs/adr/),
-and release manifests, receipts and the append-only journal under
-[`../Lumberjacks/docs/roadmap/`](../Lumberjacks/docs/roadmap/README.md).
+Technical netcode decisions stay with their system as ADRs under
+[`../fieldlab/docs/adr/`](../fieldlab/docs/adr/). Release manifests, receipts, and
+the append-only implementation journal stay under
+[`../Lumberjacks/docs/roadmap/`](../Lumberjacks/docs/roadmap/README.md). The separation
+keeps one decision in one canonical home while allowing plans and runbooks to link it.

@@ -2,11 +2,26 @@
 
 Status: implementation slice for the local alpha/dev/admin/test hub.
 
+> **Product-boundary update, 2026-08-01:** this implementation slice is governed by
+> [PD-5](../docs/decisions/pd-5-local-workbench-ownership-appliance.md),
+> [PD-6](../docs/decisions/pd-6-development-mcp-lifecycle.md), and the
+> [Workbench operating model](../docs/workbench-operating-model.md). In particular,
+> the local Workbench is a resettable ownership appliance; the Dev MCP is present only
+> in development/lab profiles; and automated OMEN/i5 rendered-client testing is a
+> first-class fidelity lane alongside, not underneath, headless qualification.
+
 ## Boundary model
 
 The local Docker Companion at `127.0.0.1:8080` is the operator workbench. It is where the
 operator sees local readiness, release identity, live trace, milestone position, physical-client
 controls, headless-lab entry points, and retained evidence.
+
+The Dev MCP is not identified by a loopback port alone. Before the Workbench
+accepts an MCP result, it must attest the Baseline source root, revision/hash,
+image, profile, provider set, caller registry, ledger directory, bound port, and
+parent launcher/task. The legacy `ComfyGatewayBoot` task currently owns a
+retired `C:\work\comfy` gateway on `:8720`; the Baseline migration uses an
+explicit project port while that task remains outside this plan's authority.
 
 The public Gateway remains the remote edge:
 
@@ -85,11 +100,14 @@ not as permission to infer what happened.
 
 ## Next integrations, in order
 
-1. Keep the workbench catalog aligned with the CSV/roadmap sources through a small generator or
+1. Run the authenticated `/identity` preflight on the explicit Baseline Dev/Lab port; keep the
+   historical default-port MCP evidence quarantined until the minimum health/log/handshake set
+   is rerun, and migrate the mod's legacy `:8720` helper calls out of normal gameplay.
+2. Keep the workbench catalog aligned with the CSV/roadmap sources through a small generator or
    explicit review when milestone truth changes.
-2. Add a local “run card” that links a selected feature lane to one synthetic, one physical, or
+3. Add a local “run card” that links a selected feature lane to one synthetic, one physical, or
    one headless command without becoming a generic workflow engine.
-3. Add a compact append-only local event index for snapshots, captures, and operator annotations.
-4. Add optional host/SSH health tiles for Docker, GPU client, i5, and headless Compose lanes.
-5. Only then revisit Steam callback-to-localhost pairing and delegated identity; keep the public
+4. Add a compact append-only local event index for snapshots, captures, and operator annotations.
+5. Add optional host/SSH health tiles for Docker, GPU client, i5, and headless Compose lanes.
+6. Only then revisit Steam callback-to-localhost pairing and delegated identity; keep the public
    Gateway as the identity root until the contracts are clearer.
