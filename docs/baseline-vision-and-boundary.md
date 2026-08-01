@@ -51,7 +51,20 @@ package, page, zip, doc, or walkthrough intended for the community.** Concretely
   deterministic/LLM-free with optional prompt-out files: the operator's fleet is an
   *accelerant*, never a *requirement*.
 - The `network/mcp` Comfy gateway is a different thing — it's Baseline's own localhost
-  mod-dev tool and stays in the toolkit; don't confuse the two.
+  mod-dev tool and stays in the toolkit; don't confuse the two. It ships in Baseline's
+  own Docker image alongside the rest of the build tooling. That is where project MCP
+  surface belongs: **in the product, containerized** — never bolted onto HEARTH.
+- **The rule runs in BOTH directions, and the inbound one is the easier to miss.**
+  Everything above forbids HEARTH leaking *out* into Baseline. The reverse is equally
+  forbidden: **Baseline must not report into, register with, or depend on HEARTH as a
+  destination** — no Baseline runtime telemetry, runner timings, job state, or ledger
+  writes routed to `mcp__hearth__*`, a "Hearth Hub", or anything else on the operator's
+  fleet. HEARTH is Derek's *cross-project* lab door, shared by every repo he works in;
+  wiring one project's machinery into it makes a general-purpose tool carry a single
+  project's concerns, and silently makes Baseline's behaviour depend on hardware no
+  contributor has. If Baseline needs a hub, Baseline ships one.
+  (Added 2026-08-01: a proposal to route per-runner `Update` timings into "Hearth Hub"
+  cleared every bullet above, because all of them were written outbound-only.)
 
 ## Why the design is the way it is (context for future agents)
 
