@@ -1,6 +1,6 @@
 # Native Valheim networking replacement landscape
 
-**Assessed:** 2026-07-31
+**Assessed:** 2026-08-01
 **Development topology:** headless dedicated server on AM4; native Windows clients on
 OMEN (Tugcorp, RTX 5070) and i5 (Durracktu, Intel Iris Xe).
 **Reference deployment:** P7 remains running as the production-reference server and is
@@ -52,6 +52,14 @@ The replacement is not 100% complete.
   resumed an interrupted three-object snapshot without duplication, unloaded to zero
   stale objects, and spawned nothing when membership was withheld. C7's logical peer
   now carries the enclosing lifecycle; general-prefab/zone breadth remains for C8.
+- C8 composes every boundary above under unconditional client AND server poison:
+  the acceptance pair (`native-20260731-c8-full44`/`full45`, accepted 2026-08-01)
+  ran the complete 49-action composition twice from clean launches on one frozen
+  build with zero poison trips, clean save integrity, and 20/20 coverage — evidence
+  in `fieldlab/evidence/c8-native-zero-composition/`. Rows stay Partial where they
+  name unselected breadth: the composition proves the selected surface only, and
+  Swapped-everywhere remains C10's exit condition (29 P1 admissions, three [VERIFY]
+  rows, component-family gates, and the session-scoped epoch fix precede it).
 
 The shortest honest description is: **the C3 ZDO semantic boundary and selected
 control/RPC classes are swapped on AM4, and C3 semantics now ride the canonical

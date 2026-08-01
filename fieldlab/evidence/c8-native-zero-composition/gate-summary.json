@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "receipt_type": "c8_native_zero_composition_retained_gate",
+  "accepted_utc": "2026-08-01T01:36:00+00:00",
+  "result": "passed",
+  "source_commit": "c0db122f2a11bb50dfe6ffbf7db1a87152822f6a",
+  "artifacts": {
+    "mod_sha256": "765090d17981235209deec2d9718221eda4230aa27b2a99998f99ffeac08c28f",
+    "mod_deployment": "hash-verified identical on AM4 server, OMEN, and i5 before the pair"
+  },
+  "runs": [
+    {
+      "run_id": "native-20260731-c8-full44",
+      "role": "C8b first composition",
+      "scenario_sha256": "6bbd1f4f23fb8e296f80a41f4d9c85938e291c1cc244ba49319d55714050ef75",
+      "composition": "passed",
+      "save_integrity": "passed",
+      "coverage": "passed",
+      "failed_checks": [],
+      "residue_cleanup": "destroyed=0"
+    },
+    {
+      "run_id": "native-20260731-c8-full45",
+      "role": "C8c repeat and integrity",
+      "scenario_sha256": "aff5b562deec13e510ee04bc95399378c1b09b3e283abd7a374b585e3f0334d7",
+      "composition": "passed",
+      "save_integrity": "passed",
+      "coverage": "passed",
+      "failed_checks": [],
+      "residue_cleanup": "destroyed=0"
+    }
+  ],
+  "retained_receipts": "fieldlab/runs/native-valheim/native-20260731-c8-full44 and .../full45 (scenario, coverage, composition summary, save integrity before/after/comparison, residue cleanup)",
+  "verified": [
+    "the complete 49-action composition ran twice from clean client launches on one frozen build",
+    "native poison was armed unconditionally on both clients and the dedicated server with zero trips",
+    "server and both clients recorded native-zero on the selected surface in both runs",
+    "the bounded Gateway interruption was replayed and the WebSocket resume completed in both runs",
+    "world save integrity compared clean before/after in both runs",
+    "the machine coverage gate held 20/20 in both runs",
+    "completed runs leave zero synthetic residue (cleanup receipts destroyed=0)"
+  ],
+  "inferred": [
+    "the six wall-class fixes landed 2026-07-31/08-01 are jointly sufficient for repeatable composition on this substrate"
+  ],
+  "unverified": [
+    "unselected method/prefab breadth (29 P1 admissions, three [VERIFY] rows, three component-family gates)",
+    "subjective rendered motion quality (C9)",
+    "the session-scoped epoch fix - the operational WAL-wipe rule stands in until C10",
+    "P7 promotion, fallback deletion, and the final no-fallback artifact (C10)"
+  ]
+}
