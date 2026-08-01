@@ -1,0 +1,622 @@
+{
+  "schema_version": 1,
+  "receipt_type": "c9_motion_quality_summary",
+  "source_runs": [
+    "native-20260731-c8-full44",
+    "native-20260731-c8-full45"
+  ],
+  "source_commit": "c0db122f2a11bb50dfe6ffbf7db1a87152822f6a",
+  "mod_sha256": "765090d17981235209deec2d9718221eda4230aa27b2a99998f99ffeac08c28f",
+  "verified": {
+    "no_native_fallback": true,
+    "every_hard_correction_attributed": true,
+    "divergence_transient_not_persistent": true,
+    "max_divergence_burst_seconds": 0.501,
+    "max_hold_recovery_seconds": 10.866,
+    "no_apply_attributable_frame_hitch": true,
+    "perf_measured_on": [
+      "omen"
+    ]
+  },
+  "inferred": {
+    "teleport_freeze_then_snap": "each divergence burst is one far target repeatedly refused by the 30m correction guard for about half a second until the reliable teleport announcement lands; the observer therefore holds, then snaps. Bounded and explained, but visible."
+  },
+  "unverified": {
+    "motion_runner_startup_stall": "LumberjacksMotionRunner.Update blocks about 1.87s exactly once per session, roughly 4.8s before Valheim logs Starting respawn, and never during steady motion. Reproduced 4/4 across both runs with under 20ms variance. Candidates are the synchronous udp.Connect hostname resolution and the legacy-lane teardown when the canonical session takes over. NOT resolved: needs one instrumented run with a lowered section threshold.",
+    "i5_frame_timing": "the i5's perf-hitches/perf-sections were never collected into the run bundle and the lane went offline before they could be lifted, so hitch attribution is measured on OMEN only. This is unmeasured on the i5, not clean.",
+    "rendered_motion_quality": "no observer clip exists yet; the two-client capture run is still outstanding, so no subjective verdict has been taken."
+  },
+  "per_run": {
+    "native-20260731-c8-full44": {
+      "omen": {
+        "motion_events": 334,
+        "actions_observed": 24,
+        "native_fallback_true": 0,
+        "state_counts": {
+          "target_rejected": 246,
+          "native_transform_writer_suppressed": 24,
+          "motion_frame_withheld": 20,
+          "reliable_resync_receipt": 6,
+          "teleport_resync_queued": 5,
+          "hold_entered": 5,
+          "reliable_resync_applied": 4,
+          "remote_player_descriptor_applied": 3,
+          "remote_motion_discovered": 3,
+          "logical_remote_seeded": 3,
+          "remote_instance_missing": 3,
+          "probe_started": 3,
+          "probe_passed": 3,
+          "local_motion_identity": 2,
+          "remote_player_evicted": 1,
+          "remote_player_tombstone_applied": 1,
+          "reliable_resync_rejected": 1,
+          "reliable_resync_queued": 1
+        },
+        "hard_corrections": {
+          "total": 17,
+          "unexplained": 0,
+          "by_kind": {
+            "teleport_to": 6,
+            "motion_drive_gap": 2,
+            "wait": 1,
+            "zone_membership_resume": 2,
+            "portal_roundtrip": 6
+          },
+          "unexplained_detail": []
+        },
+        "divergence_bursts": {
+          "count": 4,
+          "all_single_sequence": true,
+          "max_span_seconds": 0.487,
+          "max_target_error_m": 4939.0,
+          "bursts": [
+            {
+              "start_utc": "2026-08-01T01:28:27.0963285Z",
+              "span_seconds": 0.487,
+              "rejections": 66,
+              "distinct_sequences": [
+                "1025"
+              ],
+              "single_sequence": true,
+              "target_error_max_m": 72.1,
+              "action_id": "omen-c8-post-contention-settle",
+              "kind": "wait"
+            },
+            {
+              "start_utc": "2026-08-01T01:28:30.6180280Z",
+              "span_seconds": 0.484,
+              "rejections": 65,
+              "distinct_sequences": [
+                "1077"
+              ],
+              "single_sequence": true,
+              "target_error_max_m": 2532.5,
+              "action_id": "omen-c8-portal-slice",
+              "kind": "teleport_to"
+            },
+            {
+              "start_utc": "2026-08-01T01:28:43.4386539Z",
+              "span_seconds": 0.444,
+              "rejections": 50,
+              "distinct_sequences": [
+                "1280"
+              ],
+              "single_sequence": true,
+              "target_error_max_m": 4939.0,
+              "action_id": "omen-c8-portal-roundtrip",
+              "kind": "portal_roundtrip"
+            },
+            {
+              "start_utc": "2026-08-01T01:28:54.0319548Z",
+              "span_seconds": 0.486,
+              "rejections": 65,
+              "distinct_sequences": [
+                "1454"
+              ],
+              "single_sequence": true,
+              "target_error_max_m": 4102.4,
+              "action_id": "omen-c8-portal-roundtrip",
+              "kind": "portal_roundtrip"
+            }
+          ]
+        },
+        "holds": {
+          "count": 5,
+          "recovered_seconds": [
+            0.462,
+            0.585,
+            1.613,
+            2.192,
+            10.287
+          ],
+          "unrecovered_in_log": 0,
+          "detail": [
+            {
+              "timestamp_utc": "2026-08-01T01:28:16.7990822Z",
+              "action_id": "omen-c8-gateway-restart-resume",
+              "kind": "gateway_restart_resume",
+              "recovered_after_seconds": 10.287,
+              "recovered_by": "reliable_resync_applied"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:28:27.5908398Z",
+              "action_id": "omen-c8-post-contention-settle",
+              "kind": "wait",
+              "recovered_after_seconds": 2.192,
+              "recovered_by": "reliable_resync_receipt"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:28:31.1096088Z",
+              "action_id": "omen-c8-portal-slice",
+              "kind": "teleport_to",
+              "recovered_after_seconds": 1.613,
+              "recovered_by": "reliable_resync_receipt"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:28:43.8907820Z",
+              "action_id": "omen-c8-portal-roundtrip",
+              "kind": "portal_roundtrip",
+              "recovered_after_seconds": 0.462,
+              "recovered_by": "reliable_resync_receipt"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:28:54.5272070Z",
+              "action_id": "omen-c8-portal-roundtrip",
+              "kind": "portal_roundtrip",
+              "recovered_after_seconds": 0.585,
+              "recovered_by": "reliable_resync_receipt"
+            }
+          ]
+        },
+        "perf": {
+          "measured": true,
+          "hitch_rows": 17,
+          "apply_attributable_hitches": [],
+          "max_frame_ms": 6682.967,
+          "hitch_causes": {
+            "Released session ticket": 4,
+            "ZNET START": 4,
+            "Sending PlayFab login request (attempt": 2,
+            "Starting music menu": 2,
+            "Starting respawn": 2,
+            "Teleporting Tugcorp": 1,
+            "Failed to load tugcorp.fch.old.stmp": 1,
+            "Loaded localization file #7 - 'localiza": 1
+          },
+          "motion_runner_sections": [
+            {
+              "timestamp_utc": "2026-08-01T01:27:06.2167189Z",
+              "elapsed_ms": 1878.4,
+              "session_id": "20260801-012649-239bc492"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:29:28.0374296Z",
+              "elapsed_ms": 1861.8,
+              "session_id": "20260801-012910-b88ea8bd"
+            }
+          ]
+        }
+      },
+      "i5": {
+        "motion_events": 174,
+        "actions_observed": 23,
+        "native_fallback_true": 0,
+        "state_counts": {
+          "target_rejected": 99,
+          "native_transform_writer_suppressed": 25,
+          "hold_entered": 7,
+          "reliable_resync_applied": 6,
+          "reliable_resync_receipt": 6,
+          "teleport_resync_queued": 5,
+          "remote_player_descriptor_applied": 3,
+          "remote_motion_discovered": 3,
+          "logical_remote_seeded": 3,
+          "remote_instance_missing": 3,
+          "probe_started": 3,
+          "probe_passed": 3,
+          "local_motion_identity": 2,
+          "remote_player_evicted": 2,
+          "remote_player_tombstone_applied": 2,
+          "rendezvous_complete": 1,
+          "motion_frame_sent": 1
+        },
+        "hard_corrections": {
+          "total": 17,
+          "unexplained": 0,
+          "by_kind": {
+            "wait": 1,
+            "teleport_to": 6,
+            "motion_observe_gap": 1,
+            "zone_membership_resume": 3,
+            "portal_roundtrip": 6
+          },
+          "unexplained_detail": []
+        },
+        "divergence_bursts": {
+          "count": 3,
+          "all_single_sequence": true,
+          "max_span_seconds": 0.501,
+          "max_target_error_m": 4191.8,
+          "bursts": [
+            {
+              "start_utc": "2026-08-01T01:28:29.4918321Z",
+              "span_seconds": 0.49,
+              "rejections": 29,
+              "distinct_sequences": [
+                "1234"
+              ],
+              "single_sequence": true,
+              "target_error_max_m": 72.2,
+              "action_id": "i5-c8-portal-slice",
+              "kind": "teleport_to"
+            },
+            {
+              "start_utc": "2026-08-01T01:28:44.1198743Z",
+              "span_seconds": 0.488,
+              "rejections": 52,
+              "distinct_sequences": [
+                "1503"
+              ],
+              "single_sequence": true,
+              "target_error_max_m": 4191.8,
+              "action_id": "i5-c8-portal-roundtrip",
+              "kind": "portal_roundtrip"
+            },
+            {
+              "start_utc": "2026-08-01T01:28:54.8733791Z",
+              "span_seconds": 0.501,
+              "rejections": 18,
+              "distinct_sequences": [
+                "1687"
+              ],
+              "single_sequence": true,
+              "target_error_max_m": 900.9,
+              "action_id": "i5-c8-portal-roundtrip",
+              "kind": "portal_roundtrip"
+            }
+          ]
+        },
+        "holds": {
+          "count": 7,
+          "recovered_seconds": [
+            0.408,
+            0.535,
+            9.368,
+            10.429,
+            10.866
+          ],
+          "unrecovered_in_log": 2,
+          "detail": [
+            {
+              "timestamp_utc": "2026-08-01T01:28:05.7670729Z",
+              "action_id": "i5-c8-motion-observe-gap",
+              "kind": "motion_observe_gap",
+              "recovered_after_seconds": 0.535,
+              "recovered_by": "reliable_resync_applied"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:28:16.5808741Z",
+              "action_id": "i5-c8-gateway-restart-resume",
+              "kind": "gateway_restart_resume",
+              "recovered_after_seconds": 10.429,
+              "recovered_by": "reliable_resync_receipt"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:28:30.0039426Z",
+              "action_id": "i5-c8-portal-slice",
+              "kind": "teleport_to",
+              "recovered_after_seconds": 0.408,
+              "recovered_by": "reliable_resync_receipt"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:28:32.9965518Z",
+              "action_id": "i5-c8-portal-slice",
+              "kind": "teleport_to",
+              "recovered_after_seconds": 10.866,
+              "recovered_by": "reliable_resync_receipt"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:28:44.6133227Z",
+              "action_id": "i5-c8-portal-roundtrip",
+              "kind": "portal_roundtrip",
+              "recovered_after_seconds": 9.368,
+              "recovered_by": "reliable_resync_receipt"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:28:55.4178876Z",
+              "action_id": "i5-c8-portal-roundtrip",
+              "kind": "portal_roundtrip",
+              "recovered_after_seconds": null,
+              "recovered_by": null
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:29:48.8323414Z",
+              "action_id": "i5-resumed",
+              "kind": "wait",
+              "recovered_after_seconds": null,
+              "recovered_by": null
+            }
+          ]
+        },
+        "perf": {
+          "measured": false,
+          "hitch_rows": 0,
+          "apply_attributable_hitches": [],
+          "max_frame_ms": 0,
+          "hitch_causes": {},
+          "motion_runner_sections": []
+        }
+      }
+    },
+    "native-20260731-c8-full45": {
+      "omen": {
+        "motion_events": 208,
+        "actions_observed": 24,
+        "native_fallback_true": 0,
+        "state_counts": {
+          "target_rejected": 129,
+          "motion_frame_withheld": 20,
+          "native_transform_writer_suppressed": 15,
+          "reliable_resync_receipt": 6,
+          "teleport_resync_queued": 5,
+          "hold_entered": 5,
+          "reliable_resync_applied": 4,
+          "remote_player_descriptor_applied": 3,
+          "remote_motion_discovered": 3,
+          "logical_remote_seeded": 3,
+          "remote_instance_missing": 3,
+          "probe_started": 3,
+          "probe_passed": 3,
+          "local_motion_identity": 2,
+          "remote_player_evicted": 1,
+          "remote_player_tombstone_applied": 1,
+          "reliable_resync_rejected": 1,
+          "reliable_resync_queued": 1
+        },
+        "hard_corrections": {
+          "total": 17,
+          "unexplained": 0,
+          "by_kind": {
+            "teleport_to": 6,
+            "motion_drive_gap": 2,
+            "wait": 1,
+            "zone_membership_resume": 2,
+            "portal_roundtrip": 6
+          },
+          "unexplained_detail": []
+        },
+        "divergence_bursts": {
+          "count": 2,
+          "all_single_sequence": true,
+          "max_span_seconds": 0.486,
+          "max_target_error_m": 2587.3,
+          "bursts": [
+            {
+              "start_utc": "2026-08-01T01:33:30.7609195Z",
+              "span_seconds": 0.486,
+              "rejections": 66,
+              "distinct_sequences": [
+                "1127"
+              ],
+              "single_sequence": true,
+              "target_error_max_m": 72.1,
+              "action_id": "omen-c8-post-contention-settle",
+              "kind": "wait"
+            },
+            {
+              "start_utc": "2026-08-01T01:33:55.4796095Z",
+              "span_seconds": 0.477,
+              "rejections": 63,
+              "distinct_sequences": [
+                "1519"
+              ],
+              "single_sequence": true,
+              "target_error_max_m": 2587.3,
+              "action_id": "omen-c8-portal-roundtrip",
+              "kind": "portal_roundtrip"
+            }
+          ]
+        },
+        "holds": {
+          "count": 5,
+          "recovered_seconds": [
+            0.589,
+            0.608,
+            1.742,
+            9.646
+          ],
+          "unrecovered_in_log": 1,
+          "detail": [
+            {
+              "timestamp_utc": "2026-08-01T01:33:21.1034854Z",
+              "action_id": "omen-c8-gateway-restart-resume",
+              "kind": "gateway_restart_resume",
+              "recovered_after_seconds": 9.646,
+              "recovered_by": "reliable_resync_applied"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:33:31.2563116Z",
+              "action_id": "omen-c8-post-contention-settle",
+              "kind": "wait",
+              "recovered_after_seconds": 1.742,
+              "recovered_by": "reliable_resync_receipt"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:33:34.7137915Z",
+              "action_id": "omen-c8-portal-slice",
+              "kind": "teleport_to",
+              "recovered_after_seconds": 0.589,
+              "recovered_by": "reliable_resync_receipt"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:33:45.3213845Z",
+              "action_id": "omen-c8-portal-roundtrip",
+              "kind": "portal_roundtrip",
+              "recovered_after_seconds": 0.608,
+              "recovered_by": "reliable_resync_receipt"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:33:55.9634769Z",
+              "action_id": "omen-c8-portal-roundtrip",
+              "kind": "portal_roundtrip",
+              "recovered_after_seconds": null,
+              "recovered_by": null
+            }
+          ]
+        },
+        "perf": {
+          "measured": true,
+          "hitch_rows": 15,
+          "apply_attributable_hitches": [],
+          "max_frame_ms": 6727.725,
+          "hitch_causes": {
+            "Released session ticket": 4,
+            "ZNET START": 4,
+            "Sending PlayFab login request (attempt": 2,
+            "Starting music menu": 2,
+            "Starting respawn": 2,
+            "Failed to get attach prefab for item Ar": 1
+          },
+          "motion_runner_sections": [
+            {
+              "timestamp_utc": "2026-08-01T01:32:08.8484143Z",
+              "elapsed_ms": 1867.1,
+              "session_id": "20260801-013151-7bbc7b2d"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:34:28.0919491Z",
+              "elapsed_ms": 1863.2,
+              "session_id": "20260801-013411-7a92afa9"
+            }
+          ]
+        }
+      },
+      "i5": {
+        "motion_events": 113,
+        "actions_observed": 23,
+        "native_fallback_true": 0,
+        "state_counts": {
+          "target_rejected": 39,
+          "native_transform_writer_suppressed": 25,
+          "hold_entered": 7,
+          "reliable_resync_applied": 6,
+          "teleport_resync_queued": 5,
+          "reliable_resync_receipt": 5,
+          "remote_player_descriptor_applied": 3,
+          "remote_motion_discovered": 3,
+          "logical_remote_seeded": 3,
+          "remote_instance_missing": 3,
+          "probe_started": 3,
+          "probe_passed": 3,
+          "local_motion_identity": 2,
+          "remote_player_evicted": 2,
+          "remote_player_tombstone_applied": 2,
+          "rendezvous_complete": 1,
+          "motion_frame_sent": 1
+        },
+        "hard_corrections": {
+          "total": 16,
+          "unexplained": 0,
+          "by_kind": {
+            "wait": 1,
+            "teleport_to": 6,
+            "motion_observe_gap": 1,
+            "zone_membership_resume": 2,
+            "portal_roundtrip": 6
+          },
+          "unexplained_detail": []
+        },
+        "divergence_bursts": {
+          "count": 1,
+          "all_single_sequence": true,
+          "max_span_seconds": 0.473,
+          "max_target_error_m": 4198.0,
+          "bursts": [
+            {
+              "start_utc": "2026-08-01T01:33:45.8440128Z",
+              "span_seconds": 0.473,
+              "rejections": 39,
+              "distinct_sequences": [
+                "1489"
+              ],
+              "single_sequence": true,
+              "target_error_max_m": 4198.0,
+              "action_id": "i5-c8-portal-roundtrip",
+              "kind": "portal_roundtrip"
+            }
+          ]
+        },
+        "holds": {
+          "count": 7,
+          "recovered_seconds": [
+            0.54,
+            1.261,
+            9.003,
+            9.007,
+            9.811
+          ],
+          "unrecovered_in_log": 2,
+          "detail": [
+            {
+              "timestamp_utc": "2026-08-01T01:33:08.4274676Z",
+              "action_id": "i5-c8-motion-observe-gap",
+              "kind": "motion_observe_gap",
+              "recovered_after_seconds": 0.54,
+              "recovered_by": "reliable_resync_applied"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:33:20.8454605Z",
+              "action_id": "i5-c8-gateway-restart-resume",
+              "kind": "gateway_restart_resume",
+              "recovered_after_seconds": 9.811,
+              "recovered_by": "reliable_resync_receipt"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:33:32.7915378Z",
+              "action_id": "i5-c8-portal-slice",
+              "kind": "teleport_to",
+              "recovered_after_seconds": 1.261,
+              "recovered_by": "reliable_resync_receipt"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:33:35.5698399Z",
+              "action_id": "i5-c8-portal-slice",
+              "kind": "teleport_to",
+              "recovered_after_seconds": 9.007,
+              "recovered_by": "reliable_resync_receipt"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:33:46.3249266Z",
+              "action_id": "i5-c8-portal-roundtrip",
+              "kind": "portal_roundtrip",
+              "recovered_after_seconds": 9.003,
+              "recovered_by": "reliable_resync_receipt"
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:33:56.1246410Z",
+              "action_id": "i5-c8-portal-roundtrip",
+              "kind": "portal_roundtrip",
+              "recovered_after_seconds": null,
+              "recovered_by": null
+            },
+            {
+              "timestamp_utc": "2026-08-01T01:34:49.1044380Z",
+              "action_id": "i5-resumed",
+              "kind": "wait",
+              "recovered_after_seconds": null,
+              "recovered_by": null
+            }
+          ]
+        },
+        "perf": {
+          "measured": false,
+          "hitch_rows": 0,
+          "apply_attributable_hitches": [],
+          "max_frame_ms": 0,
+          "hitch_causes": {},
+          "motion_runner_sections": []
+        }
+      }
+    }
+  }
+}
