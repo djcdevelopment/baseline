@@ -2,8 +2,11 @@
 
 Local MCP gateway for Comfy Valheim mod development.
 
-This is intentionally separate from Hearth. It keeps its own auth header, port,
-ledger, caller registry, and Valheim-specific tools.
+This gateway is project-owned: it runs from this repository and its Docker image
+with no dependency on anything outside the checkout. It is intentionally separate
+from any general-purpose MCP gateway already running on the operator's machine,
+keeping its own auth header, port, ledger, caller registry, and Valheim-specific
+tools.
 
 ## Endpoint
 
@@ -33,33 +36,68 @@ The future Valheim mod client should use:
 X-Comfy-Key: valheim-mod-local
 ```
 
-## Run
+## Setup
 
-Use the same Python environment that has `mcp==1.28.1`, such as Hearth's OMEN venv:
+Create a project-local virtual environment and install the declared
+dependencies. Run these from the repository root; `.venv/` is git-ignored.
 
 ```powershell
-$env:PYTHONPATH = "C:\work\baseline\network\mcp"
-C:\work\commandcenter\fleet-worker-node\.venv-omen\Scripts\python.exe `
-  -m comfy_gateway.kernel.gateway
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r network\mcp\requirements.txt
 ```
 
-Or run:
+Bash/WSL equivalent:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r network/mcp/requirements.txt
+```
+
+[`requirements.txt`](requirements.txt) is the single dependency declaration —
+the Docker image installs from the same file, so a local venv and a built image
+resolve the same versions. Python 3.12 is what the image uses.
+
+## Run
+
+With the venv activated, from the repository root:
 
 ```powershell
 .\network\mcp\etc\start-comfy-gateway.cmd
 ```
 
-`start-comfy-gateway.cmd` picks its interpreter in this order:
+`start-comfy-gateway.cmd` resolves its interpreter in this order:
 
 1. `%COMFY_GATEWAY_PYTHON%`, if that environment variable is set -- point it at
-   any `python.exe` that has `mcp==1.28.1` installed.
-2. `C:\work\commandcenter\fleet-worker-node\.venv-omen\Scripts\python.exe`, if
-   that file still exists on this machine (Hearth's OMEN venv, the historical
-   default).
-3. Plain `python` on `PATH` otherwise.
+   any `python.exe` whose environment has the requirements installed.
+2. Otherwise plain `python` on `PATH`, which is the activated venv above.
 
-Whichever interpreter is selected still needs `mcp==1.28.1` installed; the env
-var only changes which interpreter is used, not the dependency requirement.
+There is deliberately no third, machine-specific fallback. Either interpreter
+still needs the requirements installed; the environment variable only changes
+which interpreter runs, not the dependency requirement.
+
+To run the module directly instead of through the launcher:
+
+```powershell
+$env:PYTHONPATH = "$PWD\network\mcp"
+python -m comfy_gateway.kernel.gateway
+```
+
+Or run it containerized, which needs no local Python at all:
+
+```powershell
+docker build -t comfy-mcp-gateway network\mcp
+```
+
+## Tests
+
+With the venv activated, from the repository root:
+
+```powershell
+$env:PYTHONPATH = "$PWD\network\mcp"
+python -m unittest discover -s network\mcp\tests
+```
 
 ## Tools
 

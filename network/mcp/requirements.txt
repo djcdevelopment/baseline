@@ -1,0 +1,7 @@
+# Runtime dependencies for the project-owned Comfy MCP gateway (network/mcp).
+#
+# This file is the single declaration: network/mcp/Dockerfile installs from it,
+# and the contributor setup in README.md installs from it. Pinned so a local
+# venv and the built image resolve the same versions.
+mcp==1.28.1
+starlette

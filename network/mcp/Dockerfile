@@ -19,9 +19,13 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONPATH=/workspace/network/mcp
 
-RUN pip install --no-cache-dir "mcp==1.28.1" starlette
-
 WORKDIR /workspace/network/mcp
+
+# Dependencies are declared once, in requirements.txt, so the image and a
+# contributor's local venv resolve the same versions. Copied before the source
+# so a code-only change does not re-run the install layer.
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY comfy_gateway ./comfy_gateway
 
