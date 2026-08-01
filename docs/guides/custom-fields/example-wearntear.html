@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Custom Fields — Anatomy of a Piece: WearNTear</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page:      #f9f9f7;
+    --surface:   #fcfcfb;
+    --ink:       #0b0b0b;
+    --ink-2:     #52514e;
+    --muted:     #898781;
+    --grid:      #e1e0d9;
+    --axis:      #c3c2b7;
+    --border:    rgba(11,11,11,0.10);
+    --s1:        #2a78d6;
+    --s2:        #eb6834;
+    --card:      #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page:    #0d0d0d;
+      --surface: #1a1a19;
+      --ink:     #ffffff;
+      --ink-2:   #c3c2b7;
+      --muted:   #898781;
+      --grid:    #2c2c2a;
+      --axis:    #383835;
+      --border:  rgba(255,255,255,0.10);
+      --s1:      #3987e5;
+      --s2:      #d95926;
+      --card:    #222220;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page:    #0d0d0d;
+    --surface: #1a1a19;
+    --ink:     #ffffff;
+    --ink-2:   #c3c2b7;
+    --muted:   #898781;
+    --grid:    #2c2c2a;
+    --axis:    #383835;
+    --border:  rgba(255,255,255,0.10);
+    --s1:      #3987e5;
+    --s2:      #d95926;
+    --card:    #222220;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--page); color: var(--ink);
+    font: 15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 32px 20px 64px; }
+  header h1 { font-size: 28px; margin: 0 0 4px; }
+  header .sub { color: var(--ink-2); }
+  .prov { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .level {
+    display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--s1); border: 1px solid var(--border);
+    border-radius: 999px; padding: 2px 10px; margin: 40px 0 6px; background: var(--surface);
+  }
+  h2 { font-size: 21px; margin: 6px 0 10px; }
+  h3 { font-size: 15px; margin: 22px 0 8px; }
+  p  { margin: 8px 0; }
+  p.soft { color: var(--ink-2); }
+  .fig {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 18px 18px 12px; margin: 14px 0;
+  }
+  .fig .cap { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+  .fig svg { display: block; width: 100%; height: auto; }
+  svg text { font: 13px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+  svg text.t2 { fill: var(--ink-2); font-size: 12px; }
+  svg text.tm { fill: var(--muted); font-size: 11.5px; }
+  svg text.code { font: 12.5px Consolas, monospace; }
+  svg .box   { fill: var(--card); stroke: var(--border); rx: 8; }
+  svg .chip  { fill: var(--surface); stroke: var(--s1); stroke-width: 1.2; rx: 7; }
+  svg .chip2 { fill: var(--surface); stroke: var(--s2); stroke-width: 1.2; rx: 7; }
+  svg .ghost { fill: none; stroke: var(--axis); stroke-dasharray: 5 4; rx: 7; }
+  svg .wire  { stroke: var(--axis); stroke-width: 1.5; fill: none; }
+  svg .wireA { stroke: var(--s1); stroke-width: 1.5; fill: none; }
+  svg .wireB { stroke: var(--s2); stroke-width: 1.5; fill: none; }
+  code, .mono { font-family: Consolas, monospace; font-size: 0.92em; }
+  code { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 14px 0; }
+  .tile { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .tile .n { font-size: 34px; font-weight: 650; line-height: 1.1; }
+  .tile .l { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+  .tile .d { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .chart { margin: 6px 0 2px; }
+  .legend { display: flex; gap: 18px; font-size: 12.5px; color: var(--ink-2); margin: 2px 0 12px; }
+  .legend .key { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  .row { display: grid; grid-template-columns: 108px 1fr 52px; align-items: center; gap: 10px; margin: 3px 0; }
+  .row.gap { margin-bottom: 12px; }
+  .row .name { font-family: Consolas, monospace; font-size: 13px; text-align: right; }
+  .row .total { font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .track { position: relative; height: 14px; }
+  .seg { position: absolute; top: 0; height: 14px; border-radius: 4px; cursor: default; transition: filter .1s; }
+  .seg:hover { filter: brightness(1.12); }
+  .axisline { border-top: 1px solid var(--axis); margin-top: 10px; position: relative; height: 18px; }
+  .axisline span { position: absolute; top: 3px; font-size: 11px; color: var(--muted); transform: translateX(-50%); font-variant-numeric: tabular-nums; }
+  #tip {
+    position: fixed; pointer-events: none; z-index: 10; display: none;
+    background: var(--ink); color: var(--page); font-size: 12.5px; line-height: 1.35;
+    border-radius: 6px; padding: 6px 9px; max-width: 260px; box-shadow: 0 2px 10px rgba(0,0,0,.25);
+  }
+  table.fields { border-collapse: collapse; width: 100%; font-size: 13.5px; margin: 10px 0; }
+  table.fields th { text-align: left; color: var(--muted); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--grid); padding: 4px 10px 4px 0; }
+  table.fields td { border-bottom: 1px solid var(--grid); padding: 5px 10px 5px 0; vertical-align: top; }
+  table.fields td.k { font-family: Consolas, monospace; white-space: nowrap; }
+  table.fields td.t { color: var(--muted); white-space: nowrap; }
+  .rpcs { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .rpc { font-family: Consolas, monospace; font-size: 13px; background: var(--surface); border: 1px solid var(--s2); color: var(--ink); border-radius: 6px; padding: 4px 10px; }
+  footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--grid); font-size: 12.5px; color: var(--muted); }
+  footer a, a { color: var(--s1); }
+</style>
+</head>
+<body data-palette="#2a78d6,#eb6834">
+<div class="wrap">
+
+<header>
+  <h1>Custom fields: anatomy of <span class="mono">WearNTear</span></h1>
+  <div class="sub">The durability component — and the source of the famous invisible-wall trick.</div>
+  <div class="prov">Every field name, type, and count on this page is extracted from <span class="mono">assembly_valheim.dll</span> (2026-08-01), not written from memory. Regenerate after game patches.</div>
+</header>
+
+<!-- ============================================================ L1 -->
+<div class="level">Level 1 — the concept</div>
+<h2>One component carries durability for everything that breaks</h2>
+<p><span class="mono">WearNTear</span> is the component that gives an object health, structural support, weathering, and damage visuals. Walls, doors, carts, beehives, portals — if a thing can crack and collapse, it has a <span class="mono">WearNTear</span>, and its <b>28 fields</b> work identically on all of them.</p>
+<p class="soft">That's the custom-fields payoff: learn one component's fields once, apply them to every prefab that carries it.</p>
+
+<h3>The invisible-wall trick, explained by three fields</h3>
+<p>The component holds a visual model for each damage state and swaps them as health drops. If a prefab's broken-state model has no visible mesh, the piece is <i>still there</i> — colliders and all — just unseen. That's the whole trick: it's not a hack, it's the state machine working as designed.</p>
+
+<div class="fig">
+  <svg viewBox="0 0 840 250" role="img" aria-label="WearNTear swaps visual models as health drops; an empty broken model makes the piece invisible">
+    <text class="t2" x="20" y="30" font-weight="600">health drives which model is shown</text>
+    <!-- health arrow -->
+    <path class="wire" d="M60 60 L780 60"/>
+    <polygon points="780,60 770,55 770,65" fill="var(--axis)"/>
+    <text class="tm" x="60" y="50">full health</text>
+    <text class="tm" x="740" y="50" text-anchor="end">zero</text>
+
+    <!-- state boxes -->
+    <rect class="chip" x="60" y="85" width="180" height="82"/>
+    <text class="code" x="150" y="110" text-anchor="middle" font-weight="600">m_new</text>
+    <text class="t2" x="150" y="132" text-anchor="middle">pristine model</text>
+    <text class="tm" x="150" y="152" text-anchor="middle">GameObject</text>
+
+    <rect class="chip" x="300" y="85" width="180" height="82"/>
+    <text class="code" x="390" y="110" text-anchor="middle" font-weight="600">m_worn</text>
+    <text class="t2" x="390" y="132" text-anchor="middle">cracked model</text>
+    <text class="tm" x="390" y="152" text-anchor="middle">GameObject</text>
+
+    <rect class="ghost" x="540" y="85" width="180" height="82" rx="7"/>
+    <text class="code" x="630" y="110" text-anchor="middle" font-weight="600" fill="var(--s2)">m_broken</text>
+    <text class="t2" x="630" y="132" text-anchor="middle">no visible mesh?</text>
+    <text class="t2" x="630" y="152" text-anchor="middle" fill="var(--s2)">invisible piece</text>
+
+    <path class="wire" d="M240 126 L300 126"/>
+    <polygon points="300,126 290,121 290,131" fill="var(--axis)"/>
+    <path class="wireB" d="M480 126 L540 126"/>
+    <polygon points="540,126 530,121 530,131" fill="var(--s2)"/>
+
+    <!-- wet overlay -->
+    <rect class="box" x="60" y="195" width="300" height="38"/>
+    <text class="code" x="80" y="219">m_wet</text>
+    <text class="t2" x="150" y="219">— rain overlay, independent of the three states</text>
+    <text class="tm" x="540" y="219">the piece keeps its colliders in every state —</text>
+    <text class="tm" x="540" y="235">invisible ≠ gone</text>
+  </svg>
+  <div class="cap">Three <span class="mono">GameObject</span> fields — <span class="mono">m_new</span>, <span class="mono">m_worn</span>, <span class="mono">m_broken</span> — are the damage-visual state machine. Miker's mock-your-friends build uses exactly this seam.</div>
+</div>
+
+<!-- ============================================================ L2 -->
+<div class="level">Level 2 — the breakdown</div>
+<h2>What the 28 fields actually govern</h2>
+<p>No inheritance trap here — unlike <span class="mono">Humanoid</span>, every field is declared on <span class="mono">WearNTear</span> itself (it extends <span class="mono">MonoBehaviour</span> directly and implements <span class="mono">IDestructible</span>). The fields cluster into five jobs:</p>
+
+<div class="fig">
+  <div class="chart" id="clusterChart"></div>
+  <div class="axisline" id="clusterAxis"></div>
+  <div class="cap">The 28 fields grouped by job. Hover a bar to see which fields are in the cluster. Durability &amp; damage is where <span class="mono">m_health</span>, <span class="mono">m_damages</span>, and <span class="mono">m_minToolTier</span> live — the first three custom fields most modders reach for.</div>
+</div>
+
+<table class="fields">
+  <tr><th>headline field</th><th>type</th><th>why modders touch it</th></tr>
+  <tr><td class="k">m_health</td><td class="t">float</td><td>Baseline durability. The single most-used custom field on build pieces.</td></tr>
+  <tr><td class="k">m_damages</td><td class="t">DamageModifiers</td><td>Per-damage-type resistances — make a wall immune to arrows but weak to fire.</td></tr>
+  <tr><td class="k">m_noSupportWear</td><td class="t">bool</td><td>Turns off structural-integrity collapse. Floating builds.</td></tr>
+  <tr><td class="k">m_noRoofWear</td><td class="t">bool</td><td>Turns off rain deterioration for uncovered pieces.</td></tr>
+  <tr><td class="k">m_materialType</td><td class="t">MaterialType</td><td>Which support table the piece uses (wood, stone, iron…).</td></tr>
+  <tr><td class="k">m_minToolTier</td><td class="t">int</td><td>Tool tier gate — set it high and players can't break the piece at all.</td></tr>
+</table>
+
+<!-- ============================================================ worked example -->
+<div class="level">Worked example</div>
+<h2><span class="mono">WearNTear</span> by the numbers</h2>
+
+<div class="tiles">
+  <div class="tile"><div class="n">28</div><div class="l">config fields</div><div class="d">all declared on WearNTear itself — no base-class surprises</div></div>
+  <div class="tile"><div class="n" style="color:var(--s1)">2</div><div class="l">synced ZDO fields</div><div class="d">health · support — everything else is derived or config</div></div>
+  <div class="tile"><div class="n" style="color:var(--s2)">6</div><div class="l">instance RPCs</div><div class="d">all registered in Awake — damage, repair, remove are all requests</div></div>
+</div>
+
+<h3>Who touches the synced state — reads vs writes per ZDO field</h3>
+<div class="fig">
+  <div class="legend">
+    <span class="key"><span class="swatch" style="background:var(--s1)"></span>Methods reading</span>
+    <span class="key"><span class="swatch" style="background:var(--s2)"></span>Methods writing</span>
+  </div>
+  <div class="chart" id="zdoChart"></div>
+  <div class="axisline" id="zdoAxis"></div>
+  <div class="cap">Compare with Fireplace's read-heavy <span class="mono">fuel</span>: here reads and writes balance, because damage <i>and</i> repair <i>and</i> weathering all mutate <span class="mono">health</span>. <span class="mono">support</span> is written three times but read once — it's a cache for the structural solver.</div>
+</div>
+
+<!-- ============================================================ L3 -->
+<div class="level">Level 3 — the code underneath</div>
+<h2>Six RPCs, one contract</h2>
+<p>Same ownership rule as every component: only the ZDO owner writes <span class="mono">health</span>. When your axe hits someone else's wall, your client sends <span class="mono">RPC_Damage</span>; the owner applies it, writes the new health, and <span class="mono">RPC_HealthChanged</span> fans the result back out. All six are registered in <span class="mono">Awake</span> — which is also the Harmony seam.</p>
+
+<div class="rpcs">
+  <span class="rpc">RPC_Damage</span>
+  <span class="rpc">RPC_Repair</span>
+  <span class="rpc">RPC_Remove</span>
+  <span class="rpc">RPC_HealthChanged</span>
+  <span class="rpc">RPC_ClearCachedSupport</span>
+  <span class="rpc">RPC_CreateFragments</span>
+</div>
+
+<p class="soft">Lifecycle: <span class="mono">Awake</span> (registers all six RPCs, seeds <span class="mono">health</span> from <span class="mono">m_health</span>) → <span class="mono">Start</span> → <span class="mono">OnDestroy</span>. Note the extra hook vs Fireplace: <span class="mono">OnDestroy</span> exists because a broken piece must clear its cached support so neighbors recalculate.</p>
+
+<footer>
+  Generated from the <a href="../../../tools/component-packets/README.md">component-packets</a> extract pipeline ·
+  full field dictionary: <span class="mono">tools/component-packets/samples/wearntear-field-dictionary.md</span> ·
+  companion lesson: <a href="example-fireplace.html">Fireplace</a> ·
+  project orientation: <a href="STARTHERE.md">STARTHERE.md</a>.
+</footer>
+</div>
+
+<div id="tip"></div>
+<script>
+(function () {
+  const tip = document.getElementById('tip');
+  function showTip(e, html) {
+    tip.innerHTML = html; tip.style.display = 'block';
+    const pad = 12, w = tip.offsetWidth, h = tip.offsetHeight;
+    let x = e.clientX + pad, y = e.clientY - h - pad;
+    if (x + w > innerWidth - 8) x = e.clientX - w - pad;
+    if (y < 8) y = e.clientY + pad;
+    tip.style.left = x + 'px'; tip.style.top = y + 'px';
+  }
+  function hideTip() { tip.style.display = 'none'; }
+
+  // --- chart 1: the 28 fields clustered by job (single series = magnitude) ---
+  const clusters = [
+    { name: 'durability & damage', n: 8, fields: 'm_health, m_damages, m_minToolTier, m_hitNoise, m_destroyNoise, m_triggerPrivateArea, m_ashDamageImmune, m_ashDamageResist' },
+    { name: 'damage visuals',      n: 7, fields: 'm_new, m_worn, m_broken, m_wet, m_hitEffect, m_destroyedEffect, m_switchEffect' },
+    { name: 'structural support',  n: 6, fields: 'm_supports, m_materialType, m_noSupportWear, m_comOffset, m_forceCorrectCOMCalculation, m_staticPosition' },
+    { name: 'weathering & fire',   n: 2, fields: 'm_noRoofWear, m_burnable' },
+    { name: 'wreckage & events',   n: 5, fields: 'm_autoCreateFragments, m_fragmentRoots, m_nonSolidRenderers, m_onDestroyed, m_onDamaged' },
+  ];
+  const cMax = 8;
+  const cc = document.getElementById('clusterChart');
+  clusters.forEach(d => {
+    const row = document.createElement('div'); row.className = 'row';
+    row.innerHTML = '<div class="name" style="font-family:inherit;font-size:12.5px">' + d.name + '</div>' +
+      '<div class="track"><div class="seg" data-tip="<b>' + d.name + ' — ' + d.n + ' fields</b><br><span style=opacity:.85>' + d.fields + '</span>" style="left:0;width:' + (d.n / cMax * 100) + '%;background:var(--s1)"></div></div>' +
+      '<div class="total">' + d.n + '</div>';
+    cc.appendChild(row);
+  });
+  [0, 2, 4, 6, 8].forEach(v => {
+    const s = document.createElement('span'); s.textContent = v;
+    s.style.left = 'calc(118px + (100% - 170px) * ' + (v / cMax) + ')';
+    document.getElementById('clusterAxis').appendChild(s);
+  });
+
+  // --- chart 2: ZDO reads/writes per key ---
+  const zdo = [
+    { key: 'health',  reads: 4, writes: 4, note: 'read/written by Awake, ApplyDamage, Repair handlers, Destroy' },
+    { key: 'support', reads: 1, writes: 3, note: 'a cache for the structural solver — UpdateWear, UpdateSupport, Destroy write it' },
+  ];
+  const zMax = 4;
+  const zc = document.getElementById('zdoChart');
+  zdo.forEach(d => {
+    [['reads', 'var(--s1)'], ['writes', 'var(--s2)']].forEach(([kind, color], i) => {
+      const row = document.createElement('div'); row.className = 'row' + (i === 1 ? ' gap' : '');
+      const v = d[kind];
+      row.innerHTML = '<div class="name">' + (i === 0 ? d.key : '') + '</div>' +
+        '<div class="track"><div class="seg" data-tip="<b>' + d.key + '</b> — ' + v + ' method' + (v > 1 ? 's' : '') + ' ' + kind.replace(/s$/, '') + ' it<br><span style=opacity:.85>' + d.note + '</span>" style="left:0;width:' + (v / zMax * 100) + '%;background:' + color + '"></div></div>' +
+        '<div class="total">' + v + '</div>';
+      zc.appendChild(row);
+    });
+  });
+  [0, 1, 2, 3, 4].forEach(v => {
+    const s = document.createElement('span'); s.textContent = v;
+    s.style.left = 'calc(118px + (100% - 170px) * ' + (v / zMax) + ')';
+    document.getElementById('zdoAxis').appendChild(s);
+  });
+
+  document.querySelectorAll('.seg').forEach(el => {
+    el.addEventListener('mousemove', e => showTip(e, el.dataset.tip));
+    el.addEventListener('mouseleave', hideTip);
+  });
+})();
+</script>
+</body>
+</html>

@@ -58,8 +58,15 @@ extractor could have produced — extract it.
 
 - Three presentation formats went to the creators' Discord for the resonance
   test: visual cheat sheet (HTML), narrative lesson (markdown), raw JSON
-  packet. **Outcome unknown — this decides the guide's end shape.**
-- Miker has not yet reviewed the `(?)` annotation rows.
+  packet. **2026-08-01: feedback very positive** — the layered lesson-page
+  format is validated; a second page (`example-wearntear.html`) proves the
+  template generalizes. Which single format won (if any) is still open.
+- Miker has not yet reviewed the `(?)` annotation rows — the queue is
+  packaged for him in [`annotation-review-queue.md`](annotation-review-queue.md)
+  (61 rows, regenerate with `make_review_queue.py`).
+- **Publishing surface is undecided** — the pages live in the repo; community
+  sharing currently means screenshots or sending files. GitHub Pages on this
+  (already public) repo is the zero-infra option; a Derek decision.
 - **Deliberately unbuilt:** the prefab→component index ("what can I apply this
   field to?"). The dll cannot answer it — component composition lives in Unity
   asset data. If creators actually ask, the answer is a small runtime dump of
