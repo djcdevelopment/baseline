@@ -26,9 +26,17 @@ position. Clients never run this path. So the I2 pin is a **server-side (am4) pa
 > `Sadle.cs:349` (mount control grant), `Vagon.cs:141` (cart ownership request),
 > `ArmorStand.cs:347`, and `ItemStand.cs:385`. None of these passes through `ReleaseNearbyZDOS`.
 >
-> Downstream consequence to check before reuse: `OwnershipPinRunner` was designed against the
-> single-funnel thesis, so its auto-capture selector has never been evaluated against a funnel it
-> cannot see. Detail and the full source survey are in
+> Downstream consequence, **traced to live code 2026-08-01**: the original correction named
+> `OwnershipPinRunner`, which no longer exists — it was deleted on 2026-07-21 in `66f7069` with the
+> P3/P5 lab experiments. The exposure did not die with it, it was **inherited**.
+> `OwnershipLeaseCutoverRunner` attaches a *global* Harmony prefix to `ZDO.SetOwner(long)`
+> ([OwnershipLeaseCutoverRunner.cs:1137-1144](../network/mod/ComfyNetworkSense/Core/Services/OwnershipLeaseCutoverRunner.cs:1137)),
+> so the patch does fire on all five sites above — but its body, `ShouldBlockRelease`, returns
+> `false` immediately unless `ReleaseScopeDepth > 0` (:207), and that counter is incremented at
+> exactly one site: the `ReleaseNearbyZDOS` prefix (:1125-1127). So C4's lease interception is
+> scoped to the same single funnel the retired pin was, and the five client-side handlers pass
+> through untouched. Three of them — `Ship`, `Sadle`, `Vagon` — are the C10a vehicles/mounts
+> surface. Detail and the full source survey are in
 > [`docs/RESEARCH-vehicles-mounts-ownership-2026-08-01.md`](docs/RESEARCH-vehicles-mounts-ownership-2026-08-01.md).
 
 ## Ownership storage & API (ZDO type)
