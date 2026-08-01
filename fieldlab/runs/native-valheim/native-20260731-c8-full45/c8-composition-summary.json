@@ -1,0 +1,111 @@
+{
+    "schema_version":  1,
+    "receipt_type":  "c8_native_zero_composition_summary",
+    "generated_utc":  "2026-08-01T01:35:52.9957423+00:00",
+    "run_id":  "native-20260731-c8-full45",
+    "result":  "passed",
+    "scenario_sha256":  "aff5b562deec13e510ee04bc95399378c1b09b3e283abd7a374b585e3f0334d7",
+    "clients":  [
+                    {
+                        "client":  "omen",
+                        "result":  "passed",
+                        "native_sessions":  2,
+                        "native_total":  0,
+                        "missing_actions":  [
+
+                                            ],
+                        "checks":  {
+                                       "every_manifest_action_completed":  true,
+                                       "scenario_completed_once":  true,
+                                       "no_scenario_failure":  true,
+                                       "native_ledger_sessions_present":  true,
+                                       "native_poison_armed_all":  true,
+                                       "native_total_zero":  true,
+                                       "native_poison_trips_zero":  true,
+                                       "ledger_lossless":  true,
+                                       "direct_control_completed":  true,
+                                       "routed_shapes_completed":  true,
+                                       "zdo_semantics_completed":  true,
+                                       "ownership_pickup_completed":  true,
+                                       "zone_membership_completed":  true,
+                                       "motion_and_loss_completed":  true
+                                   },
+                        "failed_checks":  [
+
+                                          ]
+                    },
+                    {
+                        "client":  "i5",
+                        "result":  "passed",
+                        "native_sessions":  2,
+                        "native_total":  0,
+                        "missing_actions":  [
+
+                                            ],
+                        "checks":  {
+                                       "every_manifest_action_completed":  true,
+                                       "scenario_completed_once":  true,
+                                       "no_scenario_failure":  true,
+                                       "native_ledger_sessions_present":  true,
+                                       "native_poison_armed_all":  true,
+                                       "native_total_zero":  true,
+                                       "native_poison_trips_zero":  true,
+                                       "ledger_lossless":  true,
+                                       "direct_control_completed":  true,
+                                       "routed_shapes_completed":  true,
+                                       "zdo_semantics_completed":  true,
+                                       "ownership_pickup_completed":  true,
+                                       "zone_membership_completed":  true,
+                                       "motion_and_loss_completed":  true,
+                                       "ownership_contention_rejected":  true
+                                   },
+                        "failed_checks":  [
+
+                                          ]
+                    }
+                ],
+    "server":  {
+                   "result":  "passed",
+                   "native_total":  0,
+                   "checks":  {
+                                  "runtime_poison_armed":  true,
+                                  "runtime_poison_disarmed":  true,
+                                  "native_summary_present":  true,
+                                  "native_poison_armed":  true,
+                                  "native_total_zero":  true,
+                                  "native_poison_trips_zero":  true,
+                                  "ledger_lossless":  true
+                              },
+                   "failed_checks":  [
+
+                                     ]
+               },
+    "checks":  {
+                   "coverage_passed":  true,
+                   "composition_completed":  true,
+                   "logical_cold_join_passed":  true,
+                   "both_clients_passed":  true,
+                   "server_native_zero":  true,
+                   "gateway_interruption_replayed":  true,
+                   "save_integrity_passed":  true
+               },
+    "failed_checks":  [
+
+                      ],
+    "verified":  [
+                     "complete manifest action coverage",
+                     "client and server poison armed with native totals zero",
+                     "typed direct, routed, ZDO, ownership, zone, and motion boundaries composed",
+                     "a distinct logical peer was rejected from the contended ownership target",
+                     "Gateway restart replay and UDP loss recovery completed",
+                     "clean disconnect/rejoin completed on both clients",
+                     "AM4 save fingerprint stayed structurally clean"
+                 ],
+    "inferred":  [
+
+                 ],
+    "unverified":  [
+                       "subjective motion quality",
+                       "P7 promotion and fallback deletion"
+                   ]
+}

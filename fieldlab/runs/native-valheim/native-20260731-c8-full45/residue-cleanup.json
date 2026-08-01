@@ -1,0 +1,21 @@
+{
+    "schema_version":  1,
+    "run_id":  "native-20260731-c8-full45",
+    "receipt":  {
+                    "schema_version":  1,
+                    "event":  "server_runtime_control",
+                    "timestamp_utc":  "2026-08-01T01:35:16.3448850Z",
+                    "request_id":  "native-20260731-c8-full45-residue-cleanup",
+                    "setting":  "cutoverResidueCleanup",
+                    "requested_value":  "native-20260731-c8-full45",
+                    "result":  "applied",
+                    "reason":  "ok",
+                    "old_value":  "zone_35,-1_before=1235",
+                    "effective_value":  "zone_35,-1_after=1235",
+                    "effect":  "residue_cleanup mode=run scanned=9155595 matched=0 destroyed=0 skipped_live_owner=0 c3_probe=0 c5_zone_probe=0 ownership_item=0 tags=none zones=none terrain_compiler_dupes_destroyed=0 terrain_compiler_dupes_skipped_live_owner=0 terrain_compiler_zones=none",
+                    "auth_context":  "authenticated_host_filesystem",
+                    "session_id":  "20260801-004746-d4576741",
+                    "build_version":  "0.5.45"
+                },
+    "cleanup_error":  null
+}
