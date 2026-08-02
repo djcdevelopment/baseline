@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "gate": "C10a selected physical saddle control and ownership",
+  "status": "accepted",
+  "captured_utc": "2026-08-02T22:05:35Z",
+  "release": {
+    "release_id": "m7-c10a-20260802-r27",
+    "mod_version": "0.5.66",
+    "mod_sha256": "337b942a64eb5632ef0bced863b9295f89269e7e928ed516404072cbac1933bc",
+    "gateway_image_id": "sha256:66ddf62515ca127f2e023f5b90e6afa174f20d16eb1182f17b4bf83a8276ea13",
+    "am4_deploy_result": "passed",
+    "am4_plugin_loaded": true,
+    "am4_server_ready": true
+  },
+  "accepted_run": {
+    "run_id": "native-20260802-c10a-mount-r27-1",
+    "profile": "c10a-mount",
+    "scenario_sha256": "e47a5e91e404a1166289b525c23f20ac472991a593b46deb43844167536aa15a",
+    "action_count": 33,
+    "composition_result": "completed",
+    "steam_free_cold_join": true,
+    "native_zero_composition": true,
+    "owner_epochs": [1, 2, 3, 4, 5],
+    "disconnect_reclaim": {
+      "departed_peer": "omen",
+      "fallback_peer": "i5",
+      "epoch": 4,
+      "passed": true
+    },
+    "probe_metrics": [
+      {"action": "i5-drive", "distance_m": 8.789, "heading_deg": 179.669, "controls": 1163, "nonzero_controls": 762, "riding_ticks": 160, "epoch": 2, "snapshot_advance": 39},
+      {"action": "omen-observe", "distance_m": 9.161, "heading_deg": 178.326, "attachment_samples": 1070, "attachment_p95_m": 0, "attachment_max_m": 0, "epoch": 2, "snapshot_advance": 40},
+      {"action": "omen-drive", "distance_m": 9.605, "heading_deg": 179.811, "controls": 1460, "nonzero_controls": 1060, "riding_ticks": 160, "epoch": 5, "snapshot_advance": 39},
+      {"action": "i5-observe", "distance_m": 9.775, "heading_deg": 176.151, "attachment_samples": 677, "attachment_p95_m": 0, "attachment_max_m": 0, "epoch": 5, "snapshot_advance": 41}
+    ],
+    "machine_checks": {
+      "passed": 18,
+      "total": 18,
+      "failed": 0,
+      "stale_transfer_fence_both_clients": true,
+      "stale_snapshot_and_rider_edge_fence_both_clients": true,
+      "native_zero_ledgers_clean": true,
+      "exact_paired_gateway_image": true,
+      "exactly_one_tagged_mount_destroyed": true
+    },
+    "clients": [
+      {"client": "omen", "result": "joined_held_and_stopped", "resume_count": 1, "terminal": "scenario_complete"},
+      {"client": "i5", "result": "joined_held_and_stopped", "resume_count": 1, "terminal": "scenario_complete"}
+    ]
+  },
+  "pre_acceptance_falsifiers": [
+    "r17", "r18", "r19", "r20-1", "r20-2", "r21", "r22", "r23", "r24", "r25", "r26"
+  ],
+  "scope": {
+    "closed": "selected two-client saddle control/ownership canary",
+    "not_closed": [
+      "arbitrary existing untagged mounts",
+      "third distant recipient and AoI enter/leave",
+      "relevance-scoped snapshot fanout",
+      "container/station family",
+      "AI/creature family",
+      "fallback deletion and P7 promotion"
+    ],
+    "p7": "untouched",
+    "workbench": "untouched",
+    "hearth": "untouched and separate"
+  }
+}

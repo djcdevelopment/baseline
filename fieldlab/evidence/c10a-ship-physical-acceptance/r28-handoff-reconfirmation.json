@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "gate": "C10a ship handoff regression",
+  "status": "accepted",
+  "captured_utc": "2026-08-02T22:26:57Z",
+  "falsifier": {
+    "run_id": "native-20260802-c10a-vehicle-r27-1",
+    "result": "failed",
+    "defect": "the future physics owner retained the departed first helm user and dispatched every reverse RequestControl without emitting RequestRespons"
+  },
+  "release": {
+    "release_id": "m7-c10a-20260802-r28",
+    "mod_version": "0.5.67",
+    "mod_sha256": "748289a7600374d7ed46f450ef38b0ae1ee8897f43ebe64ebd93190242e8b3ce",
+    "gateway_image_id": "sha256:aaa3cae6dff5ee8c2a6dd557c5b418e3c08a96e219f3ef47f09f41191f8d0a18",
+    "am4_deploy_result": "passed"
+  },
+  "accepted_run": {
+    "run_id": "native-20260802-c10a-vehicle-r28-1",
+    "scenario_sha256": "57def4ef954f2774d787b16032a41cf7c3030d484fdc0f0ae9be6dbeaf3fc774",
+    "machine_checks": {"passed": 19, "total": 19, "failed": 0},
+    "handoff": {
+      "canonical_helm_user": 0,
+      "applied_on_omen": true,
+      "applied_on_i5": true
+    },
+    "control_legs": [
+      {"driver": "i5", "physics_owner": "omen", "driver_distance_m": 19.282, "observer_distance_m": 22.913, "rudder": 1, "speed_changed": true, "release_observed": true},
+      {"driver": "omen", "physics_owner": "i5", "driver_distance_m": 14.722, "observer_distance_m": 20.279, "rudder": 1, "speed_changed": true, "release_observed": true}
+    ],
+    "server_snapshot_sequences": {
+      "initial_owner": [1, 25, 50, 75, 100],
+      "transferred_owner": [1, 25, 50, 75, 100, 125]
+    },
+    "native_zero_ledgers_clean": true,
+    "both_clients_resumed_once": true,
+    "cleanup": "matched=0 destroyed=0 vehicle=0"
+  }
+}

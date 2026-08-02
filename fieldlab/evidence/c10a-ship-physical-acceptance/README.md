@@ -3,6 +3,17 @@
 Status: **accepted on the AM4 local lane** on 2026-08-02. P7 was not
 started or changed.
 
+The original r15 acceptance was re-opened by the exact r27 saddle candidate.
+`native-20260802-c10a-vehicle-r27-1` proved that owner handoff could strand the
+future owner with the departed first helm user. r28 now requires canonical
+`s_user == 0` before transfer and applies that release to both replicas before
+the new owner can publish. `native-20260802-c10a-vehicle-r28-1` passed all 19
+machine checks: both directions moved, both releases passed, the atomic handoff
+reached both clients with `canonical_helm_user=0`, snapshots advanced under both
+owners, both clients resumed once, and all native ledgers stayed zero. The
+compact regression receipt is
+[`r28-handoff-reconfirmation.json`](r28-handoff-reconfirmation.json).
+
 Exact paired candidate `m7-c10a-20260802-r15` ran on the real OMEN and i5
 Valheim clients against the AM4 dedicated server. All three loaded mod version
 `0.5.54` with DLL SHA-256
@@ -59,12 +70,14 @@ The compact machine-readable receipt is
 retained under the ignored directory
 `fieldlab/runs/native-valheim/native-20260802-c10a-vehicle-r15-1/`.
 
-The exact artifact rebuilt deterministically to the same SHA-256 with zero
-warnings or errors; its focused suite passed 138/138. A clean no-cache .NET 9
-Docker verification passed all 620 repository tests (126 Contracts, 17
-Companion, 250 Simulation, 227 Gateway).
+The r28 mod artifact was forced through `Rebuild`, decompiled to verify that the
+handoff repair was present, and deployed by exact SHA-256; its focused suite
+passed 140/140. The r27 Gateway/saddle source had already passed the full Docker
+.NET solution gate at 625/625 (126 Contracts, 17 Companion, 250 Simulation,
+232 Gateway); r28 did not change that source.
 
-This closes the C10a physical **ship/vehicle gate only**. The separate mount,
-container/station, and AI/creature physical gates remain before P7 promotion
-and native-fallback deletion. Workbench/dashboard work remains frozen until
-those three gates close.
+This closes the C10a physical **ship/vehicle gate only**. The selected saddle
+canary is now accepted separately; arbitrary untagged mounts and relevance-
+scoped fan-out remain broader C10 work. Container/station, AI/creature, general
+AoI, P7 promotion, and native-fallback deletion also remain. Workbench/dashboard
+work remains frozen behind functional cutover work.

@@ -35,7 +35,7 @@ replacement architecture, and it resolves the root `DECISIONS-PENDING.md` entry
 | `SpawnObject` (routed) | deferred (admin/cheat) | **needs-lane P2** | Registered by `ZNetScene.Awake` — core scene machinery, not a console path. |
 | `RPC_TeleportPlayer` (routed) | needs-lane P1 | **verified deferred-with-poison-guard** | The only pinned outbound caller is Terminal's cheat-only, admin-only, non-network `recall` command. Portal travel rides `RPC_TeleportTo` (instance), and both r4 physical clients completed two-way traversal under poison without invoking this method. |
 | `UseStamina` (instance) | needs-lane P1 | **needs-lane P3 [VERIFY]** | Registered by `Player.Awake`; stamina spend is normally owner-local. The remote-invoke paths are rare. |
-| `RequestControl` / `ReleaseControl` / `RequestRespons` (instance) | superseded by ownership-lease | **verified split: typed ship lane accepted; saddle lane remains** | Fresh extractor reproduction confirms all three hashes are registered by both `Sadle.Awake` and `ShipControlls.Awake`, but source proves incompatible semantics: ships separate the profile-identity control token from simulation ownership, while saddles use session identity and transfer ownership in the grant. A method-name contract or generic C4 pickup-lease extension is invalid for one registrant. Exact r15 physically accepts the explicit ship-target contract; the same names remain poison-blocked for saddle and unknown target kinds. |
+| `RequestControl` / `ReleaseControl` / `RequestRespons` (instance) | superseded by ownership-lease | **verified split: selected typed ship and saddle lanes accepted** | Fresh extractor reproduction confirms all three hashes are registered by both `Sadle.Awake` and `ShipControlls.Awake`, but source proves incompatible semantics: ships separate the profile-identity control token from simulation ownership, while saddles use session identity and transfer ownership in the grant. A method-name contract or generic C4 pickup-lease extension is invalid for one registrant. Exact r27 physically accepts the selected explicit saddle-target canary; exact r28 reconfirms the explicit ship-target contract after repairing atomic helm release/owner handoff. Unknown target kinds remain poison-blocked. |
 | `RPC_RequestOwn` (instance) | superseded | superseded (kept) | This is the exact mechanism the C4 lease lane replaced and poisoned (`ItemDrop.RequestOwn`); the other registrants (`ArmorStand`, `ItemStand`, `Vagon`) ride the same replaced dance. |
 
 ### C10a verification update — 2026-08-02
@@ -67,14 +67,20 @@ collision**, not one ownership-lease row. A fresh extractor run reproduced both
 120-method instance inventory exactly. Ship control does not transfer ZDO ownership and
 uses persistent profile identity; saddle control transfers ownership and uses session/ZDO
 identity. The generic admission contract therefore deliberately rejects all three names.
-The typed ship contract now admits the three hashes only with an explicit ship target
-kind; exact r15 physically proved both helmsman/physics-owner directions, authenticated
-owner handoff, server snapshot fan-out, and non-owner replica apply with native use and
-poison trips at zero. Saddle and unknown target kinds remain rejected. Retained source
-receipt:
+Separate typed contracts now admit the three hashes only with explicit ship or saddle
+target kinds. Exact r27 physically proved both saddle rider directions, authenticated
+owner epochs 1→5, disconnect reclaim to a live peer, server snapshot/rider-edge fan-out,
+exact observer attachment, stale frame rejection, native-zero, and exact cleanup. Its
+exact ship rerun then exposed a future owner retaining the departed helm user; exact r28
+made canonical helm release plus owner transfer atomic and passed both ship directions
+with 19/19 machine checks. Unknown target kinds remain rejected. Retained source receipt:
 `fieldlab/evidence/c10a-vehicle-control-verification/verification-summary.json`.
 Retained physical ship receipt:
 `fieldlab/evidence/c10a-ship-physical-acceptance/verification-summary.json`.
+Retained ship handoff regression receipt:
+`fieldlab/evidence/c10a-ship-physical-acceptance/r28-handoff-reconfirmation.json`.
+Retained physical saddle receipt:
+`fieldlab/evidence/c10a-mount-physical-acceptance/verification-summary.json`.
 
 ## Summary counts (post-review)
 
@@ -150,9 +156,10 @@ HEARTH draft artifact; rows not listed in the deltas match the draft.
 Families and coverage per the machine draft, with the three
 targeted-verification flags this audit endorses:
 
-1. **Vehicles/mounts (`Ship`, `ShipControlls`, `Sadle`, `Vagon`, …)** — owner-
-   authoritative physics; requires lease-lane extension + explicit tug-of-war
-   verification. This is the largest genuinely novel ownership work left.
+1. **Vehicles/mounts (`Ship`, `ShipControlls`, `Sadle`, `Vagon`, …)** — the selected
+   typed Karve and run-tagged Lox canaries are physically accepted. Remaining work is
+   arbitrary existing untagged target handling plus a third recipient's AoI enter/leave
+   and relevance-scoped fan-out; the saddle canary currently uses `Everybody`.
 2. **Containers/stations (`Container`, `Smelter`, `CookingStation`, …)** —
    inventory mutations must be strictly ordered through the lease/journal to
    prevent duping; needs a targeted two-client container gate.
@@ -176,5 +183,6 @@ respective shapes.
   behind the poison tripwire with the deferred bucket documented in the C10 gate.
 - Most needs-lane rows are allow-list + payload-contract admissions on proven lanes.
   Vehicle control is the verified exception: one hash has registrant-dependent identity
-  and ownership semantics, so ship and saddle require separate typed contracts. The four
-  component-family gates are the remaining C9/C10-adjacent verification work.
+  and ownership semantics, so ship and saddle require separate typed contracts. The two
+  remaining component-family gates are container/station and AI/creature; vehicle/mount
+  generalization and relevance remain a separate C10 boundary.

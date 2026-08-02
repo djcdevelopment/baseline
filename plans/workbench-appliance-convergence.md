@@ -3,6 +3,12 @@
 Status: planned follow-on, 2026-08-02. Existing PD-5 policy determines the
 direction; this is execution work, not a reopened product decision.
 
+**Sequencing lock:** Workbench implementation and dashboard observation are frozen behind
+the functional native-Valheim cutover. Do not spend another engineering slice here while
+C10 still has local gameplay gates. Resume only after container/station, AI/creature, and
+vehicle/mount AoI/relevance generalization have physical receipts, or when Derek explicitly
+changes the priority. A UI cannot substitute for a playable two-client cutover receipt.
+
 ## Outcome
 
 Baseline presents one local Workbench installation and one launcher even though
@@ -112,6 +118,8 @@ retains worlds, configuration, backups, enrollment association, and receipts.
   clean-machine and human comprehension evidence are required.
 
 ## Finite remaining queue
+
+This queue begins only after the sequencing lock above releases.
 
 1. Re-observe the repaired live Home on the clean committed image.
 2. Implement AC-1 and AC-2 as the next Workbench engineering slice.
