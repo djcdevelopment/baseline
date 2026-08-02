@@ -51,6 +51,7 @@ zero objects. The interim manual WAL-discard rule is therefore retired on AM4.
 
 This evidence proves the C8 composition boundary on AM4 for the selected/registered
 method and prefab surface and the session-scoped epoch runtime gate. It does not prove
-the unselected breadth (the 29 P1 admissions, three [VERIFY] rows, and three
+the unselected breadth (33 P1 admissions — the 29 instance methods originally named
+here plus four P1 global routed registrations — three `[VERIFY]` rows, and three
 component-family gates from the C8 breadth audit), subjective motion quality, release
 alignment, or P7 promotion/fallback deletion; those remain C9-C10.

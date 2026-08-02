@@ -58,25 +58,25 @@ repeated per method with the signatures captured in v2.
 
 | Name | Bucket | Lane / Priority | Rationale |
 |---|---|---|---|
-| ChatMessage | needs-lane | target-ZDO (P1) | Core player communication (`Chat.Awake`, sig `Vector3,Int32,UserInfo,String`) |
+| ChatMessage | needs-lane | global-routed (P1) | Core player communication (`Chat.Awake`, sig `Vector3,Int32,UserInfo,String`) |
 | DestroyZDO | superseded | ZDO journal | ZDO lifecycle owned by the journal (tombstones proven in C8 gates) |
 | GlobalKeys | superseded | world-zone/descriptor | World bootstrap carried by the descriptor lane |
 | LocationIcons | superseded | world-zone/descriptor | Map pins bootstrapped via descriptor lane |
 | Ping | superseded | logical-peer session | Liveness owned by gateway session plumbing |
 | Pong | superseded | logical-peer session | Liveness owned by gateway session plumbing |
-| RPC_DamageText | needs-lane | target-ZDO (P2) | Combat feedback HUD broadcast |
-| RPC_DiscoverClosestLocation | needs-lane | target-ZDO (P2) | Vegvisir/cartography exploration |
-| RPC_DiscoverLocationResponse | needs-lane | target-ZDO (P2) | Exploration response |
-| RPC_SetConnection | needs-lane | target-ZDO (P2) [VERIFY] | Portal linking |
+| RPC_DamageText | needs-lane | global-routed (P2) | Combat feedback HUD broadcast |
+| RPC_DiscoverClosestLocation | needs-lane | global-routed (P2) | Vegvisir/cartography exploration |
+| RPC_DiscoverLocationResponse | needs-lane | global-routed (P2) | Exploration response |
+| RPC_SetConnection | needs-lane | global-routed (P2) [VERIFY] | Portal linking |
 | RPC_TeleportPlayer | deferred | poison-guarded [VERIFY] | `Chat.Awake` command path; portals use RPC_TeleportTo |
 | RemoveGlobalKey | superseded | world-zone/descriptor | Descriptor lane |
 | RequestZDO | superseded | ZDO journal | Journal replaces on-demand ZDO sync |
-| SetEvent | needs-lane | target-ZDO (P2) | Base raids / random events |
+| SetEvent | needs-lane | global-routed (P2) | Base raids / random events |
 | SetGlobalKey | superseded | world-zone/descriptor | Descriptor lane |
-| ShowMessage | needs-lane | target-ZDO (P1) | Server/system HUD messages |
-| SleepStart | needs-lane | target-ZDO (P1) | Night skip / bed logic |
-| SleepStop | needs-lane | target-ZDO (P1) | Night skip / bed logic |
-| SpawnObject | needs-lane | target-ZDO (P2) | `ZNetScene.Awake` — core spawn broadcast, not admin |
+| ShowMessage | needs-lane | global-routed (P1) | Server/system HUD messages |
+| SleepStart | needs-lane | global-routed (P1) | Night skip / bed logic |
+| SleepStop | needs-lane | global-routed (P1) | Night skip / bed logic |
+| SpawnObject | needs-lane | global-routed (P2) | `ZNetScene.Awake` — core spawn broadcast, not admin |
 
 ## DirectRPCs (21)
 
@@ -132,9 +132,10 @@ respective shapes.
   entry: the evaluate-before-freeze decision is made per-RPC above. Owner
   (Derek) can reopen any single row without reopening the audit.
 - The **C10 fallback-deletion entry criteria** gain a concrete work queue: the
-  P1 admission backlog (29 methods) must be admitted + contract-tested before
-  native fallback deletion; P2/P3 may ship behind the poison tripwire with the
-  deferred bucket documented in the C10 gate.
+  P1 admission backlog is **33 methods** — 29 instance RPCs plus the four routed
+  globals `ChatMessage`, `ShowMessage`, `SleepStart`, and `SleepStop`. All 33 must
+  be admitted + contract-tested before native fallback deletion; P2/P3 may ship
+  behind the poison tripwire with the deferred bucket documented in the C10 gate.
 - Nothing here reopens C0–C8 architecture: every needs-lane row is an
   allow-list + payload-contract admission on proven lanes. The three [VERIFY]
   flags and the three component-family gates are the C9/C10-adjacent

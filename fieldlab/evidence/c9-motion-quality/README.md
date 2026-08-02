@@ -1,6 +1,7 @@
-# C9 motion quality — complete on AM4
+# C9 motion quality — machine and artifact gates complete on AM4
 
-**Status:** complete on 2026-08-02. The accepted physical run is
+**Status:** machine and retained-artifact gates complete on 2026-08-02; Derek's
+subjective rendered-motion verdict remains pending. The accepted physical run is
 `native-20260802-c9-motion6`, using two rendered Valheim clients (OMEN/Tugcorp and
 i5/durracktu), the AM4 dedicated server and Gateway, and mod SHA-256
 `a658af8bb39ac619cbf967dc9fa007745d042088c4ffaa500b119012c9085d55`.
@@ -26,6 +27,7 @@ python fieldlab/scripts/Write-C9MotionQualitySummary.py `
 | Bounded injected-loss recovery | Passed | OMEN withheld exactly sequences 1086–1105; i5 entered hold with `native_fallback=false` and applied the accepted reliable resync after 0.895 s. |
 | No apply-attributable wall-clock hitch | Passed | The run-scoped perf windows contain 7 OMEN and 8 i5 lifecycle hitches. None has a `LumberjacksMotionRunner` section accounting for the frame; the largest are Valheim's own `Starting respawn` frames. |
 | Retained rendered presentation | Passed | One 20.067 s, 2560×720, 30 fps side-by-side artifact contains both observer/driver role combinations. Both source receipts verify that the exact Valheim process window was maximized and foreground before capture. |
+| Derek's subjective rendered-motion verdict | **Pending** | Review the retained side-by-side clip once and record `smooth`, `rough`, or `mixed`; no live KVM session or rerun is required. |
 
 ## Physical run result
 
@@ -58,9 +60,9 @@ The retained review artifact is
 - sampled-frame review by Codex shows each named remote avatar advancing across the
   framed path with no visible hard correction in the ordinary motion windows.
 
-No `smooth`/`rough`/`mixed` verdict is attributed to Derek. That subjective verdict is
-optional under the C9 contract; the exit gate requires a retained reviewable artifact
-and labels any subjective statement with its actual reviewer.
+No `smooth`/`rough`/`mixed` verdict is attributed to Derek yet. That one-word review is
+the remaining subjective C9 acceptance item; the machine and artifact gates above are
+complete and do not need to be rerun to obtain it.
 
 The two source capture receipts are retained beside the raw clips. They record exact
 foreground-handle equality (OMEN PID 49912, handle 241437642; i5 PID 18320, handle
@@ -98,6 +100,7 @@ target-rejection bursts were transient, and the once-per-session cold-join stall
 Valheim's own `WorldGenerator.Initialize`, not motion apply. C9 does not reopen those
 boundaries.
 
-C9 proves motion correctness and retains visible presentation. It does **not** close
-C10's 29 P1 admissions, three `[VERIFY]` rows, component-family gates, release
-alignment, P7 promotion, or fallback deletion.
+C9's machine evidence proves motion correctness and retains visible presentation. It
+does **not** substitute for Derek's pending subjective verdict, and it does **not**
+close C10's 33 P1 admissions (29 instance plus four global), three `[VERIFY]` rows,
+component-family gates, release alignment, P7 promotion, or fallback deletion.
