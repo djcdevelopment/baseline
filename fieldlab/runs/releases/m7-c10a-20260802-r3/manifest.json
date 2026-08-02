@@ -1,0 +1,75 @@
+{
+  "schema": "comfy-p7-release/v3-candidate",
+  "release_id": "m7-c10a-20260802-r3",
+  "captured_utc": "2026-08-02T14:26:59Z",
+  "source": {
+    "baseline_commit": "025b3b02504714a1a112058e316594c69c82208f",
+    "baseline_clean": true
+  },
+  "build_contract": {
+    "continuous_integration_build": true,
+    "deterministic": true,
+    "path_map": "fixed repository source roots",
+    "mod_repeatability": "Built after the release-stamp commit so the DLL and portable PDB embed the exact candidate commit. The exact DLL is promoted by SHA-256.",
+    "gateway_reproducibility": "The image payload is the reproducibility unit. The authoritative image target compiles and tests the solution before publish.",
+    "shared_admission_contract": "The mod and Gateway compile Lumberjacks/src/Game.Contracts/Valheim/ValheimRoutedRpcAdmissions.cs from the same commit."
+  },
+  "mod": {
+    "version": "0.5.45.0",
+    "release_id": "m7-c10a-20260802-r3",
+    "clean_build_sha256": "afe9c39c27a8f1a3a9faf95a2f86c9991c0fd17f64bd1d26852b9b9dfa48181f",
+    "size_bytes": 756224,
+    "frozen": true,
+    "build_command": "infra/gcp/p7/scripts/New-ReleaseCut.ps1 -ReleaseId m7-c10a-20260802-r3"
+  },
+  "gateway": {
+    "image_id": "sha256:933e97fab623bfd8349ca4d85d26617d371617d3899bf926db479439c875b154",
+    "image_release_id": "m7-c10a-20260802-r3",
+    "admitted_mod_release": "m7-c10a-20260802-r3",
+    "release_label": "m7-c10a-20260802-r3",
+    "revision_label": "025b3b0",
+    "identity_check": "Test-GatewayImageRelease.ps1 read /app/Game.Gateway.dll from the built image and confirmed that it admits m7-c10a-20260802-r3.",
+    "build_command": "infra/gcp/p7/scripts/New-ReleaseCut.ps1 -ReleaseId m7-c10a-20260802-r3"
+  },
+  "eventlog": {
+    "image_id": "sha256:685a183cd16644b9905321dcca1fe390f2c6ae63c569b4bba63809b4bf65ca8d",
+    "release_label": "m7-c10a-20260802-r3",
+    "gate": "build+hash+pin",
+    "build_command": "docker build --target eventlog -t lumberjacks-eventlog:m7-c10a-20260802-r3 Lumberjacks"
+  },
+  "progression": {
+    "image_id": "sha256:bace8a5e21e0acbc80f25928facabb40387ea9973c8d6fa321c158ae2c67f09f",
+    "release_label": "m7-c10a-20260802-r3",
+    "gate": "build+hash+pin",
+    "build_command": "docker build --target progression -t lumberjacks-progression:m7-c10a-20260802-r3 Lumberjacks"
+  },
+  "operatorapi": {
+    "image_id": "sha256:3278fc190367a7a513e3cdbc8f97c3d3b3754d645ba5c952dc6330f655640775",
+    "release_label": "m7-c10a-20260802-r3",
+    "gate": "build+hash+pin",
+    "build_command": "docker build --target operatorapi -t lumberjacks-operatorapi:m7-c10a-20260802-r3 Lumberjacks"
+  },
+  "runtime_config": {
+    "target": "AM4 local lab",
+    "native_poison": "required for acceptance",
+    "strict_release": "enable only after the same mod SHA and Gateway image are installed"
+  },
+  "toolchain": {
+    "mod_sdk": "8.0.422",
+    "gateway_sdk_digest": "sha256:24fe7c00719afc72e2b67cace264dea2ee39ae45f5b553bd59493fe3ddfc920f",
+    "gateway_aspnet_digest": "sha256:86085bc68dde4a8cdfd8c2342acc3bf843eade855092879a85e3f3adb56e55c7"
+  },
+  "deployment": {
+    "world_tested": false,
+    "target": "AM4/OMEN/i5 local lab only",
+    "method": "Deployed hash-exactly to AM4, OMEN, and i5. Physical run native-20260802-c10a-r3 failed i5-c8-zone-resume after replay; P7 is unchanged.",
+    "physical_run": "native-20260802-c10a-r3",
+    "physical_result": "failed",
+    "failure_evidence": "fieldlab/evidence/c10a-r3-outbound-stall/failure-summary.json"
+  },
+  "limitations": [
+    "This candidate is rejected: i5's outbound WebSocket worker stopped draining after zone-snapshot resume, so semantic completion was never acknowledged.",
+    "The three VERIFY rows and vehicles/mounts, containers/stations, and AI/creatures gates remain open.",
+    "This candidate is not authorized for P7 promotion until AM4 acceptance is retained."
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "run_id": "native-20260802-c10a-r3",
+  "result": "failed",
+  "failed_client": "i5",
+  "failed_action": "i5-c8-zone-resume",
+  "detail": "world_zone_probe_deadline applied=1 replayed=1 complete_count=0",
+  "artifact": {
+    "source_commit": "025b3b02504714a1a112058e316594c69c82208f",
+    "release_id": "m7-c10a-20260802-r3",
+    "mod_sha256": "afe9c39c27a8f1a3a9faf95a2f86c9991c0fd17f64bd1d26852b9b9dfa48181f",
+    "gateway_image_id": "sha256:933e97fab623bfd8349ca4d85d26617d371617d3899bf926db479439c875b154",
+    "scenario_sha256": "dd68b88a4bfbc5d040ee1723811c6b55ad5a5b03a3c62496e0e7237332c527ac"
+  },
+  "barrier": {
+    "held_sequence": 2249,
+    "replayed_chunks": 1,
+    "released_through_sequence": 2262,
+    "semantic_complete_count": 0
+  },
+  "outbound_stall": {
+    "gateway_last_i5_inbound_utc": "2026-08-02T14:38:34.0007213Z",
+    "gateway_last_i5_reliable_ack_through": 2244,
+    "later_i5_inbound_reliable_sequences": [2477, 2483, 2495],
+    "later_ack_queue_result": false,
+    "receive_side_remained_live": true,
+    "outbound_queue_stopped_draining": true,
+    "sender_fault_kind": "unobservable_before_repair"
+  },
+  "cleanup": {
+    "client_processes_stopped": true,
+    "runtime_controls_disarmed": true,
+    "tagged_probe_objects_destroyed": 3,
+    "p7_changed": false
+  }
+}
