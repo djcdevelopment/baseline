@@ -16,9 +16,10 @@ candidate, rather than an unqualified completion claim, because the Saga's
 unfamiliar-user usability gate is explicitly still open. It is now tagged
 `TODO — Derek soon`, not an active implementation blocker. The capture also
 records a separate native-motion-only finding for the Lumberjacks motion lane.
-The approved PD-7 bridge has since recreated the Lab server from Baseline
-compose while retaining the legacy state mount, and both rendered installs now
-have explicit local-Lab routes with canonical session/motion disabled at rest.
+The approved PD-7 bridge first recreated the Lab server from Baseline Compose;
+the subsequent full state-root migration now places the active server config
+and data under Baseline as well. Both rendered installs have explicit local-Lab
+routes with canonical session/motion disabled at rest.
 The first post-bridge C6 job exposed a missing `Game.Companion.Tests.csproj`
 COPY in the gateway Dockerfile; that cache-stage defect was corrected and the
 gateway then passed restore, build, 605 tests, and publish. The next C6 job
@@ -63,17 +64,16 @@ main-thread watchdog and records actual checkout identity (`f54a0c55...`, dirty)
 separately from the stale Companion image metadata. The rendered preflight now
 fails closed on that dirty checkout; `job-20260802-052131353-ddbbd053` proved
 the gate before any client launch.
-The new read-only `Test-LabRuntimeProvenance.ps1` gate then passed the active
-Lab's Baseline Compose attribution, immutable server image digest, explicit
-OMEN/i5 routes, and deliberate `retained_legacy_bridge` state disposition;
-without explicit bridge admission it exited 1. This closes the provenance
-preflight implementation requirement. The rendered runner now consumes that
-strict form before any other C6 work and never admits the interim bridge. Job
-`job-20260802-054530209-f67cfc0d` failed there with
-`rendered_prelive_lab_provenance_failed`, created no run artifacts, left both
-clients stopped, left i5's task `Ready`, and preserved OMEN's safe config hash.
-The full state migration and clean, image-matched C6 diagnostic run remain
-separate follow-ons.
+The new read-only `Test-LabRuntimeProvenance.ps1` gate first proved that the
+explicit bridge passed only when admitted and failed strict rendered preflight
+in `job-20260802-054530209-f67cfc0d` before any client launch. The full
+migration then completed at `2026-08-02T06:33:30Z`: its tools-layer gate proved
+a fresh ready heartbeat with zero peers/players, no OMEN Valheim process, and
+no backup in progress; stopped source and target matched at 2,561 files and
+57,551,976,393 bytes plus four critical world hashes. The retired source
+remains rollback, and the active server now passes strict provenance as
+`baseline_migrated` with only Baseline Compose labels and mounts. The clean,
+image-matched C6 diagnostic run is the remaining engineering follow-on.
 
 ## Closeout disposition
 
@@ -99,9 +99,9 @@ separate follow-ons.
    Both rendered clients were still configured for the retired public Gateway
    `http://8.231.129.249:42317`, while the local Lab Gateway was healthy on
    `http://127.0.0.1:4000` and reachable from i5 at `100.124.12.37:4000`.
-   The approved short-term bridge has now recreated the Valheim server from
-   Baseline compose while preserving the retained legacy state mount; the
-   full state migration remains pending. Do not call the next player/motion
+   The approved bridge recreated the Valheim server from Baseline Compose, and
+   the full state-root migration has now moved the active server config/data
+   under Baseline with exact inventory and world-hash verification. Do not call the next player/motion
    window a clean Lab run until the per-node-route, side-channel, motion
    rendezvous, and failed-run evidence gates are resolved. The latest full C6
    evidence adds a rendered main-loop/peer-load forensic gate after the

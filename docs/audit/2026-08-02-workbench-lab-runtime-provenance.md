@@ -306,16 +306,15 @@ OMEN/i5 routes. The admitted bridge invocation passed against
 - no retired checkout in the Compose labels;
 - server image digest
   `sha256:e8b13da3c44f54a38511c8ac224f2959a437c0b2626cf916683ca7acc8dfb146`;
-- `state_root_disposition=retained_legacy_bridge` because `/config` and
-  `/opt/valheim` still mount the explicitly retained legacy state root and the
-  Baseline bridge override is present;
+- before migration, `state_root_disposition=retained_legacy_bridge` because
+  `/config` and `/opt/valheim` mounted the explicitly retained legacy state
+  root and the Baseline bridge override was present;
 - OMEN `http://127.0.0.1:4000` and i5 `http://100.124.12.37:4000`, with no
   credentials embedded.
 
 The same verifier without `-AllowRetainedStateBridge` exited 1 and reported
 `state_root_disposition=unknown`. This is the intended fail-closed behavior:
-the bridge is visible and admitted only as an explicit interim state, while
-full state migration remains a separate operator decision. The verifier is
+the bridge was visible and admitted only as an explicit interim state. The verifier is
 read-only and did not restart, stop, recreate, or write to the Lab.
 
 The Workbench rendered-C6 path now consumes that strict invocation as its first
@@ -328,6 +327,26 @@ comparison, i5 preflight, scenario generation, or either client launch. No run
 artifact was created; OMEN and i5 had zero Valheim processes, the i5 scheduled
 task remained `Ready`, and OMEN's config retained SHA-256
 `A141231B84010B456537B2B80360C3C0128FED2753ACFAD76DC24310A71F1F42`.
+
+## Full Baseline state-root cutover
+
+The migration completed at `2026-08-02T06:33:30Z` through
+`fieldlab/scripts/Invoke-LabStateRootMigration.ps1`. A reusable
+`tools/workbench/Test-LocalLabQuiescence.ps1` gate first proved a fresh local
+Gateway heartbeat with `server_state=ready`, `peer_count=0`, an empty player
+list, no OMEN Valheim process, and no backup temp file. The command then stopped
+the server, reconciled the complete active server subtree, and compared 2,561
+files / 57,551,976,393 bytes plus SHA-256 for the current and prior
+`ComfyEra16` DB/FWL pairs. The retired tree remains unchanged as rollback. One
+backup ZIP rotated between the initial failed-closed copy and the resume; it was
+moved to recoverable Baseline quarantine rather than deleted.
+
+The recreated container names only the Baseline Compose file and working
+directory, mounts `/config` and `/opt/valheim` below the Baseline state root,
+and passes the strict verifier with
+`state_root_disposition=baseline_migrated`. The bridge override is absent from
+active labels. HEARTH remains on `8710`, Workbench Dev MCP remains on loopback
+`8721`, and host `8720` remains free.
 
 ## Sources
 

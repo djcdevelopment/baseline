@@ -10,14 +10,11 @@ policy already determines the answer, it is not an open decision.
 
 ## Open
 
-- [ ] 2026-08-02 — **Local Lab runtime provenance and canonical session boundary** — choose
-  The selected Baseline-compose/retained-state bridge is executed; choose the full
-  state-root migration before the next real-player or motion-authority window and
-  close the i5 motion-rendezvous/evidence gate. Owner: Derek; trigger: next Lab acceptance
-  run. Canonical rationale and acceptance are in
-  [PD-7](docs/decisions/pd-7-lab-runtime-provenance-and-session-boundary.md).
+None.
 
 ## Resolved
+
+- [x] 2026-08-02 — **Local Lab runtime provenance and canonical session boundary** — resolved by the full Baseline state-root migration; canonical-session diagnostic execution remains in the Saga, not this decision queue. See [PD-7](docs/decisions/pd-7-lab-runtime-provenance-and-session-boundary.md).
 
 - [x] 2026-08-01 — **Legacy ComfyGatewayBoot disposition and Baseline Dev MCP port** — resolved by retiring the stale logon task and reserving explicit Dev/Lab port `8721`; see [PD-6](docs/decisions/pd-6-development-mcp-lifecycle.md).
 

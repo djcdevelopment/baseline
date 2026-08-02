@@ -1,6 +1,6 @@
 # PD-7 — Lab runtime provenance and canonical session boundary
 
-- Status: bridge accepted and executed; full state migration pending
+- Status: full Baseline state-root migration completed; canonical motion diagnostic pending
 - Owner: Derek
 - Trigger: before the next real-player or motion-authority Lab window
 - Date: 2026-08-02
@@ -11,9 +11,10 @@ The local Valheim Lab must have one attributable runtime source and one explicit
 Gateway route per rendered node. The canonical Lumberjacks game-session lane is
 Lab-only; normal player gameplay must not keep retrying it.
 
-The short-term Baseline-compose/retained-state bridge is now the accepted
-interim choice. The full state-root migration remains a separate maintenance
-decision and is not implied by this bridge.
+The short-term Baseline-compose/retained-state bridge was the accepted interim
+choice. The long-term full state cutover has now been executed; the bridge
+remains only as a recoverable rollback path and is not part of the active
+Compose attribution.
 
 ## Evidence
 
@@ -144,10 +145,9 @@ Against `comfy-valheim-lab-valheim-server-1`, it passed the Baseline Compose
 file/working-directory checks, found no retired Compose source, recorded the
 server image digest `sha256:e8b13da3c44f54a38511c8ac224f2959a437c0b2626cf916683ca7acc8dfb146`,
 validated the credential-free OMEN (`http://127.0.0.1:4000`) and i5
-(`http://100.124.12.37:4000`) routes, and classified the state root as
-`retained_legacy_bridge`. Omitting the explicit bridge admission caused the
-same verifier to exit 1 with `state_root_disposition=unknown`. Full migration
-is still intentionally pending.
+(`http://100.124.12.37:4000`) routes. Before migration it classified the state
+root as `retained_legacy_bridge`; omitting explicit bridge admission correctly
+exited 1 with `state_root_disposition=unknown`.
 
 Rendered C6 now invokes that strict form before every other prelive action and
 does not admit the interim bridge. Job `job-20260802-054530209-f67cfc0d`
@@ -157,6 +157,29 @@ The receipt retained the failed `state_root_disposition` check; no run artifact
 was created, both clients remained stopped, and the Admin-at-rest OMEN config
 hash remained unchanged. This makes the recorded full migration a real gate,
 not a handoff note an acceptance run can bypass.
+
+## Full state migration receipt
+
+`fieldlab/scripts/Invoke-LabStateRootMigration.ps1` completed the cutover at
+`2026-08-02T06:33:30Z`. Its tools-layer quiescence gate required a fresh local
+Gateway heartbeat with `server_state=ready`, `peer_count=0`, an empty player
+list, no OMEN Valheim process, and no in-progress world backup before stopping
+the server. The stopped retained source and Baseline target matched at 2,561
+files and 57,551,976,393 bytes. SHA-256 matched for the current and prior
+`ComfyEra16` database and world identity files. The retired source remains
+untouched as rollback; one backup ZIP rotated between the failed-closed first
+copy and the resumed copy was moved to a recoverable Baseline quarantine rather
+than deleted.
+
+The recreated server now reports only
+`fieldlab/autonomous/valheim-lab.compose.yml` in its Compose labels, mounts both
+`/config` and `/opt/valheim` under the Baseline state root, retains immutable
+server image digest
+`sha256:e8b13da3c44f54a38511c8ac224f2959a437c0b2626cf916683ca7acc8dfb146`,
+and passes the strict verifier with `state_root_disposition=baseline_migrated`.
+The retired bridge override is no longer active. The remaining work is the one
+clean, image-matched watchdog diagnostic C6 and its evidence disposition, not a
+runtime-source decision.
 
 ## Acceptance
 

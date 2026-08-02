@@ -15,14 +15,6 @@ Bounded: touch only lines you created or resolved.
 
 ## Open
 
-- [ ] 2026-08-02 — **Lab server compose/state provenance and rendered-client session
-  boundary** — choose the PD-7 state-root strategy before the next real-player or
-  motion-authority window. The bridge was executed; the remaining choices are
-  the full state-root migration and the i5 motion-rendezvous/evidence gate.
-  Owner: Derek;
-  trigger: next Lab acceptance run. See the
-  canonical [PD-7](../docs/decisions/pd-7-lab-runtime-provenance-and-session-boundary.md).
-
 - [~] 2026-07-22 — **PINNED 2026-07-28** (networking-lane hard hold — see
   [PINNED-networking-lane-2026-07.md](PINNED-networking-lane-2026-07.md); return here on re-open):
   **Re-confirm the co-presence ownership bug actually reproduces before deploying/arming
@@ -194,6 +186,8 @@ Move an item back to `## Open` only when Derek re-opens it.
   integration step. (source: [ADR 0003](docs/adr/0003-server-side-mod-http-raw-socket.md))
 
 ## Resolved
+
+- [x] 2026-08-02 — **Lab server compose/state provenance and rendered-client session boundary** — full Baseline state-root migration completed; remaining diagnostic execution is tracked in the Saga. See canonical [PD-7](../docs/decisions/pd-7-lab-runtime-provenance-and-session-boundary.md).
 
 - [x] 2026-07-21 — **Trim the gameplay producer's per-hit `[gp]` diagnostic logging before real
   traffic.** → **gated behind a new `[Gameplay] gameplayEventVerboseLogging` flag (default false),

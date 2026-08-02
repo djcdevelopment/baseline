@@ -14,8 +14,8 @@ retired `C:\work\comfy` compose provenance. Replanned after the
 [MCP endpoint provenance audit](../docs/audit/2026-08-01-mcp-endpoint-provenance-audit.md).
 The runtime choice is tracked in [PD-7](../docs/decisions/pd-7-lab-runtime-provenance-and-session-boundary.md)
 and is a prerequisite for the next real-player/motion-authority window.
-The short-term Baseline-compose/retained-state bridge has since been executed;
-the full state migration remains a separate maintenance slice. The hardened
+The short-term Baseline-compose/retained-state bridge was executed and the full
+Baseline state-root migration has now passed strict provenance. The hardened
 single-client background-execution check passed, but the justified concurrent
 C6 still reproduces an OMEN rendered-loop stall; PD-7 motion acceptance is
 therefore open for bounded forensics, not for blind retries.
@@ -377,10 +377,14 @@ M3 acceptance:
 
 #### Feature WB-F3.6 — Lab runtime provenance and session boundary
 
-- **Story WB-S3.21 (bridge implemented; full migration pending):** Record the active Lab compose source, working directory,
+- **Story WB-S3.21 (full migration passed):** Record the active Lab compose source, working directory,
   image digest, and state-root disposition in the Workbench evidence packet.
   A mixed retired/Baseline runtime is visible and fails the next Lab readiness
   gate; it is never silently accepted as a Baseline run.
+  The stopped source and Baseline target matched at 2,561 files and
+  57,551,976,393 bytes with matching current/prior world hashes. The active
+  server now uses only Baseline Compose and Baseline state mounts; the retained
+  source remains a recoverable rollback copy.
 - **Story WB-S3.22 (config/routing implemented; runtime acceptance pending):** Give each rendered Lab node an explicit canonical
   Gateway route (OMEN local, i5 via OMEN's reachable Tailscale address, or an
   explicitly named production route). A blank or unreachable route is a
@@ -462,6 +466,9 @@ M3 acceptance:
   the interim bridge override. Job `job-20260802-054530209-f67cfc0d` proved the
   active bridge fails there with `rendered_prelive_lab_provenance_failed`, no
   run artifacts, both clients stopped, and the at-rest config unchanged.
+  After the full migration, the same strict verifier passes with
+  `state_root_disposition=baseline_migrated` and no bridge override in the
+  active Compose labels.
 
 M3.6 acceptance:
 
