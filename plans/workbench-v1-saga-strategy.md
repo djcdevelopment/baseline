@@ -3,8 +3,8 @@
 Status: implementation plus rendered machine-and-human acceptance completed
 2026-08-02. M5 and M6 are closed, and the read-only Operate check has a clean
 local success receipt. The install/rollback implementation is now reversibility-
-tested after a pre-live stop-ship audit; WB-1 remains a candidate pending the
-declared unfamiliar-user usability and player-impacting Operate gates. Replanned after the
+tested and live-drilled; WB-1 remains a candidate pending the declared unfamiliar-
+user usability gate and player-active transport capture. Replanned after the
 [MCP endpoint provenance audit](../docs/audit/2026-08-01-mcp-endpoint-provenance-audit.md).
 Owner: Derek. This document is the decision-complete execution strategy for the
 first coherent Workbench product slice.
@@ -323,9 +323,12 @@ M2 acceptance:
 - **Story WB-S3.20 (follow-on gate):** The admitted read-only check is complete:
   clean Lab job `job-20260802-015026195-e3676b38` passed against local candidate
   `m32-workbench-20260802-r1`. Its 30 payload entries are an exact byte match for
-  current OMEN, with no missing or unsafe entries. In a separately approved
-  player-impacting window, verify install/rollback and player-active transport
-  capture through their Workbench receipts.
+  the pre-drill OMEN state, with no missing or unsafe entries. Approved install
+  job `job-20260802-015909355-13073d0c` and rollback job
+  `job-20260802-015911118-89a57d29` proved exact state/byte restoration. A later
+  hands-on capture returned `no_peer_window` and is retained as negative evidence,
+  not accepted as the player-active receipt. Only that separately approved
+  peer-bearing capture remains open.
 
 #### Feature WB-F3.5 — Recover vertical slice
 
@@ -607,7 +610,7 @@ WB-1 is complete only when all of the following are true:
    work is explicitly classified.
 9. An unfamiliar operator completes the no-coaching Standard-mode desktop and
    mobile protocol, with comprehension and recovery-path findings recorded.
-10. In an explicitly approved player-impacting window, the admitted exact-match
-    package completes an install-to-rollback drill with before/after hashes and
-    installed-release identity restored, followed by the player-active transport
-    capture receipt.
+10. The admitted package completes an explicitly approved install-to-rollback
+    drill with before/after hashes and installed-release identity restored, then
+    a separately approved player-active window yields a peer-bearing transport
+    capture receipt. The first half passed; the player-active half remains open.

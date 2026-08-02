@@ -11,8 +11,8 @@ This is the execution handoff for the current implementation session. The
 clean-checkpoint MCP/Companion attribution, rendered AM4 + OMEN + i5 machine and
 human acceptance, and local hash-verified Operate check have passed. WB-1 remains
 a candidate, rather than an unqualified completion claim, because the Saga's
-unfamiliar-user usability gate and player-impacting install/rollback plus
-player-active transport-capture checks are explicitly still open.
+unfamiliar-user usability gate and player-active transport-capture check are
+explicitly still open. The approved install-to-rollback gate is complete.
 
 ## Closeout disposition
 
@@ -22,8 +22,10 @@ player-active transport-capture checks are explicitly still open.
    `job-20260802-015026195-e3676b38`. Candidate package
    `m32-workbench-20260802-r1` is a 30/30 exact byte match for the current OMEN
    Valheim payload, with zero missing, different, or unsafe entries. Follow-on
-   story WB-S3.20 now contains only the separately approved player-impacting
-   install/rollback and player-active transport-capture receipts. The earlier
+   story WB-S3.20 now contains only the separately approved player-active
+   transport-capture receipt. The install-to-rollback drill passed on jobs
+   `job-20260802-015909355-13073d0c` and
+   `job-20260802-015911118-89a57d29`. The earlier
    unavailable-Gateway receipt remains valid fail-closed evidence.
 3. Community usability is follow-on story WB-S2.13: have an unfamiliar operator
    use the Standard live map and mobile layout, then record comprehension and
@@ -47,7 +49,7 @@ player-active transport-capture checks are explicitly still open.
 | M0 baseline | passed | Claimed installation `wb-4285b4fd66f442e598886b861ed1bd44` and the retained companion-data volume are proven. Final machine-acceptance HEAD `817ee8b2ff6dc30105dd44714d7709b53ecc2681` produced identity-matched Companion and Dev MCP images with `source_dirty=false`; the stale `ComfyGatewayBoot` task remains disabled and HEARTH remains independent. |
 | M1 kernel | passed | Lumberjacks/tools/companion/Test-WorkbenchApi.ps1 passed browser token, target/profile rejection, jobs, events, receipts, runner auth, and heartbeat checks. |
 | M2 product shell | passed | /, /workbench, and legacy /companion return 200; Workbench V1 shell, Standard/Advanced presentation, claim flow, live topology, job cards, receipt links, and observation form are present. |
-| M3 local slices | partial — player-impacting Operate gate remains | Containerized net48 mod build passed with read-only Valheim mount, no host SDK, no plugin copy; support export passed the existing privacy scanner; safe Compose recreate preserved installation ID/claim/volume. Current clean Lab job `job-20260802-015026195-e3676b38` passed against the local hash-verified m32 pointer after reversible install/rollback hardening. The live mutation drill remains separately operator-gated. |
+| M3 local slices | partial — player-active capture remains | Containerized net48 mod build passed with read-only Valheim mount, no host SDK, no plugin copy; support export passed the privacy scanner; safe Compose recreate preserved installation ID/claim/volume. The read-only m32 check and approved install-to-rollback cycle passed with exact bytes/state restored. A later no-peer capture is retained as an explicitly insufficient negative receipt; the real player-active capture remains separately operator-gated. |
 | M4 distribution boundary | passed | Compose profile checks prove default/Production exclude Dev MCP and the SDK runner; Dev/Lab publish the identity-attested Baseline MCP on loopback `8721`; no Docker socket exists. The mod side channel is default-off, loopback-configured, and cannot be UI-enabled without Dev/Lab opt-in. The stale logon task is disabled and host `8720` is free. |
 | M5 rendered acceptance | passed | Run `workbench-20260802-003128-116adca1` completed on real OMEN and i5 clients against AM4. Derek watched live and recorded `pass / followed / smooth`; the sealed job receipt is `passed` with `human_observation_recorded`. |
 | M6 closeout | passed | Final receipt and handoff are current. The remaining player-impacting Operate work and unfamiliar-user/mobile review are classified above; no rendered-window defect remains unclassified. |
@@ -79,6 +81,10 @@ player-active transport-capture checks are explicitly still open.
   Lumberjacks/tests/Game.Companion.Tests: fail-closed modpack preflight,
   serialized reversible apply/rollback semantics, prior-state restoration, and
   isolated filesystem/Gateway fixtures that never touch the live Valheim tree.
+- Lumberjacks/tools/modpack/Invoke-LocalWorkbenchModRollbackDrill.ps1 and the
+  host runner's Windows process gate: an explicit-consent, evidence-producing
+  wrapper over the same Workbench jobs. Legacy schema-0 rollback is unavailable
+  in both UIs/API, and no-peer captures no longer produce green job receipts.
 - Source/package/i5 launchers: explicit Explore/Admin/Dev/Lab/Production
   profile selection, local runner-token generation outside the checkout,
   profile convergence, and hidden host-runner startup.
@@ -106,7 +112,34 @@ player-active transport-capture checks are explicitly still open.
 
 Latest runtime receipts from the rebuilt image:
 
-- Current reversible-update checkpoint: clean source
+- Current post-test-drive safety checkpoint: clean source
+  `1456de1142658e972f9e0462d24b3f3ba143d4ce`, Companion image
+  `sha256:b8ef890ee0db59417eb495830b8c2a3a7e79db4e3b82ac6e4b24c02861305d6b`,
+  and Dev MCP image
+  `sha256:12549a4ad59b224572ee323c2ad7767c01680a6e94f7b7febcd2cd8c1ad4e334`.
+  UI, API, runner, and authenticated MCP identity gates passed with
+  `source_dirty=false`. Current installed state is legacy m31 schema 0 and the
+  live DLL is SHA-256
+  `1e875984fde1b81895beaf70a3ad99db832a330257788d2f8ccfd6db7f4fe6a7`;
+  rollback is projected as `eligible=false / rollback_not_available`. The v0
+  negative control returned HTTP 400
+  `rollback_not_reversible_legacy_state` with installed JSON and DLL hash
+  unchanged. Valheim process and updater temporary-residue counts are zero.
+- Approved reversible live drill: install job
+  `job-20260802-015909355-13073d0c` succeeded with
+  `mod_install_complete`, candidate m32 transaction schema 1, prior release m31,
+  zero created files, and a present backup. Rollback job
+  `job-20260802-015911118-89a57d29` succeeded with
+  `mod_rollback_complete` and no recovery fallback. All 30 files matched with
+  zero different/missing/unsafe entries before, during, and after; the original
+  m31 installed-state JSON was restored exactly.
+- Subsequent hands-on actions exposed two now-closed UX defects. Legacy rollback
+  job `job-20260802-021215350-f904f441` reapplied a schema-0 backup and moved the
+  live DLL to the original m31 hash because the old record had no prior identity.
+  Capture job `job-20260802-021217921-2851b5ea` returned `no_peer_window` but the
+  old runner labeled the operation successful. Current code disables/refuses
+  legacy rollback and classifies no-peer/incomplete captures as failed evidence.
+- Pre-drill reversible-update checkpoint: clean source
   `0526c69e7522590b21b8760cc3eb91b126749e3a`, Companion image
   `sha256:08bc0f389f85ba825452c6d3a2b50452cbc76bb814599cc87e977a3a89acbcec`,
   and Dev MCP image
@@ -118,7 +151,7 @@ Latest runtime receipts from the rebuilt image:
   fresh exact-match preflight again reported 30 matched, zero different, zero
   missing, and zero unsafe entries. Valheim process count was zero; no install,
   rollback, installed-state, GCP, or player-facing mutation occurred.
-- Current byte-audited candidate checkpoint: source
+- Initial byte-audited candidate checkpoint: source
   `625c033f4b42af51e67557257e855700f0a0e0b9`, Companion image
   `sha256:f0b0b364633c43e14c1901e8effb4b9781d8f8e912981244a806ae31996c800e`,
   and Dev MCP image
@@ -138,7 +171,7 @@ Latest runtime receipts from the rebuilt image:
   `d1bfcd6f440fe9697cf495eac16923bcc9272225039b2ace69a23d1d302cbb5a`.
   The publisher changed only the persistent local release feed; no Valheim file,
   install state, rollback state, or GCP resource was changed.
-- Current install/rollback candidate `m32-workbench-20260802-r1` was built from
+- Pre-drill install/rollback candidate `m32-workbench-20260802-r1` was built from
   the live OMEN payload without writing to it. `Test-ModpackPayload.ps1
   -RequireExactMatch` reported 30 matched entries, zero different, zero missing,
   zero unsafe, and package SHA-256
@@ -328,8 +361,8 @@ checkpoint identity rerun and physical C6 machine window subsequently passed.
 
 The full Lumberjacks solution was restored and tested successfully after the
 reversible-update change (0 errors; the pre-existing EF dependency-conflict
-warning remains in `Game.Gateway.Tests`). Its four test projects passed 604 tests
-total: 126 Contracts, 250 Simulation, 217 Gateway, and 11 Companion.
+warning remains in `Game.Gateway.Tests`). Its four test projects passed 605 tests
+total: 126 Contracts, 250 Simulation, 217 Gateway, and 12 Companion.
 
 ## M5 sealed acceptance
 
@@ -342,20 +375,19 @@ Workbench and limits its claim to
 
 ## Current operator gate
 
-The reversible-update implementation is committed at `0526c69`, rebuilt into
-the clean Lab runtime, and verified without invoking either mutating endpoint.
-The next step is deliberately a player-impacting authorization boundary:
+The reversible install-to-rollback drill is complete. The current machine is in
+a stable, hash-recorded m31 state after the additional hands-on rollback. The
+next useful evidence requires a separately approved player-active window and an
+explicit active-build choice:
 
-1. Record the zero-process precondition, current installed-release JSON, and
-   SHA-256 for all 30 admitted targets.
-2. Invoke `operate.mod.install` for the byte-identical m32 candidate and retain
-   the Workbench job/events/receipt.
-3. Verify all 30 hashes remain identical and the new transaction record names
-   the legacy m31 record as `previous`.
-4. Invoke `operate.mod.rollback`; verify all hashes and the exact legacy m31
-   installed-release identity are restored, with no temporary-file residue.
-5. Only after that drill passes, open the separately observable player-active
-   transport-capture window.
+1. Recommended: install admitted m32 and leave it active. This changes one live
+   file from original m31 DLL `1e875…` to the C6-accepted DLL `93877…`; the other
+   29 payload files already match. The schema-1 transaction then provides a safe
+   rollback to the current m31 state.
+2. Launch the intended real clients and begin capture before they join/move.
+3. Accept only a peer-bearing receipt. `no_peer_window` and
+   `incomplete_telemetry` are now failed evidence, not green completion.
+4. Roll back after the player window only if the operator explicitly chooses it.
 
-No install, rollback, game launch, player-active capture, push, or force-push is
-implied by the completed engineering checkpoint.
+No further install, game launch, player-active capture, push, or force-push is
+implied by the completed drill authorization.
