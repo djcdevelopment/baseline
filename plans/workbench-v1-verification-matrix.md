@@ -26,7 +26,7 @@ receipt. `Passed` means the current checkout has direct evidence; `Pending` or
 | Active gateway launcher safety | Active launchers derive their roots/interpreters and default to explicit `:8721`; stale `ComfyGatewayBoot` was disabled without deletion and its exact retired-checkout process stopped | Passed; HEARTH unchanged on `8710` |
 | Historical default-port MCP evidence | Six old Comfy-ledger calls remain quarantined; Baseline ledger now contains successful identity-gated `valheim_mcp_health`, filtered `valheim_server_log_tail`, and `valheim_handshake_trace` events on `8721` | Minimum evidence rerun passed; old receipts retained only as history |
 | Clean source/image attribution before rendered work | Final pre-live receipt pinned clean HEAD `817ee8b2ff6dc30105dd44714d7709b53ecc2681`, Companion `sha256:26e47f966f0e5473ddd31f9fc7f3dd92264ee2d32caf12cb18fad2282d292f88`, and Dev MCP `sha256:938a24724dde4dfdcb77aece3c250b2db98d0798ec347681ae20e2630099f725` | Passed |
-| Rendered AM4 + OMEN + i5 C6 role reversal | Job `job-20260802-003125748-116adca1`, run `workbench-20260802-003128-116adca1`: real clients completed the bounded C6 composition; Workbench reached `waiting_human` with cleanup/disarm complete | Machine-passed; Derek's typed visual observation remains operator-gated |
+| Rendered AM4 + OMEN + i5 C6 role reversal | Job `job-20260802-003125748-116adca1`, run `workbench-20260802-003128-116adca1`: real clients completed the bounded C6 composition; Derek watched live and recorded `pass / followed / smooth`; cleanup/disarm completed | Passed; sealed reason `human_observation_recorded` |
 | Full Lumberjacks solution | Restore/build succeeded with 0 errors; 589 tests passed (126/250/213), with pre-existing EF dependency-conflict and test-nullability warnings | Passed |
 
 ## Current safety posture
@@ -34,4 +34,5 @@ receipt. `Passed` means the current checkout has direct evidence; `Pending` or
 The active local stack is explicitly in Lab and publishes the identity-attested
 Baseline Dev MCP only on loopback `8721`. Host `8720` is free; HEARTH remains
 independent on `8710`. The clean machine-acceptance checkpoint is committed and
-the C6 job is waiting only for the local human observation.
+the C6 machine-plus-human receipt is sealed. The remaining Operate success path
+and unfamiliar-user/mobile review are classified follow-ons, not hidden passes.

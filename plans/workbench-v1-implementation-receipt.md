@@ -9,19 +9,25 @@ Checkpoint staging scope: [workbench-v1-checkpoint-scope.md](workbench-v1-checkp
 
 This is the execution handoff for the current implementation session. The
 clean-checkpoint MCP/Companion attribution and rendered AM4 + OMEN + i5 machine
-acceptance have passed. WB-1 is deliberately not yet a completion claim because
-job `job-20260802-003125748-116adca1` is waiting for Derek's rendered
-observation.
+and human acceptance have passed. WB-1 remains a candidate, rather than an
+unqualified completion claim, because the Saga's unfamiliar-user usability gate
+and player-impacting Operate success-path checks are explicitly still open.
 
-## Adapted next slice
+## Closeout disposition
 
-1. In the local Workbench, record the observation for
-   `job-20260802-003125748-116adca1`: outcome, role following, rendered quality,
-   cleanup confirmation, and optional private note.
-2. Record the sealed receipt produced by that observation. Do not rerun the
-   physical scenario unless the observation is a fail.
-3. Close M6 by classifying the intentionally unrun player-impacting Operate
-   actions and unfamiliar-user/mobile usability as follow-on work.
+1. M5 is sealed. Do not rerun its physical scenario unless a future regression
+   or failed observation supplies a new reason.
+2. The Operate success path is follow-on story WB-S3.20: in a separately
+   approved player-impacting window, verify admitted check/install/rollback and
+   transport capture against an available release Gateway. The existing
+   unavailable-Gateway receipt remains valid fail-closed evidence.
+3. Community usability is follow-on story WB-S2.13: have an unfamiliar operator
+   use the Standard live map and mobile layout, then record comprehension and
+   recovery-path findings. Structural UI tests are not a substitute for that
+   person.
+4. No engineering defect discovered by the rendered window remains open: native
+   character binding, lease renewal, the client-only evidence boundary, and
+   Windows child exit-code propagation are fixed and regression-covered.
 
 ## Milestone status
 
@@ -32,8 +38,8 @@ observation.
 | M2 product shell | passed | /, /workbench, and legacy /companion return 200; Workbench V1 shell, Standard/Advanced presentation, claim flow, live topology, job cards, receipt links, and observation form are present. |
 | M3 local slices | partial — Operate dependency remains open | Containerized net48 mod build passed with read-only Valheim mount, no host SDK, no plugin copy; support export passed the existing privacy scanner; safe Compose recreate preserved installation ID/claim/volume. `operate.mod.check` correctly failed closed while Gateway was unavailable. |
 | M4 distribution boundary | passed | Compose profile checks prove default/Production exclude Dev MCP and the SDK runner; Dev/Lab publish the identity-attested Baseline MCP on loopback `8721`; no Docker socket exists. The mod side channel is default-off, loopback-configured, and cannot be UI-enabled without Dev/Lab opt-in. The stale logon task is disabled and host `8720` is free. |
-| M5 rendered acceptance | machine-passed, operator-gated | Run `workbench-20260802-003128-116adca1` completed on real OMEN and i5 clients against AM4. The Workbench job reached `waiting_human` with `rendered_role_reversal_complete`; only Derek's typed rendered observation remains. |
-| M6 closeout | in progress | Machine receipts and this handoff are current. Seal the observation receipt, then classify the intentionally deferred player-impacting Operate actions and unfamiliar-user/mobile review. |
+| M5 rendered acceptance | passed | Run `workbench-20260802-003128-116adca1` completed on real OMEN and i5 clients against AM4. Derek watched live and recorded `pass / followed / smooth`; the sealed job receipt is `passed` with `human_observation_recorded`. |
+| M6 closeout | passed | Final receipt and handoff are current. The Operate success path and unfamiliar-user/mobile review are classified above; no rendered-window defect remains unclassified. |
 
 ## Implemented surfaces
 
@@ -90,9 +96,12 @@ Latest runtime receipts from the rebuilt image:
   `profile=Lab` and `source_dirty=false`.
 - `job-20260802-003125748-116adca1` / run
   `workbench-20260802-003128-116adca1` — the bounded real AM4 + OMEN + i5 C6
-  machine run passed and transitioned to `waiting_human` with reason
-  `rendered_role_reversal_complete`. Its admitted `ComfyNetworkSense.dll` hash
-  is `93877e4d12291aec53cdaaeda22f9e992eaf9eb7240bbe1380daa41e8ab349d9`.
+  run passed. Derek's live observation was `pass / followed / smooth`, with
+  cleanup confirmed and note `Watched live: very exciting; looked smooth.` The
+  sealed receipt is `passed / human_observation_recorded` with evidence boundary
+  `machine_evidence_plus_operator_observation`. Its admitted
+  `ComfyNetworkSense.dll` hash is
+  `93877e4d12291aec53cdaaeda22f9e992eaf9eb7240bbe1380daa41e8ab349d9`.
 - The runner-ownership fixture `job-20260802-003056281-40000a1f` proved stale
   runner HTTP 404, active lease renewal, and exact child exit-code propagation
   (`0` and `7`) without executing an external operation.
@@ -262,21 +271,14 @@ Story/Advanced topology UI change (0 errors; one pre-existing dependency-conflic
 warning in `Game.Gateway.Tests`), and its three test projects passed 589 tests
 total (126 Contracts, 250 Simulation, 213 Gateway).
 
-## Operator gate for M5
+## M5 sealed acceptance
 
-The Workbench is in Lab and the bounded physical run has stopped at
-`waiting_human` as designed. Open `http://127.0.0.1:8080/workbench`, find job
-`job-20260802-003125748-116adca1`, and choose **Record observation**. Record:
-
-- outcome: pass or fail;
-- role_following: followed, mixed, or did_not_follow;
-- quality: smooth, mixed, or rough;
-- cleanup confirmation and an optional private note.
-
-Both clients completed their scenario actions, AM4 authority was disarmed, and
-the run-scoped residue cleanup reported zero matches. No rendered acceptance
-claim is made until the form is submitted and the machine evidence plus
-observation share one receipt.
+The Workbench joined Derek's live `pass / followed / smooth` observation to the
+machine result for `job-20260802-003125748-116adca1`. Both clients completed
+their scenario actions, AM4 authority was disarmed, and run-scoped residue
+cleanup reported zero matches. The final receipt is addressable through the
+Workbench and limits its claim to
+`machine_evidence_plus_operator_observation`.
 
 ## Checkpoint handoff (authorized 2026-08-01)
 

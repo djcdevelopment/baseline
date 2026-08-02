@@ -1,7 +1,8 @@
 # Saga WB-1 — Ownable Docker Workbench v1
 
-Status: implementation and rendered machine acceptance completed 2026-08-01;
-M5 is waiting only for Derek's typed visual observation. Replanned after the
+Status: implementation plus rendered machine-and-human acceptance completed
+2026-08-01. M5 and M6 are closed; WB-1 remains a candidate pending the declared
+unfamiliar-user usability and player-impacting Operate success-path gates. Replanned after the
 [MCP endpoint provenance audit](../docs/audit/2026-08-01-mcp-endpoint-provenance-audit.md).
 Owner: Derek. This document is the decision-complete execution strategy for the
 first coherent Workbench product slice.
@@ -254,6 +255,9 @@ M1 acceptance:
   work and a typed human-observation form for `waiting_human`.
 - **Story WB-S2.12:** Preserve existing update, diagnostics, trace, roadmap, and
   community routes through the new navigation.
+- **Story WB-S2.13 (follow-on gate):** Have an unfamiliar operator use the
+  Standard live map and mobile layout; record whether they can identify the
+  active goal, hardware roles, expected result, evidence, and recovery path.
 
 M2 acceptance:
 
@@ -307,6 +311,9 @@ M2 acceptance:
   and rollback behavior intact.
 - **Story WB-S3.15:** Expose old endpoints as compatibility adapters over the
   same underlying handlers rather than duplicate implementations.
+- **Story WB-S3.20 (follow-on gate):** In a separately approved player-impacting
+  window with an available release Gateway, verify admitted check/install/
+  rollback and transport capture through their Workbench receipts.
 
 #### Feature WB-F3.5 — Recover vertical slice
 
