@@ -28,9 +28,20 @@
       "coverage": "passed",
       "failed_checks": [],
       "residue_cleanup": "destroyed=0"
+    },
+    {
+      "run_id": "native-20260802-cutover-recovery5",
+      "role": "physical runtime repeat plus dedicated-server session-epoch gate",
+      "scenario_sha256": "2581d819997996ef0da40e7f5e893078dbdb9389ec1df740f59d9b911e7d4360",
+      "composition": "passed",
+      "save_integrity": "passed",
+      "coverage": "passed",
+      "failed_checks": [],
+      "residue_cleanup": "destroyed=0",
+      "mod_sha256": "8ac344592a6f6bd341dfbcc117a2b1a5d6eec67e580eaed29df187bdde5abe85"
     }
   ],
-  "retained_receipts": "fieldlab/runs/native-valheim/native-20260731-c8-full44 and .../full45 (scenario, coverage, composition summary, save integrity before/after/comparison, residue cleanup)",
+  "retained_receipts": "fieldlab/runs/native-valheim/native-20260731-c8-full44, .../full45, and .../native-20260802-cutover-recovery5; compact session transition receipt at recovery5-session-epoch-gate.json",
   "verified": [
     "the complete 49-action composition ran twice from clean client launches on one frozen build",
     "native poison was armed unconditionally on both clients and the dedicated server with zero trips",
@@ -38,7 +49,10 @@
     "the bounded Gateway interruption was replayed and the WebSocket resume completed in both runs",
     "world save integrity compared clean before/after in both runs",
     "the machine coverage gate held 20/20 in both runs",
-    "completed runs leave zero synthetic residue (cleanup receipts destroyed=0)"
+    "completed runs leave zero synthetic residue (cleanup receipts destroyed=0)",
+    "recovery5 repeated the physical composition on fresh GPU-rendered OMEN and i5 processes",
+    "an AM4 dedicated-server restart changed the session-scoped epoch while Gateway-only restarts replayed the same-session bank",
+    "a valid old-session mutation returned HTTP 409 world_epoch_not_active and left the new bank unchanged"
   ],
   "inferred": [
     "the six wall-class fixes landed 2026-07-31/08-01 are jointly sufficient for repeatable composition on this substrate"
@@ -46,7 +60,6 @@
   "unverified": [
     "unselected method/prefab breadth (29 P1 admissions, three [VERIFY] rows, three component-family gates)",
     "subjective rendered motion quality (C9)",
-    "the session-scoped epoch fix - the operational WAL-wipe rule stands in until C10",
     "P7 promotion, fallback deletion, and the final no-fallback artifact (C10)"
   ]
 }

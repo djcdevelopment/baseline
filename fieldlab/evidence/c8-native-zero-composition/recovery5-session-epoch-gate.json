@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "receipt_type": "native_zero_runtime_and_server_session_epoch_gate",
+  "accepted_utc": "2026-08-02T10:40:08.1109584+00:00",
+  "result": "passed",
+  "candidate": {
+    "base_revision": "7eba81ace46b70e31e4efe733c2e3edac096cdd5",
+    "mod_version": "0.5.45",
+    "mod_sha256": "8ac344592a6f6bd341dfbcc117a2b1a5d6eec67e580eaed29df187bdde5abe85",
+    "deployment": "SHA-256 matched on the AM4 server, OMEN, and i5 before launch"
+  },
+  "physical_run": {
+    "run_id": "native-20260802-cutover-recovery5",
+    "scenario_sha256": "2581d819997996ef0da40e7f5e893078dbdb9389ec1df740f59d9b911e7d4360",
+    "action_count": 49,
+    "coverage_checks_passed": 20,
+    "coverage_checks_total": 20,
+    "composition": "passed",
+    "save_integrity": "passed",
+    "native_total": {
+      "omen": 0,
+      "i5": 0,
+      "server": 0
+    },
+    "native_poison_trips": {
+      "omen": 0,
+      "i5": 0,
+      "server": 0
+    },
+    "clients": [
+      {
+        "client": "omen",
+        "process_id": 45436,
+        "renderer": "NVIDIA GeForce RTX 5070",
+        "fresh_process": true,
+        "scenario_terminal": "scenario_complete",
+        "resume_count": 1
+      },
+      {
+        "client": "i5",
+        "process_id": 18688,
+        "renderer": "Intel Iris Xe Graphics",
+        "fresh_process": true,
+        "scenario_terminal": "scenario_complete",
+        "resume_count": 1
+      }
+    ]
+  },
+  "session_epoch_transition": {
+    "before_server_restart": {
+      "source_run_id": "native-20260802-cutover-recovery4",
+      "world_epoch": "world-ffffffff63e5be34-session-000000004f34febc",
+      "gateway_only_restart_durable_objects_before": 1632,
+      "gateway_only_restart_durable_objects_after": 1632,
+      "gateway_only_restart_replay_verified": true
+    },
+    "dedicated_server_restart": {
+      "server": "AM4",
+      "restart_count": 1,
+      "session_component_changed": true
+    },
+    "after_server_restart": {
+      "source_run_id": "native-20260802-cutover-recovery5",
+      "world_epoch": "world-ffffffff63e5be34-session-000000008ef610a2",
+      "gateway_only_restart_durable_objects_before": 1632,
+      "gateway_only_restart_durable_objects_after": 1632,
+      "gateway_only_restart_replay_verified": true,
+      "final_run_durable_objects": 19257,
+      "final_reset_objects_removed": 19257
+    }
+  },
+  "stale_epoch_rejection": {
+    "tested_utc": "2026-08-02T10:40:08.1109584+00:00",
+    "request_world_epoch": "world-ffffffff63e5be34-session-000000004f34febc",
+    "active_world_epoch_before": "world-ffffffff63e5be34-session-000000008ef610a2",
+    "http_status": 409,
+    "error": "world_epoch_not_active",
+    "durable_objects_before": 0,
+    "durable_objects_after": 0,
+    "wal_bytes_before": 0,
+    "wal_bytes_after": 0,
+    "active_world_epoch_after": "world-ffffffff63e5be34-session-000000008ef610a2"
+  },
+  "world_save_fingerprint": {
+    "result": "passed",
+    "zdos_before": 9155593,
+    "zdos_after": 9155593,
+    "portal_pairs_before": 4472,
+    "portal_pairs_after": 4472,
+    "world_file_bytes_and_mtimes_exact": true
+  },
+  "verified": [
+    "two fresh GPU-rendered Valheim clients completed the full physical C8 composition against AM4",
+    "selected native game-data funnels stayed at zero with poison armed on both clients and the server",
+    "a Gateway-only restart retained and replayed the bank within each server session",
+    "an actual dedicated-server restart changed the session-scoped world epoch",
+    "a syntactically valid old-session mutation failed closed without changing the new bank",
+    "the AM4 world save fingerprint remained structurally exact"
+  ],
+  "unverified": [
+    "subjective side-by-side rendered motion quality",
+    "unselected P1 RPC and component-family breadth",
+    "P7 promotion and deletion of migration-only fallback"
+  ]
+}

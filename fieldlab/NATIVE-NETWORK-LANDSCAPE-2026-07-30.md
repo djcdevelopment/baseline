@@ -59,15 +59,19 @@ The replacement is not 100% complete.
   in `fieldlab/evidence/c8-native-zero-composition/`. Rows stay Partial where they
   name unselected breadth: the composition proves the selected surface only, and
   Swapped-everywhere remains C10's exit condition (29 P1 admissions, three [VERIFY]
-  rows, component-family gates, and the session-scoped epoch fix precede it).
+  rows, component-family gates, and release alignment precede it). Recovery5 repeated
+  the physical composition and runtime-proved the session-scoped epoch across a real
+  AM4 restart; that wall-11 prerequisite no longer remains open.
 
 The shortest honest description is: **the C3 ZDO semantic boundary and selected
 control/RPC classes are swapped on AM4, and C3 semantics now ride the canonical
 session with process-durable logical peers; C4 also swaps one selected real ownership
 and pickup boundary; C5 swaps the selected world descriptor and run-tagged
 zone-membership boundary; C6 swaps selected two-player motion authority; C7 swaps the
-Steam-free connection/bootstrap boundary. General-prefab semantics, remaining control
-breadth, full native-zero composition, and P7 promotion are not complete.**
+Steam-free connection/bootstrap boundary; C8 composes that selected surface at
+native-zero and the server-session epoch now rejects stale bank state after restart.
+General-prefab semantics, remaining control breadth, subjective motion acceptance,
+and P7 promotion are not complete.**
 
 ## C0 measured baseline and poison gate
 
