@@ -348,6 +348,75 @@ and passes the strict verifier with
 active labels. HEARTH remains on `8710`, Workbench Dev MCP remains on loopback
 `8721`, and host `8720` remains free.
 
+## Watchdog admission and single C6 disposition
+
+The clean Workbench build job `job-20260802-063901820-44598ee8` produced
+ComfyNetworkSense SHA-256
+`ec75ee07c2fcd651db353403c3692502f26d488bf35628d2721e4cac8a66cff9`
+with zero warnings/errors, a read-only Valheim mount, no plugin copy, and no
+host SDK. It was published as `m32-watchdog-20260802-r1`; package SHA-256 is
+`88659ee974014efe0c6ebb0bebad528eaaa35778cd7abe6b3890f430c99545d7`.
+
+OMEN installed through Workbench with a schema-1 backup. The first i5 install
+request exposed a deterministic launcher gap rather than an offline machine:
+the Companion still targeted `https://comfy-p7.duckdns.org`, and the request
+blocked on that refused public endpoint. `Start-I5Companion.ps1` now accepts,
+validates, and persists a selected Gateway; `Sync-I5Companion.ps1` forwards the
+profile/Gateway choice. The repository's bounded Docker Desktop repair tool
+recovered the old container after it failed to emit a stop event. One install
+then succeeded through `http://100.124.12.37:4000`, and the alignment tool
+reported the same release and package SHA-256 on Gateway, OMEN, and i5. Both
+live DLL hashes equal `ec75ee07…cff9`.
+
+Pre-live receipts then passed:
+
+- strict server provenance with `state_root_disposition=baseline_migrated`;
+- a fresh ready heartbeat, zero peers/players, and no backup in progress;
+- clean Workbench and Dev MCP identity at revision
+  `96aa8436dea9d86989d9afa929c2f2ab80aacf66`;
+- ready runner, Docker, AM4, and i5 topology nodes;
+- OMEN config SHA-256 `a141231b…1f42` and i5
+  `fc21daab…e945`, both with canonical session/motion disabled and explicit
+  local-Lab routes;
+- i5 scheduled task `Ready`, both Valheim clients stopped, and matching plugin
+  hashes.
+
+Exactly one C6 job was submitted:
+`job-20260802-065514705-b159b3fb`, run
+`workbench-20260802-065519-b159b3fb`. It failed closed, but the watchdog made
+the disposition materially different from the prior run:
+
+- i5 observe-one passed with 113 received / 467 applied and native writer
+  suppression; OMEN drive-one passed with 114 sent;
+- i5 drive-two passed with 105 sent; OMEN observe-two passed with 100 received
+  / 795 applied and native writer suppression;
+- OMEN gap-drive passed with exactly 20 withheld frames and an accepted
+  reliable resync receipt;
+- OMEN advanced into disconnect/resume, so this run did not reproduce a
+  persistent OMEN scenario-clock stall;
+- watchdog rows reported only 2.07–2.24 second gaps, idle route state, queue
+  depth zero, and zero writer faults, after which both clients advanced.
+
+The structured timestamps identify the failure as a manifest race. i5 applied
+the reliable resync for `c6-gap-omen-to-i5` at `06:57:12.417Z` while it was
+still completing the prior action. Its `i5-c6-observe-gap` probe started at
+`06:57:13.177Z`, reset its counter baseline after that application, and later
+failed with `holds=1 gaps=0 resync_applied=0`. This is not evidence that the
+gap/resync lane failed; the correlated `reliable_resync_applied` row is present
+0.76 seconds before the measurement window.
+
+The C6 generator now inserts the same bounded four-second OMEN
+`gap-observer-align` action already used by C8. A new
+`Test-C6ScenarioCoverage.ps1` contract verifies its duration, immediate order
+before drive-gap, and shared correlation; the orchestrator invokes the contract
+before i5 preflight or any remote mutation. The 24-action generated fixture
+passes. No second physical run was attempted.
+
+Cleanup receipts are complete: both exact config hashes were restored, server
+motion changed `true → false`, residue cleanup matched/destroyed zero objects,
+both clients stopped, and post-run quiescence again reported a fresh ready
+heartbeat with zero peers and players.
+
 ## Sources
 
 - [Workbench implementation receipt](../../plans/workbench-v1-implementation-receipt.md)

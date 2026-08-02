@@ -4,7 +4,8 @@ Status: implementation plus rendered machine-and-human acceptance completed
 2026-08-02. M5 and M6 are closed, and the read-only Operate check, reversible
 install/rollback drill, and peer-bearing player-active capture have clean local
 receipts. WB-1 remains a candidate pending the declared unfamiliar-user usability
-gate, tagged `TODO — Derek soon` rather than an active implementation blocker.
+gate, tagged `TODO — Derek soon` rather than an active implementation blocker,
+and one separately authorized physical validation of the corrected C6 gap order.
 The player-active capture also identified a native-motion-only gap for a
 separate development loop. The follow-on audit found that this was
 reproducible from two configuration/provenance facts: both rendered clients
@@ -16,9 +17,13 @@ The runtime choice is tracked in [PD-7](../docs/decisions/pd-7-lab-runtime-prove
 and is a prerequisite for the next real-player/motion-authority window.
 The short-term Baseline-compose/retained-state bridge was executed and the full
 Baseline state-root migration has now passed strict provenance. The hardened
-single-client background-execution check passed, but the justified concurrent
-C6 still reproduces an OMEN rendered-loop stall; PD-7 motion acceptance is
-therefore open for bounded forensics, not for blind retries.
+single-client background-execution check passed. The one clean,
+watchdog-bearing diagnostic C6 then disproved the suspected persistent OMEN
+stall: both ordinary motion directions passed and OMEN completed the gap drive.
+The run failed because i5 applied the correlated reliable resync before its
+`observe_gap` probe captured baseline counters. The existing C8 observer-alignment
+step is now backported to C6 and guarded before remote mutation; one new physical
+validation of that specific fix remains, not a retry loop.
 Owner: Derek. This document is the decision-complete execution strategy for the
 first coherent Workbench product slice.
 Product rationale remains canonical in [PD-5](../docs/decisions/pd-5-local-workbench-ownership-appliance.md),
@@ -436,7 +441,7 @@ M3 acceptance:
   `workbench-bg-reassert-20260802` then passed settle, move, bounded resume,
   and scenario completion with the hardened artifact. It clears the diagnostic
   gate for one full C6 run, but is not itself a multiplayer or motion verdict.
-- **Story WB-S3.28 (new blocker):** Analyze the one justified full C6 run against
+- **Story WB-S3.28 (forensics complete):** Analyze the one justified full C6 run against
   the hardened artifact (`job-20260802-045616258-030c0534`, run
   `workbench-20260802-045621-030c0534`). It reached session start, peer
   binding, safe-origin, interest-edge rendezvous, and initial i5 probes, but
@@ -445,14 +450,26 @@ M3 acceptance:
   OMEN log, so the next action is bounded crash-forensics or main-thread
   budget/watchdog instrumentation, not another blind C6 retry. Keep the
   Docker Workbench net48 build path unchanged while isolating this concurrent
-  rendered-client interaction.
-- **Story WB-S3.29 (implemented diagnostic gate):** Add a worker-thread
+  rendered-client interaction. The clean watchdog run
+  `job-20260802-065514705-b159b3fb` / run
+  `workbench-20260802-065519-b159b3fb` supplied that discriminating result:
+  OMEN completed drive-one, observe-two, and drive-gap, while i5 completed
+  observe-one and drive-two. i5 applied correlation `c6-gap-omen-to-i5` at
+  `06:57:12.417Z`; its `observe_gap` probe began at `06:57:13.177Z`, after the
+  evidence it was intended to measure. The prior persistent-stall hypothesis is
+  rejected for this run; the failure is scenario ordering.
+- **Story WB-S3.29 (implemented and observed diagnostic gate):** Add a worker-thread
   `perf-watchdog.jsonl` heartbeat receipt so a Unity/main-thread stall remains
   observable even when synchronous perf sections cannot close. Collect it in
   native client evidence. Make the Workbench runner compute checkout-time
   source identity for every build and fail rendered C6 closed when the checkout
   is dirty or the Companion image revision differs. A dirty Docker build may
-  support local diagnostics, but it is never a clean rendered acceptance.
+  support local diagnostics, but it is never a clean rendered acceptance. The
+  admitted DLL SHA-256
+  `ec75ee07c2fcd651db353403c3692502f26d488bf35628d2721e4cac8a66cff9`
+  ran on both clients. Its watchdog rows captured only bounded two-second gaps
+  with idle route state and zero writer faults; both clients subsequently
+  advanced their scenario clocks.
 - **Story WB-S3.30 (implemented provenance gate):** Add the read-only
   `fieldlab/scripts/Test-LabRuntimeProvenance.ps1` verifier. It checks the
   active server's Compose source and working directory, immutable image digest,
@@ -469,6 +486,14 @@ M3 acceptance:
   After the full migration, the same strict verifier passes with
   `state_root_disposition=baseline_migrated` and no bridge override in the
   active Compose labels.
+- **Story WB-S3.31 (alignment implemented; physical validation pending):** The
+  C6 manifest now places a bounded four-second OMEN observer-alignment action
+  immediately before gap drive, reusing the already accepted C8 ordering
+  margin. `Test-C6ScenarioCoverage.ps1` verifies the action, bound, order, and
+  shared correlation and is invoked before i5 preflight or any remote state is
+  armed. The generated 24-action fixture passes. The stop rule forbids using
+  this implementation change as authorization for a second physical C6 in the
+  same diagnostic cycle.
 
 M3.6 acceptance:
 
@@ -490,6 +515,8 @@ M3.6 acceptance:
 - Build receipts distinguish the actual checkout identity from the Companion
   image identity; rendered acceptance requires a clean, matching source/image
   pair.
+- A gap observer captures its baseline before the correlated sender action;
+  the scenario fails before remote mutation if that ordering guard is absent.
 
 ### Epic WB-E4 — Converge profiles, bootstrap, and Dev MCP
 

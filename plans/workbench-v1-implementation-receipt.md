@@ -13,8 +13,9 @@ clean-checkpoint MCP/Companion attribution, rendered AM4 + OMEN + i5 machine and
 human acceptance, local hash-verified Operate check, reversible install/rollback
 drill, and peer-bearing player-active capture have passed. WB-1 remains a
 candidate, rather than an unqualified completion claim, because the Saga's
-unfamiliar-user usability gate is explicitly still open. It is now tagged
-`TODO — Derek soon`, not an active implementation blocker. The capture also
+unfamiliar-user usability gate and one physical validation of the corrected
+C6 gap ordering are explicitly still open. The human gate is tagged
+`TODO — Derek soon`, not an implementation task. The capture also
 records a separate native-motion-only finding for the Lumberjacks motion lane.
 The approved PD-7 bridge first recreated the Lab server from Baseline Compose;
 the subsequent full state-root migration now places the active server config
@@ -72,8 +73,33 @@ a fresh ready heartbeat with zero peers/players, no OMEN Valheim process, and
 no backup in progress; stopped source and target matched at 2,561 files and
 57,551,976,393 bytes plus four critical world hashes. The retired source
 remains rollback, and the active server now passes strict provenance as
-`baseline_migrated` with only Baseline Compose labels and mounts. The clean,
-image-matched C6 diagnostic run is the remaining engineering follow-on.
+`baseline_migrated` with only Baseline Compose labels and mounts.
+
+The clean diagnostic checkpoint is build job
+`job-20260802-063901820-44598ee8`, DLL SHA-256
+`ec75ee07c2fcd651db353403c3692502f26d488bf35628d2721e4cac8a66cff9`.
+Package `m32-watchdog-20260802-r1` has SHA-256
+`88659ee974014efe0c6ebb0bebad528eaaa35778cd7abe6b3890f430c99545d7`
+and is installed identically on OMEN and i5 with reversible backups. The i5
+Companion lane initially exposed a concrete tool defect: it retained the public
+P7 Gateway and its install request blocked there. `Start-I5Companion.ps1` now
+persists the selected Gateway, `Sync-I5Companion.ps1` forwards it, and the
+documented Docker Desktop repair tool recovered the stuck old container before
+one successful install.
+
+Exactly one clean C6 was then admitted: job
+`job-20260802-065514705-b159b3fb`, run
+`workbench-20260802-065519-b159b3fb`, source revision
+`96aa8436dea9d86989d9afa929c2f2ab80aacf66`. Ordinary motion passed in both
+directions and OMEN completed gap drive. i5's correlated reliable resync
+applied at `06:57:12.417Z`, but its `observe_gap` probe did not begin until
+`06:57:13.177Z`; the probe therefore reset counters after the evidence and
+failed at zero gap/resync deltas. This rejects the prior persistent OMEN-stall
+hypothesis for the diagnostic run and identifies a manifest-ordering defect.
+The existing C8 four-second observer alignment is now backported to C6, and a
+new coverage gate rejects a missing/misordered alignment before remote state is
+changed. The one-run stop rule leaves physical validation for a separately
+authorized follow-up.
 
 ## Closeout disposition
 
@@ -94,23 +120,22 @@ image-matched C6 diagnostic run is the remaining engineering follow-on.
    recovery-path findings. The in-product first-visit path and
    [no-coaching protocol](workbench-v1-newcomer-usability-protocol.md) are ready;
    structural UI tests are not a substitute for that person.
-4. The next engineering slice is now explicit in
+4. The remaining engineering slice is now explicit in
    [PD-7](../docs/decisions/pd-7-lab-runtime-provenance-and-session-boundary.md).
    Both rendered clients were still configured for the retired public Gateway
    `http://8.231.129.249:42317`, while the local Lab Gateway was healthy on
    `http://127.0.0.1:4000` and reachable from i5 at `100.124.12.37:4000`.
    The approved bridge recreated the Valheim server from Baseline Compose, and
    the full state-root migration has now moved the active server config/data
-   under Baseline with exact inventory and world-hash verification. Do not call the next player/motion
-   window a clean Lab run until the per-node-route, side-channel, motion
-   rendezvous, and failed-run evidence gates are resolved. The latest full C6
-   evidence adds a rendered main-loop/peer-load forensic gate after the
-   single-client background-execution check; it does not change the Docker
-   build boundary. The watchdog-bearing artifact is diagnostic until a clean,
-   image-matched source checkpoint is built and admitted.
-5. No engineering defect discovered by the rendered window remains open: native
-   character binding, lease renewal, the client-only evidence boundary, and
-   Windows child exit-code propagation are fixed and regression-covered.
+   under Baseline with exact inventory and world-hash verification. The clean
+   watchdog run closed the main-loop forensic question and exposed the narrower
+   gap-observer ordering race. The manifest fix and pre-mutation coverage gate
+   are implemented; only its physical validation remains. This does not change
+   the Docker build boundary or authorize an automatic retry.
+5. Engineering defects discovered by the rendered windows—native character
+   binding, lease renewal, the client-only evidence boundary, Windows child
+   exit-code propagation, i5 Gateway persistence, and C6 gap ordering—are fixed
+   and regression/contract-covered. The last item is not yet physically sealed.
 6. The pre-live rollback audit found and closed a stop-ship defect before any
    player file was changed. Install now preflights the complete archive, rejects
    unsafe or duplicate targets, serializes update operations, applies files
@@ -125,10 +150,10 @@ image-matched C6 diagnostic run is the remaining engineering follow-on.
 | M0 baseline | passed | Claimed installation `wb-4285b4fd66f442e598886b861ed1bd44` and the retained companion-data volume are proven. Final machine-acceptance HEAD `817ee8b2ff6dc30105dd44714d7709b53ecc2681` produced identity-matched Companion and Dev MCP images with `source_dirty=false`; the stale `ComfyGatewayBoot` task remains disabled and HEARTH remains independent. |
 | M1 kernel | passed | Lumberjacks/tools/companion/Test-WorkbenchApi.ps1 passed browser token, target/profile rejection, jobs, events, receipts, runner auth, and heartbeat checks. |
 | M2 product shell | passed | /, /workbench, and legacy /companion return 200; Workbench V1 shell, Standard/Advanced presentation, claim flow, live topology, job cards, receipt links, and observation form are present. |
-| M3 local slices | passed for the current local slice | Canonical Docker Workbench net48 mod build `job-20260802-044059503-235d215a` passed with read-only Valheim mount, no host SDK, and no plugin copy; support export passed the privacy scanner; safe Compose recreate preserved installation ID/claim/volume. The read-only m32 check, approved install-to-rollback cycle, and peer-bearing player-active capture passed. The capture's native-motion-only result and current rendered OMEN stall remain follow-on motion-lane findings, not hidden as a mod-motion pass. |
+| M3 local slices | passed for the current local slice | Clean watchdog build `job-20260802-063901820-44598ee8` passed with read-only Valheim mount, no host SDK, and no plugin copy; support export and reversible update paths remain passed. The clean diagnostic rejected the persistent OMEN-stall hypothesis and isolated a C6 manifest-ordering race, now fixed with pre-mutation coverage but awaiting physical validation. |
 | M4 distribution boundary | passed | Compose profile checks prove default/Production exclude Dev MCP and the SDK runner; Dev/Lab publish the identity-attested Baseline MCP on loopback `8721`; no Docker socket exists. The mod side channel is default-off, loopback-configured, and cannot be UI-enabled without Dev/Lab opt-in. The stale logon task is disabled and host `8720` is free. |
 | M5 rendered acceptance | passed | Run `workbench-20260802-003128-116adca1` completed on real OMEN and i5 clients against AM4. Derek watched live and recorded `pass / followed / smooth`; the sealed job receipt is `passed` with `human_observation_recorded`. |
-| M6 closeout | passed for the original WB-1 scope | Final receipt and handoff are current. The peer-bearing player-active Operate gate is closed; native-motion-only is retained as a follow-on finding. The next real-player/motion window is held on PD-7 runtime provenance and per-node Gateway routing; unfamiliar-user/mobile review remains `TODO — Derek soon`. |
+| M6 closeout | passed for the original WB-1 scope | Final receipt and handoff are current. Full PD-7 migration, route correction, watchdog admission, and one clean diagnostic C6 are receipted. A separately authorized physical check of the C6 ordering fix and unfamiliar-user/mobile review (`TODO — Derek soon`) remain open and are not hidden as passes. |
 
 ## Implemented surfaces
 
@@ -162,8 +187,10 @@ image-matched C6 diagnostic run is the remaining engineering follow-on.
   wrapper over the same Workbench jobs. Legacy schema-0 rollback is unavailable
   in both UIs/API, and no-peer captures no longer produce green job receipts.
 - Source/package/i5 launchers: explicit Explore/Admin/Dev/Lab/Production
-  profile selection, local runner-token generation outside the checkout,
-  profile convergence, and hidden host-runner startup.
+  profile and Gateway selection, local runner-token generation outside the
+  checkout, profile convergence, and hidden host-runner startup. The i5 sync
+  lane forwards the selected Gateway and retains the client-only Explore
+  posture when pointed at the local Lab.
 - ComfyNetworkSense: the development MCP/Raven side channel is default-off,
   uses one configurable loopback-only origin, and cannot be enabled from the
   in-game transport toggle unless Dev/Lab configuration first opts in.

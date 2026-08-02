@@ -177,9 +177,41 @@ The recreated server now reports only
 server image digest
 `sha256:e8b13da3c44f54a38511c8ac224f2959a437c0b2626cf916683ca7acc8dfb146`,
 and passes the strict verifier with `state_root_disposition=baseline_migrated`.
-The retired bridge override is no longer active. The remaining work is the one
-clean, image-matched watchdog diagnostic C6 and its evidence disposition, not a
-runtime-source decision.
+The retired bridge override is no longer active.
+
+## Clean watchdog diagnostic disposition
+
+The single authorized diagnostic was Workbench job
+`job-20260802-065514705-b159b3fb`, run
+`workbench-20260802-065519-b159b3fb`, from clean image-matched revision
+`96aa8436dea9d86989d9afa929c2f2ab80aacf66`. OMEN and i5 both ran DLL SHA-256
+`ec75ee07c2fcd651db353403c3692502f26d488bf35628d2721e4cac8a66cff9`.
+Strict provenance, source/image identity, i5 readiness, both explicit routes,
+and Admin-at-rest hashes passed before launch.
+
+The result changes the forensic classification. OMEN completed drive-one,
+observe-two, and gap-drive; i5 completed observe-one and drive-two. Watchdog
+rows on both machines recorded bounded 2.07–2.24 second gaps with idle route
+state and zero writer faults, after which both scenario clocks advanced. The
+prior persistent OMEN main-loop-stall hypothesis is therefore rejected for this
+run.
+
+The actual failure was ordering in the C6 fixture. i5 applied reliable resync
+correlation `c6-gap-omen-to-i5` at `06:57:12.417Z`, while its `observe_gap`
+probe began at `06:57:13.177Z`. The probe correctly measured zero new gap and
+resync counters because the expected event had already happened. The C6
+manifest now reuses C8's bounded four-second OMEN observer-alignment action,
+and `Test-C6ScenarioCoverage.ps1` fails before i5 preflight or remote mutation
+unless that action immediately precedes gap drive and shares the observer's
+correlation. Its generated 24-action fixture passes. Per the one-run stop rule,
+physical validation is a separately authorized follow-up; it is not part of
+this diagnostic cycle.
+
+Failure cleanup passed: both exact Admin-at-rest config hashes were restored,
+server motion was disarmed, residue cleanup matched zero objects, both clients
+stopped, and a fresh local heartbeat returned to zero peers/players. The
+remaining work is therefore one physical validation of the corrected scenario
+ordering, not a runtime-source decision or another forensic retry.
 
 ## Acceptance
 
