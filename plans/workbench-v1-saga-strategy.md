@@ -256,9 +256,12 @@ M1 acceptance:
   work and a typed human-observation form for `waiting_human`.
 - **Story WB-S2.12:** Preserve existing update, diagnostics, trace, roadmap, and
   community routes through the new navigation.
-- **Story WB-S2.13 (follow-on gate):** Have an unfamiliar operator use the
-  Standard live map and mobile layout; record whether they can identify the
-  active goal, hardware roles, expected result, evidence, and recovery path.
+- **Story WB-S2.13 (follow-on gate):** The Standard UI now contains a first-visit
+  safe path and the facilitator has a no-coaching
+  [newcomer protocol](workbench-v1-newcomer-usability-protocol.md). Have an
+  unfamiliar operator use the live map and mobile layout; record whether they can
+  identify the active goal, hardware roles, expected result, evidence, and
+  recovery path.
 
 M2 acceptance:
 

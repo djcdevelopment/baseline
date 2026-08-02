@@ -25,8 +25,9 @@ player-active transport-capture checks are explicitly still open.
    valid fail-closed evidence.
 3. Community usability is follow-on story WB-S2.13: have an unfamiliar operator
    use the Standard live map and mobile layout, then record comprehension and
-   recovery-path findings. Structural UI tests are not a substitute for that
-   person.
+   recovery-path findings. The in-product first-visit path and
+   [no-coaching protocol](workbench-v1-newcomer-usability-protocol.md) are ready;
+   structural UI tests are not a substitute for that person.
 4. No engineering defect discovered by the rendered window remains open: native
    character binding, lease renewal, the client-only evidence boundary, and
    Windows child exit-code propagation are fixed and regression-covered.
