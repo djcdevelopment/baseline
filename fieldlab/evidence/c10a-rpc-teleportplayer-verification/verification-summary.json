@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "receipt_type": "c10a_rpc_teleportplayer_verification",
+  "closed_utc": "2026-08-02T15:26:09.5628435+00:00",
+  "result": "passed",
+  "method": {
+    "name": "RPC_TeleportPlayer",
+    "stable_hash": 376962408,
+    "scope": "global_routed",
+    "registration": "Chat.Awake",
+    "payload_signature": ["Vector3", "Quaternion", "Boolean"],
+    "disposition": "deferred_admin_recall",
+    "generic_routed_admission": false,
+    "fallback_policy": "unadmitted_send_remains_poison_guarded"
+  },
+  "source": {
+    "assembly_sha256": "3b26c8512778f6e0664b5af2a26f3c30993a00f584c1e76d9123a742b67e2004",
+    "extractor_inventory": "tools/synthetic-baseline-extractor/synthetic_baseline_v2.json",
+    "outbound_wrapper": "Chat.TeleportPlayer",
+    "only_wrapper_caller": "Terminal recall command",
+    "command_flags": {
+      "is_cheat": true,
+      "only_admin": true,
+      "is_network": false
+    },
+    "handler": "teleports Player.m_localPlayer",
+    "normal_portal_path": "TeleportWorld.Teleport -> Player.TeleportTo; non-owner dispatch uses instance RPC_TeleportTo"
+  },
+  "runtime": {
+    "release_id": "m7-c10a-20260802-r4",
+    "run_id": "native-20260802-c10a-r4",
+    "normal_play_actions": 49,
+    "portal_roundtrips": {
+      "omen": "passed_forward_and_reverse",
+      "i5": "passed_forward_and_reverse"
+    },
+    "rpc_teleportplayer_rows": {
+      "omen": 0,
+      "i5": 0,
+      "server": 0
+    },
+    "native_totals": {
+      "omen": 0,
+      "i5": 0,
+      "server": 0
+    },
+    "poison_trips": {
+      "omen": 0,
+      "i5": 0,
+      "server": 0
+    }
+  },
+  "guard": {
+    "test": "AdminRecallTeleportRpc_RemainsDeferredAndPoisonGuarded",
+    "expected": "TryGet, AllowsEnvelope, and AllowsRoutedEnvelope all reject RPC_TeleportPlayer"
+  },
+  "verified": [
+    "exact registration and payload signature",
+    "single cheat/admin recall call site",
+    "normal portal travel uses a different local/instance boundary",
+    "both real clients completed portal roundtrips under native poison",
+    "normal play produced no RPC_TeleportPlayer row, native use, or poison trip"
+  ],
+  "deferred": [
+    "the admin recall command needs a future authenticated Lumberjacks operator-command design if it is promoted"
+  ]
+}
