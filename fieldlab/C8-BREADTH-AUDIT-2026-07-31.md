@@ -35,7 +35,7 @@ replacement architecture, and it resolves the root `DECISIONS-PENDING.md` entry
 | `SpawnObject` (routed) | deferred (admin/cheat) | **needs-lane P2** | Registered by `ZNetScene.Awake` — core scene machinery, not a console path. |
 | `RPC_TeleportPlayer` (routed) | needs-lane P1 | **verified deferred-with-poison-guard** | The only pinned outbound caller is Terminal's cheat-only, admin-only, non-network `recall` command. Portal travel rides `RPC_TeleportTo` (instance), and both r4 physical clients completed two-way traversal under poison without invoking this method. |
 | `UseStamina` (instance) | needs-lane P1 | **needs-lane P3 [VERIFY]** | Registered by `Player.Awake`; stamina spend is normally owner-local. The remote-invoke paths are rare. |
-| `RequestControl` / `ReleaseControl` / `RequestRespons` (instance) | superseded by ownership-lease | **verified split: needs typed ship-control and saddle-control lanes** | Fresh extractor reproduction confirms all three hashes are registered by both `Sadle.Awake` and `ShipControlls.Awake`, but source proves incompatible semantics: ships separate the profile-identity control token from simulation ownership, while saddles use session identity and transfer ownership in the grant. A method-name contract or generic C4 pickup-lease extension is invalid for one registrant. The methods remain unadmitted and poison-blocked until their separate physical family gates. |
+| `RequestControl` / `ReleaseControl` / `RequestRespons` (instance) | superseded by ownership-lease | **verified split: typed ship lane accepted; saddle lane remains** | Fresh extractor reproduction confirms all three hashes are registered by both `Sadle.Awake` and `ShipControlls.Awake`, but source proves incompatible semantics: ships separate the profile-identity control token from simulation ownership, while saddles use session identity and transfer ownership in the grant. A method-name contract or generic C4 pickup-lease extension is invalid for one registrant. Exact r15 physically accepts the explicit ship-target contract; the same names remain poison-blocked for saddle and unknown target kinds. |
 | `RPC_RequestOwn` (instance) | superseded | superseded (kept) | This is the exact mechanism the C4 lease lane replaced and poisoned (`ItemDrop.RequestOwn`); the other registrants (`ArmorStand`, `ItemStand`, `Vagon`) ride the same replaced dance. |
 
 ### C10a verification update — 2026-08-02
@@ -67,9 +67,14 @@ collision**, not one ownership-lease row. A fresh extractor run reproduced both
 120-method instance inventory exactly. Ship control does not transfer ZDO ownership and
 uses persistent profile identity; saddle control transfers ownership and uses session/ZDO
 identity. The generic admission contract therefore deliberately rejects all three names.
-The vehicle and mount gates must implement separate typed contracts and retain separate
-physical receipts. Retained source receipt:
+The typed ship contract now admits the three hashes only with an explicit ship target
+kind; exact r15 physically proved both helmsman/physics-owner directions, authenticated
+owner handoff, server snapshot fan-out, and non-owner replica apply with native use and
+poison trips at zero. Saddle and unknown target kinds remain rejected. Retained source
+receipt:
 `fieldlab/evidence/c10a-vehicle-control-verification/verification-summary.json`.
+Retained physical ship receipt:
+`fieldlab/evidence/c10a-ship-physical-acceptance/verification-summary.json`.
 
 ## Summary counts (post-review)
 

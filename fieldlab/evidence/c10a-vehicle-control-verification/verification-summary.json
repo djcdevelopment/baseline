@@ -58,8 +58,13 @@
     "a method-name-only generic admission is prohibited by regression test"
   ],
   "remaining": [
-    "typed ship-control implementation and physical vehicle receipt",
     "typed saddle-control and ownership implementation and physical mount receipt",
-    "vehicle passenger attachment and world-space AoI proof"
-  ]
+    "container/station physical receipt",
+    "AI/creature physical receipt"
+  ],
+  "physical_follow_up": {
+    "ship_vehicle_gate": "accepted",
+    "receipt": "fieldlab/evidence/c10a-ship-physical-acceptance/verification-summary.json",
+    "mount_gate": "open"
+  }
 }

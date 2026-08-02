@@ -3,8 +3,8 @@
 **Assessed:** 2026-08-02
 **Development topology:** headless dedicated server on AM4; native Windows clients on
 OMEN (Tugcorp, RTX 5070) and i5 (Durracktu, Intel Iris Xe).
-**Reference deployment:** P7 remains stopped and unchanged; C0-C8 and the accepted C10a
-paired-release candidate are proven on AM4.
+**Reference deployment:** P7 remains stopped and unchanged; C0-C8, the accepted C10a
+paired-release candidate, and the physical ship/vehicle gate are proven on AM4.
 
 This is a present-tense boundary inventory, not a restatement of the historical I0-I7
 ladder. “Swapped” means the live payload crosses Lumberjacks and the corresponding
@@ -60,8 +60,9 @@ The replacement is not 100% complete.
   name unselected breadth: the composition proves the selected surface only, and
   Swapped-everywhere remains C10's exit condition (33 P1 admissions — 29 instance plus
   four global — and the component-family gates precede it). Vehicle-control source
-  verification has split the former one-row assumption into typed ship and saddle
-  contracts owned by their physical family gates. Recovery5 repeated
+  verification split the former one-row assumption into typed ship and saddle contracts;
+  the typed ship gate is now physically accepted on r15 while saddle remains open.
+  Recovery5 repeated
   the physical composition and runtime-proved the session-scoped epoch across a real
   AM4 restart; that wall-11 prerequisite no longer remains open.
 - The aligned C10a pair `m7-c10a-20260802-r4` passed the same poison-armed 49-action
@@ -75,9 +76,11 @@ The replacement is not 100% complete.
   passed, and OMEN/i5/AM4 native totals and poison trips remained zero. Fresh extractor
   verification then proved that `RequestControl`/`ReleaseControl`/`RequestRespons` share
   method hashes across incompatible ship and saddle identity/ownership semantics. Those
-  methods remain generically unadmitted and poison-blocked; their typed contracts belong
-  to the separate vehicle and mount gates. The accepted pair does not substitute for the
-  vehicle, mount, container/station, and AI/creature breadth gates.
+  methods remain generically unadmitted and poison-blocked. Exact paired r15 subsequently
+  accepted the explicit ship-target contract on one physical Karve: both clients boarded,
+  each drove while the other peer owned simulation, authenticated owner handoff reached
+  both replicas, and server-signed snapshots reproduced motion on the non-owner. The
+  mount, container/station, and AI/creature breadth gates remain.
 
 The shortest honest description is: **the C3 ZDO semantic boundary and selected
 control/RPC classes are swapped on AM4, and C3 semantics now ride the canonical
@@ -86,9 +89,10 @@ and pickup boundary; C5 swaps the selected world descriptor and run-tagged
 zone-membership boundary; C6 swaps selected two-player motion authority; C7 swaps the
 Steam-free connection/bootstrap boundary; C8 composes that selected surface at
 native-zero, the server-session epoch rejects stale bank state after restart, r4
-accepts one aligned paired release on that physical surface, and r6 physically accepts
-the legitimate cross-owner `UseStamina` P3 contract, and source verification rejects a
-generic vehicle-control contract in favor of split ship/saddle lanes. General-prefab
+accepts one aligned paired release on that physical surface, r6 physically accepts
+the legitimate cross-owner `UseStamina` P3 contract, source verification rejects a
+generic vehicle-control contract in favor of split ship/saddle lanes, and r15 physically
+accepts the typed ship lane in both helm/physics-owner directions. Remaining prefab
 family breadth, subjective motion acceptance, fallback deletion,
 and P7 promotion are not complete.**
 
@@ -243,10 +247,11 @@ manifest `p7-primary-v1`, and an armed consumer.
 | ZDO outbound carriage | **Swapped for legacy redirect and C3 semantic boundary** | Selected `*` prefabs use the redirect; C3 authoritative mutation bodies, revisions and tombstones use the durable journal over C1 | C3 body capture still observes Valheim's authoritative mutation seams; semantic breadth remains | **Verified:** C4a accepted six canonical mutations, replayed WAL across Gateway restart, retained two isolated logical recipients and ended zero pending |
 | ZDO inbound carriage/apply | **Partial; C3 typed boundary swapped on AM4** | C3 clients receive canonical-session frames, validate, and directly create/update/delete/revision/owner/position/deserialize on Unity `Update` | Legacy consumer still reconstructs a `ZPackage` and invokes `RPC_ZDOData`; general-prefab typed parity is not yet proven | **Verified:** C4a used only canonical carriage; both clients applied valid delta/tombstone, i5 applied late snapshot, stale/malformed rejected, network `RPC_ZDOData` zero |
 | Co-presence ZDO fan-out | **Corrected and integration-proven on AM4; disabled on P7 pending promotion** | Emits native-selected revisions to the exposing recipient and any in-band observer that is behind | Candidate discovery and delivered-revision bookkeeping remain native | **Verified:** two unattended physical clients, 1,340/1,340 native-selected `Emit`, zero non-emit, and successful inventory return on both clients |
-| Routed gameplay RPC (`ZRoutedRpc`) | **33 P1 methods code-admitted; aligned physical candidate and `UseStamina` P3 accepted on AM4** | One source-aligned mod/Gateway contract admits seven harness methods plus 29 P1 instance and four P1 global methods by exact name/hash, target shape, size, and extractor-pinned byte layout; exact P3 `UseStamina(Single)` is admitted for legitimate cross-owner harpoon/fishing debits; unadmitted outbound routes enter the ledger and poison blocks them. `RPC_SetConnection` is replacement-owned by the server portal cache; `RPC_TeleportPlayer` is deferred admin recall. Both deliberately stay unadmitted. Vehicle-control source verification deliberately keeps `RequestControl`/`ReleaseControl`/`RequestRespons` out too: their shared ship/saddle hashes have incompatible identity and ownership semantics and require separate typed contracts | Not every admitted P1 method was invoked by the composition. Remaining P2/P3 classification, separate vehicle/mount gates, containers/stations, AI/creatures, fallback deletion, and P7 remain | **Verified:** focused mod tests include the exact dual-registration/non-admission guard; `native-20260802-c10a-r4` completed all 49 physical actions with native totals/trips zero and hash-joined all 4,472 saved portal pairs; `native-20260802-c10a-stamina-r6-sync1` selected only live owner-matching players and applied exact `50 - 1.25 = 48.75` debits in both physical directions with native totals/trips zero and clean reconnect/cleanup; fresh extractor output reproduced all 120 tracked instance RPCs with zero unresolved registrations |
+| Routed gameplay RPC (`ZRoutedRpc`) | **33 P1 methods code-admitted; aligned candidate, `UseStamina` P3, and typed ship control accepted on AM4** | One source-aligned mod/Gateway contract admits seven harness methods plus 29 P1 instance and four P1 global methods by exact name/hash, target shape, size, and extractor-pinned byte layout; exact P3 `UseStamina(Single)` is admitted for legitimate cross-owner harpoon/fishing debits; unadmitted outbound routes enter the ledger and poison blocks them. `RPC_SetConnection` is replacement-owned by the server portal cache; `RPC_TeleportPlayer` is deferred admin recall. Both deliberately stay unadmitted. Vehicle-control source verification keeps a generic `RequestControl`/`ReleaseControl`/`RequestRespons` admission prohibited, but an explicit ship target kind selects the typed ship contract; saddle and unknown kinds remain rejected | Not every admitted P1 method was invoked by the composition. Remaining P2/P3 classification, mount, containers/stations, AI/creatures, fallback deletion, and P7 remain | **Verified:** focused tests retain the exact dual-registration/non-admission guard and typed ship target contract; `native-20260802-c10a-r4` completed all 49 physical actions with native totals/trips zero and hash-joined all 4,472 saved portal pairs; `native-20260802-c10a-stamina-r6-sync1` applied exact debits in both physical directions; `native-20260802-c10a-vehicle-r15-1` exercised real `ShipControlls`, owner handoff, and server snapshot fan-out in both physical directions with native totals/trips zero |
 | Direct peer/control RPC | **Partial; one C2a pulse swapped on AM4** | One selected post-join direct pulse crosses C1's reliable lane and dispatches on Unity `Update` | Error, player/global/admin lists, reference position, disconnect, and every other `ZRpc` control class | **Verified:** `native-20260730-c2a-final` delivered exactly one typed pulse per client; both withheld copies became stale; native tripwires were registered; all 107 selected server-native attempts were suppressed before `ZRpc.Invoke`; zero native copies arrived |
 | Player motion | **Selected boundary swapped on AM4; prior observe-only build remains on P7** | Authenticated numbered position/rotation/velocity frames use UDP with binary-WebSocket fallback; reliable hard resync uses C1. The logical remote player applies them while selected native transform and position writers are suppressed | General identity/prefab breadth and P7 promotion remain | **Verified:** C6 proved both directions, bounded loss/resync, and fresh-process resume; C7 removed the native join dependency |
 | ZDO ownership transfer and pickup action | **Partial; selected C4 boundary swapped on AM4** | Server-originated leases bind run/world/ZDO/logical holder/epoch/expiry; Gateway validates actions; the dedicated server performs the authoritative destroy and returns inventory through Lumberjacks | General-prefab ownership/action admission remains; the cutover is gated and P7 still runs the prior path | **Verified:** `native-20260730-c4b-tenth` rejected reclaimed/wrong/expired leases, poisoned selected native owner/pickup/destroy paths, and credited exactly one Raspberry to each client |
+| Ship control, authority, and replication | **Selected physical ship boundary swapped on AM4** | Explicit ship-target RPCs carry helm request/release/rudder/speed; Gateway authenticates held control and owner transfer; the physics owner sends numbered snapshots to AM4; the server journals the canonical ship body and fans a server-originated replica to both clients | Saddle/mount semantics, unrelated vehicle prefabs, fallback deletion, and P7 promotion remain separate | **Verified:** exact r15 boarded one Karve on both real clients; i5 drove while OMEN owned, ownership transferred, then OMEN drove while i5 owned; both observers saw >15 m motion plus rudder/speed change, both releases passed, both replicas applied owner/snapshot updates, and all native totals/trips were zero |
 | World identity/bootstrap | **Selected boundary swapped on AM4** | Protocol/release, world id/epoch, seed/name, world-generation version, network time, save epoch, initial zone, typed character id, and logical scene lifecycle cross Lumberjacks | General world/zone breadth and migration fallback deletion remain C8/C10 | **Verified:** C7 cold join reached the intended scene twice per client; wrong release and descriptor/protocol stopped before scene |
 | Zone/interest lifecycle | **Partial; selected run-tagged membership swapped on AM4** | Explicit enter/leave, monotonic snapshot epoch, three complete typed bodies, semantic chunk ACK, resume, complete-once, and typed release cross Lumberjacks | General-prefab/zone interest breadth, reference-position integration, and terrain generation remain Valheim; terrain is intentionally local engine work | **Verified:** both C5 clients resumed after chunk-1 socket loss, completed once, unloaded to zero, spawned none on withhold, and every selected native candidate was suppressed |
 | Server save/persistence | **Native** | Gateway/event services retain their own records | Valheim world/ZDO save is still canonical game persistence | **Verified:** current architecture; not itself a transport swap |
@@ -411,22 +416,30 @@ client logs, autotest receipts, and a Steam-identifier-free P7 correlation:
   receiver, received correlated sender receipts, resumed once, and stopped. OMEN,
   i5, and AM4 native totals/trips were zero with poison armed; compact retained
   evidence is in `evidence/c10a-usestamina-verification/`.
+- `native-valheim/native-20260802-c10a-vehicle-r15-1/` — accepted C10a ship
+  composition: both real clients boarded one Karve; i5 drove while OMEN owned;
+  authenticated handoff made i5 the owner; OMEN then drove while i5 owned. Both
+  observers received canonical server-signed ship snapshots and independently
+  measured >15 m motion, rudder, and speed changes. Both clients resumed once and
+  stopped; OMEN/i5/AM4 native totals and poison trips were zero; compact retained
+  evidence is in `evidence/c10a-ship-physical-acceptance/`.
 
 ## Replan recommendation
 
 C0-C8 are complete at their retained AM4 boundaries. C9's machine/artifact run is
 complete and waits only on Derek's one-word rendered-motion verdict. C10a has an
 accepted 49-action paired r4 surface, source/runtime classifications for
-`RPC_SetConnection` and `RPC_TeleportPlayer`, and exact paired r6 physical acceptance
-for both legitimate cross-owner `UseStamina` directions. The full prefab and method
-surface is still not promoted to “swapped.”
+`RPC_SetConnection` and `RPC_TeleportPlayer`, exact paired r6 physical acceptance
+for both legitimate cross-owner `UseStamina` directions, and exact paired r15 physical
+acceptance for the typed ship lane. The full prefab and method surface is still not
+promoted to “swapped.”
 
 Vehicle-control source verification is closed: the shared hashes require separate ship
-and saddle contracts and remain generic-lane poison tripwires. The next local gate is the
-physical vehicle family, followed by mount, container/station, and AI/creature. Close each
+and saddle contracts and remain generic-lane poison tripwires. The physical ship gate is
+also closed. The next local gate is mount, followed by container/station and AI/creature. Close each
 from source classification plus a real poison-armed receipt; do not rerun C0-C8 or
 the r6 stamina gate without contradictory evidence. Workbench/dashboard work remains
-frozen until those four local physical breadth gates close.
+frozen until those three local physical breadth gates close.
 
 P7 remains stopped and untouched. After the local gates, C10b has two bounded P7
 reloads: promote/reprove the accepted pair, then delete migration-only fallback, cut

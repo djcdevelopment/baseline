@@ -42,7 +42,8 @@ is retained under the ignored directories
 `fieldlab/runs/native-valheim/native-20260802-c10a-stamina-r6/` and
 `fieldlab/runs/native-valheim/native-20260802-c10a-stamina-r6-sync1/`.
 
-This closes only `UseStamina [VERIFY]`. Vehicle-control verification and the
-separate vehicle, mount, container/station, and AI/creature physical family gates
-remain before P7 promotion and fallback deletion. Workbench/dashboard work remains
-frozen until those five local gates close.
+This receipt closes only `UseStamina [VERIFY]`. At capture time, vehicle-control
+verification plus four physical family gates remained. Subsequent retained receipts
+closed the source split and the physical ship/vehicle gate. Mount, container/station,
+and AI/creature now remain before P7 promotion and fallback deletion.
+Workbench/dashboard work remains frozen until those three local gates close.

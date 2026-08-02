@@ -1,7 +1,8 @@
 # C10a vehicle-control contract verification
 
-Status: **source classification accepted** on 2026-08-02. This is not a vehicle
-or mount physical-play receipt; those remain separate gates.
+Status: **source classification accepted** on 2026-08-02. This receipt itself
+does not award physical credit. Its typed ship half was subsequently accepted
+on the real OMEN+i5 pair; the typed saddle/mount half remains open.
 
 The repaired repository extractor was rerun against the pinned Valheim assembly
 (SHA-256 `3b26c8512778f6e0664b5af2a26f3c30993a00f584c1e76d9123a742b67e2004`).
@@ -29,6 +30,8 @@ transport.
 
 The correct work split is now explicit: the vehicle gate owns a typed ship-control
 contract, and the mount gate owns a separate typed saddle-control/ownership contract.
-Neither family receives physical credit from this source-only classification.
-Machine-readable evidence is in
+The ship follow-up is retained in
+[`../c10a-ship-physical-acceptance/`](../c10a-ship-physical-acceptance/).
+The saddle/mount family receives no credit from this source-only classification.
+Machine-readable source evidence is in
 [`verification-summary.json`](verification-summary.json).

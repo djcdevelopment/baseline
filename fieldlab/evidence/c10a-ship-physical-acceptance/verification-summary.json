@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "gate": "C10a physical ship/vehicle family",
+  "status": "accepted",
+  "captured_utc": "2026-08-02T18:27:02Z",
+  "release": {
+    "release_id": "m7-c10a-20260802-r15",
+    "source_state": "implementation and receipt land in the same commit",
+    "mod_version": "0.5.54",
+    "mod_sha256": "53f6aa18cc97d1d70080136f3ded3d7b77313e39fdd2f168652440e7a2e0ea1d",
+    "gateway_image_id": "sha256:5d0588cc1c88157e908b190a663630fdd4c03ca851d62f6d2ea28f09b4f62d0c",
+    "gateway_admitted_mod_release": "m7-c10a-20260802-r15",
+    "server_cold_mod_sha256": "53f6aa18cc97d1d70080136f3ded3d7b77313e39fdd2f168652440e7a2e0ea1d",
+    "server_runtime_mod_sha256": "53f6aa18cc97d1d70080136f3ded3d7b77313e39fdd2f168652440e7a2e0ea1d",
+    "am4_deploy_result": "passed",
+    "am4_plugin_loaded": true,
+    "am4_server_ready": true
+  },
+  "accepted_run": {
+    "run_id": "native-20260802-c10a-vehicle-r15-1",
+    "profile": "c10a-vehicle",
+    "scenario_sha256": "c1fd21fbf905e84833f17130dff7c18de1bd19a66e1f702fd54421ba879be3d3",
+    "action_count": 34,
+    "scenario_coverage_passed": 12,
+    "scenario_coverage_total": 12,
+    "composition_result": "completed",
+    "steam_free_cold_join": true,
+    "native_zero_composition": true,
+    "ship": {
+      "prefab": "Karve",
+      "zdo_uid": "2014258734:9155594",
+      "initial_owner_peer_id": 1158532546,
+      "transferred_owner_peer_id": 1889358686,
+      "owner_handoff_applied_on_omen": true,
+      "owner_handoff_applied_on_i5": true,
+      "server_validated_owner_snapshots": true,
+      "server_origin_snapshot_fanout": true,
+      "nonowner_replica_apply": true,
+      "retained_snapshot_sequences": {
+        "omen_owner": [1, 25, 50, 75, 100],
+        "i5_owner": [1, 25, 50, 75, 100, 125]
+      }
+    },
+    "control_legs": [
+      {
+        "driver": "i5",
+        "physics_owner": "omen",
+        "driver_distance_meters": 15.589,
+        "observer_distance_meters": 16.407,
+        "driver_rudder": 1,
+        "observer_rudder": 1,
+        "driver_speed_changed": true,
+        "observer_speed_changed": true,
+        "control_granted": true,
+        "release_observed": true
+      },
+      {
+        "driver": "omen",
+        "physics_owner": "i5",
+        "driver_distance_meters": 15.768,
+        "observer_distance_meters": 15.443,
+        "driver_rudder": 1,
+        "observer_rudder": 1,
+        "driver_speed_changed": true,
+        "observer_speed_changed": true,
+        "control_granted": true,
+        "release_observed": true
+      }
+    ],
+    "physical_clients": [
+      {
+        "client": "omen",
+        "character": "Tugcorp",
+        "interactive_session": 1,
+        "renderer": "NVIDIA GeForce RTX 5070",
+        "joined_result": "joined_held_and_stopped",
+        "resume_count": 1,
+        "terminal": "scenario_complete"
+      },
+      {
+        "client": "i5",
+        "character": "Durracktu",
+        "interactive_session": 1,
+        "renderer": "Intel(R) Iris(R) Xe Graphics",
+        "joined_result": "joined_held_and_stopped",
+        "resume_count": 1,
+        "terminal": "scenario_complete"
+      }
+    ],
+    "native_zero": {
+      "omen_native_total": 0,
+      "omen_poison_armed": true,
+      "omen_poison_trips": 0,
+      "omen_writer_dropped_rows": 0,
+      "omen_writer_faults": 0,
+      "i5_native_total": 0,
+      "i5_poison_armed": true,
+      "i5_poison_trips": 0,
+      "i5_writer_dropped_rows": 0,
+      "i5_writer_faults": 0,
+      "server_native_total_including_idle_host_poll": 0,
+      "server_writer_dropped_rows": 0,
+      "server_writer_faults": 0,
+      "server_selected_funnels": {
+        "native_peer_connection": 0,
+        "server_handshake": 0,
+        "client_handshake": 0,
+        "peer_info_send": 0,
+        "peer_info_receive": 0,
+        "zdo_data_receive": 0,
+        "routed_rpc_receive": 0
+      }
+    },
+    "post_proof_fail_closed_rejections": [
+      {
+        "client": "i5",
+        "phase": "disconnect ownership return",
+        "reason": "ship_snapshot_replica_authority_invalid",
+        "native_fallback": false
+      },
+      {
+        "client": "i5",
+        "phase": "network teardown before fresh-process relaunch",
+        "reason": "NullReferenceException:Object reference not set to an instance of an object",
+        "native_fallback": false
+      }
+    ]
+  },
+  "static_verification": {
+    "mod_deterministic_rebuild_sha256": "53f6aa18cc97d1d70080136f3ded3d7b77313e39fdd2f168652440e7a2e0ea1d",
+    "mod_build_warnings": 0,
+    "mod_build_errors": 0,
+    "mod_tests_passed": 138,
+    "mod_tests_failed": 0,
+    "repository_clean_no_cache_docker_verify": "passed",
+    "repository_tests": {
+      "contracts": 126,
+      "companion": 17,
+      "simulation": 250,
+      "gateway": 227,
+      "total": 620
+    },
+    "changed_powershell_parse": "passed",
+    "scenario_choreography_checks": "12/12 passed"
+  },
+  "pre_acceptance_falsifiers": [
+    { "run": "r7", "defect": "scenario JSON quoting" },
+    { "run": "r8", "defect": "owner transfer raced helm release" },
+    { "run": "r9", "defect": "wait_released mode policy missing" },
+    { "run": "r10", "defect": "standing on deck conflated with attached helm" },
+    { "run": "r11", "defect": "observer began before remote driver" },
+    { "run": "r12", "defect": "old client replica did not apply new owner" },
+    { "run": "r13", "defect": "owner snapshots did not reach the nonowner replica" },
+    { "run": "r14", "defect": "server-local Everybody echo interrupted Gateway fanout" }
+  ],
+  "cleanup": {
+    "server_controls_disarmed": true,
+    "gateway_url_restored": "http://100.124.12.37:4000",
+    "omen_config_backup_sha256": "13faa5bae83860ab811a9f054c12ade7d5019bc8491771ee4be4286c3cdf4d5b",
+    "omen_live_config_sha256": "13faa5bae83860ab811a9f054c12ade7d5019bc8491771ee4be4286c3cdf4d5b",
+    "i5_config_backup_sha256": "0d0899a817fc3fa9ddee61f52de1c9dc7090e8742e66d5d10361fcb5ffecb9c9",
+    "i5_live_config_sha256": "0d0899a817fc3fa9ddee61f52de1c9dc7090e8742e66d5d10361fcb5ffecb9c9",
+    "omen_valheim_processes": 0,
+    "i5_valheim_processes": 0,
+    "i5_task_state": "Ready",
+    "residue_matched": 0,
+    "residue_destroyed": 0
+  },
+  "scope": {
+    "p7": "untouched",
+    "workbench": "untouched and outside this gate",
+    "companion_mcp": "untouched and separate from the Gateway runtime",
+    "closed_local_gate": "ship/vehicle",
+    "next_local_gate": "mount",
+    "remaining_local_gates": 3
+  },
+  "full_local_evidence": [
+    "fieldlab/runs/native-valheim/native-20260802-c10a-vehicle-r15-1/"
+  ]
+}
