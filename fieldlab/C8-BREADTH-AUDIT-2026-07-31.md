@@ -38,13 +38,24 @@ replacement architecture, and it resolves the root `DECISIONS-PENDING.md` entry
 | `RequestControl` / `ReleaseControl` / `RequestRespons` (instance) | superseded by ownership-lease | **needs-lane P2 via ownership-lease [VERIFY]** | Registered by `Sadle.Awake` + `ShipControlls.Awake`. The lease lane is the right home, but it is proven on `Pickable` only — vehicle-control leases are design-compatible, unbuilt work, not superseded. |
 | `RPC_RequestOwn` (instance) | superseded | superseded (kept) | This is the exact mechanism the C4 lease lane replaced and poisoned (`ItemDrop.RequestOwn`); the other registrants (`ArmorStand`, `ItemStand`, `Vagon`) ride the same replaced dance. |
 
+### C10a verification update — 2026-08-02
+
+`RPC_SetConnection(ZDOID,ZDOID)` is **superseded by the server portal-connection
+cache**, not a P2 routed payload. The pinned decompile has one outbound caller in
+vanilla `Game.SetConnection`; the enabled server patches suppress both periodic and
+load-time vanilla pairing and write server-owned typed portal links directly. Exact r4
+boot and physical receipts reconstructed 4,472 pairs, completed both clients' two-way
+portal traversal under poison, and recorded zero method rows/native use. Keep the method
+unadmitted so a replacement regression trips poison. Retained receipt:
+`fieldlab/evidence/c10a-rpc-setconnection-verification/verification-summary.json`.
+
 ## Summary counts (post-review)
 
 | Bucket | Routed | Direct | Instance | Total |
 |---|---|---|---|---|
-| superseded-by-design | 7 | 13 | 1 | **21** |
+| superseded-by-design | 8 | 13 | 1 | **22** |
 | admitted | 0 | 0 | 1 | **1** |
-| needs-lane-before-C10 | 11 | 0 | 118 | **129** |
+| needs-lane-before-C10 | 10 | 0 | 118 | **128** |
 | deferred-with-poison-guard | 1 | 8 | 0 | **9** |
 | **Total** | 19 | 21 | 120 | **160** |
 
@@ -67,7 +78,7 @@ repeated per method with the signatures captured in v2.
 | RPC_DamageText | needs-lane | global-routed (P2) | Combat feedback HUD broadcast |
 | RPC_DiscoverClosestLocation | needs-lane | global-routed (P2) | Vegvisir/cartography exploration |
 | RPC_DiscoverLocationResponse | needs-lane | global-routed (P2) | Exploration response |
-| RPC_SetConnection | needs-lane | global-routed (P2) [VERIFY] | Portal linking |
+| RPC_SetConnection | superseded | server portal-connection cache; poison-guarded | The cache suppresses the only vanilla outbound caller and writes both server-owned links directly; r4 reconstructed 4,472 pairs and both physical clients traversed one pair forward/reverse with zero method rows/native use. |
 | RPC_TeleportPlayer | deferred | poison-guarded [VERIFY] | `Chat.Awake` command path; portals use RPC_TeleportTo |
 | RemoveGlobalKey | superseded | world-zone/descriptor | Descriptor lane |
 | RequestZDO | superseded | ZDO journal | Journal replaces on-demand ZDO sync |
@@ -137,6 +148,6 @@ respective shapes.
   be admitted + contract-tested before native fallback deletion; P2/P3 may ship
   behind the poison tripwire with the deferred bucket documented in the C10 gate.
 - Nothing here reopens C0–C8 architecture: every needs-lane row is an
-  allow-list + payload-contract admission on proven lanes. The three [VERIFY]
+  allow-list + payload-contract admission on proven lanes. The three remaining [VERIFY]
   flags and the three component-family gates are the C9/C10-adjacent
   verification work.

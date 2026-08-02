@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "receipt_type": "c10a_rpc_setconnection_verification",
+  "closed_utc": "2026-08-02T15:21:46.1151631+00:00",
+  "result": "passed",
+  "method": {
+    "name": "RPC_SetConnection",
+    "stable_hash": 459281666,
+    "scope": "global_routed",
+    "registration": "Game.Start",
+    "payload_signature": ["ZDOID", "ZDOID"],
+    "disposition": "superseded_by_server_portal_connection_cache",
+    "generic_routed_admission": false,
+    "fallback_policy": "unadmitted_send_remains_poison_guarded"
+  },
+  "source": {
+    "assembly_sha256": "3b26c8512778f6e0664b5af2a26f3c30993a00f584c1e76d9123a742b67e2004",
+    "extractor_inventory": "tools/synthetic-baseline-extractor/synthetic_baseline_v2.json",
+    "registration": "Game.Start registers RPC_SetConnection<ZDOID,ZDOID>",
+    "only_outbound_caller": "Game.SetConnection live-peer-owner branch",
+    "runtime_replacement": "PortalConnectionCachePatches suppresses Game.ConnectPortals and writes authoritative server-owned links directly",
+    "load_replacement": "PortalSavedConnectionPatches replaces ZDOMan.ConnectPortals with a saved-connection hash join"
+  },
+  "runtime": {
+    "release_id": "m7-c10a-20260802-r4",
+    "run_id": "native-20260802-c10a-r4",
+    "portal_cache_enabled": true,
+    "saved_pairs_hash_joined": 4472,
+    "indexed_portals": 15133,
+    "portal_pair": {
+      "source": "1:4013360",
+      "target": "1:4732388",
+      "distance_meters": 4103.7
+    },
+    "omen_roundtrip": "passed_forward_and_reverse",
+    "i5_roundtrip": "passed_forward_and_reverse",
+    "rpc_setconnection_rows": {
+      "omen": 0,
+      "i5": 0,
+      "server": 0
+    },
+    "native_totals": {
+      "omen": 0,
+      "i5": 0,
+      "server": 0
+    },
+    "poison_armed": true
+  },
+  "guard": {
+    "test": "PortalConnectionRpc_RemainsUnadmittedAsAPoisonTripwire",
+    "expected": "TryGet, AllowsEnvelope, and AllowsRoutedEnvelope all reject RPC_SetConnection"
+  },
+  "verified": [
+    "exact registration and payload signature",
+    "single outbound vanilla call path",
+    "server replacement owns periodic and load-time portal pairing",
+    "accepted r4 server ran the replacement and reconstructed all saved pairs",
+    "both real clients completed the connected-pair roundtrip under native poison",
+    "no RPC_SetConnection routed row or native use occurred"
+  ],
+  "unverified": [
+    "a new physical portal retag operation; the dirty-tag cache path owns that separate semantic"
+  ]
+}
