@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "gate": "C10a UseStamina [VERIFY]",
+  "status": "accepted",
+  "captured_utc": "2026-08-02T16:34:43Z",
+  "release": {
+    "release_id": "m7-c10a-20260802-r6",
+    "source_commit": "07c4782b5afff36aca23858b52c0fae71e55f695",
+    "mod_version": "0.5.45.0",
+    "mod_sha256": "f0eedcb413facf74c2cc4b3d0ec67d821a89c6595d5e4ee00fbfe97ced83a396",
+    "gateway_image_id": "sha256:f43178d2cca5b6527a3be0793c5bbbf10bd01100c5e09dad64158f10bb0f6f07",
+    "gateway_admitted_mod_release": "m7-c10a-20260802-r6",
+    "server_cold_mod_sha256": "f0eedcb413facf74c2cc4b3d0ec67d821a89c6595d5e4ee00fbfe97ced83a396",
+    "server_runtime_mod_sha256": "f0eedcb413facf74c2cc4b3d0ec67d821a89c6595d5e4ee00fbfe97ced83a396"
+  },
+  "accepted_run": {
+    "run_id": "native-20260802-c10a-stamina-r6-sync1",
+    "profile": "c10a-stamina",
+    "scenario_path": "fieldlab/scenarios/native-20260802-c10a-stamina-r6-sync1.json",
+    "scenario_sha256": "cdbad7e20669c546368c3c78dbd93b00231537a274d8bce69fa0f5166815472e",
+    "action_count": 18,
+    "composition_result": "completed",
+    "steam_free_cold_join": true,
+    "native_zero_composition": true,
+    "directions": [
+      {
+        "sender": "omen",
+        "receiver": "i5",
+        "action_id": "omen-c10a-remote-stamina",
+        "target_zdo": "1430818948:1",
+        "target_peer_id": 1430818948,
+        "target_invariant": "live_player_user_matches_owner",
+        "receiver_debit": "before=50;requested=1.25;after=48.75",
+        "sender_result": "remote_player_stamina_debit_applied"
+      },
+      {
+        "sender": "i5",
+        "receiver": "omen",
+        "action_id": "i5-c10a-remote-stamina",
+        "target_zdo": "218250549:1",
+        "target_peer_id": 218250549,
+        "target_invariant": "live_player_user_matches_owner",
+        "receiver_debit": "before=50;requested=1.25;after=48.75",
+        "sender_result": "remote_player_stamina_debit_applied"
+      }
+    ],
+    "native_zero": {
+      "omen_native_total": 0,
+      "omen_poison_armed": true,
+      "omen_poison_trips": 0,
+      "i5_native_total": 0,
+      "i5_poison_armed": true,
+      "i5_poison_trips": 0,
+      "server_native_total_including_idle_host_poll": 0,
+      "server_selected_funnels": {
+        "native_peer_connection": 0,
+        "server_handshake": 0,
+        "client_handshake": 0,
+        "peer_info_send": 0,
+        "peer_info_receive": 0,
+        "zdo_data_receive": 0,
+        "routed_rpc_receive": 0
+      }
+    },
+    "physical_process_samples": {
+      "initial": {
+        "omen": {
+          "process_id": 30648,
+          "session_id": 1,
+          "responding": true
+        },
+        "i5": {
+          "process_id": 14556,
+          "session_id": 1,
+          "responding": true
+        }
+      },
+      "resumed": {
+        "omen": {
+          "process_id": 17556,
+          "session_id": 1,
+          "responding": true
+        },
+        "i5": {
+          "process_id": 24728,
+          "session_id": 1,
+          "responding": true
+        }
+      }
+    },
+    "reconnect": {
+      "omen_resume_count": 1,
+      "i5_resume_count": 1,
+      "omen_terminal": "scenario_complete",
+      "i5_terminal": "scenario_complete"
+    }
+  },
+  "pre_acceptance_falsifier": {
+    "run_id": "native-20260802-c10a-stamina-r6",
+    "classification": "independent-client choreography race",
+    "proved_direction": "i5_to_omen",
+    "proved_debit": "before=50;requested=1.25;after=48.75",
+    "i5_debit_completed_utc": "2026-08-02T16:24:44.4619955Z",
+    "i5_disconnect_started_utc": "2026-08-02T16:24:44.4799286Z",
+    "omen_reciprocal_probe_started_utc": "2026-08-02T16:24:45.8539102Z",
+    "omen_result": "deadline_exceeded after peer disconnected",
+    "repair": "25-second post-proof hold on each client before disconnect/resume",
+    "semantic_threshold_changed": false
+  },
+  "cleanup": {
+    "server_controls_disarmed": true,
+    "gateway_url_restored": "http://100.124.12.37:4000",
+    "omen_config_backup_sha256": "13faa5bae83860ab811a9f054c12ade7d5019bc8491771ee4be4286c3cdf4d5b",
+    "omen_live_config_sha256": "13faa5bae83860ab811a9f054c12ade7d5019bc8491771ee4be4286c3cdf4d5b",
+    "i5_config_backup_sha256": "0d0899a817fc3fa9ddee61f52de1c9dc7090e8742e66d5d10361fcb5ffecb9c9",
+    "i5_live_config_sha256": "0d0899a817fc3fa9ddee61f52de1c9dc7090e8742e66d5d10361fcb5ffecb9c9",
+    "omen_valheim_processes": 0,
+    "i5_valheim_processes": 0,
+    "i5_task_state": "Ready",
+    "residue_matched": 0,
+    "residue_destroyed": 0
+  },
+  "scope": {
+    "p7": "untouched",
+    "workbench": "untouched and outside this gate",
+    "companion_mcp": "untouched and separate from the Gateway runtime",
+    "next_local_gate": "vehicle-control [VERIFY]",
+    "remaining_local_gates": 5
+  },
+  "full_local_evidence": [
+    "fieldlab/runs/native-valheim/native-20260802-c10a-stamina-r6/",
+    "fieldlab/runs/native-valheim/native-20260802-c10a-stamina-r6-sync1/"
+  ]
+}
