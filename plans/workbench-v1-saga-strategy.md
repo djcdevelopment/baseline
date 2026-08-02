@@ -1,7 +1,12 @@
 # Saga WB-1 — Ownable Docker Workbench v1
 
-Status: implementation plus rendered machine-and-human acceptance completed
-2026-08-02. M5 and M6 are closed, and the read-only Operate check, reversible
+Status: engineering implementation and rendered machine-and-human acceptance
+completed 2026-08-02, but product acceptance was reopened later that day after
+the owner found that Home did not answer the basic live operator questions and
+the useful existing Companion telemetry had been displaced to a secondary route.
+M5 remains sealed. M2 and product closeout are candidate again pending observation
+of the repaired Home; structural HTML and topology tests are no longer accepted as
+evidence of operator value. The read-only Operate check, reversible
 install/rollback drill, and peer-bearing player-active capture have clean local
 receipts. WB-1 remains a candidate pending the declared unfamiliar-user usability
 gate, tagged `TODO — Derek soon` rather than an active implementation blocker.
@@ -32,6 +37,29 @@ first coherent Workbench product slice.
 Product rationale remains canonical in [PD-5](../docs/decisions/pd-5-local-workbench-ownership-appliance.md),
 [PD-6](../docs/decisions/pd-6-development-mcp-lifecycle.md), and the
 [Workbench operating model](../docs/workbench-operating-model.md).
+The separate, ordered follow-on that converges the currently independent Compose
+projects, ports, local/remote modes, and shipped tool surface is
+[Workbench appliance convergence](workbench-appliance-convergence.md).
+
+### 2026-08-02 operator-value recovery
+
+The miss was specific and reproducible: `/` was changed from the telemetry-rich
+Companion page to a Workbench shell whose Home emphasized repository topology and
+durable jobs but did not directly say whether AM4 was up, who was online, whether
+anything was executing, or what the runtime cutover/motion path was doing. The old
+answers remained at `/companion`, so the implementation technically preserved the
+route while removing its value from the primary experience. A static red Community
+card also continued to say the full cutover was simply "NO" after C8 closed.
+
+The recovery adds a first-class live-operation projection to Home, sourced from the
+Gateway deployment, Valheim heartbeat, cutover, and motion endpoints plus Workbench
+job state. Home now leads with server health/staleness, peer count and public player
+names, actual machine activity versus finished `waiting_human` review, runtime
+netcode counters, and one next action; it links the detailed Companion telemetry and
+trace rather than hiding them. The Community card now states the actual C8/C9/C10
+program boundary. Focused and full Docker tests pass, and the rebuilt Lab Workbench
+serves the live projection. Owner observation on the clean committed image remains
+the acceptance gate.
 
 ## Summary
 
@@ -287,6 +315,12 @@ M1 acceptance:
   unfamiliar operator use the live map and mobile layout; record whether they can
   identify the active goal, hardware roles, expected result, evidence, and
   recovery path.
+- **Story WB-S2.14 (implemented; owner observation pending):** Make Home answer
+  the five operator questions before showing architecture: is the server up, who
+  is online, what is executing, which runtime netcode path is active, and what
+  should happen next. Compose those answers from live Gateway telemetry and job
+  state, distinguish finished `waiting_human` work from execution, and link the
+  deeper Companion/trace views.
 
 M2 acceptance:
 
@@ -766,7 +800,8 @@ WB-1 is complete only when all of the following are true:
 1. A fresh Workbench starts in Explore and becomes locally owned through the
    claim flow.
 2. The unified UI exposes Home, Explore, Build, Operate, Recover, and Community,
-   with Standard/Advanced presentation independent of authority.
+   with Standard/Advanced presentation independent of authority, and Home directly
+   answers the live server/player/activity/netcode/next-action questions.
 3. Real capabilities in the four selected intent areas create durable,
    inspectable jobs and receipts.
 4. The allow-listed host runner performs physical and Docker-host work without a

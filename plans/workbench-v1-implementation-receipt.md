@@ -8,6 +8,24 @@ Detailed requirement evidence: [verification matrix](workbench-v1-verification-m
 Checkpoint staging scope: [workbench-v1-checkpoint-scope.md](workbench-v1-checkpoint-scope.md).
 Runtime follow-on audit: [2026-08-02 Lab provenance audit](../docs/audit/2026-08-02-workbench-lab-runtime-provenance.md).
 
+## Post-closeout product correction — 2026-08-02
+
+The earlier M2/M6 wording overclaimed the human product. Derek used the primary
+Workbench for hours and could not obtain the basic live answers already available
+in the displaced `/companion` page. That observation reopens M2 and product
+closeout regardless of the green structural UI suite. The repair now puts a live
+operation summary first on Home—server health and freshness, peers/player names,
+actual execution versus finished review, runtime cutover/motion, and one next
+action—and restores direct paths to detailed Companion telemetry and trace. The
+static Community cutover card now states C8 complete with C9/C10 remaining.
+
+The rebuilt Lab image and `/tools/` contract checks pass. Acceptance remains
+bounded honestly: a clean committed image still needs owner observation, followed
+by the already declared unfamiliar-user/mobile protocol. The separate
+[appliance convergence plan](workbench-appliance-convergence.md) now owns the
+three-Compose-project, port-registry, local/remote mode, and shipped-tool work that
+the first pass did not solve.
+
 This is the execution handoff for the current implementation session. The
 clean-checkpoint MCP/Companion attribution, rendered AM4 + OMEN + i5 machine and
 human acceptance, local hash-verified Operate check, reversible install/rollback
@@ -165,11 +183,11 @@ specific ordering-validation gate.
 |---|---|---|
 | M0 baseline | passed | Claimed installation `wb-4285b4fd66f442e598886b861ed1bd44` and the retained companion-data volume are proven. Final machine-acceptance HEAD `817ee8b2ff6dc30105dd44714d7709b53ecc2681` produced identity-matched Companion and Dev MCP images with `source_dirty=false`; the stale `ComfyGatewayBoot` task remains disabled and HEARTH remains independent. |
 | M1 kernel | passed | Lumberjacks/tools/companion/Test-WorkbenchApi.ps1 passed browser token, target/profile rejection, jobs, events, receipts, runner auth, and heartbeat checks. |
-| M2 product shell | passed | /, /workbench, and legacy /companion return 200; Workbench V1 shell, Standard/Advanced presentation, claim flow, live topology, job cards, receipt links, and observation form are present. |
+| M2 product shell | candidate after operator-value repair | `/`, `/workbench`, and legacy `/companion` return 200. Home now leads with live server/player/activity/netcode/next-action truth and links the deep telemetry; machine contracts pass. Owner and unfamiliar-user/mobile observation remain required because the earlier structural pass demonstrably missed the product failure. |
 | M3 local slices | passed for the current local slice | Clean watchdog build `job-20260802-063901820-44598ee8` passed with read-only Valheim mount, no host SDK, and no plugin copy; support export and reversible update paths remain passed. The clean diagnostic rejected the persistent OMEN-stall hypothesis and isolated a C6 manifest-ordering race. The pre-mutation coverage gate and physical validation job `job-20260802-072520719-74b07483` now pass. |
 | M4 distribution boundary | passed | Compose profile checks prove default/Production exclude Dev MCP and the SDK runner; Dev/Lab publish the identity-attested Baseline MCP on loopback `8721`; no Docker socket exists. The mod side channel is default-off, loopback-configured, and cannot be UI-enabled without Dev/Lab opt-in. The stale logon task is disabled and host `8720` is free. |
 | M5 rendered acceptance | passed | Run `workbench-20260802-003128-116adca1` completed on real OMEN and i5 clients against AM4. Derek watched live and recorded `pass / followed / smooth`; the sealed job receipt is `passed` with `human_observation_recorded`. |
-| M6 closeout | passed for the original WB-1 scope | Final receipt and handoff are current. Full PD-7 migration, route correction, watchdog admission, clean diagnostic disposition, and corrected-order physical C6 are receipted. Only unfamiliar-user/mobile review (`TODO — Derek soon`) remains open and is not hidden as a pass. |
+| M6 closeout | engineering closeout passed; product closeout reopened | Final receipt and handoff are current. Full PD-7 migration, route correction, watchdog admission, clean diagnostic disposition, and corrected-order physical C6 are receipted. Live-Home owner observation, unfamiliar-user/mobile review, and the separately planned appliance convergence remain open and are not hidden as a pass. |
 
 ## Implemented surfaces
 
@@ -525,8 +543,12 @@ processes were stopped after the corrected-order physical C6 completed.
    motion lane on both physical clients.
 3. `no_peer_window` and `incomplete_telemetry` remain failed evidence, not green
    completion.
-4. The only WB-1 acceptance item still open is the unfamiliar-person/mobile
-   no-coaching observation.
+4. Re-observe the repaired live Home on the clean committed image, then run the
+   unfamiliar-person/mobile no-coaching protocol. Structural HTML is not a
+   substitute for either observation.
+5. Execute the finite [Workbench appliance convergence](workbench-appliance-convergence.md)
+   queue so Local, Remote, and Hybrid Lab modes share one distribution, launcher,
+   port contract, tool manifest, state migration, and recovery story.
 
 No further install, rollback, game launch, or force-push is implied by the
 completed corrected-order authorization.
