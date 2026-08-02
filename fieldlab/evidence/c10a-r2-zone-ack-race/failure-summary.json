@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "run_id": "native-20260802-c10a-r2",
+  "release_id": "m7-c10a-20260802-r2",
+  "source_commit": "ab4586b4c3a86e28d1aea977c7f8f34f00fe2f23",
+  "result": "failed",
+  "failed_gate": "i5-c8-zone-resume",
+  "failure_detail": "world_zone_probe_deadline applied=1 replayed=0 complete_count=0",
+  "ack_race": {
+    "connection_id": "9259530ff1184b1294ec144bf2cff6a9",
+    "held_chunk_sequence": 2842,
+    "cumulative_ack_through": 2843,
+    "gateway_pending_frames_removed": 2,
+    "gateway_ack_timestamp_utc": "2026-08-02T14:08:48.0725628Z",
+    "gateway_detached_timestamp_utc": "2026-08-02T14:08:48.0740533Z",
+    "gateway_resumed_timestamp_utc": "2026-08-02T14:08:48.5761240Z",
+    "root_cause": "later processed reliable frame cumulatively acknowledged the intentionally held zone chunk before socket abort"
+  },
+  "new_p2_instance_methods": [
+    {
+      "name": "RPC_HealthChanged",
+      "method_hash": -257317232,
+      "signature": "Single",
+      "registration": "WearNTear.Awake",
+      "blocked_count": 5
+    },
+    {
+      "name": "RPC_UpdateMaterial",
+      "method_hash": 500148310,
+      "signature": "Int32",
+      "registration": "MaterialVariation.Awake",
+      "blocked_count": 1
+    }
+  ],
+  "cleanup": {
+    "clients_stopped": true,
+    "runtime_controls_disarmed": true,
+    "tagged_probe_objects_destroyed": 3,
+    "p7_touched": false
+  }
+}
