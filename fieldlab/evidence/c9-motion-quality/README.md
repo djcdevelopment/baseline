@@ -1,131 +1,103 @@
-# C9 motion quality — partial boundary, machine evidence only
+# C9 motion quality — complete on AM4
 
-**Status:** open. The machine half of C9's acceptance is retained here. The rendered
-observer clip is **not** produced; see "What this does not prove".
+**Status:** complete on 2026-08-02. The accepted physical run is
+`native-20260802-c9-motion6`, using two rendered Valheim clients (OMEN/Tugcorp and
+i5/durracktu), the AM4 dedicated server and Gateway, and mod SHA-256
+`a658af8bb39ac619cbf967dc9fa007745d042088c4ffaa500b119012c9085d55`.
 
-**Source:** the retained C8 acceptance pair `native-20260731-c8-full44` and
-`native-20260731-c8-full45`, on the frozen build (mod SHA-256
-`765090d17981235209deec2d9718221eda4230aa27b2a99998f99ffeac08c28f`, source commit
-`c0db122`). No new run was needed for any claim below; every number comes from
-receipts those two accepted runs already produced.
+The machine-readable result is
+[`c9-motion-quality-summary.json`](c9-motion-quality-summary.json), regenerable with:
 
-The machine-readable result is [`c9-motion-quality-summary.json`](c9-motion-quality-summary.json),
-regenerable with `fieldlab/scripts/Write-C9MotionQualitySummary.py`.
+```powershell
+python fieldlab/scripts/Write-C9MotionQualitySummary.py `
+  --output fieldlab/evidence/c9-motion-quality/c9-motion-quality-summary.json `
+  --run native-20260802-c9-motion6 `
+  --source-commit same-commit-as-evidence `
+  --mod-sha256 a658af8bb39ac619cbf967dc9fa007745d042088c4ffaa500b119012c9085d55 `
+  --rendered-artifact fieldlab/runs/motion-clips/native-20260802-c9-motion6/c9-motion-quality-side-by-side.mp4
+```
 
-## What this proves
+## Acceptance result
 
-Against C9's four acceptance criteria, measured across both runs and both clients:
-
-- **No hidden native correction.** `native_fallback=true` appears zero times in any
-  client's motion receipts in either run.
-- **No unexplained hard correction.** All 16–17 corrections per client per run map to
-  a commanded action — `teleport_to`, `portal_roundtrip`, `zone_cross`,
-  `zone_membership_resume`, `gateway_restart_resume`, or the injected motion gap.
-  Attribution deliberately considers **both** clients' timelines: a correction lands on
-  the *remote* player, so an observer sitting in its own `wait` is routinely explained
-  by the peer's concurrent action, not its own.
-- **Divergence is transient, never persistent.** Every `target_rejected` burst repeats a
-  *single* sequence number and clears within 0.501 s at the longest. There is no run in
-  which target error stays elevated across sequences.
-- **Recovery from injected loss is bounded.** Hold recovery is 0.4–1.7 s in the ordinary
-  case; the longest is 10.866 s, and every recovery beyond ~9 s sits inside a deliberate
-  interruption (the Gateway restart, or a portal leg).
-- **No apply-attributable wall-clock hitch, on both clients.** Every frame hitch in both windows is
-  Valheim's own lifecycle — `Starting respawn` (6.7 s, twice per run, once per session),
-  `Starting music menu`, `Sending PlayFab login request`, `ZNET START`, character-file
-  load. None is explained by a Lumberjacks section.
-
-  Attribution here is by **magnitude, not containment**. The perf probe calls
-  `UpdateFrame` at the top of `ComfyNetworkSense.Update`, so *every* hitch row is written
-  inside that section by construction and describes the *previous* frame; containment
-  would flag everything. A Lumberjacks section is only credited with a long frame when it
-  accounts for at least half of it. Under that rule, zero hitches are apply-attributable.
-
-## What is visible but bounded
-
-Each legitimate teleport produces a **freeze-then-snap on the observing client**: the far
-target is refused every frame by the 30 m fail-closed correction guard for roughly half a
-second, until the reliable teleport announcement lands and the resync applies. Errors seen
-this way range from 72 m (zone cross) to 4.9 km (portal). This is correct fail-closed
-behaviour and never falls back to native — but it is the artefact a `smooth`/`rough`
-verdict would most likely react to, and it is why the clip still matters.
-
-## Resolved — the once-per-session stall is vanilla's own world pregeneration
-
-An earlier revision of this document recorded a multi-second once-per-session stall as an
-unresolved finding "in `LumberjacksMotionRunner.Update`", and flagged the absence of a frame
-hitch inside it as an anomaly. **Both of those were wrong.** The corrected account:
-
-**It is not the motion runner.** `ComfyNetworkSense.cs:301` opens a single perf section named
-`ComfyNetworkSense.LumberjacksMotionRunner.Update` that in fact wraps **eight** cutover
-runners and names only the last. The motion runner is provably inert here — its `ShouldRun()`
-requires `Player.m_localPlayer`, which does not exist before respawn.
-
-**The cost is Valheim's own.** It is `WorldGenerator.Initialize(world)` — river/lake
-pregeneration (`FindLakes`, `PlaceRivers`, `PlaceStreams`) — called synchronously on the main
-thread from `LogicalPeerCutoverRunner.ConstructPeer`
-([LogicalPeerCutoverRunner.cs:238](../../../network/mod/ComfyNetworkSense/Core/Services/LogicalPeerCutoverRunner.cs:238)).
-
-**It is not a regression.** Vanilla does exactly the same thing at the same point:
-`ZNet.RPC_PeerInfo` calls `WorldGenerator.Initialize(m_world)` immediately before setting
-`ConnectionStatus.Connected` (decompiled `ZNet.cs:304`), which is the sequence `ConstructPeer`
-reproduces at lines 238–240. The Steam-free cold join **pays vanilla's join cost rather than
-adding one.**
-
-Corroborated 8/8 by an independent clock — every section end matches a
-`logical_peer_constructed` receipt to ~1 ms, and the announce→constructed gap matches the
-section elapsed within ~20 ms:
-
-| Client | Section elapsed | Announce→constructed gap |
+| C9 gate | Result | Retained evidence |
 | --- | --- | --- |
-| OMEN | 1878.4, 1861.8, 1867.1, 1863.2 ms | 1.899, 1.867, 1.878, 1.873 s |
-| i5 | 2256.6, 2459.3, 2241.1, 2460.4 ms | 2.250, 2.526, 2.268, 2.525 s |
+| No unexplained hard correction | Passed | Three reliable-resync events, all inside the commanded `motion_*_gap` pair; zero `target_rejected` bursts and zero native fallback. |
+| No persistent target divergence | Passed | Both 20 s ordinary observer probes completed with zero holds, gaps, resyncs, or failures. The injected-gap observer held once and recovered by reliable resync. |
+| Bounded injected-loss recovery | Passed | OMEN withheld exactly sequences 1086–1105; i5 entered hold with `native_fallback=false` and applied the accepted reliable resync after 0.895 s. |
+| No apply-attributable wall-clock hitch | Passed | The run-scoped perf windows contain 7 OMEN and 8 i5 lifecycle hitches. None has a `LumberjacksMotionRunner` section accounting for the frame; the largest are Valheim's own `Starting respawn` frames. |
+| Retained rendered presentation | Passed | One 20.067 s, 2560×720, 30 fps side-by-side artifact contains both observer/driver role combinations. Both source receipts verify that the exact Valheim process window was maximized and foreground before capture. |
 
-**There was no missing hitch.** Both `perf-hitches.jsonl` and `perf-sections.jsonl` stamp
-`timestamp_utc` at *completion*, so spans must be reconstructed backwards from their duration.
-Done that way, the section and the large `Starting respawn` frame **start at the same instant**
-in all eight occurrences (delta +0.03 ms to +0.77 ms), and the section is 26–28 % of that frame
-(6.7 s on OMEN, 8.5–9.5 s on the i5). The stall was always inside a hitch that had been
-recorded correctly; the earlier analysis compared the hitch's *end* against the section's span.
+## Physical run result
 
-Bearing on C9: **none.** This is one-time cold-join cost, before the player spawns, on a path
-that has nothing to do with motion apply.
+- Both clients reached `scenario_complete`, stopped cleanly, and completed one
+  fresh-process resume. Both final ledgers report `native_total=0`, `poison_trips=0`,
+  and zero writer drops/faults while poison was armed. The server poison control was
+  armed for the run and disarmed afterward.
+- i5 observing OMEN east received 308 numbered frames, applied 1,696 presentation
+  updates, suppressed 2,002 selected native transform-writer calls, and reported zero
+  failures. OMEN observing i5 north received 349 frames, applied 1,464 updates,
+  suppressed 2,000 selected native writer calls, and reported zero failures.
+- During the loss cell, i5 received 275 frames, applied 1,096 updates, held once,
+  recorded one gap and one reliable resync, and reported zero failures. OMEN's driver
+  receipt records exactly 20 deliberately withheld frames and an accepted resync.
+- The server readiness receipt remained green with the canonical server connected,
+  a fresh heartbeat, and the descriptor for this exact run.
 
-## Still open
+## Rendered artifact
 
-- **The perf section label misattributes cost — fixed in source, not yet in the build.** The
-  single section that reported seven other runners' time under the motion runner's name is now
-  eight per-runner sections inside an honestly named `ComfyNetworkSense.CutoverRunners.Update`
-  roll-up. That is a source change only: the C9 build freeze holds, the deployed artifact is
-  still mod SHA-256 `765090d1…` from `c0db122`, and **every number in this document was measured
-  under the old single-section label**. The new labels first appear in whatever build C10a cuts;
-  from that build on, `ComfyNetworkSense.LumberjacksMotionRunner.Update` rows mean the motion
-  runner alone and are not comparable to the same-named rows in the C8/C9 receipts.
+The retained review artifact is
+[`c9-motion-quality-side-by-side.mp4`](../../runs/motion-clips/native-20260802-c9-motion6/c9-motion-quality-side-by-side.mp4):
 
-## What this does not prove
+- 11,840,999 bytes; SHA-256
+  `b419d17995cde00146a32c2a4ea9e5c7937458ff13c473c114292db68a3b2dee`;
+- left panel: OMEN observing durracktu's northbound motion;
+- right panel: i5 observing Tugcorp's eastbound motion;
+- each panel is trimmed against its own machine clock and annotated from that
+  machine's receipts; no cross-machine simultaneity is claimed or required;
+- ffmpeg freeze detection reports no panel freeze of 0.5 s or longer at `-60 dB`;
+- sampled-frame review by Codex shows each named remote avatar advancing across the
+  framed path with no visible hard correction in the ordinary motion windows.
 
-- **No rendered observer clip exists**, so no subjective verdict has been taken. C9's
-  `smooth`/`rough`/`mixed` question is still unanswered.
-- Motion windows in the C8 composition are 6 s each — long enough for a binary authority
-  proof, short for judging rendered quality. The C9 scenario
-  (`fieldlab/scenarios/native-20260801-c9-motion1.json`) widens them to 24 s.
-- Nothing here revisits C0–C8 architecture, and nothing here bears on the C10 gates.
+No `smooth`/`rough`/`mixed` verdict is attributed to Derek. That subjective verdict is
+optional under the C9 contract; the exit gate requires a retained reviewable artifact
+and labels any subjective statement with its actual reviewer.
 
-## Capture lane, built and proven
+The two source capture receipts are retained beside the raw clips. They record exact
+foreground-handle equality (OMEN PID 49912, handle 241437642; i5 PID 18320, handle
+4065110), which rejects the terminal/loading-screen false positives encountered on the
+earlier attempts.
 
-Ready for the outstanding run:
+## Rejected diagnostic attempts
 
-- `fieldlab/scripts/Invoke-MotionClipCapture.ps1` — bounded per-client screen capture.
-  An ssh session lands in a non-interactive desktop and gdigrab fails there with
-  `error 5`, so the i5 path reuses the interactive scheduled-task idiom the native client
-  harness already relies on. Capture is proven on **both** machines; OMEN encodes through
-  `h264_qsv` (NVENC is unusable — the installed driver predates ffmpeg 8.1.2's required
-  API), with an automatic `libx264` fallback.
-- `fieldlab/scripts/Build-MotionQualityClip.py` — trims each whole-run recording to that
-  client's observer window using its own scenario receipts, burns in a telemetry readout
-  built from its own motion receipts, and stacks the two panels. Proven end to end against
-  full45's retained telemetry.
-- Each panel is trimmed and annotated against **its own machine's clock**. No
-  cross-machine simultaneity is claimed, and none is needed: the two direction/role
-  combinations are sequential in the scenario, so the panels are two independent,
-  internally consistent views.
+- `native-20260802-c9-motion3` exposed a real harness defect: background execution was
+  reasserted before the joined-peer boundary, then Unity reset it during scene change.
+  The request now waits for the real player and peer before consuming that reassertion.
+- `native-20260802-c9-motion4` passed machine checks, but its recordings showed a load
+  screen and a terminal/partial game window. It was rejected, and capture now fails
+  closed unless the actual Valheim window owns the Windows foreground handle.
+- `native-20260802-c9-motion5` passed machine and foreground checks, but OMEN's remote
+  avatar was behind the persisted camera. It was rejected. The bounded autotest-only
+  observer probe now faces the midpoint of the declared remote path without moving the
+  observer; normal gameplay never calls that seam.
+- `native-20260802-c9-motion6` is the first accepted run because it passes the machine,
+  foreground, framing, and retained-artifact gates together.
+
+## Evidence reducer correction
+
+This run also exposed that the older reducer read entire append-only perf logs and
+could mix historical sessions into one run. It now bounds perf rows to the selected
+scenario's completed-action window, accepts PowerShell's UTF-8 BOM, and only attributes
+a C9 apply hitch to the actual `LumberjacksMotionRunner` section. Unrelated HUD or
+scenario-controller work can explain a frame but cannot be mislabeled as motion apply.
+
+## Prior C8 baseline and limits
+
+The retained C8 pair `native-20260731-c8-full44` and `full45` remains the broader
+composition baseline. It established that teleport/zone corrections were commanded,
+target-rejection bursts were transient, and the once-per-session cold-join stall was
+Valheim's own `WorldGenerator.Initialize`, not motion apply. C9 does not reopen those
+boundaries.
+
+C9 proves motion correctness and retains visible presentation. It does **not** close
+C10's 29 P1 admissions, three `[VERIFY]` rows, component-family gates, release
+alignment, P7 promotion, or fallback deletion.

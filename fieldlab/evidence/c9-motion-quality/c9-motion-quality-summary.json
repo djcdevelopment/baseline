@@ -2,673 +2,184 @@
   "schema_version": 1,
   "receipt_type": "c9_motion_quality_summary",
   "source_runs": [
-    "native-20260731-c8-full44",
-    "native-20260731-c8-full45"
+    "native-20260802-c9-motion6"
   ],
-  "source_commit": "c0db122f2a11bb50dfe6ffbf7db1a87152822f6a",
-  "mod_sha256": "765090d17981235209deec2d9718221eda4230aa27b2a99998f99ffeac08c28f",
+  "source_commit": "same-commit-as-evidence",
+  "mod_sha256": "a658af8bb39ac619cbf967dc9fa007745d042088c4ffaa500b119012c9085d55",
+  "rendered_artifact": {
+    "path": "fieldlab\\runs\\motion-clips\\native-20260802-c9-motion6\\c9-motion-quality-side-by-side.mp4",
+    "bytes": 11840999,
+    "sha256": "b419d17995cde00146a32c2a4ea9e5c7937458ff13c473c114292db68a3b2dee"
+  },
   "verified": {
     "no_native_fallback": true,
     "every_hard_correction_attributed": true,
     "divergence_transient_not_persistent": true,
-    "max_divergence_burst_seconds": 0.501,
-    "max_hold_recovery_seconds": 10.866,
+    "max_divergence_burst_seconds": 0,
+    "max_hold_recovery_seconds": 0.895,
+    "injected_loss_observer_recovered": true,
     "no_apply_attributable_frame_hitch": true,
     "perf_measured_on": [
       "i5",
       "omen"
-    ]
+    ],
+    "rendered_artifact_retained": true
   },
   "resolved": {
-    "cold_join_world_pregeneration": "The once-per-session multi-second section is Valheim's own WorldGenerator.Initialize (river/lake pregeneration: FindLakes, PlaceRivers, PlaceStreams), called synchronously on the main thread from LogicalPeerCutoverRunner.ConstructPeer at LogicalPeerCutoverRunner.cs:238. It is NOT the motion runner: the perf section labelled ComfyNetworkSense.LumberjacksMotionRunner.Update (ComfyNetworkSense.cs:301) wraps EIGHT cutover runners and names only the last, so the label misattributes the cost. The motion runner is inert here - ShouldRun() requires Player.m_localPlayer, which does not exist before respawn. Corroborated 8/8 by an independent clock: every section end matches a logical_peer_constructed receipt to ~1ms and the announce-to-constructed gap matches the section elapsed within ~20ms. NOT A REGRESSION: vanilla ZNet.RPC_PeerInfo does the same thing at ZNet.cs:304, calling WorldGenerator.Initialize immediately before setting ConnectionStatus.Connected - the same sequence ConstructPeer reproduces at lines 238-240. The Steam-free cold join pays vanilla's join cost, it does not add one.",
-    "no_missing_hitch_after_all": "The earlier claim that no frame hitch was recorded inside the stall was a reading error, not an anomaly. Both perf-hitches and perf-sections stamp timestamp_utc at COMPLETION, so a span must be reconstructed backwards from its duration. Done that way the section and the large 'Starting respawn' frame start at the same instant in all 8 occurrences (delta +0.03ms to +0.77ms), and the section is 26-28% of that frame (6.7s on OMEN, 8.5-9.5s on the i5). The stall was always inside a hitch that was correctly recorded."
+    "perf_log_scope": "client perf logs are append-only; every hitch and section used here is bounded to the selected run's completed scenario-action window.",
+    "apply_attribution": "only a LumberjacksMotionRunner section can establish an apply-attributable C9 hitch; unrelated instrumented sections are not mislabeled as presentation apply."
   },
-  "inferred": {
-    "teleport_freeze_then_snap": "each divergence burst is one far target repeatedly refused by the 30m correction guard for about half a second until the reliable teleport announcement lands; the observer therefore holds, then snaps. Bounded and explained, but visible."
-  },
+  "inferred": {},
   "unverified": {
-    "perf_section_label_misattributes": "ComfyNetworkSense.cs:301 opens one section named after LumberjacksMotionRunner but wraps eight runners. Any cost from the other seven is reported under the motion runner's name. This is an observability defect that actively misleads - it is what sent the first pass of this analysis at the wrong component - but it has not been fixed, because the build is frozen for C9.",
-    "rendered_motion_quality": "no observer clip exists yet; the two-client capture run is still outstanding, so no subjective verdict has been taken."
+    "subjective_rendered_motion_quality": "a retained observer artifact exists, but no smooth/rough/mixed operator verdict is asserted. That verdict is optional under C9."
   },
   "per_run": {
-    "native-20260731-c8-full44": {
+    "native-20260802-c9-motion6": {
       "omen": {
-        "motion_events": 334,
-        "actions_observed": 24,
+        "motion_events": 66,
+        "actions_observed": 11,
         "native_fallback_true": 0,
         "state_counts": {
-          "target_rejected": 246,
           "native_transform_writer_suppressed": 24,
           "motion_frame_withheld": 20,
-          "reliable_resync_receipt": 6,
-          "teleport_resync_queued": 5,
-          "hold_entered": 5,
-          "reliable_resync_applied": 4,
-          "remote_player_descriptor_applied": 3,
-          "remote_motion_discovered": 3,
-          "logical_remote_seeded": 3,
-          "remote_instance_missing": 3,
           "probe_started": 3,
           "probe_passed": 3,
-          "local_motion_identity": 2,
+          "remote_player_descriptor_applied": 2,
+          "remote_motion_discovered": 2,
+          "logical_remote_seeded": 2,
+          "remote_instance_missing": 2,
+          "motion_frame_sent": 1,
+          "observer_view_aligned": 1,
+          "reliable_resync_queued": 1,
+          "reliable_resync_receipt": 1,
+          "hold_entered": 1,
           "remote_player_evicted": 1,
           "remote_player_tombstone_applied": 1,
-          "reliable_resync_rejected": 1,
-          "reliable_resync_queued": 1
+          "local_motion_identity": 1
         },
         "hard_corrections": {
-          "total": 17,
+          "total": 2,
           "unexplained": 0,
           "by_kind": {
-            "teleport_to": 6,
-            "motion_drive_gap": 2,
-            "wait": 1,
-            "zone_membership_resume": 2,
-            "portal_roundtrip": 6
+            "motion_drive_gap": 2
           },
           "unexplained_detail": []
         },
         "divergence_bursts": {
-          "count": 4,
+          "count": 0,
           "all_single_sequence": true,
-          "max_span_seconds": 0.487,
-          "max_target_error_m": 4939.0,
-          "bursts": [
+          "max_span_seconds": 0,
+          "max_target_error_m": 0,
+          "bursts": []
+        },
+        "holds": {
+          "count": 1,
+          "recovered_seconds": [],
+          "unrecovered_in_log": 1,
+          "injected_loss_observer": {
+            "count": 0,
+            "all_recovered": false,
+            "max_recovery_seconds": 0
+          },
+          "detail": [
             {
-              "start_utc": "2026-08-01T01:28:27.0963285Z",
-              "span_seconds": 0.487,
-              "rejections": 66,
-              "distinct_sequences": [
-                "1025"
-              ],
-              "single_sequence": true,
-              "target_error_max_m": 72.1,
-              "action_id": "omen-c8-post-contention-settle",
-              "kind": "wait"
-            },
-            {
-              "start_utc": "2026-08-01T01:28:30.6180280Z",
-              "span_seconds": 0.484,
-              "rejections": 65,
-              "distinct_sequences": [
-                "1077"
-              ],
-              "single_sequence": true,
-              "target_error_max_m": 2532.5,
-              "action_id": "omen-c8-portal-slice",
-              "kind": "teleport_to"
-            },
-            {
-              "start_utc": "2026-08-01T01:28:43.4386539Z",
-              "span_seconds": 0.444,
-              "rejections": 50,
-              "distinct_sequences": [
-                "1280"
-              ],
-              "single_sequence": true,
-              "target_error_max_m": 4939.0,
-              "action_id": "omen-c8-portal-roundtrip",
-              "kind": "portal_roundtrip"
-            },
-            {
-              "start_utc": "2026-08-01T01:28:54.0319548Z",
-              "span_seconds": 0.486,
-              "rejections": 65,
-              "distinct_sequences": [
-                "1454"
-              ],
-              "single_sequence": true,
-              "target_error_max_m": 4102.4,
-              "action_id": "omen-c8-portal-roundtrip",
-              "kind": "portal_roundtrip"
+              "timestamp_utc": "2026-08-02T12:35:20.2681354Z",
+              "action_id": "omen-c6-drive-gap",
+              "kind": "motion_drive_gap",
+              "recovered_after_seconds": null,
+              "recovered_by": null
             }
           ]
         },
+        "perf": {
+          "measured": true,
+          "run_window_start_utc": "2026-08-02T12:33:52.277847+00:00",
+          "run_window_end_utc": "2026-08-02T12:36:06.837561+00:00",
+          "hitch_rows": 7,
+          "apply_attributable_hitches": [],
+          "max_frame_ms": 6817.459,
+          "hitch_causes": {
+            "ZNET START": 2,
+            "DLC:beta installed:False": 1,
+            "Loaded localization file #7 - 'localiza": 1,
+            "Sending PlayFab login request (attempt": 1,
+            "Starting music menu": 1,
+            "Starting respawn": 1
+          },
+          "motion_runner_sections": []
+        }
+      },
+      "i5": {
+        "motion_events": 46,
+        "actions_observed": 11,
+        "native_fallback_true": 0,
+        "state_counts": {
+          "native_transform_writer_suppressed": 23,
+          "logical_remote_seeded": 3,
+          "probe_started": 3,
+          "probe_passed": 3,
+          "remote_player_descriptor_applied": 2,
+          "remote_motion_discovered": 2,
+          "remote_instance_missing": 2,
+          "observer_view_aligned": 2,
+          "motion_frame_sent": 2,
+          "rendezvous_complete": 1,
+          "hold_entered": 1,
+          "reliable_resync_applied": 1,
+          "local_motion_identity": 1
+        },
+        "hard_corrections": {
+          "total": 1,
+          "unexplained": 0,
+          "by_kind": {
+            "motion_observe_gap": 1
+          },
+          "unexplained_detail": []
+        },
+        "divergence_bursts": {
+          "count": 0,
+          "all_single_sequence": true,
+          "max_span_seconds": 0,
+          "max_target_error_m": 0,
+          "bursts": []
+        },
         "holds": {
-          "count": 5,
+          "count": 1,
           "recovered_seconds": [
-            0.462,
-            0.585,
-            1.613,
-            2.192,
-            10.287
+            0.895
           ],
           "unrecovered_in_log": 0,
+          "injected_loss_observer": {
+            "count": 1,
+            "all_recovered": true,
+            "max_recovery_seconds": 0.895
+          },
           "detail": [
             {
-              "timestamp_utc": "2026-08-01T01:28:16.7990822Z",
-              "action_id": "omen-c8-gateway-restart-resume",
-              "kind": "gateway_restart_resume",
-              "recovered_after_seconds": 10.287,
-              "recovered_by": "reliable_resync_applied"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:28:27.5908398Z",
-              "action_id": "omen-c8-post-contention-settle",
-              "kind": "wait",
-              "recovered_after_seconds": 2.192,
-              "recovered_by": "reliable_resync_receipt"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:28:31.1096088Z",
-              "action_id": "omen-c8-portal-slice",
-              "kind": "teleport_to",
-              "recovered_after_seconds": 1.613,
-              "recovered_by": "reliable_resync_receipt"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:28:43.8907820Z",
-              "action_id": "omen-c8-portal-roundtrip",
-              "kind": "portal_roundtrip",
-              "recovered_after_seconds": 0.462,
-              "recovered_by": "reliable_resync_receipt"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:28:54.5272070Z",
-              "action_id": "omen-c8-portal-roundtrip",
-              "kind": "portal_roundtrip",
-              "recovered_after_seconds": 0.585,
-              "recovered_by": "reliable_resync_receipt"
-            }
-          ]
-        },
-        "perf": {
-          "measured": true,
-          "hitch_rows": 17,
-          "apply_attributable_hitches": [],
-          "max_frame_ms": 6682.967,
-          "hitch_causes": {
-            "Released session ticket": 4,
-            "ZNET START": 4,
-            "Sending PlayFab login request (attempt": 2,
-            "Starting music menu": 2,
-            "Starting respawn": 2,
-            "Teleporting Tugcorp": 1,
-            "Failed to load tugcorp.fch.old.stmp": 1,
-            "Loaded localization file #7 - 'localiza": 1
-          },
-          "motion_runner_sections": [
-            {
-              "timestamp_utc": "2026-08-01T01:27:06.2167189Z",
-              "elapsed_ms": 1878.4,
-              "session_id": "20260801-012649-239bc492"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:29:28.0374296Z",
-              "elapsed_ms": 1861.8,
-              "session_id": "20260801-012910-b88ea8bd"
-            }
-          ]
-        }
-      },
-      "i5": {
-        "motion_events": 174,
-        "actions_observed": 23,
-        "native_fallback_true": 0,
-        "state_counts": {
-          "target_rejected": 99,
-          "native_transform_writer_suppressed": 25,
-          "hold_entered": 7,
-          "reliable_resync_applied": 6,
-          "reliable_resync_receipt": 6,
-          "teleport_resync_queued": 5,
-          "remote_player_descriptor_applied": 3,
-          "remote_motion_discovered": 3,
-          "logical_remote_seeded": 3,
-          "remote_instance_missing": 3,
-          "probe_started": 3,
-          "probe_passed": 3,
-          "local_motion_identity": 2,
-          "remote_player_evicted": 2,
-          "remote_player_tombstone_applied": 2,
-          "rendezvous_complete": 1,
-          "motion_frame_sent": 1
-        },
-        "hard_corrections": {
-          "total": 17,
-          "unexplained": 0,
-          "by_kind": {
-            "wait": 1,
-            "teleport_to": 6,
-            "motion_observe_gap": 1,
-            "zone_membership_resume": 3,
-            "portal_roundtrip": 6
-          },
-          "unexplained_detail": []
-        },
-        "divergence_bursts": {
-          "count": 3,
-          "all_single_sequence": true,
-          "max_span_seconds": 0.501,
-          "max_target_error_m": 4191.8,
-          "bursts": [
-            {
-              "start_utc": "2026-08-01T01:28:29.4918321Z",
-              "span_seconds": 0.49,
-              "rejections": 29,
-              "distinct_sequences": [
-                "1234"
-              ],
-              "single_sequence": true,
-              "target_error_max_m": 72.2,
-              "action_id": "i5-c8-portal-slice",
-              "kind": "teleport_to"
-            },
-            {
-              "start_utc": "2026-08-01T01:28:44.1198743Z",
-              "span_seconds": 0.488,
-              "rejections": 52,
-              "distinct_sequences": [
-                "1503"
-              ],
-              "single_sequence": true,
-              "target_error_max_m": 4191.8,
-              "action_id": "i5-c8-portal-roundtrip",
-              "kind": "portal_roundtrip"
-            },
-            {
-              "start_utc": "2026-08-01T01:28:54.8733791Z",
-              "span_seconds": 0.501,
-              "rejections": 18,
-              "distinct_sequences": [
-                "1687"
-              ],
-              "single_sequence": true,
-              "target_error_max_m": 900.9,
-              "action_id": "i5-c8-portal-roundtrip",
-              "kind": "portal_roundtrip"
-            }
-          ]
-        },
-        "holds": {
-          "count": 7,
-          "recovered_seconds": [
-            0.408,
-            0.535,
-            9.368,
-            10.429,
-            10.866
-          ],
-          "unrecovered_in_log": 2,
-          "detail": [
-            {
-              "timestamp_utc": "2026-08-01T01:28:05.7670729Z",
-              "action_id": "i5-c8-motion-observe-gap",
+              "timestamp_utc": "2026-08-02T12:35:04.3564808Z",
+              "action_id": "i5-c6-observe-gap",
               "kind": "motion_observe_gap",
-              "recovered_after_seconds": 0.535,
+              "recovered_after_seconds": 0.895,
               "recovered_by": "reliable_resync_applied"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:28:16.5808741Z",
-              "action_id": "i5-c8-gateway-restart-resume",
-              "kind": "gateway_restart_resume",
-              "recovered_after_seconds": 10.429,
-              "recovered_by": "reliable_resync_receipt"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:28:30.0039426Z",
-              "action_id": "i5-c8-portal-slice",
-              "kind": "teleport_to",
-              "recovered_after_seconds": 0.408,
-              "recovered_by": "reliable_resync_receipt"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:28:32.9965518Z",
-              "action_id": "i5-c8-portal-slice",
-              "kind": "teleport_to",
-              "recovered_after_seconds": 10.866,
-              "recovered_by": "reliable_resync_receipt"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:28:44.6133227Z",
-              "action_id": "i5-c8-portal-roundtrip",
-              "kind": "portal_roundtrip",
-              "recovered_after_seconds": 9.368,
-              "recovered_by": "reliable_resync_receipt"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:28:55.4178876Z",
-              "action_id": "i5-c8-portal-roundtrip",
-              "kind": "portal_roundtrip",
-              "recovered_after_seconds": null,
-              "recovered_by": null
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:29:48.8323414Z",
-              "action_id": "i5-resumed",
-              "kind": "wait",
-              "recovered_after_seconds": null,
-              "recovered_by": null
             }
           ]
         },
         "perf": {
           "measured": true,
-          "hitch_rows": 18,
+          "run_window_start_utc": "2026-08-02T12:33:55.419623+00:00",
+          "run_window_end_utc": "2026-08-02T12:36:05.677872+00:00",
+          "hitch_rows": 8,
           "apply_attributable_hitches": [],
-          "max_frame_ms": 9506.401,
+          "max_frame_ms": 9605.535,
           "hitch_causes": {
-            "Loaded localization file #7 - 'localiza": 4,
-            "ZNET START": 4,
-            "Preferences initialized! Activating fir": 2,
-            "Sending PlayFab login request (attempt": 2,
-            "Starting music menu": 2,
-            "Starting respawn": 2,
-            "Teleporting Durracktu": 1,
-            "DLC:beta installed:False": 1
+            "Loaded localization file #7 - 'localiza": 2,
+            "ZNET START": 2,
+            "DLC:beta installed:False": 1,
+            "Sending PlayFab login request (attempt": 1,
+            "Starting music menu": 1,
+            "Starting respawn": 1
           },
-          "motion_runner_sections": [
-            {
-              "timestamp_utc": "2026-08-01T01:27:08.3541487Z",
-              "elapsed_ms": 2256.6,
-              "session_id": "20260801-012650-999f4387"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:29:31.3015734Z",
-              "elapsed_ms": 2459.3,
-              "session_id": "20260801-012913-4e51675a"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:29:38.3804476Z",
-              "elapsed_ms": 31.0,
-              "session_id": "20260801-012913-4e51675a"
-            }
-          ]
-        }
-      }
-    },
-    "native-20260731-c8-full45": {
-      "omen": {
-        "motion_events": 208,
-        "actions_observed": 24,
-        "native_fallback_true": 0,
-        "state_counts": {
-          "target_rejected": 129,
-          "motion_frame_withheld": 20,
-          "native_transform_writer_suppressed": 15,
-          "reliable_resync_receipt": 6,
-          "teleport_resync_queued": 5,
-          "hold_entered": 5,
-          "reliable_resync_applied": 4,
-          "remote_player_descriptor_applied": 3,
-          "remote_motion_discovered": 3,
-          "logical_remote_seeded": 3,
-          "remote_instance_missing": 3,
-          "probe_started": 3,
-          "probe_passed": 3,
-          "local_motion_identity": 2,
-          "remote_player_evicted": 1,
-          "remote_player_tombstone_applied": 1,
-          "reliable_resync_rejected": 1,
-          "reliable_resync_queued": 1
-        },
-        "hard_corrections": {
-          "total": 17,
-          "unexplained": 0,
-          "by_kind": {
-            "teleport_to": 6,
-            "motion_drive_gap": 2,
-            "wait": 1,
-            "zone_membership_resume": 2,
-            "portal_roundtrip": 6
-          },
-          "unexplained_detail": []
-        },
-        "divergence_bursts": {
-          "count": 2,
-          "all_single_sequence": true,
-          "max_span_seconds": 0.486,
-          "max_target_error_m": 2587.3,
-          "bursts": [
-            {
-              "start_utc": "2026-08-01T01:33:30.7609195Z",
-              "span_seconds": 0.486,
-              "rejections": 66,
-              "distinct_sequences": [
-                "1127"
-              ],
-              "single_sequence": true,
-              "target_error_max_m": 72.1,
-              "action_id": "omen-c8-post-contention-settle",
-              "kind": "wait"
-            },
-            {
-              "start_utc": "2026-08-01T01:33:55.4796095Z",
-              "span_seconds": 0.477,
-              "rejections": 63,
-              "distinct_sequences": [
-                "1519"
-              ],
-              "single_sequence": true,
-              "target_error_max_m": 2587.3,
-              "action_id": "omen-c8-portal-roundtrip",
-              "kind": "portal_roundtrip"
-            }
-          ]
-        },
-        "holds": {
-          "count": 5,
-          "recovered_seconds": [
-            0.589,
-            0.608,
-            1.742,
-            9.646
-          ],
-          "unrecovered_in_log": 1,
-          "detail": [
-            {
-              "timestamp_utc": "2026-08-01T01:33:21.1034854Z",
-              "action_id": "omen-c8-gateway-restart-resume",
-              "kind": "gateway_restart_resume",
-              "recovered_after_seconds": 9.646,
-              "recovered_by": "reliable_resync_applied"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:33:31.2563116Z",
-              "action_id": "omen-c8-post-contention-settle",
-              "kind": "wait",
-              "recovered_after_seconds": 1.742,
-              "recovered_by": "reliable_resync_receipt"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:33:34.7137915Z",
-              "action_id": "omen-c8-portal-slice",
-              "kind": "teleport_to",
-              "recovered_after_seconds": 0.589,
-              "recovered_by": "reliable_resync_receipt"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:33:45.3213845Z",
-              "action_id": "omen-c8-portal-roundtrip",
-              "kind": "portal_roundtrip",
-              "recovered_after_seconds": 0.608,
-              "recovered_by": "reliable_resync_receipt"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:33:55.9634769Z",
-              "action_id": "omen-c8-portal-roundtrip",
-              "kind": "portal_roundtrip",
-              "recovered_after_seconds": null,
-              "recovered_by": null
-            }
-          ]
-        },
-        "perf": {
-          "measured": true,
-          "hitch_rows": 15,
-          "apply_attributable_hitches": [],
-          "max_frame_ms": 6727.725,
-          "hitch_causes": {
-            "Released session ticket": 4,
-            "ZNET START": 4,
-            "Sending PlayFab login request (attempt": 2,
-            "Starting music menu": 2,
-            "Starting respawn": 2,
-            "Failed to get attach prefab for item Ar": 1
-          },
-          "motion_runner_sections": [
-            {
-              "timestamp_utc": "2026-08-01T01:32:08.8484143Z",
-              "elapsed_ms": 1867.1,
-              "session_id": "20260801-013151-7bbc7b2d"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:34:28.0919491Z",
-              "elapsed_ms": 1863.2,
-              "session_id": "20260801-013411-7a92afa9"
-            }
-          ]
-        }
-      },
-      "i5": {
-        "motion_events": 113,
-        "actions_observed": 23,
-        "native_fallback_true": 0,
-        "state_counts": {
-          "target_rejected": 39,
-          "native_transform_writer_suppressed": 25,
-          "hold_entered": 7,
-          "reliable_resync_applied": 6,
-          "teleport_resync_queued": 5,
-          "reliable_resync_receipt": 5,
-          "remote_player_descriptor_applied": 3,
-          "remote_motion_discovered": 3,
-          "logical_remote_seeded": 3,
-          "remote_instance_missing": 3,
-          "probe_started": 3,
-          "probe_passed": 3,
-          "local_motion_identity": 2,
-          "remote_player_evicted": 2,
-          "remote_player_tombstone_applied": 2,
-          "rendezvous_complete": 1,
-          "motion_frame_sent": 1
-        },
-        "hard_corrections": {
-          "total": 16,
-          "unexplained": 0,
-          "by_kind": {
-            "wait": 1,
-            "teleport_to": 6,
-            "motion_observe_gap": 1,
-            "zone_membership_resume": 2,
-            "portal_roundtrip": 6
-          },
-          "unexplained_detail": []
-        },
-        "divergence_bursts": {
-          "count": 1,
-          "all_single_sequence": true,
-          "max_span_seconds": 0.473,
-          "max_target_error_m": 4198.0,
-          "bursts": [
-            {
-              "start_utc": "2026-08-01T01:33:45.8440128Z",
-              "span_seconds": 0.473,
-              "rejections": 39,
-              "distinct_sequences": [
-                "1489"
-              ],
-              "single_sequence": true,
-              "target_error_max_m": 4198.0,
-              "action_id": "i5-c8-portal-roundtrip",
-              "kind": "portal_roundtrip"
-            }
-          ]
-        },
-        "holds": {
-          "count": 7,
-          "recovered_seconds": [
-            0.54,
-            1.261,
-            9.003,
-            9.007,
-            9.811
-          ],
-          "unrecovered_in_log": 2,
-          "detail": [
-            {
-              "timestamp_utc": "2026-08-01T01:33:08.4274676Z",
-              "action_id": "i5-c8-motion-observe-gap",
-              "kind": "motion_observe_gap",
-              "recovered_after_seconds": 0.54,
-              "recovered_by": "reliable_resync_applied"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:33:20.8454605Z",
-              "action_id": "i5-c8-gateway-restart-resume",
-              "kind": "gateway_restart_resume",
-              "recovered_after_seconds": 9.811,
-              "recovered_by": "reliable_resync_receipt"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:33:32.7915378Z",
-              "action_id": "i5-c8-portal-slice",
-              "kind": "teleport_to",
-              "recovered_after_seconds": 1.261,
-              "recovered_by": "reliable_resync_receipt"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:33:35.5698399Z",
-              "action_id": "i5-c8-portal-slice",
-              "kind": "teleport_to",
-              "recovered_after_seconds": 9.007,
-              "recovered_by": "reliable_resync_receipt"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:33:46.3249266Z",
-              "action_id": "i5-c8-portal-roundtrip",
-              "kind": "portal_roundtrip",
-              "recovered_after_seconds": 9.003,
-              "recovered_by": "reliable_resync_receipt"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:33:56.1246410Z",
-              "action_id": "i5-c8-portal-roundtrip",
-              "kind": "portal_roundtrip",
-              "recovered_after_seconds": null,
-              "recovered_by": null
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:34:49.1044380Z",
-              "action_id": "i5-resumed",
-              "kind": "wait",
-              "recovered_after_seconds": null,
-              "recovered_by": null
-            }
-          ]
-        },
-        "perf": {
-          "measured": true,
-          "hitch_rows": 20,
-          "apply_attributable_hitches": [],
-          "max_frame_ms": 9244.564,
-          "hitch_causes": {
-            "Loaded localization file #7 - 'localiza": 4,
-            "ZNET START": 4,
-            "Sending PlayFab login request (attempt": 2,
-            "Starting music menu": 2,
-            "Starting respawn": 2,
-            "adding Raspberry  1": 2,
-            "Preferences initialized! Activating fir": 1,
-            "Failed to get attach prefab for item Ar": 1
-          },
-          "motion_runner_sections": [
-            {
-              "timestamp_utc": "2026-08-01T01:32:10.6463474Z",
-              "elapsed_ms": 2241.1,
-              "session_id": "20260801-013152-fc2bdc3c"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:34:33.8467890Z",
-              "elapsed_ms": 2460.4,
-              "session_id": "20260801-013415-d6c4ec2c"
-            },
-            {
-              "timestamp_utc": "2026-08-01T01:34:40.6631628Z",
-              "elapsed_ms": 31.4,
-              "session_id": "20260801-013415-d6c4ec2c"
-            }
-          ]
+          "motion_runner_sections": []
         }
       }
     }
