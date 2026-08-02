@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "receipt_type": "c10a_usestamina_physical_falsifier",
+  "captured_utc": "2026-08-02T16:11:46Z",
+  "result": "failed_closed",
+  "release": {
+    "release_id": "m7-c10a-20260802-r5",
+    "source_commit": "5b34acf18fbe9cf5d9020a1bceca46c79bb2f244",
+    "mod_sha256": "846b28a8ed5956366e476b3baab3409f7c2218cce7c5b16e3b7abdc101a7ea1f",
+    "gateway_image_id": "sha256:4d4bc7f0b62791923feecc65f94b5ee09beea78cee68afc5a4498216bd3f8263"
+  },
+  "attempts": [
+    {
+      "run_id": "native-20260802-c10a-stamina-r5",
+      "result": "harness_shape_rejected",
+      "finding": "Broad client poison cannot precede native peer bootstrap outside the Steam-free composition.",
+      "omen": {
+        "native_total": 1,
+        "poison_trips": 1,
+        "funnel": "native_peer_connection"
+      },
+      "i5": {
+        "native_total": 1,
+        "poison_trips": 1,
+        "funnel": "native_peer_connection"
+      }
+    },
+    {
+      "run_id": "native-20260802-c10a-stamina-r5-full",
+      "result": "asymmetric_target_identity_failure",
+      "native_zero": {
+        "omen": { "native_total": 0, "poison_trips": 0 },
+        "i5": { "native_total": 0, "poison_trips": 0 },
+        "am4": { "native_total": 0, "poison_trips": 0 }
+      },
+      "omen_to_i5": {
+        "result": "passed",
+        "target_zdo": "2222282593:1",
+        "before": 50.0,
+        "requested": 1.25,
+        "after": 48.75,
+        "sender_receipt": "remote_player_stamina_debit_applied"
+      },
+      "i5_to_omen": {
+        "result": "rejected_before_ack",
+        "rendezvous_live_player_zdo": "1059480882:1",
+        "selected_alias_zdo": "1:2860948",
+        "selected_alias_owner": 1059480882,
+        "receiver_failure": "remote_stamina_probe_target_or_payload_invalid",
+        "sender_failure": "routed_probe_deadline_exceeded"
+      }
+    }
+  ],
+  "repair_contract": {
+    "release_id": "m7-c10a-20260802-r6",
+    "live_player_invariant": "target_zdo_user_id equals target_zdo_owner_peer_id",
+    "selection": "nearest matching non-owned live player",
+    "physical_gate": "both directions must receipt exact before/requested/after debits in the native-zero composition"
+  },
+  "cleanup": {
+    "omen_process_stopped": true,
+    "i5_process_stopped": true,
+    "i5_task_state": "Ready",
+    "server_controls_disarmed": true,
+    "client_configs_restored": true,
+    "residue_matches": 0,
+    "p7_touched": false
+  },
+  "raw_evidence": [
+    "fieldlab/runs/native-valheim/native-20260802-c10a-stamina-r5/",
+    "fieldlab/runs/native-valheim/native-20260802-c10a-stamina-r5-full/"
+  ]
+}
