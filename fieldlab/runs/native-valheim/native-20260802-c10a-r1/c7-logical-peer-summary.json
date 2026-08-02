@@ -1,0 +1,160 @@
+{
+    "schema_version":  1,
+    "receipt_type":  "logical_peer_cutover_summary",
+    "generated_utc":  "2026-08-02T13:45:22.1215492+00:00",
+    "run_id":  "native-20260802-c10a-r1",
+    "result":  "failed",
+    "composition":  {
+                        "schema_version":  1,
+                        "receipt_type":  "native_cutover_composition",
+                        "generated_utc":  "2026-08-02T13:45:13.1767157+00:00",
+                        "run_id":  "native-20260802-c10a-r1",
+                        "server":  "100.116.82.60:2456",
+                        "result":  "completed",
+                        "steam_free_cold_join":  true,
+                        "scenario_sha256":  "eef9caef6f486384bd8c00d0cce6949930d0c2163d520d4b6df889549b2c4d77",
+                        "clients":  [
+                                        {
+                                            "client":  "omen",
+                                            "result":  "joined_held_and_stopped",
+                                            "resume_count":  1,
+                                            "scenario_terminal":  {
+                                                                      "schema_version":  1,
+                                                                      "timestamp_utc":  "2026-08-02T13:44:56.8866922+00:00",
+                                                                      "state":  "scenario_complete",
+                                                                      "run_id":  "native-20260802-c10a-r1",
+                                                                      "client":  "omen",
+                                                                      "action_id":  "",
+                                                                      "detail":  "all_actions_completed"
+                                                                  }
+                                        },
+                                        {
+                                            "client":  "i5",
+                                            "result":  "joined_held_and_stopped",
+                                            "resume_count":  1,
+                                            "scenario_terminal":  {
+                                                                      "schema_version":  1,
+                                                                      "timestamp_utc":  "2026-08-02T13:44:56.3196697+00:00",
+                                                                      "state":  "scenario_complete",
+                                                                      "run_id":  "native-20260802-c10a-r1",
+                                                                      "client":  "i5",
+                                                                      "action_id":  "",
+                                                                      "detail":  "all_actions_completed"
+                                                                  }
+                                        }
+                                    ]
+                    },
+    "clients":  [
+                    {
+                        "client":  "omen",
+                        "lifecycle_result":  "joined_held_and_stopped",
+                        "steam_free_requested":  true,
+                        "resume_count":  1,
+                        "scenario_terminal":  "scenario_complete",
+                        "lifecycle_error":  "",
+                        "native_total":  10,
+                        "native_ledger_sessions":  2,
+                        "native_poison_armed":  true,
+                        "native_use_rows":  5,
+                        "poison_trips":  10,
+                        "writer_dropped_rows":  0,
+                        "writer_faults":  0,
+                        "steam_free_scene_requested":  2,
+                        "joined_receipts":  2,
+                        "native_client_connect_suppressed":  2,
+                        "logical_server_announced":  5,
+                        "logical_peer_constructed":  2,
+                        "logical_peer_ready":  2,
+                        "character_id_queued":  2,
+                        "logical_failure_count":  0,
+                        "logical_failure_states":  [
+
+                                                   ],
+                        "checks":  {
+                                       "lifecycle_complete":  true,
+                                       "scene_requested_without_native_target":  true,
+                                       "joined_twice":  true,
+                                       "client_connect_suppressed":  true,
+                                       "logical_server_constructed":  true,
+                                       "typed_character_id_queued":  true,
+                                       "no_logical_terminal_failure":  true,
+                                       "native_network_zero":  false,
+                                       "native_poison_armed":  true,
+                                       "ledger_lossless":  true
+                                   }
+                    },
+                    {
+                        "client":  "i5",
+                        "lifecycle_result":  "joined_held_and_stopped",
+                        "steam_free_requested":  true,
+                        "resume_count":  1,
+                        "scenario_terminal":  "scenario_complete",
+                        "lifecycle_error":  "",
+                        "native_total":  10,
+                        "native_ledger_sessions":  2,
+                        "native_poison_armed":  true,
+                        "native_use_rows":  7,
+                        "poison_trips":  10,
+                        "writer_dropped_rows":  0,
+                        "writer_faults":  0,
+                        "steam_free_scene_requested":  2,
+                        "joined_receipts":  2,
+                        "native_client_connect_suppressed":  2,
+                        "logical_server_announced":  5,
+                        "logical_peer_constructed":  2,
+                        "logical_peer_ready":  2,
+                        "character_id_queued":  2,
+                        "logical_failure_count":  0,
+                        "logical_failure_states":  [
+
+                                                   ],
+                        "checks":  {
+                                       "lifecycle_complete":  true,
+                                       "scene_requested_without_native_target":  true,
+                                       "joined_twice":  true,
+                                       "client_connect_suppressed":  true,
+                                       "logical_server_constructed":  true,
+                                       "typed_character_id_queued":  true,
+                                       "no_logical_terminal_failure":  true,
+                                       "native_network_zero":  false,
+                                       "native_poison_armed":  true,
+                                       "ledger_lossless":  true
+                                   }
+                    }
+                ],
+    "server":  {
+                   "actor":  "server",
+                   "logical_client_ids":  [
+                                              "lp_19f2670527be6f633c140c5938e5ff4c85d4bbe309e63007f20327439f837d5c",
+                                              "lp_c63184ad7fe2fd0616f8f0cd84f7c6150d9687b039d568454b911e5f7dd544f1"
+                                          ],
+                   "logical_client_constructed":  8,
+                   "character_id_applied":  4,
+                   "selected_native_funnels":  {
+                                                   "native_peer_connection":  0,
+                                                   "server_handshake":  0,
+                                                   "client_handshake":  0,
+                                                   "peer_info_send":  0,
+                                                   "peer_info_receive":  0,
+                                                   "zdo_data_receive":  0,
+                                                   "routed_rpc_receive":  0
+                                               },
+                   "native_total_including_idle_host_poll":  230,
+                   "writer_dropped_rows":  0,
+                   "writer_faults":  0,
+                   "logical_failure_count":  0,
+                   "checks":  {
+                                  "two_distinct_logical_clients":  true,
+                                  "client_peers_reconstructed_after_resume":  true,
+                                  "typed_character_ids_applied":  true,
+                                  "selected_native_ingress_zero":  true,
+                                  "no_logical_terminal_failure":  true,
+                                  "ledger_lossless":  true
+                              }
+               },
+    "checks":  {
+                   "composition_completed_steam_free":  true,
+                   "both_clients_passed":  false,
+                   "server_passed":  true
+               }
+}

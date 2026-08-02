@@ -1,0 +1,40 @@
+{
+    "schema_version":  1,
+    "receipt_type":  "native_cutover_composition",
+    "generated_utc":  "2026-08-02T13:45:13.1767157+00:00",
+    "run_id":  "native-20260802-c10a-r1",
+    "server":  "100.116.82.60:2456",
+    "result":  "completed",
+    "steam_free_cold_join":  true,
+    "scenario_sha256":  "eef9caef6f486384bd8c00d0cce6949930d0c2163d520d4b6df889549b2c4d77",
+    "clients":  [
+                    {
+                        "client":  "omen",
+                        "result":  "joined_held_and_stopped",
+                        "resume_count":  1,
+                        "scenario_terminal":  {
+                                                  "schema_version":  1,
+                                                  "timestamp_utc":  "2026-08-02T13:44:56.8866922+00:00",
+                                                  "state":  "scenario_complete",
+                                                  "run_id":  "native-20260802-c10a-r1",
+                                                  "client":  "omen",
+                                                  "action_id":  "",
+                                                  "detail":  "all_actions_completed"
+                                              }
+                    },
+                    {
+                        "client":  "i5",
+                        "result":  "joined_held_and_stopped",
+                        "resume_count":  1,
+                        "scenario_terminal":  {
+                                                  "schema_version":  1,
+                                                  "timestamp_utc":  "2026-08-02T13:44:56.3196697+00:00",
+                                                  "state":  "scenario_complete",
+                                                  "run_id":  "native-20260802-c10a-r1",
+                                                  "client":  "i5",
+                                                  "action_id":  "",
+                                                  "detail":  "all_actions_completed"
+                                              }
+                    }
+                ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "run_id": "native-20260802-c10a-r1",
+  "release_id": "m7-c10a-20260802-r1",
+  "result": "failed",
+  "failed_gate": "c7_logical_peer_native_network_zero",
+  "clients": [
+    {
+      "actor": "omen",
+      "native_total": 10,
+      "poison_trips": 10,
+      "unadmitted_attempts": [
+        { "method": "Step", "method_hash": -461013576, "count": 7 },
+        { "method": "RPC_DamageText", "method_hash": 15349388, "count": 2 },
+        { "method": "DestroyZDO", "method_hash": 199378019, "count": 1 }
+      ]
+    },
+    {
+      "actor": "i5",
+      "native_total": 10,
+      "poison_trips": 10,
+      "unadmitted_attempts": [
+        { "method": "Step", "method_hash": -461013576, "count": 5 },
+        { "method": "RPC_DamageText", "method_hash": 15349388, "count": 3 },
+        { "method": "DestroyZDO", "method_hash": 199378019, "count": 2 }
+      ]
+    }
+  ],
+  "server_unadmitted_attempts": [
+    { "method": "SetEvent", "method_hash": -1550530018, "count": 115 },
+    { "method": "ComfyNetworkSense_ServerPulse", "method_hash": 617879363, "count": 93 },
+    { "method": "GlobalKeys", "method_hash": -1090292557, "count": 8 },
+    { "method": "LocationIcons", "method_hash": -1100589719, "count": 8 },
+    { "method": "ComfyNetworkSense_AutoPort", "method_hash": 1329236479, "count": 8 }
+  ],
+  "client_scenario_complete": true,
+  "client_resume_count": 1,
+  "save_integrity_evaluated": false,
+  "cleanup": "runtime_controls_disarmed"
+}
