@@ -7,10 +7,14 @@ player-visible artifact ("the troll teleported") is attributable to a specific
 decision, not a statistic.
 
 ## Context
+Build boundary: the mod targets net48 and is compiled through the Docker
+Workbench image with a read-only Valheim mount and plugin-copy disabled. A host
+SDK MSB3644 is an expected boundary; do not add a second build lane.
 `network/telemetry-and-scores.md` already specifies aggregate counters
 (`dropped_low_priority_count`, `messages_by_priority`). This plan upgrades from
 counts to per-decision attribution. Mod code: `network/mod/ComfyNetworkSense`
-(net48 — build with host dotnet 8, guard `PluginOutputPath`; tests exist in
+(net48 — compile through the Docker Workbench image with a read-only Valheim
+mount and plugin-copy disabled; tests exist in
 `ComfyNetworkSense.Tests`).
 
 ## Steps
@@ -31,7 +35,8 @@ counts to per-decision attribution. Mod code: `network/mod/ComfyNetworkSense`
    record type (keep the doc the single source of truth for record schemas).
 
 ## Acceptance
-- Tests pass (host dotnet 8 build).
+- Tests pass through the Docker Workbench build receipt; a host SDK MSB3644 is
+  an expected boundary.
 - A recorded session with the flag on yields traces that reconcile with the
   aggregate counters (spot-check: sum of drop traces ≈ dropped count when at
   100% emission).

@@ -11,12 +11,17 @@ status, config/secret needs, and the gap list standing between today and
 builds from.
 
 ## Context
+Clarification: the client mod runtime remains on the player's Steam install,
+but its historical `.NET Framework/net48` compilation workaround is the Docker
+Workbench image. The image mounts Valheim read-only and disables plugin copy;
+this is a build capability, not an attempt to containerize the live client.
+
 Known state: the gateway is image-pinned (Dockerfile at `network/mcp/`);
 Lumberjacks (net9) builds in the `sdk:9.0` container; the omen-dashboard
 telemetry stack is docker; the Valheim dedicated server runs on P7 with the
-mod via BepInEx; the config site exists; the client mod (net48) can NOT be
+mod via BepInEx; the config site exists; the client mod runtime (net48) is not
 containerized — it rides the player's Steam install and is the deliberate
-boundary.
+runtime boundary.
 
 ## Steps
 1. Walk `infra/`, `network/mcp/`, `Lumberjacks/`, the dashboard stack, and

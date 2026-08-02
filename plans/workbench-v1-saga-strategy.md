@@ -6,8 +6,19 @@ install/rollback drill, and peer-bearing player-active capture have clean local
 receipts. WB-1 remains a candidate pending the declared unfamiliar-user usability
 gate, tagged `TODO — Derek soon` rather than an active implementation blocker.
 The player-active capture also identified a native-motion-only gap for a
-separate development loop. Replanned after the
+separate development loop. The follow-on audit found that this was
+reproducible from two configuration/provenance facts: both rendered clients
+were still pointed at the retired public Gateway endpoint while the local Lab
+Gateway was healthy, and the active Valheim server container still carried the
+retired `C:\work\comfy` compose provenance. Replanned after the
 [MCP endpoint provenance audit](../docs/audit/2026-08-01-mcp-endpoint-provenance-audit.md).
+The runtime choice is tracked in [PD-7](../docs/decisions/pd-7-lab-runtime-provenance-and-session-boundary.md)
+and is a prerequisite for the next real-player/motion-authority window.
+The short-term Baseline-compose/retained-state bridge has since been executed;
+the full state migration remains a separate maintenance slice. The hardened
+single-client background-execution check passed, but the justified concurrent
+C6 still reproduces an OMEN rendered-loop stall; PD-7 motion acceptance is
+therefore open for bounded forensics, not for blind retries.
 Owner: Derek. This document is the decision-complete execution strategy for the
 first coherent Workbench product slice.
 Product rationale remains canonical in [PD-5](../docs/decisions/pd-5-local-workbench-ownership-appliance.md),
@@ -54,8 +65,11 @@ result is functionally false.
 
 ### Verified starting facts
 
-- The net48 mod builds successfully inside `mcr.microsoft.com/dotnet/sdk:9.0`
-  against a read-only Valheim mount with plugin copying disabled.
+- The historical `.NET Framework/net48` workaround is the Docker Workbench
+  image: the mod builds inside `mcr.microsoft.com/dotnet/sdk:9.0` against a
+  read-only Valheim mount with plugin copying disabled. A host SDK MSB3644 is
+  an expected boundary, not a missing product feature or a reason to add a
+  second host build lane.
 - AM4 and i5 were reachable during planning; i5 had working SSH, Docker, disk,
   and Valheim paths.
 - The source contains the newer Workbench endpoint, but the container answering
@@ -303,8 +317,10 @@ M2 acceptance:
 
 - **Story WB-S3.9:** Add a Dev/Lab tool-runner image based on .NET SDK 9 with the
   checkout and Valheim assemblies mounted read-only.
-- **Story WB-S3.10:** Implement `build.mod.release` using the proven container
-  build, disable plugin copying, and retain DLL/PDB hashes and compiler output.
+- **Story WB-S3.10 (implemented):** Implement `build.mod.release` using the
+  Docker Workbench image as the canonical `.NET Framework/net48` build path,
+  disable plugin copying, and retain DLL/PDB hashes and compiler output. The
+  host SDK is intentionally not a supported substitute.
 - **Story WB-S3.11:** Refuse Build outside Dev/Lab and explain whether source,
   Docker, or the Valheim assembly mount is missing.
 - **Story WB-S3.12:** Never deploy a successful build implicitly; deployment
@@ -358,6 +374,115 @@ M3 acceptance:
 - Container/image recreate preserves ownership, configuration association, and
   receipts.
 - The public-safe capsule passes the existing Workbench privacy scanner.
+
+#### Feature WB-F3.6 — Lab runtime provenance and session boundary
+
+- **Story WB-S3.21 (bridge implemented; full migration pending):** Record the active Lab compose source, working directory,
+  image digest, and state-root disposition in the Workbench evidence packet.
+  A mixed retired/Baseline runtime is visible and fails the next Lab readiness
+  gate; it is never silently accepted as a Baseline run.
+- **Story WB-S3.22 (config/routing implemented; runtime acceptance pending):** Give each rendered Lab node an explicit canonical
+  Gateway route (OMEN local, i5 via OMEN's reachable Tailscale address, or an
+  explicitly named production route). A blank or unreachable route is a
+  deterministic preflight failure, not runtime endpoint discovery.
+- **Story WB-S3.23 (implemented):** Keep the canonical game-session and motion side channels
+  disabled in Admin/Production player posture. Lab is the only profile that
+  may enable them, and the receipt records the effective side-channel state.
+- **Story WB-S3.24 (attempted; motion rendezvous failed):** After the provenance
+  decision in PD-7, run one bounded two-client Lab window and require
+  `session_started`/peer binding before evaluating motion.
+  `job-20260802-034806539-ce87afb7` reached both clients and i5 recorded
+  `session_started`, but `i5-c6-rendezvous` failed with `deadline_exceeded`
+  after UDP reset/fallback to binary WebSocket; OMEN consequently received zero
+  motion samples. No canonical-session or motion pass is claimed.
+  `native_motion_only` remains a valid native transport observation but is not a
+  Lumberjacks motion pass.
+- **Story WB-S3.25 (evidence retention implemented; rendezvous diagnosis complete):** The
+  orchestrator now retains the remote i5 lifecycle/log bundle during failure
+  cleanup when the OMEN leg aborts first. Historical receipts prove that
+  UDP-reset/WebSocket-fallback is a working transport path. The post-bridge
+  failure was caused by OMEN and i5 starting outside the Gateway's player-
+  interest edge, leaving `TryRendezvous` without a remote descriptor. No
+  production interest-routing change is authorized by this finding.
+- **Story WB-S3.26 (Lab-session gate implemented; acceptance pending):** The
+  C6 manifest generator now adds bounded `teleport_to` safe-origin actions for
+  both clients before rendezvous, using a retained-world ground-plane target
+  `(2211,33,-69)` rather than the earlier `y=80` fixture that created an
+  implausible vertical correction. This makes the Lab test independent of
+  persisted character placement while preserving the production interest-radius
+  policy. The rendered harness passes an explicit Lab-session switch for C6/C8,
+  temporarily enables only the canonical session and motion settings, and
+  restores the exact pre-run config bytes with a hash receipt. The first
+  safe-origin retry failed because this gate was absent
+  (`job-20260802-041714198-5cb8449a`). The next bounded retry
+  (`job-20260802-044127818-e060cb19`) reached session start, peer binding,
+  WebSocket fallback, interest-edge discovery, rendezvous, and passing initial
+  i5 probes, then hit an OMEN rendered Unity/main-loop stall after
+  `omen-settle`; no full C6 motion pass is claimed. A missing edge or stalled
+  renderer remains a fail-closed, actionable receipt rather than a generic
+  timeout.
+- **Story WB-S3.27 (durable failed-run Lab restore implemented; forensics
+  pending):** Add a standalone `restore-lab-session` action that restores the
+  byte-backed Lab-session config after a forced harness termination. The
+  orchestrator invokes it during failed-run cleanup for OMEN and i5 and records
+  a hash receipt. The first targeted forensics fix reasserts Unity
+  `runInBackground` at the first real peer boundary (Docker receipt
+  `job-20260802-045218754-f432d3af`) because the prior setting was applied only
+  before the scene transition. The targeted single-client observation
+  `workbench-bg-reassert-20260802` then passed settle, move, bounded resume,
+  and scenario completion with the hardened artifact. It clears the diagnostic
+  gate for one full C6 run, but is not itself a multiplayer or motion verdict.
+- **Story WB-S3.28 (new blocker):** Analyze the one justified full C6 run against
+  the hardened artifact (`job-20260802-045616258-030c0534`, run
+  `workbench-20260802-045621-030c0534`). It reached session start, peer
+  binding, safe-origin, interest-edge rendezvous, and initial i5 probes, but
+  OMEN stopped advancing after `omen-settle`; i5 failed closed at
+  `i5-c6-observe-gap`. The post-join background reassertion is present in the
+  OMEN log, so the next action is bounded crash-forensics or main-thread
+  budget/watchdog instrumentation, not another blind C6 retry. Keep the
+  Docker Workbench net48 build path unchanged while isolating this concurrent
+  rendered-client interaction.
+- **Story WB-S3.29 (implemented diagnostic gate):** Add a worker-thread
+  `perf-watchdog.jsonl` heartbeat receipt so a Unity/main-thread stall remains
+  observable even when synchronous perf sections cannot close. Collect it in
+  native client evidence. Make the Workbench runner compute checkout-time
+  source identity for every build and fail rendered C6 closed when the checkout
+  is dirty or the Companion image revision differs. A dirty Docker build may
+  support local diagnostics, but it is never a clean rendered acceptance.
+- **Story WB-S3.30 (implemented provenance gate):** Add the read-only
+  `fieldlab/scripts/Test-LabRuntimeProvenance.ps1` verifier. It checks the
+  active server's Compose source and working directory, immutable image digest,
+  `/config` and `/opt/valheim` state mounts, and credential-free OMEN/i5 Gateway
+  routes. It accepts a fully migrated Baseline state root or an explicitly
+  named retained-state bridge only when the Baseline bridge override is present;
+  without that explicit switch the same mixed state fails closed. The receipt
+  names the disposition instead of treating a healthy container as proof of
+  ownership. Rendered C6 invokes the strict form before source/image checks,
+  remote preflight, scenario generation, or client launch; it never supplies
+  the interim bridge override. Job `job-20260802-054530209-f67cfc0d` proved the
+  active bridge fails there with `rendered_prelive_lab_provenance_failed`, no
+  run artifacts, both clients stopped, and the at-rest config unchanged.
+
+M3.6 acceptance:
+
+- The active Lab source is Baseline-attributed (or the deliberate retained
+  state-root bridge is recorded) and reproducible from one command.
+- OMEN and i5 route to the same healthy local Gateway without secrets in the
+  receipt; normal gameplay does not retry the Dev/Lab side channel.
+- A two-client run records canonical session start and peer binding before a
+  motion verdict is emitted.
+- A failed two-client run retains the remote i5 lifecycle/log evidence even when
+  the OMEN leg aborts first; a missing second-client receipt is a collection
+  defect, not a motion timeout attributed to OMEN.
+- Lab-only session activation is explicit, bounded, and byte-for-byte restored;
+  Admin/Production remains disabled at rest, including after a forced harness
+  termination via the durable restore action.
+- A full C6 retry is not accepted merely because a single-client scenario clock
+  advances; the concurrent rendered-client path must produce a discriminating
+  forensic receipt before another full run.
+- Build receipts distinguish the actual checkout identity from the Companion
+  image identity; rendered acceptance requires a clean, matching source/image
+  pair.
 
 ### Epic WB-E4 — Converge profiles, bootstrap, and Dev MCP
 

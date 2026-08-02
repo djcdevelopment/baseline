@@ -30,17 +30,20 @@ docker run --rm -v "${PWD}:/src" -w /src mcr.microsoft.com/dotnet/sdk:9.0 \
 Full release-cut / image-promotion steps live in
 [`Lumberjacks/docs/build-release-runbook.md`](Lumberjacks/docs/build-release-runbook.md).
 
-### The mod (net48) — builds on HOST dotnet, with a guard flag
+### The mod (net48) — builds in the Docker Workbench image
 
-`network/mod/ComfyNetworkSense` targets `net48` and builds fine with the host
-SDK. The catch: its `.csproj` has a post-build step that copies the built DLL
-straight into `$(ValheimDir)\BepInEx\plugins` by default — a **live,
-installed BepInEx plugins folder**. An ordinary build silently overwrites
-whatever mod DLL is currently installed and loaded in Valheim.
+`network/mod/ComfyNetworkSense` targets `net48`. The supported and historical
+workaround is the Docker Workbench image, which supplies the reference
+assemblies while mounting the Valheim installation read-only. A host SDK
+failure such as MSB3644 is an expected boundary; do not add a second host
+build lane. The project also has a post-build step that can copy the built DLL
+straight into `$(ValheimDir)\BepInEx\plugins`, so the canonical Workbench build
+disables that copy.
 
-Unless you're deliberately updating your own local install, redirect that
-path somewhere that doesn't exist so the copy step no-ops — this is the
-literal value `infra/gcp/p7/scripts/New-ReleaseCut.ps1` uses:
+Use the Workbench capability/receipt (`build.mod.release`) rather than a raw
+host build. For a deliberate local diagnostic outside the Workbench, redirect
+the output path somewhere that does not exist so the copy step no-ops — this is
+the literal value `infra/gcp/p7/scripts/New-ReleaseCut.ps1` uses:
 
 ```powershell
 cd network\mod\ComfyNetworkSense

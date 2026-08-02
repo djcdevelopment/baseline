@@ -2,6 +2,11 @@
 
 ## Active product build strategy
 
+Current build boundary: the mod targets net48 and the Docker Workbench image
+is its canonical/historical build workaround. It mounts Valheim read-only,
+disables plugin copying, and retains a hashable artifact receipt; host SDK
+MSB3644 is an expected boundary.
+
 - [`workbench-v1-saga-strategy.md`](workbench-v1-saga-strategy.md) — the
   decision-complete, single-session Saga/Epic/Feature/Story strategy for the
   ownable Docker Workbench v1.
@@ -27,7 +32,9 @@ Shared context every builder should know:
 - **Repo layout:** `network/` (netcode docs, mod `ComfyNetworkSense`, gateway MCP
   in `network/mcp`), `Lumberjacks/` (net9 services — build in the `sdk:9.0`
   container), `fieldlab/`, `docs/`, `infra/`, `tools/`, `data/`, `recipes/`.
-  The mod is net48 — build with host dotnet 8; guard `PluginOutputPath`.
+  The mod is net48 — the Docker Workbench image is the canonical and
+  historical build workaround; mount Valheim read-only, disable plugin copy,
+  and retain the artifact receipt. Host SDK MSB3644 is an expected boundary.
 - **Strategy docs** (retired checkout, read-only reference):
   `C:\work\comfy\docs\adoption-strategy.md`, `positioning.md`, `governance.md`.
   The voice rules live there: never a verdict on the past; "cheaper to care";

@@ -6,6 +6,7 @@ Owner: Derek
 
 Detailed requirement evidence: [verification matrix](workbench-v1-verification-matrix.md).
 Checkpoint staging scope: [workbench-v1-checkpoint-scope.md](workbench-v1-checkpoint-scope.md).
+Runtime follow-on audit: [2026-08-02 Lab provenance audit](../docs/audit/2026-08-02-workbench-lab-runtime-provenance.md).
 
 This is the execution handoff for the current implementation session. The
 clean-checkpoint MCP/Companion attribution, rendered AM4 + OMEN + i5 machine and
@@ -15,6 +16,64 @@ candidate, rather than an unqualified completion claim, because the Saga's
 unfamiliar-user usability gate is explicitly still open. It is now tagged
 `TODO — Derek soon`, not an active implementation blocker. The capture also
 records a separate native-motion-only finding for the Lumberjacks motion lane.
+The approved PD-7 bridge has since recreated the Lab server from Baseline
+compose while retaining the legacy state mount, and both rendered installs now
+have explicit local-Lab routes with canonical session/motion disabled at rest.
+The first post-bridge C6 job exposed a missing `Game.Companion.Tests.csproj`
+COPY in the gateway Dockerfile; that cache-stage defect was corrected and the
+gateway then passed restore, build, 605 tests, and publish. The next C6 job
+reached both clients: i5 recorded `session_started` but failed at
+`i5-c6-rendezvous` after UDP reset/fallback to binary WebSocket, so OMEN
+received no motion samples and failed at `omen-c6-observe-two`.
+`LastTaskResult=1` reflects that scenario failure. Both client configs and the
+server runtime were restored to the safe posture; failure-run evidence
+retention is now implemented. The trace showed the historical fallback path is
+working; the post-bridge run instead started the clients outside the Gateway
+interest edge. The C6 manifest generator now adds the existing bounded safe-
+origin teleports before rendezvous, leaving a fresh C6 acceptance run as the
+explicit next blocker. That safe-origin retry (`job-20260802-041714198-5cb8449a`)
+also proved the runner had not yet re-enabled the Lab-only canonical session
+after restoring the Admin-at-rest posture. The client harness now accepts an
+explicit `EnableLabSession` switch, records a byte-for-byte config backup,
+temporarily enables the session/motion settings for C6/C8, and restores the
+original hash on every bounded exit path. The gated full run was attempted and
+is now a concurrent rendered main-loop/peer-load forensics blocker. The
+canonical Docker Workbench mod build receipt
+is `job-20260802-044059503-235d215a` (net48 build passed; host SDK not
+required). The corrected ground-plane retry
+(`job-20260802-044127818-e060cb19`) reached session start, peer binding,
+transport fallback, interest-edge discovery, rendezvous, and initial i5 probe
+passes, then failed closed when OMEN's rendered Unity loop stalled during
+`omen-settle`; the full C6 motion gate remains open for bounded crash forensics.
+Failed-run cleanup now has a durable Lab-session restore action; OMEN was
+restored from the prior exact Admin-at-rest backup after this forced stop.
+The targeted post-scene background-execution hardening build is
+`job-20260802-045218754-f432d3af`; a bounded rendered observation with that
+artifact (`workbench-bg-reassert-20260802`) passed the post-join scenario
+clock. One justified full C6 run against the same artifact,
+`job-20260802-045616258-030c0534` / run
+`workbench-20260802-045621-030c0534`, still failed closed at
+`i5-c6-observe-gap` after OMEN stopped advancing beyond `omen-settle`. The
+post-join reassertion is present in OMEN's log, so this is now a concurrent
+rendered main-loop/peer-load forensics blocker; no blind C6 retry is planned.
+The historical `.NET Framework/net48` workaround remains the Docker Workbench
+image; host SDK MSB3644 is an expected boundary, not a second build lane.
+The next diagnostic build `job-20260802-051844360-517ae298` adds a worker
+main-thread watchdog and records actual checkout identity (`f54a0c55...`, dirty)
+separately from the stale Companion image metadata. The rendered preflight now
+fails closed on that dirty checkout; `job-20260802-052131353-ddbbd053` proved
+the gate before any client launch.
+The new read-only `Test-LabRuntimeProvenance.ps1` gate then passed the active
+Lab's Baseline Compose attribution, immutable server image digest, explicit
+OMEN/i5 routes, and deliberate `retained_legacy_bridge` state disposition;
+without explicit bridge admission it exited 1. This closes the provenance
+preflight implementation requirement. The rendered runner now consumes that
+strict form before any other C6 work and never admits the interim bridge. Job
+`job-20260802-054530209-f67cfc0d` failed there with
+`rendered_prelive_lab_provenance_failed`, created no run artifacts, left both
+clients stopped, left i5's task `Ready`, and preserved OMEN's safe config hash.
+The full state migration and clean, image-matched C6 diagnostic run remain
+separate follow-ons.
 
 ## Closeout disposition
 
@@ -35,10 +94,24 @@ records a separate native-motion-only finding for the Lumberjacks motion lane.
    recovery-path findings. The in-product first-visit path and
    [no-coaching protocol](workbench-v1-newcomer-usability-protocol.md) are ready;
    structural UI tests are not a substitute for that person.
-4. No engineering defect discovered by the rendered window remains open: native
+4. The next engineering slice is now explicit in
+   [PD-7](../docs/decisions/pd-7-lab-runtime-provenance-and-session-boundary.md).
+   Both rendered clients were still configured for the retired public Gateway
+   `http://8.231.129.249:42317`, while the local Lab Gateway was healthy on
+   `http://127.0.0.1:4000` and reachable from i5 at `100.124.12.37:4000`.
+   The approved short-term bridge has now recreated the Valheim server from
+   Baseline compose while preserving the retained legacy state mount; the
+   full state migration remains pending. Do not call the next player/motion
+   window a clean Lab run until the per-node-route, side-channel, motion
+   rendezvous, and failed-run evidence gates are resolved. The latest full C6
+   evidence adds a rendered main-loop/peer-load forensic gate after the
+   single-client background-execution check; it does not change the Docker
+   build boundary. The watchdog-bearing artifact is diagnostic until a clean,
+   image-matched source checkpoint is built and admitted.
+5. No engineering defect discovered by the rendered window remains open: native
    character binding, lease renewal, the client-only evidence boundary, and
    Windows child exit-code propagation are fixed and regression-covered.
-5. The pre-live rollback audit found and closed a stop-ship defect before any
+6. The pre-live rollback audit found and closed a stop-ship defect before any
    player file was changed. Install now preflights the complete archive, rejects
    unsafe or duplicate targets, serializes update operations, applies files
    atomically, restores bytes on apply/state failure, removes candidate-created
@@ -52,10 +125,10 @@ records a separate native-motion-only finding for the Lumberjacks motion lane.
 | M0 baseline | passed | Claimed installation `wb-4285b4fd66f442e598886b861ed1bd44` and the retained companion-data volume are proven. Final machine-acceptance HEAD `817ee8b2ff6dc30105dd44714d7709b53ecc2681` produced identity-matched Companion and Dev MCP images with `source_dirty=false`; the stale `ComfyGatewayBoot` task remains disabled and HEARTH remains independent. |
 | M1 kernel | passed | Lumberjacks/tools/companion/Test-WorkbenchApi.ps1 passed browser token, target/profile rejection, jobs, events, receipts, runner auth, and heartbeat checks. |
 | M2 product shell | passed | /, /workbench, and legacy /companion return 200; Workbench V1 shell, Standard/Advanced presentation, claim flow, live topology, job cards, receipt links, and observation form are present. |
-| M3 local slices | passed for the current local slice | Containerized net48 mod build passed with read-only Valheim mount, no host SDK, no plugin copy; support export passed the privacy scanner; safe Compose recreate preserved installation ID/claim/volume. The read-only m32 check, approved install-to-rollback cycle, and peer-bearing player-active capture passed. The capture's native-motion-only result is recorded as a follow-on motion-lane finding, not hidden as a mod-motion pass. |
+| M3 local slices | passed for the current local slice | Canonical Docker Workbench net48 mod build `job-20260802-044059503-235d215a` passed with read-only Valheim mount, no host SDK, and no plugin copy; support export passed the privacy scanner; safe Compose recreate preserved installation ID/claim/volume. The read-only m32 check, approved install-to-rollback cycle, and peer-bearing player-active capture passed. The capture's native-motion-only result and current rendered OMEN stall remain follow-on motion-lane findings, not hidden as a mod-motion pass. |
 | M4 distribution boundary | passed | Compose profile checks prove default/Production exclude Dev MCP and the SDK runner; Dev/Lab publish the identity-attested Baseline MCP on loopback `8721`; no Docker socket exists. The mod side channel is default-off, loopback-configured, and cannot be UI-enabled without Dev/Lab opt-in. The stale logon task is disabled and host `8720` is free. |
 | M5 rendered acceptance | passed | Run `workbench-20260802-003128-116adca1` completed on real OMEN and i5 clients against AM4. Derek watched live and recorded `pass / followed / smooth`; the sealed job receipt is `passed` with `human_observation_recorded`. |
-| M6 closeout | passed | Final receipt and handoff are current. The peer-bearing player-active Operate gate is closed; the native-motion-only lane finding is follow-on engineering, and unfamiliar-user/mobile review is tagged `TODO — Derek soon`. |
+| M6 closeout | passed for the original WB-1 scope | Final receipt and handoff are current. The peer-bearing player-active Operate gate is closed; native-motion-only is retained as a follow-on finding. The next real-player/motion window is held on PD-7 runtime provenance and per-node Gateway routing; unfamiliar-user/mobile review remains `TODO — Derek soon`. |
 
 ## Implemented surfaces
 
@@ -258,8 +331,11 @@ Latest runtime receipts from the rebuilt image:
   mobile/novice observation remains open.
 - `job-20260801-172741054-f940b244` — rendered capability was refused before
   client orchestration with `rendered_prelive_source_dirty`.
-- MCP profile check on loopback port `8721` exposed 45 tools including
-  `workbench_capabilities`;
+- The project-scoped Workbench Dev MCP sibling container on loopback `8721`
+  exposed a catalog of 45 tool definitions, including
+  `workbench_capabilities`; this was a catalog count, not 45 tool calls. HEARTH
+  remained the separately supervised machine-wide gateway on OMEN `8710`, and
+  host `8720` remained free.
   MCP-created job `job-20260801-174027902-c22a7b5f` reached `succeeded` with the
   same two events and receipt shape as the browser API.
 - The live dirty-checkout identity gate passed on `8721`: project `baseline`,
@@ -403,6 +479,8 @@ processes were stopped after capture.
 2. Treat `native_motion_only` as proof of native two-peer transport presence, not
    as proof that the Lumberjacks motion lane is connected; investigate the
    recorded `canonical_session_waiting`/WS-UDP gap in a separate development loop.
+   The first diagnostic evidence points to stale client Gateway routing and
+   mixed retired/Baseline Lab compose provenance; see PD-7.
 3. `no_peer_window` and `incomplete_telemetry` remain failed evidence, not green
    completion.
 
