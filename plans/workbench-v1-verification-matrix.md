@@ -12,8 +12,8 @@ receipt. `Passed` means the current checkout has direct evidence; `Pending` or
 | Durable jobs, events, receipts, artifacts | API contract plus rebuilt Docker build/support receipts | Passed |
 | Runner authentication and ownership | API contract, authenticated heartbeat, leased-runner binding, and current fixture `job-20260802-015005516-d0741770`: stale runner HTTP 404, owning lease renewal, exact child exit-code propagation (`0` and `7`), and no external operation | Passed |
 | Browser mutation boundary | API contract rejects missing token and cross-site Origin/Sec-Fetch-Site | Passed |
-| Standard/Advanced presentation does not grant authority | Registry eligibility is server-side; UI toggle only changes presentation labels/details, with generic Story topology labels and physical names only in Advanced | Passed by design/API shape; unfamiliar-user visual usability remains manual |
-| Unified shell and compatibility routes | `Test-WorkbenchUiContract.ps1` proves `/`, `/workbench`, and `/companion` return UTF-8 HTML with no mojibake; six intent sections, responsive viewport, privacy, evidence, observation, Gateway topology, and the first-visit safe path are present. The no-coaching newcomer protocol is ready | Passed structurally; mobile/novice visual observation pending |
+| Standard/Advanced presentation does not grant authority | Registry eligibility is server-side; UI toggle only changes presentation labels/details, with generic Story topology labels and physical names only in Advanced | Passed by design/API shape; unfamiliar-user visual usability is `TODO — Derek soon` |
+| Unified shell and compatibility routes | `Test-WorkbenchUiContract.ps1` proves `/`, `/workbench`, and `/companion` return UTF-8 HTML with no mojibake; six intent sections, responsive viewport, privacy, evidence, observation, Gateway topology, and the first-visit safe path are present. The no-coaching newcomer protocol is ready | Passed structurally; mobile/novice visual observation is `TODO — Derek soon` |
 | Explore slice | Synchronous inspect/evidence jobs and topology projection | Passed |
 | Build slice | Rebuilt Lab `build.mod.release` receipt; read-only Valheim mount, no host SDK, no plugin copy | Passed |
 | Operate slice | Read-only job `job-20260802-015026195-e3676b38` passed against m32. Approved install job `job-20260802-015909355-13073d0c` and rollback job `job-20260802-015911118-89a57d29` passed with all 30 bytes exact and the original installed JSON restored. Final admitted install job `job-20260802-023656082-3e059774` left m32 active with schema-1 backup. OMEN and i5 were aligned to DLL `93877…`; peer-bearing capture job `job-20260802-025242918-32e66e98` recorded `max_peers=2`, three samples, zero bad samples, and `native_motion_only`. Legacy rollback remains fail-closed and no-peer/incomplete captures remain failed evidence. | Passed for reversible install/rollback and peer-bearing capture; native-motion lane follow-up is classified separately |
@@ -39,5 +39,5 @@ the passed live install-to-rollback receipt, independently gates host processes,
 disables non-reversible legacy rollback, and has a peer-bearing two-client
 player-active capture. Current player bytes are exact m32 with a schema-1 rollback
 record. The capture's `native_motion_only`/`canonical_session_waiting` result is
-classified as a motion-lane follow-on, and unfamiliar-user/mobile review remains
-open; neither is hidden as a pass.
+classified as a motion-lane follow-on, and unfamiliar-user/mobile review is
+`TODO — Derek soon`; neither is hidden as a pass.

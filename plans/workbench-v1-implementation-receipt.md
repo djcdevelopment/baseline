@@ -12,7 +12,8 @@ clean-checkpoint MCP/Companion attribution, rendered AM4 + OMEN + i5 machine and
 human acceptance, local hash-verified Operate check, reversible install/rollback
 drill, and peer-bearing player-active capture have passed. WB-1 remains a
 candidate, rather than an unqualified completion claim, because the Saga's
-unfamiliar-user usability gate is explicitly still open. The capture also
+unfamiliar-user usability gate is explicitly still open. It is now tagged
+`TODO — Derek soon`, not an active implementation blocker. The capture also
 records a separate native-motion-only finding for the Lumberjacks motion lane.
 
 ## Closeout disposition
@@ -28,7 +29,8 @@ records a separate native-motion-only finding for the Lumberjacks motion lane.
    `job-20260802-015909355-13073d0c` and
    `job-20260802-015911118-89a57d29`. The earlier
    unavailable-Gateway receipt remains valid fail-closed evidence.
-3. Community usability is follow-on story WB-S2.13: have an unfamiliar operator
+3. Community usability is follow-on story WB-S2.13, tagged `TODO — Derek soon`:
+   have an unfamiliar operator
    use the Standard live map and mobile layout, then record comprehension and
    recovery-path findings. The in-product first-visit path and
    [no-coaching protocol](workbench-v1-newcomer-usability-protocol.md) are ready;
@@ -53,7 +55,7 @@ records a separate native-motion-only finding for the Lumberjacks motion lane.
 | M3 local slices | passed for the current local slice | Containerized net48 mod build passed with read-only Valheim mount, no host SDK, no plugin copy; support export passed the privacy scanner; safe Compose recreate preserved installation ID/claim/volume. The read-only m32 check, approved install-to-rollback cycle, and peer-bearing player-active capture passed. The capture's native-motion-only result is recorded as a follow-on motion-lane finding, not hidden as a mod-motion pass. |
 | M4 distribution boundary | passed | Compose profile checks prove default/Production exclude Dev MCP and the SDK runner; Dev/Lab publish the identity-attested Baseline MCP on loopback `8721`; no Docker socket exists. The mod side channel is default-off, loopback-configured, and cannot be UI-enabled without Dev/Lab opt-in. The stale logon task is disabled and host `8720` is free. |
 | M5 rendered acceptance | passed | Run `workbench-20260802-003128-116adca1` completed on real OMEN and i5 clients against AM4. Derek watched live and recorded `pass / followed / smooth`; the sealed job receipt is `passed` with `human_observation_recorded`. |
-| M6 closeout | passed | Final receipt and handoff are current. The peer-bearing player-active Operate gate is closed; the native-motion-only lane finding and unfamiliar-user/mobile review remain explicitly classified above. |
+| M6 closeout | passed | Final receipt and handoff are current. The peer-bearing player-active Operate gate is closed; the native-motion-only lane finding is follow-on engineering, and unfamiliar-user/mobile review is tagged `TODO — Derek soon`. |
 
 ## Implemented surfaces
 

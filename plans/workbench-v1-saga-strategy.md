@@ -4,7 +4,8 @@ Status: implementation plus rendered machine-and-human acceptance completed
 2026-08-02. M5 and M6 are closed, and the read-only Operate check, reversible
 install/rollback drill, and peer-bearing player-active capture have clean local
 receipts. WB-1 remains a candidate pending the declared unfamiliar-user usability
-gate. The player-active capture also identified a native-motion-only gap for a
+gate, tagged `TODO — Derek soon` rather than an active implementation blocker.
+The player-active capture also identified a native-motion-only gap for a
 separate development loop. Replanned after the
 [MCP endpoint provenance audit](../docs/audit/2026-08-01-mcp-endpoint-provenance-audit.md).
 Owner: Derek. This document is the decision-complete execution strategy for the
@@ -258,7 +259,7 @@ M1 acceptance:
   work and a typed human-observation form for `waiting_human`.
 - **Story WB-S2.12:** Preserve existing update, diagnostics, trace, roadmap, and
   community routes through the new navigation.
-- **Story WB-S2.13 (follow-on gate):** The Standard UI now contains a first-visit
+- **Story WB-S2.13 (follow-on gate; TODO — Derek soon):** The Standard UI now contains a first-visit
   safe path and the facilitator has a no-coaching
   [newcomer protocol](workbench-v1-newcomer-usability-protocol.md). Have an
   unfamiliar operator use the live map and mobile layout; record whether they can

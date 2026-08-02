@@ -4,6 +4,10 @@ Purpose: close story WB-S2.13 with evidence from a genuinely unfamiliar person,
 without substituting Derek's explanation or an agent's familiarity for product
 usability. This is a product gate, not a training session.
 
+Status: `TODO — Derek soon`. This remains a deliberate community-readiness gate,
+but it does not block the current engineering and motion-lane work. Schedule it
+when Derek has an unfamiliar operator available; do not self-accept the result.
+
 ## Test boundary
 
 - Give the participant only the Workbench URL and this sentence: “Please use the
