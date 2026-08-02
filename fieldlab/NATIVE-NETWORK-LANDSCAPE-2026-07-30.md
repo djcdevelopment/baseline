@@ -1,10 +1,10 @@
 # Native Valheim networking replacement landscape
 
-**Assessed:** 2026-08-01
+**Assessed:** 2026-08-02
 **Development topology:** headless dedicated server on AM4; native Windows clients on
 OMEN (Tugcorp, RTX 5070) and i5 (Durracktu, Intel Iris Xe).
-**Reference deployment:** P7 remains running as the production-reference server and is
-unchanged; C0-C7 final-cutover acceptance is on AM4.
+**Reference deployment:** P7 remains stopped and unchanged; C0-C8 and the accepted C10a
+paired-release candidate are proven on AM4.
 
 This is a present-tense boundary inventory, not a restatement of the historical I0-I7
 ladder. “Swapped” means the live payload crosses Lumberjacks and the corresponding
@@ -59,10 +59,15 @@ The replacement is not 100% complete.
   in `fieldlab/evidence/c8-native-zero-composition/`. Rows stay Partial where they
   name unselected breadth: the composition proves the selected surface only, and
   Swapped-everywhere remains C10's exit condition (33 P1 admissions — 29 instance plus
-  four global — three [VERIFY] rows, component-family gates, and release alignment
+  four global — four `[VERIFY]` items and component-family gates
   precede it). Recovery5 repeated
   the physical composition and runtime-proved the session-scoped epoch across a real
   AM4 restart; that wall-11 prerequisite no longer remains open.
+- The aligned C10a pair `m7-c10a-20260802-r4` passed the same poison-armed 49-action
+  physical reducer on OMEN and i5 with zero native use/trips on both clients and AM4.
+  This accepts one deployable mod/Gateway pair after three retained falsifiers; it does
+  not substitute for the four explicit verification items or the separate vehicle,
+  mount, container/station, and AI/creature breadth gates.
 
 The shortest honest description is: **the C3 ZDO semantic boundary and selected
 control/RPC classes are swapped on AM4, and C3 semantics now ride the canonical
@@ -70,8 +75,9 @@ session with process-durable logical peers; C4 also swaps one selected real owne
 and pickup boundary; C5 swaps the selected world descriptor and run-tagged
 zone-membership boundary; C6 swaps selected two-player motion authority; C7 swaps the
 Steam-free connection/bootstrap boundary; C8 composes that selected surface at
-native-zero and the server-session epoch now rejects stale bank state after restart.
-General-prefab semantics, remaining control breadth, subjective motion acceptance,
+native-zero, the server-session epoch rejects stale bank state after restart, and r4
+accepts one aligned paired release on that physical surface. General-prefab semantics,
+remaining verification/control breadth, subjective motion acceptance, fallback deletion,
 and P7 promotion are not complete.**
 
 ## C0 measured baseline and poison gate
@@ -225,7 +231,7 @@ manifest `p7-primary-v1`, and an armed consumer.
 | ZDO outbound carriage | **Swapped for legacy redirect and C3 semantic boundary** | Selected `*` prefabs use the redirect; C3 authoritative mutation bodies, revisions and tombstones use the durable journal over C1 | C3 body capture still observes Valheim's authoritative mutation seams; semantic breadth remains | **Verified:** C4a accepted six canonical mutations, replayed WAL across Gateway restart, retained two isolated logical recipients and ended zero pending |
 | ZDO inbound carriage/apply | **Partial; C3 typed boundary swapped on AM4** | C3 clients receive canonical-session frames, validate, and directly create/update/delete/revision/owner/position/deserialize on Unity `Update` | Legacy consumer still reconstructs a `ZPackage` and invokes `RPC_ZDOData`; general-prefab typed parity is not yet proven | **Verified:** C4a used only canonical carriage; both clients applied valid delta/tombstone, i5 applied late snapshot, stale/malformed rejected, network `RPC_ZDOData` zero |
 | Co-presence ZDO fan-out | **Corrected and integration-proven on AM4; disabled on P7 pending promotion** | Emits native-selected revisions to the exposing recipient and any in-band observer that is behind | Candidate discovery and delivered-revision bookkeeping remain native | **Verified:** two unattended physical clients, 1,340/1,340 native-selected `Emit`, zero non-emit, and successful inventory return on both clients |
-| Routed gameplay RPC (`ZRoutedRpc`) | **33 P1 methods code-admitted; live breadth proof pending** | One source-aligned mod/Gateway contract admits seven harness methods plus 29 P1 instance and four P1 global methods by exact name/hash, target shape, size, and extractor-pinned byte layout; unadmitted outbound routes now enter the ledger and poison blocks them | The 33 P1 methods still need paired-release AM4 exercise; P2/P3 and the three component-family gates remain; P7 still runs the prior release | **Verified:** shared-contract suites pass 107/107 mod and 221/221 Gateway; `native-20260730-c2b-final` remains the runtime proof for request/response, broadcast, real target-ZDO dispatch, withhold, reconnect, and zero selected native copies |
+| Routed gameplay RPC (`ZRoutedRpc`) | **33 P1 methods code-admitted; aligned physical candidate accepted on AM4** | One source-aligned mod/Gateway contract admits seven harness methods plus 29 P1 instance and four P1 global methods by exact name/hash, target shape, size, and extractor-pinned byte layout; unadmitted outbound routes enter the ledger and poison blocks them | Not every admitted P1 method was invoked by the composition. Four `[VERIFY]` items, P2/P3 classification, separate vehicle/mount gates, containers/stations, AI/creatures, fallback deletion, and P7 remain | **Verified:** 117/117 focused mod tests and 615/615 repository tests passed; `native-20260802-c10a-r4` completed all 49 physical actions with client/server native totals and poison trips zero on the exact paired release |
 | Direct peer/control RPC | **Partial; one C2a pulse swapped on AM4** | One selected post-join direct pulse crosses C1's reliable lane and dispatches on Unity `Update` | Error, player/global/admin lists, reference position, disconnect, and every other `ZRpc` control class | **Verified:** `native-20260730-c2a-final` delivered exactly one typed pulse per client; both withheld copies became stale; native tripwires were registered; all 107 selected server-native attempts were suppressed before `ZRpc.Invoke`; zero native copies arrived |
 | Player motion | **Selected boundary swapped on AM4; prior observe-only build remains on P7** | Authenticated numbered position/rotation/velocity frames use UDP with binary-WebSocket fallback; reliable hard resync uses C1. The logical remote player applies them while selected native transform and position writers are suppressed | General identity/prefab breadth and P7 promotion remain | **Verified:** C6 proved both directions, bounded loss/resync, and fresh-process resume; C7 removed the native join dependency |
 | ZDO ownership transfer and pickup action | **Partial; selected C4 boundary swapped on AM4** | Server-originated leases bind run/world/ZDO/logical holder/epoch/expiry; Gateway validates actions; the dedicated server performs the authoritative destroy and returns inventory through Lumberjacks | General-prefab ownership/action admission remains; the cutover is gated and P7 still runs the prior path | **Verified:** `native-20260730-c4b-tenth` rejected reclaimed/wrong/expired leases, poisoned selected native owner/pickup/destroy paths, and credited exactly one Raspberry to each client |

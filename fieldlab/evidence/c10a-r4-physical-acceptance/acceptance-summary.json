@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "receipt_type": "c10a_paired_release_physical_acceptance",
+  "accepted_utc": "2026-08-02T15:08:28.9960282+00:00",
+  "result": "passed",
+  "run_id": "native-20260802-c10a-r4",
+  "artifact": {
+    "source_commit": "53260467e56ba0497a103d347ad2c463f83c7728",
+    "release_id": "m7-c10a-20260802-r4",
+    "mod_version": "0.5.45.0",
+    "mod_sha256": "e2e3ba8d1342ae29264adee7942e0535f23685aaf96bad8af86e80ea5f083e78",
+    "gateway_image_id": "sha256:b118e335325e53e0eb3d74f2bf40cd984ba7fd3d5377259480057c76083b6d3e",
+    "scenario_sha256": "0425220fc2d215d138f38568dfccd16ce84943a0966dded61c5c8dabbafa37ec",
+    "hash_exact_on_am4_omen_i5": true
+  },
+  "tests_before_cut": {
+    "focused_mod": "117/117",
+    "containerized_repository": "615/615",
+    "release_mod_build": "zero warnings and zero errors",
+    "gateway_image_admission": "m7-c10a-20260802-r4"
+  },
+  "physical": {
+    "manifest_actions": 49,
+    "coverage": "passed",
+    "composition": "completed",
+    "omen": {
+      "result": "joined_held_and_stopped",
+      "scenario_terminal": "scenario_complete",
+      "resume_count": 1,
+      "native_total": 0,
+      "poison_trips": 0,
+      "failed_checks": []
+    },
+    "i5": {
+      "result": "joined_held_and_stopped",
+      "scenario_terminal": "scenario_complete",
+      "resume_count": 1,
+      "native_total": 0,
+      "poison_trips": 0,
+      "failed_checks": []
+    },
+    "server": {
+      "native_total": 0,
+      "poison_trips": 0,
+      "two_distinct_logical_clients": true,
+      "selected_native_ingress_zero": true,
+      "failed_checks": []
+    },
+    "gateway_restart": {
+      "durable_objects_before": 5634,
+      "durable_objects_after": 5634,
+      "durable_replay_verified": true
+    },
+    "save_integrity": {
+      "result": "passed",
+      "zdos_before": 9155593,
+      "zdos_after": 9155593,
+      "portals_before": 4472,
+      "portals_after": 4472,
+      "spawned_before": 85439,
+      "spawned_after": 85439,
+      "targets_before": 20255,
+      "targets_after": 20255,
+      "locations_before": 18004,
+      "locations_after": 18004,
+      "failed_checks": []
+    }
+  },
+  "cleanup": {
+    "client_processes_stopped": true,
+    "runtime_controls_disarmed": true,
+    "residue_matched": 0,
+    "residue_destroyed": 0,
+    "gateway_remained_exact_r4": true,
+    "am4_remained_exact_r4": true,
+    "p7_changed": false
+  },
+  "verified": [
+    "complete 49-action two-client physical composition",
+    "native poison armed with zero native use and zero trips on OMEN, i5, and AM4",
+    "forced zone-snapshot resume completed on both clients",
+    "Gateway restart replay retained the durable object bank",
+    "clean disconnect and fresh-process rejoin completed on both clients",
+    "AM4 save fingerprint remained structurally exact",
+    "all runtime controls and client processes were clean after the run"
+  ],
+  "unverified": [
+    "RPC_SetConnection, RPC_TeleportPlayer, UseStamina, and vehicle-control verification items",
+    "vehicle, mount, container/station, and AI/creature runtime-family gates",
+    "subjective C9 motion-quality verdict",
+    "P7 promotion, fallback deletion, and final post-deletion release"
+  ]
+}
