@@ -35,7 +35,7 @@ replacement architecture, and it resolves the root `DECISIONS-PENDING.md` entry
 | `SpawnObject` (routed) | deferred (admin/cheat) | **needs-lane P2** | Registered by `ZNetScene.Awake` — core scene machinery, not a console path. |
 | `RPC_TeleportPlayer` (routed) | needs-lane P1 | **verified deferred-with-poison-guard** | The only pinned outbound caller is Terminal's cheat-only, admin-only, non-network `recall` command. Portal travel rides `RPC_TeleportTo` (instance), and both r4 physical clients completed two-way traversal under poison without invoking this method. |
 | `UseStamina` (instance) | needs-lane P1 | **needs-lane P3 [VERIFY]** | Registered by `Player.Awake`; stamina spend is normally owner-local. The remote-invoke paths are rare. |
-| `RequestControl` / `ReleaseControl` / `RequestRespons` (instance) | superseded by ownership-lease | **needs-lane P2 via ownership-lease [VERIFY]** | Registered by `Sadle.Awake` + `ShipControlls.Awake`. The lease lane is the right home, but it is proven on `Pickable` only — vehicle-control leases are design-compatible, unbuilt work, not superseded. |
+| `RequestControl` / `ReleaseControl` / `RequestRespons` (instance) | superseded by ownership-lease | **verified split: needs typed ship-control and saddle-control lanes** | Fresh extractor reproduction confirms all three hashes are registered by both `Sadle.Awake` and `ShipControlls.Awake`, but source proves incompatible semantics: ships separate the profile-identity control token from simulation ownership, while saddles use session identity and transfer ownership in the grant. A method-name contract or generic C4 pickup-lease extension is invalid for one registrant. The methods remain unadmitted and poison-blocked until their separate physical family gates. |
 | `RPC_RequestOwn` (instance) | superseded | superseded (kept) | This is the exact mechanism the C4 lease lane replaced and poisoned (`ItemDrop.RequestOwn`); the other registrants (`ArmorStand`, `ItemStand`, `Vagon`) ride the same replaced dance. |
 
 ### C10a verification update — 2026-08-02
@@ -59,6 +59,17 @@ or poison trips. Keep the admin method unadmitted until it has an authenticated
 Lumberjacks operator-command design. The focused negative admission test preserves that
 fail-closed boundary. Retained receipt:
 `fieldlab/evidence/c10a-rpc-teleportplayer-verification/verification-summary.json`.
+
+`RequestControl(Int64)`, `ReleaseControl(Int64)`, and
+`RequestRespons(Boolean)` are **verified as a registrant-dependent semantic
+collision**, not one ownership-lease row. A fresh extractor run reproduced both
+`Sadle.Awake` and `ShipControlls.Awake` registrations for each method and the tracked
+120-method instance inventory exactly. Ship control does not transfer ZDO ownership and
+uses persistent profile identity; saddle control transfers ownership and uses session/ZDO
+identity. The generic admission contract therefore deliberately rejects all three names.
+The vehicle and mount gates must implement separate typed contracts and retain separate
+physical receipts. Retained source receipt:
+`fieldlab/evidence/c10a-vehicle-control-verification/verification-summary.json`.
 
 ## Summary counts (post-review)
 
@@ -158,7 +169,7 @@ respective shapes.
   globals `ChatMessage`, `ShowMessage`, `SleepStart`, and `SleepStop`. All 33 must
   be admitted + contract-tested before native fallback deletion; P2/P3 may ship
   behind the poison tripwire with the deferred bucket documented in the C10 gate.
-- Nothing here reopens C0–C8 architecture: every needs-lane row is an
-  allow-list + payload-contract admission on proven lanes. The two remaining `[VERIFY]`
-  flags and the four component-family gates are the C9/C10-adjacent
-  verification work.
+- Most needs-lane rows are allow-list + payload-contract admissions on proven lanes.
+  Vehicle control is the verified exception: one hash has registrant-dependent identity
+  and ownership semantics, so ship and saddle require separate typed contracts. The four
+  component-family gates are the remaining C9/C10-adjacent verification work.

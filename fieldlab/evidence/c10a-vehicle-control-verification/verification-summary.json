@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "receipt_type": "c10a_vehicle_control_contract_verification",
+  "closed_utc": "2026-08-02T16:46:37.3307459Z",
+  "result": "passed",
+  "scope": "source_classification_only",
+  "source": {
+    "assembly_sha256": "3b26c8512778f6e0664b5af2a26f3c30993a00f584c1e76d9123a742b67e2004",
+    "extractor_project": "tools/synthetic-baseline-extractor",
+    "extractor_inventory": "tools/synthetic-baseline-extractor/synthetic_baseline_v2.json",
+    "fresh_counts": {
+      "routed": 19,
+      "direct": 21,
+      "instance": 120,
+      "components": 122,
+      "unresolved": 0
+    },
+    "tracked_instance_inventory_match": true
+  },
+  "methods": [
+    {
+      "name": "RequestControl",
+      "stable_hash": 471718700,
+      "payload_signature": ["Int64"],
+      "registrations": ["Sadle.Awake", "ShipControlls.Awake"]
+    },
+    {
+      "name": "ReleaseControl",
+      "stable_hash": -150922972,
+      "payload_signature": ["Int64"],
+      "registrations": ["Sadle.Awake", "ShipControlls.Awake"]
+    },
+    {
+      "name": "RequestRespons",
+      "stable_hash": -78027053,
+      "payload_signature": ["Boolean"],
+      "registrations": ["Sadle.Awake", "ShipControlls.Awake"]
+    }
+  ],
+  "classification": {
+    "previous": "one P2 vehicle-control row via the C4 ownership lease, verify pending",
+    "verified": "registrant-dependent semantic collision; split typed contracts required",
+    "ship": "control identity and simulation ownership remain separate",
+    "saddle": "control grant and simulation ownership transfer are fused",
+    "generic_routed_admission": false,
+    "generic_pickup_lease_reuse": false,
+    "fallback_policy": "unadmitted send remains ledgered and poison-blocked"
+  },
+  "guard": {
+    "test": "VehicleControlCollision_RequiresTypedShipAndSaddleContracts",
+    "expected": "extractor retains both registrants and exact payloads; TryGet, AllowsEnvelope, and AllowsRoutedEnvelope reject all three generic methods"
+  },
+  "verified": [
+    "repository extractor builds on the installed .NET 8 SDK",
+    "fresh extraction reproduces the tracked 120-method instance inventory",
+    "all three names collide across ShipControlls and Sadle registrations",
+    "ship and saddle have incompatible control and ownership semantics",
+    "a method-name-only generic admission is prohibited by regression test"
+  ],
+  "remaining": [
+    "typed ship-control implementation and physical vehicle receipt",
+    "typed saddle-control and ownership implementation and physical mount receipt",
+    "vehicle passenger attachment and world-space AoI proof"
+  ]
+}
