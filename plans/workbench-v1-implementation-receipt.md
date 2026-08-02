@@ -1,6 +1,6 @@
 # Workbench v1 implementation receipt
 
-Date: 2026-08-01
+Date: 2026-08-02
 Strategy: [Saga WB-1](workbench-v1-saga-strategy.md)
 Owner: Derek
 
@@ -18,8 +18,8 @@ player-active transport-capture checks are explicitly still open.
 
 1. M5 is sealed. Do not rerun its physical scenario unless a future regression
    or failed observation supplies a new reason.
-2. The read-only Operate check is closed by
-   `job-20260802-013242046-49017a94`. Candidate package
+2. The read-only Operate check is closed on the current reversible-update image by
+   `job-20260802-015026195-e3676b38`. Candidate package
    `m32-workbench-20260802-r1` is a 30/30 exact byte match for the current OMEN
    Valheim payload, with zero missing, different, or unsafe entries. Follow-on
    story WB-S3.20 now contains only the separately approved player-impacting
@@ -33,6 +33,12 @@ player-active transport-capture checks are explicitly still open.
 4. No engineering defect discovered by the rendered window remains open: native
    character binding, lease renewal, the client-only evidence boundary, and
    Windows child exit-code propagation are fixed and regression-covered.
+5. The pre-live rollback audit found and closed a stop-ship defect before any
+   player file was changed. Install now preflights the complete archive, rejects
+   unsafe or duplicate targets, serializes update operations, applies files
+   atomically, restores bytes on apply/state failure, removes candidate-created
+   files on rollback, and restores the prior installed-release identity. Eleven
+   isolated Companion tests cover the resulting contract.
 
 ## Milestone status
 
@@ -41,7 +47,7 @@ player-active transport-capture checks are explicitly still open.
 | M0 baseline | passed | Claimed installation `wb-4285b4fd66f442e598886b861ed1bd44` and the retained companion-data volume are proven. Final machine-acceptance HEAD `817ee8b2ff6dc30105dd44714d7709b53ecc2681` produced identity-matched Companion and Dev MCP images with `source_dirty=false`; the stale `ComfyGatewayBoot` task remains disabled and HEARTH remains independent. |
 | M1 kernel | passed | Lumberjacks/tools/companion/Test-WorkbenchApi.ps1 passed browser token, target/profile rejection, jobs, events, receipts, runner auth, and heartbeat checks. |
 | M2 product shell | passed | /, /workbench, and legacy /companion return 200; Workbench V1 shell, Standard/Advanced presentation, claim flow, live topology, job cards, receipt links, and observation form are present. |
-| M3 local slices | partial — player-impacting Operate gate remains | Containerized net48 mod build passed with read-only Valheim mount, no host SDK, no plugin copy; support export passed the existing privacy scanner; safe Compose recreate preserved installation ID/claim/volume. The original `operate.mod.check` failed closed while Gateway was unavailable; clean Lab job `job-20260802-012104565-fc2e52f8` then passed against the local hash-verified release pointer. |
+| M3 local slices | partial — player-impacting Operate gate remains | Containerized net48 mod build passed with read-only Valheim mount, no host SDK, no plugin copy; support export passed the existing privacy scanner; safe Compose recreate preserved installation ID/claim/volume. Current clean Lab job `job-20260802-015026195-e3676b38` passed against the local hash-verified m32 pointer after reversible install/rollback hardening. The live mutation drill remains separately operator-gated. |
 | M4 distribution boundary | passed | Compose profile checks prove default/Production exclude Dev MCP and the SDK runner; Dev/Lab publish the identity-attested Baseline MCP on loopback `8721`; no Docker socket exists. The mod side channel is default-off, loopback-configured, and cannot be UI-enabled without Dev/Lab opt-in. The stale logon task is disabled and host `8720` is free. |
 | M5 rendered acceptance | passed | Run `workbench-20260802-003128-116adca1` completed on real OMEN and i5 clients against AM4. Derek watched live and recorded `pass / followed / smooth`; the sealed job receipt is `passed` with `human_observation_recorded`. |
 | M6 closeout | passed | Final receipt and handoff are current. The remaining player-impacting Operate work and unfamiliar-user/mobile review are classified above; no rendered-window defect remains unclassified. |
@@ -69,6 +75,10 @@ player-active transport-capture checks are explicitly still open.
   Compose contract: immutable, hash-verified Lab release publication in the
   persistent Gateway volume, with no GCP call or Valheim write. Lab selects that
   configured local Gateway by default and the topology distinguishes it from P7.
+- Lumberjacks/src/Game.Companion/Program.cs and
+  Lumberjacks/tests/Game.Companion.Tests: fail-closed modpack preflight,
+  serialized reversible apply/rollback semantics, prior-state restoration, and
+  isolated filesystem/Gateway fixtures that never touch the live Valheim tree.
 - Source/package/i5 launchers: explicit Explore/Admin/Dev/Lab/Production
   profile selection, local runner-token generation outside the checkout,
   profile convergence, and hidden host-runner startup.
@@ -86,7 +96,7 @@ player-active transport-capture checks are explicitly still open.
     powershell -NoProfile -ExecutionPolicy Bypass -File Lumberjacks/tools/companion/Test-WorkbenchRunnerOwnership.ps1 -ExpectedProfile Lab
     powershell -NoProfile -ExecutionPolicy Bypass -File Lumberjacks/tools/companion/Test-WorkbenchUiContract.ps1
     powershell -NoProfile -ExecutionPolicy Bypass -File Lumberjacks/tools/companion/Test-WorkbenchComposeProfiles.ps1
-    powershell -NoProfile -ExecutionPolicy Bypass -File tools/workbench/Test-WorkbenchMcpIdentity.ps1 -Profile Dev -McpPort 8721
+    powershell -NoProfile -ExecutionPolicy Bypass -File tools/workbench/Test-WorkbenchMcpIdentity.ps1 -Profile Lab -McpPort 8721
     $env:PYTHONPATH = 'network/mcp'
     python -m unittest discover -s network/mcp/tests
     powershell -NoProfile -ExecutionPolicy Bypass -File Lumberjacks/tools/companion/New-CompanionBootstrap.ps1 -ReleaseId <fixture>
@@ -96,6 +106,18 @@ player-active transport-capture checks are explicitly still open.
 
 Latest runtime receipts from the rebuilt image:
 
+- Current reversible-update checkpoint: clean source
+  `0526c69e7522590b21b8760cc3eb91b126749e3a`, Companion image
+  `sha256:08bc0f389f85ba825452c6d3a2b50452cbc76bb814599cc87e977a3a89acbcec`,
+  and Dev MCP image
+  `sha256:22b3c8f842d1d4ff1fabc12b38e65a5552471a876ec02025539fb8607f09aa91`.
+  API, runner ownership, UI, Compose, and authenticated Lab MCP identity checks
+  passed with `source_dirty=false`. Focused Companion tests passed 11/11 and the
+  full solution passed 604 tests. Read-only Operate job
+  `job-20260802-015026195-e3676b38` returned `mod_manifest_read` for m32, and a
+  fresh exact-match preflight again reported 30 matched, zero different, zero
+  missing, and zero unsafe entries. Valheim process count was zero; no install,
+  rollback, installed-state, GCP, or player-facing mutation occurred.
 - Current byte-audited candidate checkpoint: source
   `625c033f4b42af51e67557257e855700f0a0e0b9`, Companion image
   `sha256:f0b0b364633c43e14c1901e8effb4b9781d8f8e912981244a806ae31996c800e`,
@@ -304,10 +326,10 @@ health/log/handshake rerun passed on `8721`; the mod helper is default-off and
 loopback-configured; and the stale logon listener is retired. The clean
 checkpoint identity rerun and physical C6 machine window subsequently passed.
 
-The full Lumberjacks solution was restored and built successfully after the
-Story/Advanced topology UI change (0 errors; one pre-existing dependency-conflict
-warning in `Game.Gateway.Tests`), and its three test projects passed 589 tests
-total (126 Contracts, 250 Simulation, 213 Gateway).
+The full Lumberjacks solution was restored and tested successfully after the
+reversible-update change (0 errors; the pre-existing EF dependency-conflict
+warning remains in `Game.Gateway.Tests`). Its four test projects passed 604 tests
+total: 126 Contracts, 250 Simulation, 217 Gateway, and 11 Companion.
 
 ## M5 sealed acceptance
 
@@ -318,23 +340,22 @@ cleanup reported zero matches. The final receipt is addressable through the
 Workbench and limits its claim to
 `machine_evidence_plus_operator_observation`.
 
-## Checkpoint handoff (authorized 2026-08-01)
+## Current operator gate
 
-Before committing, review the tracked and untracked scope with:
+The reversible-update implementation is committed at `0526c69`, rebuilt into
+the clean Lab runtime, and verified without invoking either mutating endpoint.
+The next step is deliberately a player-impacting authorization boundary:
 
-    git diff --name-only
-    git ls-files --others --exclude-standard
+1. Record the zero-process precondition, current installed-release JSON, and
+   SHA-256 for all 30 admitted targets.
+2. Invoke `operate.mod.install` for the byte-identical m32 candidate and retain
+   the Workbench job/events/receipt.
+3. Verify all 30 hashes remain identical and the new transaction record names
+   the legacy m31 record as `previous`.
+4. Invoke `operate.mod.rollback`; verify all hashes and the exact legacy m31
+   installed-release identity are restored, with no temporary-file residue.
+5. Only after that drill passes, open the separately observable player-active
+   transport-capture window.
 
-Then stage only the reviewed WB-1 implementation, decision, plan, test, and
-documentation files; run the required A7 Lumberjacks roadmap note/check in the
-same implementation commit because this change touches `Lumberjacks/` and
-`network/`. Leave preview-stamped `workbench.html` unstaged until the catalog
-inputs are committed:
-
-    cd Lumberjacks
-    node scripts/roadmap.mjs note --milestone A7 --kind implementation --summary "Ship the local Workbench v1 control plane" --impact "Adds the owned Companion UI, profile-gated Dev MCP, bounded runner, receipts, recovery, and verification surfaces." --verification "Focused Workbench, MCP, mod, privacy, and full solution suites pass." --evidence "plans/workbench-v1-implementation-receipt.md; plans/workbench-v1-verification-matrix.md"
-    node scripts/roadmap.mjs check --staged
-
-After the implementation commit, run `npm run workbench:render`, verify it, and
-commit only the production-stamped Workbench HTML. Then rebuild and rerun the
-clean-source/image gate before rendered C6. No push or force-push is implied.
+No install, rollback, game launch, player-active capture, push, or force-push is
+implied by the completed engineering checkpoint.

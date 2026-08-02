@@ -1,9 +1,10 @@
 # Saga WB-1 — Ownable Docker Workbench v1
 
 Status: implementation plus rendered machine-and-human acceptance completed
-2026-08-01. M5 and M6 are closed, and the read-only Operate check has a clean
-local success receipt; WB-1 remains a candidate pending the declared unfamiliar-
-user usability and player-impacting Operate gates. Replanned after the
+2026-08-02. M5 and M6 are closed, and the read-only Operate check has a clean
+local success receipt. The install/rollback implementation is now reversibility-
+tested after a pre-live stop-ship audit; WB-1 remains a candidate pending the
+declared unfamiliar-user usability and player-impacting Operate gates. Replanned after the
 [MCP endpoint provenance audit](../docs/audit/2026-08-01-mcp-endpoint-provenance-audit.md).
 Owner: Derek. This document is the decision-complete execution strategy for the
 first coherent Workbench product slice.
@@ -311,12 +312,16 @@ M2 acceptance:
 
 - **Story WB-S3.13:** Adapt existing check/install/rollback and
   transport-capture endpoints behind capability/job descriptors.
-- **Story WB-S3.14:** Keep game-closed confirmation, hash verification, backup,
-  and rollback behavior intact.
+- **Story WB-S3.14 (implemented and regression-covered):** Keep game-closed
+  confirmation and hash verification; preflight the complete archive before
+  mutation; serialize update operations; atomically replace each file; restore
+  applied bytes when apply/state recording fails; and make rollback remove
+  candidate-created files while restoring the prior release record. Legacy
+  installed records remain readable.
 - **Story WB-S3.15:** Expose old endpoints as compatibility adapters over the
   same underlying handlers rather than duplicate implementations.
 - **Story WB-S3.20 (follow-on gate):** The admitted read-only check is complete:
-  clean Lab job `job-20260802-013242046-49017a94` passed against local candidate
+  clean Lab job `job-20260802-015026195-e3676b38` passed against local candidate
   `m32-workbench-20260802-r1`. Its 30 payload entries are an exact byte match for
   current OMEN, with no missing or unsafe entries. In a separately approved
   player-impacting window, verify install/rollback and player-active transport
@@ -600,3 +605,9 @@ WB-1 is complete only when all of the following are true:
 8. All verification suites pass, endpoint-sensitive historical evidence is
    quarantined or rerun, the roadmap is regenerated where required, and remaining
    work is explicitly classified.
+9. An unfamiliar operator completes the no-coaching Standard-mode desktop and
+   mobile protocol, with comprehension and recovery-path findings recorded.
+10. In an explicitly approved player-impacting window, the admitted exact-match
+    package completes an install-to-rollback drill with before/after hashes and
+    installed-release identity restored, followed by the player-active transport
+    capture receipt.
