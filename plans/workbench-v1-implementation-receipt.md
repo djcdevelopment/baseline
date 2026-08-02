@@ -8,19 +8,21 @@ Detailed requirement evidence: [verification matrix](workbench-v1-verification-m
 Checkpoint staging scope: [workbench-v1-checkpoint-scope.md](workbench-v1-checkpoint-scope.md).
 
 This is the execution handoff for the current implementation session. The
-clean-checkpoint MCP/Companion attribution and rendered AM4 + OMEN + i5 machine
-and human acceptance have passed. WB-1 remains a candidate, rather than an
-unqualified completion claim, because the Saga's unfamiliar-user usability gate
-and player-impacting Operate success-path checks are explicitly still open.
+clean-checkpoint MCP/Companion attribution, rendered AM4 + OMEN + i5 machine and
+human acceptance, and local hash-verified Operate check have passed. WB-1 remains
+a candidate, rather than an unqualified completion claim, because the Saga's
+unfamiliar-user usability gate and player-impacting install/rollback plus
+player-active transport-capture checks are explicitly still open.
 
 ## Closeout disposition
 
 1. M5 is sealed. Do not rerun its physical scenario unless a future regression
    or failed observation supplies a new reason.
-2. The Operate success path is follow-on story WB-S3.20: in a separately
-   approved player-impacting window, verify admitted check/install/rollback and
-   transport capture against an available release Gateway. The existing
-   unavailable-Gateway receipt remains valid fail-closed evidence.
+2. The read-only Operate check is closed by
+   `job-20260802-012104565-fc2e52f8`. Follow-on story WB-S3.20 now contains only
+   the separately approved player-impacting install/rollback and player-active
+   transport-capture receipts. The earlier unavailable-Gateway receipt remains
+   valid fail-closed evidence.
 3. Community usability is follow-on story WB-S2.13: have an unfamiliar operator
    use the Standard live map and mobile layout, then record comprehension and
    recovery-path findings. Structural UI tests are not a substitute for that
@@ -36,10 +38,10 @@ and player-impacting Operate success-path checks are explicitly still open.
 | M0 baseline | passed | Claimed installation `wb-4285b4fd66f442e598886b861ed1bd44` and the retained companion-data volume are proven. Final machine-acceptance HEAD `817ee8b2ff6dc30105dd44714d7709b53ecc2681` produced identity-matched Companion and Dev MCP images with `source_dirty=false`; the stale `ComfyGatewayBoot` task remains disabled and HEARTH remains independent. |
 | M1 kernel | passed | Lumberjacks/tools/companion/Test-WorkbenchApi.ps1 passed browser token, target/profile rejection, jobs, events, receipts, runner auth, and heartbeat checks. |
 | M2 product shell | passed | /, /workbench, and legacy /companion return 200; Workbench V1 shell, Standard/Advanced presentation, claim flow, live topology, job cards, receipt links, and observation form are present. |
-| M3 local slices | partial — Operate dependency remains open | Containerized net48 mod build passed with read-only Valheim mount, no host SDK, no plugin copy; support export passed the existing privacy scanner; safe Compose recreate preserved installation ID/claim/volume. `operate.mod.check` correctly failed closed while Gateway was unavailable. |
+| M3 local slices | partial — player-impacting Operate gate remains | Containerized net48 mod build passed with read-only Valheim mount, no host SDK, no plugin copy; support export passed the existing privacy scanner; safe Compose recreate preserved installation ID/claim/volume. The original `operate.mod.check` failed closed while Gateway was unavailable; clean Lab job `job-20260802-012104565-fc2e52f8` then passed against the local hash-verified release pointer. |
 | M4 distribution boundary | passed | Compose profile checks prove default/Production exclude Dev MCP and the SDK runner; Dev/Lab publish the identity-attested Baseline MCP on loopback `8721`; no Docker socket exists. The mod side channel is default-off, loopback-configured, and cannot be UI-enabled without Dev/Lab opt-in. The stale logon task is disabled and host `8720` is free. |
 | M5 rendered acceptance | passed | Run `workbench-20260802-003128-116adca1` completed on real OMEN and i5 clients against AM4. Derek watched live and recorded `pass / followed / smooth`; the sealed job receipt is `passed` with `human_observation_recorded`. |
-| M6 closeout | passed | Final receipt and handoff are current. The Operate success path and unfamiliar-user/mobile review are classified above; no rendered-window defect remains unclassified. |
+| M6 closeout | passed | Final receipt and handoff are current. The remaining player-impacting Operate work and unfamiliar-user/mobile review are classified above; no rendered-window defect remains unclassified. |
 
 ## Implemented surfaces
 
@@ -60,6 +62,10 @@ and player-impacting Operate success-path checks are explicitly still open.
   for the same capability/job/receipt API used by the browser.
 - Lumberjacks/tools/companion/docker-compose.yml: Companion base plus
   profile-gated SDK tool-runner and loopback Dev MCP; no Docker socket.
+- Lumberjacks/tools/modpack/Publish-LocalModpack.ps1 and the local Gateway
+  Compose contract: immutable, hash-verified Lab release publication in the
+  persistent Gateway volume, with no GCP call or Valheim write. Lab selects that
+  configured local Gateway by default and the topology distinguishes it from P7.
 - Source/package/i5 launchers: explicit Explore/Admin/Dev/Lab/Production
   profile selection, local runner-token generation outside the checkout,
   profile convergence, and hidden host-runner startup.
@@ -87,6 +93,19 @@ and player-impacting Operate success-path checks are explicitly still open.
 
 Latest runtime receipts from the rebuilt image:
 
+- Current clean Lab Operate checkpoint: source
+  `f4d40499c22c413720474c166dd00ecb3deb02a4`, Companion image
+  `sha256:d85c078fdfcad8739f62317f2f8956af1d45b57441ab6c0df55f87fda947569f`,
+  and Dev MCP image
+  `sha256:1a81b41c0ef272af71e1857bcfb864edb9c4ba776e948dd60f466987fd71a133`.
+  The clean MCP identity gate passed on loopback `8721`. The topology reported
+  `Local Gateway / target=local / ready` and separately `P7 / excluded`.
+- `job-20260802-012104565-fc2e52f8` — read-only `operate.mod.check`
+  passed with `mod_manifest_read` against local immutable release
+  `m30-rolecontrol-20260723-r1`, package SHA-256
+  `d1bfcd6f440fe9697cf495eac16923bcc9272225039b2ace69a23d1d302cbb5a`.
+  The publisher changed only the persistent local release feed; no Valheim file,
+  install state, rollback state, or GCP resource was changed.
 - Final clean Lab checkpoint: source
   `817ee8b2ff6dc30105dd44714d7709b53ecc2681`, Companion image
   `sha256:26e47f966f0e5473ddd31f9fc7f3dd92264ee2d32caf12cb18fad2282d292f88`,
@@ -201,8 +220,9 @@ bootstrap, and i5 launchers instead of relying only on inherited environment
 state. Recreate verification logs the selected profile and allowed/running
 container names before failing closed on an unexpected service.
 The topology now includes a Gateway node backed by a bounded, cached heartbeat
-probe; the latest projection reports it as `offline` rather than
-silently implying that the Operate update lane is ready.
+probe and classifies its configured origin as local, P7, or remote. The current
+Lab projection reports `Local Gateway / ready` and keeps the separate P7 node
+excluded, rather than labeling any configured Gateway as P7.
 Compose now tags the built Companion image with the same identity exposed in
 the projection, so the rendered preflight can inspect the exact image rather
 than a decorative label.
