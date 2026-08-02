@@ -1,10 +1,11 @@
 # Saga WB-1 — Ownable Docker Workbench v1
 
 Status: implementation plus rendered machine-and-human acceptance completed
-2026-08-02. M5 and M6 are closed, and the read-only Operate check has a clean
-local success receipt. The install/rollback implementation is now reversibility-
-tested and live-drilled; WB-1 remains a candidate pending the declared unfamiliar-
-user usability gate and player-active transport capture. Replanned after the
+2026-08-02. M5 and M6 are closed, and the read-only Operate check, reversible
+install/rollback drill, and peer-bearing player-active capture have clean local
+receipts. WB-1 remains a candidate pending the declared unfamiliar-user usability
+gate. The player-active capture also identified a native-motion-only gap for a
+separate development loop. Replanned after the
 [MCP endpoint provenance audit](../docs/audit/2026-08-01-mcp-endpoint-provenance-audit.md).
 Owner: Derek. This document is the decision-complete execution strategy for the
 first coherent Workbench product slice.
@@ -327,8 +328,12 @@ M2 acceptance:
   job `job-20260802-015909355-13073d0c` and rollback job
   `job-20260802-015911118-89a57d29` proved exact state/byte restoration. A later
   hands-on capture returned `no_peer_window` and is retained as negative evidence,
-  not accepted as the player-active receipt. Only that separately approved
-  peer-bearing capture remains open.
+  not accepted as the player-active receipt. The separately approved peer-bearing
+  capture then passed as Workbench job `job-20260802-025242918-32e66e98`, with
+  `max_peers=2`, three samples, zero bad samples, and verdict
+  `native_motion_only`. This closes the player-active transport gate; the
+  capture's disconnected motion WS/UDP state is a follow-on implementation
+  finding, not a peer-capture failure.
 
 #### Feature WB-F3.5 — Recover vertical slice
 
@@ -613,4 +618,5 @@ WB-1 is complete only when all of the following are true:
 10. The admitted package completes an explicitly approved install-to-rollback
     drill with before/after hashes and installed-release identity restored, then
     a separately approved player-active window yields a peer-bearing transport
-    capture receipt. The first half passed; the player-active half remains open.
+    capture receipt. Both halves passed; the capture's native-motion-only result
+    is classified as a separate motion-lane follow-on.
