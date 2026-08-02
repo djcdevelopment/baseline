@@ -4,10 +4,9 @@ Status: implementation plus rendered machine-and-human acceptance completed
 2026-08-02. M5 and M6 are closed, and the read-only Operate check, reversible
 install/rollback drill, and peer-bearing player-active capture have clean local
 receipts. WB-1 remains a candidate pending the declared unfamiliar-user usability
-gate, tagged `TODO — Derek soon` rather than an active implementation blocker,
-and one separately authorized physical validation of the corrected C6 gap order.
-The player-active capture also identified a native-motion-only gap for a
-separate development loop. The follow-on audit found that this was
+gate, tagged `TODO — Derek soon` rather than an active implementation blocker.
+The player-active capture also identified a native-motion-only gap that the
+subsequent PD-7 development loop has now closed. The follow-on audit found that it was
 reproducible from two configuration/provenance facts: both rendered clients
 were still pointed at the retired public Gateway endpoint while the local Lab
 Gateway was healthy, and the active Valheim server container still carried the
@@ -22,8 +21,12 @@ watchdog-bearing diagnostic C6 then disproved the suspected persistent OMEN
 stall: both ordinary motion directions passed and OMEN completed the gap drive.
 The run failed because i5 applied the correlated reliable resync before its
 `observe_gap` probe captured baseline counters. The existing C8 observer-alignment
-step is now backported to C6 and guarded before remote mutation; one new physical
-validation of that specific fix remains, not a retry loop.
+step is now backported to C6 and guarded before remote mutation. The separately
+authorized validation job `job-20260802-072520719-74b07483`, run
+`workbench-20260802-072523-74b07483`, completed all 24 actions on both physical
+clients. i5 began gap observation 4.92 seconds before OMEN began gap drive and
+recorded one held gap plus one applied reliable resync. That closes the C6
+ordering follow-up without changing the already sealed human acceptance.
 Owner: Derek. This document is the decision-complete execution strategy for the
 first coherent Workbench product slice.
 Product rationale remains canonical in [PD-5](../docs/decisions/pd-5-local-workbench-ownership-appliance.md),
@@ -486,14 +489,19 @@ M3 acceptance:
   After the full migration, the same strict verifier passes with
   `state_root_disposition=baseline_migrated` and no bridge override in the
   active Compose labels.
-- **Story WB-S3.31 (alignment implemented; physical validation pending):** The
+- **Story WB-S3.31 (implemented and physically validated):** The
   C6 manifest now places a bounded four-second OMEN observer-alignment action
   immediately before gap drive, reusing the already accepted C8 ordering
   margin. `Test-C6ScenarioCoverage.ps1` verifies the action, bound, order, and
   shared correlation and is invoked before i5 preflight or any remote state is
-  armed. The generated 24-action fixture passes. The stop rule forbids using
-  this implementation change as authorization for a second physical C6 in the
-  same diagnostic cycle.
+  armed. The generated 24-action fixture passes. After separate authorization,
+  job `job-20260802-072520719-74b07483` / run
+  `workbench-20260802-072523-74b07483` reached
+  `waiting_human/rendered_role_reversal_complete`: both clients emitted
+  `scenario_complete`, i5's observe-gap window opened at `07:27:12.752Z`, OMEN
+  began gap drive at `07:27:17.675Z`, and i5 completed with
+  `holds=1 gaps=1 resync_applied=1`. No human observation is inferred from this
+  machine validation.
 
 M3.6 acceptance:
 
@@ -778,5 +786,6 @@ WB-1 is complete only when all of the following are true:
 10. The admitted package completes an explicitly approved install-to-rollback
     drill with before/after hashes and installed-release identity restored, then
     a separately approved player-active window yields a peer-bearing transport
-    capture receipt. Both halves passed; the capture's native-motion-only result
-    is classified as a separate motion-lane follow-on.
+    capture receipt. Both halves passed; PD-7 migration, explicit local routes,
+    and corrected-order physical C6 subsequently closed the capture's
+    native-motion-only follow-on.

@@ -203,15 +203,27 @@ resync counters because the expected event had already happened. The C6
 manifest now reuses C8's bounded four-second OMEN observer-alignment action,
 and `Test-C6ScenarioCoverage.ps1` fails before i5 preflight or remote mutation
 unless that action immediately precedes gap drive and shares the observer's
-correlation. Its generated 24-action fixture passes. Per the one-run stop rule,
-physical validation is a separately authorized follow-up; it is not part of
-this diagnostic cycle.
+correlation. Its generated 24-action fixture passes. The one-run stop rule ended
+that diagnostic cycle without a retry.
+
+After separate authorization, Workbench job
+`job-20260802-072520719-74b07483`, run
+`workbench-20260802-072523-74b07483`, physically validated the corrected order
+from clean image-matched revision
+`6a594cf4e4a34f4f70390f73442bd4ef7b92883b`. i5 began observe-gap at
+`07:27:12.752Z`; OMEN completed the four-second alignment and began drive-gap at
+`07:27:17.675Z`. OMEN withheld exactly 20 frames and accepted reliable resync;
+i5 completed with `holds=1 gaps=1 resync_applied=1`. Both clients then emitted
+`scenario_complete`, resumed once, stopped, and restored their original config
+hashes. The Workbench job remains `waiting_human` because no new human
+observation was supplied; its machine result is
+`rendered_role_reversal_complete`.
 
 Failure cleanup passed: both exact Admin-at-rest config hashes were restored,
 server motion was disarmed, residue cleanup matched zero objects, both clients
 stopped, and a fresh local heartbeat returned to zero peers/players. The
-remaining work is therefore one physical validation of the corrected scenario
-ordering, not a runtime-source decision or another forensic retry.
+corrected scenario-ordering gate and PD-7 motion follow-up are now complete;
+this is not a runtime-source decision or another forensic retry.
 
 ## Acceptance
 

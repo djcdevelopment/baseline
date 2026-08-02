@@ -13,10 +13,9 @@ clean-checkpoint MCP/Companion attribution, rendered AM4 + OMEN + i5 machine and
 human acceptance, local hash-verified Operate check, reversible install/rollback
 drill, and peer-bearing player-active capture have passed. WB-1 remains a
 candidate, rather than an unqualified completion claim, because the Saga's
-unfamiliar-user usability gate and one physical validation of the corrected
-C6 gap ordering are explicitly still open. The human gate is tagged
-`TODO — Derek soon`, not an implementation task. The capture also
-records a separate native-motion-only finding for the Lumberjacks motion lane.
+unfamiliar-user usability gate is explicitly still open. It is tagged
+`TODO — Derek soon`, not an implementation task. The capture's historical
+native-motion-only finding led to the now-complete PD-7 Lumberjacks motion loop.
 The approved PD-7 bridge first recreated the Lab server from Baseline Compose;
 the subsequent full state-root migration now places the active server config
 and data under Baseline as well. Both rendered installs have explicit local-Lab
@@ -98,8 +97,24 @@ failed at zero gap/resync deltas. This rejects the prior persistent OMEN-stall
 hypothesis for the diagnostic run and identifies a manifest-ordering defect.
 The existing C8 four-second observer alignment is now backported to C6, and a
 new coverage gate rejects a missing/misordered alignment before remote state is
-changed. The one-run stop rule leaves physical validation for a separately
+changed. The one-run stop rule left physical validation for a separately
 authorized follow-up.
+
+That follow-up is now complete. Workbench job
+`job-20260802-072520719-74b07483`, run
+`workbench-20260802-072523-74b07483`, used clean image-matched revision
+`6a594cf4e4a34f4f70390f73442bd4ef7b92883b` and the same admitted DLL SHA-256.
+The coverage receipt passed all eight checks across 24 actions. i5 began
+`i5-c6-observe-gap` at `07:27:12.752Z`; after the four-second sender alignment,
+OMEN began `omen-c6-drive-gap` at `07:27:17.675Z`. OMEN completed with exactly
+20 withheld frames and an accepted reliable resync; i5 completed with
+`holds=1 gaps=1 resync_applied=1`. Both clients then emitted
+`scenario_complete`, resumed once, stopped, and restored their original config
+hashes. Server motion was disarmed, residue cleanup matched zero objects, and
+post-run quiescence passed with zero peers/players. The job correctly remains
+`waiting_human` because no new operator observation was supplied; its machine
+result is `rendered_role_reversal_complete` and is sufficient to close the
+specific ordering-validation gate.
 
 ## Closeout disposition
 
@@ -120,7 +135,7 @@ authorized follow-up.
    recovery-path findings. The in-product first-visit path and
    [no-coaching protocol](workbench-v1-newcomer-usability-protocol.md) are ready;
    structural UI tests are not a substitute for that person.
-4. The remaining engineering slice is now explicit in
+4. The completed engineering follow-up is recorded in
    [PD-7](../docs/decisions/pd-7-lab-runtime-provenance-and-session-boundary.md).
    Both rendered clients were still configured for the retired public Gateway
    `http://8.231.129.249:42317`, while the local Lab Gateway was healthy on
@@ -130,12 +145,13 @@ authorized follow-up.
    under Baseline with exact inventory and world-hash verification. The clean
    watchdog run closed the main-loop forensic question and exposed the narrower
    gap-observer ordering race. The manifest fix and pre-mutation coverage gate
-   are implemented; only its physical validation remains. This does not change
-   the Docker build boundary or authorize an automatic retry.
+   are implemented and the separately authorized physical validation passed.
+   This does not change the Docker build boundary.
 5. Engineering defects discovered by the rendered windows—native character
    binding, lease renewal, the client-only evidence boundary, Windows child
    exit-code propagation, i5 Gateway persistence, and C6 gap ordering—are fixed
-   and regression/contract-covered. The last item is not yet physically sealed.
+   and regression/contract-covered. The final item is now physically sealed by
+   the machine-complete C6 evidence; no additional human observation is claimed.
 6. The pre-live rollback audit found and closed a stop-ship defect before any
    player file was changed. Install now preflights the complete archive, rejects
    unsafe or duplicate targets, serializes update operations, applies files
@@ -150,10 +166,10 @@ authorized follow-up.
 | M0 baseline | passed | Claimed installation `wb-4285b4fd66f442e598886b861ed1bd44` and the retained companion-data volume are proven. Final machine-acceptance HEAD `817ee8b2ff6dc30105dd44714d7709b53ecc2681` produced identity-matched Companion and Dev MCP images with `source_dirty=false`; the stale `ComfyGatewayBoot` task remains disabled and HEARTH remains independent. |
 | M1 kernel | passed | Lumberjacks/tools/companion/Test-WorkbenchApi.ps1 passed browser token, target/profile rejection, jobs, events, receipts, runner auth, and heartbeat checks. |
 | M2 product shell | passed | /, /workbench, and legacy /companion return 200; Workbench V1 shell, Standard/Advanced presentation, claim flow, live topology, job cards, receipt links, and observation form are present. |
-| M3 local slices | passed for the current local slice | Clean watchdog build `job-20260802-063901820-44598ee8` passed with read-only Valheim mount, no host SDK, and no plugin copy; support export and reversible update paths remain passed. The clean diagnostic rejected the persistent OMEN-stall hypothesis and isolated a C6 manifest-ordering race, now fixed with pre-mutation coverage but awaiting physical validation. |
+| M3 local slices | passed for the current local slice | Clean watchdog build `job-20260802-063901820-44598ee8` passed with read-only Valheim mount, no host SDK, and no plugin copy; support export and reversible update paths remain passed. The clean diagnostic rejected the persistent OMEN-stall hypothesis and isolated a C6 manifest-ordering race. The pre-mutation coverage gate and physical validation job `job-20260802-072520719-74b07483` now pass. |
 | M4 distribution boundary | passed | Compose profile checks prove default/Production exclude Dev MCP and the SDK runner; Dev/Lab publish the identity-attested Baseline MCP on loopback `8721`; no Docker socket exists. The mod side channel is default-off, loopback-configured, and cannot be UI-enabled without Dev/Lab opt-in. The stale logon task is disabled and host `8720` is free. |
 | M5 rendered acceptance | passed | Run `workbench-20260802-003128-116adca1` completed on real OMEN and i5 clients against AM4. Derek watched live and recorded `pass / followed / smooth`; the sealed job receipt is `passed` with `human_observation_recorded`. |
-| M6 closeout | passed for the original WB-1 scope | Final receipt and handoff are current. Full PD-7 migration, route correction, watchdog admission, and one clean diagnostic C6 are receipted. A separately authorized physical check of the C6 ordering fix and unfamiliar-user/mobile review (`TODO — Derek soon`) remain open and are not hidden as passes. |
+| M6 closeout | passed for the original WB-1 scope | Final receipt and handoff are current. Full PD-7 migration, route correction, watchdog admission, clean diagnostic disposition, and corrected-order physical C6 are receipted. Only unfamiliar-user/mobile review (`TODO — Derek soon`) remains open and is not hidden as a pass. |
 
 ## Implemented surfaces
 
@@ -499,17 +515,18 @@ Workbench and limits its claim to
 The reversible install-to-rollback drill and separately approved player-active
 window are complete. The machine is in a stable, hash-recorded m32 state with a
 schema-1 rollback record; both client payloads are exact m32 and both game
-processes were stopped after capture.
+processes were stopped after the corrected-order physical C6 completed.
 
 1. Keep m32 active for the next intentional test window, or explicitly invoke
    the now-eligible schema-1 rollback if returning to m31 is desired.
-2. Treat `native_motion_only` as proof of native two-peer transport presence, not
-   as proof that the Lumberjacks motion lane is connected; investigate the
-   recorded `canonical_session_waiting`/WS-UDP gap in a separate development loop.
-   The first diagnostic evidence points to stale client Gateway routing and
-   mixed retired/Baseline Lab compose provenance; see PD-7.
+2. Retain the earlier `native_motion_only` receipt as historical diagnostic
+   evidence. PD-7 migration, explicit local routes, and corrected-order run
+   `workbench-20260802-072523-74b07483` now prove the canonical Lumberjacks
+   motion lane on both physical clients.
 3. `no_peer_window` and `incomplete_telemetry` remain failed evidence, not green
    completion.
+4. The only WB-1 acceptance item still open is the unfamiliar-person/mobile
+   no-coaching observation.
 
-No further install, rollback, game launch, push, or force-push is implied by the
-completed player-active authorization.
+No further install, rollback, game launch, or force-push is implied by the
+completed corrected-order authorization.

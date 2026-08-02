@@ -417,6 +417,41 @@ motion changed `true → false`, residue cleanup matched/destroyed zero objects,
 both clients stopped, and post-run quiescence again reported a fresh ready
 heartbeat with zero peers and players.
 
+## Corrected-order physical validation
+
+Separate authorization admitted exactly one follow-up C6: Workbench job
+`job-20260802-072520719-74b07483`, run
+`workbench-20260802-072523-74b07483`. Pre-live identity pinned clean revision
+`6a594cf4e4a34f4f70390f73442bd4ef7b92883b`, Companion image
+`sha256:b90b820d9c301e3fcd88d9e51d46a040e35f62079aa1ecb8bab1519fa2bed69c`,
+and DLL SHA-256
+`ec75ee07c2fcd651db353403c3692502f26d488bf35628d2721e4cac8a66cff9`.
+Strict provenance, zero-player quiescence, and runner/Docker/AM4/i5 topology
+were green before submission; the runner's one i5 link preflight passed.
+
+The generated 24-action manifest passed every C6 coverage check. On the
+physical clients, i5 opened `i5-c6-observe-gap` at `07:27:12.752Z`. OMEN then
+ran the bounded observer-alignment action from `07:27:13.663Z` through
+`07:27:17.666Z` and began `omen-c6-drive-gap` at `07:27:17.675Z`, 4.92 seconds
+after the observer began. OMEN completed with
+`gap_withheld_reliable_resync_accepted` and exactly 20 dropped test frames. i5
+completed at `07:27:19.683Z` with
+`gap_held_reliable_resync_applied_native_writer_zero`, including
+`holds=1 gaps=1 resync_applied=1 failures=0`.
+
+Both client scenario terminals report `all_actions_completed`; each resumed
+once and stopped. The OMEN and i5 pre-run config hashes remain respectively
+`a141231b84010b456537b2b80360c3c0128fed2753acfad76dc24310a71f1f42`
+and `fc21daabb5f2c61e89c57b84f3f04ac73b54bc6fb5d71d4144b6e9250956e945`,
+with `lab_session_config_changed=false` after stop. Server motion was disarmed,
+residue cleanup matched/destroyed zero objects, strict provenance still passed,
+and the post-run heartbeat was fresh with zero peers/players.
+
+The job reached `waiting_human` with machine reason
+`rendered_role_reversal_complete`. No human observation is inferred or
+fabricated; the prior sealed M5 human receipt remains the human acceptance.
+This run closes only the separately authorized corrected-order machine gate.
+
 ## Sources
 
 - [Workbench implementation receipt](../../plans/workbench-v1-implementation-receipt.md)
