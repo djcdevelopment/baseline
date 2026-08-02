@@ -10,7 +10,7 @@ receipt. `Passed` means the current checkout has direct evidence; `Pending` or
 | Claimed installation persists through recreate | Final-image Lab receipt `job-20260801-175033646-fa1db4d7` preserved installation `wb-4285b4fd66f442e598886b861ed1bd44`, claim, and volume | Passed |
 | Typed capabilities and deterministic eligibility | `Test-WorkbenchApi.ps1`; 11 registered capabilities; target/profile/input rejection | Passed |
 | Durable jobs, events, receipts, artifacts | API contract plus rebuilt Docker build/support receipts | Passed |
-| Runner authentication and ownership | API contract, authenticated heartbeat, leased-runner binding, fixtures `job-20260801-175140061-7806c4a3` and `job-20260801-180225299-6338efd4` returning HTTP 404 for stale runner events, and reproducible `Test-WorkbenchRunnerOwnership.ps1` | Passed |
+| Runner authentication and ownership | API contract, authenticated heartbeat, leased-runner binding, and `job-20260802-003056281-40000a1f`: stale runner HTTP 404, owning lease renewal, and exact child exit-code propagation (`0` and `7`) | Passed |
 | Browser mutation boundary | API contract rejects missing token and cross-site Origin/Sec-Fetch-Site | Passed |
 | Standard/Advanced presentation does not grant authority | Registry eligibility is server-side; UI toggle only changes presentation labels/details, with generic Story topology labels and physical names only in Advanced | Passed by design/API shape; unfamiliar-user visual usability remains manual |
 | Unified shell and compatibility routes | `Test-WorkbenchUiContract.ps1` proves `/`, `/workbench`, and `/companion` return UTF-8 HTML with no mojibake; six intent sections, responsive viewport, privacy, evidence, observation, and Gateway topology surfaces are present | Passed structurally; mobile/novice visual observation pending |
@@ -22,18 +22,16 @@ receipt. `Passed` means the current checkout has direct evidence; `Pending` or
 | Normal-gameplay Dev MCP absence on this workstation | ComfyNetworkSense defaults MCP off, accepts only an explicit loopback origin, performs no disabled-state health polling, and refuses UI activation without Dev/Lab config. After the clean rebuild, `ComfyGatewayBoot` remained disabled without deletion, host `8720` remained free, and HEARTH remained on `8710` | Passed |
 | Bootstrap distribution | Clean-checkpoint package: 22 required files, runner/privacy/boundary/identity gates present, operator-private i5 README excluded, and whole ZIP privacy scan clean | Passed |
 | Dev MCP shared surface | With `-McpPort 8721`, live Streamable HTTP exposed 45 tools including Workbench; MCP job `job-20260801-174027902-c22a7b5f` returned the same events/receipt shape as Web; the clean authenticated identity gate passed | Passed |
-| Dev MCP endpoint provenance | Clean HEAD `0444fe90fac8928d486ebd2186fabe4b94b86d2a` returned `baseline.mcp.identity.v1` with `source_dirty=false` and matched project, Dev profile, image, published port `8721`, Workbench provider, caller registry, and Baseline ledger | Passed |
+| Dev MCP endpoint provenance | Final clean HEAD `817ee8b2ff6dc30105dd44714d7709b53ecc2681` returned `baseline.mcp.identity.v1` with `source_dirty=false` and matched project, Lab profile, image tag, published port `8721`, Workbench provider, caller registry, and Baseline ledger; immutable Dev MCP image ID `sha256:938a24724dde4dfdcb77aece3c250b2db98d0798ec347681ae20e2630099f725` is recorded separately | Passed |
 | Active gateway launcher safety | Active launchers derive their roots/interpreters and default to explicit `:8721`; stale `ComfyGatewayBoot` was disabled without deletion and its exact retired-checkout process stopped | Passed; HEARTH unchanged on `8710` |
 | Historical default-port MCP evidence | Six old Comfy-ledger calls remain quarantined; Baseline ledger now contains successful identity-gated `valheim_mcp_health`, filtered `valheim_server_log_tail`, and `valheim_handshake_trace` events on `8721` | Minimum evidence rerun passed; old receipts retained only as history |
-| Clean source/image attribution before rendered work | Earlier rendered job failed closed with `rendered_prelive_source_dirty`; clean HEAD `0444fe9` then rebuilt to Companion `sha256:0260d9…62c62` and Dev MCP `sha256:f2777c…ff37`, with clean identity passing | Passed; repeat automatically after the receipt commit before Lab orchestration |
-| Rendered AM4 + OMEN + i5 C6 role reversal | Requires a clean attributed checkpoint, real clients, and Derek's typed observation | Operator-gated |
+| Clean source/image attribution before rendered work | Final pre-live receipt pinned clean HEAD `817ee8b2ff6dc30105dd44714d7709b53ecc2681`, Companion `sha256:26e47f966f0e5473ddd31f9fc7f3dd92264ee2d32caf12cb18fad2282d292f88`, and Dev MCP `sha256:938a24724dde4dfdcb77aece3c250b2db98d0798ec347681ae20e2630099f725` | Passed |
+| Rendered AM4 + OMEN + i5 C6 role reversal | Job `job-20260802-003125748-116adca1`, run `workbench-20260802-003128-116adca1`: real clients completed the bounded C6 composition; Workbench reached `waiting_human` with cleanup/disarm complete | Machine-passed; Derek's typed visual observation remains operator-gated |
 | Full Lumberjacks solution | Restore/build succeeded with 0 errors; 589 tests passed (126/250/213), with pre-existing EF dependency-conflict and test-nullability warnings | Passed |
 
 ## Current safety posture
 
-The active local stack is temporarily in Dev for identity verification and
-publishes the Baseline container only on loopback `8721`. Host `8720` is free;
-HEARTH remains independent on `8710`. The implementation checkpoint and its
-production-stamped generated page are committed, and clean attribution passed.
-After committing this receipt, rebuild once from that HEAD, repeat identity and
-profile-absence checks, then switch explicitly to Lab for C6.
+The active local stack is explicitly in Lab and publishes the identity-attested
+Baseline Dev MCP only on loopback `8721`. Host `8720` is free; HEARTH remains
+independent on `8710`. The clean machine-acceptance checkpoint is committed and
+the C6 job is waiting only for the local human observation.

@@ -7,31 +7,33 @@ Owner: Derek
 Detailed requirement evidence: [verification matrix](workbench-v1-verification-matrix.md).
 Checkpoint staging scope: [workbench-v1-checkpoint-scope.md](workbench-v1-checkpoint-scope.md).
 
-This is the execution handoff for the current implementation session. It is
-deliberately not a completion claim: clean-checkpoint MCP and Companion
-attribution has passed, while rendered AM4 + OMEN + i5 acceptance still requires
-its machine receipt and operator observation.
+This is the execution handoff for the current implementation session. The
+clean-checkpoint MCP/Companion attribution and rendered AM4 + OMEN + i5 machine
+acceptance have passed. WB-1 is deliberately not yet a completion claim because
+job `job-20260802-003125748-116adca1` is waiting for Derek's rendered
+observation.
 
 ## Adapted next slice
 
-1. Rebuild Companion and Dev MCP from the final documentation HEAD and repeat
-   the already-passing authenticated identity check on `8721`.
-2. Switch explicitly to Lab, re-run the rendered pre-live source/image gate,
-   then open the bounded
-   AM4 + OMEN + i5 C6 window and collect Derek's typed observation.
-3. Close M6 by recording the final receipt and classifying remaining work.
+1. In the local Workbench, record the observation for
+   `job-20260802-003125748-116adca1`: outcome, role following, rendered quality,
+   cleanup confirmation, and optional private note.
+2. Record the sealed receipt produced by that observation. Do not rerun the
+   physical scenario unless the observation is a fail.
+3. Close M6 by classifying the intentionally unrun player-impacting Operate
+   actions and unfamiliar-user/mobile usability as follow-on work.
 
 ## Milestone status
 
 | Milestone | Status | Receipt/evidence |
 |---|---|---|
-| M0 baseline | passed | Claimed installation `wb-4285b4fd66f442e598886b861ed1bd44` and the retained companion-data volume are proven. Clean HEAD `0444fe90fac8928d486ebd2186fabe4b94b86d2a` produced identity-matched Companion and Dev MCP images with `source_dirty=false`; the stale `ComfyGatewayBoot` task remains disabled and HEARTH remains independent. |
+| M0 baseline | passed | Claimed installation `wb-4285b4fd66f442e598886b861ed1bd44` and the retained companion-data volume are proven. Final machine-acceptance HEAD `817ee8b2ff6dc30105dd44714d7709b53ecc2681` produced identity-matched Companion and Dev MCP images with `source_dirty=false`; the stale `ComfyGatewayBoot` task remains disabled and HEARTH remains independent. |
 | M1 kernel | passed | Lumberjacks/tools/companion/Test-WorkbenchApi.ps1 passed browser token, target/profile rejection, jobs, events, receipts, runner auth, and heartbeat checks. |
 | M2 product shell | passed | /, /workbench, and legacy /companion return 200; Workbench V1 shell, Standard/Advanced presentation, claim flow, live topology, job cards, receipt links, and observation form are present. |
 | M3 local slices | partial — Operate dependency remains open | Containerized net48 mod build passed with read-only Valheim mount, no host SDK, no plugin copy; support export passed the existing privacy scanner; safe Compose recreate preserved installation ID/claim/volume. `operate.mod.check` correctly failed closed while Gateway was unavailable. |
 | M4 distribution boundary | passed | Compose profile checks prove default/Production exclude Dev MCP and the SDK runner; Dev/Lab publish the identity-attested Baseline MCP on loopback `8721`; no Docker socket exists. The mod side channel is default-off, loopback-configured, and cannot be UI-enabled without Dev/Lab opt-in. The stale logon task is disabled and host `8720` is free. |
-| M5 rendered acceptance | operator-gated | AM4 and the two rendered client nodes are ready in the latest runner heartbeat. The clean source/image checkpoint passed; repeat it after the documentation commit, switch to Lab, and begin the physical role-reversal job. |
-| M6 closeout | pending | Run after the rendered window and observation; classify any failure as a new defect/follow-on story. |
+| M5 rendered acceptance | machine-passed, operator-gated | Run `workbench-20260802-003128-116adca1` completed on real OMEN and i5 clients against AM4. The Workbench job reached `waiting_human` with `rendered_role_reversal_complete`; only Derek's typed rendered observation remains. |
+| M6 closeout | in progress | Machine receipts and this handoff are current. Seal the observation receipt, then classify the intentionally deferred player-impacting Operate actions and unfamiliar-user/mobile review. |
 
 ## Implemented surfaces
 
@@ -79,6 +81,30 @@ its machine receipt and operator observation.
 
 Latest runtime receipts from the rebuilt image:
 
+- Final clean Lab checkpoint: source
+  `817ee8b2ff6dc30105dd44714d7709b53ecc2681`, Companion image
+  `sha256:26e47f966f0e5473ddd31f9fc7f3dd92264ee2d32caf12cb18fad2282d292f88`,
+  and Dev MCP image
+  `sha256:938a24724dde4dfdcb77aece3c250b2db98d0798ec347681ae20e2630099f725`.
+  The authenticated Baseline identity gate passed on loopback `8721` with
+  `profile=Lab` and `source_dirty=false`.
+- `job-20260802-003125748-116adca1` / run
+  `workbench-20260802-003128-116adca1` — the bounded real AM4 + OMEN + i5 C6
+  machine run passed and transitioned to `waiting_human` with reason
+  `rendered_role_reversal_complete`. Its admitted `ComfyNetworkSense.dll` hash
+  is `93877e4d12291aec53cdaaeda22f9e992eaf9eb7240bbe1380daa41e8ab349d9`.
+- The runner-ownership fixture `job-20260802-003056281-40000a1f` proved stale
+  runner HTTP 404, active lease renewal, and exact child exit-code propagation
+  (`0` and `7`) without executing an external operation.
+- Diagnostic run `workbench-20260801-235831-a914118d` proved that reliable
+  peer binding now carries native character identity and restored two-way C6
+  motion, while exposing the original 90-second lease limit.
+- Diagnostic run `workbench-20260802-002443-1ce9198d` produced a completed
+  two-client composition plus clean AM4 disarm/residue receipts. It exposed two
+  orchestration-only assumptions: a dedicated server cannot emit the
+  client-only motion file, and Windows PowerShell `Start-Process -PassThru`
+  cannot supply the child exit code. Both now have focused regression receipts.
+
 - `job-20260801-171711723-6af10687` — Docker mod build succeeded; `ComfyNetworkSense.dll`
   SHA-256 `589c371e384c7b1e490f89145ad0fc1aca88d2e0a016454fb2eb2fad8b1aa013`.
 - `job-20260801-171733582-4b5fd835` — support export succeeded and registered a
@@ -120,7 +146,8 @@ Latest runtime receipts from the rebuilt image:
 - The live dirty-checkout identity gate passed on `8721`: project `baseline`,
   profile `Dev`, revision `66c80dcec04ff10f0467e36b83d224bb6e22d745`, image
   `lumberjacks-companion-dev-mcp:local`, Workbench provider, Baseline caller
-  registry, and Baseline ledger all matched. The final clean-commit rerun remains.
+  registry, and Baseline ledger all matched. The later clean Lab rerun is
+  recorded at the top of this section.
 - Baseline ledger events `4180248e-ce69-4124-94ca-f757b3931ed7`,
   `9529fc24-c158-4a03-8ee1-f68a3ea17a48`, and
   `e1da4b9d-1716-4f07-8b79-b1cdbed6f2fa` re-established the minimum
@@ -178,8 +205,8 @@ dirty Dev identity stack uses Companion image
 `sha256:e0738b2ebcbd69de95f620b9f8c46bb01a7d77a4c06b80db7e338fa82bc27141`
 and Dev MCP image
 `sha256:18af8f8d19f10ecb9bcf996ec49507f5a11230821882d14b7831bc02dc6e6b10`.
-The clean checkpoint rebuild will produce and record new acceptance digests;
-these test IDs are retained instead of being overwritten.
+The final clean Lab rebuild and its acceptance digests are recorded above;
+these earlier test IDs are retained instead of being overwritten.
 
 ## Checkpoint commit provenance
 
@@ -227,8 +254,8 @@ gateway, and explicit alternate-port calls remain separate paths.
 Replan disposition: the six default-port Valheim receipts remain quarantined
 historical artifacts. The authenticated Baseline identity gate and minimum
 health/log/handshake rerun passed on `8721`; the mod helper is default-off and
-loopback-configured; and the stale logon listener is retired. Only the clean
-checkpoint identity rerun remains before the physical C6 window.
+loopback-configured; and the stale logon listener is retired. The clean
+checkpoint identity rerun and physical C6 machine window subsequently passed.
 
 The full Lumberjacks solution was restored and built successfully after the
 Story/Advanced topology UI change (0 errors; one pre-existing dependency-conflict
@@ -237,22 +264,19 @@ total (126 Contracts, 250 Simulation, 213 Gateway).
 
 ## Operator gate for M5
 
-The Workbench is temporarily in Dev for endpoint verification. After the
-generator-required checkpoint pair, rebuild it from the clean commit and switch
-to Lab. The pre-live gate also requires the clean, attributed source/image
-identity. Starting
-build.rendered.c6-role-reversal will launch the existing bounded
-native scenario on OMEN and i5, deploy the admitted build, and exercise real
-players/clients. The host runner will stop before a final receipt at
-waiting_human; the operator must record:
+The Workbench is in Lab and the bounded physical run has stopped at
+`waiting_human` as designed. Open `http://127.0.0.1:8080/workbench`, find job
+`job-20260802-003125748-116adca1`, and choose **Record observation**. Record:
 
 - outcome: pass or fail;
 - role_following: followed, mixed, or did_not_follow;
 - quality: smooth, mixed, or rough;
 - cleanup confirmation and an optional private note.
 
-No rendered acceptance claim is made until that form is submitted and the
-machine evidence plus observation share one receipt.
+Both clients completed their scenario actions, AM4 authority was disarmed, and
+the run-scoped residue cleanup reported zero matches. No rendered acceptance
+claim is made until the form is submitted and the machine evidence plus
+observation share one receipt.
 
 ## Checkpoint handoff (authorized 2026-08-01)
 

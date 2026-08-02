@@ -1,7 +1,7 @@
 # Saga WB-1 — Ownable Docker Workbench v1
 
-Status: implementation checkpoint authorized 2026-08-01; M5 rendered
-acceptance remains operator-gated. Replanned after the
+Status: implementation and rendered machine acceptance completed 2026-08-01;
+M5 is waiting only for Derek's typed visual observation. Replanned after the
 [MCP endpoint provenance audit](../docs/audit/2026-08-01-mcp-endpoint-provenance-audit.md).
 Owner: Derek. This document is the decision-complete execution strategy for the
 first coherent Workbench product slice.
