@@ -316,10 +316,11 @@ M2 acceptance:
 - **Story WB-S3.15:** Expose old endpoints as compatibility adapters over the
   same underlying handlers rather than duplicate implementations.
 - **Story WB-S3.20 (follow-on gate):** The admitted read-only check is complete:
-  clean Lab job `job-20260802-012104565-fc2e52f8` passed against the local
-  hash-verified release pointer. In a separately approved player-impacting
-  window, verify install/rollback and player-active transport capture through
-  their Workbench receipts.
+  clean Lab job `job-20260802-013242046-49017a94` passed against local candidate
+  `m32-workbench-20260802-r1`. Its 30 payload entries are an exact byte match for
+  current OMEN, with no missing or unsafe entries. In a separately approved
+  player-impacting window, verify install/rollback and player-active transport
+  capture through their Workbench receipts.
 
 #### Feature WB-F3.5 — Recover vertical slice
 

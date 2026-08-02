@@ -19,10 +19,12 @@ player-active transport-capture checks are explicitly still open.
 1. M5 is sealed. Do not rerun its physical scenario unless a future regression
    or failed observation supplies a new reason.
 2. The read-only Operate check is closed by
-   `job-20260802-012104565-fc2e52f8`. Follow-on story WB-S3.20 now contains only
-   the separately approved player-impacting install/rollback and player-active
-   transport-capture receipts. The earlier unavailable-Gateway receipt remains
-   valid fail-closed evidence.
+   `job-20260802-013242046-49017a94`. Candidate package
+   `m32-workbench-20260802-r1` is a 30/30 exact byte match for the current OMEN
+   Valheim payload, with zero missing, different, or unsafe entries. Follow-on
+   story WB-S3.20 now contains only the separately approved player-impacting
+   install/rollback and player-active transport-capture receipts. The earlier
+   unavailable-Gateway receipt remains valid fail-closed evidence.
 3. Community usability is follow-on story WB-S2.13: have an unfamiliar operator
    use the Standard live map and mobile layout, then record comprehension and
    recovery-path findings. The in-product first-visit path and
@@ -94,7 +96,14 @@ player-active transport-capture checks are explicitly still open.
 
 Latest runtime receipts from the rebuilt image:
 
-- Current clean Lab Operate checkpoint: source
+- Current byte-audited candidate checkpoint: source
+  `625c033f4b42af51e67557257e855700f0a0e0b9`, Companion image
+  `sha256:f0b0b364633c43e14c1901e8effb4b9781d8f8e912981244a806ae31996c800e`,
+  and Dev MCP image
+  `sha256:818848118f1888ea1df82f1a047b36fc6381576deebd23a5588701374284f5f6`.
+  The authenticated MCP identity gate passed on loopback `8721` with
+  `source_dirty=false`.
+- First clean Lab Operate checkpoint: source
   `f4d40499c22c413720474c166dd00ecb3deb02a4`, Companion image
   `sha256:d85c078fdfcad8739f62317f2f8956af1d45b57441ab6c0df55f87fda947569f`,
   and Dev MCP image
@@ -107,6 +116,14 @@ Latest runtime receipts from the rebuilt image:
   `d1bfcd6f440fe9697cf495eac16923bcc9272225039b2ace69a23d1d302cbb5a`.
   The publisher changed only the persistent local release feed; no Valheim file,
   install state, rollback state, or GCP resource was changed.
+- Current install/rollback candidate `m32-workbench-20260802-r1` was built from
+  the live OMEN payload without writing to it. `Test-ModpackPayload.ps1
+  -RequireExactMatch` reported 30 matched entries, zero different, zero missing,
+  zero unsafe, and package SHA-256
+  `c5144045ede921ba37d84350bd8d0378c7a6eef5714dc427677777be35ecb6db`.
+  Clean Workbench job `job-20260802-013242046-49017a94` then passed with
+  `mod_manifest_read` at source `625c033f4b42af51e67557257e855700f0a0e0b9`.
+  Valheim was closed and no install or rollback was invoked.
 - Final clean Lab checkpoint: source
   `817ee8b2ff6dc30105dd44714d7709b53ecc2681`, Companion image
   `sha256:26e47f966f0e5473ddd31f9fc7f3dd92264ee2d32caf12cb18fad2282d292f88`,
