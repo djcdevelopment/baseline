@@ -82,6 +82,18 @@ Retained ship handoff regression receipt:
 Retained physical saddle receipt:
 `fieldlab/evidence/c10a-mount-physical-acceptance/verification-summary.json`.
 
+### C10a station-family verification update — 2026-08-02
+
+A fresh extractor-v2 run reproduced the pinned assembly hash, all 120 instance
+registrations, and zero unresolved names. The eight station registrants account for
+exactly 19 methods. Seven were already P1 routes; pinned source shows the remaining 12
+on ordinary owner-mutation, directed-response, or presentation-broadcast paths, so r39
+admits their exact payload contracts as P2 routes instead of leaving normal play behind
+poison. None adds ownership transfer, a multi-writer transaction, a collision, or an
+unbounded payload. The source shape therefore does not contradict the proven target-ZDO
+lane and does not open a new physical station gate. Retained receipt:
+`fieldlab/evidence/c10a-station-breadth-review/verification-summary.json`.
+
 ## Summary counts (post-review)
 
 | Bucket | Routed | Direct | Instance | Total |
@@ -165,9 +177,9 @@ targeted-verification flags this audit endorses:
    the server held both peers and duplicates before one commit, rejected the stale
    contender, replayed both transaction IDs, journaled the real empty inventory,
    reconstructed it in both fresh processes, and stayed native-zero. This is the
-   representative container gate, not proof that every station-specific RPC ran;
-   smelter/cooking-station breadth remains admitted/poisoned until exercised or
-   contradicted.
+   representative container gate, not proof that every station-specific RPC ran. The
+   later r39 bounded source review closes the complete 19-method station admission
+   surface without claiming manual invocation of every prefab.
 3. **AI/creatures (`MonsterAI`, `AnimalAI`, `Tameable`, …)** — exact r36 physically
    accepts the selected autonomous `MonsterAI` boundary on an actual tamed Lox through
    OMEN ownership, i5 transfer, disconnect loss, and AM4 reclaim. Owners executed
@@ -197,6 +209,6 @@ respective shapes.
   and ownership semantics, so ship and saddle require separate typed contracts. The
   selected AI/creature component-family gate is now physically closed by exact r36;
   other species remain explicit source-classified breadth rather than inheriting a
-  universal pass. Station-specific breadth remains explicit rather than silently
-  inheriting the selected chest pass. Vehicle/mount generalization and relevance remain
-  a separate C10 boundary.
+   universal pass. Station source/admission breadth is now closed explicitly rather than
+   silently inheriting the selected chest pass. Vehicle/mount generalization and relevance
+   remain a separate C10 boundary.

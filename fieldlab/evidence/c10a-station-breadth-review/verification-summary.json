@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "gate": "C10a bounded station-family source and admission breadth",
+  "status": "accepted",
+  "captured_utc": "2026-08-03T02:46:42.3181309+00:00",
+  "candidate_release_id": "m7-c10a-20260802-r39",
+  "provenance": {
+    "assembly_sha256": "3b26c8512778f6e0664b5af2a26f3c30993a00f584c1e76d9123a742b67e2004",
+    "extractor_output_sha256": "7ab99f0974145e66980aaaffcbdb2fcd11b78bc5aa269cff6e4ca5bb77aa0b23",
+    "routed_rpc_count": 19,
+    "direct_rpc_count": 21,
+    "instance_rpc_count": 120,
+    "znetview_component_count": 122,
+    "unresolved_registration_count": 0
+  },
+  "station_surface": {
+    "registrant_count": 8,
+    "method_count": 19,
+    "existing_p1": [
+      "RPC_AddFuel",
+      "RPC_AddFuelAmount",
+      "RPC_AddItem",
+      "RPC_AddOre",
+      "RPC_EmptyProcessed",
+      "RPC_Extract",
+      "RPC_RemoveDoneItem"
+    ],
+    "new_normal_play_p2": [
+      "RPC_AnimateLever",
+      "RPC_AnimateLeverReturn",
+      "RPC_Attack",
+      "RPC_HitNow",
+      "RPC_IncinerateRespons",
+      "RPC_RequestIncinerate",
+      "RPC_SetFuel",
+      "RPC_SetFuelAmount",
+      "RPC_SetSlotVisual",
+      "RPC_Tap",
+      "RPC_ToggleOn",
+      "RPC_UpdateEffects"
+    ]
+  },
+  "checks": {
+    "installed_assembly_matches_pinned_extractor_hash": true,
+    "fresh_extractor_counts_match_retained_v2_inventory": true,
+    "fresh_extractor_has_zero_unresolved_registrations": true,
+    "all_19_station_methods_have_exact_shared_routes": true,
+    "all_payload_signatures_match_extractor_v2": true,
+    "all_station_routes_require_complete_target_zdo": true,
+    "no_station_method_transfers_ownership": true,
+    "no_distinct_station_authority_or_transaction_shape_found": true,
+    "mod_tests_182_of_182": true,
+    "canonical_dotnet9_tests_625_of_625": true,
+    "mod_release_build_zero_warnings_zero_errors": true
+  },
+  "physical_gate": {
+    "opened": false,
+    "reason": "All rows use the already-proven reliable target-ZDO shape; no ownership transfer, distinct transaction model, or recorded poison trip was found."
+  },
+  "claim": "The complete pinned vanilla station RPC surface is admitted and poison-safe for fallback deletion.",
+  "not_claimed": [
+    "manual physical invocation of every station prefab",
+    "vehicle/mount relevance physical acceptance",
+    "P7 promotion",
+    "post-fallback-deletion final acceptance"
+  ],
+  "scope_controls": {
+    "p7": "untouched",
+    "hearth": "untouched",
+    "workbench": "frozen"
+  }
+}
