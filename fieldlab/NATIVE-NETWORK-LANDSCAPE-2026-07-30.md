@@ -3,9 +3,9 @@
 **Assessed:** 2026-08-02
 **Development topology:** headless dedicated server on AM4; native Windows clients on
 OMEN (Tugcorp, RTX 5070) and i5 (Durracktu, Intel Iris Xe).
-**Reference deployment:** P7 remains stopped and unchanged; C0-C8, the accepted C10a
-paired-release candidate, the selected saddle and container canaries, and the corrected
-ship/vehicle handoff are proven on AM4.
+**Reference deployment:** P7 remains stopped and unchanged; C0-C8 and all C10a local
+functional boundaries, including the untagged vehicle/mount relevance path, are proven
+on AM4.
 
 This is a present-tense boundary inventory, not a restatement of the historical I0-I7
 ladder. “Swapped” means the live payload crosses Lumberjacks and the corresponding
@@ -99,8 +99,11 @@ The replacement is not 100% complete.
   checks on an actual tamed Lox through OMEN ownership, i5 transfer, disconnect loss,
   and AM4 reclaim. Owners executed 160–161 real AI ticks, replicas executed zero owner
   ticks and 160 non-owner blocks, recovery stayed under 0.035 s, native use stayed zero,
-  and exact cleanup passed. Station-specific semantics, other creature species,
-  arbitrary untagged targets, and third-recipient/AoI relevance remain explicit breadth.
+  and exact cleanup passed. The bounded station-family review admits all 19 pinned
+  methods. Exact r41 then accepted one ordinary untagged Lox across both physical
+  drive/observe directions, resume, dedicated-server ownership, native owner-sweep
+  suppression, and i5 relevance leave/re-entry; all 27 checks, native-zero, and exact
+  cleanup passed. Other creature species remain explicit source-classified breadth.
 
 The shortest honest description is: **the C3 ZDO semantic boundary and selected
 control/RPC classes are swapped on AM4, and C3 semantics now ride the canonical
@@ -115,9 +118,11 @@ generic vehicle-control contract in favor of split ship/saddle lanes, r27 physic
 accepts the selected typed saddle canary, and r28 physically reconfirms the typed ship
 lane with atomic helm release plus owner handoff; r34 physically accepts the selected
 ordered container transaction and its fresh-process journal reconstruction; r36
-physically accepts the selected autonomous `MonsterAI` ownership/handoff/reclaim canary.
-Other creature species, station-specific semantics, and vehicle/mount relevance breadth,
-subjective motion acceptance, fallback deletion, and P7 promotion are not complete.**
+physically accepts the selected autonomous `MonsterAI` ownership/handoff/reclaim canary;
+the station review closes the 19-method source/admission family; and r41 physically
+accepts ordinary untagged mount discovery, ownership, publication, and AoI relevance.
+Other creature species remain explicit source-classified breadth. Subjective motion
+acceptance, fallback deletion, and P7 promotion are not complete.**
 
 ## C0 measured baseline and poison gate
 
@@ -270,14 +275,14 @@ manifest `p7-primary-v1`, and an armed consumer.
 | ZDO outbound carriage | **Swapped for legacy redirect and C3 semantic boundary** | Selected `*` prefabs use the redirect; C3 authoritative mutation bodies, revisions and tombstones use the durable journal over C1 | C3 body capture still observes Valheim's authoritative mutation seams; semantic breadth remains | **Verified:** C4a accepted six canonical mutations, replayed WAL across Gateway restart, retained two isolated logical recipients and ended zero pending |
 | ZDO inbound carriage/apply | **Partial; C3 typed boundary swapped on AM4** | C3 clients receive canonical-session frames, validate, and directly create/update/delete/revision/owner/position/deserialize on Unity `Update` | Legacy consumer still reconstructs a `ZPackage` and invokes `RPC_ZDOData`; general-prefab typed parity is not yet proven | **Verified:** C4a used only canonical carriage; both clients applied valid delta/tombstone, i5 applied late snapshot, stale/malformed rejected, network `RPC_ZDOData` zero |
 | Co-presence ZDO fan-out | **Corrected and integration-proven on AM4; disabled on P7 pending promotion** | Emits native-selected revisions to the exposing recipient and any in-band observer that is behind | Candidate discovery and delivered-revision bookkeeping remain native | **Verified:** two unattended physical clients, 1,340/1,340 native-selected `Emit`, zero non-emit, and successful inventory return on both clients |
-| Routed gameplay RPC (`ZRoutedRpc`) | **33 P1 methods plus the complete 19-method station family code-admitted; aligned candidate, `UseStamina` P3, and typed ship/saddle control accepted on AM4** | One source-aligned mod/Gateway contract admits exact names, hashes, target shapes, sizes, and extractor-pinned byte layouts. The bounded r39 station review adds 12 ordinary-play P2 routes to the seven existing P1 station names. Exact P3 `UseStamina(Single)` is admitted for legitimate cross-owner harpoon/fishing debits; unadmitted outbound routes enter the ledger and poison blocks them. `RPC_SetConnection` is replacement-owned by the server portal cache; `RPC_TeleportPlayer` is deferred admin recall. Both deliberately stay unadmitted. Vehicle-control source verification keeps an untyped `RequestControl`/`ReleaseControl`/`RequestRespons` admission prohibited; explicit ship and saddle target kinds select separate typed contracts and unknown kinds remain rejected | Not every admitted method was physically invoked. Remaining non-station P2/P3 classification, arbitrary untagged target and AoI/relevance physical breadth, fallback deletion, and P7 remain | **Verified:** extractor-derived tests require all 19 station methods and exact payloads; focused tests retain the vehicle collision guard and typed contracts; r4 completed all 49 physical actions with native totals/trips zero; r6 applied `UseStamina` in both directions; r27/r28/r34/r36 accepted the selected saddle, ship, container, and creature canaries |
+| Routed gameplay RPC (`ZRoutedRpc`) | **33 P1 methods plus the complete 19-method station family code-admitted; aligned candidate, `UseStamina` P3, and typed ship/saddle control accepted on AM4** | One source-aligned mod/Gateway contract admits exact names, hashes, target shapes, sizes, and extractor-pinned byte layouts. The bounded r39 station review adds 12 ordinary-play P2 routes to the seven existing P1 station names. Exact P3 `UseStamina(Single)` is admitted for legitimate cross-owner harpoon/fishing debits; unadmitted outbound routes enter the ledger and poison blocks them. `RPC_SetConnection` is replacement-owned by the server portal cache; `RPC_TeleportPlayer` is deferred admin recall. Both deliberately stay unadmitted. Vehicle-control source verification keeps an untyped `RequestControl`/`ReleaseControl`/`RequestRespons` admission prohibited; explicit ship and saddle target kinds select separate typed contracts and unknown kinds remain rejected | Not every admitted method was physically invoked. Remaining non-station P2/P3 classification, other creature-species source breadth, fallback deletion, and P7 remain | **Verified:** extractor-derived tests require all 19 station methods and exact payloads; focused tests retain the vehicle collision guard and typed contracts; r4 completed all 49 physical actions with native totals/trips zero; r6 applied `UseStamina` in both directions; r27/r28/r34/r36 accepted the selected saddle, ship, container, and creature canaries; r41 accepted the untagged mount/relevance path |
 | Direct peer/control RPC | **Partial; one C2a pulse swapped on AM4** | One selected post-join direct pulse crosses C1's reliable lane and dispatches on Unity `Update` | Error, player/global/admin lists, reference position, disconnect, and every other `ZRpc` control class | **Verified:** `native-20260730-c2a-final` delivered exactly one typed pulse per client; both withheld copies became stale; native tripwires were registered; all 107 selected server-native attempts were suppressed before `ZRpc.Invoke`; zero native copies arrived |
 | Player motion | **Selected boundary swapped on AM4; prior observe-only build remains on P7** | Authenticated numbered position/rotation/velocity frames use UDP with binary-WebSocket fallback; reliable hard resync uses C1. The logical remote player applies them while selected native transform and position writers are suppressed | General identity/prefab breadth and P7 promotion remain | **Verified:** C6 proved both directions, bounded loss/resync, and fresh-process resume; C7 removed the native join dependency |
 | ZDO ownership transfer and pickup action | **Partial; selected C4 boundary swapped on AM4** | Server-originated leases bind run/world/ZDO/logical holder/epoch/expiry; Gateway validates actions; the dedicated server performs the authoritative destroy and returns inventory through Lumberjacks | General-prefab ownership/action admission remains; the cutover is gated and P7 still runs the prior path | **Verified:** `native-20260730-c4b-tenth` rejected reclaimed/wrong/expired leases, poisoned selected native owner/pickup/destroy paths, and credited exactly one Raspberry to each client |
 | Container transaction and reconstruction | **Selected physical container boundary swapped on AM4** | Actual client `Container.TakeAll` calls become typed Lumberjacks transactions; AM4 orders contenders at one canonical revision, mutates and serializes the real inventory once, returns idempotent results, and journals the new body to explicit recipient interest | Station-specific RPC semantics, arbitrary containers, fallback deletion, and P7 promotion remain separate | **Verified:** exact r34 held four copies from OMEN and i5, committed one Raspberry, rejected one stale request, replayed two duplicates, rebuilt revision-two empty state in both fresh processes, destroyed exactly one tagged chest, and passed 19/19 checks with native-zero |
-| Ship control, authority, and replication | **Selected physical ship boundary swapped on AM4** | Explicit ship-target RPCs carry helm request/release/rudder/speed; Gateway authenticates held control and makes canonical helm release plus owner transfer atomic; the physics owner sends numbered snapshots to AM4; the server journals the canonical ship body and fans a server-originated replica to both clients | Unrelated vehicle prefabs, third-recipient relevance, fallback deletion, and P7 promotion remain separate | **Verified:** r27's exact rerun exposed a stale departed helm user on the future owner; r28 applied `canonical_helm_user=0` on both replicas before handoff and passed 19/19 checks across both real driving/observing directions with native-zero |
-| Saddle control, ownership, rider attachment, and replication | **Selected physical saddle boundary swapped on AM4** | Explicit saddle-target RPCs carry control and release; Gateway authenticates the logical rider and monotonic owner epoch; the owner publishes body snapshots and rider edges; disconnect reclaim selects an exact live peer | Arbitrary existing untagged mounts, a third distant recipient, AoI enter/leave, relevance-scoped fan-out, fallback deletion, and P7 promotion remain | **Verified:** exact r27 created one run-tagged tamed Lox, drove/observed both directions, advanced owner epochs 1→5 through disconnect reclaim, held observer attachment p95/max at zero, rejected stale transfer/snapshot/rider frames, resumed both clients, destroyed exactly one target, and passed 18/18 checks with native-zero |
-| Autonomous creature authority and replication | **Selected physical `MonsterAI` boundary swapped on AM4** | The accepted saddle owner/epoch tuple selects the sole peer allowed through `BaseAI.UpdateAI`; that owner runs the real Lox AI and publishes numbered body snapshots through Lumberjacks while every replica remains blocked by the native non-owner gate | Other creature species, arbitrary untagged targets, fallback deletion, and P7 promotion remain explicit breadth | **Verified:** exact r36 ran a real tamed Lox through OMEN ownership, i5 transfer, disconnect loss, and AM4 reclaim. Owners executed 160–161 AI ticks; paired replicas executed zero owner ticks and 160 blocked ticks; recovery stayed under 0.035 s; all 19 checks, native-zero, and exact cleanup passed |
+| Ship control, authority, and replication | **Selected physical ship boundary swapped on AM4** | Explicit ship-target RPCs carry helm request/release/rudder/speed; Gateway authenticates held control and makes canonical helm release plus owner transfer atomic; the physics owner sends numbered snapshots to AM4; the server journals the canonical ship body and fans a server-originated replica to both clients | Unrelated vehicle prefabs, fallback deletion, and P7 promotion remain source-classified breadth | **Verified:** r27's exact rerun exposed a stale departed helm user on the future owner; r28 applied `canonical_helm_user=0` on both replicas before handoff and passed 19/19 checks across both real driving/observing directions with native-zero. r41 and M7-E04 accept the shared relevance boundary |
+| Saddle control, ownership, rider attachment, and replication | **Selected physical saddle boundary plus untagged relevance path swapped on AM4** | Explicit saddle-target RPCs carry control and release; Gateway authenticates the logical rider and monotonic owner epoch; owner/server publishers send body snapshots and rider edges through direct per-observer relevance; disconnect reclaim selects an exact live peer | Other creature species, fallback deletion, and P7 promotion remain; a third simultaneous physical client was not claimed | **Verified:** r27 accepted the selected run-tagged saddle canary; exact r41 independently discovered one ordinary untagged Lox, drove/observed both directions, traversed epochs 1→6 through both peers and the server, suppressed all four native owner-sweep attempts, physically left/re-entered i5 relevance, resumed both clients, and passed 27/27 with native-zero and exact cleanup. M7-E04 repeatably proves the three-recipient policy |
+| Autonomous creature authority and replication | **Selected physical `MonsterAI` boundary swapped on AM4** | The accepted saddle owner/epoch tuple selects the sole peer allowed through `BaseAI.UpdateAI`; that owner runs the real Lox AI and publishes numbered body snapshots through Lumberjacks while every replica remains blocked by the native non-owner gate | Other creature species, fallback deletion, and P7 promotion remain explicit breadth | **Verified:** exact r36 ran a real tamed Lox through OMEN ownership, i5 transfer, disconnect loss, and AM4 reclaim. Owners executed 160–161 AI ticks; paired replicas executed zero owner ticks and 160 blocked ticks; recovery stayed under 0.035 s; all 19 checks, native-zero, and exact cleanup passed. r41 separately accepts ordinary untagged target discovery and relevance |
 | World identity/bootstrap | **Selected boundary swapped on AM4** | Protocol/release, world id/epoch, seed/name, world-generation version, network time, save epoch, initial zone, typed character id, and logical scene lifecycle cross Lumberjacks | General world/zone breadth and migration fallback deletion remain C8/C10 | **Verified:** C7 cold join reached the intended scene twice per client; wrong release and descriptor/protocol stopped before scene |
 | Zone/interest lifecycle | **Partial; selected run-tagged membership swapped on AM4** | Explicit enter/leave, monotonic snapshot epoch, three complete typed bodies, semantic chunk ACK, resume, complete-once, and typed release cross Lumberjacks | General-prefab/zone interest breadth, reference-position integration, and terrain generation remain Valheim; terrain is intentionally local engine work | **Verified:** both C5 clients resumed after chunk-1 socket loss, completed once, unloaded to zero, spawned none on withhold, and every selected native candidate was suppressed |
 | Server save/persistence | **Native** | Gateway/event services retain their own records | Valheim world/ZDO save is still canonical game persistence | **Verified:** current architecture; not itself a transport swap |
@@ -289,7 +294,6 @@ mode. None requires two humans driving game windows.
 
 | Remaining boundary | Smallest useful slice | Failure mode that makes the result legible | Estimated build + real-run cost |
 | --- | --- | --- | --- |
-| Vehicle/mount generalization and relevance | Select arbitrary existing untagged targets and prove a third distant recipient's AoI enter/leave plus relevance-scoped fan-out | Run-tag-only targeting, `Everybody` fan-out, a stale replica, or native fallback fails the gate | One named C10a physical gate |
 | P7 finalization | Promote the paired candidate, re-prove, delete migration-only fallback, cut a final artifact, and re-prove | Roll back the artifact pair; never selectively reopen a native path | 2–4 days plus two bounded reloads; C10 |
 
 ## Blocker status
@@ -473,6 +477,12 @@ client logs, autotest receipts, and a Steam-identifier-free P7 correlation:
   recovery stayed under 0.035 s; all 19 checks, native-zero, fresh-process composition,
   and exact cleanup passed. r35 remains the stale released-rider-edge falsifier. Compact
   evidence is in `evidence/c10a-creature-physical-acceptance/`.
+- `native-valheim/native-20260802-c10a-relevance-r41-1/` — accepted ordinary
+  untagged vehicle/mount relevance: both clients completed all 41 actions and one
+  fresh-process resume, ownership traversed epochs 1–6, AM4 published the server-owned
+  target, all four native owner-sweep attempts were suppressed, i5 physically left and
+  re-entered relevance, and all 27 checks, native-zero, and exact cleanup passed.
+  Compact evidence is in `evidence/c10a-vehicle-relevance-physical-acceptance/`.
 
 ## Replan recommendation
 
@@ -502,15 +512,17 @@ snapshots from that ZDO-only representation; its exact run proved both repairs, 
 advanced only two server snapshots before vanilla's two-second `ReleaseNearbyZDOS`
 sweep revoked that owner. r41 adds the saddle authority map to the existing scoped
 `ZDO.SetOwner` guard, records the suppression, and self-heals/logs any surviving drift.
-M7-E04 repeatably proves the exact three-recipient edge policy. The next and only local
-gate is exact r41 AM4/OMEN/i5 physical acceptance before fallback deletion; r37's
-mixed-release black screens and r39/r40's server-handoff failures remain named
-falsifiers, not gameplay proof.
+M7-E04 repeatably proves the exact three-recipient edge policy. Exact r41 then passed
+the AM4/OMEN/i5 physical gate 27/27: both clients completed both directions and resume,
+the dedicated server retained epoch-6 authority while physically suppressing all four
+native owner-sweep attempts, and i5 left then re-entered relevance. r37's mixed-release
+black screens and r39/r40's server-handoff failures remain named falsifiers, not
+gameplay proof. There are no remaining local functional implementation gates.
 Do not rerun retained C0-C8, stamina, ship, selected saddle, selected container,
 or selected creature boundaries without contradictory evidence.
-Workbench/dashboard work remains frozen until those functional local gates close.
+Workbench/dashboard work remains frozen through final network cutover.
 
-P7 remains stopped and untouched. After the local gates, C10b has two bounded P7
-reloads: promote/reprove the accepted pair, then delete migration-only fallback, cut
+P7 remains stopped and untouched. C10b has two bounded P7 reloads:
+promote/reprove the accepted pair, then delete migration-only fallback, cut
 the final paired artifact, and reprove the named boundaries. The detailed remaining
 count and order are canonical in `plan-native-network-final-cutover.md`.

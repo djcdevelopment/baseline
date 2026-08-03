@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "receipt_type": "c10a_vehicle_relevance_physical_acceptance",
+  "accepted_utc": "2026-08-03T03:37:56.0078842+00:00",
+  "result": "passed",
+  "run_id": "native-20260802-c10a-relevance-r41-1",
+  "artifact": {
+    "source_commit": "c0d5cc530e06881e85b452a0dce971d7d175cc96",
+    "release_id": "m7-c10a-20260802-r41",
+    "mod_version": "0.5.80.0",
+    "mod_sha256": "c167ab061853043253f26af76774b58d969707b2a266272ac2d1e35ea9c2da11",
+    "gateway_image_id": "sha256:8a6ba0e66286c59ff9d1816e9e14e1f20701c8c62d61d2b2aa3dff0ca5172025",
+    "scenario_sha256": "ee695d4c810d06f06878e5e165ebadcd77c4488f894993b33a7485c5a51145f4",
+    "hash_exact_on_am4_omen_i5": true,
+    "gateway_image_exact": true
+  },
+  "precut": {
+    "mod_tests": "186/186",
+    "release_mod_build": "zero warnings and zero errors",
+    "repository_tests": "625/625",
+    "manifest_actions": 41,
+    "manifest_coverage_checks": "15/15"
+  },
+  "physical": {
+    "reducer_checks": "27/27",
+    "failed_checks": [],
+    "composition": "completed",
+    "omen": {
+      "result": "joined_held_and_stopped",
+      "scenario_terminal": "scenario_complete",
+      "resume_count": 1,
+      "native_total": 0,
+      "poison_trips": 0
+    },
+    "i5": {
+      "result": "joined_held_and_stopped",
+      "scenario_terminal": "scenario_complete",
+      "resume_count": 1,
+      "native_total": 0,
+      "poison_trips": 0
+    },
+    "authority": {
+      "epochs_observed": [1, 2, 3, 4, 5, 6],
+      "transfers": [
+        { "action": "i5_drive", "epoch": 2, "user_is_owner": true },
+        { "action": "omen_disconnect_reclaim", "epoch": 3, "user_is_owner": true },
+        { "action": "i5_disconnect_reclaim", "epoch": 4, "user_is_owner": true },
+        { "action": "omen_drive", "epoch": 5, "user_is_owner": true },
+        { "action": "server_handoff", "epoch": 6, "user": 0 }
+      ],
+      "native_release_sweep_attempts_suppressed": 4,
+      "owner_drift_repairs_required": 0,
+      "server_owner_published_to_both_clients": true
+    },
+    "drive_observe": [
+      { "action": "i5_drive", "distance_m": 9.129, "heading_deg": 179.71, "snapshot_advance": 39 },
+      { "action": "omen_observe_i5", "distance_m": 11.995, "heading_deg": 175.673, "snapshot_advance": 41, "attachment_p95_m": 0, "attachment_max_m": 0 },
+      { "action": "omen_drive", "distance_m": 9.162, "heading_deg": 179.613, "snapshot_advance": 39 },
+      { "action": "i5_observe_omen", "distance_m": 9.295, "heading_deg": 175.368, "snapshot_advance": 41, "attachment_p95_m": 0, "attachment_max_m": 0 }
+    ],
+    "relevance": {
+      "producer_direct_fanout": true,
+      "physical_i5_sequence": ["snapshot_relevance_left", "snapshot_relevance_entered"],
+      "three_recipient_policy_receipt": "fieldlab/experiments/m7/m7-e04-vehicle-relevance/experiment.md"
+    }
+  },
+  "cleanup": {
+    "client_processes_stopped": true,
+    "runtime_controls_disarmed": true,
+    "residue_matched": 1,
+    "residue_destroyed": 1,
+    "skipped_live_owner": 0,
+    "mounts_destroyed": 1,
+    "untagged_tracked": 1,
+    "p7_changed": false
+  },
+  "verified": [
+    "one ordinary untagged tamed Lox was discovered without preseeded authority on server, owner, and observer",
+    "both real clients completed both drive/observe directions and a fresh-process resume",
+    "canonical ownership and snapshots covered epochs 1 through 6 including dedicated-server ownership",
+    "the native ReleaseNearbyZDOS owner sweep was physically attempted and suppressed",
+    "i5 physically left and re-entered producer-side snapshot relevance",
+    "native poison remained armed with zero native use and zero trips",
+    "exact AM4/OMEN/i5 DLL and paired Gateway image provenance passed",
+    "exactly one tracked untagged mount was destroyed during cleanup"
+  ],
+  "inferred": [],
+  "unverified": [
+    "a third simultaneous physical Valheim client; M7-E04 is the three-recipient policy proof",
+    "subjective C9 motion-quality verdict",
+    "P7 candidate promotion and reproof",
+    "fallback deletion and final post-deletion P7 reproof"
+  ]
+}
