@@ -497,11 +497,15 @@ rather than an inherited physical pass. r39 implemented ordinary untagged mount 
 direct per-observer relevance with hysteresis, and dedicated-server-owned snapshot
 publication, but its exact two-client run falsified two concrete edges: a wait-only
 request could create the target, and a server-owned raw ZDO had no publisher without a
-live `Character`. r40 makes discovery non-creating and publishes canonical server-owner
-snapshots from that ZDO-only representation. M7-E04 repeatably proves the exact
-three-recipient edge policy. The next and only local gate is exact r40 AM4/OMEN/i5
-physical acceptance before fallback deletion; r37's mixed-release black screens and
-r39's zero-advance server handoff remain named falsifiers, not gameplay proof.
+live `Character`. r40 made discovery non-creating and published canonical server-owner
+snapshots from that ZDO-only representation; its exact run proved both repairs, then
+advanced only two server snapshots before vanilla's two-second `ReleaseNearbyZDOS`
+sweep revoked that owner. r41 adds the saddle authority map to the existing scoped
+`ZDO.SetOwner` guard, records the suppression, and self-heals/logs any surviving drift.
+M7-E04 repeatably proves the exact three-recipient edge policy. The next and only local
+gate is exact r41 AM4/OMEN/i5 physical acceptance before fallback deletion; r37's
+mixed-release black screens and r39/r40's server-handoff failures remain named
+falsifiers, not gameplay proof.
 Do not rerun retained C0-C8, stamina, ship, selected saddle, selected container,
 or selected creature boundaries without contradictory evidence.
 Workbench/dashboard work remains frozen until those functional local gates close.
