@@ -161,8 +161,13 @@ targeted-verification flags this audit endorses:
    arbitrary existing untagged target handling plus a third recipient's AoI enter/leave
    and relevance-scoped fan-out; the saddle canary currently uses `Everybody`.
 2. **Containers/stations (`Container`, `Smelter`, `CookingStation`, …)** —
-   inventory mutations must be strictly ordered through the lease/journal to
-   prevent duping; needs a targeted two-client container gate.
+   exact r34 physically accepts the selected two-client wood-chest transaction:
+   the server held both peers and duplicates before one commit, rejected the stale
+   contender, replayed both transaction IDs, journaled the real empty inventory,
+   reconstructed it in both fresh processes, and stayed native-zero. This is the
+   representative container gate, not proof that every station-specific RPC ran;
+   smelter/cooking-station breadth remains admitted/poisoned until exercised or
+   contradicted.
 3. **AI/creatures (`MonsterAI`, `AnimalAI`, `Tameable`, …)** — server-to-client
    ownership handoff must not stall AI; needs a targeted verification cell.
 
@@ -184,5 +189,6 @@ respective shapes.
 - Most needs-lane rows are allow-list + payload-contract admissions on proven lanes.
   Vehicle control is the verified exception: one hash has registrant-dependent identity
   and ownership semantics, so ship and saddle require separate typed contracts. The two
-  remaining component-family gates are container/station and AI/creature; vehicle/mount
+  remaining named component-family gate is AI/creature; station-specific breadth remains
+  explicit rather than silently inheriting the selected chest pass. Vehicle/mount
   generalization and relevance remain a separate C10 boundary.

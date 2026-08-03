@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "gate": "C10a selected physical container transaction",
+  "status": "accepted",
+  "captured_utc": "2026-08-03T00:10:59.6031025Z",
+  "release": {
+    "release_id": "m7-c10a-20260802-r34",
+    "mod_version": "0.5.73",
+    "mod_sha256": "6a076ce929b3d343883a88ba5e1f8a1601648299292b73ef1c1d37c815ec0635",
+    "gateway_image_id": "sha256:7942aca93246505340822f939d3bab5a6236848e60f45874aa02ccbfafc55c51",
+    "am4_deploy_result": "passed",
+    "am4_plugin_loaded": true,
+    "am4_server_ready": true
+  },
+  "accepted_run": {
+    "run_id": "native-20260802-c10a-container-r34-1",
+    "profile": "c10a-container",
+    "scenario_sha256": "596c0e501f5a3a27a3dc267afdd5fc367ec1e8c0040094ef690bc8e6ff92c2c8",
+    "action_count": 23,
+    "composition_result": "completed",
+    "steam_free_cold_join": true,
+    "native_zero_composition": true,
+    "container_uid": "2707228667:9155594",
+    "container_prefab": "piece_chest_wood",
+    "seed_item": "Raspberry",
+    "server_commit_count": 1,
+    "server_stale_reject_count": 1,
+    "duplicate_replay_count": 2,
+    "total_inventory_delta": 1,
+    "inventory_results": [
+      {"client": "omen", "decision": "committed", "inventory_before": 10, "inventory_after": 11, "granted": 1},
+      {"client": "i5", "decision": "stale_revision", "inventory_before": 23, "inventory_after": 23, "granted": 0}
+    ],
+    "fresh_process_reconstruction": {
+      "omen": {"revision": 2, "metadata_count": 0, "inventory_count": 0, "owner": 0},
+      "i5": {"revision": 2, "metadata_count": 0, "inventory_count": 0, "owner": 0}
+    },
+    "machine_checks": {
+      "passed": 19,
+      "total": 19,
+      "failed": 0,
+      "actual_container_takeall_intercepted_both_clients": true,
+      "two_peer_four_copy_barrier": true,
+      "one_commit_one_stale_two_replays": true,
+      "explicit_inventory_serialization": true,
+      "scoped_native_owner_reassignment_suppressed": true,
+      "fresh_process_durable_refresh": true,
+      "fresh_process_empty_reconstruction_both_clients": true,
+      "native_zero_ledgers_clean": true,
+      "exact_paired_gateway_image": true,
+      "exactly_one_tagged_container_destroyed": true
+    },
+    "clients": [
+      {"client": "omen", "result": "joined_held_and_stopped", "resume_count": 1, "terminal": "scenario_complete"},
+      {"client": "i5", "result": "joined_held_and_stopped", "resume_count": 1, "terminal": "scenario_complete"}
+    ]
+  },
+  "pre_acceptance_falsifiers": ["r29", "r30", "r31", "r32", "r33"],
+  "scope": {
+    "closed": "selected two-client ordered container transaction canary",
+    "not_closed": [
+      "station-specific RPC invocation",
+      "AI/creature family",
+      "arbitrary existing untagged vehicle and mount targets",
+      "third distant recipient and AoI enter/leave",
+      "relevance-scoped snapshot fanout",
+      "fallback deletion and P7 promotion"
+    ],
+    "p7": "untouched",
+    "workbench": "untouched",
+    "hearth": "untouched and separate"
+  }
+}
