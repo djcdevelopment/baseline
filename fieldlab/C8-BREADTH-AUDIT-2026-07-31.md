@@ -168,8 +168,14 @@ targeted-verification flags this audit endorses:
    representative container gate, not proof that every station-specific RPC ran;
    smelter/cooking-station breadth remains admitted/poisoned until exercised or
    contradicted.
-3. **AI/creatures (`MonsterAI`, `AnimalAI`, `Tameable`, …)** — server-to-client
-   ownership handoff must not stall AI; needs a targeted verification cell.
+3. **AI/creatures (`MonsterAI`, `AnimalAI`, `Tameable`, …)** — exact r36 physically
+   accepts the selected autonomous `MonsterAI` boundary on an actual tamed Lox through
+   OMEN ownership, i5 transfer, disconnect loss, and AM4 reclaim. Owners executed
+   160–161 real `BaseAI.UpdateAI` ticks, replicas executed zero owner ticks and 160
+   non-owner blocks, recovery stayed under 0.035 s, all native ledgers stayed zero, and
+   exact cleanup passed. Pinned source shows `MonsterAI.UpdateAI` and
+   `AnimalAI.UpdateAI` share the `BaseAI` non-owner gate; that classification does not
+   claim every species or `Tameable` behavior was physically invoked.
 
 Players/motion ride the motion-authority lane (C6, accepted); pickables,
 destructibles, structures, world-systems, effects ride the generic
@@ -188,7 +194,9 @@ respective shapes.
   behind the poison tripwire with the deferred bucket documented in the C10 gate.
 - Most needs-lane rows are allow-list + payload-contract admissions on proven lanes.
   Vehicle control is the verified exception: one hash has registrant-dependent identity
-  and ownership semantics, so ship and saddle require separate typed contracts. The two
-  remaining named component-family gate is AI/creature; station-specific breadth remains
-  explicit rather than silently inheriting the selected chest pass. Vehicle/mount
-  generalization and relevance remain a separate C10 boundary.
+  and ownership semantics, so ship and saddle require separate typed contracts. The
+  selected AI/creature component-family gate is now physically closed by exact r36;
+  other species remain explicit source-classified breadth rather than inheriting a
+  universal pass. Station-specific breadth remains explicit rather than silently
+  inheriting the selected chest pass. Vehicle/mount generalization and relevance remain
+  a separate C10 boundary.
