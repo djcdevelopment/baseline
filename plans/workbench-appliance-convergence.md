@@ -4,10 +4,11 @@ Status: planned follow-on, 2026-08-02. Existing PD-5 policy determines the
 direction; this is execution work, not a reopened product decision.
 
 **Sequencing lock:** Workbench implementation and dashboard observation are frozen behind
-the functional native-Valheim cutover. Do not spend another engineering slice here while
-C10 still has local gameplay gates. Resume only after container/station, AI/creature, and
-vehicle/mount AoI/relevance generalization have physical receipts, or when Derek explicitly
-changes the priority. A UI cannot substitute for a playable two-client cutover receipt.
+the functional native-Valheim cutover. Exact r41 now closes the local container/station,
+AI/creature, and vehicle/mount AoI/relevance prerequisites with physical receipts, but C10b's
+P7 candidate proof, fallback deletion, and final no-fallback P7 proof remain. Resume appliance
+implementation only after that final network close, or when Derek explicitly changes the
+priority. A UI cannot substitute for a playable two-client cutover receipt.
 
 ## Outcome
 
