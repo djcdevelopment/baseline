@@ -493,11 +493,15 @@ pinned extractor identifies exactly 19 methods across eight station registrants,
 have exact shared routes, and no distinct authority shape or poison trip opened another
 physical gate. The shared vehicle hashes require separate typed contracts and remain
 generic-lane poison tripwires; other creature species remain source-classified breadth
-rather than an inherited physical pass. r39 implements ordinary untagged mount adoption,
+rather than an inherited physical pass. r39 implemented ordinary untagged mount adoption,
 direct per-observer relevance with hysteresis, and dedicated-server-owned snapshot
-publication. M7-E04 repeatably proves the exact three-recipient edge policy. The next and
-only local gate is its exact AM4/OMEN/i5 physical acceptance before fallback deletion;
-r37's mixed-release black screens are a stopped pre-scene falsifier, not gameplay proof.
+publication, but its exact two-client run falsified two concrete edges: a wait-only
+request could create the target, and a server-owned raw ZDO had no publisher without a
+live `Character`. r40 makes discovery non-creating and publishes canonical server-owner
+snapshots from that ZDO-only representation. M7-E04 repeatably proves the exact
+three-recipient edge policy. The next and only local gate is exact r40 AM4/OMEN/i5
+physical acceptance before fallback deletion; r37's mixed-release black screens and
+r39's zero-advance server handoff remain named falsifiers, not gameplay proof.
 Do not rerun retained C0-C8, stamina, ship, selected saddle, selected container,
 or selected creature boundaries without contradictory evidence.
 Workbench/dashboard work remains frozen until those functional local gates close.
