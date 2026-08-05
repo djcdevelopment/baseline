@@ -90,6 +90,52 @@ one curl away. Add the recovery drill to the P7 runbook.
 - The scenario itself needs no changes for fixes 1–4; it is exactly the test
   that catches them.
 
+## Addendum — the 2026-08-05 human session (added same day)
+
+The first human 2-player session surfaced a sixth finding that outranks the
+original five in alpha order, plus a baseline and an operational hazard.
+
+### 6. Enrollment-lane end-to-end proof is the real alpha gate
+
+P7 has three delivery lanes: native vanilla sync; the enrollment consumer lane
+(server primary-redirect into the authoritative window, drained by ENROLLED
+consumers — what every real tester runs via the personalized mod-zip, and what
+July's sessions ran); and the harness journal lane (canonical session +
+private-plane runtime arming — what every candidate proof runs). The candidate
+proof therefore validates a lane no alpha tester will ever use, and the lane
+they will use has never been exercised on P7 by the new stack: the lab clients
+connected sessions but attached as consumers never (`active_consumers: 0`,
+4,421 receipts pending, applied 0), because consumer attach on P7's
+credentialed public plane requires enrollment keys the lab configs lack (AM4's
+uncredentialed local gateway hides this entirely). Required proof: start from a
+fresh self-service mod-zip enrollment, end with a physically verified visible
+world and co-presence. That proof, not candidate 12, is the alpha gate.
+
+### Unbounded WAL growth on unconsumed windows
+
+With 100% redirect and zero consumers, `redirect.wal` reached 1,002 MB on the
+32 GB state disk in one evening. Deleted 2026-08-05 with the stack stopped
+(with `journal.jsonl`, per the wipe-after-restart doctrine; disk back to 64%).
+Gateway fix: bound unconsumed-window growth (size or age cap + shed-and-log);
+a misconfigured or consumer-less deploy must degrade, not fill the disk.
+
+### Motion baseline (C9 human verdict, partial)
+
+2026-08-05, P7 WAN (us-west1), vanilla native sync, mod in observe mode:
+verdict **smooth** (Derek). This baselines the pipe — WAN latency to GCP is not
+a limiting factor — and sets the felt reference the armed cutover motion path
+must match. The C9 human verdict for the Lumberjacks-owned motion path remains
+open; run it on the armed lane after the r42 fixes.
+
+### Config state left on P7
+
+`zdoRedirectEnabled = false` (native play mode) as of 2026-08-05; the armed
+config is preserved at
+`djcdevelopment.valheim.comfynetworksense.cfg.bak-20260805T1020Z` next to the
+live cfg. Restore it deliberately for the next armed window. VM stopped,
+status verified TERMINATED; the 08-05 boot receipt died with the shutdown —
+the next harness window needs a fresh determinism proof.
+
 ## Scope notes
 
 - Fixes 1–4 are Gateway-side; fix 1 also touches the mod's session resume
