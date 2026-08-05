@@ -15,6 +15,23 @@ Bounded: touch only lines you created or resolved.
 
 ## Open
 
+- [ ] 2026-08-05 — **When to spend the r42 Gateway fix cut and the next P7 window.** The
+  session-plane fix plan is landed (five fixes + enrollment addendum); implementing it invalidates
+  the promoted r41 pair, so the cost is a coupled pair cut, re-promotion, a fresh boot receipt, and
+  candidate 12 — plus the local wedge repro (harness throttle) that should reproduce the redelivery
+  stall on AM4 *before* GCP spend. (source: [fix plan](evidence/p7-gateway-session-plane-fix-plan-20260805.md), [SESSION-RETRO-2026-08-05](retro/SESSION-RETRO-2026-08-05.md))
+
+- [ ] 2026-08-05 — **Ratify the enrollment-lane proof as the alpha gate (ADR 0017), and pick the
+  alpha posture.** Proposed: alpha runs on a fallback-capable candidate with the mod-zip→visible-world
+  proof as the gate; the permanent no-fallback final cuts only after alpha traffic survives. Needs
+  Derek's yes, and the client-harness enrollment support it implies. (source: [ADR 0017](docs/adr/0017-prove-the-lane-users-ship-on.md))
+
+- [ ] 2026-08-05 — **Restore `zdoRedirectEnabled=true` on P7 before the next armed window.** The
+  server was left in native play mode; the armed config is
+  `djcdevelopment.valheim.comfynetworksense.cfg.bak-20260805T1020Z` beside the live cfg on the VM.
+  A candidate run against a native-mode server would be measuring the wrong lane — restore first.
+  (source: [fix plan addendum](evidence/p7-gateway-session-plane-fix-plan-20260805.md))
+
 - [~] 2026-07-22 — **PINNED 2026-07-28** (networking-lane hard hold — see
   [PINNED-networking-lane-2026-07.md](PINNED-networking-lane-2026-07.md); return here on re-open):
   **Re-confirm the co-presence ownership bug actually reproduces before deploying/arming
