@@ -133,6 +133,16 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;',
 // cluster but said nothing about what it was.
 const structOf=r=>r.label||(r.cluster_rank!=null?`#${r.cluster_rank}`:'unmatched');
 
+// Valheim's time of day is a 0..1 fraction of the day, 0.5 being noon. Shown raw
+// in a corner it reads as a score out of one, which is the opposite of what it
+// means -- 0.90 is a useless midnight frame and 0.64 is the best light there is.
+// So render it as a clock.
+const clockOf=t=>{
+  if(t==null) return '';
+  const m=Math.round(t*24*60), h=Math.floor(m/60)%24;
+  return `${String(h).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
+};
+
 async function boot(){
   try{ DB=await (await fetch('index.json',{cache:'no-store'})).json(); }
   catch(e){ $('main').innerHTML='<div class=empty>could not load index.json</div>'; return; }
@@ -245,7 +255,7 @@ function cellHtml(r,i){
   return `<div class=cell data-i="${i}">
     <img loading=lazy src="thumb/${esc(r.id)}.webp" alt="">
     <span class=badge style="background:${col}">${esc(r.environment||'')}</span>
-    <span class=tt>${r.time_of_day!=null?r.time_of_day.toFixed(2):''}</span>
+    <span class=tt title="ranking score">${r.score!=null?r.score.toFixed(1):''}</span>
     <span class="star${MINE.has(r.id)?' on':''}">${MINE.has(r.id)?'★':'☆'}${VOTES[r.id]?`<i>${VOTES[r.id]}</i>`:''}</span>
     <div class=cap>${esc(cap)}</div></div>`;
 }
@@ -269,7 +279,8 @@ function openLb(i){
   if(r.signs) bits.push(`${r.signs} signs`);
   if(r.builders) bits.push(`${r.builders} builders`);
   if(r.environment) bits.push(r.environment);
-  if(r.time_of_day!=null) bits.push('t '+r.time_of_day.toFixed(2));
+  if(r.score!=null) bits.push('score '+r.score.toFixed(2));
+  if(r.time_of_day!=null) bits.push(clockOf(r.time_of_day)+' in-game');
   if(r.shot_distance_m!=null) bits.push(`shot from ${Math.round(r.shot_distance_m)} m`);
   const nv=VOTES[r.id]||0;
   $('lbmeta').innerHTML=bits.map(b=>`<span>${esc(b)}</span>`).join('')+
@@ -290,7 +301,7 @@ function openLb(i){
   const sibs=byRun[r.run]||[];
   $('lbrends').innerHTML=sibs.map(s=>`<div class="rend${s.id===r.id?' cur':''}" data-id="${esc(s.id)}">
      <div class=fr><img loading=lazy src="thumb/${esc(s.id)}.webp" alt=""></div>
-     <div class=lab>${esc((s.variant||'').replace(/^[a-d]_/,''))}</div></div>`).join('');
+     <div class=lab>${esc(clockOf(s.time_of_day)||(s.variant||'').replace(/^[a-d]_/,''))}</div></div>`).join('');
   $('lbrends').querySelectorAll('.rend').forEach(el=>{
     el.onclick=()=>{ const j=view.findIndex(v=>v.id===el.dataset.id); if(j>=0) openLb(j); };
   });

@@ -275,6 +275,7 @@ def main():
                 row.update({
                     "cluster_id": cluster["cluster_id"],
                     "cluster_rank": cluster.get("rank"),
+                    "score": cluster.get("score"),
                     "label": label_for(cluster, names),
                     "kind": describe(cluster),
                     "footprint_m2": cluster.get("footprint_m2"),
@@ -351,6 +352,7 @@ def main():
             row.update({
                 "cluster_id": cluster["cluster_id"],
                 "cluster_rank": cluster.get("rank"),
+                "score": cluster.get("score"),
                 "label": label_for(cluster, names),
                 "kind": describe(cluster),
                 "footprint_m2": cluster.get("footprint_m2"),
@@ -382,6 +384,27 @@ def main():
                 skipped.append((run, f"large render failed for {fname}: {exc}"))
         if args.copy_full:
             shutil.copy2(src, os.path.join(img_dir, image_id + ".png"))
+
+    # Iterating on the camera meant shooting the same three structures six times,
+    # so they carry 36 frames each while everything else has 6 -- and sorting by
+    # rank then fills the first page with one building. Most of those extras are
+    # from superseded builds anyway: 200 m of haze, the wrong golden hour, the
+    # occlusion check that only flagged. Keep the newest capture of each angle.
+    best = {}
+    for r in rows:
+        if r.get("source") != "orbit":
+            continue
+        key = (r.get("cluster_id"), r.get("variant"))
+        if key not in best or r["ts"] > best[key]["ts"]:
+            best[key] = r
+    superseded = sum(1 for r in rows
+                     if r.get("source") == "orbit"
+                     and best.get((r.get("cluster_id"), r.get("variant"))) is not r)
+    rows = [r for r in rows
+            if r.get("source") != "orbit"
+            or best.get((r.get("cluster_id"), r.get("variant"))) is r]
+    if superseded:
+        print(f"  {superseded} orbit frame(s) superseded by a later capture of the same angle")
 
     rows.sort(key=lambda r: -r["ts"])
 
