@@ -129,24 +129,49 @@ Lumberjacks exposes this natively. When a build is a first-class object with a
 known owner and known extents, none of this scanning is necessary; you ask.
 Treat this tool as a bridge for the Valheim era, not as the architecture.
 
-## Where this is going
+## The pieces, and what each one does
 
-The scan is step one of three. Next:
+```text
+scan_clusters.py        world .db cache  ->  clusters.json      structures + geometry
+plan_shots.py           clusters.json    ->  shotplan.tsv       6 camera positions each
+Invoke-OrbitCapture.ps1 shotplan.tsv     ->  screenshots        unattended, no keyboard
+build_valheim_index.py  screenshots      ->  index.json         joined back to structures
+name_structures.py      screenshots      ->  cluster-names.json named by a vision model
+gallery/index.html      index.json       ->  the gallery        vote / request / claim
+```
 
-1. **A local web page** listing clusters, with a click-to-teleport button per
-   row and weather / time-of-day controls.
-2. **An MCP tool** on the Comfy gateway that writes a bounded, allow-listed
-   command mailbox — the same atomic-mailbox pattern
-   `valheim_lab_motion_test` already uses, deliberately not an HTTP call from
-   the game (a synchronous raw-socket POST on Unity's main thread can freeze
-   the client for seconds).
-3. **A mailbox consumer in the camera mod**, so the page can move you and set
-   the weather while you keep control of framing.
+Two ways to shoot:
 
-The mod half is a revival of `valheim-camera-proof` from the public `comfy`
-archive, which already has teleport, screenshot capture, `comfyproof_env`,
-`comfyproof_time`, and `comfyproof_hideplayer`. It stays a separate BepInEx
-plugin — nothing here belongs in ComfyNetworkSense.
+**By hand.** Install the camera mod, run `make_waypoints.py --install`, and use the
+arrow keys in game — right for the next build, left for the previous, up to capture
+the current framing in 23 lights. You choose every composition.
 
-Note on licensing: that kit is MIT in the archive. A copy landed here falls
-under this repo's BSL 1.1 instead.
+**Unattended.** `Invoke-OrbitCapture.ps1 -Top 40` plans six angles per structure
+from its bounding box, launches the game, opens the world, places and aims the
+camera, waits for the world to stream in, recovers from a blocked view, shoots,
+and quits. Nobody touches the keyboard.
+
+The automated path exists because a human pays for *moving* and a machine does
+not. Twenty-three frames of one viewpoint was the right trade for a person; six
+viewpoints is the right trade for a machine.
+
+## Known rough edges
+
+- **Prefab names are hashes.** StewardView's cache does not resolve building
+  pieces. A one-time in-game dump of `ZNetScene`'s prefab table would fix it
+  permanently.
+- **Builder IDs are not names.** 660 distinct `creator_id`s attribute cleanly,
+  but turning one into a person needs the running viewer's player records.
+- **No metric here can judge a photograph.** Luminance and contrast find black
+  frames and empty frames; they called the best hand-shot image of the first
+  session "thin". Ranking is what the gallery votes are for.
+- **Dense forest still beats the camera occasionally.** The runner lifts and then
+  swings to clear foliage, and records which; `still_blocked` in the receipts
+  means it tried everything and shot anyway.
+
+## Licensing
+
+The camera mod is a revival of `valheim-camera-proof` from the public `comfy`
+archive, where it is MIT. A copy landed in this repository falls under BSL 1.1
+instead. It stays a separate BepInEx plugin — nothing here belongs in
+ComfyNetworkSense.
