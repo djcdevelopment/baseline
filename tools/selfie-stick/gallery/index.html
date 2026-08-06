@@ -94,7 +94,7 @@
   </button>
   <b>Era 16</b>
   <span class=sub id=sub>loading…</span>
-  <label class=psize>Page size <input id=psize type=number min=1 value=24></label>
+  <label class=psize>Page size <input id=psize type=number min=1 value=100></label>
  </div>
  <div class=panel id=panel></div>
 </header>
@@ -120,7 +120,7 @@
 // ---- state ----
 let DB={images:[]}, MINE=new Set(), VOTES={}, REQS={}, CLAIMS={}, USER='anon', SIGNEDIN=false;
 let sel={region:new Set(),kind:new Set(),environment:new Set(),structure:new Set()};
-let sort='recent', page=0, view=[], cur=-1;
+let sort='best', page=0, view=[], cur=-1;   // the auto score is the most useful first impression
 const byRun={};                       // run id -> all moods of that one setup
 
 const ENVCOLOR={Clear:'#7aa2ff',Misty:'#9ad5c8',Rain:'#8fb2d9',ThunderStorm:'#b79ae0'};
@@ -218,7 +218,7 @@ function render(){
   else if(sort==='stars') view.sort((a,b)=>(STARS.has(b.id)?1:0)-(STARS.has(a.id)?1:0)||b.ts-a.ts);
   else view.sort((a,b)=>b.ts-a.ts);
 
-  const n=Math.max(1,parseInt($('psize').value)||24);
+  const n=Math.max(1,parseInt($('psize').value)||100);
   const pages=Math.max(1,Math.ceil(view.length/n));
   page=Math.min(page,pages-1);
   const slice=view.slice(page*n,page*n+n);
