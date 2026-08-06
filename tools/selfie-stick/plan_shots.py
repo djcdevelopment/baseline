@@ -48,9 +48,9 @@ def parse_args():
     p.add_argument("--top", type=int, default=0, help="only the top N by score")
     p.add_argument("--elevation", type=float, default=40.0,
                    help="camera elevation above the horizontal, degrees (default 40)")
-    p.add_argument("--margin", type=float, default=1.35,
+    p.add_argument("--margin", type=float, default=1.15,
                    help="frame headroom so landscape is in shot as well as building")
-    p.add_argument("--max-distance", type=float, default=200.0,
+    p.add_argument("--max-distance", type=float, default=120.0,
                    help="haze cap. Beyond this the frame fills with atmosphere and the "
                         "build reads as a flat silhouette; better to shoot part of a big "
                         "build up close than all of it through 400 m of fog")
@@ -71,6 +71,18 @@ def orbit_azimuths(size_x, size_z):
     return [(base + 45.0 + i * 90.0) % 360.0 for i in range(4)], long_axis_is_x
 
 
+def elevation_for(cluster, default_deg):
+    """A tower and a plaza want opposite camera heights.
+
+    Shooting a 100 m spire from 40 deg up gives you a roof. Shooting a flat sprawling
+    settlement from 15 deg gives you a fence. So tilt down on flat things and level
+    off on tall ones, from the height-to-width ratio.
+    """
+    width = max(cluster["size_x"], cluster["size_z"], 1.0)
+    ratio = cluster["size_y"] / width
+    return max(18.0, min(default_deg, default_deg - 60.0 * ratio))
+
+
 def camera_for(cluster, azimuth_deg, elevation_deg, margin, max_distance, clearance):
     """Where to stand, and where to look, to frame this structure from one bearing."""
     cx, cz = cluster["center_x"], cluster["center_z"]
@@ -78,8 +90,15 @@ def camera_for(cluster, azimuth_deg, elevation_deg, margin, max_distance, cleara
     # mass sits above its median, and aiming low tips the whole build out of frame.
     cy = (cluster["min_y"] + cluster["max_y"]) / 2.0
 
-    diag = max(cluster["diagonal_m"], 8.0)
-    ideal = (diag / 2.0) / math.tan(math.radians(FOV_V_DEG / 2.0)) * margin
+    # Frame on the compact extent, not the bounding diagonal. A cluster's diagonal is
+    # inflated by sprawl -- outbuildings, walls, a dock -- so framing on it pushes the
+    # camera far enough back that the thing people came to see is a smudge in the middle
+    # of a hazy frame. Measured on Dragon's Den: diagonal 252 m wants the camera 267 m
+    # out, while its compact extent of 150 m wants 136 m. The second is the photograph.
+    subject = max(cluster["size_y"],
+                  min(cluster["size_x"], cluster["size_z"]),
+                  8.0)
+    ideal = (subject / 2.0) / math.tan(math.radians(FOV_V_DEG / 2.0)) * margin
     distance = min(ideal, max_distance)
     fits = ideal <= max_distance
 
@@ -106,6 +125,7 @@ def camera_for(cluster, azimuth_deg, elevation_deg, margin, max_distance, cleara
         "yaw_deg": round(yaw, 2),
         "pitch_deg": round(pitch, 2),       # Unity convention: positive looks down
         "distance_m": round(distance, 1),
+        "elevation_deg": round(elevation_deg, 1),
         "frames_whole_build": fits,
     }
 
@@ -130,7 +150,8 @@ def main():
     shots, clipped = [], 0
     for c in clusters:
         azimuths, long_x = orbit_azimuths(c["size_x"], c["size_z"])
-        cams = [camera_for(c, a, args.elevation, args.margin,
+        elev = elevation_for(c, args.elevation)
+        cams = [camera_for(c, a, elev, args.margin,
                            args.max_distance, args.min_clearance) for a in azimuths]
         if not cams[0]["frames_whole_build"]:
             clipped += 1
@@ -166,7 +187,24 @@ def main():
         json.dump(out, fh, indent=1, ensure_ascii=False)
     os.replace(tmp, args.out)
 
-    print(f"  {len(clusters)} structures -> {len(shots)} shots  ({args.out})")
+    # The mod reads this, not the JSON. It has no JSON parser — it scrapes with
+    # regex — and one flat line per shot is far harder to misparse than nested
+    # objects. Same data, ordered, comment lines start with '#'.
+    tsv = os.path.splitext(args.out)[0] + ".tsv"
+    with open(tsv + ".tmp", "w", encoding="utf-8", newline="\n") as fh:
+        fh.write("# cluster_id\tshot\tcam_x\tcam_y\tcam_z\tyaw\tpitch\tenv\ttime\t"
+                 "aim_x\taim_y\taim_z\tlabel\n")
+        for s in shots:
+            c, a = s["camera"], s["aim"]
+            fh.write(f"{s['cluster_id']}\t{s['shot']}\t{c['x']}\t{c['y']}\t{c['z']}\t"
+                     f"{s['yaw_deg']}\t{s['pitch_deg']}\t{s['environment']}\t"
+                     f"{s['time_of_day']}\t{a['x']}\t{a['y']}\t{a['z']}\t"
+                     f"{s['label'].replace(chr(9), ' ')}\n")
+    os.replace(tsv + ".tmp", tsv)
+
+    print(f"  {len(clusters)} structures -> {len(shots)} shots")
+    print(f"  {args.out}")
+    print(f"  {tsv}  (this is the one the mod reads)")
     if clipped:
         print(f"  {clipped} structure(s) too big to frame whole inside the "
               f"{args.max_distance:g} m haze cap — shot closer, partial frame")
