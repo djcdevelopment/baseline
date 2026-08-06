@@ -27,6 +27,10 @@ from collections import Counter
 DEFAULT_CAPTURES = (r"C:\Program Files (x86)\Steam\steamapps\common\Valheim"
                     r"\BepInEx\config\comfy-manual-captures")
 THUMB_PX = 512
+# Big enough to actually look at, small enough to serve. The 4K originals are
+# 6.6 MB each; at 1600 px they are a couple of hundred KB and lose nothing that
+# matters on a screen.
+LARGE_PX = 1600
 
 
 def parse_args():
@@ -41,6 +45,10 @@ def parse_args():
                    help="where index.json and thumb/ are written")
     p.add_argument("--thumbs", action="store_true",
                    help="also generate webp thumbnails (needs Pillow)")
+    p.add_argument("--large", action="store_true",
+                   help="also generate 1600px webp for the lightbox")
+    p.add_argument("--keep-rejects", action="store_true",
+                   help="include frames the capture itself flagged as bad")
     p.add_argument("--copy-full", action="store_true",
                    help="copy full-size images into dest/img (large; off by default)")
     p.add_argument("--orbit-captures", default=(r"C:\Program Files (x86)\Steam\steamapps"
@@ -171,12 +179,29 @@ def load_names(path):
         return {str(k): str(v).strip() for k, v in json.load(fh).items() if str(v).strip()}
 
 
-def make_thumb(src, dest_path):
+def make_thumb(src, dest_path, px=THUMB_PX, quality=82):
     from PIL import Image
     with Image.open(src) as im:
         im = im.convert("RGB")
-        im.thumbnail((THUMB_PX, THUMB_PX))
-        im.save(dest_path, "WEBP", quality=82, method=4)
+        im.thumbnail((px, px))
+        im.save(dest_path, "WEBP", quality=quality, method=4)
+
+
+def is_reject(rec):
+    """Frames the capture itself already knew were bad.
+
+    Two failure modes, both recorded at the moment of the shot: the world had not
+    loaded (a photograph of the loading screen), and the view was obstructed (a
+    photograph of a tree). No judgement about whether a picture is *good* -- only
+    whether it is a picture of the thing at all.
+    """
+    if rec.get("skipped"):
+        return "skipped by the runner"
+    if rec.get("pieces_near_aim") == 0:
+        return "world never loaded"
+    if rec.get("occluded"):
+        return "view obstructed"
+    return None
 
 
 def main():
@@ -199,7 +224,11 @@ def main():
 
     rows = []
     skipped = []
+    rejected = []
     unjoined = 0
+    large_dir = os.path.join(args.dest, "large")
+    if args.large:
+        os.makedirs(large_dir, exist_ok=True)
 
     for run in sorted(os.listdir(args.captures)):
         run_dir = os.path.join(args.captures, run)
@@ -270,6 +299,12 @@ def main():
                     sys.exit("--thumbs needs Pillow: pip install pillow")
                 except Exception as exc:
                     skipped.append((run, f"thumbnail failed for {still}: {exc}"))
+            if args.large:
+                try:
+                    make_thumb(src, os.path.join(large_dir, image_id + ".webp"),
+                               px=LARGE_PX, quality=80)
+                except Exception as exc:
+                    skipped.append((run, f"large render failed for {still}: {exc}"))
             if args.copy_full:
                 shutil.copy2(src, os.path.join(img_dir, image_id + ".png"))
 
@@ -277,12 +312,19 @@ def main():
     orbit_n = 0
     for rec in read_orbit_receipts(args.receipts):
         run, fname = rec.get("run"), rec.get("file")
+        if rec.get("skipped") and not args.keep_rejects:
+            rejected.append((run, "-", rec["skipped"]))
+            continue
         if not run or not fname:
             skipped.append((str(run), "receipt missing run or file"))
             continue
         src = os.path.join(args.orbit_captures, run, fname)
         if not os.path.exists(src):
             skipped.append((run, f"{fname} in receipts but not on disk"))
+            continue
+        why = is_reject(rec)
+        if why and not args.keep_rejects:
+            rejected.append((run, fname, why))
             continue
         cluster = by_id.get(rec.get("cluster_id"))
         image_id = f"{run}_{os.path.splitext(fname)[0]}"
@@ -332,6 +374,12 @@ def main():
                 make_thumb(src, os.path.join(thumb_dir, image_id + ".webp"))
             except Exception as exc:
                 skipped.append((run, f"thumbnail failed for {fname}: {exc}"))
+        if args.large:
+            try:
+                make_thumb(src, os.path.join(large_dir, image_id + ".webp"),
+                           px=LARGE_PX, quality=80)
+            except Exception as exc:
+                skipped.append((run, f"large render failed for {fname}: {exc}"))
         if args.copy_full:
             shutil.copy2(src, os.path.join(img_dir, image_id + ".png"))
 
@@ -365,6 +413,12 @@ def main():
           f"({len(rows) - doc['joined']:,} without metadata)")
     if unjoined:
         print(f"  {unjoined} run(s) had no cluster within {args.max_join_m:g} m")
+    if rejected:
+        from collections import Counter
+        why = Counter(w for _, _, w in rejected)
+        print(f"  {len(rejected)} frame(s) excluded as failed captures:")
+        for w, c in why.most_common():
+            print(f"      {c:>4}  {w}")
     if skipped:
         # Loud on purpose: build_index.py swallows these, and a contributor's whole
         # drop can disappear without a word.
