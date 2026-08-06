@@ -10,7 +10,7 @@ Lumberjacks `e7cef6e9819f4d5f4d462f6d74860611fddb046a` (Gateway code in
 This is not a production deployment acceptance.
 
 This document is the single acceptance record. Its compact evidence set is under
-[`evidence/20260719-172149`](evidence/20260719-172149/); the provenance and SHA-256 inventory is
+[`evidence/20260719-172149`](); the provenance and SHA-256 inventory is
 [`evidence-manifest.json`](evidence/20260719-172149/evidence-manifest.json). The larger source run
 under `fieldlab/runs/` is intentionally generated and Git-ignored. The manifest retains hashes for
 those generated sources so a surviving local copy can be checked without making private or bulky

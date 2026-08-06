@@ -1,15 +1,15 @@
 # PD-1 — Governance & contributions
 
 Status: adopted 2026-07-29 (Derek). Canonical *why* for the contribution posture.
-The *what* lives in [`CONTRIBUTING.md`](../../CONTRIBUTING.md), [`CLA.md`](../../CLA.md),
-and [`LICENSING.md`](../../LICENSING.md); this document explains it.
+The *what* lives in [`CONTRIBUTING.md`](../../CONTRIBUTING.md), [`CLA.md`](../legal/CLA.md),
+and [`LICENSING.md`](../legal/LICENSING.md); this document explains it.
 
 ## The operating principle
 
 > **Baseline sells licenses, so the maintainer must hold rights to the whole tree.**
 
 Baseline is public source (BSL 1.1) with a paid commercial path
-([`COMMERCIAL.md`](../../COMMERCIAL.md)), and ComfyStewardView is proprietary. A licensor
+([`COMMERCIAL.md`](../legal/COMMERCIAL.md)), and ComfyStewardView is proprietary. A licensor
 who grants Additional Use Grants and sells commercial licenses must hold sufficient
 rights over every line shipped. Rights are cheap to collect at the door and famously
 expensive to collect retroactively. Every contribution rule below follows from this
@@ -33,7 +33,7 @@ one sentence.
 
 ## The instrument: lightweight CLA (decided 2026-07-29, delegated)
 
-**Decision:** a plain-language contributor license agreement — [`CLA.md`](../../CLA.md)
+**Decision:** a plain-language contributor license agreement — [`CLA.md`](../legal/CLA.md)
 v1.0 — signed with one sentence in the first substantive PR (or by email), recorded in
 [`docs/legal/cla-signatures.md`](../legal/cla-signatures.md) at merge. Trivial changes
 waivable at the maintainer's discretion.

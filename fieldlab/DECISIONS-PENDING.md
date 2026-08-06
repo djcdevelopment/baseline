@@ -6,7 +6,7 @@
 > `C:\work\comfy` listener was stopped; active Baseline Dev/Lab launchers/config
 > use explicit `:8721`. See the canonical
 > [MCP endpoint provenance audit](../docs/audit/2026-08-01-mcp-endpoint-provenance-audit.md)
-> and root [decision queue](../DECISIONS-PENDING.md). Do not promote `:8720`
+> and root [decision queue](../docs/internal/DECISIONS-PENDING.md). Do not promote `:8720`
 > receipts or treat the retired task as Baseline evidence.
 
 The single place to look when batching decisions. Append open items as

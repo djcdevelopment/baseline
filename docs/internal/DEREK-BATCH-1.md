@@ -53,20 +53,20 @@ anyone, or post `00-announcement.md` (hardcoded denylist, no flag). Setup walkth
 `Lumberjacks/docs/workbench/discord/09-discord-bot-setup.md`.
 
 0. **Tick-box version of everything below:**
-   [`tools/workbench/discord/WORKBOOK.md`](tools/workbench/discord/WORKBOOK.md) — also
+   [`tools/workbench/discord/WORKBOOK.md`](../../tools/workbench/discord/WORKBOOK.md) — also
    carries the paste-ready handoff block for the dashboard agent.
 1. ✅ **Done.** Bot `Baseline-helper` created and authorized; token at
    `%USERPROFILE%\.baseline\discord.env`. `whoami` green.
 2. ✅ **Done.** Dry run approved and applied — the live plan hash matched the
    pre-approved offline receipt exactly (`6aba648cba55`), so what was read is what
-   shipped. Receipt: [`receipts/2026-07-29-plan.md`](tools/workbench/discord/receipts/2026-07-29-plan.md).
+   shipped. Receipt: [`receipts/2026-07-29-plan.md`](../../tools/workbench/discord/receipts/2026-07-29-plan.md).
    Thread URLs recorded in `tools/workbench/discord/provision-state.json`.
 3. ⏳ **STILL OPEN — the four catalog threads.** Seeds 01–04 contain `<ONEPAGER-URL>` /
    `<ACCESS-URL>`; posting them before `/workbench` is live would put literal
    placeholders, or links to a 404, in front of the community, so the bot holds them.
    Right after item 7's deploy:
    ```powershell
-   python tools\workbench\discord\workbench_discord.py --site-base-url https://comfy-p7.duckdns.org plan
+   python tools\workbench\discord\workbench_discord.py --site-base-url https://am4.tail8e749c.ts.net plan
    ```
    then `apply --yes --expect-plan <hash>`. Preview:
    `receipts/2026-07-29-plan-offline-after-deploy.md`.
@@ -84,7 +84,7 @@ diff-and-update pass forever. Let the bot create them.*
 ## 5. ✅ RESOLVED 2026-07-29 by the visibility flip — the repo is PUBLIC, so the roadmap's `github.com/djcdevelopment/baseline/...` links now resolve for everyone. No action left.
 
 ## 6. ✅ RESOLVED 2026-07-30 — retain ComfyStewardView's proprietary license
-Canonical decision: [`docs/decisions/pd-1-governance-and-contributions.md`](docs/decisions/pd-1-governance-and-contributions.md).
+Canonical decision: [`docs/decisions/pd-1-governance-and-contributions.md`](../../docs/decisions/pd-1-governance-and-contributions.md).
 
 *FYI, already fixed:* the quest picker's save instructions pointed at the pruned
 `comfy-control/` config path while the live mod reads `comfy-network-sense/` — silent
@@ -94,9 +94,17 @@ failure for any volunteer. Corrected in the picker + schema doc before the zip b
 **AM4 is the server/gateway for this stabilization round and every loop is verified**
 (page hash-exact, downloads hash-exact + cold-start through the wire, live telemetry via
 the kit's poller, nav sweep green, ops surface correctly fail-closed). The P7/GCP deploy
-below happens when you take it back to the cloud, lean-and-mean; the threads + announcement
-wait for the PUBLIC site either way (AM4 is tailnet-only — its URLs mean nothing to the
-community).
+below happens when you take it back to the cloud, lean-and-mean.
+
+> **CORRECTION 2026-08-06.** This item originally said *"AM4 is tailnet-only — its URLs
+> mean nothing to the community"*, and that sentence gated the unveil on a P7 deploy for
+> a week. **It is false.** `am4.tail8e749c.ts.net` is a Tailscale **Funnel**, not plain
+> tailnet: it resolves on public DNS (8.8.8.8 → 208.111.35.209) and serves `/workbench`,
+> `/community`, `/roadmap`, `/health` and both `/workbench/downloads/*` routes to anyone
+> on the internet. The threads and the announcement never needed P7. Two real caveats
+> remain: UDP cannot ride the funnel, so the **game world** still needs P7 or a direct
+> path; and the funnel routes `/join` to an unrelated service, so the enrollment flow is
+> not publicly reachable.
 
 **P7 step 0 (when that day comes): the VM is TERMINATED — stopped since 2026-07-25 23:44
 PT. You start it** (agent is classifier-blocked from cloud mutations):
@@ -119,7 +127,7 @@ password question.
 
 ## 8. Cognitive-lift portfolio — built, two optional touches
 Your "find 5–10 ideas, matrix them, build top 5" ask is done: 13 researched ideas scored in
-[plans/cognitive-lift-portfolio.md](plans/cognitive-lift-portfolio.md) (sources included),
+[plans/cognitive-lift-portfolio.md](../../plans/cognitive-lift-portfolio.md) (sources included),
 top 5 built: **announcement drafter** (journal → Discord draft skeleton, never auto-posted:
 `tools/workbench/new_announcement_draft.py`), **forum tags** (item 4 above), **bug-fix-shaped
 first-task lens** (in the one-pager template), **Already-answered section + saved replies**,

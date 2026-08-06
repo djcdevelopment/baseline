@@ -3,9 +3,9 @@
 **In force from 2026-07-29** for substantive contributions. Plain-language and
 project-written: this text was drafted by the project's AI agent and ratified by the
 maintainer under a recorded delegation
-([PD-1](docs/decisions/pd-1-governance-and-contributions.md)). It has **not yet had
+([PD-1](../../docs/decisions/pd-1-governance-and-contributions.md)). It has **not yet had
 independent legal review**; that review is scheduled for the
-[First Stranger gate](docs/decisions/pd-2-security-posture-first-stranger-gate.md).
+[First Stranger gate](../../docs/decisions/pd-2-security-posture-first-stranger-gate.md).
 If anything here gives you pause, email `licensing@djcdevelopment.com` before
 contributing — a conversation is a welcome outcome, not a failure mode.
 
@@ -47,7 +47,7 @@ By submitting a Contribution and signing as described below, you agree:
 4. **You stand behind it.** You have read and understood what you are submitting and
    can answer questions about it. These certifications bind you, the human signer,
    regardless of what tooling produced the text (see
-   [CONTRIBUTING.md](CONTRIBUTING.md) on AI-assisted contributions).
+   [CONTRIBUTING.md](../../CONTRIBUTING.md) on AI-assisted contributions).
 5. **No warranty, no obligation.** Your Contribution is provided as-is; you are not
    required to provide support; the Maintainer is not obligated to merge or retain it.
 
@@ -59,7 +59,7 @@ send it from your own email to `licensing@djcdevelopment.com`):
 > I agree to the Baseline CLA (CLA.md v1.0).
 
 The maintainer records your handle, the date, and the CLA version in
-[`docs/legal/cla-signatures.md`](docs/legal/cla-signatures.md) at merge. One signature
+[`docs/legal/cla-signatures.md`](../../docs/legal/cla-signatures.md) at merge. One signature
 covers all your future Contributions under the same CLA version.
 
 ## Trivial changes

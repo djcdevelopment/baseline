@@ -11,6 +11,6 @@ landing protocol before asking the operator a procedural question — the answer
 "should I commit / push / merge this?" is already there, and asking costs them a full
 context charge for a question the repo has answered.
 
-Cold pickup: [`HANDOFF-2026-07-29.md`](HANDOFF-2026-07-29.md) (state, pending-by-actor,
+Cold pickup: [`docs/internal/HANDOFF-2026-07-29.md`](docs/internal/HANDOFF-2026-07-29.md) (state, pending-by-actor,
 resume recipes). Product boundary before packaging or outward copy:
 [`docs/baseline-vision-and-boundary.md`](docs/baseline-vision-and-boundary.md).

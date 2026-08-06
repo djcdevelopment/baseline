@@ -48,6 +48,19 @@ It is vendored because it documents the original intent and the `users.txt` cont
 because it is still safe to execute. Edit `/etc/caddy/Caddyfile` directly, keeping a dated
 backup alongside the existing `.bak-*` and `.pre-mech-*` files.
 
+### `users.sh` is the same hazard wearing a different name
+
+`users.sh` calls `$HOME/gallery/gen_caddyfile.sh` on **both** paths — after `add` (line 18)
+and after `del` (line 28) — so managing a gallery login is not a separate, safe operation.
+Running `~/gallery/users.sh add <name>` on AM4 regenerates the old root-served layout and
+takes the public community storefront (`/workbench`, `/community`, `/roadmap`, the
+downloads) offline, along with the `/ops` 403 guard and the mech-commander proxy. The blast
+radius is the whole public surface, and nothing in `users.sh` says so at the call site.
+
+Until the generator is reduced to an `import`-ed snippet, adding or removing a gallery user
+means: edit `users.txt`, edit the `basic_auth` block in `/etc/caddy/Caddyfile` by hand, take
+a dated backup, then `sudo systemctl reload caddy`.
+
 ## Routing drift found on copying — and repaired 2026-08-06
 
 Both of these were live faults, not theoretical ones. The gallery moved from the site root

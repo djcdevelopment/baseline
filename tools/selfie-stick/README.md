@@ -107,12 +107,12 @@ The schema contract is an anti-lock-in guarantee, not a licence workaround. The
 code in this directory is governed by the repository's
 [`LICENSE`](../../LICENSE) like everything else: reading, testing, and
 modifying are free, and a community steward running their own server is covered
-automatically by the safe harbour in [`LICENSING.md`](../../LICENSING.md) — go,
+automatically by the safe harbour in [`LICENSING.md`](../../docs/legal/LICENSING.md) — go,
 enjoy it, no permission needed and no royalty owed.
 
 If instead you are packaging this as a turnkey offering, or you are a large
 organisation or past the safe-harbour limits, come talk to us first
-(`licensing@djcdevelopment.com`, see [`COMMERCIAL.md`](../../COMMERCIAL.md)).
+(`licensing@djcdevelopment.com`, see [`COMMERCIAL.md`](../../docs/legal/COMMERCIAL.md)).
 The boundary the project draws is extraction, not success — and getting to the
 point where these coordinates fall out of an opaque binary took a lot of failed
 attempts that are not visible in the finished script.

@@ -1,0 +1,48 @@
+# Start here — what's live, what's paused, what's history
+
+One page, one purpose: stop you from acting on the wrong era. Every area below is tagged
+**LIVE** (running or actively maintained), **BUILT — not deployed**, **STOPPED** (real, but not
+running right now), **PAUSED** (hard hold with a written resume path), **COCKPIT** (operator
+session state, not durable docs), or **HISTORICAL** (kept honestly, describes a past era).
+Updated 2026-08-06.
+
+If you're a newcomer rather than an agent or contributor, you want
+[`README.md`](../../README.md) instead — it has three doors, one per audience. This page is
+the era map, not a welcome.
+
+## The public surface
+
+| Origin | Status | Notes |
+|---|---|---|
+| `https://am4.tail8e749c.ts.net` | **LIVE** | The community-facing origin, exposed by Tailscale Funnel. Serves `/workbench`, `/community`, `/roadmap`, `/health`, `/workbench/downloads/*`. **This is the only public origin.** |
+| `comfy-p7.duckdns.org` | **STOPPED** | The GCP P7 VM is terminated (since 2026-07-25). Docs still referencing it as a live host are stale unless they are P7 operator runbooks, where P7 is correctly the subject. |
+| `/join` on the public origin | ⚠️ **NOT OURS** | The funnel routes `/join` to an unrelated service, shadowing the Gateway's real enrollment flow. Do not link anyone here. See the `steam-join` catalog card. |
+
+## The areas
+
+| Area | Status | What it is |
+|---|---|---|
+| [`Lumberjacks/`](../../Lumberjacks/README.md) | **LIVE** (services + roadmap) | Gateway/eventlog/progression/operatorapi + the append-only public roadmap journal. **Caveat:** its *era-1 engine docs* (greenfield ADRs 0001–0020, getting-started, 90-day plans) are **HISTORICAL** — and `Lumberjacks/docs/README.md` is itself an era-1 entrance. |
+| [`network/mod/ComfyNetworkSense/`](../../network/mod/ComfyNetworkSense/README.md) | **LIVE** | The BepInEx plugin: ZDO redirect, handshake, telemetry, quest tracking. |
+| [`Lumberjacks/docs/workbench/`](../../Lumberjacks/docs/workbench/) + `/workbench` routes | **LIVE** | The Community Workbench: public catalog of 7 tools, ownership ladder, cold-start kits. Deployed and publicly reachable on the AM4 origin. |
+| [`fieldlab/`](../../fieldlab/NETCODE-MAP.md) | **LIVE** | The netcode-replacement R&D program. **The 2026-07-28 hard hold was superseded on 07-30 and the lane reopened** — `PINNED-networking-lane-2026-07.md` is marked SUPERSEDED. Work continued through 08-05 (r42 Gateway session-plane fix cut, `b206c31`; ADR 0017 accepted). Still true: no human Steam two-client test has passed, and C10b has no green receipt. |
+| [`infra/gcp/p7/`](../../infra/gcp/p7/README.md) | **STOPPED** (tooling LIVE) | The release/deploy/rollback pipeline is real and maintained; the VM it targets is terminated. Deploys go release-cut → promote; never `terraform apply` from here — a plan would destroy the VM and 4 live resources. |
+| [`recipes/quest-catalogs/`](../../recipes/README.md) | **LIVE** | The quest picker + absorption engine (Python, self-contained). |
+| [`tools/workbench/`](../../tools/workbench/) | **LIVE** | Toolkit for the catalog: privacy-gated zip builder, publish script, announcement drafter, feedback distiller. ⚠️ `Publish-WorkbenchAssets.ps1` still defaults to the terminated `comfy-p7` host. |
+| [`tools/selfie-stick/`](../../tools/selfie-stick/README.md) | **LIVE** | World-save structure scanner → ranked camera shot list. The revived front half of the `camera-gallery` piece. |
+| [`tools/i5/`](../../tools/i5/README.md), [`tools/wave0/`](../../tools/wave0/) | **PAUSED** | Two-client test lanes; wave0's human gates are pinned. |
+| [`network/`](../../network/README.md) (docs) | **LIVE** (notes) | Multiplayer-architecture research notes + the localhost MCP dev gateway (`network/mcp/` — Baseline's own tool). |
+| `docs/internal/HANDOFF-2026-07-29.md` · `DEREK-BATCH-1.md` · `DECISIONS-PENDING.md` · `plans/` | **COCKPIT** | Operator session state: cold-pickup, decision queue, working plans. Read for context; don't treat as product docs. **HANDOFF-2026-07-29 predates the 07-30 lane reopen and still says PAUSED.** |
+| [`docs/audit/`](../audit/) | **COCKPIT** | Independent review memos. |
+| [comfy](https://github.com/djcdevelopment/comfy) · [Lumberjacks](https://github.com/djcdevelopment/Lumberjacks) (GitHub) | **HISTORICAL** | Public archives of the pre-merge repos; the recovery source for everything pruned in July 2026. Local checkouts of both are retired. |
+| [ComfyStewardView](https://github.com/djcdevelopment/ComfyStewardView) | **LIVE**, separate repo | World-file (.db) extractor + heatmap viewer. Its own (proprietary) license. |
+
+## Two warnings that outrank the rest
+
+`main` is force-pushed by background automation (see [`AGENTS.md`](../../AGENTS.md)), and that
+automation also lands commits on its own. Long-lived branches and forks rot fast. Pull
+`--ff-only` before every push.
+
+**There is no CI.** The only automated enforcement in this repo is an opt-in git hook
+(`git config core.hooksPath .githooks`) which gates the roadmap journal and the workbench
+render contract — *not* the test suites. A green working tree is not a green build.

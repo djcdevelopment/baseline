@@ -11,7 +11,7 @@ cash-driven organization repackaging the work as its own.
 
 ## Automatic Community Steward grant
 
-The controlling terms are in [`LICENSE`](LICENSE). In summary, no separate
+The controlling terms are in [`LICENSE`](../../LICENSE). In summary, no separate
 agreement or royalty is required when:
 
 - the operator is an eligible individual, volunteer group, or small

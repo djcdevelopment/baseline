@@ -111,9 +111,11 @@ current schema for tracking the Lumberjacks cutover. (`Lumberjacks/docs/roadmap/
 **OMEN** — Derek's primary machine: the rendered Valheim client and
 operator workstation. (`infra/gcp/p7/README.md`)
 
-**P7** — The live GCP deployment, VM `comfy-lumberjacks-p7`: a real Valheim
-world plus five digest-pinned Lumberjacks services, reachable at
-comfy-p7.duckdns.org. (`README.md`, `infra/gcp/p7/README.md`)
+**P7** — The GCP deployment, VM `comfy-lumberjacks-p7`: a real Valheim world
+plus five digest-pinned Lumberjacks services, at comfy-p7.duckdns.org. **The
+VM has been terminated since 2026-07-25**, so the hostname does not resolve to
+a running service; the public community origin is `am4.tail8e749c.ts.net`.
+(`infra/gcp/p7/README.md`, `docs/internal/START-HERE.md`)
 
 **Public source (BSL 1.1)** — The mandated description of Baseline's
 license: source is publicly visible under Business Source License 1.1

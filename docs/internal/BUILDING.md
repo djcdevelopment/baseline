@@ -28,7 +28,7 @@ docker run --rm -v "${PWD}:/src" -w /src mcr.microsoft.com/dotnet/sdk:9.0 \
 ```
 
 Full release-cut / image-promotion steps live in
-[`Lumberjacks/docs/build-release-runbook.md`](Lumberjacks/docs/build-release-runbook.md).
+[`Lumberjacks/docs/build-release-runbook.md`](../../Lumberjacks/docs/build-release-runbook.md).
 
 ### The mod (net48) — builds in the Docker Workbench image
 
@@ -64,8 +64,8 @@ From `Lumberjacks/`:
 That check includes a licensing-phrase lint: it **fails any new note or JSON
 edit containing "open source"** (this project is BSL 1.1, not OSI-approved).
 Write **"public source (BSL 1.1)"** instead. Full rule:
-[`Lumberjacks/AGENTS.md`](Lumberjacks/AGENTS.md) and
-[`Lumberjacks/docs/roadmap/README.md`](Lumberjacks/docs/roadmap/README.md).
+[`Lumberjacks/AGENTS.md`](../../Lumberjacks/AGENTS.md) and
+[`Lumberjacks/docs/roadmap/README.md`](../../Lumberjacks/docs/roadmap/README.md).
 
 Workbench catalog page edits follow the same shape, different commands: edit
 `Lumberjacks/docs/workbench/workbench.json` only, then
@@ -86,7 +86,7 @@ publish gate by `tools/workbench/Publish-WorkbenchAssets.ps1`.
 
 Background automation auto-commits and **force-pushes `origin/main`** for any
 change touching the Gateway, `network/`, or `infra/gcp/p7/` — see "This
-journal runs as background automation" in [`AGENTS.md`](AGENTS.md). Don't
+journal runs as background automation" in [`AGENTS.md`](../../AGENTS.md). Don't
 rely on a stable base SHA or a long-lived feature branch: pull/rebase before
 you start, and never force-push to "undo" what the automation did.
 

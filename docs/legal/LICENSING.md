@@ -1,7 +1,7 @@
 # Licensing Baseline
 
 Baseline is public source with a community-first production grant. The
-controlling terms are in [`LICENSE`](LICENSE).
+controlling terms are in [`LICENSE`](../../LICENSE).
 
 ## The short version
 
@@ -74,7 +74,7 @@ privacy notice or signed data terms.
 
 Contributions can create additional copyright ownership. Substantive
 third-party code is not merged until the contributor has completed the
-project's contributor agreement. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
+project's contributor agreement. See [`CONTRIBUTING.md`](../../CONTRIBUTING.md).
 
 ## Names and third-party products
 

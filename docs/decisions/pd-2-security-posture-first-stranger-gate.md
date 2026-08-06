@@ -39,7 +39,7 @@ today, not forgotten):
 - **Rate limiting on the steam-join/enroll path** (none exists today; the runbook says
   so truthfully).
 - **Contributor agreement given a real review** — the instrument shipped 2026-07-29
-  ([`CLA.md`](../../CLA.md), agent-drafted under delegation; see PD-1); the gate adds
+  ([`CLA.md`](../legal/CLA.md), agent-drafted under delegation; see PD-1); the gate adds
   a counsel pass if contribution volume warrants it.
 - **Moderation / code-of-conduct posture** for the forum.
 - **Telemetry retention & deletion posture** beyond the aggregates-only v0 API.

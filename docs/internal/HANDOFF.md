@@ -23,7 +23,7 @@ build for the mod). Tests 528 → **533** in Lumberjacks; mod contract tests 2 �
 - ✅ **7** — landmark reach (networking slice): `ZdoIntegrationContract.Admits` + reach field + config. `1dd6c18`
 - ✅ **9** — clients profile KEPT as manual noVNC (Derek's call). `296ceab`
 - ✅ **10** — three sibling POSTs folded onto `BoundedRawHttp`. `7c58e49`
-- ✅ **4** — AoI measurement run headless (Lumberjacks stack + wandering bots). **Closed as a measurement phase**, per Derek: the landscape is mapped, `send`-volume is the ceiling (filter ~4% of tick), the aggressive dual radius cut buys ~8× headroom, the recovered pressure model is **falsified** (player-invariant), and the harness is a re-runnable baseline (fresh-stack protocol, ±2× noise). See [`fieldlab/evidence/aoi-baseline-20260721/`](fieldlab/evidence/aoi-baseline-20260721/README.md). Harnesses in `Lumberjacks/scripts/aoi-*.sh`.
+- ✅ **4** — AoI measurement run headless (Lumberjacks stack + wandering bots). **Closed as a measurement phase**, per Derek: the landscape is mapped, `send`-volume is the ceiling (filter ~4% of tick), the aggressive dual radius cut buys ~8× headroom, the recovered pressure model is **falsified** (player-invariant), and the harness is a re-runnable baseline (fresh-stack protocol, ±2× noise). See [`fieldlab/evidence/aoi-baseline-20260721/`](../../fieldlab/evidence/aoi-baseline-20260721/README.md). Harnesses in `Lumberjacks/scripts/aoi-*.sh`.
 
 **Decision (2026-07-21): stop measuring, implement AoI end-to-end.** The findings justify building the
 three-tier full/thinned/dropped shape + landmark reach through the gateway replication path and the
@@ -43,7 +43,7 @@ Still open, needing the seat / infra / a live world:
   commits are local only.
 - Tests **528/528**. Mod builds 0 warnings. Config surface **107 → 73 keys**.
 - The intermittent `Game.Simulation.Tests` failure is fixed (`d5bed21`).
-- Read [ADR 0010](fieldlab/docs/adr/0010-consistency-is-predictability.md) before touching AoI.
+- Read [ADR 0010](../../fieldlab/docs/adr/0010-consistency-is-predictability.md) before touching AoI.
 - **Do not delete `fieldlab/autonomous/`** — it is the live definition of a running gateway and
   a running Valheim server.
 - The P7 VM is running and billing, by decision.
@@ -117,7 +117,7 @@ to the changed-entity count, and moving an entity across 100.0 units moves it be
 ## 4 · Run the AoI knee sweep
 
 **Do:** follow
-[`Lumberjacks/docs/network/aoi-knee-experiment-brief.md`](Lumberjacks/docs/network/aoi-knee-experiment-brief.md)
+[`Lumberjacks/docs/network/aoi-knee-experiment-brief.md`](../../Lumberjacks/docs/network/aoi-knee-experiment-brief.md)
 — it is self-contained and pastes as an opening prompt. Sweep the three-tier shape first:
 `NearRadius` ~30, `MidRadius` ~64, `MidTickInterval` for the thinned rate.
 
@@ -181,7 +181,7 @@ is a landmark within its reach of the observer*.
 selector, `Position` is absolute, `structural_anchor` is already rank 2, the reliable lane is
 already region-wide and unfiltered, and the manifest already has a broadcast wire. Today
 `DistanceMeters` means *observation* distance; nothing means *visibility* range. See
-[landmark-reach-design.md](Lumberjacks/docs/network/landmark-reach-design.md).
+[landmark-reach-design.md](../../Lumberjacks/docs/network/landmark-reach-design.md).
 
 **Test:** an object marked with reach R is delivered to a client at distance R while an
 unmarked peer object at the same distance is not, and the datagram path shows **no** added
@@ -243,10 +243,10 @@ no ZDO ownership, which is the far-field proxy prototype task 7 needs. Read the 
 
 # Record
 
-[Retro](fieldlab/retro/SESSION-RETRO-2026-07-21.md) (two, the second an addendum) ·
-[the mess](fieldlab/docs/audit-2026-07-21-conditional-logic.svg) ·
-[the sixteen twists](fieldlab/docs/audit-2026-07-21-the-twists.svg) ·
-[AoI findings](Lumberjacks/docs/network/area-of-interest-findings.md) ·
-ADRs [0008](fieldlab/docs/adr/0008-liveness-is-not-admission.md) ·
-[0009](fieldlab/docs/adr/0009-verify-against-an-independent-source.md) ·
-[0010](fieldlab/docs/adr/0010-consistency-is-predictability.md)
+[Retro](../../fieldlab/retro/SESSION-RETRO-2026-07-21.md) (two, the second an addendum) ·
+[the mess](../../fieldlab/docs/audit-2026-07-21-conditional-logic.svg) ·
+[the sixteen twists](../../fieldlab/docs/audit-2026-07-21-the-twists.svg) ·
+[AoI findings](../../Lumberjacks/docs/network/area-of-interest-findings.md) ·
+ADRs [0008](../../fieldlab/docs/adr/0008-liveness-is-not-admission.md) ·
+[0009](../../fieldlab/docs/adr/0009-verify-against-an-independent-source.md) ·
+[0010](../../fieldlab/docs/adr/0010-consistency-is-predictability.md)

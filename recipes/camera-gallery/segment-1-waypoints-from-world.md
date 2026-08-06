@@ -43,7 +43,7 @@ understand the parser's internals.
   (communal/guild builds); keep them, the flight can caption them "communal build."
 
 ## Output
-`waypoints.json` per the contract in [`README.md`](README.md). See [`waypoints.sample.json`](waypoints.sample.json)
+`waypoints.json` per the contract in [`README.md`](../../README.md). See [`waypoints.sample.json`](waypoints.sample.json)
 for a stable fixture.
 
 ## Definition of done (self-verifiable)

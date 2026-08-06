@@ -17,7 +17,7 @@ Baseline uses a public community license (BSL 1.1) and may also offer separate
 commercial licenses. To preserve that model, a **substantive** copyrightable
 contribution (code, documentation, art) needs the licensing side agreed before merge:
 
-- **sign the [Contributor License Agreement](CLA.md)** — one sentence in your first
+- **sign the [Contributor License Agreement](docs/legal/CLA.md)** — one sentence in your first
   PR description (or an email); the maintainer records it in
   [`docs/legal/cla-signatures.md`](docs/legal/cla-signatures.md) at merge. Trivial
   fixes can be waived at the maintainer's discretion.
