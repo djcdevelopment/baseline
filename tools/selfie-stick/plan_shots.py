@@ -30,10 +30,20 @@ import sys
 # window is 16:9 and height is the binding constraint for a tall build.
 FOV_V_DEG = 65.0
 
-# Measured golden hours. The two ramps either side of midday move 3-4x faster than
-# the plateau, and every frame outside 0.29..0.77 came back too dark to use.
-GOLDEN_PM = 0.70
-GOLDEN_AM = 0.30
+# Measured golden hours, taken from the 207-frame sweep rather than assumed. The
+# first version of this planner used 0.70 and 0.30 because they *sound* like golden
+# hour; the measurements say both sit past the good light:
+#
+#     time   luminance   contrast
+#     0.29        74.9      105.2   <- the old dawn value, already falling off
+#     0.32       121.5      157.4
+#     0.64       121.6      159.8   <- peak contrast in the whole sweep
+#     0.67       118.8      153.7
+#     0.70        83.1      118.2   <- the old orbit value, 26% less contrast
+#
+# The falloff either side of midday is steep, so being 0.03 late costs a lot.
+GOLDEN_PM = 0.64
+GOLDEN_AM = 0.32
 WEATHER_ALT = ("Misty", 0.66)
 
 
