@@ -4,6 +4,7 @@
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name=theme-color content="#0e0e12">
+<meta name=robots content="noindex, nofollow">
 <title>Era 16 — what people built</title>
 <style>
  /* Styling is lifted from the AM4 image gallery so the two read as one product.
@@ -52,6 +53,7 @@
  .acts{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 12px}
  .act{background:#2a2a35;border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer}
  .act:hover{border-color:var(--accent)}
+ .hint{font-size:12px;color:var(--mut);line-height:1.5}
  .empty{color:var(--mut);text-align:center;padding:50px 10px;font-size:14px}
  .psize{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--mut)}
  .psize input{width:56px;background:var(--panel);border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:6px 8px;font-size:13px;text-align:center}
@@ -116,7 +118,7 @@
 
 <script>
 // ---- state ----
-let DB={images:[]}, MINE=new Set(), VOTES={}, REQS={}, CLAIMS={}, USER='anon';
+let DB={images:[]}, MINE=new Set(), VOTES={}, REQS={}, CLAIMS={}, USER='anon', SIGNEDIN=false;
 let sel={region:new Set(),kind:new Set(),environment:new Set(),structure:new Set()};
 let sort='recent', page=0, view=[], cur=-1;
 const byRun={};                       // run id -> all moods of that one setup
@@ -271,10 +273,11 @@ function openLb(i){
 
   // structure-level actions
   const nreq=REQS[r.cluster_id]||0, claimed=CLAIMS[r.cluster_id];
-  $('lbacts').innerHTML = r.cluster_id==null ? '' :
-    `<button class=act id=actreq>📷 more shots of this${nreq?` · ${nreq}`:''}</button>
-     <button class=act id=actmine>🏠 ${claimed?`claimed by ${esc(claimed)}`:'this one is mine'}</button>
-     <button class=act id=actnot>not mine</button>`;
+  $('lbacts').innerHTML = r.cluster_id==null ? '' : (SIGNEDIN
+    ? `<button class=act id=actreq>📷 more shots of this${nreq?` · ${nreq}`:''}</button>
+       <button class=act id=actmine>🏠 ${claimed?`claimed by ${esc(claimed)}`:'this one is mine'}</button>
+       <button class=act id=actnot>not mine</button>`
+    : `<span class=hint>${nreq?`${nreq} request(s) for this build · `:''}${claimed?`claimed by ${esc(claimed)} · `:''}sign in to ask for more shots or claim this build</span>`);
   if($('actreq')) $('actreq').onclick=()=>sendSignal('request',r,{note:''});
   if($('actmine')) $('actmine').onclick=()=>sendSignal('claim',r,{mine:true});
   if($('actnot')) $('actnot').onclick=()=>sendSignal('claim',r,{mine:false});
@@ -291,11 +294,27 @@ function openLb(i){
 function closeLb(){ $('lb').classList.remove('show'); }
 function step(d){ const j=cur+d; if(j>=0&&j<view.length) openLb(j); }
 
+// Signed-out visitors all arrive as "anon", and the server's one-vote-per-user
+// index would make them collide — first vote wins, everyone else silently
+// ignored. So each browser keeps its own random id. Not a security boundary:
+// clearing storage gets you another vote. It only separates honest visitors.
+const VOTER=(()=>{
+  try{
+    let v=localStorage.getItem('valheim_voter');
+    if(!v){ v=(crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2))
+              .replace(/-/g,'').slice(0,32);
+            localStorage.setItem('valheim_voter',v); }
+    return v;
+  }catch(e){ return ''; }   // private mode: vote still counts, just not remembered
+})();
+
 async function loadSignals(){
   try{
-    const s=await fetch('/api/valheim/signals',{cache:'no-store'}).then(r=>r.json());
+    const s=await fetch('/api/valheim/signals?voter='+encodeURIComponent(VOTER),
+                        {cache:'no-store'}).then(r=>r.json());
     VOTES=s.votes||{}; REQS=s.requests||{}; CLAIMS=s.claims||{};
     MINE=new Set(s.mine||[]); USER=s.user||'anon';
+    SIGNEDIN=!!USER && USER.indexOf('anon')!==0;
   }catch(e){ /* bot down — page still works, just no counts */ }
 }
 
@@ -306,7 +325,7 @@ async function toggleStar(id,fromLb){
   render(); if(fromLb) openLb(cur);
   try{
     const r=await fetch('/api/valheim/vote',{method:'POST',headers:{'content-type':'application/json'},
-      body:JSON.stringify({image_id:id,on})});
+      body:JSON.stringify({image_id:id,on,voter:VOTER})});
     if(!r.ok) throw new Error(r.status);
     const j=await r.json();
     VOTES[id]=j.votes;                            // server count wins
