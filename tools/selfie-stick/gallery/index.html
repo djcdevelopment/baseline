@@ -47,7 +47,11 @@
  .cell:hover .cap{transform:translateY(0)}
  .cell .star{position:absolute;right:5px;bottom:5px;z-index:4;font-size:19px;line-height:1;cursor:pointer;color:#fff;opacity:.8;text-shadow:0 1px 3px #000;display:none}
  .cell .star.on{color:#ffd24a;opacity:1}
+ .cell .star i{font-style:normal;font-size:12px;margin-left:2px;vertical-align:2px}
  body.canstar .cell .star{display:block}
+ .acts{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 12px}
+ .act{background:#2a2a35;border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer}
+ .act:hover{border-color:var(--accent)}
  .empty{color:var(--mut);text-align:center;padding:50px 10px;font-size:14px}
  .psize{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--mut)}
  .psize input{width:56px;background:var(--panel);border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:6px 8px;font-size:13px;text-align:center}
@@ -103,6 +107,7 @@
  <div class=info>
   <div class=pr id=lbtitle></div>
   <div class=meta id=lbmeta></div>
+  <div class=acts id=lbacts></div>
   <div class=rtitle>every light this was shot in</div>
   <div class=rends id=lbrends></div>
  </div>
@@ -111,7 +116,7 @@
 
 <script>
 // ---- state ----
-let DB={images:[]}, STARS=new Set(), CANSTAR=false, USER='anon';
+let DB={images:[]}, MINE=new Set(), VOTES={}, REQS={}, CLAIMS={}, USER='anon';
 let sel={region:new Set(),environment:new Set(),structure:new Set()};
 let sort='recent', page=0, view=[], cur=-1;
 const byRun={};                       // run id -> all moods of that one setup
@@ -129,17 +134,11 @@ async function boot(){
 
   for(const r of DB.images){ (byRun[r.run]=byRun[r.run]||[]).push(r); }
 
-  // The API is shared with the image gallery and keys on an opaque id, so
-  // starring works here unchanged. Both calls are guarded: if the bot is down
-  // the gallery still renders, just without stars.
-  try{
-    const [w,s]=await Promise.all([
-      fetch('/api/whoami').then(r=>r.json()).catch(()=>null),
-      fetch('/api/stars').then(r=>r.json()).catch(()=>null)
-    ]);
-    if(w){ USER=w.user||'anon'; CANSTAR=!!w.admin; if(CANSTAR) document.body.classList.add('canstar'); }
-    if(s&&s.starred) STARS=new Set(s.starred);
-  }catch(e){}
+  // On this gallery the star IS the community vote — any logged-in user, not
+  // the admin-only print-prep flag the image gallery uses. Guarded: if the bot
+  // is down the gallery still renders, just without counts.
+  await loadSignals();
+  document.body.classList.add('canstar');
 
   buildPanel(); render();
 }
@@ -239,7 +238,7 @@ function cellHtml(r,i){
     <img loading=lazy src="thumb/${esc(r.id)}.webp" alt="">
     <span class=badge style="background:${col}">${esc(r.environment||'')}</span>
     <span class=tt>${r.time_of_day!=null?r.time_of_day.toFixed(2):''}</span>
-    <span class="star${STARS.has(r.id)?' on':''}">${STARS.has(r.id)?'★':'☆'}</span>
+    <span class="star${MINE.has(r.id)?' on':''}">${MINE.has(r.id)?'★':'☆'}${VOTES[r.id]?`<i>${VOTES[r.id]}</i>`:''}</span>
     <div class=cap>${esc(cap)}</div></div>`;
 }
 
@@ -260,10 +259,20 @@ function openLb(i){
   if(r.environment) bits.push(r.environment);
   if(r.time_of_day!=null) bits.push('t '+r.time_of_day.toFixed(2));
   if(r.shot_distance_m!=null) bits.push(`shot from ${Math.round(r.shot_distance_m)} m`);
+  const nv=VOTES[r.id]||0;
   $('lbmeta').innerHTML=bits.map(b=>`<span>${esc(b)}</span>`).join('')+
-    `<span id=lbstar class="${STARS.has(r.id)?'on':''}">${STARS.has(r.id)?'★ starred':'☆ star'}</span>`;
-  const st=$('lbstar'); if(st&&CANSTAR) st.onclick=()=>toggleStar(r.id,true);
-  else if(st) st.style.cursor='default';
+    `<span id=lbstar class="${MINE.has(r.id)?'on':''}">${MINE.has(r.id)?'★ voted':'☆ vote'}${nv?' · '+nv:''}</span>`;
+  $('lbstar').onclick=()=>toggleStar(r.id,true);
+
+  // structure-level actions
+  const nreq=REQS[r.cluster_id]||0, claimed=CLAIMS[r.cluster_id];
+  $('lbacts').innerHTML = r.cluster_id==null ? '' :
+    `<button class=act id=actreq>📷 more shots of this${nreq?` · ${nreq}`:''}</button>
+     <button class=act id=actmine>🏠 ${claimed?`claimed by ${esc(claimed)}`:'this one is mine'}</button>
+     <button class=act id=actnot>not mine</button>`;
+  if($('actreq')) $('actreq').onclick=()=>sendSignal('request',r,{note:''});
+  if($('actmine')) $('actmine').onclick=()=>sendSignal('claim',r,{mine:true});
+  if($('actnot')) $('actnot').onclick=()=>sendSignal('claim',r,{mine:false});
 
   const sibs=byRun[r.run]||[];
   $('lbrends').innerHTML=sibs.map(s=>`<div class="rend${s.id===r.id?' cur':''}" data-id="${esc(s.id)}">
@@ -277,19 +286,46 @@ function openLb(i){
 function closeLb(){ $('lb').classList.remove('show'); }
 function step(d){ const j=cur+d; if(j>=0&&j<view.length) openLb(j); }
 
+async function loadSignals(){
+  try{
+    const s=await fetch('/api/valheim/signals',{cache:'no-store'}).then(r=>r.json());
+    VOTES=s.votes||{}; REQS=s.requests||{}; CLAIMS=s.claims||{};
+    MINE=new Set(s.mine||[]); USER=s.user||'anon';
+  }catch(e){ /* bot down — page still works, just no counts */ }
+}
+
 async function toggleStar(id,fromLb){
-  if(!CANSTAR){ toast('starring is limited to gallery admins'); return; }
-  const on=!STARS.has(id);
-  on?STARS.add(id):STARS.delete(id);
+  const on=!MINE.has(id);
+  on?MINE.add(id):MINE.delete(id);
+  VOTES[id]=Math.max(0,(VOTES[id]||0)+(on?1:-1));
   render(); if(fromLb) openLb(cur);
   try{
-    const r=await fetch('/api/star',{method:'POST',headers:{'content-type':'application/json'},
-      body:JSON.stringify({job_id:id,on})});
+    const r=await fetch('/api/valheim/vote',{method:'POST',headers:{'content-type':'application/json'},
+      body:JSON.stringify({image_id:id,on})});
     if(!r.ok) throw new Error(r.status);
+    const j=await r.json();
+    VOTES[id]=j.votes;                            // server count wins
+    render(); if(fromLb) openLb(cur);
   }catch(e){
-    on?STARS.delete(id):STARS.add(id);           // put it back; the server is the truth
-    render(); toast('could not save that star');
+    on?MINE.delete(id):MINE.add(id);              // put it back; the server is the truth
+    VOTES[id]=Math.max(0,(VOTES[id]||0)+(on?-1:1));
+    render(); toast('could not save that vote');
   }
+}
+
+// Requests and claims act on the structure, not the frame, so they live in the
+// lightbox where the structure is named.
+async function sendSignal(kind,r,body){
+  try{
+    const res=await fetch('/api/valheim/'+kind,{method:'POST',
+      headers:{'content-type':'application/json'},
+      body:JSON.stringify(Object.assign({cluster_id:r.cluster_id,
+        label:`#${r.cluster_rank} · ${(r.pieces||0).toLocaleString()} pieces`},body))});
+    const j=await res.json();
+    if(!res.ok) throw new Error(j.error||res.status);
+    await loadSignals(); render(); openLb(cur);
+    toast(kind==='request'?'asked for more shots':'thanks — noted');
+  }catch(e){ toast(String(e.message||e)); }
 }
 let tt;
 function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show');
