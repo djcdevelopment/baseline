@@ -182,7 +182,7 @@ function buildPanel(){
     h+='</div>';
   }
   h+=`<div class=facet>Sort</div><div class="checks sortrow">`;
-  for(const [k,l] of [['recent','newest'],['rank','by rank'],['pieces','biggest build'],['height','tallest'],['stars','starred first'],['light','by time of day']])
+  for(const [k,l] of [['best','auto scored'],['recent','newest'],['rank','by rank'],['pieces','biggest build'],['height','tallest'],['stars','starred first'],['light','by time of day']])
     h+=`<label class=ck data-sort="${k}"${sort===k?' style="pointer-events:none"':''}>${l}</label>`;
   h+=`</div><button class=clr id=clrbtn>clear filters</button>`;
   $('panel').innerHTML=h;
@@ -210,7 +210,8 @@ function filtered(){
 
 function render(){
   view=filtered();
-  if(sort==='rank') view.sort((a,b)=>(a.cluster_rank||1e9)-(b.cluster_rank||1e9)||(a.variant||'').localeCompare(b.variant||''));
+  if(sort==='best') view.sort((a,b)=>(b.aesthetic??-1)-(a.aesthetic??-1));
+  else if(sort==='rank') view.sort((a,b)=>(a.cluster_rank||1e9)-(b.cluster_rank||1e9)||(a.variant||'').localeCompare(b.variant||''));
   else if(sort==='pieces') view.sort((a,b)=>(b.pieces||0)-(a.pieces||0));
   else if(sort==='height') view.sort((a,b)=>(b.height_m||0)-(a.height_m||0));
   else if(sort==='light') view.sort((a,b)=>(a.time_of_day||0)-(b.time_of_day||0));
@@ -255,7 +256,7 @@ function cellHtml(r,i){
   return `<div class=cell data-i="${i}">
     <img loading=lazy src="thumb/${esc(r.id)}.webp" alt="">
     <span class=badge style="background:${col}">${esc(r.environment||'')}</span>
-    <span class=tt title="ranking score">${r.score!=null?r.score.toFixed(1):''}</span>
+    <span class=tt title="${r.aesthetic!=null?'aesthetic score for this photograph':'structure ranking score'}">${r.aesthetic!=null?r.aesthetic.toFixed(2):(r.score!=null?r.score.toFixed(1):'')}</span>
     <span class="star${MINE.has(r.id)?' on':''}">${MINE.has(r.id)?'★':'☆'}${VOTES[r.id]?`<i>${VOTES[r.id]}</i>`:''}</span>
     <div class=cap>${esc(cap)}</div></div>`;
 }
@@ -279,7 +280,8 @@ function openLb(i){
   if(r.signs) bits.push(`${r.signs} signs`);
   if(r.builders) bits.push(`${r.builders} builders`);
   if(r.environment) bits.push(r.environment);
-  if(r.score!=null) bits.push('score '+r.score.toFixed(2));
+  if(r.aesthetic!=null) bits.push('aesthetic '+r.aesthetic.toFixed(2));
+  if(r.score!=null) bits.push('structure score '+r.score.toFixed(2));
   if(r.time_of_day!=null) bits.push(clockOf(r.time_of_day)+' in-game');
   if(r.shot_distance_m!=null) bits.push(`shot from ${Math.round(r.shot_distance_m)} m`);
   const nv=VOTES[r.id]||0;

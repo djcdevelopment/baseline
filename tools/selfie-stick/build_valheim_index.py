@@ -57,6 +57,8 @@ def parse_args():
     p.add_argument("--receipts", default=(r"C:\Program Files (x86)\Steam\steamapps\common"
                                           r"\Valheim\BepInEx\config\shotplan-receipts.jsonl"),
                    help="orbit run receipts, one JSON object per line")
+    p.add_argument("--aesthetic", default=os.path.join(here, "out", "aesthetic.json"),
+                   help="per-image scores from score_images.py")
     p.add_argument("--names", default=os.path.join(here, "out", "cluster-names.json"),
                    help="optional JSON map of cluster_id -> human name")
     p.add_argument("--max-join-m", type=float, default=250.0,
@@ -212,6 +214,14 @@ def main():
     clusters = load_clusters(args.clusters)
     by_id = {c["cluster_id"]: c for c in clusters}
     names = load_names(args.names)
+    # Per-image aesthetic scores, if they have been computed. These say something
+    # about the photograph; the cluster score only says something about the
+    # building, and is identical across all six frames of it.
+    aesthetic = {}
+    if os.path.exists(args.aesthetic):
+        with open(args.aesthetic, encoding="utf-8") as fh:
+            aesthetic = {k: v.get("aesthetic") for k, v in json.load(fh).items()}
+        print(f"  {len(aesthetic)} image(s) carry an aesthetic score")
     if names:
         print(f"  {len(names)} structure(s) named by hand")
     os.makedirs(args.dest, exist_ok=True)
@@ -270,6 +280,7 @@ def main():
                 "z": round(pos["z"], 1),
                 "ts": int(os.path.getmtime(src)),
                 "published": False,               # ingest is automatic, exposure is not
+                "aesthetic": aesthetic.get(image_id),
             }
             if cluster:
                 row.update({
@@ -341,6 +352,7 @@ def main():
             "z": round(lens.get("z", 0.0), 1),
             "ts": int(os.path.getmtime(src)),
             "published": False,
+            "aesthetic": aesthetic.get(image_id),
             "source": "orbit",
             # orbit-only provenance: enough to tell a bad frame from a bad plan
             "occluded": bool(rec.get("occluded")),
