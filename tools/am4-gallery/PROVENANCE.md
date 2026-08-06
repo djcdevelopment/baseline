@@ -48,15 +48,50 @@ It is vendored because it documents the original intent and the `users.txt` cont
 because it is still safe to execute. Edit `/etc/caddy/Caddyfile` directly, keeping a dated
 backup alongside the existing `.bak-*` and `.pre-mech-*` files.
 
-## Known drift at the time of copying
+## Routing drift found on copying — and repaired 2026-08-06
 
-- `index.html` requests **relative** `thumb/<id>.webp` and `img/<id>.webp`. Served from
-  `/gallery/`, those resolve to `/gallery/thumb/...`, which `handle_path /gallery/*` strips
-  and roots at `/home/derek/gallery` — a directory containing neither. The real images are
-  under `/home/derek/bench/results_full/{thumb,img}`, reachable only via the top-level
-  `/thumb/*` and `/img/*` handlers.
-- `request.html` fetches absolute `/now.json`, which 404s; the file is served at
-  `/gallery/now.json`.
+Both of these were live faults, not theoretical ones. The gallery moved from the site root
+to `/gallery/` when the public storefront took the root, and two paths were left behind.
+
+**1. Thumbnails and full images 404'd.** `index.html` requests **relative**
+`thumb/<id>.webp` and `img/<id>.webp`. Served from `/gallery/`, those resolve to
+`/gallery/thumb/...`, which `handle_path /gallery/*` strips and roots at
+`/home/derek/gallery` — a directory containing neither. The 3,315 real images live under
+`/home/derek/bench/results_full/{thumb,img}`.
+
+Fixed in `/etc/caddy/Caddyfile` by adding two handlers **before** the `/gallery/*` block
+(Caddy evaluates `handle` blocks in written order):
+
+```caddy
+handle_path /gallery/thumb/* {
+        root * /home/derek/bench/results_full/thumb
+        file_server
+}
+handle_path /gallery/img/* {
+        root * /home/derek/bench/results_full/img
+        file_server
+}
+```
+
+Verified by `caddy adapt`: the two image roots now each appear twice — once for the
+original top-level `/thumb/*` and `/img/*`, once for the `/gallery/`-prefixed pair.
+Backup kept at `/etc/caddy/Caddyfile.pre-gallery-thumbfix-20260806-091410`. The caddy user
+can read the store, so no `setfacl` step was needed.
+
+**2. The live status card was dead.** `request.html` fetched absolute `/now.json`, which
+has no handler. Changed to relative `now.json`, which resolves to `/gallery/now.json`
+(present, auth-gated). Fixed in both this copy and the host copy; host backup at
+`~/gallery/request.html.bak-nowjson-*`.
+
+Note the `/api/*` calls in both pages are correctly absolute — those are top-level Caddy
+routes proxied to the bot on `127.0.0.1:8200` — and `index.json` is correctly relative.
+`/now.json` was the only path on the wrong side of the move.
+
+**Verification caveat:** every `/gallery/*` path returns `401` unauthenticated because
+`basic_auth` runs before the handler, so a runtime probe cannot distinguish "fixed" from
+"broken" without credentials. `401` replacing `404` proves a handler now matches; the
+`caddy adapt` root check proves it matches the right one. Confirming the pixels render
+still needs one logged-in look.
 
 ## Related risk, not yet addressed
 

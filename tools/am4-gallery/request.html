@@ -269,7 +269,9 @@ let tT;function toast(m,err){const t=$('toast');t.textContent=m;t.className='toa
 // ---- polling ----
 let lastNow=null;
 async function loadNow(){
-  try{lastNow=await (await fetch('/now.json',{cache:'no-store'})).json();renderStatus(lastNow);renderLive(lastNow);}catch(e){}
+  // relative on purpose: this page is served from /gallery/, and now.json sits
+  // beside it. An absolute /now.json has no Caddy handler and 404s.
+  try{lastNow=await (await fetch('now.json',{cache:'no-store'})).json();renderStatus(lastNow);renderLive(lastNow);}catch(e){}
 }
 async function loadMine(){
   try{mine=await (await fetch('/api/mine',{cache:'no-store'})).json();renderReqs();
