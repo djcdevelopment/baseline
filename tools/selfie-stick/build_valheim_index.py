@@ -93,7 +93,9 @@ def read_orbit_receipts(path):
     rows = []
     if not os.path.exists(path):
         return rows
-    with open(path, encoding="utf-8") as fh:
+    # utf-8-sig, not utf-8: the mod appends with .NET's Encoding.UTF8, which emits a
+    # BOM on the first write, so line 1 of every receipts file starts with one.
+    with open(path, encoding="utf-8-sig") as fh:
         for n, line in enumerate(fh, 1):
             line = line.strip()
             if not line:
