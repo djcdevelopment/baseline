@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name=theme-color content="#0e0e12">
+<title>AM4 Gallery — Intel B70 image-gen</title>
+<style>
+ :root{--bg:#0e0e12;--panel:#1a1a22;--line:#2b2b36;--fg:#ececf2;--mut:#9a9aa8;--accent:#7aa2ff}
+ *{box-sizing:border-box}
+ html,body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,sans-serif;-webkit-text-size-adjust:100%}
+ a{color:inherit}
+ /* ---- top bar ---- */
+ header{position:sticky;top:0;z-index:20;background:rgba(14,14,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+ .topline{display:flex;align-items:center;gap:10px;padding:9px 12px}
+ .topline b{font-size:15px;white-space:nowrap}
+ .topline .sub{font-size:11px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+ .filt{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;background:var(--panel);border:1px solid #3a3a47;color:var(--fg);border-radius:9px;cursor:pointer;font-size:13px;font-weight:600;padding:8px 13px}
+ .filt:hover{border-color:#4a4a57}
+ .filt svg{display:block}
+ .filt .arr{transition:transform .2s;opacity:.65;font-weight:400}
+ header.open .filt{background:var(--accent);border-color:var(--accent);color:#0b0b10}
+ header.open .filt .arr{transform:rotate(180deg)}
+ .fbadge{display:none;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--accent);color:#0b0b10;font-size:11px;font-weight:700;line-height:1}
+ header.open .fbadge{background:#0b0b10;color:var(--accent)}
+ /* expanded: checkbox panel */
+ .panel{display:none;padding:4px 12px 12px;max-height:60vh;overflow:auto}
+ header.open .panel{display:block}
+ .facet{margin:10px 0 2px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)}
+ .checks{display:flex;flex-wrap:wrap;gap:6px}
+ .ck{display:inline-flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:12px;cursor:pointer;user-select:none}
+ .ck.on{background:var(--accent);border-color:var(--accent);color:#0b0b10;font-weight:600}
+ .ck input{display:none}
+ .ck .cnt{opacity:.55;font-variant-numeric:tabular-nums}
+ .ck.on .cnt{opacity:.8}
+ .panel .srch{margin-top:12px;width:100%;background:var(--panel);border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:8px 10px;font-size:13px}
+ .panel .clr{margin-top:10px;background:none;border:1px solid var(--line);color:var(--mut);border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer}
+ /* ---- grid ---- */
+ main{padding:8px}
+ .hero{display:flex;gap:8px;align-items:center;padding:12px 12px 4px;max-width:760px;margin:0 auto}
+ .hero input{flex:1;min-width:0;background:#fff;color:#111;border:0;border-radius:999px;padding:13px 18px;font-size:16px}
+ .hero button{background:#36c98d;color:#08130d;border:0;border-radius:11px;padding:13px 18px;font-size:16px;font-weight:700;cursor:pointer;white-space:nowrap}
+ .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+ .cell{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:#000;cursor:pointer}
+ .cell img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .25s}
+ .cell img.in{opacity:1}
+ .cell .badge{position:absolute;left:5px;top:5px;font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;color:#0b0b10;z-index:2}
+ .cell .tt{position:absolute;right:5px;top:5px;font-size:10px;background:rgba(0,0,0,.6);padding:1px 5px;border-radius:5px;color:#cfe;z-index:2}
+ .cell .cap{position:absolute;left:0;right:0;bottom:0;padding:18px 7px 6px;font-size:11px;line-height:1.3;color:#fff;
+   background:linear-gradient(transparent,rgba(0,0,0,.88));transform:translateY(100%);transition:transform .18s;pointer-events:none}
+ .cell:hover .cap{transform:translateY(0)}
+ /* admin star overlay (only shown to ADMINS via body.admin) */
+ .cell .star{position:absolute;right:5px;bottom:5px;z-index:4;font-size:19px;line-height:1;cursor:pointer;color:#fff;opacity:.8;text-shadow:0 1px 3px #000;display:none}
+ .cell .star.on{color:#ffd24a;opacity:1}
+ body.admin .cell .star{display:block}
+ #lbstar{cursor:pointer;background:#2a2a35;padding:2px 8px;border-radius:6px}
+ #lbstar.on{background:#ffd24a;color:#0b0b10;font-weight:700}
+ .empty{color:var(--mut);text-align:center;padding:50px 10px;font-size:14px}
+ .psize{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--mut)}
+ .psize input{width:56px;background:var(--panel);border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:6px 8px;font-size:13px;text-align:center}
+ .pager{display:flex;align-items:center;justify-content:center;gap:12px;padding:18px 10px 6px;font-size:13px;color:var(--mut)}
+ .pager button{background:var(--panel);border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:7px 15px;font-size:13px;cursor:pointer}
+ .pager button:disabled{opacity:.4;cursor:default}
+ /* ---- lightbox ---- */
+ #lb{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.95);display:none;flex-direction:column}
+ #lb.show{display:flex}
+ #lb .x{position:absolute;top:env(safe-area-inset-top);right:0;padding:12px 18px;font-size:24px;color:#fff;cursor:pointer;z-index:3}
+ #lb .stage{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:0}
+ #lb .stage img{max-width:100%;max-height:100%;object-fit:contain}
+ #lb .info{background:var(--panel);border-top:1px solid var(--line);padding:12px 16px calc(14px + env(safe-area-inset-bottom));max-height:48vh;overflow:auto}
+ #lb .pr{font-size:14px;line-height:1.45;color:#fff;margin-bottom:8px}
+ #lb .pr .copy{margin-left:8px;font-size:12px;color:var(--accent);cursor:pointer;white-space:nowrap}
+ #lb .meta{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;margin-bottom:10px}
+ #lb .meta span{background:#2a2a35;padding:2px 8px;border-radius:6px}
+ #lb .rtitle{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);margin:4px 0 6px}
+ #lb .rends{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+ #lb .rends::-webkit-scrollbar{display:none}
+ #lb .rend{flex:0 0 auto;width:96px;cursor:pointer}
+ #lb .rend .fr{aspect-ratio:1;border-radius:7px;overflow:hidden;background:#000;border:2px solid transparent}
+ #lb .rend.cur .fr{border-color:var(--accent)}
+ #lb .rend img{width:100%;height:100%;object-fit:cover}
+ #lb .rend .lab{font-size:10px;margin-top:3px;display:flex;justify-content:space-between;color:var(--mut)}
+ #lb .rend .lab b{color:var(--fg)}
+ #lb .nav-a{position:absolute;top:42%;transform:translateY(-50%);font-size:34px;color:rgba(255,255,255,.65);padding:8px 14px;cursor:pointer;user-select:none;z-index:2}
+ #lb .pv{left:0}#lb .nx{right:0}
+ .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:#0b0b10;font-size:13px;font-weight:600;padding:8px 16px;border-radius:999px;z-index:60;opacity:0;transition:opacity .2s;pointer-events:none}
+ .toast.show{opacity:1}
+</style>
+</head>
+<body>
+<header id=hdr>
+ <div class=topline>
+  <button class=filt id=expbtn>
+   <svg width=14 height=14 viewBox="0 0 16 16" fill=none stroke=currentColor stroke-width=1.5 stroke-linejoin=round><path d="M1.5 3h13l-5 6v4l-3 1.4V9z"/></svg>
+   Filters<span class=fbadge id=fbadge></span><span class=arr>▾</span>
+  </button>
+  <b>AM4 Gallery</b>
+  <span class=sub id=sub>loading…</span>
+  <label class=psize>Page size <input id=psize type=number min=1 value=10></label>
+ </div>
+ <div class=panel id=panel></div>
+</header>
+
+<div class=hero>
+ <input id=heroprompt placeholder="enter your prompt here…">
+ <button id=herogo>Submit ▶</button>
+</div>
+
+<main id=main><div class=empty>loading…</div></main>
+
+<div id=lb>
+ <span class=x onclick="closeLb()">✕</span>
+ <span class="nav-a pv" onclick="step(-1)">‹</span>
+ <span class="nav-a nx" onclick="step(1)">›</span>
+ <div class=stage><img id=lbimg alt=""></div>
+ <div class=info>
+  <div class=pr id=lbprompt></div>
+  <div class=meta id=lbmeta></div>
+  <div class=rtitle id=lbrtitle>all renditions of this prompt</div>
+  <div class=rends id=lbrends></div>
+ </div>
+</div>
+<div class=toast id=toast></div>
+
+<script>
+const MODELCOLORS={sd15:'#79d2a6',sdxl:'#f0a868',sd35:'#c89bf0',flux:'#7aa2ff'};
+const mcolor=m=>MODELCOLORS[m]||'#9a9aa8';
+let FACETS=[['model'],['style'],['category']];               // 'req' added on load if present
+const LISTNAME={model:'models',style:'styles',category:'categories',req:'requesters'};
+const LABELS={model:'models',style:'styles',category:'categories',req:'by'};
+
+let DB=null, byCell={};
+let sel={model:new Set(),style:new Set(),category:new Set(),req:new Set()};
+let sort='top', q='';  // default: rank by OMEN aesthetic score (was 'latest')
+let pageSize=10, page=0;
+let lbList=[], lbIdx=0;
+let ADMIN=false, STARS=new Set(), starredOnly=false;   // admin print-prep flagging
+const $=s=>document.querySelector(s);
+
+fetch('index.json').then(r=>r.json()).then(d=>{
+  DB=d;
+  d.images.forEach(i=>{if(i.cell)(byCell[i.cell]=byCell[i.cell]||[]).push(i)});
+  if(d.requesters && d.requesters.length) FACETS.push(['req']);
+  // who am I (Caddy basic-auth user) + current starred set; gallery still works if these fail
+  Promise.all([
+    fetch('/api/whoami').then(r=>r.json()).catch(()=>({admin:false})),
+    fetch('/api/stars').then(r=>r.json()).catch(()=>({starred:[]}))
+  ]).then(([who,st])=>{
+    ADMIN=!!who.admin; STARS=new Set(st.starred||[]);
+    if(ADMIN)document.body.classList.add('admin');
+    buildControls(); apply();
+  });
+});
+
+// ---- filtering ----
+function filtered(){
+  let d=DB.images.filter(i=>
+    (sel.model.size===0||sel.model.has(i.model)) &&
+    (sel.style.size===0||sel.style.has(i.style)) &&
+    (sel.category.size===0||sel.category.has(i.category)) &&
+    (sel.req.size===0||sel.req.has(i.req)) &&
+    (!starredOnly||STARS.has(i.id)) &&
+    (!q||i.prompt.toLowerCase().includes(q)));
+  if(sort==='fast') d=[...d].sort((a,b)=>a.t-b.t);
+  else if(sort==='slow') d=[...d].sort((a,b)=>b.t-a.t);
+  else if(sort==='top') d=[...d].sort((a,b)=>(b.aes||0)-(a.aes||0));  // OMEN aesthetic score
+  // 'latest' already newest-first in the index
+  return d;
+}
+// count images per value of facet k, respecting every OTHER active filter
+// (so counts answer "how many would I get if I picked this")
+function facetCounts(k){
+  const base=DB.images.filter(i=>
+    (k==='model'||sel.model.size===0||sel.model.has(i.model)) &&
+    (k==='style'||sel.style.size===0||sel.style.has(i.style)) &&
+    (k==='category'||sel.category.size===0||sel.category.has(i.category)) &&
+    (k==='req'||sel.req.size===0||sel.req.has(i.req)) &&
+    (!q||i.prompt.toLowerCase().includes(q)));
+  const c={};
+  base.forEach(i=>{const v=i[k]; if(v!=null)c[v]=(c[v]||0)+1;});
+  return {c,total:base.length};
+}
+function apply(){
+  const d=filtered();
+  $('#sub').textContent=`${d.length} / ${DB.n} · ${DB.models.join(' · ')}`;
+  const pages=Math.max(1,Math.ceil(d.length/pageSize));
+  page=Math.min(Math.max(0,page),pages-1);
+  const start=page*pageSize, slice=d.slice(start,start+pageSize);
+  const gridHtml=slice.length?`<div class=grid>${slice.map(cellHtml).join('')}</div>`:`<div class=empty>nothing matches these filters</div>`;
+  $('#main').innerHTML=gridHtml+pager(pages,d.length);
+  // index is into the full filtered list so the lightbox browses across pages
+  $('#main').querySelectorAll('.cell').forEach((el,i)=>el.onclick=()=>openLb(d,start+i));
+  if(ADMIN)$('#main').querySelectorAll('.cell .star').forEach(el=>el.onclick=ev=>{ev.stopPropagation();toggleStar(el.dataset.star,el);});
+  const pp=$('#pprev'), pn=$('#pnext');
+  if(pp)pp.onclick=()=>{page--;apply();scrollTop()};
+  if(pn)pn.onclick=()=>{page++;apply();scrollTop()};
+  syncControls();
+}
+function pager(pages,total){
+  if(total<=pageSize)return'';
+  return `<div class=pager>
+    <button id=pprev ${page<=0?'disabled':''}>‹ Prev</button>
+    <span>page ${page+1} / ${pages} · ${total} imgs</span>
+    <button id=pnext ${page>=pages-1?'disabled':''}>Next ›</button></div>`;
+}
+function scrollTop(){window.scrollTo({top:0,behavior:'smooth'})}
+function cellHtml(im){
+  return `<div class=cell data-id="${im.id}" title="${esc(im.prompt)}">
+    <img loading=lazy src="thumb/${im.id}.webp" onload="this.classList.add('in')" alt="">
+    <span class=badge style="background:${mcolor(im.model)}">${im.model}</span>
+    <span class=tt>${im.aes!=null?'★'+im.aes.toFixed(1)+' ':''}${im.t}s</span>
+    ${ADMIN?`<span class="star${STARS.has(im.id)?' on':''}" data-star="${im.id}" title="flag for print-prep upscale">${STARS.has(im.id)?'★':'☆'}</span>`:''}
+    <div class=cap>${esc(im.prompt)}</div></div>`;
+}
+function toggleStar(id,el){
+  const on=!STARS.has(id);
+  fetch('/api/star',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job_id:id,on})})
+    .then(r=>r.json()).then(res=>{
+      if(res.error){toast(res.error);return;}
+      if(res.starred)STARS.add(id);else STARS.delete(id);
+      const set=(e)=>{if(e){e.classList.toggle('on',res.starred);e.textContent=res.starred?'★':'☆';}};
+      set(el);
+      const gs=document.querySelector('.cell[data-id="'+id+'"] .star'); if(gs&&gs!==el)set(gs);
+      const ls=$('#lbstar'); if(ls&&lbList[lbIdx]&&lbList[lbIdx].id===id){ls.classList.toggle('on',res.starred);ls.textContent=res.starred?'★ starred':'☆ star';}
+      toast(res.starred?'starred ★ (queued for print-prep)':'unstarred');
+      if(starredOnly&&!res.starred)apply();
+    }).catch(()=>toast('star failed'));
+}
+
+// ---- controls (dropdowns when collapsed, checkboxes when expanded) ----
+function buildControls(){
+  const panel=$('#panel'); panel.innerHTML='';
+  FACETS.forEach(([k])=>{
+    const h=document.createElement('div'); h.className='facet'; h.textContent=LABELS[k]||k+'s'; panel.appendChild(h);
+    const row=document.createElement('div'); row.className='checks'; row.dataset.k=k;
+    DB[LISTNAME[k]].forEach(v=>row.appendChild(makeCheck(k,v)));
+    panel.appendChild(row);
+  });
+  // sort: single-select chips (dropdowns are gone)
+  const sh=document.createElement('div'); sh.className='facet'; sh.textContent='sort'; panel.appendChild(sh);
+  const srow=document.createElement('div'); srow.className='checks';
+  [['latest','newest'],['top','top rated'],['fast','fastest'],['slow','slowest']].forEach(([val,lab])=>{
+    const c=document.createElement('div'); c.className='ck'+(sort===val?' on':''); c.textContent=lab;
+    c.onclick=()=>{sort=val;page=0;buildControls();apply()}; srow.appendChild(c);
+  });
+  panel.appendChild(srow);
+  // admin-only: a "starred only" view of the print-prep queue
+  if(ADMIN){
+    const fh=document.createElement('div'); fh.className='facet'; fh.textContent='flagged for print-prep'; panel.appendChild(fh);
+    const frow=document.createElement('div'); frow.className='checks';
+    const c=document.createElement('div'); c.className='ck'+(starredOnly?' on':''); c.textContent='⭐ starred only';
+    c.onclick=()=>{starredOnly=!starredOnly;page=0;buildControls();apply()}; frow.appendChild(c);
+    panel.appendChild(frow);
+  }
+  const srch=document.createElement('input'); srch.className='srch'; srch.placeholder='search prompt…';
+  srch.value=q; srch.oninput=()=>{q=srch.value.toLowerCase();page=0;apply()}; panel.appendChild(srch);
+  const clr=document.createElement('button'); clr.className='clr'; clr.textContent='clear all';
+  clr.onclick=()=>{FACETS.forEach(([k])=>sel[k].clear());q='';sort='top';page=0;buildControls();apply()}; panel.appendChild(clr);
+}
+function makeCheck(k,v){
+  const l=document.createElement('label'); l.className='ck'+(sel[k].has(v)?' on':''); l.dataset.v=v;
+  l.innerHTML=`<input type=checkbox ${sel[k].has(v)?'checked':''}>${v}<span class=cnt></span>`;
+  l.querySelector('input').onchange=e=>{ e.target.checked?sel[k].add(v):sel[k].delete(v); l.classList.toggle('on',e.target.checked); page=0; apply(); };
+  return l;
+}
+function syncControls(){
+  // refresh checkbox-chip counts in place (no rebuild, so clicks don't jump)
+  FACETS.forEach(([k])=>{
+    const {c}=facetCounts(k);
+    document.querySelectorAll(`.checks[data-k="${k}"] .ck`).forEach(el=>{
+      const span=el.querySelector('.cnt'); if(span) span.textContent=` (${c[el.dataset.v]||0})`;
+    });
+  });
+  const n=sel.model.size+sel.style.size+sel.category.size+sel.req.size+(q?1:0);
+  const b=$('#fbadge'); b.textContent=n||''; b.style.display=n?'inline-flex':'none';
+}
+$('#expbtn').onclick=()=>$('#hdr').classList.toggle('open');
+$('#psize').addEventListener('change',e=>{
+  let v=parseInt(e.target.value,10); if(!(v>=1))v=10;
+  e.target.value=v; pageSize=v; page=0; apply();
+});
+
+// ---- lightbox ----
+function openLb(list,idx){
+  // Arrows page through the WHOLE filtered feed (the default "page through the
+  // gallery" behaviour). The rendition strip below still jumps between the
+  // model/seed variants of the current prompt — both axes, no conflict.
+  lbList=list; lbIdx=idx;
+  showLb();$('#lb').classList.add('show');
+}
+function closeLb(){$('#lb').classList.remove('show')}
+function step(d){lbIdx=(lbIdx+d+lbList.length)%lbList.length;showLb()}  // wraps across the whole feed
+function showLb(){
+  const im=lbList[lbIdx];
+  $('#lbimg').src=`img/${im.id}.webp`;
+  $('#lbprompt').innerHTML=`${esc(im.prompt)}<span class=copy onclick="copyPrompt()">⧉ copy</span><span class=copy onclick="remix()">🔁 remix</span>`;
+  $('#lbmeta').innerHTML=
+    `<span style="color:${mcolor(im.model)};font-weight:700">${im.model}</span>`+
+    `<span>⏱ ${im.t}s</span><span>seed ${im.seed}</span>`+
+    (im.style?`<span>${im.style}</span>`:'')+`<span>${im.category}</span>`+
+    `<span>${lbIdx+1} / ${lbList.length}</span>`;
+  if(ADMIN){const on=STARS.has(im.id);
+    $('#lbmeta').innerHTML+=`<span id=lbstar class="${on?'on':''}">${on?'★ starred':'☆ star'}</span>`;
+    $('#lbstar').onclick=()=>toggleStar(im.id,null);}
+  // rendition strip = the model/seed variants of THIS prompt's cell (not the feed)
+  const rends=(byCell[im.cell]||[im]).slice().sort((a,b)=>(a.model+a.seed).localeCompare(b.model+b.seed));
+  $('#lbrtitle').style.display=rends.length>1?'block':'none';
+  $('#lbrends').innerHTML=rends.map(r=>`<div class="rend${r.id===im.id?' cur':''}" data-id="${r.id}">
+     <div class=fr><img loading=lazy src="thumb/${r.id}.webp" alt=""></div>
+     <div class=lab><b style="color:${mcolor(r.model)}">${r.model}</b><span>s${r.seed} · ${r.t}s</span></div></div>`).join('');
+  // clicking a rendition jumps to it within the feed (so arrows continue from there)
+  $('#lbrends').querySelectorAll('.rend').forEach(el=>el.onclick=()=>{
+    const p=lbList.findIndex(x=>x.id===el.dataset.id); if(p>=0){lbIdx=p;showLb();}
+  });
+}
+function copyPrompt(){navigator.clipboard?.writeText(lbList[lbIdx].prompt).then(()=>toast('prompt copied'))}
+function remix(){
+  const im=lbList[lbIdx];
+  // preselect the models that haven't run this prompt yet (fill the gaps)
+  const have=new Set((byCell[im.cell]||[]).map(x=>x.model));
+  const missing=DB.models.filter(m=>!have.has(m));
+  const ms=missing.length?missing.join(','):'all';
+  location.href='/request.html?prompt='+encodeURIComponent(im.prompt)+'&models='+encodeURIComponent(ms);
+}
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+let tT; function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),1400)}
+
+document.addEventListener('keydown',e=>{
+  if(!$('#lb').classList.contains('show'))return;
+  if(e.key==='ArrowRight')step(1); else if(e.key==='ArrowLeft')step(-1); else if(e.key==='Escape')closeLb();
+});
+let sx=0;
+$('#lb').addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+$('#lb').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)step(dx<0?1:-1)},{passive:true});
+
+// hero lure -> request page (carries the typed prompt as prefill)
+(function(){
+  const go=()=>{const v=$('#heroprompt').value.trim();
+    location.href='/request.html'+(v?('?prompt='+encodeURIComponent(v)):'');};
+  $('#herogo').onclick=go;
+  $('#heroprompt').addEventListener('keydown',e=>{if(e.key==='Enter')go();});
+})();
+</script>
+</body>
+</html>

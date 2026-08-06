@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang=en>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08080a">
+<title>Request a run — AM4 Gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+ *{box-sizing:border-box}
+ html,body{margin:0;background:#08080a;color:#f2f2f4;font-family:'Space Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+ textarea,input,button{font-family:inherit}
+ a{color:#7fa0ff}
+ ::-webkit-scrollbar{height:6px;width:6px}::-webkit-scrollbar-thumb{background:#2c2c34;border-radius:99px}
+ .noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}
+ .mono{font-family:'JetBrains Mono',monospace}
+ .lab{font:600 11px 'Space Grotesk';letter-spacing:.14em;color:#7e7e89;text-transform:uppercase}
+ .pill{display:inline-flex;align-items:center;gap:5px;background:#1c1c23;border:1px solid #2a2a32;color:#c4c4ce;font:500 12px 'JetBrains Mono';padding:5px 9px;border-radius:999px;white-space:nowrap;flex:0 0 auto}
+ @keyframes pulseDot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(74,222,128,.5)}50%{opacity:.65;box-shadow:0 0 0 6px rgba(74,222,128,0)}}
+ @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+ @keyframes fadeScale{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+ @keyframes barStripe{from{background-position:0 0}to{background-position:28px 0}}
+ @keyframes glowPulse{0%,100%{box-shadow:0 0 0 1px rgba(93,128,255,.3),0 0 26px rgba(93,128,255,.08)}50%{box-shadow:0 0 0 1px rgba(93,128,255,.55),0 0 34px rgba(93,128,255,.18)}}
+ #shell{display:flex;flex-direction:column;gap:15px;max-width:920px;margin:0 auto;padding:0 14px 48px}
+ @media(min-width:900px){
+  #shell{display:grid;grid-template-columns:minmax(0,1fr) 304px;grid-template-areas:"header status" "prompt live" "chips live" "amount live" "submit live" "reqs live";column-gap:28px;row-gap:18px}
+  #c-header{grid-area:header}#c-status{grid-area:status;align-self:start;position:static!important}
+  #c-prompt{grid-area:prompt}#c-chips{grid-area:chips}#c-amount{grid-area:amount}#c-submit{grid-area:submit}
+  #c-live{grid-area:live;position:sticky;top:14px;align-self:start}#c-reqs{grid-area:reqs}
+ }
+ .chip{flex:0 0 auto;min-width:72px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 15px;border-radius:14px;cursor:pointer;transition:all .15s;background:#1a1a20;color:#d2d2db;border:1px solid #2b2b33}
+ .chip.on{background:#5d80ff;color:#fff;border-color:#5d80ff;box-shadow:0 6px 18px #5d80ff55}
+ .chip .nm{font:600 14px 'Space Grotesk'}.chip .sb{font:500 11px 'JetBrains Mono';color:#7e7e89}.chip.on .sb{color:rgba(255,255,255,.85)}
+ .seg{flex:1;padding:11px 8px;border-radius:12px;cursor:pointer;transition:all .15s;background:transparent;color:#7e7e89;border:1px solid #26262e;font:600 13px 'Space Grotesk'}
+ .seg.on{background:#5d80ff;color:#fff;border-color:#5d80ff}
+ .step{width:54px;height:56px;border-radius:13px;background:#1a1a20;border:1px solid #2b2b33;color:#d2d2db;font:500 26px 'Space Grotesk';cursor:pointer;flex:0 0 auto;line-height:1}
+ .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#5d80ff;color:#08160d;font:600 13px 'Space Grotesk';padding:9px 16px;border-radius:999px;z-index:60;opacity:0;transition:opacity .2s;pointer-events:none}
+ .toast.show{opacity:1}.toast.err{background:#ff7a6b}
+ #rlb{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.95);display:none;flex-direction:column}
+ #rlb.show{display:flex}
+ #rlb .x{position:absolute;top:env(safe-area-inset-top);right:0;padding:12px 18px;font-size:24px;color:#fff;cursor:pointer;z-index:3}
+ #rlb .stage{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:0}
+ #rlb .stage img{max-width:100%;max-height:100%;object-fit:contain}
+ #rlb .nav{position:absolute;top:50%;transform:translateY(-50%);font-size:40px;color:rgba(255,255,255,.7);padding:10px 16px;cursor:pointer;user-select:none;z-index:2}
+ #rlb .pv{left:0}#rlb .nx{right:0}
+ #rlb .cap{text-align:center;font:500 12px 'JetBrains Mono';color:#9a9aa5;padding:10px 0 calc(14px + env(safe-area-inset-bottom))}
+</style>
+</head>
+<body>
+<div id="shell">
+
+ <div id="c-header" style="padding-top:16px">
+  <div style="font:600 11px 'Space Grotesk';letter-spacing:.22em;color:#5d80ff;text-transform:uppercase">AM4 GALLERY</div>
+  <h1 style="margin:5px 0 3px;font:700 25px 'Space Grotesk';letter-spacing:-.02em">Request a run</h1>
+  <div style="font:400 13px 'Space Grotesk';color:#7e7e89">A prompt, a model, how hard to push the box. <a href="/" style="text-decoration:none;border-bottom:1px solid #7fa0ff44">gallery →</a></div>
+ </div>
+
+ <div id="c-status" style="position:sticky;top:0;z-index:30;background:#08080a;padding:8px 0">
+  <div style="background:#121217;border:1px solid #26262e;border-radius:13px;padding:10px 11px;box-shadow:0 8px 24px rgba(0,0,0,.5)">
+   <div id="statusInner" class=noscroll style="display:flex;gap:6px;align-items:center;overflow-x:auto"><span class=pill>connecting…</span></div>
+  </div>
+ </div>
+
+ <div id="c-prompt">
+  <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:7px"><div class=lab>Prompt</div><div class=mono style="font-size:11px;color:#5b5b64">one per line</div></div>
+  <textarea id="prompt" placeholder="describe the image…" style="width:100%;min-height:118px;max-height:210px;resize:vertical;background:#121217;border:1px solid #26262e;border-radius:13px;color:#f2f2f4;font:400 15px/1.45 'Space Grotesk';padding:13px 14px;outline:none"></textarea>
+ </div>
+
+ <div id="c-chips">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px"><div class=lab>Model</div>
+   <button id="infoBtn" style="background:none;border:none;color:#7e7e89;font:500 12px 'Space Grotesk';cursor:pointer">how they differ</button></div>
+  <div id="chips" class=noscroll style="display:flex;gap:9px;overflow-x:auto;padding:2px 1px 5px"></div>
+  <div id="modelInfo" style="display:none;margin-top:8px;font:400 12.5px/1.45 'Space Grotesk';color:#9a9aa5;background:#101015;border:1px solid #222229;border-radius:11px;padding:9px 11px">Bigger models are slower. <b style="color:#cfcfd8">All</b> runs a side-by-side ladder race so every model renders the same prompt at once.</div>
+ </div>
+
+ <div id="c-amount">
+  <div class=lab style="margin-bottom:9px">How much to run</div>
+  <div style="display:flex;gap:8px;margin-bottom:11px">
+   <button id="segImg" class="seg on" onclick="setMode('images')">Number of images</button>
+   <button id="segBud" class="seg" onclick="setMode('budget')">GPU time budget</button>
+  </div>
+  <div style="display:flex;align-items:center;gap:9px">
+   <button class=step onclick="bump(-1)">−</button>
+   <div style="flex:1;height:56px;background:#121217;border:1px solid #26262e;border-radius:13px;display:flex;align-items:center;gap:8px;padding:0 16px;min-width:0">
+    <input id="amount" inputmode="numeric" value="4" style="width:100%;min-width:0;background:none;border:none;outline:none;color:#f2f2f4;font:600 26px 'JetBrains Mono'">
+    <span id="amountUnit" class=mono style="font-size:12px;color:#6a6a73;white-space:nowrap">images</span>
+   </div>
+   <button class=step onclick="bump(1)">+</button>
+  </div>
+  <div id="amountHelp" class=mono style="margin-top:8px;font-size:11.5px;color:#6a6a73">per prompt, per model · max 1000</div>
+ </div>
+
+ <div id="c-submit">
+  <button id="submitBtn" onclick="submit()" style="width:100%;min-height:58px;border:none;border-radius:15px;background:linear-gradient(180deg,#8ee0ad,#6fce97);color:#08160d;font:700 18px 'Space Grotesk';letter-spacing:.01em;cursor:pointer;box-shadow:0 8px 24px rgba(111,206,151,.26)">Submit ▶</button>
+ </div>
+
+ <div id="c-live"></div>
+ <div id="c-reqs"></div>
+</div>
+<div id=rlb>
+ <span class=x onclick="rlbClose()">✕</span>
+ <span class="nav pv" onclick="rlbStep(-1)">‹</span>
+ <span class="nav nx" onclick="rlbStep(1)">›</span>
+ <div class=stage><img id=rlbimg alt=""></div>
+ <div class=cap id=rlbcap></div>
+</div>
+<div class=toast id=toast></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const ACCENT='#5d80ff';
+const MODELS=[{id:'All',name:'All',sub:'race mode'},{id:'sd15',name:'sd15',sub:'~2s'},{id:'sdxl',name:'sdxl',sub:'~7s'},{id:'sd35',name:'sd35',sub:'~24s'},{id:'flux',name:'flux',sub:'~30s'}];
+const PLAB={queued:'queued',loading:'loading model',sampling:'sampling',saving:'saving',done:'done',idle:'idle',error:'error'};
+const PCOLOR={queued:'#8b8b95',loading:'#f0a23b',sampling:ACCENT,saving:'#7fd6a0',done:'#4ade80',error:'#ff7a6b'};
+const ORDER=['queued','loading','sampling','saving','done'];
+const SHORT={queued:'queued',loading:'load',sampling:'sample',saving:'save',done:'done'};
+let selectedModel='All', mode='images', count=4, budget=6, mine=null;
+
+// ---- prefill from gallery hero / remix ----
+const qp=new URLSearchParams(location.search);
+if(qp.get('prompt')) $('prompt').value=qp.get('prompt');
+const qm=qp.get('models');
+if(qm && qm!=='all'){ const first=qm.split(',').find(m=>MODELS.some(x=>x.id===m)); if(first) selectedModel=first; }
+else if(qm==='all') selectedModel='All';
+
+// ---- model chips ----
+function renderChips(){
+  $('chips').innerHTML=MODELS.map(m=>`<button class="chip${selectedModel===m.id?' on':''}" onclick="pickModel('${m.id}')"><span class=nm>${m.name}</span><span class=sb>${m.sub}</span></button>`).join('');
+}
+function pickModel(id){selectedModel=id;renderChips();}
+$('infoBtn').onclick=()=>{const e=$('modelInfo');e.style.display=e.style.display==='none'?'block':'none';};
+renderChips();
+
+// ---- amount ----
+function setMode(m){mode=m;
+  $('segImg').classList.toggle('on',m==='images');$('segBud').classList.toggle('on',m==='budget');
+  $('amount').value=m==='images'?count:budget;
+  $('amountUnit').textContent=m==='images'?'images':'GPU-min';
+  $('amountHelp').textContent=m==='images'?'per prompt, per model · max 1000':'spend cap — stops when the budget is used up';
+}
+function bump(d){ if(mode==='images'){count=Math.max(1,Math.min(1000,count+d));$('amount').value=count;} else {budget=Math.max(1,Math.min(120,budget+d));$('amount').value=budget;} }
+$('amount').oninput=e=>{const n=parseInt(String(e.target.value).replace(/[^0-9]/g,''))||0; if(mode==='images')count=Math.min(1000,n); else budget=Math.min(120,n);};
+
+// ---- helpers ----
+const routing=n=>{if(n&&n.dual)return{s:'B70 #1 + #2',f:'Dual B70'};const a=((n&&n.gpu)||[]).filter(x=>(x.vram_used_gb||0)>1);return a.length>=2?{s:'B70 #1 + #2',f:'Dual B70'}:{s:'B70 #1',f:'Single B70'};};
+const hotTemp=g=>{const t=(g||[]).map(x=>x.temp_c).filter(x=>x!=null);return t.length?Math.max(...t):null;};
+const tempColor=t=>t==null?'#9fd0ff':t>86?'#ff7a6b':t>76?'#f0a23b':'#9fd0ff';
+const ramColor=(u,t)=>{const r=t?u/t:0;return r>0.9?'#ff7a6b':r>0.78?'#f0a23b':'#7fd6a0';};
+const vramLabel=g=>{const a=(g||[]).filter(x=>(x.vram_used_gb||0)>1);if(a.length>=2)return a.map(x=>x.vram_used_gb.toFixed(1)).join(' | ')+' GB'; if(a.length===1)return a[0].vram_used_gb.toFixed(1)+' GB'; return '—';};
+
+// ---- status module (idle vs live ticker) ----
+function renderStatus(n){
+  const el=$('statusInner');
+  if(n && n.active){
+    const pc=PCOLOR[n.phase]||ACCENT, rt=routing(n), hot=hotTemp(n.gpu);
+    const cold=n.warm?'warm model':('cold start '+(n.load_s!=null?n.load_s:'…')+'s');
+    el.innerHTML=`<div style="flex:0 0 100%;display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span style="width:9px;height:9px;border-radius:99px;background:#4ade80;animation:pulseDot 1.4s infinite;flex:0 0 auto"></span>
+        <span style="font:600 13.5px 'Space Grotesk'">${n.model||''}</span>
+        <span class=mono style="font-size:12px;color:${pc}">${PLAB[n.phase]||n.phase}</span></div>
+      <span class=pill>${cold}</span><span class=pill>RAM ${Math.round(n.ram_used_gb)}/${Math.round(n.ram_total_gb)} GB</span>
+      <span class=pill>${rt.s}</span><span class=pill>${hot!=null?hot+'°C':'—'}</span>`;
+    el.style.flexWrap='wrap';
+  } else {
+    const hot=hotTemp(n&&n.gpu), gm=mine?`${mine.used_min_today}/${mine.daily_budget_min} GPU-min`:'';
+    el.style.flexWrap='nowrap';
+    el.innerHTML=`<span style="display:inline-flex;align-items:center;gap:6px;background:#152018;border:1px solid #234430;color:#7fd6a0;font:500 12px 'JetBrains Mono';padding:5px 10px;border-radius:999px;white-space:nowrap;flex:0 0 auto"><span style="width:7px;height:7px;border-radius:99px;background:#4ade80;animation:pulseDot 1.6s infinite"></span>${n&&n.accepting?'accepting':'paused'}</span>
+      <span class=pill>queue ${n?n.queue:0}</span><span class=pill>GPU ${hot!=null?hot+'°C':'—'}</span>
+      <span class=pill>${n?n.local_time:''}</span>${gm?`<span class=pill>${gm}</span>`:''}`;
+  }
+}
+
+// ---- live run card ----
+function renderLive(n){
+  const wrap=$('c-live');
+  if(!n || !n.active){ wrap.innerHTML=''; return; }
+  const pc=PCOLOR[n.phase]||ACCENT, ci=ORDER.indexOf(n.phase);
+  const strip=ORDER.map((p,i)=>{const st=i<ci?'past':i===ci?'active':'future';
+    const col=st==='active'?PCOLOR[p]:st==='past'?'rgba(127,214,160,.5)':'#1f1f27';
+    const txt=st==='active'?PCOLOR[p]:st==='past'?'#7e7e89':'#4a4a52';
+    return `<div style="flex:1;display:flex;flex-direction:column;gap:5px"><div style="height:3px;border-radius:99px;background:${col}"></div><div class=mono style="font-size:9px;letter-spacing:.03em;color:${txt};text-transform:uppercase">${SHORT[p]}</div></div>`;}).join('');
+  const pct=Math.round((n.progress||0)*100), hot=hotTemp(n.gpu), rt=routing(n);
+  const ru=Math.round(n.ram_used_gb), rtot=Math.round(n.ram_total_gb);
+  const cold=n.warm?'warm':(n.load_s!=null?('cold '+n.load_s+'s'):'cold');
+  let foot;
+  if(n.done){
+    const th=(n.images||[]).map((id,i)=>`<a href="/img/${id}.webp" target=_blank rel=noopener style="flex:0 0 auto"><img src="/thumb/${id}.webp" style="width:46px;height:46px;border-radius:9px;object-fit:cover;display:block;animation:fadeScale .4s ease both"></a>`).join('');
+    foot=`<div style="display:flex;align-items:center;gap:11px;background:#0f1a12;border:1px solid #1f3a27;border-radius:12px;padding:9px">
+        <div class=noscroll style="display:flex;gap:6px;overflow-x:auto">${th}</div>
+        <div><div style="font:600 13px 'Space Grotesk';color:#7fd6a0">done · ${(n.images||[]).length} img</div><div class=mono style="font-size:11px;color:#6a6a73">saved to gallery · ${n.elapsed_s}s</div></div></div>`;
+  } else {
+    foot=`<div style="display:flex;justify-content:space-between;font:500 12px 'JetBrains Mono'"><span style="color:#8b8b95">elapsed <b style="color:#e8e8ee">${n.elapsed_s}s</b></span><span style="color:#8b8b95">eta <b style="color:#e8e8ee">${n.eta_s?Math.max(0,Math.round(n.eta_s-(n.elapsed_s||0)))+'s':'—'}</b></span></div>`;
+  }
+  wrap.innerHTML=`<div style="background:linear-gradient(180deg,#14141b,#101016);border:1px solid #2b2f49;border-radius:16px;padding:14px;animation:glowPulse 2.6s infinite">
+    <div style="display:flex;align-items:center;gap:9px;margin-bottom:13px">
+      <span class=mono style="font-weight:700;font-size:12px;color:#fff;background:#1f2340;border:1px solid #34406e;border-radius:8px;padding:4px 8px">#${n.req_id}</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;font:600 13px 'Space Grotesk';color:${pc}"><span style="width:8px;height:8px;border-radius:99px;background:${pc};animation:blink 1.1s infinite"></span>${PLAB[n.phase]||n.phase}</span>
+      <span style="flex:1"></span>
+      <span class=mono style="font-size:12px;color:#9a9aa5">${n.model||''} · ${cold}${n.job_total>1?(' · '+n.job_index+'/'+n.job_total):''}</span></div>
+    <div style="display:flex;gap:4px;margin-bottom:13px">${strip}</div>
+    <div style="height:12px;border-radius:99px;background:#1a1a22;overflow:hidden;position:relative;margin-bottom:6px"><div style="height:100%;border-radius:99px;transition:width .2s linear;background-color:${pc};background-image:linear-gradient(45deg,rgba(255,255,255,.16) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.16) 50%,rgba(255,255,255,.16) 75%,transparent 75%);background-size:28px 28px;animation:barStripe .7s linear infinite;width:${pct}%"></div></div>
+    <div style="display:flex;justify-content:space-between;font:500 11px 'JetBrains Mono';color:#8b8b95;margin-bottom:13px"><span>${pct}%</span>${n.phase==='sampling'?`<span style="color:#cfcfd8">step ${n.step} / ${n.steps}</span>`:''}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:13px">
+      ${tile('GPU temp',hot!=null?hot+'°C':'—',tempColor(hot))}
+      ${tile('RAM pressure',ru+' / '+rtot+' GB',ramColor(n.ram_used_gb,n.ram_total_gb))}
+      ${tile('VRAM / card',vramLabel(n.gpu),'#cfcfd8')}
+      ${tile('Routing',rt.f,'#9fb0ff')}
+    </div>${foot}</div>`;
+}
+const tile=(k,v,c)=>`<div style="background:#15151c;border:1px solid #23232c;border-radius:11px;padding:8px 10px"><div style="font:600 9px 'Space Grotesk';letter-spacing:.12em;color:#5f5f69;text-transform:uppercase">${k}</div><div class=mono style="font-weight:600;font-size:16px;color:${c};margin-top:3px">${v}</div></div>`;
+
+// ---- your requests ----
+const BADGE={new:['…','#8b8b95'],pending:['⏳ pending','#f0a23b'],approved:['▶ queued','#9fb0ff'],running:['⏳ running',ACCENT],done:['✓ done','#7fd6a0'],rejected:['✕ rejected','#ff7a6b'],error:['✕ error','#ff7a6b']};
+function renderReqs(){
+  const wrap=$('c-reqs');
+  if(!mine || !mine.requests || !mine.requests.length){ wrap.innerHTML=''; return; }
+  const head=`<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:4px 0 11px">`
+    +`<div style="display:flex;align-items:baseline;gap:14px"><div class=lab>Your requests</div>`
+    +`<a href="/" style="font:600 12px 'Space Grotesk';color:#7fa0ff;text-decoration:none;border-bottom:1px solid #7fa0ff66;white-space:nowrap">← back to the gallery</a></div>`
+    +`<div class=mono style="font-size:11px;color:#6a6a73;white-space:nowrap">${mine.used_min_today}/${mine.daily_budget_min} GPU-min today</div></div>`;
+  const rows=mine.requests.map(r=>{
+    const b=BADGE[r.status]||[r.status,'#8b8b95'];
+    const meta=r.models.join('+')+(r.n?(' · '+r.n+' img'):'');
+    const th=(r.images||[]).map((id,i)=>`<img loading=lazy src="/thumb/${id}.webp" onclick="reqLb(${r.id},${i})" style="width:64px;height:64px;border-radius:10px;object-fit:cover;display:block;border:1px solid rgba(255,255,255,.06);cursor:pointer;flex:0 0 auto" alt="">`).join('');
+    const running=(r.status==='running'||r.status==='approved'||r.status==='pending');
+    return `<div style="background:#121217;border:1px solid ${running?'#2b2f49':'#222229'};border-radius:13px;padding:11px 12px">
+      <div style="display:flex;align-items:center;gap:8px"><span class=mono style="font-weight:700;font-size:12px;color:#cfcfd8">#${r.id}</span>
+        <span style="font:600 12px 'Space Grotesk';color:${b[1]}">${b[0]}</span>
+        <span class=mono style="font-size:11px;color:#6a6a73">${meta}</span></div>
+      <div style="margin-top:6px;font:400 13px 'Space Grotesk';color:#9a9aa5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.prompts[0]||'')}</div>
+      ${th?`<div class=noscroll style="display:flex;gap:7px;margin-top:9px;overflow-x:auto;padding-bottom:2px">${th}</div>`:''}</div>`;
+  }).join('');
+  wrap.innerHTML=head+`<div style="display:flex;flex-direction:column;gap:9px">${rows}</div>`;
+}
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+// ---- request-results lightbox: swipe/arrow through one request's images ----
+let rlbImgs=[],rlbIdx=0;
+function reqLb(reqId,idx){const r=(mine&&mine.requests||[]).find(x=>x.id===reqId);if(!r||!r.images||!r.images.length)return;rlbImgs=r.images;rlbIdx=idx;showRlb();$('rlb').classList.add('show');}
+function showRlb(){$('rlbimg').src=`/img/${rlbImgs[rlbIdx]}.webp`;$('rlbcap').textContent=`${rlbIdx+1} / ${rlbImgs.length}`;}
+function rlbStep(d){if(!rlbImgs.length)return;rlbIdx=(rlbIdx+d+rlbImgs.length)%rlbImgs.length;showRlb();}
+function rlbClose(){$('rlb').classList.remove('show');}
+document.addEventListener('keydown',e=>{if(!$('rlb').classList.contains('show'))return;if(e.key==='ArrowRight')rlbStep(1);else if(e.key==='ArrowLeft')rlbStep(-1);else if(e.key==='Escape')rlbClose();});
+let rsx=0;
+$('rlb').addEventListener('touchstart',e=>rsx=e.touches[0].clientX,{passive:true});
+$('rlb').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-rsx;if(Math.abs(dx)>40)rlbStep(dx<0?1:-1);},{passive:true});
+
+// ---- submit ----
+async function submit(){
+  const prompts=$('prompt').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const models=selectedModel==='All'?['all']:[selectedModel];
+  const body={prompts,models,mode:mode==='images'?'count':'time',count,minutes:budget};
+  const b=$('submitBtn');
+  if(!prompts.length){toast('Enter at least one prompt',true);return;}
+  b.disabled=true;b.textContent='Submitting…';
+  try{
+    const r=await fetch('/api/requests',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const d=await r.json();
+    if(!r.ok) toast(d.error||'something went wrong',true);
+    else toast(`Request #${d.id} sent · ${d.eta}`+(d.queue_ahead?` · ${d.queue_ahead} ahead`:''));
+  }catch(e){toast('network error',true);}
+  b.disabled=false;b.textContent='Submit ▶';
+  loadMine();
+}
+let tT;function toast(m,err){const t=$('toast');t.textContent=m;t.className='toast show'+(err?' err':'');clearTimeout(tT);tT=setTimeout(()=>t.className='toast'+(err?' err':''),2600);}
+
+// ---- polling ----
+let lastNow=null;
+async function loadNow(){
+  try{lastNow=await (await fetch('/now.json',{cache:'no-store'})).json();renderStatus(lastNow);renderLive(lastNow);}catch(e){}
+}
+async function loadMine(){
+  try{mine=await (await fetch('/api/mine',{cache:'no-store'})).json();renderReqs();
+    if(!lastNow||!lastNow.active)renderStatus(lastNow);}catch(e){}
+}
+loadMine();loadNow();
+setInterval(loadNow,1200);
+setInterval(loadMine,15000);
+</script>
+</body>
+</html>
