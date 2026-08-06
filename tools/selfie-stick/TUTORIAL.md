@@ -297,6 +297,91 @@ That is the honest shape of instrumentation. It is very good at finding what is
 definitively broken and unreliable at judging what is good. Use it to delete the
 black rectangles, not to pick the winners.
 
+## Step 7 — taking the human out of the loop
+
+Everything so far assumed a person at the keyboard: fly there, frame it, press a
+key. That works, and it does not scale past one operator with an evening free.
+
+Automating it changed which trade was correct. A human pays for *moving*, so 23
+frames of one viewpoint varying only the light was sensible. A machine pays
+nothing to move, and six photographs from six angles say far more about a
+building than twenty-three of one wall. The count went down and the information
+went up.
+
+### Nothing in the repository can type into the console
+
+The first design died immediately. The mod exposes `runplan` as a console
+command, and there is no `SendInput`, `SendKeys` or `keybd_event` anywhere in
+this codebase — the existing lab harness drives the game entirely through
+files and in-process handlers, deliberately. So an unattended run cannot be a
+sequence of typed commands.
+
+The mod arms itself from a file instead. `orbit-request.json` exists → it picks
+the character, opens the named local world, waits for the player, shoots the
+plan, quits. Process exit becomes the completion signal, which is more honest
+than a timer.
+
+Two routes were rejected on evidence rather than taste. The approved plan called
+for a local dedicated server, but no server binary is installed on this machine.
+And the existing `Invoke-NativeValheimClient.ps1` writes a request that makes
+another plugin auto-join a *server*, which would race this mod for the main
+menu, and it has no path for loading a local world at all. Single-player turned
+out to be both simpler and faster: ZDOs stream off disk with no network between
+the camera and the world.
+
+### Five runs, five faults, and no single instrument found them all
+
+Each run changed exactly one variable.
+
+| run | changed | fault it exposed | found by |
+| --- | --- | --- | --- |
+| 1 | baseline | framing on the bbox diagonal | comparing two numbers |
+| 2 | reframe | camera inside a tree | opening the image |
+| 3 | light | none (+34% contrast) | a histogram |
+| 4 | occlusion recovery | `occluded:true` with `clearance:planned` | two fields contradicting |
+| 5 | recovery timing | none — prediction held | the receipt |
+
+**Framing on the bounding diagonal is wrong for anything that sprawls.** A
+cluster's diagonal is inflated by outbuildings and walls. Dragon's Den measures
+252 m corner to corner but its compact extent is 150 m, so framing on the
+diagonal pushed the camera 267 m out to fit a fence and left the tower a smudge
+in fog. Framing on `max(height, narrower horizontal)` fixed it.
+
+**The light values were wrong and the data to prove it already existed.** The
+planner shot at 0.70 because that *sounds* like golden hour. The 207-frame sweep
+from Step 6 — run hours earlier, in this same repo — says 0.70 carries 26% less
+contrast than 0.64. Measuring twice and reasoning from a plausible story anyway
+is a failure mode worth naming.
+
+### The two failures that argue for both kinds of instrument
+
+**A camera inside a tree is invisible to every metric.** `pieces_near_aim` was
+24,695 on that frame — the *highest* of the run — because a tree is geometry.
+Luminance and contrast both looked healthy. Only opening the image found it.
+
+**A timing bug is invisible in the image and screams in the data.** Run 4
+produced a receipt with `occluded: true` and `clearance: planned`. Those cannot
+both be true: same raycast, same two points. They ran either side of the world
+streaming in — the clearance check happened at placement, before the trees
+existed, so it honestly reported a clear view for a camera about to be buried in
+a canopy. A raycast can only hit colliders that exist.
+
+That second one is the more valuable failure, because it scales. Nobody will
+open every frame of 480, but a field that contradicts itself still shouts. It is
+also the argument for recording `lifted+16m` rather than a boolean: a bare
+`occluded: true` would have read as a known-hard case and shipped.
+
+### What the receipts bought
+
+When run 1 came back hazy and small, the receipts said `lens_offset 1.3 m`,
+`fov 65`, `occluded 0`, `pieces 16k–31k`. That is: the boom collapsed correctly,
+the game's field of view matches what the planner assumes, nothing was blocking,
+and the world had fully streamed in before every shutter. The capture was
+provably sound, so the fault was provably in the plan.
+
+Without that, the obvious move is to start tuning the runner — the half that was
+already working.
+
 ## What is still open
 
 - **Prefab names are hashes.** The cache stores `hash:538325542`, not
