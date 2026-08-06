@@ -56,6 +56,8 @@ def parse_args():
     p.add_argument("--out", default=os.path.join(here, "out", "shotplan.json"))
     p.add_argument("--region", default="in-world", choices=["all", "in-world", "outland"])
     p.add_argument("--top", type=int, default=0, help="only the top N by score")
+    p.add_argument("--skip", type=int, default=0,
+                   help="skip the first N by score, for shooting the next band down")
     p.add_argument("--elevation", type=float, default=40.0,
                    help="camera elevation above the horizontal, degrees (default 40)")
     p.add_argument("--margin", type=float, default=1.15,
@@ -154,6 +156,8 @@ def main():
     clusters = [c for c in doc["clusters"]
                 if args.region == "all" or c["region"] == args.region]
     clusters.sort(key=lambda c: -c["score"])
+    if args.skip:
+        clusters = clusters[args.skip:]
     if args.top:
         clusters = clusters[: args.top]
 
