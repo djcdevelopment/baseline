@@ -117,7 +117,7 @@
 <script>
 // ---- state ----
 let DB={images:[]}, MINE=new Set(), VOTES={}, REQS={}, CLAIMS={}, USER='anon';
-let sel={region:new Set(),environment:new Set(),structure:new Set()};
+let sel={region:new Set(),kind:new Set(),environment:new Set(),structure:new Set()};
 let sort='recent', page=0, view=[], cur=-1;
 const byRun={};                       // run id -> all moods of that one setup
 
@@ -125,8 +125,11 @@ const ENVCOLOR={Clear:'#7aa2ff',Misty:'#9ad5c8',Rain:'#8fb2d9',ThunderStorm:'#b7
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-// A row's "structure" facet: rank plus size, so the chip is readable.
-const structOf=r=>r.cluster_rank!=null?`#${r.cluster_rank} · ${(r.pieces||0).toLocaleString()} pcs`:'unmatched';
+// The structure chip. Valheim gives builds no names, so the builder derives one
+// from the place's most distinctive trait ("major hub · 19,720") and a hand-written
+// name in cluster-names.json overrides it. Rank and piece count alone identified a
+// cluster but said nothing about what it was.
+const structOf=r=>r.label||(r.cluster_rank!=null?`#${r.cluster_rank}`:'unmatched');
 
 async function boot(){
   try{ DB=await (await fetch('index.json',{cache:'no-store'})).json(); }
@@ -154,7 +157,8 @@ function facetValues(key){
 }
 
 function buildPanel(){
-  const facets=[['region','Region'],['environment','Weather'],['structure','Structure']];
+  const facets=[['region','Region'],['kind','Kind of place'],['environment','Weather'],
+                ['structure','Structure']];
   let h='';
   for(const [key,label] of facets){
     const vals=facetValues(key);
@@ -187,6 +191,7 @@ function buildPanel(){
 function filtered(){
   return DB.images.filter(r=>
     (!sel.region.size||sel.region.has(r.region)) &&
+    (!sel.kind.size||sel.kind.has(r.kind)) &&
     (!sel.environment.size||sel.environment.has(r.environment)) &&
     (!sel.structure.size||sel.structure.has(structOf(r))));
 }

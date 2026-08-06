@@ -43,6 +43,8 @@ def parse_args():
                    help="also generate webp thumbnails (needs Pillow)")
     p.add_argument("--copy-full", action="store_true",
                    help="copy full-size images into dest/img (large; off by default)")
+    p.add_argument("--names", default=os.path.join(here, "out", "cluster-names.json"),
+                   help="optional JSON map of cluster_id -> human name")
     p.add_argument("--max-join-m", type=float, default=250.0,
                    help="how far a shot may be from a cluster centre and still count "
                         "as a picture of it (default 250)")
@@ -81,6 +83,62 @@ def read_capture(run_dir):
     return doc["position"], doc.get("items", [])
 
 
+def describe(c):
+    """A readable name for a structure, since Valheim gives builds no names.
+
+    Rank and piece count identify a cluster but say nothing about what it is, so
+    lead with its most distinctive trait. Ordered by how strongly each trait
+    characterises a place: a 66-portal hub reads as a hub first and a big build
+    second, while sheer height is the defining fact about a tower.
+    """
+    portals, beds = c.get("portals", 0), c.get("beds", 0)
+    signs, stands = c.get("signs", 0), c.get("item_stands", 0)
+    h, foot = c.get("size_y", 0), c.get("footprint_m2", 0)
+    builders = c.get("distinct_creators", 0)
+
+    if portals >= 30:
+        kind = "major hub"
+    elif h >= 90:
+        kind = "tower"
+    elif stands >= 200:
+        kind = "museum"
+    elif signs >= 800:
+        kind = "sign-covered"
+    elif portals >= 10:
+        kind = "hub"
+    elif beds >= 10:
+        kind = "settlement"
+    elif foot >= 50000:
+        kind = "sprawl"
+    elif h >= 60:
+        kind = "tall hall"
+    elif builders >= 8:
+        kind = "shared build"
+    else:
+        kind = "build"
+
+    if c.get("sky"):
+        kind = "sky " + kind
+    return kind
+
+
+def label_for(c, named):
+    """Prefer a human name. `named` comes from the notes column of clusters.csv —
+    fill it in while flying and the gallery picks it up on the next rebuild."""
+    hand = (named or {}).get(str(c["cluster_id"]))
+    if hand:
+        return hand
+    return f"{describe(c)} · {c['pieces']:,}"
+
+
+def load_names(path):
+    """Optional cluster_id -> name map, so structures can be named by hand."""
+    if not path or not os.path.exists(path):
+        return {}
+    with open(path, encoding="utf-8-sig") as fh:
+        return {str(k): str(v).strip() for k, v in json.load(fh).items() if str(v).strip()}
+
+
 def make_thumb(src, dest_path):
     from PIL import Image
     with Image.open(src) as im:
@@ -95,6 +153,9 @@ def main():
         sys.exit(f"captures directory not found: {args.captures}")
 
     clusters = load_clusters(args.clusters)
+    names = load_names(args.names)
+    if names:
+        print(f"  {len(names)} structure(s) named by hand")
     os.makedirs(args.dest, exist_ok=True)
     thumb_dir = os.path.join(args.dest, "thumb")
     img_dir = os.path.join(args.dest, "img")
@@ -152,6 +213,10 @@ def main():
                 row.update({
                     "cluster_id": cluster["cluster_id"],
                     "cluster_rank": cluster.get("rank"),
+                    "label": label_for(cluster, names),
+                    "kind": describe(cluster),
+                    "footprint_m2": cluster.get("footprint_m2"),
+                    "item_stands": cluster.get("item_stands", 0),
                     "shot_distance_m": round(dist, 1),
                     "pieces": cluster["pieces"],
                     "height_m": cluster["size_y"],
@@ -188,6 +253,7 @@ def main():
         "environments": facet("environment"),
         "regions": facet("region"),
         "variants": facet("variant"),
+        "kinds": facet("kind"),
         "images": rows,
     }
 
