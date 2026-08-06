@@ -1,206 +1,226 @@
 # Launch runbook — operator
 
-For Derek, as the person who owns this. Written 2026-08-06 against verified live state.
-Everything below was checked, not recalled; where something is inferred it says so.
+**What this is:** the operator's working page for taking Baseline's tools to a community.
+What is proven, what still needs testing, what to fall back to, what installing actually
+involves, what to say, and where the friction is.
 
-The unveil is **the tools**, not the world. That line is already drawn in the
-announcement and in every card status. Nothing here asks you to move it.
+**Who it is for:** whoever is operating this. Today that is one person. It assumes you can
+read the repo but not that you were in the room for any of it.
+
+**State as of 2026-08-06.** Everything below was checked against the live system on that
+date, not recalled. Where something is inferred it says so. If you are reading this much
+later, re-check §1 before trusting §3.
+
+### The one distinction that governs everything here
+
+Two different launches get confused constantly, and separating them is the whole decision:
+
+- **The tools** — a catalog of things people download and run on their own machine.
+  **Open.** Verified end to end through the public wire.
+- **The world** — joining the modded Valheim server and playing. **Not open**, by decision,
+  and the roadmap's own register says `platform_readiness: "not_ready"` with nine `no_go`
+  entries, two labelled stop-ship.
+
+Nothing in this runbook proposes moving that line. The announcement already draws it.
+
+### Terms, if you are new
+
+Full list in [`GLOSSARY.md`](GLOSSARY.md); these are the ones this page leans on.
+
+| Term | Short version |
+|---|---|
+| **AM4** | The box hosting the public surface. `am4.tail8e749c.ts.net` is a **Tailscale Funnel** — genuinely public, not tailnet-only. Carries HTTP; not Valheim's UDP. |
+| **P7** | The GCP VM (`comfy-lumberjacks-p7`). **Terminated since 2026-07-25.** `comfy-p7.duckdns.org` resolves to nothing running. |
+| **The Gateway** | The Lumberjacks service that owns sessions, admission, enrollment and world-state delivery. |
+| **Cutover mode** | Which stack owns world state. `native` = vanilla Valheim sync with telemetry still on. |
+| **C-gates** | Numbered acceptance gates for the netcode cutover. C0–C8 + C10a done on AM4; **C10b never green**. |
+| **r42** | The Gateway session-plane fix cut landed 2026-08-05 (`b206c31`). Unit-tested only, never deployed. |
+| **Enrollment lane vs. harness lane** | Two different paths world data can take. Every proof ran the **harness** lane; every real player runs the **enrollment** lane, which has never been exercised on P7. That mismatch is [ADR 0017](../../fieldlab/docs/adr/0017-prove-the-lane-users-ship-on.md). |
 
 ---
 
 ## 1. What we know works
 
-Receipts retained, re-verified 2026-08-06 unless noted.
+Re-verified 2026-08-06.
 
 | Thing | Evidence |
 |---|---|
-| **The public Workbench** | `workbench-verify-live --post-publish` → **71 checks, 0 failed**. Receipt: `captures/workbench-verify-live.json` |
-| **Served page = committed render** | live sha256 `346259b9…` equals the local artifact, byte for byte |
-| **Downloads survive the wire** | quest-picker + community-telemetry each stream with matching size, digest, and `X-Download-Sha256` header |
-| **Public reachability** | `am4.tail8e749c.ts.net` resolves on public DNS (8.8.8.8 → 208.111.35.209). `/workbench`, `/community`, `/roadmap`, `/networksense`, `/events`, `/testing`, `/health` all 200 |
-| **Discord** | invite resolves, correct guild, non-expiring; all 7 threads + all 9 first-task links live |
-| **`/ops` is fail-closed** | 403 unauthenticated. `/gallery` 401. Both correct |
-| **Netcode gates C0–C8, C10a** | complete on AM4 with falsifier receipts (12,339 server calls zero drops; poison blocked 76/76) |
-| **C3 durable journal replay** | re-proved on P7 2026-08-03, 1,643 objects before/after |
-| **M0 frozen release** | published and byte-verified |
-| **Test suites** | 619 C# test attributes, 29 generator tests green |
-| **A modded server is up** | `Comfy Era16 Lab`, world `ComfyEra16`, up 3 days, telemetry heartbeat on |
+| The public Workbench | `workbench-verify-live --post-publish` → **71 checks, 0 failed**. Receipt: `captures/workbench-verify-live.json` |
+| Served page = committed render | live sha256 `346259b9…`, byte-identical to the local artifact |
+| Downloads survive the wire | both zips stream with matching size, digest, and `X-Download-Sha256` |
+| Public reachability | resolves on public DNS (8.8.8.8 → 208.111.35.209); `/workbench`, `/community`, `/roadmap`, `/networksense`, `/events`, `/testing`, `/health` all 200 |
+| Discord | invite resolves, correct guild, non-expiring; 7 threads + 9 task links live |
+| Access control | `/ops` 403s, `/gallery` 401s, both unauthenticated. Correct |
+| Netcode C0–C8, C10a | complete on AM4 with falsifier receipts — 12,339 server calls zero drops, poison blocked 76/76 |
+| Durable journal replay (C3) | re-proved on P7 2026-08-03, 1,643 objects before and after |
+| M0 frozen release | published, byte-verified |
+| Tests | 619 C# test attributes, 29 generator tests, green |
+| A modded server is up | `Comfy Era16 Lab`, world `ComfyEra16`, 3 days uptime, telemetry reporting |
 
-**The one number people will ask about:** the 83,220/83,220 ZDO golden proof is real, and it
-is **one client, one window, 2026-07-16**. Say that second half out loud every time. It is
-not a claim about Valheim networking in general and the roadmap says so itself.
+**Say the second half of this out loud, every time:** the golden proof is 83,220 of 83,220
+eligible ZDO revisions with zero native — and it is **one client, one window, 2026-07-16**.
+It is not a claim about Valheim networking in general. The roadmap says so itself.
 
 ---
 
 ## 2. What we want to test again
 
-Ordered by what actually unblocks something.
+### Free — no cloud spend, runnable this week
 
-### Free — no GCP spend, can run this week
-
-- [ ] **Wedge repro on AM4.** Reproduce the candidate-8/11 livelock locally using
-      `zdoJournalApplyThrottleMs` (exists: `network/mod/ComfyNetworkSense/Config/PluginConfig.cs:114`),
-      then prove r42 breaks it. This is the pre-req your own register names, and it is the
-      difference between "r42 passes unit tests" and "r42 fixes the thing".
-      **Done when:** the stall reproduces on demand *before* the fix and does not *after*.
-- [ ] **Cold-machine tool install.** Take one of the two published zips onto a machine that
-      has never seen this project and follow only the one-pager. This is `no_go` item 6 and
-      it is the cheapest one to close.
-- [ ] **C9 motion verdict on the Lumberjacks lane.** The `smooth` verdict banked 08-05 was
-      on *vanilla native sync*, not the Lumberjacks path. The real one is still open.
+| | Test | Done when |
+|---|---|---|
+| ☐ | **Wedge repro on AM4.** Reproduce the candidate-8/11 livelock with `zdoJournalApplyThrottleMs` (`network/mod/ComfyNetworkSense/Config/PluginConfig.cs:114`), then show r42 breaks it | the stall reproduces on demand *before* the fix and not *after* |
+| ☐ | **Cold-machine tool install.** One published zip, a machine that has never seen this project, only the one-pager as a guide | a stranger's path works, or you know exactly where it doesn't. Closes `no_go` #6 |
+| ☐ | **C9 motion verdict on the Lumberjacks lane** | you have watched the *Lumberjacks* path. The `smooth` verdict banked 08-05 was on vanilla native sync, so the real one is still open |
 
 ### Needs a window, and a decision first
 
-- [ ] **Enrollment-consumer lane on P7.** The ADR-0017 gate. Every C8/C10b proof ran the
-      harness journal lane; every real tester runs the enrollment lane, which has **never**
-      been exercised on P7 (`active_consumers: 0`, 4,421 receipts pending, applied 0).
-      **Blocked on tooling that does not exist** — the client harness has no
-      enrollment/consumer switch. That build is part of the gate's cost.
-- [ ] **Candidate 12.** Needs the r42 coupled pair cut, re-promotion, a fresh boot receipt,
-      P7 started, and `zdoRedirectEnabled=true` restored first. A run against a native-mode
-      server measures the wrong lane.
-- [ ] **Two humans, two Steam clients.** Still never passed. Everything else is a proxy for it.
+| | Test | Blocked on |
+|---|---|---|
+| ☐ | **Enrollment lane on P7** — the ADR 0017 gate | tooling that does not exist: the client harness has no enrollment/consumer switch. Last measured `active_consumers: 0`, 4,421 receipts pending, 0 applied |
+| ☐ | **Candidate 12** | the r42 coupled pair cut, re-promotion, a fresh boot receipt, P7 started, and `zdoRedirectEnabled=true` restored. Run against a native-mode server it measures the wrong lane |
+| ☐ | **Two humans, two Steam clients** | nothing but time. Never passed. Everything else is a proxy for it |
 
 ### Fix before the next unveil
 
-- [ ] **`verify-live` checks liveness, not identity.** It asserted `/join` was fine because
-      it answered 200 — while `/join` belonged to a different product. Add an identity
-      assertion (expect `Server: Kestrel`, or a known marker in the body) to the routes class.
+☐ **`verify-live` checks liveness, not identity.** It passed `/join` because the route
+answered 200 — while that route belonged to a different product entirely. Assert identity
+too (expect `Server: Kestrel`, or a known body marker) in the routes class.
 
 ---
 
 ## 3. Where we can fall back
 
-**You are already standing on the fallback, and it works.** The AM4 server runs
-`lumberjacksCutoverMode = native` — vanilla Valheim sync, with the Lumberjacks telemetry
-heartbeat still on. That is why `/community` has live data. It is the position the 08-05
-session retreated to after the modded lane failed four ways, and it has been up three days.
+**You are already standing on the fallback, and it is working.** The AM4 server runs
+`lumberjacksCutoverMode = native` — vanilla Valheim sync with the Lumberjacks telemetry
+heartbeat still on, which is why `/community` shows live data. It is where the 2026-08-05
+session retreated after the modded lane failed four ways, and it has held for three days.
 
 | If this breaks | Fall back to | How |
 |---|---|---|
-| The Lumberjacks lane misbehaves in a session | Native sync | `lumberjacksCutoverMode = native` — already set. Restart the server container |
-| The ZDO redirect wedges clients | Redirect off | Restore `.bak-20260805T1020Z`; wipe the WAL after any restart or clients livelock at spawn |
-| A Gateway image goes bad | Previous image | Re-pin the prior digest. **No terraform, no compose changes** |
-| The published page is wrong | Re-publish | `Publish-WorkbenchAssets.ps1` — it is a file copy, no image build, no restart. Gates fail closed |
-| Steam enrollment can't be routed | The LAN guest package | `tools/guest-package/` — older, but it has preflight and diagnostics (see §6) |
-| The whole web surface is down | The repo | It is public. Every tool's source and one-pager is readable without the site |
+| The Lumberjacks lane misbehaves mid-session | Native sync | `lumberjacksCutoverMode = native` — already set; restart the server container |
+| The ZDO redirect wedges clients | Redirect off | restore `.bak-20260805T1020Z`, then **wipe the WAL** — after any restart, a stale bank livelocks clients at spawn |
+| A Gateway image goes bad | The previous image | re-pin the prior digest. **No terraform, no compose changes** |
+| The published page is wrong | Re-publish | `Publish-WorkbenchAssets.ps1` — a file copy, no image build, no restart, gates fail closed |
+| Enrollment can't be routed | The LAN guest package | `tools/guest-package/` — older, but it has preflight and diagnostics (§6) |
+| The whole web surface is down | The repo | it is public; every tool's source and one-pager reads fine without the site |
 
-**Do not** `terraform apply` from baseline — a plan would destroy the VM and 4 live
-resources. **Do not** run `~/gallery/users.sh` on AM4 before Saturday: it calls
-`gen_caddyfile.sh`, which overwrites `/etc/caddy/Caddyfile` wholesale with a template that
-has none of the storefront routes. That takes the entire public surface down in one command.
+> **Two things that break production in one command.**
+> Never `terraform apply` from this repo — a plan would destroy the VM and four live
+> resources. Never run `~/gallery/users.sh` on AM4 — it calls `gen_caddyfile.sh`, which
+> overwrites `/etc/caddy/Caddyfile` wholesale with a template containing none of the
+> storefront routes, taking `/workbench`, the downloads, the `/ops` guard and the mech proxy
+> down together. To change a gallery login, hand-edit the `basic_auth` block instead.
 
 ---
 
 ## 4. The install plan
 
-### Today — the tools (this is the launch)
+### Today — the tools
 
-No install, no account, no server. Someone clicks the Workbench, downloads a zip, unzips it,
-runs it. That is the whole flow, and it is verified end to end through the public wire.
+**There is no install.** Click the Workbench, download a zip, unzip, run. Verified end to
+end through the public wire.
 
-- **Quest picker** — a self-contained HTML page. Open it in a browser. Nothing to install.
+- **Quest picker** — a self-contained HTML page; open it in a browser.
 - **Community telemetry** — a local stack; the kit carries its own instructions.
-- **ComfyStewardView** — separate public repo, point it at a world save.
+- **ComfyStewardView** — separate public repo; point it at a world save.
 
 ### Not today — joining the world
 
-There is no publicly open install path, and that is deliberate. Two mechanisms exist:
+No publicly open path, deliberately. Two mechanisms exist:
 
-1. **Steam self-service enrollment** (intended path). Invite → Steam OpenID → personalized
-   mod-pack zip with credentials baked into the BepInEx config → extract → restart Valheim.
-   Built, test-covered, **not publicly routed** — the funnel sends `/join` to an unrelated
-   IRC portal — and **never walked end to end**. That walk is task SJ-1.
-2. **LAN guest package** (`tools/guest-package/`). Older. Sealed DLL + config merge, hash
-   verified against the manifest, backs up what it overwrites, writes a receipt, rolls back
-   on any failure. Has a **read-only preflight** and a **secret-scrubbing diagnostics
-   collector** — see §6.
+1. **Steam self-service enrollment** — the intended path. Invite → Steam sign-in →
+   personalized mod-pack zip with credentials already in the config → extract → restart
+   Valheim. Built and test-covered, but **not publicly routed** (the funnel gives `/join` to
+   an unrelated IRC portal) and **never walked end to end**. That walk is task SJ-1 on the
+   `steam-join` card.
+2. **LAN guest package** (`tools/guest-package/`) — older. Sealed DLL plus config merge,
+   hash-verified against its manifest, backs up what it overwrites, writes a receipt, rolls
+   back on failure.
 
-When you do open it: **one client at a time** while the enrollment queue is shared. That is
-a real constraint, not caution.
+When it does open: **one client at a time**, until the shared enrollment queue is
+recipient-scoped. Two testers would steal each other's records. That is a correctness
+constraint, not caution.
 
 ---
 
 ## 5. How we explain it to people
 
-The copy is written and it is good. Don't rewrite it under time pressure.
+The copy is written and it is good. Do not rewrite it under time pressure.
 
-- **The announcement** — `Lumberjacks/docs/workbench/discord/00-announcement.md`. Post it by
-  hand; the bot has a hardcoded denylist against posting it. Placeholder is filled, the
-  stale "networking on hold" premise is fixed, it says three runnable tools and puts the
-  Steam card in the not-open section.
-- **What alpha means** — `docs/community/expectations.md`. One operator, best-effort, built
-  in the open, batch rhythm in days not minutes.
-- **The player door** — `docs/community/README.md`.
-- **Each tool** — its own one-pager and its own thread. Already posted.
+| Audience need | Where it lives |
+|---|---|
+| The announcement | `Lumberjacks/docs/workbench/discord/00-announcement.md` — **post by hand**; the bot has a hardcoded denylist against posting it |
+| What alpha means | [`docs/community/expectations.md`](../community/expectations.md) |
+| The player door | [`docs/community/README.md`](../community/README.md) |
+| Each tool | its own one-pager and its own Discord thread, already posted |
 
-**The three sentences to keep saying:**
+**Three sentences worth repeating:**
 
 1. *"What's open today is the tooling. The server isn't."*
 2. *"Every status on that page is what the thing does today, not what it's going to do."*
 3. *"Running one of these once and telling me what happened — including that it broke — is a complete contribution."*
 
-**If someone asks about the networking work:** it is closer than it has ever been, the
-machine side is green on everything a machine can check, and what is left needs a human
-driving two Steam clients for hours. No dates.
+**If asked about the networking work:** closer than it has ever been, the machine side is
+green on everything a machine can check, and what is left needs a human driving two Steam
+clients for hours. No dates.
 
 **If someone finds the IRC portal at `/join`:** that is a different project sharing the same
-box. It is not the Valheim join flow. Nothing on the Workbench links to it any more.
+host. It is not the Valheim join flow, and nothing on the Workbench links to it.
 
 ---
 
 ## 6. Making it not effort to join and test
 
-This is the part worth your attention, because most of the friction is removable and some of
-the fix is already built and just not pointed at.
+Most of the friction is removable, and some of the fix is already built and simply not
+pointed at.
 
-### The shortest real test loop you have today
+### The shortest real test loop available today
 
-**A friendly tester can play the modded server right now, over the tailnet, with no
-enrollment, no invite flow, and no routing fix.** This sidesteps every `no_go` item because
-the server is in native mode:
+**A friendly tester can play the modded server right now, over the tailnet — no enrollment,
+no invite flow, no routing fix.** It works because the server is in native mode, so none of
+the `no_go` items apply:
 
-- The server is up: `Comfy Era16 Lab`, world `ComfyEra16`, UDP **2456–2457**, no password,
-  `SERVER_PUBLIC=false` so it is direct-connect only, not in the Steam browser.
-- Tailscale **carries UDP fine** — it is only *Funnel* that cannot. The "UDP can't ride the
-  funnel" caveat does not apply to a tailnet peer.
-- So: share the tailnet with one person, they direct-connect to AM4 on `2456`, done.
-- Telemetry heartbeat is on, so their session shows up on `/community` — you get real data
-  and real feedback without opening anything public.
+- The server is up, UDP **2456–2457**, direct-connect only (`SERVER_PUBLIC=false`, so it is
+  not listed in the Steam browser).
+- **Tailscale carries UDP fine.** The "UDP can't ride the funnel" caveat is about *Funnel*
+  specifically and does not apply to an ordinary tailnet peer.
+- So: share the tailnet with one person, they direct-connect to AM4 on 2456.
+- Telemetry is on, so their session appears on `/community` — real data and real feedback
+  without opening anything public.
 
-**Do this before Saturday if you want one honest outside voice.** It costs a Tailscale
-invite and zero infrastructure change.
+Cost: one Tailscale invite. Zero infrastructure change. **Worth doing before any unveil**, so
+that at least one person who is not you has walked it.
 
 ### Already built, currently buried
 
-`tools/guest-package/` has two things that exist precisely to remove tester effort, and no
+`tools/guest-package/` holds two things that exist to remove tester effort, and no
 community-facing doc points at either:
 
-- **`Invoke-GuestPreflight.ps1`** — read-only. Checks DLL hash, BepInEx present, Valheim not
-  running, config writable, gateway health, TLS, bootstrap and enrollment id. Emits a
-  PASS/FAIL JSON verdict and changes nothing. A tester runs this *before* touching anything
-  and either gets a green light or a named remedy per check.
+- **`Invoke-GuestPreflight.ps1`** — read-only, changes nothing. Checks DLL hash, BepInEx
+  present, Valheim not running, config writable, gateway health and TLS, bootstrap and
+  enrollment id. Emits a PASS/FAIL verdict with a named remedy per failed check. Replaces
+  *"did I break something before I even started."*
 - **`Collect-ComfyGuestDiagnostics.ps1`** — copies the mod config and BepInEx log with
-  secrets redacted, then **fails hard if anything secret-shaped survives**. That replaces
-  "please paste your log and remember to scrub it," which is a thing testers get wrong and
-  then feel bad about.
+  secrets redacted, then **fails hard if anything secret-shaped survives**. Replaces *"paste
+  your log, and remember to scrub it"* — a thing testers get wrong and then feel bad about.
 
-Surfacing these two is a doc change, not a build.
+Surfacing both is a doc change, not a build.
 
-### The friction that is left, ranked
+### Remaining friction, ranked
 
-1. **`/join` belongs to something else.** Until the funnel stops shadowing it, there is no
-   self-service path at all. Highest leverage single fix for onboarding.
+1. **`/join` belongs to something else.** Until the funnel stops shadowing it there is no
+   self-service path at all. Highest-leverage single fix for onboarding.
 2. **One client at a time.** Until the enrollment queue is recipient-scoped, "invite the
-   community" is not a thing that can work. Two testers would steal each other's records.
-3. **No tester FAQ.** Task SJ-2, and it cannot be written until SJ-1 is walked once.
-4. **Invites are manual** — admin-generated, one-use, 24h, no self-serve. Fine for a
-   handful, a bottleneck past that.
-5. **Install is extract-and-restart.** Acceptable; the zip deliberately omits the personal
+   community" cannot work.
+3. **No tester FAQ.** Task SJ-2 — and it cannot honestly be written until SJ-1 is walked once.
+4. **Invites are manual** — admin-generated, one-use, 24h. Fine for a handful, a bottleneck
+   past that.
+5. **Install is extract-and-restart.** Acceptable. The zip deliberately omits the personal
    config so a re-download never clobbers settings someone changed.
 
-### The order I would fix them in
+### The order to fix them in
 
-Walk the flow yourself once over the tailnet (free, today) → fix `/join` routing → write the
-FAQ from what actually tripped you → then recipient-scope the queue. Each step makes the next
-one cheaper, and only the last one needs real engineering.
+Walk the flow yourself over the tailnet (free, today) → fix `/join` routing → write the FAQ
+from what actually tripped you → then recipient-scope the queue. Each step makes the next
+cheaper, and only the last is real engineering.

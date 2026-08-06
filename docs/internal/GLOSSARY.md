@@ -3,6 +3,31 @@
 One-line definitions for terms used across Baseline's docs, alphabetized.
 Each entry was checked against the repo doc(s) named in parentheses.
 
+**AM4** — The local box that hosts the community-facing surface. Its
+`am4.tail8e749c.ts.net` name is a **Tailscale Funnel**, so it is reachable
+from the public internet, not just the tailnet — `/workbench`, `/community`,
+`/roadmap` and the downloads are served there. The funnel carries HTTP only;
+Valheim's UDP does not ride it, though ordinary tailnet peers reach UDP
+fine. AM4 also hosts unrelated co-tenants, which is why `/join` there is an
+IRC portal rather than the Gateway's enrollment flow.
+(`docs/internal/LAUNCH-RUNBOOK.md`, `docs/internal/START-HERE.md`)
+
+**C-gates (C0–C10b)** — The numbered acceptance gates of the native-network
+cutover plan, C0 through C10b. C0–C8 and C10a are complete on AM4 with
+receipts; C10b, the P7 cutover, has no green receipt.
+(`fieldlab/plan-native-network-final-cutover.md`)
+
+**Cutover mode** — The mod's `lumberjacksCutoverMode` setting, which picks
+which stack owns world state. `native` means vanilla Valheim sync (with
+Lumberjacks telemetry still reporting); the Lumberjacks lanes take over
+otherwise. The AM4 lab server runs `native`.
+(`network/mod/ComfyNetworkSense/Config/PluginConfig.cs`)
+
+**no_go** — The stop-ship register in the volunteer roadmap: conditions that
+must be false before the volunteer platform opens. Nine entries as of
+2026-08-05, two of them explicitly labelled stop-ship.
+(`Lumberjacks/docs/roadmap/valheim-volunteer-roadmap.json`)
+
 **Admitted mod release** — The `ComfyNetworkSense` build a given Gateway
 image is configured to accept; a separate identity from both the Gateway
 image release id and the public client-pull pointer (below). P7 currently
