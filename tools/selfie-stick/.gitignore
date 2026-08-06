@@ -1,0 +1,8 @@
+# Scan outputs stay local.
+#
+# clusters.json/csv/xlsx and waypoints.json attribute real coordinates to real
+# builders for every structure in a scanned world. This repository is public.
+# Regenerating them takes about two minutes (see README.md), so there is no
+# reason to publish someone's home coordinates to save a rerun.
+out/
+out-*/
