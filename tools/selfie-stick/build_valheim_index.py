@@ -43,6 +43,12 @@ def parse_args():
                    help="also generate webp thumbnails (needs Pillow)")
     p.add_argument("--copy-full", action="store_true",
                    help="copy full-size images into dest/img (large; off by default)")
+    p.add_argument("--orbit-captures", default=(r"C:\Program Files (x86)\Steam\steamapps"
+                                                r"\common\Valheim\BepInEx\config\comfy-orbit-captures"),
+                   help="directory of automated orbit capture runs")
+    p.add_argument("--receipts", default=(r"C:\Program Files (x86)\Steam\steamapps\common"
+                                          r"\Valheim\BepInEx\config\shotplan-receipts.jsonl"),
+                   help="orbit run receipts, one JSON object per line")
     p.add_argument("--names", default=os.path.join(here, "out", "cluster-names.json"),
                    help="optional JSON map of cluster_id -> human name")
     p.add_argument("--max-join-m", type=float, default=250.0,
@@ -73,6 +79,30 @@ def nearest_cluster(clusters, x, z, max_m):
     if best is None or best_d2 > limit2:
         return None, None
     return best, math.sqrt(best_d2)
+
+
+def read_orbit_receipts(path):
+    """Orbit runs record their own provenance, one JSON object per line.
+
+    Manual captures have to be joined to a structure by nearest centroid, because
+    all the mod knew was where the player stood. An orbit shot was *planned* for a
+    specific cluster, so its cluster_id is exact and carries the framing intent
+    with it — planned vs actual lens position, occlusion, and how much of the build
+    had streamed in when the shutter fired.
+    """
+    rows = []
+    if not os.path.exists(path):
+        return rows
+    with open(path, encoding="utf-8") as fh:
+        for n, line in enumerate(fh, 1):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rows.append(json.loads(line))
+            except json.JSONDecodeError as exc:
+                print(f"  ! receipts line {n} unreadable: {exc}")
+    return rows
 
 
 def read_capture(run_dir):
@@ -153,6 +183,7 @@ def main():
         sys.exit(f"captures directory not found: {args.captures}")
 
     clusters = load_clusters(args.clusters)
+    by_id = {c["cluster_id"]: c for c in clusters}
     names = load_names(args.names)
     if names:
         print(f"  {len(names)} structure(s) named by hand")
@@ -240,6 +271,68 @@ def main():
             if args.copy_full:
                 shutil.copy2(src, os.path.join(img_dir, image_id + ".png"))
 
+    # ---- automated orbit runs -------------------------------------------------
+    orbit_n = 0
+    for rec in read_orbit_receipts(args.receipts):
+        run, fname = rec.get("run"), rec.get("file")
+        if not run or not fname:
+            skipped.append((str(run), "receipt missing run or file"))
+            continue
+        src = os.path.join(args.orbit_captures, run, fname)
+        if not os.path.exists(src):
+            skipped.append((run, f"{fname} in receipts but not on disk"))
+            continue
+        cluster = by_id.get(rec.get("cluster_id"))
+        image_id = f"{run}_{os.path.splitext(fname)[0]}"
+        lens = rec.get("lens") or rec.get("placed") or {}
+        row = {
+            "id": image_id,
+            "run": run,
+            "variant": rec.get("shot"),
+            "environment": rec.get("environment"),
+            "time_of_day": rec.get("time_of_day"),
+            "x": round(lens.get("x", 0.0), 1),
+            "y": round(lens.get("y", 0.0), 1),
+            "z": round(lens.get("z", 0.0), 1),
+            "ts": int(os.path.getmtime(src)),
+            "published": False,
+            "source": "orbit",
+            # orbit-only provenance: enough to tell a bad frame from a bad plan
+            "occluded": bool(rec.get("occluded")),
+            "pieces_near_aim": rec.get("pieces_near_aim"),
+            "lens_offset_m": rec.get("lens_offset_m"),
+        }
+        if cluster:
+            # Exact, not nearest: this shot was planned for this structure.
+            row.update({
+                "cluster_id": cluster["cluster_id"],
+                "cluster_rank": cluster.get("rank"),
+                "label": label_for(cluster, names),
+                "kind": describe(cluster),
+                "footprint_m2": cluster.get("footprint_m2"),
+                "item_stands": cluster.get("item_stands", 0),
+                "pieces": cluster["pieces"],
+                "height_m": cluster["size_y"],
+                "region": cluster["region"],
+                "sky": cluster.get("sky", False),
+                "portals": cluster["portals"],
+                "beds": cluster["beds"],
+                "signs": cluster["signs"],
+                "builders": cluster["distinct_creators"],
+                "top_creator_id": cluster.get("top_creator_id"),
+                "shot_distance_m": 0.0,
+            })
+        rows.append(row)
+        orbit_n += 1
+
+        if args.thumbs:
+            try:
+                make_thumb(src, os.path.join(thumb_dir, image_id + ".webp"))
+            except Exception as exc:
+                skipped.append((run, f"thumbnail failed for {fname}: {exc}"))
+        if args.copy_full:
+            shutil.copy2(src, os.path.join(img_dir, image_id + ".png"))
+
     rows.sort(key=lambda r: -r["ts"])
 
     def facet(key):
@@ -263,6 +356,9 @@ def main():
     os.replace(tmp, os.path.join(args.dest, "index.json"))
 
     print(f"  {len(rows):,} images across {doc['runs']} runs -> {args.dest}")
+    if orbit_n:
+        occ = sum(1 for r in rows if r.get("source") == "orbit" and r.get("occluded"))
+        print(f"  {orbit_n:,} from automated orbit runs ({occ} flagged occluded)")
     print(f"  {doc['joined']:,} joined to a structure "
           f"({len(rows) - doc['joined']:,} without metadata)")
     if unjoined:
