@@ -26,6 +26,15 @@ Bounded: touch only lines you created or resolved.
   unverified-provenance enrollment credentials):
   [evidence](evidence/p7-terrain-only-phase0-receipt-census-20260806.md).
 
+- [ ] 2026-08-07 — **Precondition for the r42 spend is now MET:** the candidate-8/11 wedge
+  reproduced on demand on AM4/OMEN via `zdoJournalApplyThrottleMs=250` against the exact promoted
+  r41 gateway image (224-frame refill, 171 s starvation window), and did NOT reproduce against a
+  current-main r42 gateway build (61-frame refill, progress at 1 s) under the identical drill.
+  Receipts: [rung 1](runs/native-valheim/native-20260807-wedge1c-r41-omen/wedge-repro-receipt.md),
+  [rung 2](runs/native-valheim/native-20260807-wedge2-r42-omen/wedge-fix-receipt.md). Remaining
+  before candidate 12: Derek's go on the coupled pair cut (below), plus the enrollment-lane legs
+  (one human `/join` per lab Steam account — the pack endpoint only rotates, never mints).
+
 - [ ] 2026-08-05 — **When to spend the r42 Gateway fix cut and the next P7 window.** The
   session-plane fix plan is landed (five fixes + enrollment addendum); implementing it invalidates
   the promoted r41 pair, so the cost is a coupled pair cut, re-promotion, a fresh boot receipt, and
