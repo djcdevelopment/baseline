@@ -1,0 +1,163 @@
+# The Turnkey Quest Lab — objective, architecture, and what is actually true
+
+*Supersedes `zero_derek_turnkey_quest_lab_vision.md` (untracked, repo root, 2026-08-07). That
+draft described three friction removers as though all three existed; one did not exist at all,
+one was half-built, and one conflicts with a decision already taken. It also said seven schools
+where every source in the repo says eight. This is the corrected version. Where something is not
+built, it says so.*
+
+---
+
+## 1. Operating context: solo SDLC, and what the constraint actually is
+
+One operator carries every phase — Mono.Cecil transpiles and Harmony patching at one end, web
+UI, docs and community stewardship at the other. **Maintainer operational friction is the binding
+constraint**, not capability and not ideas.
+
+So the objective is not "a better quest tool". It is:
+
+- **Eliminate setup support.** Nobody should have to ask how to install it, where a file goes, or
+  why nothing happened.
+- **Make failure self-explaining.** A creator who guesses wrong should be told what went wrong, in
+  their own vocabulary, without a maintainer in the loop.
+- **Buy back operator bandwidth** for the things only the operator can do.
+
+The measure of success is *how few questions get asked*, not how many features exist.
+
+## 2. The architecture
+
+```mermaid
+flowchart TD
+    Link["1. /workbench/downloads/quest-lab"] --> Drop["2. Drop ComfyQuestLab.dll into BepInEx/plugins"]
+    Drop --> Start["3. Open a private single-player world"]
+    Start --> Setup["4. F5 console: lab_setup"]
+
+    Setup --> Gallery["Practice gallery raised (8 monuments, stations, armoury)"]
+    Setup --> Seed["Starter quest file written (only into an empty folder)"]
+    Setup --> Panel["F6 opens the lab panel: console / spellbook / quests"]
+
+    Seed --> Edit["5. Edit the JSON, run lab_reload"]
+    Edit --> Verdict["Quests tab: armed, or why not"]
+
+    Tome["Web tome at /questlab"] -.teaches.-> Setup
+
+    style Link fill:#162126,stroke:#75c9f1
+    style Setup fill:#11191d,stroke:#d7a86e
+    style Verdict fill:#162126,stroke:#68d391
+```
+
+**Two keys, and this catches nearly everyone.** `F5` is *Valheim's* console, where `lab_setup` and
+`lab_reload` are typed. `F6` opens the *lab's* own panel. The superseded draft said diagnostics
+appear "in the F5 overlay"; they appear in the F6 panel.
+
+**Eight schools, not seven:** Combat, Harvest, Inventory, Building, Crafting, Progression,
+**World**, Social. The draft's list omitted World. The likely origin is a since-corrected roster
+line that read "seven of the eight categories are not wired yet".
+
+## 3. The friction removers — status, honestly
+
+### A. Hot-reloadable quest iteration (`lab_reload`) — **BUILT 2026-08-07**
+
+Re-reads every `*.json` under `BepInEx/config/comfy-quest-lab/quests/` on demand and reports a
+**diff by name** (`+ neck_romancer`, `~ punchwood (trigger changed)`, `= 3 unchanged`). A diff is
+what makes a hot-reload trustworthy — "reloaded" alone never tells a creator that the file they
+just saved is the file the lab just read.
+
+Three design facts worth carrying forward:
+
+- **Each file is a whole `quest-view.json`**, not a fragment, so any of them can be copied
+  byte-for-byte to `comfy-network-sense/quest-view.json` and the shipping mod accepts it unchanged.
+  That round trip is the lab's entire promise.
+- **Files parse independently.** One typo'd draft costs its own quests and nothing else.
+- **Reload drops cooldowns**, diverging from the shipping mod's session-long 60 s on purpose.
+  Recorded in [`network/tuning-ledger.md`](../network/tuning-ledger.md).
+
+> The draft located quest files at `BepInEx/config/ComfyQuestLab/`. The actual config directory is
+> hyphenated, `comfy-quest-lab/`, matching every other path the mod uses.
+
+### B. Self-explaining failure boundaries — **BUILT, in three tiers**
+
+The draft attributed this to `LabEventRing`. The ring is a bounded event buffer that prints
+nothing; the panel is what explains things. What exists:
+
+1. **Contract errors**, passed through **untouched** from `QuestViewLoader.Parse`, with a
+   lab-written remedy appended as a clearly separate sentence. Rewording them is how the lab would
+   start lying about the shipping mod.
+2. **Armability verdicts** — why a quest cannot fire, naming the creator's own trigger verb.
+3. **Advisories** — a mistyped `weapon_skill` with the nearest real one, a target in no catalog,
+   `projectile: true` on a melee-only skill, a duplicate `quest_id`, `shots` that carry no
+   behaviour.
+
+Plus the **patch-seam roster** (`questlab_seams`), which reports a seam that moved in a game
+update as unavailable rather than taking the mod down.
+
+> The draft's example message — *"count condition expected positive integer"* — names a field the
+> schema does not have. Quest-view v1 has no counts. Inventing one would produce quests the
+> shipping mod cannot load, which is exactly what the shared contract exists to prevent.
+
+### C. One-click quest export (`lab_export`) — **NOT BUILT, and deliberately deferred**
+
+The draft describes it as emitting "a formatted Quest Submission Bridge payload into the outbox
+folder". That path was removed on purpose:
+[fieldlab ADR-0018 — quest proof is the EventLog row](../fieldlab/docs/adr/0018-quest-proof-is-the-eventlog-row.md)
+replaced outbox payloads with a durable server EventLog row as the proof of completion, and
+`tools/quest-bridge/bridge_consumer.py` now explicitly rejects schema-1 outbox payloads.
+
+If this is revived, it should be scoped as **sharing an authored quest definition**, not as
+submitting a completion — the former does not conflict with ADR-0018 and the latter does.
+
+## 4. The constraint the whole design turns on
+
+**All eight schools are hooked. Exactly one can have a quest bound to it.**
+
+`QuestTriggerEvaluator` — shared by source-link with the shipping mod, not reimplemented — matches
+`kill` triggers only. A `hit` trigger parses cleanly, reports no error, and can never fire.
+
+This is not a caveat appended to the vision; it *is* the vision. A creator who discovers it after
+an evening of work is a support ticket and a lost contributor. A creator who is told on their
+first launch, by a starter file holding one armed quest beside one that silently cannot fire, has
+learned the most important thing about the system in two minutes.
+
+Every design choice follows from refusing to hide it:
+
+- Armed state is decided by **dry-firing the real evaluator**, not by a predicate restating its
+  rules — a mirror predicate is what drifts into a comfortable lie.
+- Every console row carries a usability verdict.
+- The seed ships the trap on purpose.
+
+Related: the lab's own console once promised that `trigger.target` should be typed exactly as
+shown, while the matcher compared against the creature's `m_name` localization token. For
+`Greydwarf_Elite` vs `$enemy_greydwarfbrute` those share nothing. Fixed 2026-08-07; the console
+now shows both names whenever they disagree.
+
+## 5. The creator journey
+
+1. **Discovery** — the Community Workbench (`/workbench`) or the Discord thread.
+   *Correction: the draft named the [Absorption Loop](https://djcdevelopment.github.io/baseline/absorption-loop/)
+   essay as a discovery path. That essay does not mention the Quest Lab. Either it gains a link or
+   it is not a path.*
+2. **Download** — `/workbench/downloads/quest-lab`, SHA-256 verified at four layers, the last of
+   them recomputed server-side per request before a byte streams.
+3. **Onboarding** — `lab_setup`; the web tome at `/questlab` teaches the eight schools and now
+   carries the install steps it lacked until 2026-08-07.
+4. **Experimentation** — edit JSON, `lab_reload`, read the Quests tab.
+5. **Submission** — **not built.** See §3C.
+
+## 6. Success criteria, and how we would know
+
+| Criterion | How it would be evidenced | Status |
+|---|---|---|
+| Zero setup tickets | Nobody asks an install question in the thread | Untested — not yet announced |
+| Safe failure | Local-only, no server state touched, postfixes swallow throws, `Awake` degrades the quest lane rather than the mod | Built; **not yet witnessed in game** |
+| Flywheel | Community-authored quests posted in the thread | Not started |
+
+**The honest gap as of 2026-08-07:** the quest lane is proven by 28 unit tests against the real
+contract, and the gallery and harvest console are proven in a live session. The quest lane itself
+— the seed, a firing, a reload diff — **has never been run inside Valheim.** Publishing the
+download is gated on that, not on more code.
+
+## 7. Boundary
+
+Per [`docs/baseline-vision-and-boundary.md`](baseline-vision-and-boundary.md): this is a community
+toolkit and must remain extractable. Nothing about the lab may depend on the operator's private
+lab infrastructure. It is client-only, local-only, and sends nothing anywhere.
