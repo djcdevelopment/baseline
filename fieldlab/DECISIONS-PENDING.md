@@ -15,6 +15,17 @@ Bounded: touch only lines you created or resolved.
 
 ## Open
 
+- [x] 2026-08-07 — **Failure-4 closure shape: defer the mod-side native-fallback guard.** Derek
+  decided the terrain-only class closes with enrollment credentials + r42's admission observability
+  (`/live/valheim-cutover` verdict), not an admission-aware fallback in `ZdoRedirectRunner`; the
+  guard is a future ADR if alpha traffic demands it. The 409-on-zero-consumers behavior is pinned
+  as by-design-and-diagnosable, and the recovery path (late consumer attach → drain → admission
+  flips, no restart) is pinned green, by two new tests in
+  `Lumberjacks/tests/Game.Gateway.Tests/SessionPlaneRecoveryTests.cs`. Phase-0 receipt census
+  confirming the 08-05 diagnosis (and the surprise that both lab clients now hold
+  unverified-provenance enrollment credentials):
+  [evidence](evidence/p7-terrain-only-phase0-receipt-census-20260806.md).
+
 - [ ] 2026-08-05 — **When to spend the r42 Gateway fix cut and the next P7 window.** The
   session-plane fix plan is landed (five fixes + enrollment addendum); implementing it invalidates
   the promoted r41 pair, so the cost is a coupled pair cut, re-promotion, a fresh boot receipt, and
