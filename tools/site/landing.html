@@ -1,0 +1,245 @@
+<style>
+@font-face{font-family:AB;src:url(__FONT_BODY__) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:AB;src:url(__FONT_BODYSB__) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:AM;src:url(__FONT_MONO__) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:AM;src:url(__FONT_MONOB__) format("woff2");font-weight:700;font-display:swap}
+
+__TOKENS__
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+p{margin:0}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:600}
+a{color:var(--wood);text-decoration:none;
+  border-bottom:1px solid color-mix(in srgb,var(--wood) 40%,transparent)}
+a:hover{border-bottom-color:var(--wood)}
+a:focus-visible{outline:2px solid var(--wood);outline-offset:3px;border-radius:3px}
+strong{font-weight:600;color:var(--ink)}
+code{font-family:var(--mono);font-size:.86em;color:var(--wood)}
+
+.wrap{max-width:60rem;margin:0 auto;padding:0 20px}
+section{padding:0}
+section+section{margin-top:4.2rem}
+header+section{margin-top:2.3rem}
+.col{max-width:36rem;display:flex;flex-direction:column;gap:1rem}
+.col>*,.grid>*{min-width:0}
+
+.eyebrow{font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--wood)}
+h2{font-family:var(--mono);font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);
+  letter-spacing:-.01em;line-height:1.25}
+.head{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1.1rem}
+.muted{color:var(--muted)}
+
+/* ---- masthead ---- */
+header{padding:4.5rem 0 0;display:flex;flex-direction:column;gap:1.15rem}
+.mark{display:flex;align-items:center;gap:.7rem}
+.mark .glyph{width:30px;height:30px;display:grid;place-items:center;border-radius:7px;
+  border:1px solid var(--wood);color:var(--wood);font-family:var(--mono);font-weight:700;
+  font-size:.9rem}
+.mark .name{font-family:var(--mono);font-weight:700;font-size:1.02rem;letter-spacing:.03em}
+h1{font-family:var(--mono);font-weight:700;letter-spacing:-.022em;line-height:1.1;
+  font-size:clamp(1.5rem,5.4vw,2.85rem);max-width:22ch;overflow-wrap:break-word}
+.sub{max-width:38rem;color:var(--muted);font-size:clamp(1rem,1.9vw,1.12rem)}
+.rule{height:1px;background:var(--line);margin:.4rem 0}
+
+/* ---- the vertical chain ---- */
+.chain{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.04em}
+.chain b{font-weight:700;color:var(--ink);background:var(--panel);
+  border:1px solid var(--line);border-radius:4px;padding:.3rem .55rem}
+.chain i{font-style:normal;color:var(--dim)}
+
+/* ---- cards ---- */
+/* 13.5rem so four cards fit one row at full width rather than leaving an orphan. */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(13.5rem,1fr));gap:.8rem}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:5px;
+  padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.45rem}
+.card h3{font-family:var(--mono);font-size:.9rem;font-weight:700}
+.card p{font-size:.92rem;color:var(--muted);line-height:1.55}
+.tag{align-self:flex-start;font-family:var(--mono);font-size:.6rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;padding:.16rem .45rem;border-radius:999px;
+  border:1px solid currentColor}
+.t-run{color:var(--green)}
+.t-invite{color:var(--amber)}
+
+/* ---- primary action ---- */
+.cta{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--mono);
+  font-size:.85rem;font-weight:700;border:1px solid var(--wood);color:var(--wood);
+  border-radius:5px;padding:.75rem 1.15rem;align-self:flex-start;
+  background:color-mix(in srgb,var(--wood) 10%,transparent)}
+.cta:hover{background:color-mix(in srgb,var(--wood) 20%,transparent)}
+.links{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;font-family:var(--mono);font-size:.78rem}
+
+/* ---- field note ---- */
+.note-card{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:1.4rem;
+  align-items:center;background:var(--paper);border:1px solid var(--line);
+  border-radius:5px;padding:1.2rem}
+@media(max-width:700px){.note-card{grid-template-columns:1fr}}
+.note-card .body{display:flex;flex-direction:column;gap:.6rem}
+.note-card h3{font-family:var(--mono);font-size:1.02rem;line-height:1.3}
+.note-card p{font-size:.93rem;color:var(--muted)}
+.strip{display:grid;grid-template-columns:repeat(2,1fr);gap:4px}
+.strip img{aspect-ratio:16/9;object-fit:cover;border-radius:3px}
+
+/* ---- honesty block ---- */
+.warn{border-left:2px solid var(--amber);padding:.2rem 0 .2rem 1rem;color:var(--muted);
+  font-size:.96rem;max-width:36rem}
+
+/* ---- code areas ---- */
+.areas{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:.7rem}
+.area{border:1px solid var(--line);border-radius:5px;padding:.75rem .9rem;
+  display:flex;flex-direction:column;gap:.25rem}
+.area b{font-family:var(--mono);font-size:.76rem;font-weight:700;color:var(--wood)}
+.area span{font-size:.85rem;color:var(--muted);line-height:1.45}
+
+footer{border-top:1px solid var(--line);margin-top:5rem;padding:2.2rem 0 3.2rem;
+  display:flex;flex-direction:column;gap:.9rem}
+.fine{font-family:var(--mono);font-size:.68rem;color:var(--dim);line-height:1.8;
+  max-width:46rem;margin:0}
+dl.fine{display:grid;grid-template-columns:auto 1fr;gap:.5rem 1.1rem}
+dl.fine dt{color:var(--muted);font-weight:700}
+dl.fine dd{margin:0}
+@media(max-width:620px){dl.fine{grid-template-columns:1fr;gap:.15rem .9rem}
+  dl.fine dd{margin-bottom:.5rem}}
+.disclaimer{opacity:.75}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="mark">
+    <span class="glyph">B</span>
+    <span class="name">BASELINE</span>
+  </div>
+  <h1>A toolkit to build an entire community on, in Valheim</h1>
+  <p class="sub">With the things most hobbyist servers never get to have: identity,
+    telemetry and testing as first-class parts of the stack instead of afterthoughts.</p>
+  <div class="rule"></div>
+  <div class="chain">
+    <b>Server</b><i>&rarr;</i><b>Gateway</b><i>&rarr;</i><b>Player</b><i>&rarr;</i><b>Mod</b><i>&rarr;</i><b>BepInEx</b><i>&rarr;</i><b>Harmony</b><i>&rarr;</i><b>Unity</b><i>&rarr;</i><b>transpiling</b>
+  </div>
+</header>
+
+<section><div class="col">
+  <p>The communities this is for <strong>already do this work</strong> &mdash; with mods,
+    spreadsheets, Discord bots, checklists, screenshots. Baseline doesn't replace any of
+    that. It's meant to let people spend less time on paperwork and tracking, and more
+    time making things.</p>
+</div></section>
+
+<section>
+  <div class="head">
+    <div class="eyebrow">Try something right now</div>
+    <h2>The Community Workbench</h2>
+    <p class="muted" style="max-width:36rem">A catalog of tools you can download and run
+      on your own machine tonight. Every card says what the thing actually does today
+      &mdash; not what it's going to do.</p>
+  </div>
+  <div class="grid">
+    <div class="card"><span class="tag t-run">runnable</span>
+      <h3>Quest Picker</h3>
+      <p>Turns a guild's real quest tracker into a page where a player checks off what
+        they're chasing &mdash; and the game mod reads the result.</p></div>
+    <div class="card"><span class="tag t-run">runnable</span>
+      <h3>ComfyStewardView</h3>
+      <p>Reads a Valheim world file and answers what stops being walkable once a server
+        gets big: where is everyone building, and who owns this.</p></div>
+    <div class="card"><span class="tag t-run">runnable</span>
+      <h3>Community Telemetry</h3>
+      <p>An aggregates-only telemetry API with privacy tests that fail if a player ID,
+        name or position ever shows up &mdash; plus the whole stack, runnable locally.</p></div>
+    <div class="card"><span class="tag t-invite">invite only</span>
+      <h3>Steam Self-Service Join</h3>
+      <p>An invite, a Steam sign-in, and a mod-pack zip with your credentials already in
+        it.</p></div>
+  </div>
+  <p style="margin-top:1.1rem"><a class="cta" href="https://am4.tail8e749c.ts.net/workbench">Open the Workbench &rarr;</a></p>
+</section>
+
+<section>
+  <div class="head">
+    <div class="eyebrow">Field notes</div>
+    <h2>What the tools turn up</h2>
+  </div>
+  <div class="note-card">
+    <div class="body">
+      <h3><a href="selfie-stick/">Photographing a world nobody had time to look at</a></h3>
+      <p>Three million building pieces and one person. Clustering a save file into 1,833
+        structures, then placing a camera at every one of them from its geometry &mdash;
+        1,411 photographs, none of them framed by hand.</p>
+      <p style="font-family:var(--mono);font-size:.7rem;color:var(--dim)">
+        the arithmetic, the file contracts, and what each stage emits</p>
+    </div>
+    <a href="selfie-stick/" style="border:none" aria-label="Read: Photographing a world nobody had time to look at">
+      <div class="strip">__STRIP__</div>
+    </a>
+  </div>
+</section>
+
+<section>
+  <div class="head">
+    <div class="eyebrow">Come talk about it</div>
+    <h2>Running one of these once is a complete contribution</h2>
+  </div>
+  <div class="col">
+    <p>Every tool has its own thread. Saying what happened when you ran it &mdash;
+      including that it broke &mdash; is the contribution.</p>
+    <div class="links">
+      <a href="https://discord.gg/JCDaYQ68kN">Join the Discord</a>
+      <a href="https://github.com/djcdevelopment/baseline">Read the code on GitHub</a>
+      <a href="https://am4.tail8e749c.ts.net/roadmap">Follow the roadmap</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="head">
+    <div class="eyebrow">Being straight with you</div>
+    <h2>What is not open yet</h2>
+  </div>
+  <p class="warn">The game server is not open. You can run every tool above on your own
+    machine, but this is not yet an invitation to come play on the live world &mdash; the
+    volunteer platform isn't ready, and saying otherwise would waste your evening. That
+    work is tracked in the open on the roadmap. This is a solo-operator project in alpha,
+    and it is written down honestly rather than dressed up.</p>
+</section>
+
+<section>
+  <div class="head">
+    <div class="eyebrow">If you came to read the code</div>
+    <h2>Designed for extraction</h2>
+    <p class="muted" style="max-width:36rem">People are expected to read this code, and if
+      you take pieces of it and use them yourself, that's the highest compliment.</p>
+  </div>
+  <div class="areas">
+    <div class="area"><b>Lumberjacks/</b><span>The service stack: Gateway, eventlog,
+      progression, operatorapi, and the append-only roadmap journal.</span></div>
+    <div class="area"><b>network/mod/</b><span>The BepInEx plugin: ZDO redirect,
+      handshake, telemetry, quest tracking.</span></div>
+    <div class="area"><b>fieldlab/</b><span>The netcode-replacement R&amp;D program and its
+      ground truth.</span></div>
+    <div class="area"><b>infra/gcp/p7/</b><span>Release, deployment and
+      rollback.</span></div>
+  </div>
+</section>
+
+<footer>
+  <dl class="fine">
+    <dt>Licence</dt>
+    <dd>Public source under the Business Source License 1.1, with an automatic Community
+      Steward grant for small operators &mdash; up to 100 active members and USD 25,000
+      aggregate community revenue per rolling year, while publishing their complete
+      deployed source. Qualifying stewards keep the profit: no separate agreement, no
+      royalty. Each version converts to AGPL-3.0-only no later than its Change Date.</dd>
+    <dt>Note</dt>
+    <dd><code>main</code> is force-pushed by background automation. Long-lived branches
+      and forks rot fast &mdash; read AGENTS.md before you touch anything.</dd>
+  </dl>
+  <p class="fine disclaimer">Not affiliated with or endorsed by Iron Gate AB or Coffee
+    Stain Publishing.</p>
+</footer>
+
+</div>

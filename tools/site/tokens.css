@@ -1,0 +1,43 @@
+/* Baseline site design tokens — the single source for every page under site/.
+   Inlined at build time by both tools/site/build_landing.py and
+   tools/selfie-stick/article/build.py, so the two pages cannot drift apart.
+
+   The palette is lifted from the Community Workbench (Lumberjacks/src/Game.Gateway/
+   Community/workbench.html) so the public site reads as one surface with the tool
+   that already exists: a dark blue-green ground with a single warm timber accent.
+
+   Dark is the default and the designed-for case. Light is a real second theme, not
+   an inversion: the ground goes to a cool paper and the accent darkens enough to
+   hold contrast on it. */
+
+:root{
+  --bg:#0b1013; --paper:#11191d; --panel:#162126; --line:#2c3a3f; --line2:#3d5058;
+  --ink:#edf5f2; --muted:#9eb0ad; --dim:#7b8f8c;
+  --wood:#d7a86e; --amber:#f6c453; --blue:#75c9f1; --green:#68d391; --violet:#c7a7ff;
+  --scrim:rgba(11,16,19,.86);
+  --sans:AB,ui-sans-serif,system-ui,"Segoe UI",sans-serif;
+  --mono:AM,ui-monospace,Consolas,monospace;
+  --measure:34rem;
+}
+@media (prefers-color-scheme:light){
+  :root{
+    --bg:#eceeed; --paper:#f6f7f6; --panel:#e3e8e7; --line:#c6d0ce; --line2:#a8b6b4;
+    --ink:#0e1719; --muted:#4d5f5d; --dim:#687977;
+    --wood:#8a5a22; --amber:#8a6410; --blue:#1a6285; --green:#1f6b42; --violet:#5b3fa0;
+    --scrim:rgba(236,238,237,.88);
+  }
+}
+/* The viewer's own toggle stamps data-theme on the root and must win in both
+   directions, so each theme is restated rather than relying on the media query. */
+:root[data-theme="dark"]{
+  --bg:#0b1013; --paper:#11191d; --panel:#162126; --line:#2c3a3f; --line2:#3d5058;
+  --ink:#edf5f2; --muted:#9eb0ad; --dim:#7b8f8c;
+  --wood:#d7a86e; --amber:#f6c453; --blue:#75c9f1; --green:#68d391; --violet:#c7a7ff;
+  --scrim:rgba(11,16,19,.86);
+}
+:root[data-theme="light"]{
+  --bg:#eceeed; --paper:#f6f7f6; --panel:#e3e8e7; --line:#c6d0ce; --line2:#a8b6b4;
+  --ink:#0e1719; --muted:#4d5f5d; --dim:#687977;
+  --wood:#8a5a22; --amber:#8a6410; --blue:#1a6285; --green:#1f6b42; --violet:#5b3fa0;
+  --scrim:rgba(236,238,237,.88);
+}

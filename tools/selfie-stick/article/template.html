@@ -5,35 +5,7 @@
 @font-face{font-family:AM;src:url(__FONT_MONO__) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:AM;src:url(__FONT_MONOB__) format("woff2");font-weight:700;font-display:swap}
 
-:root{
-  --bg:#0b1013; --paper:#11191d; --panel:#162126; --line:#2c3a3f; --line2:#3d5058;
-  --ink:#edf5f2; --muted:#9eb0ad; --dim:#7b8f8c;
-  --wood:#d7a86e; --amber:#f6c453; --blue:#75c9f1; --green:#68d391; --violet:#c7a7ff;
-  --scrim:rgba(11,16,19,.86);
-  --sans:AB,ui-sans-serif,system-ui,"Segoe UI",sans-serif;
-  --mono:AM,ui-monospace,Consolas,monospace;
-  --measure:34rem;
-}
-@media (prefers-color-scheme:light){
-  :root{
-    --bg:#eceeed; --paper:#f6f7f6; --panel:#e3e8e7; --line:#c6d0ce; --line2:#a8b6b4;
-    --ink:#0e1719; --muted:#4d5f5d; --dim:#687977;
-    --wood:#8a5a22; --amber:#8a6410; --blue:#1a6285; --green:#1f6b42; --violet:#5b3fa0;
-    --scrim:rgba(236,238,237,.88);
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#0b1013; --paper:#11191d; --panel:#162126; --line:#2c3a3f; --line2:#3d5058;
-  --ink:#edf5f2; --muted:#9eb0ad; --dim:#7b8f8c;
-  --wood:#d7a86e; --amber:#f6c453; --blue:#75c9f1; --green:#68d391; --violet:#c7a7ff;
-  --scrim:rgba(11,16,19,.86);
-}
-:root[data-theme="light"]{
-  --bg:#eceeed; --paper:#f6f7f6; --panel:#e3e8e7; --line:#c6d0ce; --line2:#a8b6b4;
-  --ink:#0e1719; --muted:#4d5f5d; --dim:#687977;
-  --wood:#8a5a22; --amber:#8a6410; --blue:#1a6285; --green:#1f6b42; --violet:#5b3fa0;
-  --scrim:rgba(236,238,237,.88);
-}
+__TOKENS__
 
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
   font-size:17px;line-height:1.68;-webkit-font-smoothing:antialiased}
@@ -72,6 +44,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--wood);outline-offse
 .hero-inner{max-width:64rem;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:.85rem}
 .eyebrow{font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.16em;
   text-transform:uppercase;color:var(--wood)}
+.eyebrow .up{border-bottom:1px solid color-mix(in srgb,var(--wood) 45%,transparent)}
+.eyebrow span{opacity:.5;margin:0 .2em}
 /* Mono at a large size does not wrap mid-word, so an over-wide h1 pushes the whole
    document past the viewport. Scale hard on vw and allow a break as a backstop. */
 h1{font-family:var(--mono);font-weight:700;letter-spacing:-.02em;line-height:1.08;
@@ -185,7 +159,8 @@ footer{border-top:1px solid var(--line);margin-top:5rem;padding:2.5rem 20px 3.5r
 <header class="hero">
   <img src="__HERO_SRC__" alt="A seven-tiered pagoda with a windmill at its peak, rising out of forest above a bay at golden hour">
   <div class="hero-scrim"><div class="hero-inner">
-    <div class="eyebrow">Valheim &middot; world photography &middot; field notes</div>
+    <div class="eyebrow"><a class="up" href="../">Baseline</a> <span>/</span>
+    world photography &middot; field notes</div>
     <h1>Photographing a world nobody had time to look at</h1>
     <p class="standfirst">Three million building pieces. One person. The only way to see
       what people had built was to stop flying the camera by hand and teach the geometry

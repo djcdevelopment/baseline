@@ -17,7 +17,11 @@ import argparse, base64, json, os, html
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
-SITE_URL = "https://djcdevelopment.github.io/baseline/"
+
+# The site root belongs to Baseline as a whole; this article is one tool's story and
+# lives under its own slug.
+BASE_URL = "https://djcdevelopment.github.io/baseline/"
+ARTICLE_URL = BASE_URL + "selfie-stick/"
 
 ap = argparse.ArgumentParser(description=__doc__,
                              formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -29,7 +33,7 @@ args = ap.parse_args()
 if not os.path.exists(args.images):
     raise SystemExit(f"no {args.images} — run curate.py first")
 
-OUT = args.out or (os.path.join(REPO, "site", "index.html")
+OUT = args.out or (os.path.join(REPO, "site", "selfie-stick", "index.html")
                    if args.target == "pages"
                    else os.path.join(HERE, "build", "article-body.html"))
 
@@ -385,7 +389,10 @@ hero_cap = (f'{hero_name} &middot; {h["pieces"]:,} pieces &middot; '
             f'bearing orbit1 &middot; time of day {h["time_of_day"]} &middot; '
             f'aesthetic {h["aesthetic"]:.2f}')
 
+TOKENS = open(os.path.join(REPO, "tools", "site", "tokens.css"), encoding="utf-8").read()
+
 rep = {
+    "__TOKENS__": TOKENS,
     "__FONT_BODY__": fonts["body"], "__FONT_BODYSB__": fonts["bodysb"],
     "__FONT_MONO__": fonts["mono"], "__FONT_MONOB__": fonts["monob"],
     "__HERO_SRC__": h["src"], "__HERO_CAP__": hero_cap,
@@ -416,11 +423,13 @@ if args.target == "pages":
         f'<title>{TITLE}</title>\n'
         f'<meta name="description" content="{DESC}">\n'
         '<meta name="author" content="Derek Ciula">\n'
+        f'<link rel="canonical" href="{ARTICLE_URL}">\n'
         '<meta property="og:type" content="article">\n'
         f'<meta property="og:title" content="{TITLE}">\n'
         f'<meta property="og:description" content="{DESC}">\n'
-        f'<meta property="og:url" content="{SITE_URL}">\n'
-        f'<meta property="og:image" content="{SITE_URL}og.jpg">\n'
+        f'<meta property="og:site_name" content="Baseline">\n'
+        f'<meta property="og:url" content="{ARTICLE_URL}">\n'
+        f'<meta property="og:image" content="{ARTICLE_URL}og.jpg">\n'
         '<meta property="og:image:width" content="1200">\n'
         '<meta property="og:image:height" content="630">\n'
         '<meta name="twitter:card" content="summary_large_image">\n'
@@ -450,8 +459,4 @@ if args.target == "pages":
     im.save(og, "JPEG", quality=86, optimize=True, progressive=True)
     print(f"  {og}  {os.path.getsize(og)//1024} KB")
 
-    # Pages runs Jekyll by default, which ignores files and dirs beginning with _
-    # and can rewrite what it does serve. Opt out.
-    nj = os.path.join(os.path.dirname(OUT), ".nojekyll")
-    open(nj, "w").close()
-    print(f"  {nj}")
+    # .nojekyll lives once at the site root, not in each article directory.
