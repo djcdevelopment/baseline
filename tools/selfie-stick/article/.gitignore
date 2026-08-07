@@ -1,0 +1,4 @@
+# Intermediate build state. images.json is ~800 KB of base64 derived from out/,
+# which is itself gitignored — and every image it holds is already inlined in the
+# published site/index.html, so committing it would store the same bytes twice.
+build/

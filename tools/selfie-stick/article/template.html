@@ -1,0 +1,629 @@
+<title>Photographing a world nobody had time to look at</title>
+<style>
+@font-face{font-family:AB;src:url(__FONT_BODY__) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:AB;src:url(__FONT_BODYSB__) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:AM;src:url(__FONT_MONO__) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:AM;src:url(__FONT_MONOB__) format("woff2");font-weight:700;font-display:swap}
+
+:root{
+  --bg:#0b1013; --paper:#11191d; --panel:#162126; --line:#2c3a3f; --line2:#3d5058;
+  --ink:#edf5f2; --muted:#9eb0ad; --dim:#7b8f8c;
+  --wood:#d7a86e; --amber:#f6c453; --blue:#75c9f1; --green:#68d391; --violet:#c7a7ff;
+  --scrim:rgba(11,16,19,.86);
+  --sans:AB,ui-sans-serif,system-ui,"Segoe UI",sans-serif;
+  --mono:AM,ui-monospace,Consolas,monospace;
+  --measure:34rem;
+}
+@media (prefers-color-scheme:light){
+  :root{
+    --bg:#eceeed; --paper:#f6f7f6; --panel:#e3e8e7; --line:#c6d0ce; --line2:#a8b6b4;
+    --ink:#0e1719; --muted:#4d5f5d; --dim:#687977;
+    --wood:#8a5a22; --amber:#8a6410; --blue:#1a6285; --green:#1f6b42; --violet:#5b3fa0;
+    --scrim:rgba(236,238,237,.88);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1013; --paper:#11191d; --panel:#162126; --line:#2c3a3f; --line2:#3d5058;
+  --ink:#edf5f2; --muted:#9eb0ad; --dim:#7b8f8c;
+  --wood:#d7a86e; --amber:#f6c453; --blue:#75c9f1; --green:#68d391; --violet:#c7a7ff;
+  --scrim:rgba(11,16,19,.86);
+}
+:root[data-theme="light"]{
+  --bg:#eceeed; --paper:#f6f7f6; --panel:#e3e8e7; --line:#c6d0ce; --line2:#a8b6b4;
+  --ink:#0e1719; --muted:#4d5f5d; --dim:#687977;
+  --wood:#8a5a22; --amber:#8a6410; --blue:#1a6285; --green:#1f6b42; --violet:#5b3fa0;
+  --scrim:rgba(236,238,237,.88);
+}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:17px;line-height:1.68;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+
+/* ---- rhythm: one owner for vertical space ---- */
+.wrap{display:flex;flex-direction:column;gap:0}
+section{padding:0 20px}
+.col{max-width:var(--measure);margin:0 auto;display:flex;flex-direction:column;gap:1.15rem}
+.wide{max-width:64rem;margin:0 auto;display:flex;flex-direction:column;gap:.9rem}
+.mid{max-width:48rem;margin:0 auto;display:flex;flex-direction:column;gap:.9rem}
+/* Three spacing tiers, keyed off what a section contains rather than hand-tagged:
+   a figure/equation hugs the prose it belongs to, an h3 opens a subsection, and a
+   .head (eyebrow + h2) opens a chapter. */
+section+section{margin-top:1.7rem}
+section:has(> .col h3){margin-top:3rem}
+section:has(> .col > .head){margin-top:4.6rem}
+header.hero+section{margin-top:3.4rem}
+
+/* Flex items default to min-width:auto, so a wide child (a min-width SVG, a long
+   pre, a table) refuses to shrink and widens the whole document instead of
+   scrolling inside its own overflow-x container. */
+.col>*,.wide>*,.mid>*,figure>*,.foot>*{min-width:0}
+
+p{margin:0}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:600}
+a{color:var(--wood);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--wood) 40%,transparent)}
+a:hover{border-bottom-color:var(--wood)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--wood);outline-offset:3px;border-radius:3px}
+
+/* ---- hero ---- */
+.hero{position:relative;padding:0;margin:0}
+.hero img{width:100%;height:min(78vh,700px);object-fit:cover;object-position:center 42%}
+.hero-scrim{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:20px;background:linear-gradient(to bottom,transparent 30%,var(--scrim) 88%)}
+.hero-inner{max-width:64rem;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:.85rem}
+.eyebrow{font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--wood)}
+/* Mono at a large size does not wrap mid-word, so an over-wide h1 pushes the whole
+   document past the viewport. Scale hard on vw and allow a break as a backstop. */
+h1{font-family:var(--mono);font-weight:700;letter-spacing:-.02em;line-height:1.08;
+  font-size:clamp(1.32rem,6.6vw,3.4rem);overflow-wrap:break-word}
+.standfirst{max-width:38rem;color:var(--muted);font-size:clamp(1rem,2vw,1.16rem);line-height:1.55}
+.credit{font-family:var(--mono);font-size:.66rem;color:var(--dim);letter-spacing:.05em}
+
+/* ---- type ---- */
+h2{font-family:var(--mono);font-weight:700;font-size:clamp(1.3rem,3vw,1.75rem);
+  letter-spacing:-.015em;line-height:1.2}
+h3{font-family:var(--mono);font-weight:700;font-size:.95rem;letter-spacing:.01em;color:var(--ink)}
+.lede{font-size:1.1rem;color:var(--muted);line-height:1.6}
+.head{display:flex;flex-direction:column;gap:.5rem}
+strong{font-weight:600;color:var(--ink)}
+em{font-style:italic;color:var(--muted)}
+code{font-family:var(--mono);font-size:.86em;color:var(--wood);
+  background:color-mix(in srgb,var(--wood) 11%,transparent);padding:.08em .34em;border-radius:4px}
+
+/* ---- figures ---- */
+figure{margin:0;display:flex;flex-direction:column;gap:.55rem}
+figcaption{font-family:var(--mono);font-size:.7rem;line-height:1.55;color:var(--dim);
+  letter-spacing:.01em}
+figcaption b{color:var(--muted);font-weight:700}
+.shot{border-radius:3px;overflow:hidden;background:#000;border:1px solid var(--line)}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem}
+@media(max-width:720px){.grid3,.grid4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.grid2{grid-template-columns:1fr}}
+.tile{position:relative;display:flex;flex-direction:column;gap:.4rem}
+.tile .lab{display:flex;justify-content:space-between;gap:.6rem;font-family:var(--mono);
+  font-size:.66rem;color:var(--dim);letter-spacing:.02em}
+.tile .lab b{color:var(--muted);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tile .lab .n{color:var(--wood);font-weight:700;font-variant-numeric:tabular-nums;flex:0 0 auto}
+
+/* contact sheet */
+.sheet{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:3px}
+.sheet img{aspect-ratio:16/9;object-fit:cover;border-radius:2px}
+
+/* ---- data ---- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.stat{background:var(--paper);padding:.85rem .95rem;display:flex;flex-direction:column;gap:.2rem}
+.stat .v{font-family:var(--mono);font-weight:700;font-size:1.28rem;color:var(--wood);
+  font-variant-numeric:tabular-nums;line-height:1.1}
+.stat .k{font-family:var(--mono);font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--dim)}
+
+pre{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:4px;
+  padding:.9rem 1rem;overflow-x:auto;font-family:var(--mono);font-size:.73rem;line-height:1.65;
+  color:var(--muted);white-space:pre;tab-size:4}
+pre b{color:var(--ink);font-weight:700}
+pre i{color:var(--wood);font-style:normal}
+pre u{color:var(--dim);text-decoration:none}
+pre .c{color:var(--dim)}
+
+.eq{background:var(--paper);border:1px solid var(--line);border-left:2px solid var(--wood);
+  border-radius:4px;padding:.85rem 1rem;overflow-x:auto;font-family:var(--mono);font-size:.82rem;
+  line-height:1.9;color:var(--ink);white-space:pre}
+.eq .n{color:var(--wood)}
+.eq .cm{display:block;font-size:.7rem;color:var(--dim);line-height:1.55;margin-top:.55rem}
+
+.note{border-left:2px solid var(--line2);padding:.15rem 0 .15rem 1rem;color:var(--muted);
+  font-size:.94rem}
+.warn{border-left-color:var(--amber)}
+
+table{border-collapse:collapse;width:100%;font-size:.78rem;font-family:var(--mono)}
+th,td{text-align:left;padding:.5rem .7rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-weight:700}
+td{color:var(--muted)}
+td b{color:var(--ink);font-weight:700}
+td.n{font-variant-numeric:tabular-nums;color:var(--wood);white-space:nowrap}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--paper)}
+.tbl table tr:last-child td{border-bottom:none}
+
+ul{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.5rem}
+li::marker{color:var(--wood)}
+
+/* ---- diagrams ---- */
+.dia{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:1rem;
+  overflow-x:auto}
+.dia svg{width:100%;height:auto;min-width:560px;display:block}
+svg text{font-family:var(--mono);fill:var(--ink)}
+.s-lab{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+.s-ttl{font-size:13px;font-weight:700;fill:var(--ink)}
+.s-sub{font-size:10.5px;fill:var(--muted)}
+.s-num{font-size:19px;font-weight:700;fill:var(--wood)}
+.s-tag{font-size:9.5px;font-weight:700;letter-spacing:.05em;fill:var(--dim)}
+.s-box{fill:var(--panel);stroke:var(--line2);stroke-width:1}
+.s-lane{fill:none;stroke:var(--line);stroke-width:1;stroke-dasharray:3 4}
+.s-arr{stroke:var(--line2);stroke-width:1.4;fill:none}
+.s-hi{stroke:var(--wood);stroke-width:1.6;fill:none}
+
+/* ---- footer ---- */
+footer{border-top:1px solid var(--line);margin-top:5rem;padding:2.5rem 20px 3.5rem;
+  background:var(--paper)}
+.foot{max-width:48rem;margin:0 auto;display:flex;flex-direction:column;gap:1.1rem}
+.repo{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--mono);font-size:.82rem;
+  font-weight:700;border:1px solid var(--wood);color:var(--wood);border-radius:4px;
+  padding:.7rem 1.1rem;align-self:flex-start;
+  background:color-mix(in srgb,var(--wood) 9%,transparent)}
+.repo:hover{background:color-mix(in srgb,var(--wood) 18%,transparent)}
+.fmeta{font-family:var(--mono);font-size:.68rem;color:var(--dim);line-height:1.8}
+.fmeta b{color:var(--muted);font-weight:700}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <img src="__HERO_SRC__" alt="A seven-tiered pagoda with a windmill at its peak, rising out of forest above a bay at golden hour">
+  <div class="hero-scrim"><div class="hero-inner">
+    <div class="eyebrow">Valheim &middot; world photography &middot; field notes</div>
+    <h1>Photographing a world nobody had time to look at</h1>
+    <p class="standfirst">Three million building pieces. One person. The only way to see
+      what people had built was to stop flying the camera by hand and teach the geometry
+      to place it instead.</p>
+    <div class="credit">__HERO_CAP__</div>
+  </div></div>
+</header>
+
+<!-- ============ THE REWARD ============ -->
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">What came out</div>
+    <h2>The pictures first</h2>
+  </div>
+  <p class="lede">Everything below this is machinery. This is what the machinery is for:
+    photographs of other people's buildings, framed by arithmetic, on a server where no
+    human ever lined up the shot.</p>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="grid2">__FEATURE_TILES__</div>
+    <figcaption>Six structures, each the highest-scoring frame of its build. Camera position,
+      bearing, elevation, time of day and weather were all chosen by the planner from the
+      save file's geometry. <b>No human flew any of these shots.</b></figcaption>
+  </figure>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="sheet">__SHEET__</div>
+    <figcaption>Sixty frames sampled evenly across the ranked run &mdash; best at top-left,
+      weakest at bottom-right. <b>1,411 photographs</b> came out of 54 sessions. The point
+      of the ranking is that nobody has to look at all of them.</figcaption>
+  </figure>
+</div></section>
+
+<section><div class="wide">
+  <div class="stats">__STATS__</div>
+</div></section>
+
+<!-- ============ OVERVIEW ============ -->
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">The shape of it</div>
+    <h2>Three million pieces, sixty good pictures</h2>
+  </div>
+  <p>The world is a community server sixteen eras old. Its save file holds roughly
+    <strong>3.15 million player-placed building pieces</strong>. Somewhere in there are the
+    builds worth looking at, and there is no index of them &mdash; a Valheim save is a flat
+    bag of objects with coordinates, not a list of buildings.</p>
+  <p>So the whole job is a funnel: turn a bag of pieces into a list of structures, rank the
+    structures, photograph the top of the list, then rank the photographs.</p>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="dia">__SVG_FUNNEL__</div>
+    <figcaption>Each stage throws away most of what the previous one produced. The two
+      reductions that matter are <b>clustering</b> (pieces to structures) and
+      <b>scoring</b> (frames to a shortlist) &mdash; everything else is transport.</figcaption>
+  </figure>
+</div></section>
+
+<!-- ============ DATA FLOW ============ -->
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">Data flow</div>
+    <h2>Where the human used to be</h2>
+  </div>
+  <p>The first version of this had a person in the middle: read a shot list off a second
+    monitor, teleport, look around, press a key, repeat. That works for twenty shots. It
+    does not work for fourteen hundred.</p>
+  <p>The fix was to make the plan a file the game reads at startup, and to make the game
+    write back a receipt for every frame it takes. Once both halves exist, the loop closes
+    and the operator's only job is launching it.</p>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="dia">__SVG_FLOW__</div>
+    <figcaption>Three lanes. <b>Offline</b> is Python against a read-only analytics cache.
+      <b>In-game</b> is a BepInEx plugin that boots, reads a plan, and flies it.
+      <b>Delivery</b> joins receipts to files on disk and scores what survived. The dashed
+      hop is the only manual step left: a launcher script copies the plan into the game's
+      config directory and starts Steam.</figcaption>
+  </figure>
+</div></section>
+
+<!-- ============ CONTRACTS ============ -->
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">Contracts</div>
+    <h2>Four files, four promises</h2>
+  </div>
+  <p>The two halves are written in different languages, run in different processes, and
+    cannot call each other. Everything they share is a file. That constraint turned out to
+    be a feature &mdash; each handoff is inspectable, replayable, and diff-able.</p>
+  <p>One deliberately unglamorous choice: the plan the mod reads is <strong>tab-separated
+    text, not JSON</strong>. The plugin has no JSON parser, it scrapes with regex, and one
+    flat line per shot is far harder to misparse than nested objects.</p>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="dia">__SVG_CONTRACTS__</div>
+    <figcaption>Every arrow is a file on disk. The receipt is the important one: it records
+      what the planner <b>asked</b> for and what the engine <b>did</b>, which is how a frame
+      can later be trusted, or thrown away.</figcaption>
+  </figure>
+</div></section>
+
+<!-- ============ STACK ============ -->
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">Tech stack</div>
+    <h2>Nothing here was written for this</h2>
+  </div>
+  <p>Every layer already existed for another reason. The world cache was built to answer
+    steward questions. The perception model was on the box for a photo library. The mod
+    started life as a proof that a camera could be moved at all. The work was wiring, not
+    invention.</p>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="dia">__SVG_STACK__</div>
+    <figcaption>Roughly <b>2,300 lines of Python and PowerShell</b> against
+      <b>1,787 lines of C#</b>. The heaviest dependency &mdash; a CLIP vision transformer
+      &mdash; is the one that took the least code to use.</figcaption>
+  </figure>
+</div></section>
+
+<!-- ============ THE MATH ============ -->
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">The math</div>
+    <h2>How a camera gets placed</h2>
+  </div>
+  <p>There are four small pieces of arithmetic in this, and none of them are clever. What
+    made them work was measuring instead of guessing.</p>
+
+  <h3>1 &mdash; Finding a building in a bag of pieces</h3>
+  <p>Building pieces are snapped to a 16&nbsp;m grid. A cell holding at least four pieces is
+    "occupied". Occupied cells touching in a 26-neighbourhood get unioned together. What
+    falls out is one cluster per structure, with a true 3-D bounding box.</p>
+  <p>Doing this in three dimensions rather than two is not optional here. This world has
+    builds stacked vertically, and a flat grid merges a sky platform with whatever sits on
+    the ground beneath it &mdash; producing "structures" with nonsense five-kilometre
+    bounding boxes.</p>
+</div></section>
+
+<section><div class="mid">
+  <div class="eq">
+<span class="n">score</span> = 2&middot;log10(pieces) + min(h,60)/20 + min(prefabs,60)/30 + min(4&middot;pieces/area, 2)
+<span class="cm">mass + vertical relief + material variety + compactness. Deliberately
+transparent and deliberately untuned &mdash; it penalises sprawl, because a
+field of scattered fence posts covers ground without ever filling a frame.</span>
+  </div>
+</div></section>
+
+<section><div class="col">
+  <h3>2 &mdash; Where to stand</h3>
+  <p>Given a bounding box and a field of view, the standoff distance is secondary-school
+    trigonometry. The part that took a second attempt was deciding <em>what</em> to frame.</p>
+  <p>The first version framed on the bounding diagonal, and every photograph came back as a
+    smudge in the middle of a hazy frame. A cluster's diagonal is inflated by sprawl &mdash;
+    outbuildings, walls, a dock &mdash; so framing on it pushes the camera back past the
+    thing people came to see. Framing on the <strong>compact extent</strong> instead fixed
+    it: on one build the diagonal wanted the camera 267&nbsp;m out, the compact extent wanted
+    136&nbsp;m. The second one is the photograph.</p>
+</div></section>
+
+<section><div class="mid">
+  <div class="eq">
+<span class="n">subject</span>   = max( size_y, min(size_x, size_z), 8 )
+<span class="n">distance</span>  = (subject / 2) / tan(fov_v / 2) &times; margin
+<span class="n">elevation</span> = max( 18&deg;, min(40&deg;, 40&deg; &minus; 60&deg; &middot; size_y/width) )
+<span class="n">azimuth[i]</span> = (base + 45&deg; + 90&deg;&middot;i) mod 360&deg;
+<span class="cm">fov_v is 65&deg; and the window is 16:9, so height is the binding
+constraint. Elevation tilts down on flat things and levels off on
+tall ones: shooting a 100 m spire from 40&deg; up gives you a roof.
+The 45&deg; azimuth offset puts every shot on a corner &mdash; dead-on the
+narrow face of a long hall is the least informative angle there is.</span>
+  </div>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="dia">__SVG_GEOM__</div>
+    <figcaption>Left: the framing triangle in elevation. Right: the four bearings in plan,
+      offset 45&deg; from the structure's long axis. The camera is clamped to stay at least
+      3&nbsp;m above the lowest foundation piece, which is the only place terrain enters the
+      calculation.</figcaption>
+  </figure>
+</div></section>
+
+<section><div class="col">
+  <p class="note">There is no heightmap. Valheim generates terrain from the world seed and
+    the save holds only objects, so no offline elevation data exists at all. The trick is
+    that a cluster's lowest piece <em>is</em> ground at that build, because a foundation
+    rests on it. Only the in-game runner needs a real ground query, and only to stop a
+    camera landing inside a hillside.</p>
+</div></section>
+
+<section><div class="col">
+  <h3>3 &mdash; When to shoot</h3>
+  <p>The first planner used time-of-day 0.70 and 0.30 for the two light variants, because
+    those <em>sound</em> like golden hour. Then a 207-frame sweep measured luminance and
+    contrast across the whole day, and both guesses turned out to sit past the good light.</p>
+</div></section>
+
+<section><div class="mid">
+  <figure>
+  <div class="tbl"><table>
+    <thead><tr><th>Time of day</th><th>Luminance</th><th>Contrast</th><th></th></tr></thead>
+    <tbody>
+      <tr><td class="n">0.29</td><td class="n">74.9</td><td class="n">105.2</td><td>the old dawn value &mdash; already falling off</td></tr>
+      <tr><td class="n">0.32</td><td class="n">121.5</td><td class="n">157.4</td><td><b>adopted: morning</b></td></tr>
+      <tr><td class="n">0.64</td><td class="n">121.6</td><td class="n">159.8</td><td><b>adopted: peak contrast in the sweep</b></td></tr>
+      <tr><td class="n">0.67</td><td class="n">118.8</td><td class="n">153.7</td><td></td></tr>
+      <tr><td class="n">0.70</td><td class="n">83.1</td><td class="n">118.2</td><td>the old orbit value &mdash; 26% less contrast</td></tr>
+    </tbody>
+  </table></div>
+  <figcaption>The falloff either side of midday is steep enough that being 0.03 late costs a
+    quarter of the contrast in the frame.</figcaption>
+  </figure>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="grid4">__LIGHT_TILES__</div>
+    <figcaption>One structure, four times of day, camera identical. <b>Nothing moved but the
+      sun.</b> These four are samples from the sweep, not the two values the planner
+      settled on &mdash; they are what the measurement above was taken from.</figcaption>
+  </figure>
+</div></section>
+
+<section><div class="col">
+  <h3>4 &mdash; Which frame is any good</h3>
+  <p>The number on a gallery tile used to be the <em>structure's</em> ranking score, which is
+    identical across all six photographs of the same building. It ranks places. It cannot
+    tell a good picture of a place from a bad one, which is the thing a gallery actually
+    needs.</p>
+  <p>So each frame now goes through a CLIP ViT-L/14 image encoder and a small LAION aesthetic
+    head &mdash; the same model and weights already sitting on the box for an unrelated photo
+    library. No new download, no new dependency.</p>
+</div></section>
+
+<section><div class="mid">
+  <div class="eq">
+<span class="n">e</span>         = CLIP_ViT-L/14 image encoder (frame)      &rarr; 768 floats
+<span class="n">e</span>         = e / norm(e)                            &rarr; L2-normalised
+<span class="n">aesthetic</span> = MLP(e)    768 &rarr; 1024 &rarr; 128 &rarr; 64 &rarr; 16 &rarr; 1
+<span class="cm">It is still a machine's opinion, and it is still not taste. But it is
+an opinion about this frame rather than about the building in it.
+Across the 1,411 photographs it spread them from 3.86 to 6.31,
+median 5.55.</span>
+  </div>
+</div></section>
+
+<!-- ============ OUTPUTS ============ -->
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">Stage by stage</div>
+    <h2>What each step actually emits</h2>
+  </div>
+  <p>The clearest way to explain a pipeline is to show what falls out of each end of it.
+    These are real records from the run that produced the photographs above, with
+    coordinates removed &mdash; they attribute real builds to real people, and this is a
+    public page.</p>
+</div></section>
+
+<section><div class="mid">
+  <figure>
+    <figcaption><b>scan_clusters.py</b> &rarr; clusters.json &mdash; one record per structure</figcaption>
+    <pre>{
+  <i>"world"</i>: "ComfyEra16.db",
+  <i>"method"</i>: "3-D connected-component clustering of BUILDING ZDOs on a
+             16x16x16 m grid (min 4 pieces/cell, min 400 pieces/cluster)",
+  <i>"count"</i>: <b>1833</b>,
+  <i>"clusters"</i>: [{
+    <i>"cluster_id"</i>: 51,        <i>"region"</i>: "in-world",   <i>"sky"</i>: false,
+    <i>"pieces"</i>: <b>21464</b>,        <i>"score"</i>: <b>15.663</b>,      <i>"distinct_prefabs"</i>: 132,
+    <i>"center_x"</i>: <u>&#183;&#183;&#183;&#183;&#183;</u>,      <i>"center_y"</i>: <u>&#183;&#183;&#183;&#183;&#183;</u>,     <i>"center_z"</i>: <u>&#183;&#183;&#183;&#183;&#183;</u>,
+    <i>"size_x"</i>: 150.2,       <i>"size_y"</i>: 100.0,      <i>"size_z"</i>: 176.4,
+    <i>"footprint_m2"</i>: 26494.0, <i>"diagonal_m"</i>: 252.3,
+    <i>"suggested_standoff_m"</i>: 227.1, <i>"suggested_camera_y"</i>: 135.1,
+    <i>"distinct_creators"</i>: 5,  <i>"portals"</i>: 4,        <i>"signs"</i>: 2857
+  }, <span class="c">&#8230; 1832 more</span>]
+}</pre>
+  </figure>
+</div></section>
+
+<section><div class="mid">
+  <figure>
+    <figcaption><b>plan_shots.py</b> &rarr; shotplan.tsv &mdash; six lines per structure, one per frame.
+      This is the file the plugin reads.</figcaption>
+    <pre><span class="c"># cluster_id  shot     cam_x cam_y cam_z   yaw    pitch  env    time  aim  label</span>
+439           <b>orbit1</b>   <u>&#183;&#183;&#183;&#183;</u>  <u>&#183;&#183;&#183;&#183;</u>  <u>&#183;&#183;&#183;&#183;</u>   <i>225.0</i>  <i>27.39</i>  Clear  <i>0.64</i>  <u>&#183;&#183;&#183;</u>  Pirate's Haven
+439           <b>orbit2</b>   <u>&#183;&#183;&#183;&#183;</u>  <u>&#183;&#183;&#183;&#183;</u>  <u>&#183;&#183;&#183;&#183;</u>   <i>315.0</i>  <i>27.39</i>  Clear  <i>0.64</i>  <u>&#183;&#183;&#183;</u>  Pirate's Haven
+439           <b>orbit3</b>   <u>&#183;&#183;&#183;&#183;</u>  <u>&#183;&#183;&#183;&#183;</u>  <u>&#183;&#183;&#183;&#183;</u>    <i>45.0</i>  <i>27.39</i>  Clear  <i>0.64</i>  <u>&#183;&#183;&#183;</u>  Pirate's Haven
+439           <b>orbit4</b>   <u>&#183;&#183;&#183;&#183;</u>  <u>&#183;&#183;&#183;&#183;</u>  <u>&#183;&#183;&#183;&#183;</u>   <i>135.0</i>  <i>27.39</i>  Clear  <i>0.64</i>  <u>&#183;&#183;&#183;</u>  Pirate's Haven
+439           <b>dawn</b>     <u>&#183;&#183;&#183;&#183;</u>  <u>&#183;&#183;&#183;&#183;</u>  <u>&#183;&#183;&#183;&#183;</u>   <i>225.0</i>  <i>27.39</i>  Clear  <i>0.32</i>  <u>&#183;&#183;&#183;</u>  Pirate's Haven
+439           <b>weather</b>  <u>&#183;&#183;&#183;&#183;</u>  <u>&#183;&#183;&#183;&#183;</u>  <u>&#183;&#183;&#183;&#183;</u>   <i>225.0</i>  <i>27.39</i>  Misty  <i>0.66</i>  <u>&#183;&#183;&#183;</u>  Pirate's Haven</pre>
+  </figure>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="grid4">__ORBIT_TILES__</div>
+    <figcaption>Those first four lines, executed. The same structure on four bearings 90&deg;
+      apart, each one offset 45&deg; from its long axis so no shot is dead-on a face.
+      <b>The leftmost frame is the one at the top of this page.</b></figcaption>
+  </figure>
+</div></section>
+
+<section><div class="mid">
+  <figure>
+    <figcaption><b>the plugin</b> &rarr; shotplan-receipts.jsonl &mdash; one line per frame,
+      written from inside the running game</figcaption>
+    <pre>{
+  <i>"run"</i>: "20260806-110505", <i>"index"</i>: 478, <i>"cluster_id"</i>: 407,
+  <i>"shot"</i>: "dawn", <i>"file"</i>: <b>"0407_dawn.png"</b>,
+  <i>"planned"</i>:  { x: <u>&#183;&#183;&#183;</u>, y: <b>97.800</b>, z: <u>&#183;&#183;&#183;</u> },   <span class="c">&#8592; what the planner asked for</span>
+  <i>"placed"</i>:   { x: <u>&#183;&#183;&#183;</u>, y: <b>97.800</b>, z: <u>&#183;&#183;&#183;</u> },   <span class="c">&#8592; where the engine put the player</span>
+  <i>"lens"</i>:     { x: <u>&#183;&#183;&#183;</u>, y: <b>99.386</b>, z: <u>&#183;&#183;&#183;</u> },   <span class="c">&#8592; where the camera actually was</span>
+  <i>"lens_offset_m"</i>: <b>1.648</b>,        <i>"clearance"</i>: <b>"planned"</b>,
+  <i>"yaw"</i>: 45, <i>"pitch"</i>: 26.31, <i>"fov"</i>: 65,
+  <i>"environment"</i>: "Clear", <i>"time_of_day"</i>: 0.32,
+  <i>"pieces_near_aim"</i>: <b>3377</b>, <i>"occluded"</i>: <b>false</b>,
+  <i>"at"</i>: "2026-08-06T12:35:28.109-07:00"
+}</pre>
+  </figure>
+  <p class="note">Three positions, not one. <strong>planned</strong> is the request,
+    <strong>placed</strong> is where the engine actually dropped the player after its own
+    ground clamp, and <strong>lens</strong> is the camera &mdash; 1.6&nbsp;m above the player
+    origin, because the eye is not the feet. Keeping all three is what lets a frame be
+    audited a week later instead of trusted on faith. <code>occluded</code> and
+    <code>pieces_near_aim</code> come from a raycast at capture time: if nothing is in
+    front of the lens, the frame is a photograph of fog and gets dropped.</p>
+</div></section>
+
+<section><div class="mid">
+  <figure>
+    <figcaption><b>build_valheim_index.py</b> + <b>score_images.py</b> &rarr; index.json &mdash;
+      receipts joined to files on disk, then scored</figcaption>
+    <pre>{ <i>"n"</i>: <b>1411</b>, <i>"runs"</i>: <b>54</b>, <i>"joined"</i>: <b>1411</b>,
+  <i>"environments"</i>: ["Clear","Misty","Rain","ThunderStorm"],
+  <i>"kinds"</i>: ["build","hub","major hub","museum","settlement","sky build",
+            "sky museum","sprawl","tall hall","tower","shared build"],
+  <i>"images"</i>: [{
+    <i>"id"</i>: "20260806-071848_0439_orbit1",  <i>"variant"</i>: "orbit1",
+    <i>"aesthetic"</i>: <b>6.313</b>,     <i>"score"</i>: 11.013,   <i>"cluster_rank"</i>: 692,
+    <i>"label"</i>: <b>"Pirate's Haven"</b>,  <i>"kind"</i>: "hub",  <i>"builders"</i>: 3,
+    <i>"pieces"</i>: 4124,       <i>"height_m"</i>: 25.8,  <i>"footprint_m2"</i>: 7049.8,
+    <i>"occluded"</i>: false,    <i>"published"</i>: <b>false</b>
+  }, <span class="c">&#8230; 1410 more</span>]
+}</pre>
+  </figure>
+  <p class="note warn"><code>"published": false</code> is the default on every single record,
+    and it is deliberate. Ingest is automatic; exposure is not. These are other people's
+    houses.</p>
+</div></section>
+
+<!-- ============ NAMING ============ -->
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">One more thing</div>
+    <h2>Naming things by looking at them</h2>
+  </div>
+  <p>A cluster's identity in the save file is <code>cluster 439</code>. That is useless in a
+    gallery. The obvious fix &mdash; read the prefab names and infer "this is a longhouse"
+    &mdash; does not work: the analytics cache stores prefabs as hashes like
+    <code>hash:538325542</code>, and the offline name table holds 617 <em>item</em> names and
+    no building pieces at all.</p>
+  <p>So the naming step skips the metadata entirely and shows a vision model the photograph.
+    It gets back a name, a one-line description, and a feature list.</p>
+</div></section>
+
+<section><div class="mid">
+  <figure>
+    <figcaption><b>name_structures.py</b> &rarr; cluster-descriptions.json</figcaption>
+    <pre>{
+  <i>"22"</i>: {
+    <i>"name"</i>: <b>"Pride's Portal"</b>,
+    <i>"blurb"</i>: "A grand entrance to an ethereal realm with glowing
+              lanterns and a golden portal.",
+    <i>"features"</i>: ["Glowing Lanterns", "Golden Portal",
+                 "Architectural Columns"],
+    <i>"from_image"</i>: "20260806-015620_a_clear_t38",  <i>"pieces"</i>: 9603
+  }
+}</pre>
+  </figure>
+  <p class="note">Names that came back this way include <em>Tree of Light</em>,
+    <em>Skyward Tower</em>, <em>Marble Oasis</em>, <em>Gothic Ruin</em> and
+    <em>Kleenex Gate</em>. The last one is not a mistake &mdash; it is a real build, and the
+    model read the sign.</p>
+</div></section>
+
+<!-- ============ OPEN ============ -->
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">Still open</div>
+    <h2>What this does not do</h2>
+  </div>
+  <ul>
+    <li><strong>Prefab names are hashes.</strong> "Dominant material" is a stable ID, not a
+      word. The fix is a one-time in-game dump of the prefab table, joined thereafter.</li>
+    <li><strong>Builders are numbers.</strong> 351 distinct creator IDs across the ranked
+      clusters, none of them zero &mdash; so attribution works, but turning an ID into a name
+      needs records that only exist in the running server.</li>
+    <li><strong>No metric can judge a photograph.</strong> The aesthetic head sorts
+      competently and is confidently wrong at the edges. It is a filter that makes a
+      1,411-frame pile reviewable, not a critic.</li>
+    <li><strong>Dense forest still eats the camera.</strong> The occlusion raycast catches a
+      wall in front of the lens. It does not catch a pine branch across a third of the
+      frame.</li>
+    <li><strong>It runs on one machine.</strong> The world cache, the model weights, the game
+      install and the gallery are all local. Nothing here is a service, and this write-up is
+      not a promise that it will become one.</li>
+  </ul>
+</div></section>
+
+<footer><div class="foot">
+  <div class="eyebrow">The code</div>
+  <p>The planning half &mdash; clustering, shot planning, naming, scoring, index building
+    &mdash; is open and lives in the Baseline repo. The in-game half is a separate BepInEx
+    plugin, kept out of that repo on purpose so it stays a claimable piece of work for
+    anyone who wants it.</p>
+  <a class="repo" href="https://github.com/djcdevelopment/baseline/tree/main/tools/selfie-stick">
+    github.com/djcdevelopment/baseline &rarr; tools/selfie-stick</a>
+  <div class="fmeta">
+    <b>World</b> &nbsp;ComfyEra16 &middot; 1,833 structures &middot; 3,146,002 building pieces<br>
+    <b>Run</b> &nbsp;&nbsp;&nbsp;54 sessions &middot; 1,411 frames &middot; 161 structures photographed<br>
+    <b>Note</b> &nbsp;&nbsp;Coordinates and builder IDs are withheld throughout. The scan
+    outputs are gitignored for the same reason.
+  </div>
+</div></footer>
+
+</div>
