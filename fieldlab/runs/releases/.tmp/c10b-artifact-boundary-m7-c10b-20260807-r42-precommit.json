@@ -1,0 +1,678 @@
+{
+    "schema_version":  1,
+    "receipt_type":  "c10b_artifact_fallback_boundary",
+    "generated_utc":  "2026-08-07T08:13:27.2011059+00:00",
+    "stage":  "candidate",
+    "result":  "passed",
+    "expected_release_id":  "m7-c10b-20260807-r42",
+    "source_release_id":  "m7-c10b-20260807-r42",
+    "dll_release_id":  "m7-c10b-20260807-r42",
+    "dll_sha256":  "b5cd6783ccf1aa69b3c01afd042f970955a610987d9a594fb8397979b8f0e5bc",
+    "source_root":  "C:\\work\\baseline\\network\\mod\\ComfyNetworkSense",
+    "dll_path":  "C:\\work\\baseline\\network\\mod\\ComfyNetworkSense\\bin\\Release\\ComfyNetworkSense.dll",
+    "production_source_file_count":  95,
+    "checks":  {
+                   "required_source_files_present":  true,
+                   "source_release_exact":  true,
+                   "dll_release_exact":  true,
+                   "source_and_dll_release_aligned":  true,
+                   "config_control_inventory_exact":  true,
+                   "runtime_control_inventory_exact":  true,
+                   "request_control_inventory_exact":  true,
+                   "active_control_inventory_exact":  true,
+                   "migration_marker_polarity_exact":  true,
+                   "retained_native_guard_complete":  true,
+                   "final_permanent_semantics_exact":  true
+               },
+    "failed_checks":  [
+
+                      ],
+    "inventory":  {
+                      "config_controls":  [
+                                              "DirectControlCutoverEnabled",
+                                              "LogicalPeerCutoverEnabled",
+                                              "MotionAuthorityCutoverEnabled",
+                                              "NativeNetworkLedgerEnabled",
+                                              "NativeNetworkPoisonEnabled",
+                                              "OwnershipLeaseCutoverEnabled",
+                                              "RoutedRpcCutoverEnabled",
+                                              "SocketQuarantineCutoverEnabled",
+                                              "WorldZoneCutoverEnabled",
+                                              "ZdoJournalCanonicalSessionEnabled",
+                                              "ZdoJournalCutoverEnabled"
+                                          ],
+                      "runtime_controls":  [
+                                               "directControlCutoverEnabled",
+                                               "logicalPeerCutoverEnabled",
+                                               "motionAuthorityCutoverEnabled",
+                                               "nativeNetworkPoisonEnabled",
+                                               "ownershipLeaseCutoverEnabled",
+                                               "routedRpcCutoverEnabled",
+                                               "worldZoneCutoverEnabled",
+                                               "zdoJournalCanonicalSessionEnabled",
+                                               "zdoJournalCutoverEnabled"
+                                           ],
+                      "request_controls":  [
+                                               "motion_authority_cutover",
+                                               "native_network_poison",
+                                               "ownership_lease_cutover",
+                                               "routed_rpc_cutover",
+                                               "socket_quarantine_cutover",
+                                               "world_zone_cutover",
+                                               "zdo_journal_canonical_session",
+                                               "zdo_journal_cutover"
+                                           ],
+                      "active_request_controls":  [
+                                                      "ActiveMotionAuthorityCutover",
+                                                      "ActiveOwnershipLeaseCutover",
+                                                      "ActiveRoutedRpcCutover",
+                                                      "ActiveSocketQuarantineCutover",
+                                                      "ActiveWorldZoneCutover",
+                                                      "ActiveZdoJournalCanonicalSession",
+                                                      "ActiveZdoJournalCutover"
+                                                  ]
+                  },
+    "migration_markers":  [
+                              {
+                                  "marker":  "ActiveMotionAuthorityCutover",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "ActiveOwnershipLeaseCutover",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "ActiveRoutedRpcCutover",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "ActiveSocketQuarantineCutover",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "ActiveWorldZoneCutover",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "ActiveZdoJournalCanonicalSession",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "ActiveZdoJournalCutover",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "canonical_motion_authority_disarmed",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "DirectControlCutoverEnabled",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "logical_peer_adapter_disarmed",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "logicalPeerCutoverEnabled",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "motion_authority_cutover",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "motionAuthorityCutoverEnabled",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "native_direct_pulse_generator_stopped",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "native_network_poison",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "native_world_and_zone_paths_restored",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "NativeNetworkLedgerEnabled",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "nativeNetworkPoisonEnabled",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "ownership_lease_cutover",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "OwnershipLeaseCutoverEnabled",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "routed_rpc_cutover",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "routedRpcCutoverEnabled",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "selected_ownership_native_path_restored",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "selected_routed_rpc_native_path_restored",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "SetPoisonOverride",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "socket_quarantine_cutover",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "SocketQuarantineCutoverEnabled",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "SocketQuarantineCutoverRunner",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "world_zone_cutover",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "worldZoneCutoverEnabled",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "zdo_journal_canonical_session",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "zdo_journal_cutover",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "zdo_semantics_restored_to_http_lab_seam",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "ZdoJournalCanonicalSessionEnabled",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              },
+                              {
+                                  "marker":  "ZdoJournalCutoverEnabled",
+                                  "source_present":  true,
+                                  "dll_present":  true,
+                                  "expected_present":  true,
+                                  "passed":  true
+                              }
+                          ],
+    "retained_native_guard_markers":  [
+                                          {
+                                              "marker":  "NativeNetworkLedger",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "NativeNetworkEvidenceRunId",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "NativeSteamSocketPatches",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "NativeHandshakeLedgerPatches",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "NativeZdoLedgerPatches",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "NativeRoutedRpcLedgerPatches",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "DirectControlCutoverRunner",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "RoutedRpcCutoverRunner",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "ShipCutoverRunner",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "SaddleCutoverRunner",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "CreatureAiCutoverRunner",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "ContainerCutoverRunner",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "ZdoJournalCutoverRunner",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "OwnershipLeaseCutoverRunner",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "WorldZoneCutoverRunner",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "LumberjacksMotionRunner",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "LogicalPeerCutoverRunner",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "LumberjacksGameSessionRunner",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "NativeAutotestRequest",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "native-network-use.jsonl",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "native_total",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "poison_trips",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "steam_free_cold_join",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "lumberjacks_gateway_url",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "nativeNetworkEvidenceRunId",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "lumberjacksGatewayUrl",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "portalTraversalEnabled",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          },
+                                          {
+                                              "marker":  "cutoverResidueCleanup",
+                                              "source_present":  true,
+                                              "dll_present":  true,
+                                              "passed":  true
+                                          }
+                                      ],
+    "final_semantic_requirements":  [
+                                        {
+                                            "name":  "native_ledger_permanent",
+                                            "relative_path":  "Core\\Services\\NativeNetworkLedger.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "native_poison_permanent",
+                                            "relative_path":  "Core\\Services\\NativeNetworkLedger.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "direct_control_permanent_policy",
+                                            "relative_path":  "Core\\Services\\DirectControlCutoverRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "direct_control_update_uses_permanent_policy",
+                                            "relative_path":  "Core\\Services\\DirectControlCutoverRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "direct_control_suppression_uses_permanent_policy",
+                                            "relative_path":  "Core\\Services\\DirectControlCutoverRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "direct_control_snapshot_uses_permanent_policy",
+                                            "relative_path":  "Core\\Services\\DirectControlCutoverRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "routed_rpc_permanent",
+                                            "relative_path":  "Core\\Services\\RoutedRpcCutoverRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "ship_permanent",
+                                            "relative_path":  "Core\\Services\\ShipCutoverRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "saddle_permanent",
+                                            "relative_path":  "Core\\Services\\SaddleCutoverRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "creature_ai_permanent",
+                                            "relative_path":  "Core\\Services\\CreatureAiCutoverRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "container_permanent",
+                                            "relative_path":  "Core\\Services\\ContainerCutoverRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "zdo_journal_permanent",
+                                            "relative_path":  "Core\\Services\\ZdoJournalCutoverRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "zdo_canonical_session_permanent",
+                                            "relative_path":  "Core\\Services\\ZdoJournalCutoverRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "ownership_lease_permanent",
+                                            "relative_path":  "Core\\Services\\OwnershipLeaseCutoverRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "world_zone_permanent",
+                                            "relative_path":  "Core\\Services\\WorldZoneCutoverRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "motion_authority_permanent",
+                                            "relative_path":  "Core\\Services\\LumberjacksMotionRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "logical_peer_server_permanent",
+                                            "relative_path":  "Core\\Services\\LogicalPeerCutoverRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "canonical_server_session_permanent",
+                                            "relative_path":  "Core\\Services\\LumberjacksGameSessionRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "cold_join_does_not_require_local_player",
+                                            "relative_path":  "Core\\Services\\LumberjacksGameSessionRunner.cs",
+                                            "required_found":  true,
+                                            "forbidden_found":  true,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "motion_region_binding_permanent",
+                                            "relative_path":  "Core\\Services\\LumberjacksGameSessionRunner.cs",
+                                            "required_found":  false,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "logical_rpc_update_virtualization_retained",
+                                            "relative_path":  "Patches\\NativeNetworkPatches.cs",
+                                            "required_found":  true,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "logical_connection_status_virtualization_retained",
+                                            "relative_path":  "Patches\\NativeNetworkPatches.cs",
+                                            "required_found":  true,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        },
+                                        {
+                                            "name":  "direct_control_suppression_patch_retained",
+                                            "relative_path":  "Patches\\NativeNetworkPatches.cs",
+                                            "required_found":  true,
+                                            "forbidden_found":  false,
+                                            "applies":  false,
+                                            "passed":  true
+                                        }
+                                    ]
+}
