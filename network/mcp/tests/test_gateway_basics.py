@@ -63,6 +63,10 @@ class GatewayBasicsTest(unittest.TestCase):
                 },
                 clear=False,
             ):
+                # The default must hold even on a machine that exports
+                # COMFY_MCP_PROJECT for its own runtime. patch.dict snapshots
+                # the whole mapping, so this deletion is restored on exit.
+                os.environ.pop("COMFY_MCP_PROJECT", None)
                 identity = gateway_identity(
                     context,
                     auth,
@@ -78,6 +82,47 @@ class GatewayBasicsTest(unittest.TestCase):
             self.assertEqual("abc123", identity["source_revision"])
             self.assertIn("comfy_gateway.toolsurface.workbench", identity["providers"])
             self.assertEqual(str(callers), identity["caller_registry"])
+
+    def test_identity_project_names_the_owning_repository(self) -> None:
+        """A loopback port cannot say which checkout answered; this field can.
+
+        Two containers built from this same Dockerfile both report source_root
+        /workspace, so before COMFY_MCP_PROJECT existed the identity gate could
+        not distinguish baseline's gateway from isolate's at all. The gate is
+        the boundary PD-8 relies on, so the field it turns on has to be pinned.
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            callers = root / "callers.json"
+            callers.write_text(
+                json.dumps({"key": {"id": "tester", "runner_class": "human", "node": "omen"}}),
+                encoding="utf-8",
+            )
+            ledger = Ledger(root / "ledger")
+            auth = AuthRegistry(callers_path=callers, ledger=ledger)
+            context = ComfyContext(repo_root=root, ledger=ledger)
+
+            def identity_for(project: str | None) -> dict:
+                env = {"COMFY_MCP_ROOT": str(root / "network" / "mcp")}
+                if project is not None:
+                    env["COMFY_MCP_PROJECT"] = project
+                with patch.dict(os.environ, env, clear=False):
+                    if project is None:
+                        os.environ.pop("COMFY_MCP_PROJECT", None)
+                    return gateway_identity(
+                        context, auth, [], host="0.0.0.0", port=8720
+                    )
+
+            self.assertEqual("isolate", identity_for("isolate")["project"])
+            self.assertEqual("baseline", identity_for(None)["project"])
+            # env_value() nulls the literal "unknown" so an unstamped run reports
+            # nothing rather than inventing provenance; project must still fall
+            # back to a usable name rather than to None.
+            self.assertEqual("baseline", identity_for("unknown")["project"])
+            # The schema id is a contract version and does not track the project.
+            self.assertEqual(
+                "baseline.mcp.identity.v1", identity_for("isolate")["schema"]
+            )
 
     def test_valheim_report_from_temp_jsonl(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

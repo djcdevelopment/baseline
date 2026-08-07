@@ -1,17 +1,18 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Comfy Gateway API Contract Boundary",
-  "version": "1.0.0",
-  "description": "Explicit transport, authentication, and endpoint contracts for the Comfy Gateway runtime in isolate and baseline.",
+  "version": "1.1.0",
+  "description": "Explicit transport, authentication, and endpoint contracts for the Comfy Gateway runtime in isolate and baseline. Enforced by tests/test_api_contract_conformance.py, which drives the real routes and fails in BOTH directions: a declared field the response omits, and a response field this file does not declare. Editing an endpoint without editing this file is meant to turn the suite red.",
   "transport": {
     "protocol": "HTTP/1.1",
-    "default_port": 8721,
-    "fallback_port": 8720,
+    "default_port": 8720,
+    "default_port_note": "The kernel's DEFAULT_PORT and the port the container listens on. Host publish ports are a deployment choice and are NOT protocol defaults: baseline's companion dev-mcp publishes 8721, isolate's lab gateway publishes 8722. Version 1.0.0 of this file wrongly declared 8721 as the transport default.",
     "auth_header": "X-Comfy-Key",
     "accepted_keys": [
       "comfy-dev-local",
       "valheim-mod-local"
-    ]
+    ],
+    "unauthorized_status": 401
   },
   "endpoints": [
     {
@@ -24,10 +25,10 @@
         "schema": {
           "type": "object",
           "properties": {
-            "status": { "type": "string", "enum": ["ok", "degraded"] },
-            "version": { "type": "string" }
+            "ok": { "type": "boolean" },
+            "gateway": { "type": "string" }
           },
-          "required": ["status"]
+          "required": ["ok", "gateway"]
         }
       }
     },
@@ -35,19 +36,50 @@
       "path": "/identity",
       "method": "GET",
       "auth_required": true,
+      "description": "Authenticated runtime provenance attestation. A loopback URL and a healthy response do not identify a project; this does. Note that source_root is /workspace inside any container built from network/mcp/Dockerfile, so `project` is the only field that names the owning repository.",
       "response": {
         "status": 200,
         "content_type": "application/json",
         "schema": {
           "type": "object",
           "properties": {
+            "schema": { "type": "string" },
+            "project": { "type": "string" },
+            "kernel": { "type": "string" },
             "source_root": { "type": "string" },
-            "revision": { "type": "string" },
-            "image": { "type": "string" },
-            "profile": { "type": "string" },
-            "port": { "type": "integer" }
+            "mcp_root": { "type": "string" },
+            "source_revision": { "type": ["string", "null"] },
+            "source_branch": { "type": ["string", "null"] },
+            "source_dirty": { "type": ["string", "null"] },
+            "image": { "type": ["string", "null"] },
+            "profile": { "type": ["string", "null"] },
+            "listen_host": { "type": "string" },
+            "listen_port": { "type": "integer" },
+            "published_host": { "type": "string" },
+            "published_port": { "type": ["integer", "null"] },
+            "providers": { "type": "array" },
+            "caller_registry": { "type": "string" },
+            "ledger_dir": { "type": "string" }
           },
-          "required": ["source_root", "image", "profile", "port"]
+          "required": [
+            "schema",
+            "project",
+            "kernel",
+            "source_root",
+            "mcp_root",
+            "source_revision",
+            "source_branch",
+            "source_dirty",
+            "image",
+            "profile",
+            "listen_host",
+            "listen_port",
+            "published_host",
+            "published_port",
+            "providers",
+            "caller_registry",
+            "ledger_dir"
+          ]
         }
       }
     },
@@ -56,7 +88,7 @@
       "method": "POST",
       "auth_required": true,
       "protocol": "FastMCP JSON-RPC 2.0",
-      "description": "MCP tool invocation and streaming endpoint."
+      "description": "MCP tool invocation and streaming endpoint. No response schema is declared: the payload is JSON-RPC over a streamable-http session owned by FastMCP, not a shape this repository defines. Conformance for this route is the transport auth contract above, not a body schema."
     }
   ]
 }

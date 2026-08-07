@@ -38,3 +38,53 @@ Extract the container runtime environment (MCP gateway, lab compose definitions,
 | **GCP Live Telemetry Ingestion** | Python MCP Gateway server (`network/mcp`), telemetry aggregators, REST/MCP endpoints | `ComfyNetworkSense` BepInEx mod, GCP tunnel launcher scripts (`start-gateway-tunnel.ps1`) |
 | **Multi-PC Local Lab (OMEN, i5, AM4)** | Disposable client compose manifests (`valheim-lab.compose.yml`), remote deploy tools (`tools/i5`, `tools/am4`) | Host PC environment configs (`OMEN_VALHEIM_DIR`), Tailscale IPs, local game client installations |
 
+## Amendment — 2026-08-07: the boundary, as built and as measured
+
+The rationale above says a separate repository *forces* environment variables, mount
+roots, and endpoints to be explicit and contract-tested. On the day this was accepted it
+had not yet done so, and the gap was not visible from either repository on its own.
+
+Measured before any change (full receipt:
+[isolate-boundary-verification-20260807.json](../../fieldlab/evidence/isolate-boundary-verification-20260807.json)):
+
+- The extracted compose file was **byte-identical** to baseline's, including
+  `name: comfy-valheim-lab` — the live lab's project. `AUTONOMOUS_ROOT` and `COMFY_ROOT`
+  had no defaults, so an unset value rendered the world mounts as blank-rooted absolute
+  paths and `docker compose` still exited 0. Bringing the "decoupled" stack up would have
+  adopted the running server and recreated it against an empty world.
+- `gateway_identity()` hardcoded `project: "baseline"`, and `source_root` is `/workspace`
+  inside any container built from `network/mcp/Dockerfile`. **`/identity` — the endpoint
+  this decision names as the contract boundary — could not distinguish the two
+  repositories.** A gate that cannot fail is not a boundary.
+- `contracts/api-contract.json` did not describe the code beside it: `/healthz` declared
+  `status` but returns `ok`/`gateway`; `/identity` declared `port` but returns
+  `listen_port`/`published_port`; transport declared `default_port: 8721`, which is
+  baseline's *companion container host publish*, not the kernel default of 8720. Nothing
+  read the file, so nothing noticed.
+- `isolate`'s own suite was red 2/11 on paths this decision deliberately left in
+  `baseline`, which blocked the AGENTS.md rule that tests pass before an image is published.
+
+### What changed
+
+`/identity` now reports `project` from `COMFY_MCP_PROJECT` (defaulting to `baseline`, so
+every existing launcher keeps its current answer); the isolate compose runs as its own
+`isolate-lab` project with defaults that resolve inside its own tree; the contract was
+corrected and is now enforced by `tests/test_api_contract_conformance.py`, which fails in
+both directions — a declared field the response omits, *and* a response field the contract
+does not declare. `Test-WorkbenchMcpIdentity.ps1` gained `-ExpectedProject`.
+
+Verified 2026-08-07 on OMEN: the isolate gateway attests `project: isolate` with real git
+provenance on 8722, while the same check pointed at 8721 fails on `project` **first** —
+a mismatch that could not have fired before this change. The live lab was untouched
+throughout (container id and `StartedAt` unchanged).
+
+### Still blocking this decision
+
+**`isolate` has no git remote.** Step 3 of the promotion pathway above — publish versioned
+container images, consume them in `baseline` — is therefore not reachable. Today `baseline`
+can only rebuild the gateway from a sibling directory on the same disk, which is precisely
+the coupling this decision set out to remove. Until there is a remote and a published tag,
+the two repositories are duplicated source with a tested contract between them, not an
+independent runtime. The compose file also remains duplicated with no drift guard; which
+copy is authoritative is unresolved.
+

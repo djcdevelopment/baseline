@@ -171,8 +171,17 @@ def gateway_identity(
 
     published_port = env_value("COMFY_MCP_HOST_PORT")
     return {
+        # Contract version, not a project claim. It stays "baseline.*" across
+        # every repository that ships this kernel, because callers pin it
+        # exactly (Test-WorkbenchMcpIdentity.ps1) and renaming it would break
+        # them to say nothing new. The project field below is what varies.
         "schema": "baseline.mcp.identity.v1",
-        "project": "baseline",
+        # source_root is /workspace inside any container built from this
+        # Dockerfile, so it cannot tell two checkouts apart. This is the only
+        # field that names the runtime's owning repository, which is the whole
+        # point of the gate — so it has to be supplied, not assumed. Defaults
+        # to baseline so existing launchers keep their current answer.
+        "project": env_value("COMFY_MCP_PROJECT") or "baseline",
         "kernel": "comfy_gateway",
         "source_root": str(context.repo_root),
         "mcp_root": str(comfy_mcp_root()),

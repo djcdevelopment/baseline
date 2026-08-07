@@ -1,0 +1,223 @@
+{
+  "schema": "baseline.evidence.isolate-boundary.v1",
+  "generated_utc": "2026-08-07T15:56:36Z",
+  "operator": "Derek",
+  "host": "OMEN",
+  "subject": "PD-8 runtime boundary between baseline and isolate",
+  "claim": "The isolate repository can stand up its own MCP gateway, from its own source, under its own compose project, with mounts resolving inside its own tree — and GET /identity can name which of the two repositories answered.",
+  "not_claimed": "Nothing about multi-peer ZDO delivery, motion capture, netcode behaviour, or the image promotion lane. This is a runtime boundary result only.",
+  "runbook": "docs/internal/RUNBOOK-isolate-verification-2026-08-07.md",
+  "revisions": {
+    "baseline_head_at_start": "55ba890fe0cefb7b8907601864b0afb5f08b6108",
+    "isolate_head": "ec74746c1d44db7e45ac21611d55e1023d2a9818",
+    "isolate_branch": "master",
+    "isolate_worktree_dirty": true,
+    "note": "isolate's working tree was dirty during the run because these fixes were uncommitted at probe time. /identity reported source_dirty=true, which is the gate working: it declined to attest a clean revision it could not stand behind."
+  },
+
+  "defects_found_before_any_change": [
+    {
+      "id": "D1",
+      "severity": "destructive",
+      "summary": "isolate/docker/valheim-lab.compose.yml declared name: comfy-valheim-lab — the live lab project — and AUTONOMOUS_ROOT/COMFY_ROOT had no defaults, so unset values rendered the world mounts as blank-rooted absolute paths (/state/server/data). docker compose exited 0 with warnings only, meaning the documented Phase 2 command would have adopted the running server and recreated it against an empty world directory.",
+      "evidence": "docker compose config --format json, rendered before any edit",
+      "status": "fixed"
+    },
+    {
+      "id": "D2",
+      "severity": "high",
+      "summary": "gateway_identity() hardcoded project=\"baseline\", and source_root is /workspace inside any container built from network/mcp/Dockerfile. /identity — the endpoint PD-8 nominates as the contract boundary — was structurally unable to distinguish the two repositories.",
+      "evidence": "network/mcp/comfy_gateway/kernel/gateway.py:175,177",
+      "status": "fixed"
+    },
+    {
+      "id": "D3",
+      "severity": "medium",
+      "summary": "isolate's gateway service set none of the six COMFY_MCP_* provenance variables and mounted only the valheim,inference providers, while the identity gate requires the workbench provider plus non-empty revision/dirty/image.",
+      "status": "fixed"
+    },
+    {
+      "id": "D4",
+      "severity": "medium",
+      "summary": "contracts/api-contract.json did not describe the implementation beside it: /healthz declared 'status' but returns ok/gateway; /identity declared 'port' but returns listen_port/published_port; transport declared default_port 8721, which is baseline's companion container host publish, not the kernel default of 8720.",
+      "status": "fixed, and now enforced by test"
+    },
+    {
+      "id": "D5",
+      "severity": "medium",
+      "summary": "isolate's test suite was red 2/11: DISTRIBUTION_SCOPE named network/mod/ComfyNetworkSense/README.md and Lumberjacks/docs/workbench/tools, which PD-8 deliberately left in baseline. AGENTS.md forbids publishing images with tests failing, so the promotion lane was blocked.",
+      "status": "fixed"
+    },
+    {
+      "id": "D6",
+      "severity": "low",
+      "summary": "Pre-existing on the baseline side and NOT introduced here: the identity gate is red against the live 8721 endpoint with source_revision_missing,source_dirty_missing. Root cause is that the companion compose passes ${...:-unknown} and env_value() maps the literal 'unknown' to null by design; nobody exports the real values at launch.",
+      "status": "root-caused, NOT fixed — out of scope, see follow_ups"
+    }
+  ],
+
+  "gates": [
+    {
+      "id": "G1",
+      "name": "compose renders safely with an explicit env file",
+      "command": "docker compose -p isolate-lab --env-file docker\\isolate-lab.env -f docker\\valheim-lab.compose.yml config",
+      "expected": "zero unset-variable warnings; project isolate-lab; every source path under C:/work/isolate",
+      "result": "pass",
+      "observed": "project isolate-lab; server mounts C:\\work\\isolate\\labstate\\state\\server\\{config,data}; gateway var mount C:\\work\\isolate\\network\\mcp\\var; published 8722:8720; image isolate-lab-comfy-gateway:latest"
+    },
+    {
+      "id": "G1b",
+      "name": "compose renders safely with NO env file (the D1 path)",
+      "command": "docker compose -f docker\\valheim-lab.compose.yml config",
+      "expected": "defaults alone must not produce blank-rooted mounts",
+      "result": "pass",
+      "observed": "project isolate-lab; sources C:\\work\\isolate\\labstate\\...; zero warnings. Before the fix this same command rendered /state/server/data and exited 0."
+    },
+    {
+      "id": "G2",
+      "name": "isolate test suite green",
+      "command": "python -m unittest discover -s network\\mcp\\tests",
+      "expected": "green",
+      "result": "pass",
+      "observed": "Ran 19 tests, OK (was 11 tests, 2 failures)"
+    },
+    {
+      "id": "G2b",
+      "name": "the new contract guard can actually fail",
+      "method": "three mutations applied to api-contract.json, suite re-run after each, file restored and byte-compared",
+      "expected": "each mutation turns the suite red; restore returns it green",
+      "result": "pass",
+      "observed": [
+        "drop 'project' from the contract -> exit 1, '/identity returns fields the contract does not declare: [project]'",
+        "declare a phantom 'status' field on /healthz -> exit 1, '/healthz response is missing contract-required fields: [status]'",
+        "revert transport default_port to the wrong 8721 -> exit 1",
+        "restore -> exit 0, contract byte-identical to pre-mutation"
+      ]
+    },
+    {
+      "id": "G2c",
+      "name": "the privacy scan is not vacuously green after re-scoping",
+      "method": "planted tools/poison-probe.md containing a user-profile absolute path, ran the suite, removed it",
+      "expected": "planted leak detected, then clean",
+      "result": "pass",
+      "observed": "72 files in scope; scanner exempted by exact path; 6 sibling workbench .ps1 files still scanned; planted leak -> exit 1 'user-profile absolute path'; after removal -> exit 0"
+    },
+    {
+      "id": "G3",
+      "name": "gateway starts under its own project without adopting the live lab",
+      "command": "pwsh -File tools\\Start-IsolateLab.ps1",
+      "expected": "new network and container under isolate-lab; live lab untouched",
+      "result": "pass",
+      "observed": "created network isolate-lab_default and container isolate-lab-comfy-gateway-1 on 127.0.0.1:8722->8720; built image isolate-lab-comfy-gateway:latest sha256:126a4b40f92b8210b2d6e83e3ee76dad803a841bd1ee29714cebb60ec4929908"
+    },
+    {
+      "id": "G4a",
+      "name": "NEGATIVE CONTROL — 8721 must not pass as isolate",
+      "command": "Test-WorkbenchMcpIdentity.ps1 -Profile Lab -McpPort 8721 -ExpectedProject isolate",
+      "expected": "non-zero exit; a pass here would mean the gate is blind and every later gate is worthless",
+      "result": "pass (correctly failed)",
+      "observed": "exit 2, verdict mcp_endpoint_identity_mismatch, error 'project,source_revision_missing,source_dirty_missing', identity.project=baseline, identity.image=lumberjacks-companion-dev-mcp:local",
+      "significance": "'project' is listed FIRST. Before D2 was fixed both endpoints reported project=baseline and this mismatch could not have fired at all."
+    },
+    {
+      "id": "G4b",
+      "name": "real probe — 8722, the isolate runtime",
+      "command": "Test-WorkbenchMcpIdentity.ps1 -Profile Lab -McpPort 8722 -ExpectedProject isolate -ExpectedImage isolate-lab-comfy-gateway:latest",
+      "expected": "verdict passed with isolate provenance",
+      "result": "pass",
+      "observed": {
+        "verdict": "passed",
+        "project": "isolate",
+        "profile": "Lab",
+        "published_port": 8722,
+        "source_revision": "ec74746c1d44db7e45ac21611d55e1023d2a9818",
+        "source_branch": "master",
+        "source_dirty": "true",
+        "image": "isolate-lab-comfy-gateway:latest",
+        "providers": [
+          "comfy_gateway.kernel.gateway#builtin",
+          "comfy_gateway.toolsurface.valheim",
+          "comfy_gateway.toolsurface.inference",
+          "comfy_gateway.toolsurface.workbench"
+        ]
+      },
+      "significance": "This is the first moment the PD-8 boundary is evidenced rather than asserted."
+    },
+    {
+      "id": "G5",
+      "name": "dedicated server starts on isolate's own world root",
+      "command": "pwsh -File tools\\Start-IsolateLab.ps1 -Services valheim-server -NoBuild",
+      "expected": "starts under isolate-lab, no port collision, writes only inside C:\\work\\isolate\\labstate, baseline state untouched",
+      "result": "pass",
+      "observed": "isolate-lab-valheim-server-1 up on 2466-2467/udp (baseline holds 2456-2457); created C:\\work\\isolate\\labstate\\state\\server\\{config,data}; baseline fieldlab/autonomous/state file count 15270 before and after; reached the Steam update handshake (preallocating 201226636 / 1756871901)",
+      "deliberately_incomplete": "The 1.75GB server download was stopped and the data directory deleted. World generation was never part of the boundary claim, and keeping a throwaway world would be a permanent disk tax for no evidence. Container removed; labstate file count back to 0."
+    },
+    {
+      "id": "G6",
+      "name": "live lab blast radius",
+      "expected": "comfy-valheim-lab-valheim-server-1 identical across the whole exercise",
+      "result": "pass",
+      "observed": "container id 2abad3bb1c21ff4913f065b9304f236794f27c2e5cde1fcc0fb1f4aeba1d647c and StartedAt 2026-08-07T07:01:08.042815581Z unchanged before and after; still Up 9 hours"
+    },
+    {
+      "id": "G7",
+      "name": "live lab quiescence",
+      "command": "Test-LocalLabQuiescence.ps1",
+      "result": "fail (observed, not caused)",
+      "observed": "6 of 7 checks pass: gateway telemetry reachable, heartbeat 3s old, role dedicated, state ready, peer_count=0, no local Valheim process. player_list_empty=False with players=Durracktu,Tugcorp while peer_count=0.",
+      "interpretation": "Two named players with zero peers on a server that has been up 9 hours reads as stale name retention in the telemetry rather than live sessions. Recorded rather than resolved — it is unrelated to this work, and nothing here touched that server. Flagged in follow_ups.",
+      "did_not_block": "This gate exists to prove nothing being disturbed has a human on it. Nothing in this exercise wrote to the live lab at all, so a red here could not have caused harm."
+    },
+    {
+      "id": "G8",
+      "name": "multi-peer motion / ZDO delivery",
+      "result": "blocked",
+      "reason": "i5_offline",
+      "observed": "ssh -o BatchMode=yes i5 -> connection timed out to i5-laptop.tail8e749c.ts.net:22",
+      "note": "Deliberately not substituted with a single-host run. One host cannot exercise the delivery path, and reporting it as if it could is the failure this whole exercise was built to avoid."
+    }
+  ],
+
+  "changes_landed": {
+    "isolate": [
+      "docker/valheim-lab.compose.yml — project renamed to isolate-lab; relative in-file defaults for AUTONOMOUS_ROOT/COMFY_ROOT; gateway published on loopback 8722; six COMFY_MCP_* provenance vars; workbench provider mounted; local build tag instead of an unpublishable ghcr reference",
+      "docker/isolate-lab.env — new, committed, no secrets; ports shifted clear of baseline's",
+      "tools/Start-IsolateLab.ps1 — new; stamps real git provenance and refuses to compose into the live project",
+      "network/mcp/comfy_gateway/kernel/gateway.py — project from COMFY_MCP_PROJECT, default baseline",
+      "network/mcp/contracts/api-contract.json — corrected to the implementation, version 1.1.0",
+      "network/mcp/tests/test_api_contract_conformance.py — new, 6 cases",
+      "network/mcp/tests/test_gateway_basics.py — project default and override pinned",
+      "network/mcp/tests/test_distribution_independence.py — scope re-pointed at what isolate ships; scanner exempted by exact path with a test that keeps the exemption narrow"
+    ],
+    "baseline": [
+      "network/mcp/comfy_gateway/kernel/gateway.py — same kernel change, kept convergent",
+      "network/mcp/contracts/api-contract.json — same correction",
+      "network/mcp/tests/test_api_contract_conformance.py — same new test",
+      "network/mcp/tests/test_gateway_basics.py — same",
+      "tools/workbench/Test-WorkbenchMcpIdentity.ps1 — new -ExpectedProject parameter, defaults to baseline so existing invocations are unchanged",
+      "docs/decisions/pd-8-*.md — amended",
+      "isolate_implementation_plan.md — deleted (superseded; its Phase 2 command was the D1 destructive path)"
+    ],
+    "deliberate_divergence": "network/mcp/tests/test_distribution_independence.py now differs between the repos on purpose: baseline's DISTRIBUTION_SCOPE correctly names mod and Lumberjacks surface that exists there and not in isolate. Every other shared file was kept byte-identical and verified so."
+  },
+
+  "follow_ups": [
+    {
+      "id": "F1",
+      "severity": "blocking for PD-8",
+      "summary": "isolate has no git remote. PD-8's promotion lane ('publish versioned container images, consume them in baseline') is not reachable: baseline can only rebuild from a sibling directory, which is the coupling PD-8 exists to remove. Until there is a remote and a published tag, the two repos are duplicated source, not a boundary."
+    },
+    {
+      "id": "F2",
+      "summary": "D6 — baseline's companion dev-mcp launch does not export LUMBERJACKS_COMPANION_SOURCE_REVISION/BRANCH/DIRTY, so the live 8721 endpoint fails its own identity gate. The fix is a launcher that stamps git provenance, the same shape as isolate's Start-IsolateLab.ps1."
+    },
+    {
+      "id": "F3",
+      "summary": "The compose file remains duplicated between the repos with no drift guard. Deciding which copy is authoritative — or deleting one — is unresolved."
+    },
+    {
+      "id": "F4",
+      "summary": "Live lab telemetry reports players=Durracktu,Tugcorp with peer_count=0. Determine whether player names are retained after disconnect, and if so, whether Test-LocalLabQuiescence should treat that as quiescent."
+    }
+  ]
+}
