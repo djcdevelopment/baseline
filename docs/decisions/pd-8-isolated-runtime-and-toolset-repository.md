@@ -28,3 +28,13 @@ Extract the container runtime environment (MCP gateway, lab compose definitions,
   - `GET /identity` - Authenticated runtime provenance attestation
   - `POST /mcp` - FastMCP JSON-RPC tool invocation endpoint
 - **Container Images**: Decoupled from host builds via published tags (`comfy-gateway`, `valheim-lab`).
+
+## Feature Matrix & Workflow Partitioning
+
+| Workflow / Feature Set | What Moves to `isolate` (Tooling & Containers) | What Remains in `baseline` (Game & Mod Sources) |
+|---|---|---|
+| **.NET SDK / Build Engine** | SDK build container images (`lj-workbench`, `mcr.microsoft.com/dotnet/sdk:9.0`), build scripts | C# mod source code (`Lumberjacks/src/`), solution files, BepInEx plugin sources |
+| **Steam Auth & Mod Download** | Headless Steam client containers (`josh5/steam-headless`), compose stack configs | Gateway OpenID callback logic, database schemas, modpack ZIP archives |
+| **GCP Live Telemetry Ingestion** | Python MCP Gateway server (`network/mcp`), telemetry aggregators, REST/MCP endpoints | `ComfyNetworkSense` BepInEx mod, GCP tunnel launcher scripts (`start-gateway-tunnel.ps1`) |
+| **Multi-PC Local Lab (OMEN, i5, AM4)** | Disposable client compose manifests (`valheim-lab.compose.yml`), remote deploy tools (`tools/i5`, `tools/am4`) | Host PC environment configs (`OMEN_VALHEIM_DIR`), Tailscale IPs, local game client installations |
+
