@@ -56,12 +56,31 @@ is `* -text` so the bytes stay pinned on every platform.
 C#) and `handoffs/README.md` (the archive tree's own index) remain
 archive-only at `github.com/djcdevelopment/comfy/tree/main/handoffs/`.
 
+*(That 746 is the figure as of this record, 2026-07-29. The plugin is 1,787
+lines as of 2026-08-06 — see the superseding note under "Segment status".
+It is still archive-only, and still deliberately so.)*
+
 This exclusion is deliberate. This landing paves the path for community
 claiming task CG-1 (revive segment 1 against ComfyStewardView and produce a
 `waypoints.sample.json` from a current build) without doing it. The
 proof-of-concept kit is fetched from the archive by whoever takes segment 3.
 
 ## Segment status
+
+> **Superseded 2026-08-06.** The four statements below were true when this
+> record was written on 2026-07-29 and are kept as the provenance they are.
+> They no longer describe the present. What changed: the pipeline was rebuilt
+> around **stills instead of a video flythrough**, so segment 1 was replaced by
+> `tools/selfie-stick/scan_clusters.py`, segment 3 **was built** (the
+> proof-of-concept plugin grew from 746 lines to 1,787 — camera boom,
+> aim-at-target, an unattended orbit runner, per-frame receipts), and segment
+> 4's ffmpeg cut is no longer on the path. It ran on 2026-08-06: 161
+> structures, 1,411 frames, unattended. Current status lives in
+> [`Lumberjacks/docs/workbench/tools/camera-gallery.md`](../../Lumberjacks/docs/workbench/tools/camera-gallery.md);
+> the write-up is at <https://djcdevelopment.github.io/baseline/selfie-stick/>.
+>
+> This directory's contents are unaffected — they remain byte-exact from the
+> archive, which is the point of them.
 
 - Segment 1 is working code: a 69-line stdlib Python script driving
   ComfyStewardView's API.

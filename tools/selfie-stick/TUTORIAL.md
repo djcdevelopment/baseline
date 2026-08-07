@@ -43,6 +43,9 @@ Before writing anything we went looking, and found more standing than expected:
   with teleport, screenshot capture, weather and time-of-day forcing, and a
   hide-player toggle. It lives in the public `comfy` archive, deliberately not
   in this repo, so that a community claiming task stays claimable.
+  *(That 746 is the figure as found, on 2026-07-02. The work below grew it to
+  1,787 — camera boom, aim-at-target, an orbit runner and per-frame receipts.
+  Anywhere else you see "746-line camera proof", it is quoting the before.)*
 - **A workbench entry** for the whole pipeline (`camera-gallery`, status
   `recoverable-not-running`) that already names the gap: the flight-path mod has
   no code anywhere.
@@ -393,9 +396,20 @@ already working.
 - **Builder names are IDs.** 660 distinct `creator_id`s on building pieces, none
   zero, so attribution works — but turning an ID into a name needs the player
   records that live in the running viewer, not the cache.
-- **The camera is still you.** The mod teleports and shoots; it has no boom,
-  orbit, or aim-at-target. That is the next piece, and the reason this tool
-  emits `suggested_standoff_m` and `suggested_camera_y` for every cluster.
+- **Dense forest still eats the camera.** The occlusion raycast at capture time
+  catches a wall between the lens and the aim point. It does not catch a pine
+  branch across a third of the frame, and no amount of standoff fixes a tree
+  that is closer than the building.
+- **No metric can judge a photograph.** The aesthetic head sorts competently and
+  is confidently wrong at the edges. It makes a 1,411-frame pile reviewable; it
+  is not a critic, and the top of its ranking is not the best picture.
+- **Nothing here is packaged.** The planning half is in this repo, the mod is in
+  the `comfy` archive, and the world cache and model weights are on one machine.
+  Someone else cannot run this tonight, and that is the honest gap.
+
+*The camera used to be the open item here — "the mod teleports and shoots; it
+has no boom, orbit, or aim-at-target." That closed on 2026-08-06: `SetCameraBoom`,
+`TryAim` and `RunShotPlan` all shipped, which is what Step 7 above is describing.*
 
 ## The reason this is worth writing down
 
