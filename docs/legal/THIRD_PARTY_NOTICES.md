@@ -43,6 +43,16 @@ relicense those dependencies.
   file-by-file mapping are in `recipes/quest-submission-bridge/PROVENANCE.md`.
   The authored additions in that directory (`PROVENANCE.md`, `.gitattributes`)
   are project material under the root license.
+  (`bridge-consumer/README.md` diverged 2026-08-06 — repo-local path fixes,
+  recorded in that `PROVENANCE.md`; the MIT terms are unchanged.)
+
+- `tools/quest-bridge/bridge_consumer.py`, `tools/quest-bridge/review_inbox.py`
+
+  Derivative works (2026-08-06, ADR 0018 port to the EventLog contract) of the
+  MIT-licensed comfy-archive copies at
+  `recipes/quest-submission-bridge/bridge-consumer/`; they retain the MIT terms
+  reproduced in that directory's `PROVENANCE.md`. `fetch_completions.py`,
+  `README.md`, and the tests are project material under the root license.
 
 - `recipes/camera-gallery/`
 

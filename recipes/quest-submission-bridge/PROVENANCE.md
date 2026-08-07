@@ -87,6 +87,14 @@ fixture, not the live schema. The live quest-view contract for the running
 `ComfyNetworkSense` mod is documented at `recipes/quest-catalogs/`
 (`quest-view-schema.md`, `example-quest-view.json`).
 
+## Recorded divergences
+
+- `bridge-consumer/README.md` — edited 2026-08-06 (QB-1): the archive's
+  `handoffs/comfy-control-surface/` paths were rewritten to this repo's
+  `recipes/quest-submission-bridge/`, and an "Archived original" note was added
+  pointing at the live port (`tools/quest-bridge/`, ADR 0018). This file is no
+  longer byte-exact against `ae81c83`; all other recovered files remain so.
+
 ## Editing rule
 
 Files in this directory must not be edited in place without recording the

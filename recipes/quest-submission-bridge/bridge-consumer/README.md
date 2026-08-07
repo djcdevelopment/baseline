@@ -2,6 +2,13 @@
 
 Local bridge proof for `ComfyControlSurface` outbox payloads.
 
+> **Archived original.** The producer mod (`ComfyControlSurface`) is retired, so the
+> "live Valheim workbench" paths below only ever apply to fixture/demo data now. The
+> live port — reading the durable EventLog instead of a local outbox, per ADR 0018 —
+> is at `tools/quest-bridge/`. Paths in this file were rewritten from the archive's
+> `handoffs/comfy-control-surface/` to this repo's `recipes/quest-submission-bridge/`;
+> the divergence is recorded in `../PROVENANCE.md`.
+
 This consumes JSON files written by the in-game mod and renders review-ready markdown without network
 access, bot tokens, webhooks, or privileged services.
 
@@ -10,22 +17,22 @@ access, bot tokens, webhooks, or privileged services.
 From the repo root, against the live Valheim workbench:
 
 ```powershell
-python .\handoffs\comfy-control-surface\bridge-consumer\bridge_consumer.py `
+python .\recipes\quest-submission-bridge\bridge-consumer\bridge_consumer.py `
   "C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\config\comfy-control"
 ```
 
 Against the included fixture:
 
 ```powershell
-python .\handoffs\comfy-control-surface\bridge-consumer\bridge_consumer.py `
-  .\handoffs\comfy-control-surface\bridge-consumer\fixtures
+python .\recipes\quest-submission-bridge\bridge-consumer\bridge_consumer.py `
+  .\recipes\quest-submission-bridge\bridge-consumer\fixtures
 ```
 
 Against the Mikers/Slayer rank-up demo:
 
 ```powershell
-python .\handoffs\comfy-control-surface\bridge-consumer\bridge_consumer.py `
-  .\handoffs\comfy-control-surface\bridge-consumer\mikers-demo
+python .\recipes\quest-submission-bridge\bridge-consumer\bridge_consumer.py `
+  .\recipes\quest-submission-bridge\bridge-consumer\mikers-demo
 ```
 
 ## Output
@@ -47,22 +54,22 @@ when the bridge consumer is rerun.
 After importing payloads, use the review inbox CLI:
 
 ```powershell
-python .\handoffs\comfy-control-surface\bridge-consumer\review_inbox.py `
+python .\recipes\quest-submission-bridge\bridge-consumer\review_inbox.py `
   "C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\config\comfy-control" list
 
-python .\handoffs\comfy-control-surface\bridge-consumer\review_inbox.py `
+python .\recipes\quest-submission-bridge\bridge-consumer\review_inbox.py `
   "C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\config\comfy-control" show <submission_id>
 
-python .\handoffs\comfy-control-surface\bridge-consumer\review_inbox.py `
+python .\recipes\quest-submission-bridge\bridge-consumer\review_inbox.py `
   "C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\config\comfy-control" accept <submission_id>
 
-python .\handoffs\comfy-control-surface\bridge-consumer\review_inbox.py `
+python .\recipes\quest-submission-bridge\bridge-consumer\review_inbox.py `
   "C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\config\comfy-control" reject <submission_id> --reason "..."
 
-python .\handoffs\comfy-control-surface\bridge-consumer\review_inbox.py `
+python .\recipes\quest-submission-bridge\bridge-consumer\review_inbox.py `
   "C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\config\comfy-control" needs-info <submission_id> --reason "..."
 
-python .\handoffs\comfy-control-surface\bridge-consumer\review_inbox.py `
+python .\recipes\quest-submission-bridge\bridge-consumer\review_inbox.py `
   "C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\config\comfy-control" export <submission_id>
 ```
 
