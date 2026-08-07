@@ -49,3 +49,4 @@ beats a taxonomy of ten empty ones.
 - [PD-5 — The local Workbench is Baseline's ownership appliance](pd-5-local-workbench-ownership-appliance.md)
 - [PD-6 — The Baseline Dev MCP is a development/lab-only control plane](pd-6-development-mcp-lifecycle.md)
 - [PD-7 — Lab runtime provenance and canonical session boundary](pd-7-lab-runtime-provenance-and-session-boundary.md)
+- [PD-8 — Isolated runtime and toolset repository architecture](pd-8-isolated-runtime-and-toolset-repository.md)
