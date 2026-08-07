@@ -1,0 +1,6 @@
+Quest lab packaging and unified tool suite navigation
+
+- Create turnkey zip build for quest lab
+- Add quest lab tool to community workbench
+- Add unified Gateway surfaces topbar to roadmap, workbench, quest lab, quest picker, and steward/absorption-loop
+- Add lab_setup command to ComfyQuestLab

@@ -9,6 +9,22 @@
 <style>*{box-sizing:border-box}</style>
 </head>
 <body>
+<div class="gateway-topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand"><span class="mark">LJ</span><span>Valheim volunteer roadmap</span></div>
+    <nav aria-label="Gateway surfaces">
+      <a href="/roadmap">Roadmap</a>
+      <a href="/community">Community</a>
+      <a href="/workbench">Workbench</a>
+      <a href="/questpicker">Quest Picker</a>
+      <a href="/steward">Steward</a>
+      <a href="/questlab">Quest Lab</a>
+      <a href="/networksense">NetworkSense</a>
+      <a href="/events">Events</a>
+      <a href="/testing">Testing</a>
+    </nav>
+  </div>
+</div>
 <style>
 /* Baseline site design tokens — lifted from djcdevelopment.github.io/baseline so this
    article reads as the same surface. Dark is the default and the designed-for case. */
@@ -136,6 +152,15 @@ dl.fine dd{margin:0}
   dl.fine dd{margin-bottom:.5rem}}
 @media(max-width:620px){.step{grid-template-columns:1.6rem 1fr}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* ---- gateway topbar ---- */
+.gateway-topbar { position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,.08); background: rgba(11,16,19,.92); backdrop-filter: blur(14px); font-family: var(--sans); font-size: 14px; }
+.gateway-topbar .topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 12px 20px; max-width: 60rem; margin: 0 auto; }
+.gateway-topbar .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; color: #fff; }
+.gateway-topbar .mark { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 4px; background: rgba(255,255,255,.1); font-size: 12px; }
+.gateway-topbar nav { display: flex; gap: 16px; overflow-x: auto; }
+.gateway-topbar nav a { color: rgba(255,255,255,.7); text-decoration: none; white-space: nowrap; border-bottom: none; }
+.gateway-topbar nav a:hover { color: #fff; border-bottom: none; }
+.gateway-topbar nav a[aria-current="page"] { color: #fff; font-weight: 600; }
 </style>
 
 <div class="wrap">
@@ -256,7 +281,7 @@ dl.fine dd{margin:0}
       <h3>The provenance view</h3>
       <p>A page per source: this cell became this quest, this column became that
         evidence rule, these rows were flagged — with the anomalies pinned to the
-        rows they concern. <a href="https://am4.tail8e749c.ts.net/questpicker/provenance.html">Open the receipts</a>.</p></div>
+        rows they concern. <a href="/baseline/questpicker/provenance.html">Open the receipts</a>.</p></div>
   </div>
 </section>
 
@@ -272,7 +297,7 @@ dl.fine dd{margin:0}
       personal <code>quest-view.json</code>. The picker owns no data: it is a projection
       of the absorbed truth, and a composer for one player's working set.</p>
     <div class="links">
-      <a href="https://am4.tail8e749c.ts.net/questpicker/">Open the live Quest Picker</a>
+      <a href="/baseline/questpicker/">Open the live Quest Picker</a>
     </div>
   </div>
 </section>
@@ -401,7 +426,7 @@ dl.fine dd{margin:0}
 <footer>
   <dl class="fine">
     <dt>Live</dt>
-    <dd><a href="https://am4.tail8e749c.ts.net/questpicker/">am4.tail8e749c.ts.net/questpicker/</a></dd>
+    <dd><a href="/baseline/questpicker/">djcdevelopment.github.io/baseline/questpicker/</a></dd>
     <dt>Contracts</dt>
     <dd><code>recipes/quest-catalogs/schema.md</code> (canonical catalog) &middot;
       <code>recipes/quest-catalogs/quest-view-schema.md</code> (player selection) &middot;
