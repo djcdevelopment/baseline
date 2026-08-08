@@ -139,6 +139,51 @@ A defensible second change, independent of the first: the client should not regi
 journal interest during the character-select connection, only after the real join. That
 removes the burn-then-discard cycle at its source rather than repairing it after.
 
+## Fix applied and verified live — 2026-08-08
+
+The proposed change was applied verbatim to `RegisterInterest`, cut as Gateway image
+`m7-c10b-20260808-r43` (admitting the frozen mod `m7-c10b-20260807-r42`), deployed to
+OMEN, and proved with a real client join.
+
+**Unit level.** Three regression tests added at
+`Lumberjacks/tests/Game.Gateway.Tests/ValheimZdoJournalRefreshTests.cs`. Mutation-tested
+rather than merely run — with the one-line fix commented out, 2 of the 3 fail
+(`Expected: 50, Actual: 0` on the re-snapshot, and `re-snapshot reused sequence 1;
+highest discarded was 10` on the sequence check). The third,
+`UnchangedInterestWithoutRefreshStillDedupsAgainstALiveQueue`, passes either way by
+design: it guards against the fix widening into "every registration re-sends
+everything". Full gateway suite 247/247.
+
+*Testing note worth keeping:* the full suite first reported 2 red immediately after the
+mutated file was restored. That was a stale build, not a regression — `Copy-Item`
+preserves the backup's original mtime, which was older than the DLL compiled during the
+mutation run, so MSBuild judged the tree up to date and reused the mutated binary.
+Touching the source and rebuilding gave 247/247. Any incremental result in this repo
+taken straight after a file restore should be distrusted.
+
+**Live level.** Client `native-20260808-flipped-omen`, six cutover legs armed on both
+sides, AM4 at `lumberjacks-primary` with `zdoRedirectPrefabs = *` — i.e. the exact
+configuration that produced the black screen.
+
+| | broken run 03:38-03:42 | r43 run 04:27 |
+|---|---|---|
+| `interest_registered` snapshot_count | 1230 → 9 → 1 → 0 → 0 | 1233, then 8 for a different zone set |
+| `canonical_delivery_progress` | none | `banked=1024 inbound=962 delivery_seq=1024` |
+| client HUD | `pieces 0 \| entities 0 \| zone 0:0` | `pieces 667 \| zone 34:-1` |
+| client state | black screen, `server local session, no remote server pulse` | Black Forest rendered; terrain, runestones, vegetation, minimap |
+| client log | stalled | `Starting music blackforest`, then `TERRAIN_COMP awake` across zones 34,-2 and 34,0 |
+
+The second registration returning 8 rather than a full re-issue is not the defect
+recurring: that call is `zone=34,-1 radius_zones=2`, a different zone set from the
+first, so 8 matching objects is the correct answer. `refresh=true` is confirmed present
+in the client's `canonical_interest_queued` detail, so the fixed path is the one being
+exercised.
+
+**Not yet covered:** the HUD reports `entities 0` and `connection Mixed / owner Maybe`
+with a single client in world. Whether those are expected for a solo occupant under
+`*` is unverified. Two-client behaviour is also untested — i5 was not joined for this
+run, so nothing here speaks to remote-player motion, which is what C9 needs.
+
 ## Separate finding — Gateway is not the r42 pair image
 
 The posture doc claims "Gateway: r42 pair image on OMEN." The running container
