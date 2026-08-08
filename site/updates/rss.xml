@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Baseline dispatches</title><link>https://djcdevelopment.github.io/baseline/updates/</link><description>Public dispatches authored in the Baseline Discord forum.</description><generator>tools/corpus/build.py 6247ff917eb0</generator></channel></rss>
+<rss version="2.0"><channel><title>Baseline dispatches</title><link>https://djcdevelopment.github.io/baseline/updates/</link><description>Public dispatches authored in the Baseline Discord forum.</description><generator>tools/corpus/build.py</generator></channel></rss>

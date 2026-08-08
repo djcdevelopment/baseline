@@ -442,7 +442,7 @@ def updates_page(records: list[dict[str, Any]], streams: dict[str, Any]) -> str:
     return page_shell("Updates - Baseline", "Discord dispatches and the Baseline engineering journal, with their authorities kept distinct.", body, f"{PUBLIC_BASE}updates/")
 
 
-def rss_feed(records: list[dict[str, Any]], fingerprint: str) -> str:
+def rss_feed(records: list[dict[str, Any]]) -> str:
     dispatches = [r for r in records if r["kind"] == "dispatch"]
     dispatches.sort(key=lambda r: parse_time(r["published_at"], r["id"]), reverse=True)
     items = []
@@ -451,7 +451,7 @@ def rss_feed(records: list[dict[str, Any]], fingerprint: str) -> str:
         items.append(f"<item><guid isPermaLink=\"false\">{e(record['id'])}</guid><title>{e(record['title'])}</title><link>{e(record['url'])}</link><pubDate>{format_datetime(dt)}</pubDate><description>{e(record['summary'])}</description></item>")
     return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" + (
         f'<rss version="2.0"><channel><title>Baseline dispatches</title><link>{PUBLIC_BASE}updates/</link>'
-        f'<description>Public dispatches authored in the Baseline Discord forum.</description><generator>tools/corpus/build.py {fingerprint[:12]}</generator>'
+        f'<description>Public dispatches authored in the Baseline Discord forum.</description><generator>tools/corpus/build.py</generator>'
         + "".join(items) + "</channel></rss>\n"
     )
 
@@ -487,7 +487,7 @@ def outputs() -> dict[Path, str]:
         ROOT / configured["index"]: json.dumps(index, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         ROOT / configured["explore"]: explore_page(roles, records),
         ROOT / configured["updates"]: updates_page(records, index["streams"]),
-        ROOT / configured["rss"]: rss_feed(records, index["build_fingerprint"]),
+        ROOT / configured["rss"]: rss_feed(records),
         ROOT / configured["json_feed"]: json_feed(records),
     }
     roles_root = ROOT / configured["roles_root"]

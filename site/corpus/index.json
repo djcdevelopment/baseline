@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-08-08T12:28:18.501Z",
+  "as_of": "2026-08-08T12:29:23.991Z",
   "audiences": [
     {
       "id": "curious",
@@ -66,7 +66,7 @@
       "short_label": "Contributor"
     }
   ],
-  "build_fingerprint": "6247ff917eb008e2a95946b2da8b3cb52fdf374fce8099ff335e29835b0d220f",
+  "build_fingerprint": "861dd92707eca4bfce1f2fbee0c33a3618756304457ae558cf439c10cef3d772",
   "generated_by": "tools/corpus/build.py",
   "notice": "GENERATED acceleration structure. Rebuild from authoritative artifacts; do not edit.",
   "records": [
@@ -22771,6 +22771,50 @@
       "title": "Make Discord dispatches authoritative and project the public corpus through audience lenses",
       "updated_at": "2026-08-08T12:28:18.501Z",
       "url": "https://am4.tail8e749c.ts.net/roadmap#note-20260808122818-make-discord-dispatches-authoritative-and-projec"
+    },
+    {
+      "audiences": [
+        "admin",
+        "developer"
+      ],
+      "data": {
+        "at": "2026-08-08T12:29:23.991Z",
+        "author": "Codex",
+        "evidence": [],
+        "id": "20260808122923-publish-the-audience-aware-workbench-from-commit",
+        "impact": "The generated Workbench now carries a production provenance stamp for the committed audience vocabulary, catalog, and renderer instead of a preview stamp. The companion corpus projections were rebuilt after the deployment record, keeping the public index and roadmap adapter byte-current with their authoritative journal.",
+        "kind": "deployment",
+        "milestones": [
+          "A7"
+        ],
+        "repository": "Lumberjacks",
+        "schema_version": 1,
+        "summary": "Publish the audience-aware Workbench from committed source inputs",
+        "verification": [
+          "workbench:check passes from clean provenance inputs; corpus --check passes after the deployment note; generated Workbench contains eight role lenses and the live #dispatches link"
+        ]
+      },
+      "facets": {
+        "kind": "deployment",
+        "milestones": [
+          "A7"
+        ]
+      },
+      "id": "roadmap:20260808122923-publish-the-audience-aware-workbench-from-commit",
+      "kind": "roadmap-note",
+      "primary_audiences": [
+        "admin"
+      ],
+      "published_at": "2026-08-08T12:29:23.991Z",
+      "source": {
+        "authority": "append-only-roadmap-journal",
+        "locator": "Lumberjacks/docs/roadmap/commit-notes.jsonl#L488",
+        "sha256": "3b5f187557a862754537c9cb75203bcc24ea9addc8647cfa18b84cddfd8813e7"
+      },
+      "summary": "The generated Workbench now carries a production provenance stamp for the committed audience vocabulary, catalog, and renderer instead of a preview stamp. The companion corpus projections were rebuilt after the deployment record, keeping the public index and roadmap adapter byte-current with their authoritative journal.",
+      "title": "Publish the audience-aware Workbench from committed source inputs",
+      "updated_at": "2026-08-08T12:29:23.991Z",
+      "url": "https://am4.tail8e749c.ts.net/roadmap#note-20260808122923-publish-the-audience-aware-workbench-from-commit"
     },
     {
       "audiences": [
