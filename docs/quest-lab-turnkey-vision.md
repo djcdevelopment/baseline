@@ -116,8 +116,10 @@ submitting a completion — the former does not conflict with ADR-0018 and the l
 
 **All eight schools are hooked. Exactly one can have a quest bound to it.**
 
-`QuestTriggerEvaluator` — shared by source-link with the shipping mod, not reimplemented — matches
-`kill` triggers only. A `hit` trigger parses cleanly, reports no error, and can never fire.
+`QuestTriggerEvaluator` — shared by source-link with the shipping mod, not reimplemented — now
+accepts all 34 safe canonical events, and preserves `hit` as an alias for creature or resource
+damage. The current lab engine still forwards only the witnessed `kill` lane, so a `hit` trigger
+parses and is contract-bindable but cannot fire in game until normalized damage events reach it.
 
 This is not a caveat appended to the vision; it *is* the vision. A creator who discovers it after
 an evening of work is a support ticket and a lost contributor. A creator who is told on their
