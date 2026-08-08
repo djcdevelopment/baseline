@@ -112,26 +112,29 @@ replaced outbox payloads with a durable server EventLog row as the proof of comp
 If this is revived, it should be scoped as **sharing an authored quest definition**, not as
 submitting a completion — the former does not conflict with ADR-0018 and the latter does.
 
-## 4. The constraint the whole design turns on
+## 4. The contract the whole design turns on
 
-**All eight schools are hooked. Exactly one can have a quest bound to it.**
+**All eight schools are hooked, and every safe canonical event is bindable through one shared
+evaluator.**
 
-`QuestTriggerEvaluator` — shared by source-link with the shipping mod, not reimplemented — now
-accepts all 34 safe canonical events, and preserves `hit` as an alias for creature or resource
-damage. The current lab engine still forwards only the witnessed `kill` lane, so a `hit` trigger
-parses and is contract-bindable but cannot fire in game until normalized damage events reach it.
+`QuestTriggerEvaluator` — shared by source-link with the shipping mod, not reimplemented — accepts
+all 34 safe canonical events and preserves `hit` as an alias for creature or resource damage. The
+lab's central router converts 57 safe method signatures into those stable names. It also gives
+local/RPC and overload witnesses one bounded action key, so a creator testing with cooldown zero
+cannot complete the same quest twice from one action.
 
-This is not a caveat appended to the vision; it *is* the vision. A creator who discovers it after
-an evening of work is a support ticket and a lost contributor. A creator who is told on their
-first launch, by a starter file holding one armed quest beside one that silently cannot fire, has
-learned the most important thing about the system in two minutes.
+The atlas still matters because not every observable mutation is a safe creator action. All 86
+practical signatures can be inspected; low-level inventory mutations, received chat, and other
+corroborating witnesses appear only under the diagnostic profile and are structurally barred from
+quest evaluation. Four query/cheat signatures are deliberately disabled.
 
-Every design choice follows from refusing to hide it:
+Every design choice follows from making that boundary visible:
 
 - Armed state is decided by **dry-firing the real evaluator**, not by a predicate restating its
   rules — a mirror predicate is what drifts into a comfortable lie.
 - Every console row carries a usability verdict.
-- The seed ships the trap on purpose.
+- The seed carries both the backward-compatible `kill` quest and the broad `hit` alias, and both
+  are armed through the same evaluator dry-run.
 
 Related: the lab's own console once promised that `trigger.target` should be typed exactly as
 shown, while the matcher compared against the creature's `m_name` localization token. For
@@ -159,10 +162,11 @@ now shows both names whenever they disagree.
 | Safe failure | Local-only, no server state touched, postfixes swallow throws, `Awake` degrades the quest lane rather than the mod | Built; **not yet witnessed in game** |
 | Flywheel | Community-authored quests posted in the thread | Not started |
 
-**The honest gap as of 2026-08-07:** the quest lane is proven by 28 unit tests against the real
-contract, and the gallery and harvest console are proven in a live session. The quest lane itself
-— the seed, a firing, a reload diff — **has never been run inside Valheim.** Publishing the
-download is gated on that, not on more code.
+**The honest gap as of 2026-08-08:** the generalized contract, parser, action correlator, and all
+practical patch targets pass the headless suites and compile against the installed Valheim
+assembly. Earlier live sessions witnessed combat, harvest, gallery construction, and a kill quest.
+The other six schools and the expanded canonical routes still need machine-readable i5 live-suite
+receipts before their runtime claims graduate from built to witnessed.
 
 ## 7. Boundary
 
