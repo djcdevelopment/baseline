@@ -5,7 +5,10 @@ name: Pages
 on:
   push:
     branches: [main]
-    paths: ['site/**', '.github/workflows/pages.yml']
+    # data/processed pages are staged into the artifact below, so they must
+    # trigger a redeploy too
+    paths: ['site/**', 'data/processed/quest-picker.html',
+            'data/processed/provenance*.html', '.github/workflows/pages.yml']
   workflow_dispatch:
 
 permissions:
