@@ -145,8 +145,8 @@ now shows both names whenever they disagree.
 ### Bounded evidence without a maintainer
 
 `questlab_batch prepare all-schools` writes one ordinary, bindable example quest per school,
-raises the default gallery only when none is standing, and stages the two consumables the
-permanent armoury does not carry. `run` records real canonical actions and their quest
+raises the default gallery only when none is standing, and stages Wood, Coal, and Copper Ore
+at the player's feet so a fresh character needs no prior inventory. `run` records real canonical actions and their quest
 completions; `report`, `reset`, and `export` make repeated testing a suite rather than eight
 one-off console experiments. Receipts explicitly count raw witnesses, canonical actions,
 coalesced alternatives, and same-action double completions.
