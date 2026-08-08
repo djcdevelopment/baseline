@@ -15,6 +15,34 @@ Bounded: touch only lines you created or resolved.
 
 ## Open
 
+- [ ] 2026-08-08 — **How does C9 get a motion artifact?** The driven-motion path emits
+  `started`/`completed` receipts on both clients while `motion-authority-cutover.jsonl` logs zero
+  events and `freezedetect` shows both panels frozen ~17 of 20 s; the motion-test response returns
+  `"motion_apply_enabled": null`. Options: fix the driven-motion path, or capture Derek driving
+  manually. C9 cannot close until one of them produces a clip with movement in it.
+  (source: [retro](retro/SESSION-RETRO-2026-08-08.md), [memory](../../../Users/derek/.claude/projects/C--work-baseline/memory/c9-clip-has-no-motion.md))
+- [ ] 2026-08-08 — **Fix `Enable-LabSessionConfig` to add a missing key, or keep seeding at-rest?**
+  It only rewrites keys that already exist (so its restore can be byte-exact), which means a client
+  whose config lacks `lumberjacksMotionEnabled` is refused, and the plugin only writes that key once
+  it has run. Seeding at-rest once breaks the loop; adding-and-recording would fix it properly.
+  (source: [retro](retro/SESSION-RETRO-2026-08-08.md) `L-2026-08-08-9`)
+- [ ] 2026-08-08 — **The lab is not playable under cutover without the harness.** The shipped
+  personalized pack config carries every `*CutoverEnabled` **false**, and `Enable-LabSessionConfig`
+  writes none of them; arming depends on the ephemeral `native-autotest-request.json` (15-min
+  expiry, deleted on join). `fieldlab/evidence/am4-full-cutover-posture-20260807.md` claims "launch
+  Valheim normally — no harness, no arming," which does not hold. Correct the doc, or make the pack
+  arm the legs. (source: [evidence](evidence/am4-blackscreen-refresh-snapshot-20260808.md))
+- [ ] 2026-08-08 — **Headless Companion update lane refuses r42.** `Program.cs:842` fetches the raw
+  template from `/api/v0/valheim/modpack/package`; the config-stripping build
+  (`ModPackBuilder.BuildConfigPreservingUpdatePack`) is only reachable via `/join/update/steam-callback`
+  behind a Steam browser login that `Install-I5LatestModpack.ps1` deliberately avoids. Needs a
+  Consumer-gated headless route serving the stripped pack.
+  (source: [receipt addendum](evidence/isolate-boundary-verification-20260807.json) F5)
+- [ ] 2026-08-08 — **`isolate` has no git remote**, so PD-8's promotion lane ("publish versioned
+  images, consume them in baseline") cannot run — baseline can only rebuild from a sibling
+  directory, the exact coupling PD-8 exists to remove. Also its CI triggers on `main` while the
+  branch is `master`. (source: [PD-8 amendment](../docs/decisions/pd-8-isolated-runtime-and-toolset-repository.md))
+
 - [x] 2026-08-07 — **Failure-4 closure shape: defer the mod-side native-fallback guard.** Derek
   decided the terrain-only class closes with enrollment credentials + r42's admission observability
   (`/live/valheim-cutover` verdict), not an admission-aware fallback in `ZdoRedirectRunner`; the
