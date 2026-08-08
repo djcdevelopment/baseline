@@ -119,7 +119,9 @@
 <script>
 // ---- state ----
 let DB={images:[]}, MINE=new Set(), VOTES={}, REQS={}, CLAIMS={}, USER='anon', SIGNEDIN=false;
-let sel={region:new Set(),kind:new Set(),environment:new Set(),structure:new Set()};
+let DEPTH={}, JUDGE={};               // instrument side-files; absent is fine
+let sel={region:new Set(),kind:new Set(),environment:new Set(),structure:new Set(),perspective:new Set()};
+let showFog=false;                    // whiteout frames stay one click away, not gone
 let sort='best', page=0, view=[], cur=-1;   // the auto score is the most useful first impression
 const byRun={};                       // run id -> all moods of that one setup
 
@@ -149,6 +151,11 @@ async function boot(){
 
   for(const r of DB.images){ (byRun[r.run]=byRun[r.run]||[]).push(r); }
 
+  // Instrument side-files: depth/luma geometry and the judge's one-liners.
+  // Metric-only, and optional — an old deploy without them still renders.
+  try{ DEPTH=await (await fetch('depth.json',{cache:'no-store'})).json(); }catch(e){}
+  try{ JUDGE=await (await fetch('judge.json',{cache:'no-store'})).json(); }catch(e){}
+
   // On this gallery the star IS the community vote — any logged-in user, not
   // the admin-only print-prep flag the image gallery uses. Guarded: if the bot
   // is down the gallery still renders, just without counts.
@@ -169,7 +176,8 @@ function facetValues(key){
 }
 
 function buildPanel(){
-  const facets=[['region','Region'],['kind','Kind of place'],['environment','Weather'],
+  const facets=[['region','Region'],['perspective','Perspective'],
+                ['kind','Kind of place'],['environment','Weather'],
                 ['structure','Structure']];
   let h='';
   for(const [key,label] of facets){
@@ -181,6 +189,11 @@ function buildPanel(){
     }
     h+='</div>';
   }
+  // Whiteout fog frames are hidden, not deleted: the chip says how many and
+  // one click brings them back. The detector is an instrument, not a verdict.
+  const nfog=DB.images.reduce((a,r)=>a+(r.fog?1:0),0);
+  if(nfog) h+=`<div class=facet>Hidden</div><div class=checks>`+
+    `<label class="ck${showFog?' on':''}" id=fogchip>fog <span class=cnt>${nfog}</span></label></div>`;
   h+=`<div class=facet>Sort</div><div class="checks sortrow">`;
   for(const [k,l] of [['best','auto scored'],['recent','newest'],['rank','by rank'],['pieces','biggest build'],['height','tallest'],['stars','starred first'],['light','by time of day']])
     h+=`<label class=ck data-sort="${k}"${sort===k?' style="pointer-events:none"':''}>${l}</label>`;
@@ -197,12 +210,15 @@ function buildPanel(){
     el.classList.toggle('on', el.dataset.sort===sort);
     el.onclick=()=>{ sort=el.dataset.sort; page=0; buildPanel(); render(); };
   });
+  if($('fogchip')) $('fogchip').onclick=()=>{ showFog=!showFog; page=0; buildPanel(); render(); };
   $('clrbtn').onclick=()=>{ for(const k in sel) sel[k].clear(); page=0; buildPanel(); render(); };
 }
 
 function filtered(){
   return DB.images.filter(r=>
+    (showFog||!r.fog) &&
     (!sel.region.size||sel.region.has(r.region)) &&
+    (!sel.perspective.size||sel.perspective.has(r.perspective)) &&
     (!sel.kind.size||sel.kind.has(r.kind)) &&
     (!sel.environment.size||sel.environment.has(r.environment)) &&
     (!sel.structure.size||sel.structure.has(structOf(r))));
@@ -215,7 +231,7 @@ function render(){
   else if(sort==='pieces') view.sort((a,b)=>(b.pieces||0)-(a.pieces||0));
   else if(sort==='height') view.sort((a,b)=>(b.height_m||0)-(a.height_m||0));
   else if(sort==='light') view.sort((a,b)=>(a.time_of_day||0)-(b.time_of_day||0));
-  else if(sort==='stars') view.sort((a,b)=>(STARS.has(b.id)?1:0)-(STARS.has(a.id)?1:0)||b.ts-a.ts);
+  else if(sort==='stars') view.sort((a,b)=>(MINE.has(b.id)?1:0)-(MINE.has(a.id)?1:0)||(VOTES[b.id]||0)-(VOTES[a.id]||0)||b.ts-a.ts);
   else view.sort((a,b)=>b.ts-a.ts);
 
   const n=Math.max(1,parseInt($('psize').value)||100);
@@ -284,6 +300,15 @@ function openLb(i){
   if(r.score!=null) bits.push('structure score '+r.score.toFixed(2));
   if(r.time_of_day!=null) bits.push(clockOf(r.time_of_day)+' in-game');
   if(r.shot_distance_m!=null) bits.push(`shot from ${Math.round(r.shot_distance_m)} m`);
+  if(r.perspective) bits.push(r.perspective);
+  if(r.fog) bits.push('flagged: fog whiteout');
+  // Instruments, when this frame has been measured. Depth is geometry (does
+  // the frame have layers), the judge is a rubric read of the picture.
+  const d=DEPTH[r.id];
+  if(d&&d.depth_score!=null) bits.push(`depth ${d.depth_score.toFixed(2)} · block ${d.center_block.toFixed(2)} · far ${d.far_mass.toFixed(2)}`);
+  if(d&&d.luma_mean!=null) bits.push(`luma ${Math.round(d.luma_mean)} ± ${Math.round(d.luma_spread)}`);
+  const j=JUDGE[r.id];
+  if(j&&j.score!=null) bits.push(`judge ${j.score} — ${j.reason||''}`);
   const nv=VOTES[r.id]||0;
   $('lbmeta').innerHTML=bits.map(b=>`<span>${esc(b)}</span>`).join('')+
     `<span id=lbstar class="${MINE.has(r.id)?'on':''}">${MINE.has(r.id)?'★ voted':'☆ vote'}${nv?' · '+nv:''}</span>`;

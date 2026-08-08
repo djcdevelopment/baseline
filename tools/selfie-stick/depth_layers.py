@@ -59,6 +59,17 @@ def crop_hud(img):
     return img.crop((int(l * w), int(t * h), int(r * w), int(b * h)))
 
 
+def luma(img):
+    """Mean luminance and p90-p10 spread on a 160x90 grey thumbnail — the same
+    scale name_structures.py already uses to reject unreadable naming frames.
+    High mean + low spread is a whiteout: fog with nothing behind it."""
+    import numpy as np
+    g = img.convert("L").copy()
+    g.thumbnail((160, 90))
+    a = np.asarray(g, dtype="float32")
+    return round(float(a.mean()), 1), round(float(np.percentile(a, 90) - np.percentile(a, 10)), 1)
+
+
 def metrics(depth):
     """depth: 2-D array, larger = closer (Depth Anything's convention)."""
     import numpy as np
@@ -134,7 +145,9 @@ def main():
             img = crop_hud(Image.open(os.path.join(args.images, fname)).convert("RGB"))
             img.thumbnail((770, 770))
             depth = np.array(pipe(img)["predicted_depth"])
-            done[image_id] = metrics(depth)
+            m = metrics(depth)
+            m["luma_mean"], m["luma_spread"] = luma(img)
+            done[image_id] = m
         except Exception as exc:
             print(f"  ! {fname}: {exc}")
             continue
@@ -142,6 +155,20 @@ def main():
             rate = i / max(time.time() - t0, 0.001)
             print(f"    {i}/{len(todo)}   {rate:.1f}/s   "
                   f"~{(len(todo) - i) / max(rate, 0.001) / 60:.0f} min left")
+
+    # Frames measured before luminance existed get a cheap top-up: no depth
+    # model, just the grey thumbnail.
+    topup = [i for i in done if "luma_mean" not in done[i]
+             and os.path.exists(os.path.join(args.images, i + ".webp"))]
+    if topup:
+        print(f"  luma top-up for {len(topup)} earlier measurement(s)")
+        for image_id in topup:
+            try:
+                img = crop_hud(Image.open(
+                    os.path.join(args.images, image_id + ".webp")).convert("RGB"))
+                done[image_id]["luma_mean"], done[image_id]["luma_spread"] = luma(img)
+            except Exception as exc:
+                print(f"  ! {image_id}: {exc}")
 
     tmp = args.out + ".tmp"
     with open(tmp, "w", encoding="utf-8") as fh:

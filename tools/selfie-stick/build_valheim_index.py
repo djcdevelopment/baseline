@@ -57,6 +57,8 @@ def parse_args():
     p.add_argument("--receipts", default=(r"C:\Program Files (x86)\Steam\steamapps\common"
                                           r"\Valheim\BepInEx\config\shotplan-receipts.jsonl"),
                    help="orbit run receipts, one JSON object per line")
+    p.add_argument("--depth", default=os.path.join(here, "out", "depth.json"),
+                   help="depth/luma metrics from depth_layers.py; powers the fog flag")
     p.add_argument("--aesthetic", default=os.path.join(here, "out", "aesthetic.json"),
                    help="per-image scores from score_images.py")
     p.add_argument("--names", default=os.path.join(here, "out", "cluster-names.json"),
@@ -189,6 +191,39 @@ def make_thumb(src, dest_path, px=THUMB_PX, quality=82):
         im.save(dest_path, "WEBP", quality=quality, method=4)
 
 
+def perspective_of(variant):
+    """Where the lens stood. seat_* rides a chair; the other interior vantages
+    stand at eye height; everything else is the drone doing orbits and sweeps."""
+    v = variant or ""
+    if v.startswith("seat_"):
+        return "seated"
+    if v.startswith(("hall_", "toproom_", "gate_", "court_")):
+        return "eye level"
+    return "drone"
+
+
+# Whiteout fog: bright and flat. Calibrated on the visible offenders in the
+# gallery (misty frames reading as near-uniform white) against bright-but-real
+# controls (snow builds, clear skies) — see the calibration table in the run
+# that set these. Flagged frames stay in the index; the gallery hides them
+# behind a toggle rather than deleting anyone's capture.
+FOG_LUMA_MEAN = 186.0
+FOG_LUMA_SPREAD = 60.0
+FOG_DEPTH_SPAN = 0.35
+FOG_FAR_MASS = 0.10
+
+
+def is_fog(image_id, depth):
+    d = depth.get(image_id)
+    if not d or "luma_mean" not in d:
+        return False
+    whiteout = d["luma_mean"] > FOG_LUMA_MEAN and d["luma_spread"] < FOG_LUMA_SPREAD
+    flat = (d["luma_mean"] > FOG_LUMA_MEAN - 20
+            and d.get("depth_span", 1.0) < FOG_DEPTH_SPAN
+            and d.get("far_mass", 1.0) < FOG_FAR_MASS)
+    return bool(whiteout or flat)
+
+
 def is_reject(rec):
     """Frames the capture itself already knew were bad.
 
@@ -222,6 +257,11 @@ def main():
         with open(args.aesthetic, encoding="utf-8") as fh:
             aesthetic = {k: v.get("aesthetic") for k, v in json.load(fh).items()}
         print(f"  {len(aesthetic)} image(s) carry an aesthetic score")
+    depth = {}
+    if os.path.exists(args.depth):
+        with open(args.depth, encoding="utf-8") as fh:
+            depth = json.load(fh)
+        print(f"  {len(depth)} image(s) carry depth/luma metrics")
     if names:
         print(f"  {len(names)} structure(s) named by hand")
     os.makedirs(args.dest, exist_ok=True)
@@ -281,6 +321,8 @@ def main():
                 "ts": int(os.path.getmtime(src)),
                 "published": False,               # ingest is automatic, exposure is not
                 "aesthetic": aesthetic.get(image_id),
+                "perspective": perspective_of(item.get("variant")),
+                "fog": is_fog(image_id, depth),
             }
             if cluster:
                 row.update({
@@ -353,6 +395,8 @@ def main():
             "ts": int(os.path.getmtime(src)),
             "published": False,
             "aesthetic": aesthetic.get(image_id),
+            "perspective": perspective_of(rec.get("shot")),
+            "fog": is_fog(image_id, depth),
             "source": "orbit",
             # orbit-only provenance: enough to tell a bad frame from a bad plan
             "occluded": bool(rec.get("occluded")),
@@ -432,6 +476,7 @@ def main():
         "regions": facet("region"),
         "variants": facet("variant"),
         "kinds": facet("kind"),
+        "perspectives": facet("perspective"),
         "images": rows,
     }
 
@@ -440,7 +485,16 @@ def main():
         json.dump(doc, fh, ensure_ascii=False)
     os.replace(tmp, os.path.join(args.dest, "index.json"))
 
+    # The gallery side-loads the instrument files when they exist. Both are
+    # metric/reason-only — no coordinates, no creator ids — safe to serve.
+    for side in (args.depth, os.path.join(os.path.dirname(args.depth), "judge.json")):
+        if os.path.exists(side):
+            shutil.copy2(side, os.path.join(args.dest, os.path.basename(side)))
+
     print(f"  {len(rows):,} images across {doc['runs']} runs -> {args.dest}")
+    fog_n = sum(1 for r in rows if r.get("fog"))
+    if fog_n:
+        print(f"  {fog_n} frame(s) flagged as fog whiteouts (hidden by default in the gallery)")
     if orbit_n:
         occ = sum(1 for r in rows if r.get("source") == "orbit" and r.get("occluded"))
         print(f"  {orbit_n:,} from automated orbit runs ({occ} flagged occluded)")
