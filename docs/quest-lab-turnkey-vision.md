@@ -34,7 +34,7 @@ flowchart TD
 
     Setup --> Gallery["Marked old builds safely cleared; fresh compact course raised"]
     Setup --> Seed["Starter quest file written (only into an empty folder)"]
-    Setup --> Panel["F6 opens the zoomable panel: console / spellbook / quests"]
+    Setup --> Panel["F6 opens the saved, zoomable panel: event grid / action grid / quest grid"]
     Setup --> Batch["Optional: questlab_batch prepare/run/report/export"]
 
     Seed --> Edit["5. Edit the JSON, run lab_reload"]
@@ -48,9 +48,11 @@ flowchart TD
 ```
 
 **Two keys, and this catches nearly everyone.** `F5` is *Valheim's* console, where `lab_setup` and
-`lab_reload` are typed. `F6` opens the *lab's* own panel and transfers mouse ownership to it; the
-visible `−` / `+` controls persistently scale the whole panel from 65–200%. The superseded draft
-said diagnostics appear "in the F5 overlay"; they appear in the F6 panel.
+`lab_reload` are typed. `F6` opens the *lab's* own panel and transfers mouse ownership to it. Its
+position and size persist on close; visible `−` / `+` controls scale it from 65–200%, and clicking
+the percentage resets it to 100%. Search and log clearing are separate, Pause freezes visible
+rows, and clipped grid cells explain themselves in a hover-help bar. The superseded draft said
+diagnostics appear "in the F5 overlay"; they appear in the F6 panel.
 
 **Eight schools, not seven:** Combat, Harvest, Inventory, Building, Crafting, Progression,
 **World**, Social. The draft's list omitted World. The likely origin is a since-corrected roster
@@ -178,15 +180,15 @@ SHA-verified config lane. It has no general console, keystroke, arbitrary path, 
 | Criterion | How it would be evidenced | Status |
 |---|---|---|
 | Zero setup tickets | Nobody asks an install question in the thread | Untested — not yet announced |
-| Safe failure | Local-only observer postfixes swallow throws; explicit gallery/suite changes are marked, selective, and bounded | Built and headlessly guarded; all-school live suite passed on r4, exact r11 re-witness pending |
+| Safe failure | Local-only observer postfixes swallow throws; explicit gallery/suite changes are marked, selective, and bounded | Built and headlessly guarded; all-school live suite passed on r4, exact r12 re-witness pending |
 | Flywheel | Community-authored quests posted in the thread | Not started |
 
 **The honest gap as of 2026-08-08:** the generalized contract, parser, action correlator, and all
 practical patch targets pass the headless suites and compile against the installed Valheim
 assembly. An exact-r4 OMEN suite witnessed all eight schools and completed all eight bindable
 example quests with zero same-action double completions; the separate synthetic suite passed all
-34 safe evaluator events. r11 changes the panel and physical course, so the final package still
-needs those receipts repeated against the exact r11 DLL plus Derek's visual acceptance of the
+34 safe evaluator events. r12 changes the panel and physical course, so the final package still
+needs those receipts repeated against the exact r12 DLL plus Derek's visual acceptance of the
 compact marble build.
 
 ## 7. Boundary
