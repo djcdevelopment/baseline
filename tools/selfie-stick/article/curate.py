@@ -11,7 +11,11 @@ CROP = (0, 40, 1550, 900)          # drop the NetworkSense HUD strip + right wid
 os.makedirs(OUT, exist_ok=True)
 
 idx = json.load(open(os.path.join(SRC, "index.json"), encoding="utf-8"))
-imgs = [i for i in idx["images"] if i.get("aesthetic")]
+# Part 1 is the exterior story; the interior variants belong to part 2's curator
+# (curate2.py) and must not drift into these picks as the corpus grows.
+INTERIOR = ("hall_", "toproom_", "seat_", "gate_", "court_")
+imgs = [i for i in idx["images"] if i.get("aesthetic")
+        and not (i.get("variant") or "").startswith(INTERIOR)]
 by_id = {i["id"]: i for i in imgs}
 by_cv = {}
 for i in imgs:

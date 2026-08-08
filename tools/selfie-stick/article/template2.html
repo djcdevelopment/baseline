@@ -1,0 +1,500 @@
+<title>Standing where the builders stood</title>
+<style>
+@font-face{font-family:AB;src:url(__FONT_BODY__) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:AB;src:url(__FONT_BODYSB__) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:AM;src:url(__FONT_MONO__) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:AM;src:url(__FONT_MONOB__) format("woff2");font-weight:700;font-display:swap}
+
+__TOKENS__
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:17px;line-height:1.68;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+
+/* ---- rhythm: one owner for vertical space ---- */
+.wrap{display:flex;flex-direction:column;gap:0}
+section{padding:0 20px}
+.col{max-width:var(--measure);margin:0 auto;display:flex;flex-direction:column;gap:1.15rem}
+.wide{max-width:64rem;margin:0 auto;display:flex;flex-direction:column;gap:.9rem}
+.mid{max-width:48rem;margin:0 auto;display:flex;flex-direction:column;gap:.9rem}
+section+section{margin-top:1.7rem}
+section:has(> .col h3){margin-top:3rem}
+section:has(> .col > .head){margin-top:4.6rem}
+header.hero+section{margin-top:3.4rem}
+.col>*,.wide>*,.mid>*,figure>*,.foot>*{min-width:0}
+
+p{margin:0}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:600}
+a{color:var(--wood);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--wood) 40%,transparent)}
+a:hover{border-bottom-color:var(--wood)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--wood);outline-offset:3px;border-radius:3px}
+
+/* ---- hero ---- */
+.hero{position:relative;padding:0;margin:0}
+.hero img{width:100%;height:min(78vh,700px);object-fit:cover;object-position:center 42%}
+.hero-scrim{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:20px;background:linear-gradient(to bottom,transparent 30%,var(--scrim) 88%)}
+.hero-inner{max-width:64rem;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:.85rem}
+.eyebrow{font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--wood)}
+.eyebrow .up{border-bottom:1px solid color-mix(in srgb,var(--wood) 45%,transparent)}
+.eyebrow span{opacity:.5;margin:0 .2em}
+h1{font-family:var(--mono);font-weight:700;letter-spacing:-.02em;line-height:1.08;
+  font-size:clamp(1.32rem,6.6vw,3.4rem);overflow-wrap:break-word}
+.standfirst{max-width:38rem;color:var(--muted);font-size:clamp(1rem,2vw,1.16rem);line-height:1.55}
+.credit{font-family:var(--mono);font-size:.66rem;color:var(--dim);letter-spacing:.05em}
+
+/* ---- type ---- */
+h2{font-family:var(--mono);font-weight:700;font-size:clamp(1.3rem,3vw,1.75rem);
+  letter-spacing:-.015em;line-height:1.2}
+h3{font-family:var(--mono);font-weight:700;font-size:.95rem;letter-spacing:.01em;color:var(--ink)}
+.lede{font-size:1.1rem;color:var(--muted);line-height:1.6}
+.head{display:flex;flex-direction:column;gap:.5rem}
+strong{font-weight:600;color:var(--ink)}
+em{font-style:italic;color:var(--muted)}
+code{font-family:var(--mono);font-size:.86em;color:var(--wood);
+  background:color-mix(in srgb,var(--wood) 11%,transparent);padding:.08em .34em;border-radius:4px}
+
+/* ---- figures ---- */
+figure{margin:0;display:flex;flex-direction:column;gap:.55rem}
+figcaption{font-family:var(--mono);font-size:.7rem;line-height:1.55;color:var(--dim);
+  letter-spacing:.01em}
+figcaption b{color:var(--muted);font-weight:700}
+.shot{border-radius:3px;overflow:hidden;background:#000;border:1px solid var(--line)}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem}
+@media(max-width:720px){.grid3,.grid4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.grid2{grid-template-columns:1fr}}
+.tile{position:relative;display:flex;flex-direction:column;gap:.4rem}
+.tile .lab{display:flex;justify-content:space-between;gap:.6rem;font-family:var(--mono);
+  font-size:.66rem;color:var(--dim);letter-spacing:.02em}
+.tile .lab b{color:var(--muted);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tile .lab .n{color:var(--wood);font-weight:700;font-variant-numeric:tabular-nums;flex:0 0 auto}
+
+/* contact sheet */
+.sheet{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:3px}
+.sheet img{aspect-ratio:16/9;object-fit:cover;border-radius:2px}
+
+/* ---- data ---- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.stat{background:var(--paper);padding:.85rem .95rem;display:flex;flex-direction:column;gap:.2rem}
+.stat .v{font-family:var(--mono);font-weight:700;font-size:1.28rem;color:var(--wood);
+  font-variant-numeric:tabular-nums;line-height:1.1}
+.stat .k{font-family:var(--mono);font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--dim)}
+
+pre{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:4px;
+  padding:.9rem 1rem;overflow-x:auto;font-family:var(--mono);font-size:.73rem;line-height:1.65;
+  color:var(--muted);white-space:pre;tab-size:4}
+pre b{color:var(--ink);font-weight:700}
+pre i{color:var(--wood);font-style:normal}
+pre u{color:var(--dim);text-decoration:none}
+pre .c{color:var(--dim)}
+
+.eq{background:var(--paper);border:1px solid var(--line);border-left:2px solid var(--wood);
+  border-radius:4px;padding:.85rem 1rem;overflow-x:auto;font-family:var(--mono);font-size:.82rem;
+  line-height:1.9;color:var(--ink);white-space:pre}
+.eq .n{color:var(--wood)}
+.eq .cm{display:block;font-size:.7rem;color:var(--dim);line-height:1.55;margin-top:.55rem}
+
+.note{border-left:2px solid var(--line2);padding:.15rem 0 .15rem 1rem;color:var(--muted);
+  font-size:.94rem}
+.warn{border-left-color:var(--amber)}
+
+table{border-collapse:collapse;width:100%;font-size:.78rem;font-family:var(--mono)}
+th,td{text-align:left;padding:.5rem .7rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-weight:700}
+td{color:var(--muted)}
+td b{color:var(--ink);font-weight:700}
+td.n{font-variant-numeric:tabular-nums;color:var(--wood);white-space:nowrap}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--paper)}
+.tbl table tr:last-child td{border-bottom:none}
+
+ul{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.5rem}
+li::marker{color:var(--wood)}
+
+/* ---- diagrams ---- */
+.dia{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:1rem;
+  overflow-x:auto}
+.dia svg{width:100%;height:auto;min-width:560px;display:block}
+svg text{font-family:var(--mono);fill:var(--ink)}
+.s-lab{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+.s-ttl{font-size:13px;font-weight:700;fill:var(--ink)}
+.s-sub{font-size:10.5px;fill:var(--muted)}
+.s-num{font-size:19px;font-weight:700;fill:var(--wood)}
+.s-tag{font-size:9.5px;font-weight:700;letter-spacing:.05em;fill:var(--dim)}
+.s-box{fill:var(--panel);stroke:var(--line2);stroke-width:1}
+.s-lane{fill:none;stroke:var(--line);stroke-width:1;stroke-dasharray:3 4}
+.s-arr{stroke:var(--line2);stroke-width:1.4;fill:none}
+.s-hi{stroke:var(--wood);stroke-width:1.6;fill:none}
+
+/* ---- footer ---- */
+footer{border-top:1px solid var(--line);margin-top:5rem;padding:2.5rem 20px 3.5rem;
+  background:var(--paper)}
+.foot{max-width:48rem;margin:0 auto;display:flex;flex-direction:column;gap:1.1rem}
+.repo{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--mono);font-size:.82rem;
+  font-weight:700;border:1px solid var(--wood);color:var(--wood);border-radius:4px;
+  padding:.7rem 1.1rem;align-self:flex-start;
+  background:color-mix(in srgb,var(--wood) 9%,transparent)}
+.repo:hover{background:color-mix(in srgb,var(--wood) 18%,transparent)}
+.fmeta{font-family:var(--mono);font-size:.68rem;color:var(--dim);line-height:1.8}
+.fmeta b{color:var(--muted);font-weight:700}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <img src="__HERO_SRC__" alt="A gothic hall interior drenched in lantern light, latticework walls glowing amber and blue, a staircase climbing through the middle">
+  <div class="hero-scrim"><div class="hero-inner">
+    <div class="eyebrow"><a class="up" href="../">Baseline</a> <span>/</span>
+    <a class="up" href="../">selfie-stick</a> <span>/</span> part 2 &middot; field notes</div>
+    <h1>Standing where the builders stood</h1>
+    <p class="standfirst">Part one taught arithmetic to fly a drone. This one brings the
+      camera down to eye level &mdash; into the halls, onto the thrones, out to the gates
+      &mdash; and then has to teach the judging what a wall is.</p>
+    <div class="credit">__HERO_CAP__</div>
+  </div></div>
+</header>
+
+<!-- ============ THE REWARD ============ -->
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">What came out</div>
+    <h2>The pictures first, again</h2>
+  </div>
+  <p class="lede">Same rule as <a href="../">part one</a>: everything below this is
+    machinery. These frames were composed from a save file's furniture &mdash; a camera
+    standing in a doorway, sitting in a chair, posted up on a courtyard flagstone. No
+    human framed any of them.</p>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="grid2">__SHOW_TILES__</div>
+    <figcaption>A storm over a gatehouse, a courtyard at dusk, a seat by the fire, a top
+      room at dawn, battlements under stars, a barrel cellar at night. Five vantage kinds,
+      four skies. <b>The camera is at human eye height in every one.</b></figcaption>
+  </figure>
+</div></section>
+
+<!-- ============ DOWN FROM THE DRONE ============ -->
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">The ask</div>
+    <h2>Down from the drone</h2>
+  </div>
+  <p><a href="../">Part one</a> ended with 1,411 photographs, all of them taken from the
+    air: four bearings around each build, forty degrees up, far enough back to frame the
+    whole box. Good photographs of <em>buildings</em>. But nobody who built these places
+    ever saw them that way. They saw them from the hall floor, from the head of the
+    table, from the gate coming home at night.</p>
+  <p>So the brief for this round was specific: <strong>the main room. The highest room
+    with the biggest window. A chair, at a table. The main gate. The courtyard.</strong>
+    And each of those through four skies &mdash; sunrise, sunset, a clear starry night,
+    and a raging storm.</p>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="grid2">__PAIR_TILES__</div>
+    <figcaption>The same structure twice. Left: the drone's version from part one.
+      Right: standing in its hall at sunrise. Readers of part one have met this build
+      already &mdash; it is the 21,000-piece cluster whose record got printed as the
+      sample. <b>The record now has an inside.</b></figcaption>
+  </figure>
+</div></section>
+
+<!-- ============ FINDING THE ROOMS ============ -->
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">Framing</div>
+    <h2>The save file knows where every chair is</h2>
+  </div>
+  <p>An orbit needs one fact per structure: its bounding box. An interior shot needs to
+    know what a <em>room</em> is, and the box cannot say. But the save can. Every placed
+    object in the world is a record with a position and a prefab id &mdash; every chair,
+    every table, every gate hinge and every torch. The analytics cache had been storing
+    them all along; nothing had ever asked.</p>
+  <p>One of part one's open items closed itself here. Prefab names used to be opaque
+    hashes; a committed in-game dump of the prefab table now resolves
+    <strong>99.6% of 9.1 million objects</strong> to names at parse time. Once pieces
+    have names, a vocabulary falls out: seats and tables, gates and doors, windows,
+    fires, floors, roofs, walls. Group the floors into half-metre elevation bands and
+    you have storeys. Grid the roof pieces and the cells with nothing overhead are
+    courtyard candidates.</p>
+</div></section>
+
+<section><div class="mid">
+  <div class="eq">
+<span class="n">hall</span>     the floor band with the most floor under it, sweetened &times;1.5 if a fire burns on it
+<span class="n">toproom</span>  the highest band 4 m above the hall with a window attached; aim into the light
+<span class="n">seat</span>     a chair with a table in reach; sit in it; look across the table, not at it
+<span class="n">gate</span>     the gate nearest the box edge at ground level; torch-lit gates win 6 m of slack
+<span class="n">court</span>    the largest open-sky patch walled on three sides; stand at its edge, look across
+<span class="cm">Five recipes, all computed from furniture positions. A build that has no
+gates gets no gate shot &mdash; a skipped vantage with a reason beats a
+camera in a wall.</span>
+  </div>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="dia">__SVG_VANTAGES__</div>
+    <figcaption>Where the five cameras stand, in plan. The save stores no rotation for
+      furniture, so a chair's facing is unknowable &mdash; every seated shot aims at what
+      the seat is <b>near</b> instead: the table, the fire, the hall. Which is the better
+      photograph anyway.</figcaption>
+  </figure>
+</div></section>
+
+<!-- ============ PERSPECTIVE ============ -->
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">Perspective</div>
+    <h2>Eye level is a measured number</h2>
+  </div>
+  <p>The plan file grew one column: <code>mode=interior</code>, a fourteenth field that
+    older builds of the plugin simply never read. Inside the game it changes two things.
+    The ground clamp &mdash; which keeps an orbit camera out of hillsides by forcing it
+    two metres up &mdash; relaxes to twenty centimetres, because two metres of "safety"
+    puts an indoor lens at the ceiling. And occlusion recovery turns off: outdoors it
+    climbs the camera out of foliage, indoors every rescue is a teleport through the
+    roof.</p>
+  <p>Then the receipts corrected the constants. The planner had assumed the lens rides
+    1.5&nbsp;m above the player's feet; the receipts measured <strong>1.8&nbsp;m</strong>,
+    frame after frame. Every standing camera in the pilot was composed three-tenths of a
+    metre too high, which is the difference between a room and the underside of its
+    ceiling joists. Assumed, then measured, then fixed &mdash; the same lesson part one
+    learned about golden hour.</p>
+
+  <h3>The throne that threw the camera</h3>
+  <p>The first seated shots put the camera exactly at the chair's position. For plain
+    chairs that worked. For thrones, the lens spawned <em>inside the throne's own
+    collider</em>, and the engine's camera-collision resolved the disagreement by
+    hurling the view seventeen metres into the air. The receipt is what caught it: the
+    planner asked for a seat, the lens reported back from the sky.</p>
+</div></section>
+
+<section><div class="mid">
+  <figure>
+    <figcaption><b>shotplan-receipts.jsonl</b> &mdash; the seated shot, first attempt.
+      Three positions per frame is the whole audit trail.</figcaption>
+    <pre>{
+  <i>"shot"</i>: "seat_storm", <i>"mode"</i>: <b>"interior"</b>, <i>"clearance"</i>: "planned",
+  <i>"planned"</i>: { x: <u>&#183;&#183;&#183;</u>, y: <b>41.99</b>, z: <u>&#183;&#183;&#183;</u> },  <span class="c">&#8592; the seat of the throne</span>
+  <i>"placed"</i>:  { x: <u>&#183;&#183;&#183;</u>, y: <b>41.99</b>, z: <u>&#183;&#183;&#183;</u> },  <span class="c">&#8592; the engine agreed</span>
+  <i>"lens"</i>:    { x: <u>&#183;&#183;&#183;</u>, y: <b>58.42</b>, z: <u>&#183;&#183;&#183;</u> },  <span class="c">&#8592; the camera did not</span>
+  <i>"lens_offset_m"</i>: <b>17.106</b>              <span class="c">&#8592; supposed to be ~1.8</span>
+}</pre>
+  </figure>
+  <p class="note">The fix is thirty-five centimetres: spawn the camera just forward of
+    the backrest, toward whatever the seat faces. The first attempt at that fix
+    overshot to seventy &mdash; and produced a macro photograph of the far edge of the
+    table. Composition at half-metre scale is a different sport than composition at a
+    hundred metres.</p>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="grid3">__FAIL_TILES__</div>
+    <figcaption>Three ways a seated camera fails, left to right: thrown seventeen metres
+      by a throne collider; jammed against a crystal slab (<b>center_block 0.66</b>);
+      walled into a rock grotto. Every one was caught by a receipt or a depth map, not
+      by a person scrolling.</figcaption>
+  </figure>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="shot"><img src="__FIXED_SRC__" alt="A barrel-lined cellar at night, warm lamps on the right, a lit doorway glowing at the far end of the hall"></div>
+    <figcaption>__FIXED_CAP__ &mdash; the seated shot, working: forward of the backrest,
+      1.4&nbsp;m lens, aiming across the room instead of down at the furniture. Depth
+      reads it as layered (<b>center_block 0.17</b>): barrels near, hall middle, lit
+      doorway far.</figcaption>
+  </figure>
+</div></section>
+
+<section><div class="col">
+  <p>Two more corrections rode along. The rig now runs in god and ghost mode, set by
+    reflection at the start of every shot &mdash; courtyards have wolves, and a death
+    mid-plan costs a respawn wait <em>and</em> puts a freshly visible corpse-run
+    character in frame, because the hide-player toggle binds to the body that died.
+    The operator spotted that one live, watching a run: a pink-armoured figure
+    photobombing a courtyard at dawn.</p>
+</div></section>
+
+<!-- ============ FOUR SKIES ============ -->
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">Light</div>
+    <h2>Four skies over one hall</h2>
+  </div>
+  <p>Part one measured golden hour and clamped every exterior frame into the band
+    0.33&ndash;0.77 of the day, because outside that band facades go dark. That rule is
+    an <em>exterior</em> rule, and this round deliberately breaks it. A starry night is
+    the whole point of a night shot; an interior carries its own hearth light. The night
+    value did move once &mdash; 0.97 came back black even outdoors, 0.90 keeps the
+    stars and the last of the sky &mdash; and storm stayed on the value the old manual
+    sweeps had already proven.</p>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="grid4">__LIGHT_TILES__</div>
+    <figcaption>One hall, one camera position, yaw 135.79&deg;, pitch 2.86&deg;, fourteen
+      metres across the room. <b>Nothing moved but the sky</b>: sunrise 0.29, sunset
+      0.71, night 0.90, thunderstorm 0.58.</figcaption>
+  </figure>
+</div></section>
+
+<!-- ============ JUDGEMENT ============ -->
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">Judgement sharpening</div>
+    <h2>Teaching the judging what a wall is</h2>
+  </div>
+  <p>The aesthetic model that ranks these frames was borrowed &mdash; a CLIP encoder and
+    a small LAION head that were on the machine for an unrelated photo library. Indoors
+    it faced new ways to fail, so the question was asked properly: is the borrowed
+    scorer actually any good <em>here</em>?</p>
+  <p>Twelve pilot frames were labelled by hand &mdash; six keepers, six duds &mdash; and
+    four scorers were benchmarked on all thirty-six keeper-versus-dud pairs.</p>
+</div></section>
+
+<section><div class="mid">
+  <figure>
+  <div class="tbl"><table>
+    <thead><tr><th>Scorer</th><th>Pairs right</th><th></th></tr></thead>
+    <tbody>
+      <tr><td><b>LAION aesthetic head</b> (the incumbent)</td><td class="n">36 / 36</td><td><b>kept</b> &mdash; the borrowed scorer was never the problem</td></tr>
+      <tr><td>Same, HUD cropped out first</td><td class="n">35 / 36</td><td>text in frame turns out not to matter at model resolution</td></tr>
+      <tr><td>CLIP zero-shot text probes</td><td class="n">35 / 36</td><td>no better, and another thing to tune</td></tr>
+      <tr><td>7B vision model, 1&ndash;10 rubric</td><td class="n">&mdash;</td><td>see below</td></tr>
+    </tbody>
+  </table></div>
+  <figcaption>The incumbent separated every keeper from every dud. Its real ceiling is
+    subtler: the starry-night battlements &mdash; one of the best frames of the pilot
+    &mdash; was its <b>lowest-scoring keeper</b>. It will keep a dark frame out of the
+    reject pile, but it will never champion one.</figcaption>
+  </figure>
+</div></section>
+
+<section><div class="col">
+  <h3>Depth is a measurement, not an opinion</h3>
+  <p>The sharpest question in this round came from the operator, watching frames come
+    in: <em>is this image mostly a tree branch &mdash; or is the subject behind the
+    branch, so the branch adds a layer of depth?</em> That is not a taste question. It
+    is a geometry question, and geometry can be measured.</p>
+  <p>Every frame now runs through a monocular depth model, and the depth map is asked
+    the questions a photographer would ask: is there a visible background? Is something
+    near-depth sitting across the eye-line, or hugging the frame edges as a framing
+    device? How many distinct depth layers hold real pixels?</p>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="dia">__SVG_DEPTH__</div>
+    <figcaption>The blockage box is the <b>upper</b> centre on purpose. Foreground mass
+      at the bottom of a frame &mdash; a table edge, barrels, the ground &mdash; is how
+      layered photographs are built; the same mass across the eye-line is a wall the
+      camera is stuck against.</figcaption>
+  </figure>
+</div></section>
+
+<section><div class="mid">
+  <div class="eq">
+<span class="n">center_block</span> = share of near-depth pixels in the upper-centre box
+<span class="n">edge_frame</span>   = share of near mass hugging the border  <span class="c">(framing, good)</span>
+<span class="n">depth_score</span>  = far_mass &times; (1 &minus; center_block) &times; span &times; framing_bonus
+
+<span class="n">veto</span>: center_block &gt; 0.45 &rarr; frame excluded, whatever its aesthetic
+<span class="cm">On the labelled set the veto fired on exactly the two geometric duds
+and zero keepers. As a ranker on its own it is a coin flip &mdash; deep
+but unlit rooms score high on geometry and fail on light. The two
+signals are complementary, and neither replaces the other.</span>
+  </div>
+</div></section>
+
+<section><div class="col">
+  <h3>The judge that said 8.0 eighty times</h3>
+  <p>The plan was a three-layer bench: aesthetic to filter, depth to veto, and a local
+    7B vision model as the final judge, reading each frame against a rubric &mdash;
+    <em>does this feel like standing in the scene?</em> The model ran. It returned its
+    verdict on all eighty frames it was shown: <strong>8.0. Every single time.</strong>
+    Same number, near-identical sentence. Small vision models compress absolute scales
+    into a single polite answer, and an instrument with one reading is not an
+    instrument.</p>
+  <p>The honest fix is already known and not yet built: ask the model to <em>compare
+    two frames</em> rather than rate one &mdash; pairwise verdicts survive scale
+    compression &mdash; and give the job to bigger eyes. The judging column ships in
+    the data today, labelled for what it is: a reason-generator with a constant
+    attached.</p>
+  <p>One more thing changed shape here. The thresholds above stopped being constants in
+    a script and became sliders: the whole bench now lives in a reactive notebook where
+    the frames ride <em>inside</em> the sortable dataframe &mdash; reorder by any
+    instrument and the pictures reorder with it. That idea arrived as a tip from a
+    reader of part one. Wheels were not rebuilt.</p>
+</div></section>
+
+<!-- ============ STATS ============ -->
+<section><div class="wide">
+  <div class="stats">__STATS__</div>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="sheet">__SHEET__</div>
+    <figcaption>Forty-eight frames sampled evenly across the ranked interior corpus
+      &mdash; best at top-left, weakest at bottom-right. The pile is real: plenty of
+      duds. <b>The point of the instruments is that nobody has to scroll past them.</b>
+    </figcaption>
+  </figure>
+</div></section>
+
+<!-- ============ OPEN ============ -->
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">Still open</div>
+    <h2>What this does not do yet</h2>
+  </div>
+  <ul>
+    <li><strong>The judge needs eyes and a sparring partner.</strong> Pairwise
+      comparison instead of absolute scores, on a model big enough to have opinions.
+      The hardware for that exists locally; the harness does not, yet.</li>
+    <li><strong>Windows that are holes.</strong> Plenty of builds glaze nothing and
+      leave openings instead. The top-room recipe falls back to an interior view when
+      it finds no window prefabs, and the fallback is honest but rarely the best frame
+      in the room.</li>
+    <li><strong>Publishing is still a human act.</strong> Every frame in the index
+      remains <code>published: false</code> until a person promotes it. The instruments
+      shortlist; they do not consent on anyone's behalf. These are still other people's
+      houses &mdash; now including their living rooms.</li>
+    <li><strong>The plugin remains outside the repo.</strong> The interior changes
+      &mdash; the mode column, the relaxed clamp, god mode for the rig &mdash; live in
+      the same claimable BepInEx plugin as before, deliberately unabsorbed.</li>
+  </ul>
+</div></section>
+
+<footer><div class="foot">
+  <div class="eyebrow">The code &middot; the series</div>
+  <p>The planning half &mdash; the feature scan, the interior planner, the depth
+    metrics, the curation notebook &mdash; is open and lives in the Baseline repo
+    alongside everything part one described.</p>
+  <a class="repo" href="https://github.com/djcdevelopment/baseline/tree/main/tools/selfie-stick">
+    github.com/djcdevelopment/baseline &rarr; tools/selfie-stick</a>
+  <a class="repo" href="../">&larr; Part 1 &mdash; photographing a world nobody had time to look at</a>
+  <div class="fmeta">
+    <b>Run</b> &nbsp;&nbsp;&nbsp;436 of 436 planned frames captured &middot; 25 structures
+    &middot; 109 vantages &middot; four skies each<br>
+    <b>Pilot</b> &nbsp;3 iterations &middot; 12 hand-labelled frames &middot; 116 pilot
+    frames before the run<br>
+    <b>Note</b> &nbsp;&nbsp;Coordinates and builder IDs are withheld throughout, same as
+    part one. The scan outputs are gitignored for the same reason.
+  </div>
+</div></footer>
+
+</div>
