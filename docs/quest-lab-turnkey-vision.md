@@ -147,7 +147,9 @@ now shows both names whenever they disagree.
 
 `questlab_batch prepare all-schools` writes one ordinary, bindable example quest per school,
 safely clears every marked old build, and raises one fresh compact course. The birch, Greyling,
-tools, arrows, wood, smelter coal, food, and `sign here` sign are all at their point of use, so
+tools, arrows, wood, smelter coal, mounted picnic food, and raised/lit `sign here` sign are all
+at their point of use. The Birch, bronze axe, and picnic table stay on natural terrain before
+the ascent portal; the reversible deck clears the measured Meadows canopy without deleting it, so
 a fresh character needs no prior inventory or directions from Derek. `run` records real canonical actions and their quest
 completions; `report`, `reset`, and `export` make repeated testing a suite rather than eight
 one-off console experiments. Receipts explicitly count raw witnesses, canonical actions,
@@ -176,15 +178,15 @@ SHA-verified config lane. It has no general console, keystroke, arbitrary path, 
 | Criterion | How it would be evidenced | Status |
 |---|---|---|
 | Zero setup tickets | Nobody asks an install question in the thread | Untested — not yet announced |
-| Safe failure | Local-only observer postfixes swallow throws; explicit gallery/suite changes are marked, selective, and bounded | Built and headlessly guarded; all-school live suite passed on r4, exact r9 re-witness pending |
+| Safe failure | Local-only observer postfixes swallow throws; explicit gallery/suite changes are marked, selective, and bounded | Built and headlessly guarded; all-school live suite passed on r4, exact r10 re-witness pending |
 | Flywheel | Community-authored quests posted in the thread | Not started |
 
 **The honest gap as of 2026-08-08:** the generalized contract, parser, action correlator, and all
 practical patch targets pass the headless suites and compile against the installed Valheim
 assembly. An exact-r4 OMEN suite witnessed all eight schools and completed all eight bindable
 example quests with zero same-action double completions; the separate synthetic suite passed all
-34 safe evaluator events. r9 changes the panel and physical course, so the final package still
-needs those receipts repeated against the exact r9 DLL plus Derek's visual acceptance of the
+34 safe evaluator events. r10 changes the panel and physical course, so the final package still
+needs those receipts repeated against the exact r10 DLL plus Derek's visual acceptance of the
 compact marble build.
 
 ## 7. Boundary
