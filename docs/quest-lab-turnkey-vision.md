@@ -59,7 +59,7 @@ line that read "seven of the eight categories are not wired yet".
 ### A. Hot-reloadable quest iteration (`lab_reload`) — **BUILT 2026-08-07**
 
 Re-reads every `*.json` under `BepInEx/config/comfy-quest-lab/quests/` on demand and reports a
-**diff by name** (`+ neck_romancer`, `~ punchwood (trigger changed)`, `= 3 unchanged`). A diff is
+**diff by name** (`+ first_blood`, `~ punchwood (trigger changed)`, `= 3 unchanged`). A diff is
 what makes a hot-reload trustworthy — "reloaded" alone never tells a creator that the file they
 just saved is the file the lab just read.
 
@@ -68,6 +68,12 @@ Three design facts worth carrying forward:
 - **Each file is a whole `quest-view.json`**, not a fragment, so any of them can be copied
   byte-for-byte to `comfy-network-sense/quest-view.json` and the shipping mod accepts it unchanged.
   That round trip is the lab's entire promise.
+- **`lab_target` keeps the loop closed.** Editing and reloading is worthless if the second test
+  means going to find another thing to kill. The gallery's stations are placed once, so the first
+  seed — which targeted a Neck at some shoreline — cancelled the practice ground it was seeded
+  beside. The seed now targets the Greyling under the combat monument, `lab_target` restocks any
+  school's station in front of the player, and a test asserts the seed's target against the
+  gallery plan so the two cannot drift apart again.
 - **Files parse independently.** One typo'd draft costs its own quests and nothing else.
 - **Reload drops cooldowns**, diverging from the shipping mod's session-long 60 s on purpose.
   Recorded in [`network/tuning-ledger.md`](../network/tuning-ledger.md).
