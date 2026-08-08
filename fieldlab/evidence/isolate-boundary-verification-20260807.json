@@ -219,5 +219,47 @@
       "id": "F4",
       "summary": "Live lab telemetry reports players=Durracktu,Tugcorp with peer_count=0. Determine whether player names are retained after disconnect, and if so, whether Test-LocalLabQuiescence should treat that as quiescent."
     }
+  ],
+
+  "addenda": [
+    {
+      "at": "2026-08-08T02:08:28Z",
+      "trigger": "Operator reported i5 back online; G8 above was recorded blocked on i5_offline.",
+      "outcome": "G8's blocker did not clear — it moved twice, and the second one is a new blocking defect in the client-pull update lane.",
+
+      "i5_lane": {
+        "result": "UP",
+        "evidence": "Test-I5Link.ps1 — ssh alias resolves, port 22 reachable, key auth as desktop-t685kei\\admin, staging root present, BepInEx plugins dir present, 91.4 GB free, Docker Desktop 29.6.2",
+        "note": "The original G8 observation was correct when made. This supersedes it."
+      },
+
+      "second_blocker": {
+        "summary": "Neither OMEN nor i5 had Valheim running, and both sat on m32-watchdog-20260802-r1 while the local gateway admits m7-c10b-20260807-r42. Test-Wave0Readiness.ps1 returned blocked_by_failed_preflight.",
+        "wave0_note": "Test-Wave0Readiness.ps1 defaults -GatewayUrl to https://comfy-p7.duckdns.org, the stopped P7 VM, so it dies on an Invoke-RestMethod timeout before reporting anything. It only runs locally with -GatewayUrl http://127.0.0.1:4000. Worth a default that does not assume the cloud VM is up.",
+        "partition_from_the_script_itself": {
+          "agent_can_run": ["i5-online-install", "idle-two-client-capture"],
+          "derek_needed": ["two-client-join", "apply-observe-course", "role-reversal"]
+        }
+      },
+
+      "third_blocker_NEW_DEFECT": {
+        "id": "F5",
+        "severity": "blocking for the alpha client-pull lane",
+        "summary": "Release m7-c10b-20260807-r42 cannot be installed by the headless Companion update lane. The install was refused on OMEN with HTTP 400 package_personalized_config_forbidden, detail BepInEx/config/djcdevelopment.valheim.comfynetworksense.cfg.",
+        "the_guard_is_correct": "Game.Companion/Program.cs:999 refuses any package carrying that entry, because the Gateway stores only a credential hash after install and overwriting the file would erase the one copy of the raw access key the client owns. Nothing was forced past it.",
+        "root_cause": "Two halves of the same codebase disagree about which artifact the headless lane receives. Game.Companion/Program.cs:842 fetches GET /api/v0/valheim/modpack/package, which SteamEnrollmentEndpoints.cs:76 serves as the raw template via Results.File(File.OpenRead(release.package_file)) — unmodified. The config-stripping build, ModPackBuilder.BuildConfigPreservingUpdatePack, exists and is correct, but is only reachable through /join/update/steam-callback (SteamEnrollmentEndpoints.cs:138), which requires Steam OpenID in a browser. Install-I5LatestModpack.ps1 documents itself as deliberately avoiding that flow. So the headless update lane and the config-preserving pack builder never meet.",
+        "why_it_surfaced_only_now": "Confirmed by inspecting the stored templates in artifacts/modpacks/. m31-motionphase-20260724-r1, m32-workbench-20260802-r1, and m32-watchdog-20260802-r1 are each 33 entries with NO personalized config entry. m7-c10b-20260807-r42 is also 33 entries but DOES carry it. Today's cut swapped one file, and that single change is what the installer guard refuses. The three prior releases installed headlessly because their templates happened to lack the entry.",
+        "the_real_tension": "New-AlphaModpack.ps1:95-102 stages the config entry deliberately, because the /join first-install lane REQUIRES it — ModPackBuilder.BuildPersonalizedPack throws if the template has no such entry. So the template must carry it for first install and must not carry it for headless update. One artifact cannot satisfy both; the update lane has to strip, which is exactly what BuildConfigPreservingUpdatePack does and exactly what no headless route calls.",
+        "proposed_fix": "Serve the stripped pack on a Consumer-gated headless route (e.g. GET /api/v0/valheim/modpack/package/update running TryBuildConfigPreservingUpdatePack) and point Game.Companion/Program.cs:842 at it. Requires rebuilding both the Gateway and Companion images. Not attempted — outside the authorized scope, and guessing at it would have meant rebuilding two images on a hypothesis.",
+        "verification_of_the_evidence": "The downloaded package hashed to c5ee672f26dedad7e20e7063c38235fe34dd8d1b3d8bcae9e24bc86ab959821b at 1085425 bytes, matching the manifest exactly, so the entry list above is the artifact the gateway actually serves and not a stale local copy."
+      },
+
+      "state_left_behind": {
+        "omen": "UNCHANGED — still m32-watchdog-20260802-r1 installed 2026-08-02T06:40:57Z. The guard fails before the first target byte is written and returned installed:null; verified via Companion status afterwards.",
+        "i5": "UNTOUCHED — not attempted. Same package, same guard, same outcome; running it would have produced a second identical failure and no new information.",
+        "valheim": "not running on either machine",
+        "two_client_test": "still BLOCKED, now on F5 rather than on i5 connectivity"
+      }
+    }
   ]
 }
