@@ -35,6 +35,7 @@ flowchart TD
     Setup --> Gallery["Practice gallery raised (8 monuments, stations, armoury)"]
     Setup --> Seed["Starter quest file written (only into an empty folder)"]
     Setup --> Panel["F6 opens the lab panel: console / spellbook / quests"]
+    Setup --> Batch["Optional: questlab_batch prepare/run/report/export"]
 
     Seed --> Edit["5. Edit the JSON, run lab_reload"]
     Edit --> Verdict["Quests tab: armed, or why not"]
@@ -141,6 +142,20 @@ shown, while the matcher compared against the creature's `m_name` localization t
 `Greydwarf_Elite` vs `$enemy_greydwarfbrute` those share nothing. Fixed 2026-08-07; the console
 now shows both names whenever they disagree.
 
+### Bounded evidence without a maintainer
+
+`questlab_batch prepare all-schools` writes one ordinary, bindable example quest per school,
+raises the default gallery only when none is standing, and stages the two consumables the
+permanent armoury does not carry. `run` records real canonical actions and their quest
+completions; `report`, `reset`, and `export` make repeated testing a suite rather than eight
+one-off console experiments. Receipts explicitly count raw witnesses, canonical actions,
+coalesced alternatives, and same-action double completions.
+
+The second suite, `creator-events`, is a fast source-shared evaluator proof for all 34 safe
+events. Its receipt says `synthetic-contract`; it cannot graduate a school to “witnessed”.
+The i5 helper can deliver only ten expiring, allowlisted suite/gallery operations through the
+SHA-verified config lane. It has no general console, keystroke, arbitrary path, or prefab field.
+
 ## 5. The creator journey
 
 1. **Discovery** — the Community Workbench (`/workbench`) or the Discord thread.
@@ -159,7 +174,7 @@ now shows both names whenever they disagree.
 | Criterion | How it would be evidenced | Status |
 |---|---|---|
 | Zero setup tickets | Nobody asks an install question in the thread | Untested — not yet announced |
-| Safe failure | Local-only, no server state touched, postfixes swallow throws, `Awake` degrades the quest lane rather than the mod | Built; **not yet witnessed in game** |
+| Safe failure | Local-only observer postfixes swallow throws; explicit gallery/suite changes are marked, selective, and bounded | Built and headlessly guarded; expanded live suite pending |
 | Flywheel | Community-authored quests posted in the thread | Not started |
 
 **The honest gap as of 2026-08-08:** the generalized contract, parser, action correlator, and all
