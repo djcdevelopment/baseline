@@ -64,6 +64,14 @@ h1{font-family:var(--mono);font-weight:700;letter-spacing:-.022em;line-height:1.
 .t-run{color:var(--green)}
 .t-invite{color:var(--amber)}
 
+/* ---- audience projections ---- */
+.role-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(13.5rem,1fr));gap:.65rem}
+.role-card{display:flex;flex-direction:column;gap:.3rem;padding:.8rem .9rem;
+  border:1px solid var(--line);border-radius:5px;background:var(--paper);text-decoration:none}
+.role-card b{font-family:var(--mono);font-size:.78rem;color:var(--wood)}
+.role-card span{font-size:.82rem;line-height:1.4;color:var(--muted)}
+.role-card:hover{border-color:var(--wood)}
+
 /* ---- primary action ---- */
 .cta{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--mono);
   font-size:.85rem;font-weight:700;border:1px solid var(--wood);color:var(--wood);
@@ -129,6 +137,22 @@ dl.fine dd{margin:0}
     that. It's meant to let people spend less time on paperwork and tracking, and more
     time making things.</p>
 </div></section>
+
+<section>
+  <div class="head">
+    <div class="eyebrow">Find your way in</div>
+    <h2>One corpus, several useful views</h2>
+    <p class="muted" style="max-width:40rem">Choose the question closest to yours. These
+      are tailored tables of contents, not gates: every view keeps a route to everything
+      outside its lane.</p>
+  </div>
+  <div class="role-grid">__AUDIENCES__</div>
+  <div class="links" style="margin-top:1rem">
+    <a href="updates/">Follow updates</a>
+    <a href="explore/">Explore everything</a>
+    <a href="corpus/index.json">Inspect the generated index</a>
+  </div>
+</section>
 
 <section>
   <div class="head">

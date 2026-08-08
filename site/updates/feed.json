@@ -1,0 +1,8 @@
+{
+  "description": "Public dispatches authored in the Baseline Discord forum.",
+  "feed_url": "https://djcdevelopment.github.io/baseline/updates/feed.json",
+  "home_page_url": "https://djcdevelopment.github.io/baseline/updates/",
+  "items": [],
+  "title": "Baseline dispatches",
+  "version": "https://jsonfeed.org/version/1.1"
+}

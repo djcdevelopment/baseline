@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "guild_id": "1531911987074957442",
+  "bot_id": "1531921451765071942",
+  "channel": {
+    "name": "dispatches",
+    "topic": "Baseline's public dispatch feed. A starter post is syndicated to the web and RSS; replies stay here. Choose at least one audience tag and exactly one format tag.",
+    "require_tag": true,
+    "sort_order": "creation_date"
+  },
+  "audience_tags": {
+    "curious": "curious",
+    "player / tester": "player-tester",
+    "creator / GM": "creator",
+    "mod / community": "moderator",
+    "admin / operator": "admin",
+    "modder": "modder",
+    "developer": "developer",
+    "contributor": "contributor"
+  },
+  "format_tags": [
+    "release",
+    "field note",
+    "decision",
+    "invitation",
+    "incident",
+    "milestone"
+  ],
+  "mirror": "corpus/mirrors/discord/dispatches.json"
+}

@@ -12,13 +12,14 @@ Reuses tokens.css and the article's subset fonts so the two pages are visibly on
 site. The four thumbnails come from the article build, if it has been run; without
 them the page still builds, just without the strip.
 """
-import base64, io, json, os
+import base64, html, io, json, os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
 BASE_URL = "https://djcdevelopment.github.io/baseline/"
 ART = os.path.join(REPO, "tools", "selfie-stick", "article")
 OUT = os.path.join(REPO, "site", "index.html")
+AUDIENCES = os.path.join(REPO, "corpus", "audiences.json")
 
 TITLE = "Baseline — a toolkit to build a Valheim community on"
 DESC = ("Identity, telemetry and testing as first-class parts of a Valheim server "
@@ -54,7 +55,17 @@ if os.path.exists(imgs_path):
 else:
     print("  ! no article images.json — building without the thumbnail strip")
 
-for k, v in {"__TOKENS__": tokens, "__STRIP__": strip,
+audience_doc = json.load(open(AUDIENCES, encoding="utf-8"))
+audiences = "".join(
+    '<a class="role-card" href="for/{id}/"><b>{label}</b><span>{question}</span></a>'.format(
+        id=html.escape(role["id"], quote=True),
+        label=html.escape(role["short_label"]),
+        question=html.escape(role["question"]),
+    )
+    for role in sorted(audience_doc["roles"], key=lambda role: role["order"])
+)
+
+for k, v in {"__TOKENS__": tokens, "__STRIP__": strip, "__AUDIENCES__": audiences,
              "__FONT_BODY__": fonts["body"], "__FONT_BODYSB__": fonts["bodysb"],
              "__FONT_MONO__": fonts["mono"], "__FONT_MONOB__": fonts["monob"]}.items():
     if k not in tpl:

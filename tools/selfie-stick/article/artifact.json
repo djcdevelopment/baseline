@@ -1,0 +1,19 @@
+{
+  "$schema": "../../../corpus/schemas/artifact.schema.json",
+  "schema_version": 1,
+  "id": "story:selfie-stick",
+  "kind": "story",
+  "title": "Photographing a world nobody had time to look at",
+  "summary": "Three million building pieces become 1,833 structures and 1,411 photographs framed by arithmetic rather than a human camera operator.",
+  "audiences": {
+    "primary": ["curious", "creator"],
+    "relevant": ["admin", "modder", "developer", "contributor"]
+  },
+  "canonical_url": "https://djcdevelopment.github.io/baseline/selfie-stick/",
+  "published_at": "2026-08-06T17:18:30-07:00",
+  "source_files": ["template.html", "build.py", "README.md"],
+  "facets": {
+    "result_first": true,
+    "system": "world-photography"
+  }
+}

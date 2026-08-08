@@ -1,0 +1,19 @@
+{
+  "$schema": "../../corpus/schemas/artifact.schema.json",
+  "schema_version": 1,
+  "id": "portal:baseline",
+  "kind": "portal",
+  "title": "Baseline",
+  "summary": "A public front door to the tools, field notes, live surfaces, and honest boundaries of the Baseline Valheim community stack.",
+  "audiences": {
+    "primary": ["curious"],
+    "relevant": ["player-tester", "creator", "moderator", "admin", "modder", "developer", "contributor"]
+  },
+  "canonical_url": "https://djcdevelopment.github.io/baseline/",
+  "published_at": "2026-08-06T00:00:00-07:00",
+  "source_files": ["landing.html", "build_landing.py", "tokens.css"],
+  "facets": {
+    "durable": true,
+    "surface": "github-pages"
+  }
+}

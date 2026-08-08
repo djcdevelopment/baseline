@@ -7,8 +7,11 @@ on:
     branches: [main]
     # data/processed pages are staged into the artifact below, so they must
     # trigger a redeploy too
-    paths: ['site/**', 'data/processed/quest-picker.html',
-            'data/processed/provenance*.html', '.github/workflows/pages.yml']
+    paths: ['site/**', 'corpus/**', 'tools/corpus/**', 'tools/site/**',
+            'Lumberjacks/docs/workbench/workbench.json',
+            'Lumberjacks/docs/roadmap/commit-notes.jsonl',
+            'data/processed/quest-picker.html', 'data/processed/provenance*.html',
+            '.github/workflows/pages.yml']
   workflow_dispatch:
 
 permissions:
@@ -31,6 +34,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      - name: Verify corpus projections are reconstructable
+        run: python tools/corpus/build.py --check
       - name: Stage quest picker for deployment
         run: |
           mkdir -p site/questpicker

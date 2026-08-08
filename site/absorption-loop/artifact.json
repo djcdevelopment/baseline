@@ -1,0 +1,19 @@
+{
+  "$schema": "../../corpus/schemas/artifact.schema.json",
+  "schema_version": 1,
+  "id": "story:absorption-loop",
+  "kind": "story",
+  "title": "From a leader's spreadsheet to a killing blow, and back with proof",
+  "summary": "A guild's untouched quest tracker becomes a player picker, an in-game objective, and evidence for a human review decision.",
+  "audiences": {
+    "primary": ["creator", "moderator"],
+    "relevant": ["curious", "player-tester", "admin", "modder", "developer"]
+  },
+  "canonical_url": "https://djcdevelopment.github.io/baseline/absorption-loop/",
+  "published_at": "2026-08-07T06:57:12-07:00",
+  "source_files": ["index.html"],
+  "facets": {
+    "result_first": true,
+    "system": "quest-absorption"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "artifact_globs": [
+    "tools/**/artifact.json",
+    "site/*/artifact.json"
+  ],
+  "adapters": [
+    {
+      "id": "workbench",
+      "kind": "workbench",
+      "path": "Lumberjacks/docs/workbench/workbench.json"
+    },
+    {
+      "id": "roadmap",
+      "kind": "roadmap-jsonl",
+      "path": "Lumberjacks/docs/roadmap/commit-notes.jsonl",
+      "audiences_by_kind": {
+        "decision": ["admin", "developer", "contributor"],
+        "deployment": ["admin", "developer"],
+        "documentation": ["curious", "contributor", "developer"],
+        "implementation": ["developer", "modder", "contributor"],
+        "planning": ["creator", "admin", "developer"],
+        "verification": ["player-tester", "admin", "developer"]
+      },
+      "url": "https://am4.tail8e749c.ts.net/roadmap#note-{id}"
+    },
+    {
+      "id": "discord-dispatches",
+      "kind": "discord-dispatches",
+      "path": "corpus/mirrors/discord/dispatches.json",
+      "optional": true
+    }
+  ],
+  "outputs": {
+    "index": "site/corpus/index.json",
+    "explore": "site/explore/index.html",
+    "updates": "site/updates/index.html",
+    "rss": "site/updates/rss.xml",
+    "json_feed": "site/updates/feed.json",
+    "roles_root": "site/for"
+  }
+}
