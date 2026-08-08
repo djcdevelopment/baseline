@@ -32,9 +32,9 @@ flowchart TD
     Drop --> Start["3. Open a private single-player world"]
     Start --> Setup["4. F5 console: lab_setup"]
 
-    Setup --> Gallery["Practice gallery raised (8 monuments, stations, armoury)"]
+    Setup --> Gallery["Marked old builds safely cleared; fresh compact course raised"]
     Setup --> Seed["Starter quest file written (only into an empty folder)"]
-    Setup --> Panel["F6 opens the lab panel: console / spellbook / quests"]
+    Setup --> Panel["F6 opens the zoomable panel: console / spellbook / quests"]
     Setup --> Batch["Optional: questlab_batch prepare/run/report/export"]
 
     Seed --> Edit["5. Edit the JSON, run lab_reload"]
@@ -48,8 +48,9 @@ flowchart TD
 ```
 
 **Two keys, and this catches nearly everyone.** `F5` is *Valheim's* console, where `lab_setup` and
-`lab_reload` are typed. `F6` opens the *lab's* own panel. The superseded draft said diagnostics
-appear "in the F5 overlay"; they appear in the F6 panel.
+`lab_reload` are typed. `F6` opens the *lab's* own panel and transfers mouse ownership to it; the
+visible `−` / `+` controls persistently scale the whole panel from 65–200%. The superseded draft
+said diagnostics appear "in the F5 overlay"; they appear in the F6 panel.
 
 **Eight schools, not seven:** Combat, Harvest, Inventory, Building, Crafting, Progression,
 **World**, Social. The draft's list omitted World. The likely origin is a since-corrected roster
@@ -145,8 +146,9 @@ now shows both names whenever they disagree.
 ### Bounded evidence without a maintainer
 
 `questlab_batch prepare all-schools` writes one ordinary, bindable example quest per school,
-raises the default gallery only when none is standing, and stages Wood, Coal, and Copper Ore
-at the player's feet so a fresh character needs no prior inventory. `run` records real canonical actions and their quest
+safely clears every marked old build, and raises one fresh compact course. The birch, Greyling,
+tools, arrows, wood, smelter coal, food, and `sign here` sign are all at their point of use, so
+a fresh character needs no prior inventory or directions from Derek. `run` records real canonical actions and their quest
 completions; `report`, `reset`, and `export` make repeated testing a suite rather than eight
 one-off console experiments. Receipts explicitly count raw witnesses, canonical actions,
 coalesced alternatives, and same-action double completions.
@@ -174,14 +176,16 @@ SHA-verified config lane. It has no general console, keystroke, arbitrary path, 
 | Criterion | How it would be evidenced | Status |
 |---|---|---|
 | Zero setup tickets | Nobody asks an install question in the thread | Untested — not yet announced |
-| Safe failure | Local-only observer postfixes swallow throws; explicit gallery/suite changes are marked, selective, and bounded | Built and headlessly guarded; expanded live suite pending |
+| Safe failure | Local-only observer postfixes swallow throws; explicit gallery/suite changes are marked, selective, and bounded | Built and headlessly guarded; all-school live suite passed on r4, exact r8 re-witness pending |
 | Flywheel | Community-authored quests posted in the thread | Not started |
 
 **The honest gap as of 2026-08-08:** the generalized contract, parser, action correlator, and all
 practical patch targets pass the headless suites and compile against the installed Valheim
-assembly. Earlier live sessions witnessed combat, harvest, gallery construction, and a kill quest.
-The other six schools and the expanded canonical routes still need machine-readable i5 live-suite
-receipts before their runtime claims graduate from built to witnessed.
+assembly. An exact-r4 OMEN suite witnessed all eight schools and completed all eight bindable
+example quests with zero same-action double completions; the separate synthetic suite passed all
+34 safe evaluator events. r8 changes the panel and physical course, so the final package still
+needs those receipts repeated against the exact r8 DLL plus Derek's visual acceptance of the
+compact marble build.
 
 ## 7. Boundary
 
