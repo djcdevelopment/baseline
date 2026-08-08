@@ -32,7 +32,8 @@ jobs:
         run: |
           mkdir -p site/questpicker
           cp data/processed/quest-picker.html site/questpicker/index.html
-          cp data/processed/provenance.html site/questpicker/provenance.html
+          cp data/processed/quest-picker.html site/questpicker/quest-picker.html
+          cp data/processed/provenance*.html site/questpicker/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
