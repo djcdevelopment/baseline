@@ -38,7 +38,7 @@ flowchart TD
     Setup --> Batch["Optional: questlab_batch prepare/run/report/export"]
 
     Seed --> Edit["5. Edit the JSON, run lab_reload"]
-    Edit --> Verdict["Quests tab: armed, or why not"]
+    Edit --> Verdict["Quests grid: school / trigger / armed / fires; expand why"]
 
     Tome["Web tome at /questlab"] -.teaches.-> Setup
 
@@ -178,15 +178,15 @@ SHA-verified config lane. It has no general console, keystroke, arbitrary path, 
 | Criterion | How it would be evidenced | Status |
 |---|---|---|
 | Zero setup tickets | Nobody asks an install question in the thread | Untested — not yet announced |
-| Safe failure | Local-only observer postfixes swallow throws; explicit gallery/suite changes are marked, selective, and bounded | Built and headlessly guarded; all-school live suite passed on r4, exact r10 re-witness pending |
+| Safe failure | Local-only observer postfixes swallow throws; explicit gallery/suite changes are marked, selective, and bounded | Built and headlessly guarded; all-school live suite passed on r4, exact r11 re-witness pending |
 | Flywheel | Community-authored quests posted in the thread | Not started |
 
 **The honest gap as of 2026-08-08:** the generalized contract, parser, action correlator, and all
 practical patch targets pass the headless suites and compile against the installed Valheim
 assembly. An exact-r4 OMEN suite witnessed all eight schools and completed all eight bindable
 example quests with zero same-action double completions; the separate synthetic suite passed all
-34 safe evaluator events. r10 changes the panel and physical course, so the final package still
-needs those receipts repeated against the exact r10 DLL plus Derek's visual acceptance of the
+34 safe evaluator events. r11 changes the panel and physical course, so the final package still
+needs those receipts repeated against the exact r11 DLL plus Derek's visual acceptance of the
 compact marble build.
 
 ## 7. Boundary
