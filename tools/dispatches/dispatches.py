@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Provision and capture the Discord forum that acts as Baseline's dispatch feed.
+"""Provision, publish to, and capture Baseline's Discord dispatch feed.
 
-This tool manages structure and reads starter posts. It has no code path that creates,
-edits, replies to, pins, archives, or deletes a post.
+Structure and authoring stay separate: ``apply`` manages the forum contract,
+``publish`` creates one reviewed starter post from a repository seed, and ``capture``
+reads Discord back into the rebuildable public mirror. Publishing is create-only;
+this tool never edits, replies to, pins, archives, or deletes a post.
 """
 from __future__ import annotations
 
@@ -19,6 +21,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 DEFAULT_CONFIG = HERE / "config.json"
 DEFAULT_STATE = HERE / "provision-state.json"
+DEFAULT_SEED = HERE / "seeds" / "start-here.json"
 WORKBENCH_DISCORD = ROOT / "tools" / "workbench" / "discord"
 sys.path.insert(0, str(WORKBENCH_DISCORD))
 
@@ -36,6 +39,8 @@ SORT_ORDERS = {"recent_activity": 0, "creation_date": 1}
 FORUM_LAYOUT_LIST = 1
 TAG_LIMIT = 20
 TAG_NAME_LIMIT = 20
+THREAD_NAME_LIMIT = 100
+MESSAGE_LIMIT = 2000
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -96,6 +101,48 @@ def load_config(path: Path) -> dict[str, Any]:
 
 def desired_tags(cfg: dict[str, Any]) -> list[str]:
     return list(cfg["audience_tags"]) + list(cfg["format_tags"])
+
+
+def normalize_publish_seed(raw: dict[str, Any], cfg: dict[str, Any], source: str) -> dict[str, Any]:
+    if raw.get("schema_version") != 1:
+        raise ToolError(f"{source}: publish seed schema_version must be 1")
+    title = raw.get("title")
+    content = raw.get("content")
+    audiences = raw.get("audience_tags")
+    format_tag = raw.get("format_tag")
+    if not isinstance(title, str) or not title.strip():
+        raise ToolError(f"{source}: title must be a non-empty string")
+    if len(title) > THREAD_NAME_LIMIT:
+        raise ToolError(f"{source}: title is {len(title)} characters; Discord permits {THREAD_NAME_LIMIT}")
+    if not isinstance(content, str) or not content.strip():
+        raise ToolError(f"{source}: content must be a non-empty string")
+    if len(content) > MESSAGE_LIMIT:
+        raise ToolError(f"{source}: content is {len(content)} characters; Discord permits {MESSAGE_LIMIT}")
+    if not isinstance(audiences, list) or not audiences or not all(isinstance(value, str) for value in audiences):
+        raise ToolError(f"{source}: audience_tags must be a non-empty string array")
+    if len(audiences) != len(set(audiences)):
+        raise ToolError(f"{source}: audience_tags contains duplicates")
+    unknown_audiences = sorted(set(audiences) - set(cfg["audience_tags"]))
+    if unknown_audiences:
+        raise ToolError(f"{source}: unknown audience tags: {', '.join(unknown_audiences)}")
+    if format_tag not in cfg["format_tags"]:
+        raise ToolError(f"{source}: unknown format_tag: {format_tag!r}")
+    return {
+        "title": title.strip(),
+        "content": content.strip(),
+        "audience_tags": audiences,
+        "format_tag": format_tag,
+        "tags": audiences + [format_tag],
+    }
+
+
+def load_publish_seed(path: Path, cfg: dict[str, Any]) -> dict[str, Any]:
+    resolved = path.resolve()
+    try:
+        resolved.relative_to(ROOT)
+    except ValueError as exc:
+        raise ToolError("publish seeds must remain inside the repository") from exc
+    return normalize_publish_seed(read_json(resolved), cfg, rel(resolved))
 
 
 def live_client(token_file: Path | None) -> tuple[DiscordClient, HttpTransport]:
@@ -340,8 +387,62 @@ def cmd_capture(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_publish(args: argparse.Namespace) -> int:
+    cfg = load_config(args.config)
+    seed = load_publish_seed(args.seed, cfg)
+    client, _transport = live_client(args.token_file)
+    forum = find_forum(client, cfg)
+    if forum is None:
+        raise ToolError(f"#{cfg['channel']['name']} does not exist; run apply --yes first")
+
+    matches = [thread for thread in all_threads(client, cfg, forum["id"]) if thread.get("name") == seed["title"]]
+    if len(matches) > 1:
+        raise ToolError(f"more than one dispatch is titled {seed['title']!r}; refusing to guess")
+    if matches:
+        thread = matches[0]
+        message = starter_message(client, thread)
+        tag_by_id = {tag["id"]: tag["name"] for tag in forum.get("available_tags", [])}
+        live_tags = {tag_by_id.get(tag_id, f"unknown:{tag_id}") for tag_id in thread.get("applied_tags", [])}
+        content_matches = (message.get("content") or "") == seed["content"]
+        tags_match = set(seed["tags"]) == live_tags
+        print(f"exists      {thread['id']} {seed['title']}")
+        print(f"source      https://discord.com/channels/{cfg['guild_id']}/{thread['id']}")
+        if not content_matches or not tags_match:
+            differences = []
+            if not content_matches:
+                differences.append("starter content differs")
+            if not tags_match:
+                differences.append(f"tags differ ({sorted(live_tags)} != {sorted(seed['tags'])})")
+            raise ToolError(
+                "title collision: " + "; ".join(differences) + ". Discord is authoritative, so publish will not edit it"
+            )
+        print("NOOP        the reviewed seed already exists exactly; nothing was written")
+        return 0
+
+    print(f"CREATE      {seed['title']}")
+    print(f"tags        {', '.join(seed['tags'])}")
+    print(f"sha256      {hashlib.sha256(seed['content'].encode('utf-8')).hexdigest()}")
+    if not args.yes:
+        print("\nNothing was written to Discord. Review the seed, then run `publish --yes`.")
+        return 0
+
+    live_tag_ids = {tag["name"]: tag["id"] for tag in forum.get("available_tags", [])}
+    missing = [name for name in seed["tags"] if name not in live_tag_ids]
+    if missing:
+        raise ToolError(f"live forum is missing required tags: {', '.join(missing)}; run apply --yes first")
+    thread = client.create_forum_post(
+        str(forum["id"]), seed["title"], seed["content"], [live_tag_ids[name] for name in seed["tags"]]
+    )
+    print(f"created     {thread['id']}")
+    print(f"source      https://discord.com/channels/{cfg['guild_id']}/{thread['id']}")
+    return 0
+
+
 def self_test() -> int:
     cfg = load_config(DEFAULT_CONFIG)
+    seed = load_publish_seed(DEFAULT_SEED, cfg)
+    assert seed["tags"] == ["curious", "invitation"]
+    assert seed["title"] == "Start here: choose your way into Baseline"
     fake_forum = {"available_tags": [
         {"id": str(index + 1), "name": name} for index, name in enumerate(desired_tags(cfg))
     ]}
@@ -371,6 +472,10 @@ def build_parser() -> argparse.ArgumentParser:
     capture_parser = sub.add_parser("capture")
     capture_parser.add_argument("--out", type=Path, default=None)
     capture_parser.set_defaults(func=cmd_capture)
+    publish_parser = sub.add_parser("publish")
+    publish_parser.add_argument("--seed", type=Path, default=DEFAULT_SEED)
+    publish_parser.add_argument("--yes", action="store_true")
+    publish_parser.set_defaults(func=cmd_publish)
     sub.add_parser("self-test").set_defaults(func=lambda _args: self_test())
     return parser
 

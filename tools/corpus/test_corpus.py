@@ -48,6 +48,18 @@ class CorpusContractTests(unittest.TestCase):
         self.assertEqual({item["id"] for item in feed["items"]}, expected)
         self.assertTrue(all(item["id"].startswith("dispatch:") for item in feed["items"]))
 
+    def test_dispatch_audience_tags_drive_role_and_explore_projections(self) -> None:
+        dispatches = [record for record in self.records if record["kind"] == "dispatch"]
+        explore = build.explore_page(self.roles, self.records)
+        for dispatch in dispatches:
+            self.assertIn(dispatch["url"], explore)
+            for role in self.roles:
+                projection = build.role_page(role, self.roles, self.records)
+                if role["id"] in dispatch["audiences"]:
+                    self.assertIn(dispatch["url"], projection)
+                else:
+                    self.assertNotIn(dispatch["url"], projection)
+
     def test_build_is_byte_deterministic(self) -> None:
         first = build.outputs()
         second = build.outputs()

@@ -19,11 +19,18 @@ contents include the post; they do not hide it from anyone.
 python tools/dispatches/dispatches.py check
 python tools/dispatches/dispatches.py plan
 python tools/dispatches/dispatches.py apply --yes
+python tools/dispatches/dispatches.py publish
+python tools/dispatches/dispatches.py publish --yes
 python tools/dispatches/dispatches.py capture
 ```
 
-`plan` is read-only. `apply` owns only the forum's managed settings and tags; it never
-creates, edits, replies to, or deletes a post. `capture` writes the public mirror at
+`plan` is read-only. `apply` owns only the forum's managed settings and tags. `publish`
+creates one starter post from a reviewed repository seed and requires `--yes`; it is
+idempotent by title and refuses to change a Discord post that already exists. Discord
+becomes authoritative at publication, so later editorial changes happen there, not by
+rewriting the seed. The default bootstrap seed is
+[`seeds/start-here.json`](seeds/start-here.json). Neither command edits, replies to, or
+deletes a post. `capture` writes the public mirror at
 `corpus/mirrors/discord/dispatches.json`. A malformed starter post is retained in the
 mirror with `publishable: false` and reasons, but cannot enter RSS or a projection.
 

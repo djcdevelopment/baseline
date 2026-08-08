@@ -396,10 +396,20 @@ def role_page(role: dict[str, Any], roles: list[dict[str, Any]], records: list[d
     role_id = role["id"]
     core = [r for r in records if role_id in r["audiences"] and r["kind"] in {"story", "guide", "portal", "tool"}]
     core.sort(key=lambda r: (role_id not in r["primary_audiences"], {"story": 0, "portal": 1, "guide": 2, "tool": 3}.get(r["kind"], 9), r["title"]))
+    dispatches = [r for r in records if role_id in r["audiences"] and r["kind"] == "dispatch"]
+    dispatches.sort(key=lambda r: parse_time(r["published_at"], r["id"]), reverse=True)
     recent = [r for r in records if role_id in r["audiences"] and r["kind"] == "roadmap-note"]
     recent.sort(key=lambda r: parse_time(r["published_at"], r["id"]), reverse=True)
+    dispatch_section = ""
+    if dispatches:
+        dispatch_section = (
+            '<section><h2>Dispatches for this lane</h2><div class="stream">'
+            + "".join(stream_entry(r) for r in dispatches[:10])
+            + f'</div><p><a href="{PUBLIC_BASE}updates/">Follow every public dispatch &rarr;</a></p></section>'
+        )
     body = f"""<header class="wrap"><div class="eyebrow">A view, not a fence</div><h1>{e(role['label'])}</h1><p class="lede">{e(role['promise'])}</p><p class="note"><strong>Your question:</strong> {e(role['question'])} Start here, then cross the lane whenever something catches your eye.</p></header>
 <main class="wrap"><section><h2>Choose another lens</h2>{role_chips(roles, role_id)}</section>
+{dispatch_section}
 <section><h2>Start in your lane</h2><div class="grid">{''.join(record_card(r) for r in core)}</div></section>
 <section><h2>Recent work touching this lane</h2><div class="stream">{''.join(stream_entry(r) for r in recent[:6])}</div><p><a href="{PUBLIC_BASE}explore/">Explore everything, including work outside this lens &rarr;</a></p></section></main>"""
     return page_shell(f"{role['label']} - Baseline", role["promise"], body, f"{PUBLIC_BASE}for/{role_id}/")
@@ -414,14 +424,24 @@ def stream_entry(record: dict[str, Any]) -> str:
 def explore_page(roles: list[dict[str, Any]], records: list[dict[str, Any]]) -> str:
     core = [r for r in records if r["kind"] in {"story", "guide", "portal", "tool"}]
     core.sort(key=lambda r: ({"story": 0, "portal": 1, "guide": 2, "tool": 3}.get(r["kind"], 9), r["title"]))
+    dispatches = [r for r in records if r["kind"] == "dispatch"]
+    dispatches.sort(key=lambda r: parse_time(r["published_at"], r["id"]), reverse=True)
     recent = [r for r in records if r["kind"] == "roadmap-note"]
     recent.sort(key=lambda r: parse_time(r["published_at"], r["id"]), reverse=True)
     counts: dict[str, int] = {}
     for record in records:
         counts[record["kind"]] = counts.get(record["kind"], 0) + 1
     tally = " · ".join(f"{counts[key]} {key.replace('-', ' ')}" for key in sorted(counts))
+    dispatch_section = ""
+    if dispatches:
+        dispatch_section = (
+            '<section><h2>Latest dispatches</h2><div class="stream">'
+            + "".join(stream_entry(r) for r in dispatches[:20])
+            + f'</div><p><a href="{PUBLIC_BASE}updates/">Follow the complete public feed &rarr;</a></p></section>'
+        )
     body = f"""<header class="wrap"><div class="eyebrow">Nothing hidden by the lenses</div><h1>Explore all</h1><p class="lede">Every audience page is a tailored table of contents over this same corpus. This view crosses the lanes; the machine-readable index retains every adapted record.</p><p class="meta">{e(tally)}</p></header>
 <main class="wrap"><section><h2>Enter through a lens</h2>{role_chips(roles)}</section><section><h2>Stories, portals, and tools</h2><div class="grid">{''.join(record_card(r) for r in core)}</div></section>
+{dispatch_section}
 <section><h2>Latest roadmap records</h2><div class="stream">{''.join(stream_entry(r) for r in recent[:25])}</div><p><a href="{AM4_BASE}/roadmap">Read the complete living roadmap &rarr;</a></p></section></main>"""
     return page_shell("Explore all - Baseline", "Cross every audience lane in the Baseline corpus.", body, f"{PUBLIC_BASE}explore/")
 

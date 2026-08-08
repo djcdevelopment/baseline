@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-08-08T12:29:23.991Z",
+  "as_of": "2026-08-08T12:55:51.979Z",
   "audiences": [
     {
       "id": "curious",
@@ -66,10 +66,92 @@
       "short_label": "Contributor"
     }
   ],
-  "build_fingerprint": "861dd92707eca4bfce1f2fbee0c33a3618756304457ae558cf439c10cef3d772",
+  "build_fingerprint": "cf8269705ce61c300d5e89c441bb684964182128bed777b57416723754993efe",
   "generated_by": "tools/corpus/build.py",
   "notice": "GENERATED acceleration structure. Rebuild from authoritative artifacts; do not edit.",
   "records": [
+    {
+      "audiences": [
+        "curious"
+      ],
+      "data": {
+        "attachments": [],
+        "audiences": [
+          "curious"
+        ],
+        "author": {
+          "bot": true,
+          "global_name": null,
+          "id": "1531921451765071942",
+          "username": "Baseline-helper"
+        },
+        "content": "Baseline is a public workbench for agentic collaboration and Valheim community tooling. The same body of work looks different depending on why you arrived, so start from the lane that sounds like you.\n\nChoose your lens: https://djcdevelopment.github.io/baseline/\nExplore everything: https://djcdevelopment.github.io/baseline/explore/\nOpen the live Community Workbench: https://am4.tail8e749c.ts.net/workbench\nFollow public dispatches: https://djcdevelopment.github.io/baseline/updates/\n\nCreator, admin, moderator, modder, developer, player/tester, contributor, or just curious: each lens gives you a shorter table of contents, then lets you cross lanes without hiding the rest.\n\nThis forum is the source of truth for public dispatches. Each starter post flows to the website, RSS, and JSON Feed. Replies stay here as conversation.\n\nTell us what brought you here, what you expected to find, and where the map still feels wrong.",
+        "content_sha256": "10910b65528d87c49f0b7e410826f389557c47e5b9ca87472a9041c97c8898d6",
+        "created_at": "2026-08-08T12:53:16.973000+00:00",
+        "edited_at": null,
+        "embeds": [
+          {
+            "content_scan_version": 0,
+            "description": "Identity, telemetry and testing as first-class parts of a Valheim server stack instead of afterthoughts. Tools you can run on your own machine tonight, and honest notes about what is not ready.",
+            "provider": {
+              "name": "Baseline"
+            },
+            "title": "Baseline — a toolkit to build a Valheim community on",
+            "type": "link",
+            "url": "https://djcdevelopment.github.io/baseline/"
+          },
+          {
+            "content_scan_version": 0,
+            "description": "Cross every audience lane in the Baseline corpus.",
+            "title": "Explore all - Baseline",
+            "type": "link",
+            "url": "https://djcdevelopment.github.io/baseline/explore/"
+          },
+          {
+            "content_scan_version": 0,
+            "description": "Discord dispatches and the Baseline engineering journal, with their authorities kept distinct.",
+            "title": "Updates - Baseline",
+            "type": "link",
+            "url": "https://djcdevelopment.github.io/baseline/updates/"
+          }
+        ],
+        "format": "invitation",
+        "message_id": "1535631989556781156",
+        "projection_errors": [],
+        "publishable": true,
+        "reply_count": 0,
+        "tags": [
+          "curious",
+          "invitation"
+        ],
+        "thread_id": "1535631989556781156",
+        "title": "Start here: choose your way into Baseline",
+        "url": "https://discord.com/channels/1531911987074957442/1535631989556781156"
+      },
+      "facets": {
+        "format": "invitation",
+        "tags": [
+          "curious",
+          "invitation"
+        ]
+      },
+      "id": "dispatch:1535631989556781156",
+      "kind": "dispatch",
+      "primary_audiences": [
+        "curious"
+      ],
+      "published_at": "2026-08-08T12:53:16.973000+00:00",
+      "source": {
+        "authority": "discord-forum-starter-post",
+        "locator": "discord://1531911987074957442/1535631989556781156/1535631989556781156",
+        "mirror": "corpus/mirrors/discord/dispatches.json",
+        "sha256": "574dbfd0553ed248575fb24fbbc969b7348c606516fe8b359dd1228d9497d8b4"
+      },
+      "summary": "Baseline is a public workbench for agentic collaboration and Valheim community tooling. The same body of work looks different depending on why you arrived, so start from the lane that sounds like you. Choose your lens: https://djcdevelopment.github.io/baseline/ Explore everyth...",
+      "title": "Start here: choose your way into Baseline",
+      "updated_at": "2026-08-08T12:53:16.973000+00:00",
+      "url": "https://discord.com/channels/1531911987074957442/1535631989556781156"
+    },
     {
       "audiences": [
         "curious",
@@ -22818,6 +22900,141 @@
     },
     {
       "audiences": [
+        "player-tester",
+        "admin",
+        "developer"
+      ],
+      "data": {
+        "at": "2026-08-08T12:33:33.036Z",
+        "author": "Codex",
+        "evidence": [],
+        "id": "20260808123333-interior-full-run-436-436-frames-over-25-builds-",
+        "impact": "Curation is now measured instead of vibes: a depth veto catches camera-against-wall frames with zero keeper loss, and the notebook lets the operator move thresholds and watch winners reorder",
+        "kind": "verification",
+        "milestones": [
+          "A7"
+        ],
+        "repository": "Lumberjacks",
+        "schema_version": 1,
+        "summary": "Interior full run: 436/436 frames over 25 builds, and the scoring bench grew instruments - depth-layer geometry (Depth Anything V2), a VLM judge lane, and a marimo curation notebook with frames inline in the dataframe",
+        "verification": [
+          "12 hand-labelled pilot frames: LAION 36/36 keeper-vs-dud pairs, depth veto fires on exactly the two geometric duds; full run 424 indexed frames, 527 depth-measured; judge measured compressing to a constant 8.0 and documented as such"
+        ]
+      },
+      "facets": {
+        "kind": "verification",
+        "milestones": [
+          "A7"
+        ]
+      },
+      "id": "roadmap:20260808123333-interior-full-run-436-436-frames-over-25-builds-",
+      "kind": "roadmap-note",
+      "primary_audiences": [
+        "player-tester"
+      ],
+      "published_at": "2026-08-08T12:33:33.036Z",
+      "source": {
+        "authority": "append-only-roadmap-journal",
+        "locator": "Lumberjacks/docs/roadmap/commit-notes.jsonl#L489",
+        "sha256": "ac7e1fc848912dce7f65f250b16da44cbbac74753c00a64c62d9947417243755"
+      },
+      "summary": "Curation is now measured instead of vibes: a depth veto catches camera-against-wall frames with zero keeper loss, and the notebook lets the operator move thresholds and watch winners reorder",
+      "title": "Interior full run: 436/436 frames over 25 builds, and the scoring bench grew instruments - depth-layer geometry (Depth Anything V2), a VLM judge lane, and a marimo curation notebook with frames inline in the dataframe",
+      "updated_at": "2026-08-08T12:33:33.036Z",
+      "url": "https://am4.tail8e749c.ts.net/roadmap#note-20260808123333-interior-full-run-436-436-frames-over-25-builds-"
+    },
+    {
+      "audiences": [
+        "developer",
+        "modder",
+        "contributor"
+      ],
+      "data": {
+        "at": "2026-08-08T12:46:38.006Z",
+        "author": "Codex",
+        "evidence": [],
+        "id": "20260808124638-quest-lab-gains-bounded-self-service-suites-and-",
+        "impact": "Creators can prepare, run, reset, report, and export all-school live evidence or an explicitly synthetic 34-event contract check; the i5 lane accepts only ten expiring allowlisted suite/gallery operations and no console or keystroke input.",
+        "kind": "implementation",
+        "milestones": [
+          "A4"
+        ],
+        "repository": "Lumberjacks",
+        "schema_version": 1,
+        "summary": "Quest Lab gains bounded self-service suites and i5 receipts",
+        "verification": [
+          "281 shared .NET tests; 47 Python repository tests; 57/57 safe and 86/86 practical patch coverage; ComfyQuestLab Release build 0 warnings/errors; privacy-clean local package sha256 09d5f2e19d9ca134df7132356007319e4bfbe27e3c0a7ea5fd9e98de9535c7bc."
+        ]
+      },
+      "facets": {
+        "kind": "implementation",
+        "milestones": [
+          "A4"
+        ]
+      },
+      "id": "roadmap:20260808124638-quest-lab-gains-bounded-self-service-suites-and-",
+      "kind": "roadmap-note",
+      "primary_audiences": [
+        "developer"
+      ],
+      "published_at": "2026-08-08T12:46:38.006Z",
+      "source": {
+        "authority": "append-only-roadmap-journal",
+        "locator": "Lumberjacks/docs/roadmap/commit-notes.jsonl#L490",
+        "sha256": "def678963bfd533a06f2066cde567fb634c49ce91d8d4a2a4166e2b194dadc0a"
+      },
+      "summary": "Creators can prepare, run, reset, report, and export all-school live evidence or an explicitly synthetic 34-event contract check; the i5 lane accepts only ten expiring allowlisted suite/gallery operations and no console or keystroke input.",
+      "title": "Quest Lab gains bounded self-service suites and i5 receipts",
+      "updated_at": "2026-08-08T12:46:38.006Z",
+      "url": "https://am4.tail8e749c.ts.net/roadmap#note-20260808124638-quest-lab-gains-bounded-self-service-suites-and-"
+    },
+    {
+      "audiences": [
+        "curious",
+        "contributor",
+        "developer"
+      ],
+      "data": {
+        "at": "2026-08-08T12:55:51.979Z",
+        "author": "Codex",
+        "evidence": [],
+        "id": "20260808125551-part-2-of-the-selfie-stick-article-ships-standin",
+        "impact": "The interior lane has a public story: five vantage recipes, the throne that threw the camera, four skies over one hall, and the instruments that curate without consenting on anyone's behalf",
+        "kind": "documentation",
+        "milestones": [
+          "A7"
+        ],
+        "repository": "Lumberjacks",
+        "schema_version": 1,
+        "summary": "Part 2 of the selfie-stick article ships: Standing where the builders stood - framing, perspective and judgement sharpening, linked from part 1",
+        "verification": [
+          "Page built self-contained (0.83 MB ascii), rendered and scrolled end to end locally; part 1 rebuilt with the part-2 link and an exterior-only curation guard; no coordinates or creator ids in either page"
+        ]
+      },
+      "facets": {
+        "kind": "documentation",
+        "milestones": [
+          "A7"
+        ]
+      },
+      "id": "roadmap:20260808125551-part-2-of-the-selfie-stick-article-ships-standin",
+      "kind": "roadmap-note",
+      "primary_audiences": [
+        "curious"
+      ],
+      "published_at": "2026-08-08T12:55:51.979Z",
+      "source": {
+        "authority": "append-only-roadmap-journal",
+        "locator": "Lumberjacks/docs/roadmap/commit-notes.jsonl#L491",
+        "sha256": "c73b9eb3c0834bfb769ff0879b3de54290a1f1b917ce26abbb3f5a5aadce3767"
+      },
+      "summary": "The interior lane has a public story: five vantage recipes, the throne that threw the camera, four skies over one hall, and the instruments that curate without consenting on anyone's behalf",
+      "title": "Part 2 of the selfie-stick article ships: Standing where the builders stood - framing, perspective and judgement sharpening, linked from part 1",
+      "updated_at": "2026-08-08T12:55:51.979Z",
+      "url": "https://am4.tail8e749c.ts.net/roadmap#note-20260808125551-part-2-of-the-selfie-stick-article-ships-standin"
+    },
+    {
+      "audiences": [
         "creator",
         "moderator",
         "curious",
@@ -22939,7 +23156,7 @@
           "tools/selfie-stick/article/README.md"
         ],
         "locator": "tools/selfie-stick/article/artifact.json",
-        "sha256": "f0f6fc5141e68fd3804d44e9a98cb35be3102be0f5527889515b94b026b715dd"
+        "sha256": "66183890cf61234d1ab4b32bc2ab4b0080b4e08c431262dacaea28cd822a054f"
       },
       "summary": "Three million building pieces become 1,833 structures and 1,411 photographs framed by arithmetic rather than a human camera operator.",
       "title": "Photographing a world nobody had time to look at",
@@ -23846,7 +24063,7 @@
       "authority": "Discord forum starter posts; this file is a rebuildable public mirror",
       "channel_url": "https://discord.com/channels/1531911987074957442/1535624779418181703",
       "mirror": "corpus/mirrors/discord/dispatches.json",
-      "source_watermark": null
+      "source_watermark": "2026-08-08T12:53:16.973000+00:00"
     }
   }
 }

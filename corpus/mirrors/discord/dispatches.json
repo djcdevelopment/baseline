@@ -3,9 +3,64 @@
   "channel_id": "1535624779418181703",
   "channel_url": "https://discord.com/channels/1531911987074957442/1535624779418181703",
   "guild_id": "1531911987074957442",
-  "posts": [],
+  "posts": [
+    {
+      "attachments": [],
+      "audiences": [
+        "curious"
+      ],
+      "author": {
+        "bot": true,
+        "global_name": null,
+        "id": "1531921451765071942",
+        "username": "Baseline-helper"
+      },
+      "content": "Baseline is a public workbench for agentic collaboration and Valheim community tooling. The same body of work looks different depending on why you arrived, so start from the lane that sounds like you.\n\nChoose your lens: https://djcdevelopment.github.io/baseline/\nExplore everything: https://djcdevelopment.github.io/baseline/explore/\nOpen the live Community Workbench: https://am4.tail8e749c.ts.net/workbench\nFollow public dispatches: https://djcdevelopment.github.io/baseline/updates/\n\nCreator, admin, moderator, modder, developer, player/tester, contributor, or just curious: each lens gives you a shorter table of contents, then lets you cross lanes without hiding the rest.\n\nThis forum is the source of truth for public dispatches. Each starter post flows to the website, RSS, and JSON Feed. Replies stay here as conversation.\n\nTell us what brought you here, what you expected to find, and where the map still feels wrong.",
+      "content_sha256": "10910b65528d87c49f0b7e410826f389557c47e5b9ca87472a9041c97c8898d6",
+      "created_at": "2026-08-08T12:53:16.973000+00:00",
+      "edited_at": null,
+      "embeds": [
+        {
+          "content_scan_version": 0,
+          "description": "Identity, telemetry and testing as first-class parts of a Valheim server stack instead of afterthoughts. Tools you can run on your own machine tonight, and honest notes about what is not ready.",
+          "provider": {
+            "name": "Baseline"
+          },
+          "title": "Baseline — a toolkit to build a Valheim community on",
+          "type": "link",
+          "url": "https://djcdevelopment.github.io/baseline/"
+        },
+        {
+          "content_scan_version": 0,
+          "description": "Cross every audience lane in the Baseline corpus.",
+          "title": "Explore all - Baseline",
+          "type": "link",
+          "url": "https://djcdevelopment.github.io/baseline/explore/"
+        },
+        {
+          "content_scan_version": 0,
+          "description": "Discord dispatches and the Baseline engineering journal, with their authorities kept distinct.",
+          "title": "Updates - Baseline",
+          "type": "link",
+          "url": "https://djcdevelopment.github.io/baseline/updates/"
+        }
+      ],
+      "format": "invitation",
+      "message_id": "1535631989556781156",
+      "projection_errors": [],
+      "publishable": true,
+      "reply_count": 0,
+      "tags": [
+        "curious",
+        "invitation"
+      ],
+      "thread_id": "1535631989556781156",
+      "title": "Start here: choose your way into Baseline",
+      "url": "https://discord.com/channels/1531911987074957442/1535631989556781156"
+    }
+  ],
   "replies_syndicated": false,
   "schema_version": 1,
-  "source_watermark": null,
+  "source_watermark": "2026-08-08T12:53:16.973000+00:00",
   "starter_posts_only": true
 }

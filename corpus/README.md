@@ -62,7 +62,16 @@ python tools/corpus/test_corpus.py
 It also validates source containment, audience references, unique IDs, provenance
 hashes, and feed shape.
 
-To refresh the Discord authority mirror after people publish dispatches:
+To create a reviewed starter post through the existing bot, inspect the dry run and
+then explicitly publish it:
+
+```powershell
+python tools/dispatches/dispatches.py publish
+python tools/dispatches/dispatches.py publish --yes
+```
+
+The command is create-only. Once the starter exists, Discord owns subsequent edits.
+To refresh the rebuildable mirror after people publish or edit dispatches:
 
 ```powershell
 python tools/dispatches/dispatches.py capture

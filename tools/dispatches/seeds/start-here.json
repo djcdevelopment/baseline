@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "title": "Start here: choose your way into Baseline",
+  "content": "Baseline is a public workbench for agentic collaboration and Valheim community tooling. The same body of work looks different depending on why you arrived, so start from the lane that sounds like you.\n\nChoose your lens: https://djcdevelopment.github.io/baseline/\nExplore everything: https://djcdevelopment.github.io/baseline/explore/\nOpen the live Community Workbench: https://am4.tail8e749c.ts.net/workbench\nFollow public dispatches: https://djcdevelopment.github.io/baseline/updates/\n\nCreator, admin, moderator, modder, developer, player/tester, contributor, or just curious: each lens gives you a shorter table of contents, then lets you cross lanes without hiding the rest.\n\nThis forum is the source of truth for public dispatches. Each starter post flows to the website, RSS, and JSON Feed. Replies stay here as conversation.\n\nTell us what brought you here, what you expected to find, and where the map still feels wrong.",
+  "audience_tags": [
+    "curious"
+  ],
+  "format_tag": "invitation"
+}

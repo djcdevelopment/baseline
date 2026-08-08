@@ -2,7 +2,21 @@
   "description": "Public dispatches authored in the Baseline Discord forum.",
   "feed_url": "https://djcdevelopment.github.io/baseline/updates/feed.json",
   "home_page_url": "https://djcdevelopment.github.io/baseline/updates/",
-  "items": [],
+  "items": [
+    {
+      "content_text": "Baseline is a public workbench for agentic collaboration and Valheim community tooling. The same body of work looks different depending on why you arrived, so start from the lane that sounds like you.\n\nChoose your lens: https://djcdevelopment.github.io/baseline/\nExplore everything: https://djcdevelopment.github.io/baseline/explore/\nOpen the live Community Workbench: https://am4.tail8e749c.ts.net/workbench\nFollow public dispatches: https://djcdevelopment.github.io/baseline/updates/\n\nCreator, admin, moderator, modder, developer, player/tester, contributor, or just curious: each lens gives you a shorter table of contents, then lets you cross lanes without hiding the rest.\n\nThis forum is the source of truth for public dispatches. Each starter post flows to the website, RSS, and JSON Feed. Replies stay here as conversation.\n\nTell us what brought you here, what you expected to find, and where the map still feels wrong.",
+      "date_modified": "2026-08-08T12:53:16.973000+00:00",
+      "date_published": "2026-08-08T12:53:16.973000+00:00",
+      "id": "dispatch:1535631989556781156",
+      "summary": "Baseline is a public workbench for agentic collaboration and Valheim community tooling. The same body of work looks different depending on why you arrived, so start from the lane that sounds like you. Choose your lens: https://djcdevelopment.github.io/baseline/ Explore everyth...",
+      "tags": [
+        "curious",
+        "invitation"
+      ],
+      "title": "Start here: choose your way into Baseline",
+      "url": "https://discord.com/channels/1531911987074957442/1535631989556781156"
+    }
+  ],
   "title": "Baseline dispatches",
   "version": "https://jsonfeed.org/version/1.1"
 }
