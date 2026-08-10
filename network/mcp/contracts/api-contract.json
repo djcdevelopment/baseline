@@ -5,8 +5,8 @@
   "description": "Explicit transport, authentication, and endpoint contracts for the Comfy Gateway runtime in isolate and baseline. Enforced by tests/test_api_contract_conformance.py, which drives the real routes and fails in BOTH directions: a declared field the response omits, and a response field this file does not declare. Editing an endpoint without editing this file is meant to turn the suite red.",
   "transport": {
     "protocol": "HTTP/1.1",
-    "default_port": 8720,
-    "default_port_note": "The kernel's DEFAULT_PORT and the port the container listens on. Host publish ports are a deployment choice and are NOT protocol defaults: baseline's companion dev-mcp publishes 8721, isolate's lab gateway publishes 8722. Version 1.0.0 of this file wrongly declared 8721 as the transport default.",
+    "default_port": 8721,
+    "default_port_note": "Baseline Dev/Lab uses loopback port 8721. Port 8720 is retained only as quarantined legacy compatibility and is not accepted as current Baseline evidence.",
     "auth_header": "X-Comfy-Key",
     "accepted_keys": [
       "comfy-dev-local",

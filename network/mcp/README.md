@@ -123,6 +123,30 @@ python -m unittest discover -s network\mcp\tests
 
 ## Tools
 
+### Quest Lab authoring bridge
+
+The Dev/Lab provider includes a bounded Quest Lab bridge on the same authenticated
+`127.0.0.1:8721` MCP endpoint. It accepts arbitrary **plain filenames** only inside
+the configured `BepInEx/config/comfy-quest-lab/quests` directory; traversal,
+absolute paths, non-JSON names, oversized documents, malformed schema-v1 files,
+and accidental overwrites are rejected. Replacing an existing draft requires an
+explicit `replace=true` request. Writes are atomic and never invoke a shell or
+Valheim console.
+
+Available tools:
+
+- `questlab_write(file_name, document, replace=false, trigger_reload=true)`
+- `questlab_reload()` — queues the existing fixed
+  `requests/questlab-batch-request.json` mailbox with the allowlisted `reload`
+  operation for the Unity main thread
+- `questlab_spell_encode(document)` / `questlab_spell_decode(spell)`
+- `questlab_status()`
+
+Spell Strings use the copy/paste form `[Import: <Base64 schema-v1 JSON>]`. They are
+deliberately uncompressed so creators can inspect and recover the payload without a
+special decoder. The provider remains Dev/Lab-only; normal gameplay does not start
+the MCP listener.
+
 - `comfy_gateway_status`: gateway identity, providers, ledger, caller.
 - `local_generate`: direct local Ollama generation.
 - `valheim_networksense_files`: list NetworkSense telemetry files.

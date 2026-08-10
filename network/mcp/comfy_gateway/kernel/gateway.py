@@ -29,7 +29,7 @@ from comfy_gateway.kernel.context import ComfyContext
 from comfy_gateway.kernel.ledger import REPO_ROOT, Ledger, comfy_mcp_root, new_event
 
 DEFAULT_HOST = "127.0.0.1"
-DEFAULT_PORT = 8720
+DEFAULT_PORT = 8721
 BUILTIN_PROVIDER = "comfy_gateway.kernel.gateway#builtin"
 
 log = logging.getLogger("comfy.gateway")
@@ -316,7 +316,7 @@ def main(argv: Optional[list[str]] = None) -> None:
     parser = argparse.ArgumentParser(description="Comfy Valheim development MCP gateway")
     parser.add_argument(
         "--providers",
-        default="comfy_gateway.toolsurface.valheim,comfy_gateway.toolsurface.inference",
+        default="comfy_gateway.toolsurface.valheim,comfy_gateway.toolsurface.inference,comfy_gateway.toolsurface.questlab",
     )
     parser.add_argument("--host", default=DEFAULT_HOST)
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)

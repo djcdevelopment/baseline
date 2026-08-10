@@ -22,5 +22,5 @@ if not defined COMFY_MCP_SOURCE_REVISION set "COMFY_MCP_SOURCE_REVISION=unknown"
 for /f "delims=" %%D in ('git status --porcelain 2^>nul') do set "COMFY_MCP_SOURCE_DIRTY=true"
 if not defined COMFY_MCP_SOURCE_DIRTY set "COMFY_MCP_SOURCE_DIRTY=false"
 if not defined COMFY_MCP_IMAGE set "COMFY_MCP_IMAGE=native-baseline:%COMFY_MCP_SOURCE_REVISION%"
-"%COMFY_GATEWAY_PYTHON_EXE%" -m comfy_gateway.kernel.gateway --host 127.0.0.1 --port "%COMFY_MCP_PORT%" --callers network\mcp\comfy_gateway\etc\callers.json --providers comfy_gateway.toolsurface.valheim,comfy_gateway.toolsurface.inference >> network\mcp\var\gateway-task.log 2>&1
+"%COMFY_GATEWAY_PYTHON_EXE%" -m comfy_gateway.kernel.gateway --host 127.0.0.1 --port "%COMFY_MCP_PORT%" --callers network\mcp\comfy_gateway\etc\callers.json --providers comfy_gateway.toolsurface.valheim,comfy_gateway.toolsurface.inference,comfy_gateway.toolsurface.questlab >> network\mcp\var\gateway-task.log 2>&1
 
