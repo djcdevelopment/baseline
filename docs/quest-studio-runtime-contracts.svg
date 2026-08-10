@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="820" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+  <title id="title">Quest experience contract interface map</title><desc id="desc">The experience graph, package envelope, active set, Charm reference, event input, action output, persistent state, and receipt interfaces.</desc>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#91b8d0"/></marker><style>.bg{fill:#0d1520}.core{fill:#302852;stroke:#aa91df;stroke-width:2.5}.in{fill:#19384c;stroke:#65a9cd;stroke-width:2}.out{fill:#173c31;stroke:#65c49e;stroke-width:2}.state{fill:#3b3024;stroke:#d2a46a;stroke-width:2}.t{fill:#f5f8fb;font:700 28px system-ui}.h{fill:#eef5f9;font:700 17px system-ui}.x{fill:#c8d6df;font:13px system-ui}.s{fill:#9fb3c0;font:11px system-ui}.f{fill:none;stroke:#91b8d0;stroke-width:2.3;marker-end:url(#a)}.dash{stroke-dasharray:6 5}</style></defs>
+  <rect class="bg" width="1280" height="820" rx="18"/><text class="t" x="42" y="48">Shared contract interfaces · one behavior across every host</text>
+
+  <rect class="in" x="45" y="100" width="310" height="125" rx="13"/><text class="h" x="67" y="132">Canonical event input</text><text class="x" x="67" y="158">event ID · target · where fields</text><text class="x" x="67" y="180">timestamp · dedupe identity</text><text class="s" x="67" y="204">Produced by normalized game witnesses</text>
+  <rect class="core" x="445" y="85" width="390" height="155" rx="15"/><text class="h" x="470" y="120">comfy-quest-experience/v1</text><text class="x" x="470" y="147">Experience → Stage → Transition</text><text class="x" x="470" y="169">Trigger: EVENT / ANY / ALL / COUNT / SEQUENCE</text><text class="x" x="470" y="191">Entry/transition actions · next stage or outcome</text><text class="s" x="470" y="216">Stable canonical IDs; Norse prose is metadata</text>
+  <path class="f" d="M355 162 H439"/>
+  <rect class="out" x="925" y="100" width="310" height="125" rx="13"/><text class="h" x="947" y="132">Closed action output</text><text class="x" x="947" y="158">message · sight · counter · timer</text><text class="x" x="947" y="180">stage · grant · spawn · clear marked</text><text class="s" x="947" y="204">Stable action ID + bounded parameters</text>
+  <path class="f" d="M835 162 H919"/>
+
+  <rect class="state" x="45" y="310" width="310" height="130" rx="13"/><text class="h" x="67" y="342">comfy-quest-pack/v2</text><text class="x" x="67" y="368">manifest.json</text><text class="x" x="67" y="390">experiences/*.json</text><text class="x" x="67" y="412">quests/*.json (legacy, optional)</text>
+  <rect class="core" x="445" y="300" width="390" height="150" rx="15"/><text class="h" x="470" y="334">ComfyQuestContracts services</text><text class="x" x="470" y="360">Compile + exact diagnostics</text><text class="x" x="470" y="382">Evaluate + deterministic ordering</text><text class="x" x="470" y="404">Certify + hash + compatibility</text><text class="x" x="470" y="426">Check + activate + rollback</text>
+  <path class="f" d="M355 375 H439"/>
+  <rect class="state" x="925" y="310" width="310" height="130" rx="13"/><text class="h" x="947" y="342">comfy-quest-active-set/v1</text><text class="x" x="947" y="368">pack ID · SemVer · content hash</text><text class="x" x="947" y="390">package SHA-256 · source</text><text class="s" x="947" y="414">Atomic activation; prior set retained</text>
+  <path class="f" d="M835 375 H919"/>
+
+  <rect class="state" x="45" y="530" width="310" height="130" rx="13"/><text class="h" x="67" y="562">Charm ZDO reference</text><text class="x" x="67" y="588">pack · experience · binding</text><text class="x" x="67" y="610">SemVer · canonical content hash</text><text class="s" x="67" y="634">No embedded workflow or arbitrary keys</text>
+  <rect class="core" x="445" y="520" width="390" height="150" rx="15"/><text class="h" x="470" y="554">Durable execution identity</text><text class="x" x="470" y="580">world · character · binding ZDO</text><text class="x" x="470" y="602">experience hash · stage · transition</text><text class="x" x="470" y="624">action ID · execution state</text><text class="s" x="470" y="648">Exactly-once across duplicates and restarts</text>
+  <path class="f" d="M355 595 H439"/>
+  <rect class="out" x="925" y="530" width="310" height="130" rx="13"/><text class="h" x="947" y="562">Machine-readable receipt</text><text class="x" x="947" y="588">validation · load · rollback · binding</text><text class="x" x="947" y="610">transition · action · failure</text><text class="s" x="947" y="634">Studio reads on refresh</text>
+  <path class="f" d="M835 595 H919"/>
+
+  <path class="f dash" d="M1080 530 C1080 480 780 480 780 456"/>
+  <path class="f dash" d="M640 520 V456"/>
+  <text class="s" x="42" y="738">Global bounds: 1 MiB · 64 stages · 128 leaves · 256 actions · depth 3 · acyclic graph</text>
+  <text class="s" x="42" y="763">Authority: mutation only in solo/listen-host private worlds · peer/dedicated inspection and simulation only</text>
+  <text class="s" x="42" y="788">Forbidden: arbitrary RPC · console/shell · reflection · URL/path · raw prefab · unmarked deletion</text>
+</svg>

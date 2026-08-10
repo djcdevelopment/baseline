@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">Quest Studio Runtime technology stack</title><desc id="desc">Layered view of browser, Companion, shared contracts, BepInEx mods, Valheim integration, files, tests, and deployment hosts.</desc>
+  <defs><style>.bg{fill:#0e1420}.band{stroke-width:2}.t{fill:#f4f7fa;font:700 28px system-ui}.h{fill:#eef4f8;font:700 18px system-ui}.x{fill:#c9d6df;font:14px system-ui}.s{fill:#9eb2c0;font:12px system-ui}.b1{fill:#24365a;stroke:#708fd1}.b2{fill:#21445a;stroke:#65a9c7}.b3{fill:#3b3157;stroke:#a28bd0}.b4{fill:#1e4a3c;stroke:#64c39b}.b5{fill:#493728;stroke:#d0a267}.line{stroke:#7e9cb0;stroke-width:2}</style></defs>
+  <rect class="bg" width="1280" height="760" rx="18"/><text class="t" x="42" y="50">Quest platform · technology stack and deployment</text>
+  <text class="h" x="48" y="100">Authoring host · OMEN / loopback Workbench</text>
+  <rect class="band b1" x="42" y="120" width="1196" height="90" rx="12"/><text class="h" x="68" y="153">Quest Studio browser surface</text><text class="x" x="68" y="179">HTML · CSS · JavaScript · visual graph editor · Grimoire · simulation · history · diff</text><text class="s" x="870" y="178">PLANNED</text>
+  <rect class="band b2" x="42" y="230" width="575" height="95" rx="12"/><text class="h" x="68" y="263">Lumberjacks Companion · ASP.NET Core / .NET 8</text><text class="x" x="68" y="289">Loopback API · durable Studio state · root-confined publish</text><text class="s" x="68" y="309">Existing host; Quest Studio endpoints planned</text>
+  <rect class="band b2" x="663" y="230" width="575" height="95" rx="12"/><text class="h" x="689" y="263">Optional MCP adapter</text><text class="x" x="689" y="289">Automation over Companion capabilities and files</text><text class="s" x="689" y="309">Never a second contract or arbitrary command bridge</text>
+  <line class="line" x1="320" y1="210" x2="320" y2="230"/><line class="line" x1="950" y1="210" x2="950" y2="230"/>
+
+  <rect class="band b3" x="42" y="350" width="1196" height="105" rx="12"/><text class="h" x="68" y="383">ComfyQuestContracts · C# / netstandard2.0 / Newtonsoft.Json</text><text class="x" x="68" y="409">Canonical models · compiler · diagnostics · evaluator · graph rules · hashes · pack activation</text><text class="s" x="68" y="433">IMPLEMENTED FOUNDATION · Unity-free · same implementation consumed by every host</text>
+  <line class="line" x1="320" y1="325" x2="320" y2="350"/><line class="line" x1="950" y1="325" x2="950" y2="350"/>
+
+  <text class="h" x="48" y="500">Gameplay hosts · Valheim clients</text>
+  <rect class="band b4" x="42" y="520" width="370" height="105" rx="12"/><text class="h" x="68" y="553">ComfyQuestRuntime</text><text class="x" x="68" y="579">C# · net48 · BepInEx 5 · Unity/Valheim</text><text class="s" x="68" y="603">Shell implemented; stage/action runtime planned</text>
+  <rect class="band b4" x="455" y="520" width="370" height="105" rx="12"/><text class="h" x="481" y="553">ComfyQuestLab</text><text class="x" x="481" y="579">C# · net48 · BepInEx · Unity UI</text><text class="s" x="481" y="603">Existing; UX slimming planned</text>
+  <rect class="band b5" x="868" y="520" width="370" height="105" rx="12"/><text class="h" x="894" y="553">ComfyNetworkSense</text><text class="x" x="894" y="579">Telemetry · canonical events · schema-1</text><text class="s" x="894" y="603">Existing; remains legacy-compatible</text>
+  <line class="line" x1="227" y1="455" x2="227" y2="520"/><line class="line" x1="640" y1="455" x2="640" y2="520"/><line class="line" x1="1053" y1="455" x2="1053" y2="520"/>
+
+  <rect class="band b5" x="42" y="650" width="575" height="70" rx="12"/><text class="h" x="68" y="681">Filesystem contracts</text><text class="x" x="68" y="705">.questpack · inbox/ · active-set.json · receipts</text>
+  <rect class="band b5" x="663" y="650" width="575" height="70" rx="12"/><text class="h" x="689" y="681">Verification</text><text class="x" x="689" y="705">xUnit · deterministic builds · OMEN · i5 peer lane</text>
+</svg>

@@ -1,5 +1,10 @@
 # ComfyQuestLab & NetworkSense: WeakAura-Style Authoring & Community Diagnostics Specification
 
+> Quest workflow update (2026-08-09): the primary Studio-to-game handoff is a certified immutable
+> `.questpack` copied through the loopback Companion into `BepInEx/config/comfy-quest-runtime/inbox/`.
+> The game checks and loads only on explicit user action. MCP is optional automation over that same file
+> contract; it is not a required browser-to-game channel. See `docs/quest-studio-runtime-boundary.md`.
+
 This specification lays out the technical contracts, file formats, and architectural patterns to transition **ComfyQuestLab** and **ComfyNetworkSense** into a real-time, visual, and highly-immersive authoring environment. It bridges low-level game assemblies and networking states with tactile, Norse-thematic concepts, eliminating creator friction while preserving strict security and network boundaries.
 
 ## Implementation boundary (r25 planning baseline)

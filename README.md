@@ -17,6 +17,7 @@ says what the thing actually does today — not what it's going to do.
 
 | Tool | What it is |
 |---|---|
+| **Quest Studio + Runtime** | Authors certified experience packs in the loopback Workbench, then explicitly loads and inscribes them in a private Valheim world. The native OMEN-host/i5-peer authority boundary is live-proven. |
 | **Quest Picker** | Turns a guild's real quest tracker into a page where a player checks off what they're chasing — and the game mod reads the result. |
 | **ComfyStewardView** | Reads a Valheim world file and answers what stops being walkable once a server gets big: where is everyone building, and who owns this. |
 | **Community Telemetry** | An aggregates-only telemetry API with privacy tests that fail if a player ID, name, or position ever shows up — plus the whole stack, runnable locally. |
@@ -68,6 +69,8 @@ The four load-bearing areas:
 - **[`fieldlab/`](fieldlab/NETCODE-MAP.md)** — the netcode-replacement R&D program and
   its ground truth.
 - **[`infra/gcp/p7/`](infra/gcp/p7/README.md)** — release, deployment, and rollback.
+- **[`docs/quest-studio-runtime-plan.md`](docs/quest-studio-runtime-plan.md)** — the
+  Quest Studio, Runtime, and Lab split, shared contract, milestones, diagrams, and current evidence.
 
 ⚠️ `main` is force-pushed by background automation. Long-lived branches and forks rot
 fast — read [AGENTS.md](AGENTS.md) before you touch anything.

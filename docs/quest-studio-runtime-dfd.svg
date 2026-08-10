@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">Quest Studio to Quest Runtime conceptual data-flow diagram</title>
+  <desc id="desc">Creators author in Studio, publish immutable packs through Companion, explicitly load them in Runtime, bind experiences to Charms, and read receipts. Lab observes and rehearses while NetworkSense supplies telemetry and legacy compatibility.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#8fb9d6"/></marker>
+    <style>
+      .bg{fill:#0d1520}.zone{fill:#121f2c;stroke:#34516a;stroke-width:2}.box{fill:#193044;stroke:#69a7c9;stroke-width:2}.store{fill:#252642;stroke:#a690d4;stroke-width:2}.game{fill:#17382f;stroke:#6bc5a2;stroke-width:2}.legacy{fill:#382a24;stroke:#d7a66c;stroke-width:2}.title{fill:#f3f7fb;font:700 28px system-ui}.head{fill:#eef6fb;font:700 18px system-ui}.text{fill:#c8d7e3;font:14px system-ui}.small{fill:#9fb5c4;font:12px system-ui}.flow{fill:none;stroke:#8fb9d6;stroke-width:2.5;marker-end:url(#arrow)}.dash{stroke-dasharray:7 6}.label{fill:#b9d8ea;font:12px system-ui}
+    </style>
+  </defs>
+  <rect class="bg" width="1280" height="760" rx="18"/>
+  <text class="title" x="42" y="48">Quest Studio → Quest Runtime · conceptual data flow</text>
+  <rect class="zone" x="32" y="78" width="580" height="630" rx="18"/><text class="head" x="54" y="110">Workbench / local authoring boundary</text>
+  <rect class="zone" x="638" y="78" width="610" height="630" rx="18"/><text class="head" x="660" y="110">Valheim / gameplay boundary</text>
+
+  <rect class="box" x="62" y="145" width="210" height="105" rx="12"/><text class="head" x="82" y="177">Creator</text><text class="text" x="82" y="203">Graph editing · simulation</text><text class="text" x="82" y="225">Explicit Publish</text>
+  <rect class="box" x="332" y="135" width="240" height="125" rx="12"/><text class="head" x="352" y="167">Quest Studio</text><text class="text" x="352" y="193">Durable editable projects</text><text class="text" x="352" y="215">Compile · diff · certify</text><text class="small" x="352" y="239">Loopback Workbench UI</text>
+  <path class="flow" d="M272 197 H326"/><text class="label" x="282" y="186">edits</text>
+
+  <rect class="store" x="332" y="310" width="240" height="105" rx="12"/><text class="head" x="352" y="342">Immutable .questpack</text><text class="text" x="352" y="368">manifest + experiences/</text><text class="small" x="352" y="392">optional unchanged quests/</text>
+  <path class="flow" d="M452 260 V304"/><text class="label" x="462" y="289">publish bytes</text>
+
+  <rect class="box" x="62" y="310" width="210" height="105" rx="12"/><text class="head" x="82" y="342">Companion</text><text class="text" x="82" y="368">Confine · certify · write</text><text class="small" x="82" y="392">Never activates gameplay</text>
+  <path class="flow" d="M326 362 H278"/><text class="label" x="282" y="350">POST</text>
+  <path class="flow" d="M272 395 C300 435 330 440 365 420"/><text class="label" x="270" y="449">atomic inbox write</text>
+
+  <rect class="store" x="675" y="145" width="245" height="105" rx="12"/><text class="head" x="695" y="177">Runtime inbox</text><text class="text" x="695" y="203">Unloaded candidate packs</text><text class="small" x="695" y="227">No filesystem watcher</text>
+  <path class="flow" d="M572 362 C625 362 630 198 669 198"/><text class="label" x="596" y="290">file copy</text>
+  <rect class="game" x="978" y="135" width="235" height="125" rx="12"/><text class="head" x="998" y="167">ComfyQuestRuntime</text><text class="text" x="998" y="193">Check · Load · Rollback</text><text class="text" x="998" y="215">Evaluate · bind · act</text><text class="small" x="998" y="239">Explicit player controls</text>
+  <path class="flow" d="M920 197 H972"/><text class="label" x="927" y="186">Check / Load</text>
+
+  <rect class="store" x="675" y="310" width="245" height="105" rx="12"/><text class="head" x="695" y="342">Active set + state</text><text class="text" x="695" y="368">Version/hash · stage/action IDs</text><text class="small" x="695" y="392">Atomic and world-scoped</text>
+  <path class="flow" d="M1095 260 C1095 352 982 362 926 362"/><text class="label" x="985" y="344">activate / persist</text>
+
+  <rect class="game" x="978" y="310" width="235" height="105" rx="12"/><text class="head" x="998" y="342">World Charms</text><text class="text" x="998" y="368">Namespaced references only</text><text class="small" x="998" y="392">Owned allowlisted ZDOs</text>
+  <path class="flow" d="M1095 266 V304"/><text class="label" x="1105" y="291">Inscribe</text>
+
+  <rect class="store" x="675" y="475" width="245" height="105" rx="12"/><text class="head" x="695" y="507">Receipt ledger</text><text class="text" x="695" y="533">load · bind · transition · action</text><text class="small" x="695" y="557">Machine-readable, refreshable</text>
+  <path class="flow" d="M1095 415 C1095 528 978 528 926 528"/><text class="label" x="993" y="510">append result</text>
+  <path class="flow dash" d="M675 548 C590 548 590 505 550 415"/><text class="label" x="568" y="535">read on refresh</text>
+
+  <rect class="box" x="62" y="500" width="210" height="100" rx="12"/><text class="head" x="82" y="532">ComfyQuestLab</text><text class="text" x="82" y="558">Witness · rehearse · learn</text><text class="small" x="82" y="582">Uses the shared contract</text>
+  <rect class="legacy" x="332" y="500" width="240" height="100" rx="12"/><text class="head" x="352" y="532">ComfyNetworkSense</text><text class="text" x="352" y="558">Telemetry + schema-1 only</text><text class="small" x="352" y="582">Never experience runtime</text>
+  <path class="flow dash" d="M332 550 H278"/><text class="label" x="285" y="539">events</text>
+
+  <rect class="box" x="332" y="630" width="240" height="52" rx="12"/><text class="head" x="352" y="663">Optional MCP automation</text>
+  <path class="flow dash" d="M452 630 V606"/>
+  <text class="small" x="675" y="671">Solid arrows: primary contract · dashed arrows: observation or optional automation</text>
+</svg>
