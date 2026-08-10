@@ -16,6 +16,10 @@ What remains is the cross-boundary architecture and dataset notes:
   [`audit/2026-08-01-workbench-product-review.md`](audit/2026-08-01-workbench-product-review.md),
   preserving the conversation, historical lineage, classifications, and source audit
   behind the Workbench decisions.
+- **Quest Lab expansion retrospective:**
+  [`retrospectives/2026-08-09-quest-lab-expansion-retrospective.md`](retrospectives/2026-08-09-quest-lab-expansion-retrospective.md),
+  recording the r24 event archive, parser/Sheets handoff, Gallery v2 rebuild, live evidence,
+  visual acceptance, and remaining optional evidence gaps.
 - **MCP endpoint provenance:**
   [`audit/2026-08-01-mcp-endpoint-provenance-audit.md`](audit/2026-08-01-mcp-endpoint-provenance-audit.md),
   recording the retired `:8720` task collision, split ledgers, and the identity-first

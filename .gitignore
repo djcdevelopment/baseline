@@ -89,6 +89,14 @@ fieldlab/scripts/omen-client-smoke.secrets.ps1
 discord.env
 **/discord.env
 
+# Local OAuth client configuration and tokens. Quest Lab's Google Sheets companion
+# stores both outside the repo, but these patterns prevent an accidental copied fixture
+# from entering source control.
+desktop-oauth-client.json
+oauth-token.json
+oauth-token.dpapi
+client_secret*.json
+
 # Discord thread exports: real display names next to what people said. Same stance as
 # the candidate-issues journal - internal only. Keep exports outside the repo; this
 # catches the case where someone points --out at it anyway.
