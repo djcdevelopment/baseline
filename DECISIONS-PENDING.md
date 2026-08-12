@@ -24,3 +24,23 @@ None.
   21 superseded by design, 129 admitted-to-lane before C10 (29 P1), 9 deferred
   behind the poison tripwire. Any single row can be reopened without reopening
   the audit. (Owner: Derek)
+
+- [ ] 2026-08-12 — **Reserve the three NuGet identifiers and issue a push key.**
+  `Comfy.Quest.Contracts`, `Comfy.Transport.Contracts`, `Comfy.Quest.Studio` are
+  unclaimed (404s confirm availability); the first push claims each. Add
+  `NUGET_API_KEY` to `comfy-quest` and `lumberjacks-platform` only —
+  `networksense` publishes GitHub Releases and needs no key. Until then the fleet
+  builds from vendored local feeds and cannot be consumed by a stranger.
+  (Owner: Derek; source: [SESSION-RETRO-2026-08-12](fieldlab/retro/SESSION-RETRO-2026-08-12.md))
+- [ ] 2026-08-12 — **Confirm or rename `lumberjacks-platform`.** Chosen as a
+  default because `djcdevelopment/Lumberjacks` is the retired public archive.
+  Renaming is cheap now and gets expensive once packages and releases pin it.
+  (Owner: Derek; source: [PD-9](docs/decisions/pd-9-repository-split.md))
+- [ ] 2026-08-12 — **Decide whether the Steam account handles stay published.**
+  `Durracktu`, `wary.fool`, and `floooooobcakes` appear in the platform's M1 plan
+  and multiplayer setup doc, and in baseline's own `AGENTS.md`. Read as a
+  deliberate choice and left alone; the SteamID64 beside them was redacted.
+  (Owner: Derek; source: [SESSION-RETRO-2026-08-12](fieldlab/retro/SESSION-RETRO-2026-08-12.md))
+- [x] 2026-08-12 — **Repository topology** — resolved as five sovereign repos with
+  Baseline as the hub, per [PD-9](docs/decisions/pd-9-repository-split.md).
+  (Owner: Derek)
