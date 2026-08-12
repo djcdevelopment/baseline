@@ -1,5 +1,0 @@
-{
-  "comfy-dev-local": { "id": "comfy-dev-local", "runner_class": "human", "node": "omen" },
-  "valheim-mod-local": { "id": "valheim-mod-local", "runner_class": "mod", "node": "omen" }
-}
-

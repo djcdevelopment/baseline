@@ -1,4 +1,9 @@
-# Build Request Receipts
+# Build Request Receipts — historical lane
+
+> **HISTORICAL — 2026-08-12.** This document records a retired monorepo-era
+> workflow. Its scripts moved out with the live FieldLab harness; do not treat the
+> commands below as runnable Baseline hub operations. Current platform automation
+> belongs to [`lumberjacks-platform`](https://github.com/djcdevelopment/lumberjacks-platform).
 
 Use this lane when real build work should count as evidence instead of running another
 synthetic P7 repeat. Each request gets a stable receipt id, request body, repo context,

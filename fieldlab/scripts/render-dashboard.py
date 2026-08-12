@@ -16,8 +16,8 @@ ROOT = Path(__file__).resolve().parents[1]  # fieldlab/
 STATUS = ROOT / "status" / "program-status.json"
 OUT = ROOT / "status" / "dashboard.html"
 
-# Nordic Glass — dark. Matches the in-game house theme (network/mod/ComfyNetworkSense/UI-DESIGN.md)
-# Deliberately single-theme dark: this is the game program's ops console.
+# Nordic Glass — dark. Preserves the historical NetworkSense in-game design theme.
+# Deliberately single-theme dark: this is the retired program's evidence dashboard.
 TEMPLATE = r"""
 <title>Netcode Replacement — Historical Program Dashboard (retired)</title>
 <style>

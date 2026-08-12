@@ -1,7 +1,15 @@
 # Comfy to Lumberjacks vertical seam
 
-This map is code-derived and names the one path exercised by
-`fieldlab/scripts/Invoke-ComfyLumberjacksIntegration.ps1`.
+> **HISTORICAL ACCEPTANCE MAP — 2026-07-19.** This map preserves the accepted
+> monorepo-era seam; it does not describe runnable Baseline code. Resolve the
+> retained source layout through the sealed
+> [`baseline@aceb2eb4`](https://github.com/djcdevelopment/baseline/tree/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/integration).
+> Current implementation authority is split between
+> [`networksense`](https://github.com/djcdevelopment/networksense) and
+> [`lumberjacks-platform`](https://github.com/djcdevelopment/lumberjacks-platform).
+
+This map is code-derived and names the one path exercised by the
+[`Invoke-ComfyLumberjacksIntegration.ps1` script at the accepted revision](https://github.com/djcdevelopment/baseline/blob/dd7806185e88735be032161860a72c0a59b801a1/fieldlab/scripts/Invoke-ComfyLumberjacksIntegration.ps1).
 
 | Boundary | Existing code used by the slice |
 | --- | --- |

@@ -1,9 +1,0 @@
-﻿{
-  "name": "@game/game-client",
-  "private": true,
-  "version": "0.1.0",
-  "description": "Thin client shell for the community survival platform.",
-  "scripts": {
-    "dev": "echo game-client scaffold"
-  }
-}

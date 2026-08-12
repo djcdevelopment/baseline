@@ -24,6 +24,7 @@ artifacts/
 *.tfvars.json
 !*.tfvars.example
 __pycache__/
+node_modules/
 
 # generated local bridge outputs
 bridge-review/
@@ -46,14 +47,19 @@ TestResults/
 *.fwl
 *.fch
 
-# Field-lab runtime + generated (not source): container state (~30GB), run packets, gateway var
-# The run catalog (index.json/CATALOG.md) is tracked M0 evidence; run packets stay local.
-fieldlab/autonomous/state/
+# Field-lab historical run packets. The run catalog (index.json/CATALOG.md) is
+# tracked evidence; newly captured packets stay local until deliberately promoted.
 fieldlab/runs/*
 !fieldlab/runs/index.json
 !fieldlab/runs/CATALOG.md
+
+# Pre-split generated/runtime residue is intentionally neither deleted nor tracked
+# by the split commit. These paths are not implementation authority; current lanes
+# live in lumberjacks-platform and isolate.
+fieldlab/autonomous/state/
 network/mcp/var/
-network/var/
+Lumberjacks/tools/companion/dist/
+Lumberjacks/tools/companion/docker-compose.valheim.yml
 
 # Private, non-source analysis of miker's exported staff chat (internal only, do not commit)
 comfy-miker-analysis/
@@ -70,8 +76,7 @@ comfy-ascent-analysis/
 # Session-transcript audit extract: contains raw operator voice transcripts - keep private
 fieldlab-session-audit/
 
-# Local operator secrets for the OMEN smoke (Lumberjacks network password) - never commit
-fieldlab/scripts/omen-client-smoke.secrets.ps1
+# Local operator secrets - never commit.
 *.secrets.ps1
 
 # Discord bot token and any local env file. The canonical home for the token is OUTSIDE
@@ -96,18 +101,3 @@ desktop-oauth-client.json
 oauth-token.json
 oauth-token.dpapi
 client_secret*.json
-
-# Discord thread exports: real display names next to what people said. Same stance as
-# the candidate-issues journal - internal only. Keep exports outside the repo; this
-# catches the case where someone points --out at it anyway.
-workbench-exports/
-
-# Vendored metadata reader for New-ReleaseCut.ps1's artifact identity check.
-# Windows PowerShell 5.1 has no GAC entry for System.Reflection.Metadata, so the
-# check cannot load it via Add-Type -AssemblyName. These netstandard2.0 builds do
-# load on .NET Framework 4.8. Vendored so a nuget cache clear cannot silently
-# disarm the one gate that stops a mismatched release from shipping.
-!infra/gcp/p7/scripts/lib/*.dll
-# Local Docker override that grants the Companion write access to a specific Valheim install.
-Lumberjacks/tools/companion/docker-compose.valheim.yml
-Lumberjacks/tools/companion/runner-token

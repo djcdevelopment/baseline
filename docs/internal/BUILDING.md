@@ -41,6 +41,13 @@ Baseline has no roadmap-journal pre-commit ceremony. That hook and append-only j
 belong to `lumberjacks-platform`. Commit only intentional paths, pull with
 `--ff-only` before pushing, and never force-push without explicit operator approval.
 
+The split removes tracked product source with ordinary Git history. An older local
+checkout may still contain ignored build/runtime residue such as `node_modules`,
+FieldLab container state, MCP ledger state, or Companion `dist` output. Those bytes
+are neither tracked nor authoritative and must never be used as a source fallback.
+Removing local residue is a separate operator cleanup decision, not part of the
+repository split commit.
+
 Each product repository defines its own build/test/release commands in its `AGENTS.md`
 and CI workflow. Cross-repository integration uses released packages or artifacts;
 do not run a fleet build by traversing local checkouts.

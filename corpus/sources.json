@@ -8,12 +8,12 @@
     {
       "id": "workbench",
       "kind": "workbench",
-      "path": "Lumberjacks/docs/workbench/workbench.json"
+      "path": "corpus/mirrors/lumberjacks/workbench.json"
     },
     {
       "id": "roadmap",
       "kind": "roadmap-jsonl",
-      "path": "Lumberjacks/docs/roadmap/commit-notes.jsonl",
+      "path": "corpus/mirrors/lumberjacks/commit-notes.jsonl",
       "audiences_by_kind": {
         "decision": ["admin", "developer", "contributor"],
         "deployment": ["admin", "developer"],

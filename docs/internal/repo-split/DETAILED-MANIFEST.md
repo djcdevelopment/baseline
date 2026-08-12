@@ -329,10 +329,19 @@ it inherits .githooks/pre-commit unchanged since all its paths are Lumberjacks/.
 
 ## Phase 4 — Baseline slimming + index buildout
 
+> **Executed-scope amendment — 2026-08-12.** The later external extraction
+> prompt and the verified ownership audit superseded the older KEEP clause below
+> for `fieldlab/docs/`: the live FieldLab ADR/runbook set moved to
+> `lumberjacks-platform`, while Baseline retained evidence, retrospectives, run
+> records, frozen decisions, and historical root findings. The Platform copy is
+> landed and tested; retaining another active ADR tree here would create two
+> authorities. Read `docs/ incl. adr/` in the original planning text as historical,
+> not as the executed Phase-4 disposition.
+
 4.1 git rm -r from baseline main (ordinary commits — baseline history is never rewritten):
   everything on the three path lists above, plus network/mcp (after 4.4) and Lumberjacks/.
   KEEP: docs/, corpus/, site/, data/, handoffs/, plans/, artifacts/, captures/, erasave/,
-  recipes/ (rest), the fieldlab evidence subtree (evidence/, retro/, docs/ incl. adr/, runs/
+  recipes/ (rest), the fieldlab evidence subtree (evidence/, retro/, runs/
   tracked metadata, root findings/maps MDs, DECISIONS-PENDING.md, experiments/),
   tools/corpus, tools/site, tools/dispatches, tools/am4-gallery, tools/selfie-stick,
   tools/render_guest_guide.py, tools/provenance_record.py,

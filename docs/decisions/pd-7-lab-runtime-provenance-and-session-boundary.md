@@ -1,9 +1,22 @@
 # PD-7 — Lab runtime provenance and canonical session boundary
 
-- Status: full Baseline state-root migration completed; canonical motion diagnostic pending
+- Status: adopted; the historical state-root migration and canonical motion diagnostic are complete
 - Owner: Derek
-- Trigger: before the next real-player or motion-authority Lab window
+- Trigger: satisfied 2026-08-02; future Lab runtime work belongs to `lumberjacks-platform`
 - Date: 2026-08-02
+
+> **Authority amendment — 2026-08-12.** This decision remains the canonical
+> fleet-level rationale for attributable Lab runtime state and explicit client
+> routes. Active implementation, Compose state, verification scripts, and new run
+> receipts now belong to
+> [`lumberjacks-platform`](https://github.com/djcdevelopment/lumberjacks-platform/tree/main/fieldlab).
+> “Baseline,” its state root, and its script paths below describe the completed
+> pre-split migration; they are historical evidence, not current hub paths or
+> runnable instructions. The referenced
+> [`Test-LabRuntimeProvenance.ps1`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/scripts/Test-LabRuntimeProvenance.ps1)
+> and
+> [`Invoke-LabStateRootMigration.ps1`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/scripts/Invoke-LabStateRootMigration.ps1)
+> remain inspectable at the sealed extraction revision.
 
 ## Decision to make
 
@@ -11,10 +24,10 @@ The local Valheim Lab must have one attributable runtime source and one explicit
 Gateway route per rendered node. The canonical Lumberjacks game-session lane is
 Lab-only; normal player gameplay must not keep retrying it.
 
-The short-term Baseline-compose/retained-state bridge was the accepted interim
-choice. The long-term full state cutover has now been executed; the bridge
-remains only as a recoverable rollback path and is not part of the active
-Compose attribution.
+At adoption, the short-term Baseline-compose/retained-state bridge was the
+accepted interim choice. The long-term full state cutover was then executed;
+the bridge remained only as a recoverable rollback path and was not part of the
+active Compose attribution recorded by this decision.
 
 ## Evidence
 
@@ -139,8 +152,10 @@ launch when the checkout is dirty or the Companion image revision does not
 match it. This prevents a diagnostic dirty build from masquerading as a clean
 runtime acceptance.
 
-The read-only `fieldlab/scripts/Test-LabRuntimeProvenance.ps1` verifier now
-closes the provenance preflight requirement without changing the running Lab.
+The read-only
+[`Test-LabRuntimeProvenance.ps1`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/scripts/Test-LabRuntimeProvenance.ps1)
+verifier then closed the provenance preflight requirement without changing the
+running Lab.
 Against `comfy-valheim-lab-valheim-server-1`, it passed the Baseline Compose
 file/working-directory checks, found no retired Compose source, recorded the
 server image digest `sha256:e8b13da3c44f54a38511c8ac224f2959a437c0b2626cf916683ca7acc8dfb146`,
@@ -160,7 +175,8 @@ not a handoff note an acceptance run can bypass.
 
 ## Full state migration receipt
 
-`fieldlab/scripts/Invoke-LabStateRootMigration.ps1` completed the cutover at
+[`Invoke-LabStateRootMigration.ps1`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/scripts/Invoke-LabStateRootMigration.ps1)
+completed the cutover at
 `2026-08-02T06:33:30Z`. Its tools-layer quiescence gate required a fresh local
 Gateway heartbeat with `server_state=ready`, `peer_count=0`, an empty player
 list, no OMEN Valheim process, and no in-progress world backup before stopping

@@ -1,26 +1,34 @@
-# Decisions pending — netcode-replacement program
+# Frozen decision register — netcode-replacement program
+
+> **FROZEN HISTORICAL EVIDENCE — 2026-08-12.** This file remains at its original
+> path so old relative citations keep resolving. Four policy-valid live choices were
+> migrated to the `lumberjacks-platform` decision queue and are present at
+> [`lumberjacks-platform@a122776`](https://github.com/djcdevelopment/lumberjacks-platform/blob/a122776f7ceb9a04acbc31ef3bb7e94ae192efbe/DECISIONS-PENDING.md).
+> This file is **not a queue**: do not append, resolve, reopen, or execute items here.
+> The wording and checkbox state below are preserved as the historical snapshot.
 
 > **2026-08-01 provenance correction and resolution:** the old resolved gateway
 > note below is historical, not current workstation truth. The stale
 > `ComfyGatewayBoot` task was disabled without deletion and its retired
-> `C:\work\comfy` listener was stopped; active Baseline Dev/Lab launchers/config
-> use explicit `:8721`. See the canonical
+> `C:\work\comfy` listener was stopped; at that time, Baseline Dev/Lab launchers/config
+> used explicit `:8721`. See the canonical
 > [MCP endpoint provenance audit](../docs/audit/2026-08-01-mcp-endpoint-provenance-audit.md)
-> and root [decision queue](../docs/internal/DECISIONS-PENDING.md). Do not promote `:8720`
+> and root [decision queue](../DECISIONS-PENDING.md). Do not promote `:8720`
 > receipts or treat the retired task as Baseline evidence.
 
-The single place to look when batching decisions. Append open items as
-`- [ ] <date> — <decision> (source: <link>)`; check off with a link to where it was resolved.
-Bounded: touch only lines you created or resolved.
+This was formerly the netcode program's batching register. Its old editing
+instructions are retired; current platform decisions follow the admission policy in
+the sovereign queue linked above.
 
-## Open
+## Historical open-state snapshot
 
 - [ ] 2026-08-08 — **How does C9 get a motion artifact?** The driven-motion path emits
   `started`/`completed` receipts on both clients while `motion-authority-cutover.jsonl` logs zero
   events and `freezedetect` shows both panels frozen ~17 of 20 s; the motion-test response returns
   `"motion_apply_enabled": null`. Options: fix the driven-motion path, or capture Derek driving
   manually. C9 cannot close until one of them produces a clip with movement in it.
-  (source: [retro](retro/SESSION-RETRO-2026-08-08.md), [memory](../../../Users/derek/.claude/projects/C--work-baseline/memory/c9-clip-has-no-motion.md))
+  (source: [retro](retro/SESSION-RETRO-2026-08-08.md), private memory note
+  `c9-clip-has-no-motion` — non-portable and not retained as project evidence)
 - [ ] 2026-08-08 — **Fix `Enable-LabSessionConfig` to add a missing key, or keep seeding at-rest?**
   It only rewrites keys that already exist (so its restore can be byte-exact), which means a client
   whose config lacks `lumberjacksMotionEnabled` is refused, and the plugin only writes that key once
@@ -72,7 +80,7 @@ Bounded: touch only lines you created or resolved.
 - [ ] 2026-08-05 — **Ratify the enrollment-lane proof as the alpha gate (ADR 0017), and pick the
   alpha posture.** Proposed: alpha runs on a fallback-capable candidate with the mod-zip→visible-world
   proof as the gate; the permanent no-fallback final cuts only after alpha traffic survives. Needs
-  Derek's yes, and the client-harness enrollment support it implies. (source: [ADR 0017](docs/adr/0017-prove-the-lane-users-ship-on.md))
+  Derek's yes, and the client-harness enrollment support it implies. (source: [ADR 0017](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0017-prove-the-lane-users-ship-on.md))
 
 - [ ] 2026-08-05 — **Restore `zdoRedirectEnabled=true` on P7 before the next armed window.** The
   server was left in native play mode; the armed config is
@@ -86,12 +94,12 @@ Bounded: touch only lines you created or resolved.
   the fan-out.** The 2026-07-22 live test showed the "empty world" was an autoport config boolean, not
   single-recipient starvation; delivery reached both consumers. The fan-out (`c8db19d`) is built + green
   in tests but may fix a case that isn't triggering. Test: two clients, *both* default configs (autoport
-  off), stand in one base — does the 2nd still see empty? (source: [SESSION-RETRO-2026-07-22](retro/SESSION-RETRO-2026-07-22.md), [ADR 0013 reality check](docs/adr/0013-ownership-visibility-split.md))
+  off), stand in one base — does the 2nd still see empty? (source: [SESSION-RETRO-2026-07-22](retro/SESSION-RETRO-2026-07-22.md), [ADR 0013 reality check](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0013-ownership-visibility-split.md))
 
 - [ ] 2026-07-21 — **Restore the pruned quest slice as a `QuestTriggerEvaluator` consuming the gameplay
   events** (Increment 4+). Client-side trigger + local-player attribution from the comfy backup
   (`djcdevelopment/comfy`, `handoffs/comfy-control-surface/`), dropping the screenshot/outbox coupling
-  in favour of the RPC→gateway seam. (source: [ADR 0012](docs/adr/0012-gameplay-telemetry-is-client-side.md), plan increment 4)
+  in favour of the RPC→gateway seam. (source: [ADR 0012](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0012-gameplay-telemetry-is-client-side.md), plan increment 4)
 
 - [ ] 2026-07-21 — **Area co-presence: adopt the ownership/visibility split (ADR 0013).** The live
   two-human test proved the queue is multi-tenant but co-located players can't share buildings/portals
@@ -100,11 +108,11 @@ Bounded: touch only lines you created or resolved.
   **Status:** gateway substrate proven headless (`8f92edf`, N=2/10 isolation + WAL replay + dedup);
   **Phase 0 shadow + Phase 2 fan-out BUILT** (uncommitted, flag-gated default-off, mod builds clean +
   70 mod / gateway tests green), awaiting the **live two-human test**
-  ([runbook](docs/runbook-copresence-fanout-live-test.md)). Phase 1 proved a no-op (runner already
+  ([runbook](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/runbook-copresence-fanout-live-test.md)). Phase 1 proved a no-op (runner already
   emits per-peer). **Remaining Derek-facing calls:** (a) after the live test, the per-recipient-seq fix
   to restore `complete=True` under multiple recipients (pre-existing global-seq artifact, not fan-out);
   (b) fan-out vs region-shared partitions (deferred to Phase 4, only against measured WAL amplification).
-  (source: [ADR 0013](docs/adr/0013-ownership-visibility-split.md), [findings](FINDINGS-multiplayer-copresence-2026-07-21.md))
+  (source: [ADR 0013](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0013-ownership-visibility-split.md), [findings](FINDINGS-multiplayer-copresence-2026-07-21.md))
 
 - [ ] 2026-07-30 — **What is P7 still for, and does it come back?** This session narrowed the
   answer to **exactly one thing: the Valheim UDP world** (2456-2457). The community surface is
@@ -113,19 +121,19 @@ Bounded: touch only lines you created or resolved.
   still needs a cloud VM. Demos no longer need it either (see [[demo-streaming-sunshine-moonlight]]).
   The open call is whether P7 returns as a booked play/UAT window, gets replaced for the world role,
   or stays down; the boot fixes below only matter under the first two.
-  (source: [SESSION-RETRO-2026-07-30](retro/SESSION-RETRO-2026-07-30.md), [ADR 0014](docs/adr/0014-boot-must-converge-or-say-so.md))
+  (source: [SESSION-RETRO-2026-07-30](retro/SESSION-RETRO-2026-07-30.md), [ADR 0014](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0014-boot-must-converge-or-say-so.md))
 
 - [ ] 2026-07-30 — **When to spend a cold stop/start proving the P7 boot fixes, and how to land the
   half that needs terraform?** The boot work is committed but **UNVERIFIED** — deliberately, since
   the VM stays stopped. Two parts with different costs: the systemd unit can be applied by hand over
   SSH on any future boot (steps staged in
-  [RUNBOOK-boot-determinism.md](../infra/gcp/p7/RUNBOOK-boot-determinism.md)), but the
+  [RUNBOOK-boot-determinism.md](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/infra/gcp/p7/RUNBOOK-boot-determinism.md)), but the
   `bootstrap.sh.tftpl` half is the GCE `metadata_startup_script` and needs terraform, which is off
   the table from this checkout (a plan here would destroy the VM + 4 live resources —
-  [RECONCILE-GAP.md](../infra/gcp/p7/RECONCILE-GAP.md)). So the durable fix for a rebuilt VM is
+  [RECONCILE-GAP.md](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/infra/gcp/p7/RECONCILE-GAP.md)). So the durable fix for a rebuilt VM is
   blocked on the same reconcile that has been deferred all along. Runbook step 1 captures evidence
   the fix destroys, so it must run **before** the fix is applied.
-  (source: [SESSION-RETRO-2026-07-30](retro/SESSION-RETRO-2026-07-30.md), [ADR 0014](docs/adr/0014-boot-must-converge-or-say-so.md))
+  (source: [SESSION-RETRO-2026-07-30](retro/SESSION-RETRO-2026-07-30.md), [ADR 0014](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0014-boot-must-converge-or-say-so.md))
 
 - [ ] 2026-07-29 — **Prune the stale P7 world auto-backups?** Four
   `ComfyEra16_backup_auto-*.db` at ~1.33 GB each (~5.3 GB); three are from 07-25/07-26. Pruning
@@ -143,7 +151,7 @@ Bounded: touch only lines you created or resolved.
   other: `AutoCharacterSelectPatches` gets a container past the menu and `MatrixCheckinRunner`
   drives benchmark cells; no adversarial or combat logic ever existed. It is also gated behind
   the unseeded lab clients (pinned item 5, a manual Steam login only Derek can do).
-  (source: [SWARM-HARNESS-REMOVED.md](../network/mod/ComfyNetworkSense/SWARM-HARNESS-REMOVED.md), [SESSION-RETRO-2026-07-29 addendum 3](retro/SESSION-RETRO-2026-07-29.md))
+  (source: [SWARM-HARNESS-REMOVED.md](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/network/mod/ComfyNetworkSense/SWARM-HARNESS-REMOVED.md), [SESSION-RETRO-2026-07-29 addendum 3](retro/SESSION-RETRO-2026-07-29.md))
 
 *(The AoI optimization items below remain on **hard hold**; see
 [PINNED-aoi-optimization.md](PINNED-aoi-optimization.md) — **except** the multi-player-density item,
@@ -161,17 +169,18 @@ seeding. No human Steam test is scheduled by the pause. Effort moved to adoption
 ## Pinned — hard hold (2026-07-21)
 
 Full context and Derek's rationale in [PINNED-aoi-optimization.md](PINNED-aoi-optimization.md).
-Move an item back to `## Open` only when Derek re-opens it.
+The former queue instructed editors to move an item back to `## Open` only when Derek
+re-opened it; that instruction is frozen and must not be carried out in this file.
 
 - [~] 2026-07-21 — **Validate the far → approach re-sync under band-shaping.** A dropped far ZDO is
   acked (mandatory, or duplicate storm), so native believes the peer has it; a static far object a
   player leaves and returns to may not be re-offered. Test: fly >64m from a build, return, confirm it
-  reloads. First suspect if "distant builds don't reload" is reported. **PINNED.** (source: [ADR 0011](docs/adr/0011-aoi-lives-on-the-producer.md), band-shaping baseline)
+  reloads. First suspect if "distant builds don't reload" is reported. **PINNED.** (source: [ADR 0011](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0011-aoi-lives-on-the-producer.md), band-shaping baseline)
 - [x] 2026-07-21 — **Band-shaping under multi-player density.** Cost is observers × changed-entities;
   the production validation was single-observer. Two clients in one dense area is the real scaling test.
   → **UNPINNED / promoted:** reproduced live and re-scoped as the ownership/visibility split
-  ([ADR 0013](docs/adr/0013-ownership-visibility-split.md)); tracked as the active co-presence item in
-  `## Open` above, not on hold. (source: [ADR 0011](docs/adr/0011-aoi-lives-on-the-producer.md))
+  ([ADR 0013](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0013-ownership-visibility-split.md)); tracked as the active co-presence item in
+  `## Open` above, not on hold. (source: [ADR 0011](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0011-aoi-lives-on-the-producer.md))
 - [~] 2026-07-21 — **AoI "v.5": hysteresis at the 30/64m band edges + landmark announcement wiring +
   re-run the baseline.** MVP shipped; the edges still flap without a dead-band (ADR 0010), and the
   gateway-side `ReachMeters` is dead-carried (populate it on the priority-manifest broadcast). **PINNED.** (source:
@@ -230,7 +239,7 @@ Move an item back to `## Open` only when Derek re-opens it.
 - [x] 2026-07-21 — **D3 + D4, the P3/P5 lab experiments and probe auto-start** → **done**, per
   Derek. 15 keys, three runner files, and `TryDriveNetcodeProbeAuto` removed; 88 → 73 keys. The
   gateway-side injection surface stays (it is wired into `ValheimHandshakeService`).
-  (source: [config-surface-decisions](docs/config-surface-decisions.md)) `network/mcp/comfy_gateway/toolsurface/matrix.py`
+  (source: [config-surface-decisions](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/config-surface-decisions.md)) `network/mcp/comfy_gateway/toolsurface/matrix.py`
   (~16 KB, 5 tools) has no client since the mod-side checkout/report loop was deleted. It is **not** a
   simple delete: `kernel/gateway.py` lazily imports it from three custom HTTP routes
   (`/valheim/matrix/{checkout,report,status}`), and it is named in two `--providers` lists. Removing it
@@ -248,7 +257,7 @@ Move an item back to `## Open` only when Derek re-opens it.
   bespoke socket copy, the priority-mirror `WebRequest`, and the apply-profile `WebRequest` all route
   through `BoundedRawHttp` now (`SendBounded` where a credential header is needed, `PostForBody`
   otherwise). Mod builds net48 0/0; the live dedicated-server POST acceptance stays the low-priority
-  integration step. (source: [ADR 0003](docs/adr/0003-server-side-mod-http-raw-socket.md))
+  integration step. (source: [ADR 0003](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0003-server-side-mod-http-raw-socket.md))
 
 ## Resolved
 
@@ -267,7 +276,7 @@ Move an item back to `## Open` only when Derek re-opens it.
   destroyed unrelated liveness information, freezing the coverage figures that prove the cutover is
   working while the queue counters beside them kept updating live. `RecordAndAdmit` now records then
   gates; the 409 and its conditions are unchanged. Proved by running the new test against the old
-  ordering, where it fails. (source: [ADR 0008](docs/adr/0008-liveness-is-not-admission.md))
+  ordering, where it fails. (source: [ADR 0008](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0008-liveness-is-not-admission.md))
 - [x] 2026-07-21 — **Stop the P7 VM, or leave it running?** → **leave it running**, per Derek.
 - [x] 2026-07-21 — **Fix release reproducibility, or accept it permanently?** → **accept it, in
   operator-in-the-seat mode**, per Derek: "accept unreproducibility when I'm in the seat driving
@@ -276,12 +285,12 @@ Move an item back to `## Open` only when Derek re-opens it.
   **independent-agent guardrail**, not an operator dev/testing requirement. Neither remedy from
   ADR 0005 is adopted now; both stay on the shelf and either may be switched on when unattended
   agent builds resume. Recorded as an amendment to
-  [ADR 0005](docs/adr/0005-carry-forward-unreproducible-artifacts.md).
+  [ADR 0005](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0005-carry-forward-unreproducible-artifacts.md).
 - [x] 2026-07-21 — **Give the P7 VM a deploy key, or keep it credential-free?** → **keep it
   credential-free for now**, per Derek ("unattended for now"): no secret at rest, updates keep
   arriving as pushed git bundles or OCI archives, and no unattended update path is opened. Revisit
   together with the independent-agent-guardrails mode above, since that is the mode that would
-  actually need one. (source: [ADR 0006](docs/adr/0006-git-bundle-transport-no-vm-credentials.md))
+  actually need one. (source: [ADR 0006](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0006-git-bundle-transport-no-vm-credentials.md))
 - [x] 2026-07-21 — **Strict roster posture for future acceptance windows** → **leave it disarmed**,
   per Derek: the two-account roster path is proven beyond reasonable doubt and well documented, so
   re-arming it per window buys no new information and can only block a join. Do not make it a

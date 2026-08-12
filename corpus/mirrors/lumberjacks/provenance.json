@@ -1,0 +1,22 @@
+{
+  "captured_at": "2026-08-12T10:13:20.467461Z",
+  "files": [
+    {
+      "bytes": 575644,
+      "local_path": "commit-notes.jsonl",
+      "raw_url": "https://raw.githubusercontent.com/djcdevelopment/lumberjacks-platform/d5128c03d1df5c2ab45adf042bcc7e8c48ad290b/Lumberjacks/docs/roadmap/commit-notes.jsonl",
+      "sha256": "058bd784005800b59465b76a1ca1b875b17f0bcacd1d4db68840d75334358a2a",
+      "upstream_path": "Lumberjacks/docs/roadmap/commit-notes.jsonl"
+    },
+    {
+      "bytes": 42176,
+      "local_path": "workbench.json",
+      "raw_url": "https://raw.githubusercontent.com/djcdevelopment/lumberjacks-platform/d5128c03d1df5c2ab45adf042bcc7e8c48ad290b/Lumberjacks/docs/workbench/workbench.json",
+      "sha256": "e4f9a9e5a786dd5e7eb20f775358e2b2b2b5e2ae9e68cfe70e37c2fc09704970",
+      "upstream_path": "Lumberjacks/docs/workbench/workbench.json"
+    }
+  ],
+  "revision": "d5128c03d1df5c2ab45adf042bcc7e8c48ad290b",
+  "schema": "baseline.corpus.mirror-provenance/v1",
+  "upstream_repository": "djcdevelopment/lumberjacks-platform"
+}

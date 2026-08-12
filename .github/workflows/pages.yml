@@ -8,8 +8,7 @@ on:
     # data/processed pages are staged into the artifact below, so they must
     # trigger a redeploy too
     paths: ['site/**', 'corpus/**', 'tools/corpus/**', 'tools/site/**',
-            'Lumberjacks/docs/workbench/workbench.json',
-            'Lumberjacks/docs/roadmap/commit-notes.jsonl',
+            'corpus/mirrors/lumberjacks/**',
             'data/processed/quest-picker.html', 'data/processed/provenance*.html',
             '.github/workflows/pages.yml']
   workflow_dispatch:

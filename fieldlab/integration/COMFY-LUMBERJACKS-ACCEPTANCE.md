@@ -1,5 +1,17 @@
 # Comfy to Lumberjacks integration acceptance
 
+> **HISTORICAL ACCEPTANCE EVIDENCE — 2026-07-19.** This document records the
+> accepted monorepo-era slice; it is not a current runbook. Product implementation
+> now belongs to
+> [`networksense`](https://github.com/djcdevelopment/networksense) and
+> [`lumberjacks-platform`](https://github.com/djcdevelopment/lumberjacks-platform).
+> Paths below retain their acceptance-time meaning. Inspect the retained document
+> and surrounding tree at the sealed
+> [`baseline@aceb2eb4`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/integration/COMFY-LUMBERJACKS-ACCEPTANCE.md),
+> and inspect the original orchestration script at its exact accepted
+> [`dd780618` revision](https://github.com/djcdevelopment/baseline/blob/dd7806185e88735be032161860a72c0a59b801a1/fieldlab/scripts/Invoke-ComfyLumberjacksIntegration.ps1).
+> Baseline no longer contains a runnable copy of that script.
+
 **Accepted implementation:** Comfy `dd7806185e88735be032161860a72c0a59b801a1` with
 Lumberjacks `e7cef6e9819f4d5f4d462f6d74860611fddb046a` (Gateway code in
 `fb55441f562ee3410087287d33b609dc05ba1fea`).
@@ -220,23 +232,25 @@ All three named Git objects were resolved directly during acceptance. The genera
 referenced the final Lumberjacks audit commit, while `fb55441...` is the code-bearing parent; both
 are recorded to remove that prior ambiguity.
 
-## Reproduction
+## Historical reproduction record
 
-Prerequisites are the existing stopped headless-client container, running original local server,
-Steam-authenticated client state, Docker network, and local Valheim/BepInEx files described by the
-harness. From `C:\work\baseline`:
+At acceptance, the prerequisites were the existing stopped headless-client
+container, running original local server, Steam-authenticated client state, Docker
+network, and local Valheim/BepInEx files described by the harness. The operator ran
+the archived orchestration script from the then-current Baseline root. That exact
+script is linked in the historical banner above; there is deliberately no executable
+replacement in this hub.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File C:\work\baseline\fieldlab\scripts\Invoke-ComfyLumberjacksIntegration.ps1
-```
+The archived command rebuilt the accepted Comfy DLL with an isolated plugin output,
+rebuilt the Gateway with the same explicit release, printed redacted effective
+configuration, ran the real positive and negative paths, verified the loaded DLL
+hashes, and restored local state in `finally`.
 
-The command rebuilds the current Comfy DLL with an isolated plugin output, rebuilds the Gateway with
-the same explicit release, prints redacted effective configuration, runs the real positive and
-negative paths, verifies the loaded DLL hashes, and restores local state in `finally`.
-
-A new run is a behavioral reproduction, not a byte-for-byte reproduction: it will have new temporal
-IDs and may have a different Docker image ID. The accepted artifact identities above remain tied to
-the recorded implementation commits and window.
+At the time, repeating the run was a behavioral reproduction, not a byte-for-byte
+reproduction: it produced new temporal IDs and could produce a different Docker
+image ID. The accepted artifact identities above remain tied to the recorded
+implementation commits and window; any present-day integration run must use the
+sovereign repositories' artifact lanes and runbooks.
 
 The committed compact packet can be rechecked without launching Valheim:
 

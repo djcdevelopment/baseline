@@ -1,8 +1,22 @@
 # Comfy + Lumberjacks architecture diagrams
 
+> **HISTORICAL ACCEPTANCE VIEWS — 2026-07-19.** These diagrams and source paths
+> preserve the monorepo-era slice; they are not current Baseline implementation or
+> run instructions. Resolve the listed paths against the sealed
+> [`baseline@aceb2eb4` tree](https://github.com/djcdevelopment/baseline/tree/aceb2eb48d770885a2c4171b926867f4ee82b4a4).
+> Current code is owned by
+> [`networksense`](https://github.com/djcdevelopment/networksense) and
+> [`lumberjacks-platform`](https://github.com/djcdevelopment/lumberjacks-platform).
+> The orchestration script itself had already been pruned by the split base; its
+> exact accepted version remains at
+> [`dd780618`](https://github.com/djcdevelopment/baseline/blob/dd7806185e88735be032161860a72c0a59b801a1/fieldlab/scripts/Invoke-ComfyLumberjacksIntegration.ps1).
+
 These diagrams describe the accepted local integration slice and the production-shaped P7 deployment separately. They are source-derived views, not a claim that P7 was running during acceptance. Secret values, private endpoints, Steam identities, and credentials are intentionally omitted.
 
-There is no hosted CI workflow in either repository. The operations diagram therefore shows the actual local/operator-driven build, release, verification, deployment, and rollback path instead of inventing a cloud pipeline.
+At acceptance there was no hosted CI workflow in either repository. The operations
+diagram therefore records the local/operator-driven build, release, verification,
+deployment, and rollback path that existed then instead of inventing a cloud
+pipeline.
 
 ## Runtime data-flow
 
@@ -15,7 +29,7 @@ The diagram follows a real server-originated ZDO candidate from `CreateSyncListP
 Primary sources:
 
 - `network/mod/ComfyNetworkSense/Core/Services/NetcodeProbeRunner.cs` and `ZdoRedirectRunner.cs`: producer hooks, Importance decision, redirect submission, consumer polling, ACK, heartbeat, and telemetry.
-- `fieldlab/scripts/Invoke-ComfyLumberjacksIntegration.ps1`: real local runtime orchestration.
+- The archived `Invoke-ComfyLumberjacksIntegration.ps1` linked above: real local runtime orchestration at acceptance.
 - `tools/verify_comfy_lumberjacks_integration.py`: ordered positive-path and network-absent negative-path assertions.
 - `fieldlab/integration/COMFY-LUMBERJACKS-ACCEPTANCE.md`: accepted evidence and limitations.
 - Lumberjacks `src/Game.Gateway/Valheim/ValheimZdoRedirectService.cs` and its mapped endpoints: ingress, admission, queue, delivery, and ACK behavior.
@@ -31,7 +45,7 @@ The local proof runs on the Windows operator workstation through Docker Desktop:
 Primary sources:
 
 - `fieldlab/autonomous/valheim-lab.compose.yml`: local Valheim lab topology.
-- `fieldlab/scripts/Invoke-ComfyLumberjacksIntegration.ps1`: accepted local containers, network, and cleanup ownership.
+- The archived `Invoke-ComfyLumberjacksIntegration.ps1` linked above: accepted local containers, network, and cleanup ownership.
 - `infra/gcp/p7/main.tf`: GCP machine, disks, address, and snapshot policy.
 - `infra/gcp/p7/docker-compose.yml`: P7 service topology and persistence.
 - `infra/gcp/p7/comfy-lumberjacks-p7.service`: boot-time Docker Compose lifecycle.

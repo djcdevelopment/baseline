@@ -80,7 +80,15 @@ Fresh clone → `git filter-repo` with explicit `--path` lists (paths preserved,
 
 ## Phase 5 — Verification matrix
 
-Per-repo: networksense `dotnet build` net48 (host dotnet 8, PluginOutputPath guard) + `dotnet test` (net8, 277 cases); lumberjacks-platform container `dotnet test Game.sln` verify stage + `npm run roadmap:test` + compose up; comfy-quest mod builds + ComfyQuestLab.Tests + 17-module unittest suite + questpack round-trip; baseline `python -m unittest discover -s tests` (remaining) + `tools/corpus/build.py --check`; sovereign-shards CI scaffold green.
+> **Executed-gate correction — 2026-08-12.** The sealed extraction surfaces
+> contain 166 NetworkSense tests, 185 Quest Lab tests, and 18 Quest Python modules
+> (199 tests); the Platform solution receipt is 649/649. Those enumerated results,
+> not the earlier estimates in repository history, are the final exact-count
+> gates. The live FieldLab ADR/runbook set also travels with
+> `lumberjacks-platform`; Baseline keeps
+> its evidence and historical records.
+
+Per-repo: networksense `dotnet build` net48 (host dotnet 8, PluginOutputPath guard) + `dotnet test` (net8, 166 cases); lumberjacks-platform container `dotnet test Game.sln` verify stage (649 cases) + `npm run roadmap:test` + compose up; comfy-quest mod builds + ComfyQuestLab.Tests (185 cases) + 18-module/199-case unittest suite + questpack round-trip; baseline `python -m unittest discover -s tests` (remaining) + `tools/corpus/build.py --check`; sovereign-shards CI scaffold green.
 
 Integration lanes: **I1** mod release artifact → p7 hash gate matches; **I2** Studio publish → `.questpack` → Runtime Check/Load on OMEN; **I3** questlab.html vendor script hash-verifies; **I4** corpus mirror → Pages build; **I5** headless lab boots with the released DLL and `/identity` names the right repo.
 

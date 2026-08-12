@@ -1,13 +1,12 @@
 # Program status & live dashboard (retired 2026-07-21)
 
 **This surface is historical, not live.** `program-status.json` covered the P0-P6 /
-I0-I7 ladder; the M-series program that followed it lives in
-`Lumberjacks/docs/roadmap/valheim-volunteer-roadmap.json` (milestones, gate/proof
-state) and `Lumberjacks/docs/plan-m1-strict-admission.md` (active plan + risk
-register) — see `fieldlab/plan-baseline-cutover.md` open item 3 for why keeping two
-status surfaces in sync stopped working (`program-status.json` sat stale for days
-after Stages 1-4 landed, with nothing catching it). Retiring this one rather than
-adding a third reconciliation job: **one status surface, the roadmap.**
+I0-I7 ladder; the M-series program that followed it now lives in the platform-owned
+[`valheim-volunteer-roadmap.json`](https://github.com/djcdevelopment/lumberjacks-platform/blob/main/Lumberjacks/docs/roadmap/valheim-volunteer-roadmap.json)
+and [`plan-m1-strict-admission.md`](https://github.com/djcdevelopment/lumberjacks-platform/blob/main/Lumberjacks/docs/plan-m1-strict-admission.md).
+See `fieldlab/plan-baseline-cutover.md` open item 3 for why keeping two status
+surfaces in sync stopped working. This frozen copy is retained as evidence, not as a
+second platform status authority.
 
 - **Dashboard (retired, stable URL preserved):** https://claude.ai/code/artifact/1c10f4f8-d747-4411-a400-26d5fb155117
   — now shows a retirement banner and points here instead of live phase/gate state.
