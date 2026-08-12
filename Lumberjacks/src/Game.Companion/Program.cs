@@ -1029,9 +1029,13 @@ sealed class ModpackInstaller(CompanionStateStore stateStore, ValheimLocator loc
                 var temporary = plan.Target + ".lumberjacks-" + Guid.NewGuid().ToString("N") + ".tmp";
                 try
                 {
-                    await using var source = plan.Entry.Open();
-                    await using var destination = File.Create(temporary);
-                    await source.CopyToAsync(destination, cancellationToken);
+                    // The destination handle must be fully closed before the rename:
+                    // Windows refuses to move a file that still has an open handle.
+                    await using (var source = plan.Entry.Open())
+                    await using (var destination = File.Create(temporary))
+                    {
+                        await source.CopyToAsync(destination, cancellationToken);
+                    }
                     File.Move(temporary, plan.Target, true);
                 }
                 finally
