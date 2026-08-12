@@ -34,6 +34,37 @@ implement via Sonnet subagents, offload drafts/triage to HEARTH `gcp-gemini`.
 AGENTS.md, CI no-reach-in guard, `tools/Assert-RepoIdentity.ps1` — verified
 passing in-repo AND refusing (exit 1) from a wrong checkout.
 
+### Phases 2-5 — COMPLETE ✅ (external execution, validated 2026-08-12)
+
+All five sovereign repos are landed and CI-green at pinned revisions:
+networksense `8d9ced61` (166/166) · lumberjacks-platform `d5128c03` (649/649)
+· comfy-quest `a7043648` (185 C# + 199 py) · sovereign-shards `4ad00beb` ·
+isolate `600e2d88` (25/25, MCP reconciled). Baseline slimmed at `39262cee`
+(Hub CI + Pages green), now 861 tracked files, 0 tracked under
+Lumberjacks/network/infra. Reports: `reports/01`..`06`.
+
+**Independently validated by the Claude session (not just report-trusted):**
+CI conclusions re-read from the GitHub API at the exact SHAs · baseline
+history NOT rewritten (1176 commits, `pre-split-20260811` reachable, moved
+source still recoverable from the tag — the archive premise holds) ·
+sovereign-shards boundary guard run locally: self-test rejects 3 bad
+fixtures (a guard that can fail) · gitleaks 8.30.1 clean over full filtered
+history in all three extractions, one fixture lookalike rewritten not
+allow-listed · `Lumberjacks/oldimages` purged (platform pack 8.78 MiB) · no
+stale source left on disk in baseline (only bin/obj skeletons).
+
+**Deliberately BLOCKED, correctly (no fake receipts):** NuGet publication
+(no API key — packages resolve from vendored local feeds), all product
+releases (0 releases/0 product tags across the fleet), I1/I3 published
+lanes, I2 (needs OMEN game client; runbook written in comfy-quest), I5
+(needs published DLL + authority to boot the live lab).
+
+**Open operator decisions:** (1) the four new repos are PRIVATE while
+baseline is PUBLIC and links to them from README (4 refs), site/ (8 files),
+and docs — those links 404 for the public until they flip; the gate I set
+for flipping (verified-clean gitleaks scrub) is now satisfied. (2) NuGet
+IDs + `NUGET_API_KEY` for the two publishing repos.
+
 ### Phase 1 — COMPLETE ✅ (sealed 2026-08-12 ~00:25 PT)
 **Tag `split-base-20260811` exists and is pushed** — the extraction
 precondition is satisfied. Landing round: `9541b78f` (scripts), `5077fd75`
