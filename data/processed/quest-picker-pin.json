@@ -1,0 +1,32 @@
+{
+  "schema": "questpicker-pin/v1",
+  "output": {
+    "path": "data/processed/quest-picker.html",
+    "sha256": "271b7641ea7b44172d740413dd28e1f37d417820387039c9371b6cb9e9cbe08d",
+    "bytes": 263821
+  },
+  "generator": {
+    "repository": "djcdevelopment/comfy-quest",
+    "revision": "e53f21cc9cf8a86bc18fd1ac3762c095ee29c1c3",
+    "entrypoint": "recipes/quest-catalogs/render_quest_picker.py",
+    "invocation": "QUEST_DATA_ROOT=<this checkout> python recipes/quest-catalogs/render_quest_picker.py"
+  },
+  "inputs": [
+    {
+      "path": "data/processed/quest-catalog-slayers.json",
+      "sha256": "1162e6663294f65c1a5b720c6fae78ce48f9c505f07c1fc04f79e73ee246982a",
+      "bytes": 68547
+    },
+    {
+      "path": "data/processed/quest-catalog-rangers.json",
+      "sha256": "87517f859e3d980ba604ca7a757fe7cf741ba4483dca2096af6ff3c1f28e0d47",
+      "bytes": 70426
+    },
+    {
+      "path": "data/processed/quest-catalog-creator-events.json",
+      "sha256": "585916e276c7db74bb604e858976f29d576ebba990e0a4456ef5469fd88b271f",
+      "bytes": 164844
+    }
+  ],
+  "note": "The guild data lives here; the renderer ships from comfy-quest. This pin records which generator revision produced the committed page and the exact inputs it consumed, so drift on either side is detectable without a release round-trip."
+}
