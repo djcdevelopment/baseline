@@ -1,7 +1,9 @@
 # 01 — NetworkSense extraction report
 
-Date: 2026-08-12  
-Target: `https://github.com/djcdevelopment/networksense` (private)  
+Date: 2026-08-12
+
+Target: `https://github.com/djcdevelopment/networksense` (private)
+
 Extraction base: `baseline@split-base-20260811`
 (`aceb2eb48d770885a2c4171b926867f4ee82b4a4`)
 
