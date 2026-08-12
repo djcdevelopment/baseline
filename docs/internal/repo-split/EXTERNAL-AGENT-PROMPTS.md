@@ -48,7 +48,8 @@ gates; it does not re-execute.
 
 **P2 parameter block — lumberjacks-platform**
 - INCLUDE: `Lumberjacks/` `infra/gcp/p7` `fieldlab/scripts` `fieldlab/autonomous` `fieldlab/docs` `fieldlab/NETCODE-MAP.md` `fieldlab/PORTAL-LIFECYCLE-MAP.md` `fieldlab/plan-native-network-final-cutover.md` `tools/p7` `tools/wave0` `tools/workbench` `tools/authority-lab` `tools/guest-package` `.githooks` `tests/test_powershell_param_contracts.py` `tests/test_guest_package.py` `tests/fixtures`
-- EXCLUDE (second pass): `Lumberjacks/oldimages` `Lumberjacks/network/mcp`
+- EXCLUDE (second pass): `Lumberjacks/oldimages` `Lumberjacks/network/mcp` `Lumberjacks/src/Quest.Studio` (Quest Studio belongs to comfy-quest — P3 carries it)
+- KNOWN POST-EXTRACTION RED (leave it, P4 fixes it): `Lumberjacks/tests/Game.Companion.Tests` ProjectReferences `../../src/Quest.Studio/Quest.Studio.csproj`, which won't exist in this repo. Record it in your report; do not "fix" it by re-including Quest.Studio. Also 3 pre-existing ModpackInstallerTests failures are known — record, don't fix.
 - Also: `--strip-blobs-bigger-than 5M`. NOTE the two py tests need a tests/__init__.py — create one if the filter didn't carry it.
 - OWNS: net9 gateway/services/companion, transport contracts package, p7 infra, fieldlab live harness, roadmap journal + ceremony (its pre-commit hook works unchanged — set `git config core.hooksPath .githooks` and record it in AGENTS.md). DOES NOT OWN: the mod (networksense), quest product (comfy-quest), evidence archive (baseline).
 - ARTIFACTS: publishes Comfy.Transport.Contracts (Phase 3), gateway images, roadmap.html; consumes mod DLL releases + Comfy.Quest.Contracts/Studio.
@@ -70,7 +71,7 @@ gates; it does not re-execute.
 > TASK: Wire real package publishing and repin consumers. Read PLAN-OF-RECORD Phase 3.
 > 1. In lumberjacks-platform: add `.github/workflows/publish-nuget.yml` — on tag `nuget-v*`, pack `Lumberjacks/src/Comfy.Transport.Contracts` and `dotnet nuget push` to NuGet.org with the NUGET_API_KEY secret. Version from the tag. Same in comfy-quest for Comfy.Quest.Contracts + Comfy.Quest.Studio.
 > 2. Tag `nuget-v0.1.0` in each producing repo; verify the workflow publishes (or report the exact failure).
-> 3. In every consuming repo (networksense, lumberjacks-platform, comfy-quest): switch nuget.config to nuget.org (drop packages-local + delete the vendored nupkgs), pin exact versions 0.1.0, restore + full build/test gates from that repo's ci.yml. THIS IS THE ROLLBACK COMMITMENT POINT — record in each report that rollback is now "repin version" not "revert to baseline".
+> 3. In every consuming repo (networksense, lumberjacks-platform, comfy-quest): switch nuget.config to nuget.org (drop packages-local + delete the vendored nupkgs), pin exact versions 0.1.0, restore + full build/test gates from that repo's ci.yml. In lumberjacks-platform this INCLUDES switching `Lumberjacks/tests/Game.Companion.Tests`'s ProjectReference to Quest.Studio → `PackageReference Comfy.Quest.Studio` (CPM row already exists) — that test project is expected red between P2 and this step. THIS IS THE ROLLBACK COMMITMENT POINT — record in each report that rollback is now "repin version" not "revert to baseline".
 > 4. networksense: add `.github/workflows/release-mod.yml` — on tag `mod-v*`, build Release DLL, emit manifest.json + sha256, attach as GitHub Release assets. Cut `mod-v0.5.46-split-proof` and verify `infra/gcp/p7/scripts/New-ReleaseCut.ps1 -ModArtifact <downloaded dll>` in lumberjacks-platform hash-verifies it (p7 smoke, no deploy).
 > 5. Report per the shared contract.
 
