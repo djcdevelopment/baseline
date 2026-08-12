@@ -25,13 +25,22 @@ None.
   behind the poison tripwire. Any single row can be reopened without reopening
   the audit. (Owner: Derek)
 
-- [ ] 2026-08-12 — **Reserve the three NuGet identifiers and issue a push key.**
-  `Comfy.Quest.Contracts`, `Comfy.Transport.Contracts`, `Comfy.Quest.Studio` are
-  unclaimed (404s confirm availability); the first push claims each. Add
-  `NUGET_API_KEY` to `comfy-quest` and `lumberjacks-platform` only —
-  `networksense` publishes GitHub Releases and needs no key. Until then the fleet
-  builds from vendored local feeds and cannot be consumed by a stranger.
-  (Owner: Derek; source: [SESSION-RETRO-2026-08-12](fieldlab/retro/SESSION-RETRO-2026-08-12.md))
+- [ ] 2026-08-12 — **Authorize NuGet publication (no key to handle).** The two
+  publish workflows now use Trusted Publishing: the job mints a GitHub OIDC token
+  and trades it for a one-hour nuget.org key, so there is no secret to create,
+  paste, rotate, or guard. What remains is browser-only, once: sign in at
+  nuget.org → username menu → **Trusted Publishing** → add a policy per repo
+  (Repository Owner `djcdevelopment`; Repository `comfy-quest` /
+  `lumberjacks-platform`; Workflow File `publish-nuget.yml`; Environment blank),
+  then set repository variable `NUGET_USER` to the nuget.org profile name (a
+  username, not a credential) in each repo. Then tag `nuget-v0.1.0`. The policy is
+  per-owner, not per-package, so the three unclaimed IDs are claimed on first push.
+  **Correction:** an earlier version of this entry said the fleet "cannot be
+  consumed by a stranger" without this. That was wrong — the `.nupkg` files are
+  committed to each repo and CI guard G5 proves a clean checkout with an empty
+  NuGet cache restores and passes. Publication buys discoverability and lets an
+  outside project depend on the contracts without cloning; it does not unblock
+  building. (Owner: Derek; source: [SESSION-RETRO-2026-08-12](fieldlab/retro/SESSION-RETRO-2026-08-12.md))
 - [ ] 2026-08-12 — **Confirm or rename `lumberjacks-platform`.** Chosen as a
   default because `djcdevelopment/Lumberjacks` is the retired public archive.
   Renaming is cheap now and gets expensive once packages and releases pin it.
