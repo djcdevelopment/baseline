@@ -26,6 +26,13 @@ The currently committed picker predates the first post-split release and is reta
 as a historical snapshot. Refresh is BLOCKED until a signed/tagged Quest release
 exists; do not regenerate it from a sibling checkout or imply it is release-backed.
 
+The raw trackers and harvested catalogs stayed here, so the generator reads them
+through `QUEST_DATA_ROOT` (pointed at this checkout) rather than an assumed
+monorepo layout — verified 2026-08-12 to reproduce the committed
+`processed/quest-picker.html` byte for byte. That portability is what a future
+release lane needs; it does **not** make a local run an authorized refresh. The
+rule above still governs what may be committed here.
+
 Weapon source files similarly flow into the joined JSON documented under
 [`../docs/datasets/`](../docs/datasets/).
 
