@@ -1,18 +1,18 @@
 using ComfyQuestContracts;
 
-namespace Lumberjacks.Companion;
+namespace Comfy.Quest.Studio;
 
-sealed class QuestPackPublisher
+public sealed class QuestPackPublisher
 {
     public const long MaxPackageBytes = 8 * 1024 * 1024;
-    readonly ValheimLocator _locator;
+    readonly IQuestStudioHost _host;
 
-    public QuestPackPublisher(ValheimLocator locator) => _locator = locator;
+    public QuestPackPublisher(IQuestStudioHost host) => _host = host;
 
     public async Task<QuestPackPublishReceipt> PublishAsync(Stream source, string filename, CancellationToken cancellationToken)
     {
         if (!SafeFilename(filename)) return QuestPackPublishReceipt.Fail("filename_invalid");
-        var valheim = _locator.Find();
+        var valheim = _host.FindValheim();
         if (valheim is null) return QuestPackPublishReceipt.Fail("valheim_not_found", manualCopyAvailable: true);
 
         var runtimeRoot = Path.Combine(valheim, "BepInEx", "config", "comfy-quest-runtime");
@@ -68,7 +68,7 @@ sealed class QuestPackPublisher
     }
 }
 
-sealed record QuestPackPublishReceipt(
+public sealed record QuestPackPublishReceipt(
     int SchemaVersion,
     bool Ok,
     string Status,

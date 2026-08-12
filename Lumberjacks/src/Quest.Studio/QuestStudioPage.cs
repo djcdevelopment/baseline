@@ -1,4 +1,4 @@
-namespace Lumberjacks.Companion;
+namespace Comfy.Quest.Studio;
 
 static class QuestStudioPage
 {

@@ -4,24 +4,24 @@ using System.Text.Json;
 using ComfyQuestContracts;
 using Newtonsoft.Json;
 
-namespace Lumberjacks.Companion;
+namespace Comfy.Quest.Studio;
 
-sealed class QuestStudioService
+public sealed class QuestStudioService
 {
     readonly object _lock = new();
     readonly string _projectPath;
     readonly string _historyPath;
     readonly QuestPackPublisher _publisher;
-    readonly ValheimLocator _locator;
+    readonly IQuestStudioHost _host;
 
-    public QuestStudioService(WorkbenchStore store, QuestPackPublisher publisher, ValheimLocator locator)
+    public QuestStudioService(IQuestStudioHost host, QuestPackPublisher publisher)
     {
-        var root = Path.Combine(store.RootDirectory, "quest-studio");
+        var root = Path.Combine(host.StateDirectory, "quest-studio");
         Directory.CreateDirectory(root);
         _projectPath = Path.Combine(root, "project.json");
         _historyPath = Path.Combine(root, "history");
         _publisher = publisher;
-        _locator = locator;
+        _host = host;
     }
 
     public QuestStudioProject Read()
@@ -29,7 +29,7 @@ sealed class QuestStudioService
         lock (_lock)
         {
             if (!File.Exists(_projectPath)) return QuestStudioProject.Starter();
-            try { return System.Text.Json.JsonSerializer.Deserialize<QuestStudioProject>(File.ReadAllText(_projectPath), Json.Options) ?? QuestStudioProject.Starter(); }
+            try { return System.Text.Json.JsonSerializer.Deserialize<QuestStudioProject>(File.ReadAllText(_projectPath), _host.Json) ?? QuestStudioProject.Starter(); }
             catch { return QuestStudioProject.Starter() with { LastError = "project_state_unreadable" }; }
         }
     }
@@ -38,7 +38,7 @@ sealed class QuestStudioService
 
     public object Receipts()
     {
-        var valheim = _locator.Find();
+        var valheim = _host.FindValheim();
         if (valheim is null) return new { schema_version = 1, available = false, receipts = Array.Empty<JsonElement>() };
         var root = Path.Combine(valheim, "BepInEx", "config", "comfy-quest-runtime");
         var store = new RuntimeReceiptStore(root);
@@ -58,7 +58,7 @@ sealed class QuestStudioService
         lock (_lock)
         {
             var temporary = _projectPath + ".tmp";
-            File.WriteAllText(temporary, System.Text.Json.JsonSerializer.Serialize(project, Json.Options));
+            File.WriteAllText(temporary, System.Text.Json.JsonSerializer.Serialize(project, _host.Json));
             File.Move(temporary, _projectPath, true);
         }
         var certified = Certify(project!);
@@ -141,13 +141,13 @@ sealed class QuestStudioService
         if (File.Exists(target)) return;
         var temporary = target + ".tmp";
         var snapshot = new QuestStudioSnapshot(1, contentHash, DateTimeOffset.UtcNow, project with { LastError = null });
-        File.WriteAllText(temporary, System.Text.Json.JsonSerializer.Serialize(snapshot, Json.Options));
+        File.WriteAllText(temporary, System.Text.Json.JsonSerializer.Serialize(snapshot, _host.Json));
         try { File.Move(temporary, target); } catch (IOException) when (File.Exists(target)) { File.Delete(temporary); }
     }
 
-    static QuestStudioSnapshot? ReadSnapshot(string path)
+    QuestStudioSnapshot? ReadSnapshot(string path)
     {
-        try { return new FileInfo(path).Length <= 1024 * 1024 ? System.Text.Json.JsonSerializer.Deserialize<QuestStudioSnapshot>(File.ReadAllText(path), Json.Options) : null; }
+        try { return new FileInfo(path).Length <= 1024 * 1024 ? System.Text.Json.JsonSerializer.Deserialize<QuestStudioSnapshot>(File.ReadAllText(path), _host.Json) : null; }
         catch { return null; }
     }
     static void Add(string field, string? from, string? to, List<QuestStudioFieldChange> changes) { if (!string.Equals(from, to, StringComparison.Ordinal)) changes.Add(new(field, from, to)); }
@@ -178,22 +178,22 @@ sealed class QuestStudioService
     static void Write(ZipArchive archive, string name, string content) { using var writer = new StreamWriter(archive.CreateEntry(name, CompressionLevel.Optimal).Open(), new UTF8Encoding(false)); writer.Write(content); }
 }
 
-sealed record QuestStudioProject(string PackId, string Version, string ExperienceId, string Title, string Event, string? Target, string Message, string? LastError = null)
+public sealed record QuestStudioProject(string PackId, string Version, string ExperienceId, string Title, string Event, string? Target, string Message, string? LastError = null)
 {
     public static QuestStudioProject Starter() => new("first-quest", "1.0.0", "first-quest", "First Quest", "kill", "$enemy_greyling", "The Charm answers your deed.");
 }
-sealed record QuestStudioResult(bool Ok, string Status, string? Error, string? ExperienceJson, string? ContentHash, IReadOnlyList<ContractDiagnostic> Diagnostics)
+public sealed record QuestStudioResult(bool Ok, string Status, string? Error, string? ExperienceJson, string? ContentHash, IReadOnlyList<ContractDiagnostic> Diagnostics)
 {
     public static QuestStudioResult Success(string status, string json, string hash) => new(true, status, null, json, hash, Array.Empty<ContractDiagnostic>());
     public static QuestStudioResult Fail(string error, IReadOnlyList<ContractDiagnostic>? diagnostics = null) => new(false, "rejected", error, null, null, diagnostics ?? Array.Empty<ContractDiagnostic>());
 }
-sealed record QuestStudioPublishResult(bool Ok, string Status, string? Error, QuestPackPublishReceipt? Receipt, IReadOnlyList<ContractDiagnostic> Diagnostics)
+public sealed record QuestStudioPublishResult(bool Ok, string Status, string? Error, QuestPackPublishReceipt? Receipt, IReadOnlyList<ContractDiagnostic> Diagnostics)
 {
     public static QuestStudioPublishResult Fail(string error, IReadOnlyList<ContractDiagnostic>? diagnostics = null) => new(false, "rejected", error, null, diagnostics ?? Array.Empty<ContractDiagnostic>());
 }
-sealed record QuestStudioSnapshot(int SchemaVersion, string ContentHash, DateTimeOffset SavedUtc, QuestStudioProject Project);
-sealed record QuestStudioFieldChange(string Field, string? From, string? To);
-sealed record QuestStudioDiff(bool Ok, string? Error, QuestStudioSnapshot? From, QuestStudioSnapshot? To, IReadOnlyList<QuestStudioFieldChange> Changes)
+public sealed record QuestStudioSnapshot(int SchemaVersion, string ContentHash, DateTimeOffset SavedUtc, QuestStudioProject Project);
+public sealed record QuestStudioFieldChange(string Field, string? From, string? To);
+public sealed record QuestStudioDiff(bool Ok, string? Error, QuestStudioSnapshot? From, QuestStudioSnapshot? To, IReadOnlyList<QuestStudioFieldChange> Changes)
 {
     public static QuestStudioDiff Fail(string error) => new(false, error, null, null, Array.Empty<QuestStudioFieldChange>());
 }
