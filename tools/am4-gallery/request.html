@@ -35,6 +35,7 @@
  .chip .nm{font:600 14px 'Space Grotesk'}.chip .sb{font:500 11px 'JetBrains Mono';color:#7e7e89}.chip.on .sb{color:rgba(255,255,255,.85)}
  .seg{flex:1;padding:11px 8px;border-radius:12px;cursor:pointer;transition:all .15s;background:transparent;color:#7e7e89;border:1px solid #26262e;font:600 13px 'Space Grotesk'}
  .seg.on{background:#5d80ff;color:#fff;border-color:#5d80ff}
+ .game-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}.game-grid label{display:grid;gap:5px;color:#7e7e89;font-size:11px}.game-grid select,.game-grid input{min-width:0;background:#121217;border:1px solid #2b2b33;border-radius:10px;color:#f2f2f4;padding:10px}.game-hint{grid-column:1/-1;padding:9px 11px;border:1px solid #29404a;border-radius:10px;background:#0e181e;color:#9fd0ff;font:500 11px 'JetBrains Mono'}
  .step{width:54px;height:56px;border-radius:13px;background:#1a1a20;border:1px solid #2b2b33;color:#d2d2db;font:500 26px 'Space Grotesk';cursor:pointer;flex:0 0 auto;line-height:1}
  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#5d80ff;color:#08160d;font:600 13px 'Space Grotesk';padding:9px 16px;border-radius:999px;z-index:60;opacity:0;transition:opacity .2s;pointer-events:none}
  .toast.show{opacity:1}.toast.err{background:#ff7a6b}
@@ -64,7 +65,9 @@
  </div>
 
  <div id="c-prompt">
-  <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:7px"><div class=lab>Prompt</div><div class=mono style="font-size:11px;color:#5b5b64">one per line</div></div>
+  <div style="display:flex;gap:8px;margin-bottom:10px"><button id="kindGeneric" class="seg on" onclick="setRequestKind('generic')">Free prompt</button><button id="kindGame" class="seg" onclick="setRequestKind('game')">Game art</button></div>
+  <div id="gameFields" class="game-grid" style="display:none"><label>Subject<select id="gameSubject"></select></label><label>Art direction<select id="gameDirection"></select></label><label>Quality lane<select id="gameQuality" onchange="updateGameHint()"><option value="q8">Standard · Q8</option><option value="bf16">Max · bf16</option></select></label><label>Fixed seed<input id="gameSeed" inputmode="numeric" placeholder="optional"></label><div id="gameHint" class="game-hint"></div></div>
+  <div style="display:flex;align-items:baseline;gap:8px;margin:10px 0 7px"><div id="promptLabel" class=lab>Prompt</div><div id="promptHelp" class=mono style="font-size:11px;color:#5b5b64">one per line</div></div>
   <textarea id="prompt" placeholder="describe the image…" style="width:100%;min-height:118px;max-height:210px;resize:vertical;background:#121217;border:1px solid #26262e;border-radius:13px;color:#f2f2f4;font:400 15px/1.45 'Space Grotesk';padding:13px 14px;outline:none"></textarea>
  </div>
 
@@ -116,7 +119,25 @@ const PLAB={queued:'queued',loading:'loading model',sampling:'sampling',saving:'
 const PCOLOR={queued:'#8b8b95',loading:'#f0a23b',sampling:ACCENT,saving:'#7fd6a0',done:'#4ade80',error:'#ff7a6b'};
 const ORDER=['queued','loading','sampling','saving','done'];
 const SHORT={queued:'queued',loading:'load',sampling:'sample',saving:'save',done:'done'};
-let selectedModel='All', mode='images', count=4, budget=6, mine=null;
+let selectedModel='All', mode='images', count=4, budget=6, mine=null, requestKind='generic', gameRegistry=null;
+
+async function loadGameRegistry(){
+  try{
+    gameRegistry=await (await fetch('/api/game-art/registry',{cache:'no-store'})).json();
+    $('gameSubject').innerHTML=gameRegistry.subjects.map(x=>`<option value="${x.id}">${x.label}</option>`).join('');
+    $('gameDirection').innerHTML=gameRegistry.directions.map(x=>`<option value="${x.id}">${x.label}</option>`).join('');
+    updateGameHint();
+  }catch(e){$('gameHint').textContent='game-art registry unavailable';}
+}
+function setRequestKind(kind){requestKind=kind;
+  $('kindGeneric').classList.toggle('on',kind==='generic');$('kindGame').classList.toggle('on',kind==='game');
+  $('gameFields').style.display=kind==='game'?'grid':'none';$('c-chips').style.display=kind==='game'?'none':'';
+  $('segBud').style.display=kind==='game'?'none':'';if(kind==='game')setMode('images');
+  $('promptLabel').textContent=kind==='game'?'Creative notes':'Prompt';$('promptHelp').textContent=kind==='game'?'optional · canonical prompt stays intact':'one per line';
+  $('prompt').placeholder=kind==='game'?'optional mood, pose, or composition note…':'describe the image…';
+}
+function updateGameHint(){const max=$('gameQuality').value==='bf16';$('gameHint').textContent=max?'Combined B70s · full bf16 UNet on #1 · text encoders + VAE on #2':'Independent lane · Flux Q8 · one B70 per in-flight job';}
+loadGameRegistry();
 
 // ---- prefill from gallery hero / remix ----
 const qp=new URLSearchParams(location.search);
@@ -144,7 +165,7 @@ function bump(d){ if(mode==='images'){count=Math.max(1,Math.min(1000,count+d));$
 $('amount').oninput=e=>{const n=parseInt(String(e.target.value).replace(/[^0-9]/g,''))||0; if(mode==='images')count=Math.min(1000,n); else budget=Math.min(120,n);};
 
 // ---- helpers ----
-const routing=n=>{if(n&&n.dual)return{s:'B70 #1 + #2',f:'Dual B70'};const a=((n&&n.gpu)||[]).filter(x=>(x.vram_used_gb||0)>1);return a.length>=2?{s:'B70 #1 + #2',f:'Dual B70'}:{s:'B70 #1',f:'Single B70'};};
+const routing=n=>{if(n&&n.execution_mode==='combined-model')return{s:'B70 #1 + #2',f:'Combined model'};if(n&&n.execution_mode==='independent-parallel')return{s:'B70 #1 | #2',f:'Independent parallel'};const a=((n&&n.gpu)||[]).filter(x=>(x.vram_used_gb||0)>1);return a.length>=2?{s:'B70 #1 + #2',f:'Dual B70'}:{s:'B70 #1',f:'Single B70'};};
 const hotTemp=g=>{const t=(g||[]).map(x=>x.temp_c).filter(x=>x!=null);return t.length?Math.max(...t):null;};
 const tempColor=t=>t==null?'#9fd0ff':t>86?'#ff7a6b':t>76?'#f0a23b':'#9fd0ff';
 const ramColor=(u,t)=>{const r=t?u/t:0;return r>0.9?'#ff7a6b':r>0.78?'#f0a23b':'#7fd6a0';};
@@ -222,7 +243,7 @@ function renderReqs(){
     +`<div class=mono style="font-size:11px;color:#6a6a73;white-space:nowrap">${mine.used_min_today}/${mine.daily_budget_min} GPU-min today</div></div>`;
   const rows=mine.requests.map(r=>{
     const b=BADGE[r.status]||[r.status,'#8b8b95'];
-    const meta=r.models.join('+')+(r.n?(' · '+r.n+' img'):'');
+    const meta=(r.subject_id?`${r.subject_id} · ${r.art_direction} · ${r.quality_lane}`:r.models.join('+'))+(r.n?(' · '+r.n+' img'):'');
     const th=(r.images||[]).map((id,i)=>`<img loading=lazy src="/thumb/${id}.webp" onclick="reqLb(${r.id},${i})" style="width:64px;height:64px;border-radius:10px;object-fit:cover;display:block;border:1px solid rgba(255,255,255,.06);cursor:pointer;flex:0 0 auto" alt="">`).join('');
     const running=(r.status==='running'||r.status==='approved'||r.status==='pending');
     return `<div style="background:#121217;border:1px solid ${running?'#2b2f49':'#222229'};border-radius:13px;padding:11px 12px">
@@ -251,9 +272,11 @@ $('rlb').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-rs
 async function submit(){
   const prompts=$('prompt').value.split('\n').map(s=>s.trim()).filter(Boolean);
   const models=selectedModel==='All'?['all']:[selectedModel];
-  const body={prompts,models,mode:mode==='images'?'count':'time',count,minutes:budget};
+  const seedText=$('gameSeed').value.trim();
+  const body=requestKind==='game'?{mode:'count',count,game:{subjectId:$('gameSubject').value,artDirection:$('gameDirection').value,qualityLane:$('gameQuality').value,notes:$('prompt').value.trim(),...(seedText?{seed:Number(seedText)}:{})}}:{prompts,models,mode:mode==='images'?'count':'time',count,minutes:budget};
   const b=$('submitBtn');
-  if(!prompts.length){toast('Enter at least one prompt',true);return;}
+  if(requestKind==='generic'&&!prompts.length){toast('Enter at least one prompt',true);return;}
+  if(requestKind==='game'&&!gameRegistry){toast('Game-art registry is still loading',true);return;}
   b.disabled=true;b.textContent='Submitting…';
   try{
     const r=await fetch('/api/requests',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});

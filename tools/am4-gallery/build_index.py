@@ -39,6 +39,12 @@ def main():
                 id=m["job_id"], model=m["model"], cell=m.get("cell_id"),
                 style=m.get("style"), category=m["category"], length=m.get("length"),
                 prompt=m["prompt"], seed=m.get("seed"), req=m.get("requester"),
+                project=m.get("project"), campaign=m.get("campaign"),
+                subjectType=m.get("subjectType"), subjectId=m.get("subjectId"),
+                subjectLabel=m.get("subjectLabel"), artDirection=m.get("artDirection"),
+                gameUse=m.get("gameUse"), qualityLane=m.get("qualityLane"),
+                comparisonId=m.get("comparisonId"), registryVersion=m.get("registryVersion"),
+                sourceRefs=m.get("sourceRefs", []),
                 t=m["metrics"]["t_total_s"], ts=round(os.path.getmtime(p)),
                 aes=sc.get("aesthetic"), clip=sc.get("clip"),  # OMEN perception scores
                 starred=(m["job_id"] in starred),             # admin print-prep flag
@@ -58,6 +64,12 @@ def main():
         styles=sorted({i["style"] for i in imgs if i["style"]}),
         categories=sorted({i["category"] for i in imgs}),
         requesters=sorted({i["req"] for i in imgs if i.get("req")}),
+        projects=sorted({i["project"] for i in imgs if i.get("project")}),
+        campaigns=sorted({i["campaign"] for i in imgs if i.get("campaign")}),
+        subjectTypes=sorted({i["subjectType"] for i in imgs if i.get("subjectType")}),
+        subjects=sorted({i["subjectId"] for i in imgs if i.get("subjectId")}),
+        artDirections=sorted({i["artDirection"] for i in imgs if i.get("artDirection")}),
+        qualityLanes=sorted({i["qualityLane"] for i in imgs if i.get("qualityLane")}),
         featured=featured,
         images=imgs,
     )

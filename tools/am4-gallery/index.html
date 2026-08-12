@@ -123,15 +123,17 @@
 <div class=toast id=toast></div>
 
 <script>
-const MODELCOLORS={sd15:'#79d2a6',sdxl:'#f0a868',sd35:'#c89bf0',flux:'#7aa2ff'};
+const MODELCOLORS={sd15:'#79d2a6',sdxl:'#f0a868',sd35:'#c89bf0',flux:'#7aa2ff',flux_bf16:'#ffb86b'};
 const mcolor=m=>MODELCOLORS[m]||'#9a9aa8';
-let FACETS=[['model'],['style'],['category']];               // 'req' added on load if present
-const LISTNAME={model:'models',style:'styles',category:'categories',req:'requesters'};
-const LABELS={model:'models',style:'styles',category:'categories',req:'by'};
+let FACETS=[['model'],['style'],['category']];
+const GAMEFACETS=[['project'],['campaign'],['subjectType'],['subjectId'],['artDirection'],['qualityLane']];
+const LISTNAME={model:'models',style:'styles',category:'categories',req:'requesters',project:'projects',campaign:'campaigns',subjectType:'subjectTypes',subjectId:'subjects',artDirection:'artDirections',qualityLane:'qualityLanes'};
+const LABELS={model:'models',style:'styles',category:'categories',req:'by',project:'project',campaign:'campaign',subjectType:'subject type',subjectId:'subject',artDirection:'art direction',qualityLane:'quality lane'};
 
 let DB=null, byCell={};
-let sel={model:new Set(),style:new Set(),category:new Set(),req:new Set()};
-let sort='top', q='';  // default: rank by OMEN aesthetic score (was 'latest')
+let sel={model:new Set(),style:new Set(),category:new Set(),req:new Set(),project:new Set(),campaign:new Set(),subjectType:new Set(),subjectId:new Set(),artDirection:new Set(),qualityLane:new Set()};
+const initialQuery=new URLSearchParams(location.search);
+let sort=initialQuery.get('sort')||'top', q=(initialQuery.get('q')||'').toLowerCase();
 let pageSize=10, page=0;
 let lbList=[], lbIdx=0;
 let ADMIN=false, STARS=new Set(), starredOnly=false;   // admin print-prep flagging
@@ -141,6 +143,8 @@ fetch('index.json').then(r=>r.json()).then(d=>{
   DB=d;
   d.images.forEach(i=>{if(i.cell)(byCell[i.cell]=byCell[i.cell]||[]).push(i)});
   if(d.requesters && d.requesters.length) FACETS.push(['req']);
+  GAMEFACETS.forEach(([k])=>{const values=d[LISTNAME[k]]||[];if(values.length)FACETS.push([k]);});
+  FACETS.forEach(([k])=>{const raw=initialQuery.get(k);if(raw)raw.split(',').filter(v=>(d[LISTNAME[k]]||[]).includes(v)).forEach(v=>sel[k].add(v));});
   // who am I (Caddy basic-auth user) + current starred set; gallery still works if these fail
   Promise.all([
     fetch('/api/whoami').then(r=>r.json()).catch(()=>({admin:false})),
@@ -155,10 +159,7 @@ fetch('index.json').then(r=>r.json()).then(d=>{
 // ---- filtering ----
 function filtered(){
   let d=DB.images.filter(i=>
-    (sel.model.size===0||sel.model.has(i.model)) &&
-    (sel.style.size===0||sel.style.has(i.style)) &&
-    (sel.category.size===0||sel.category.has(i.category)) &&
-    (sel.req.size===0||sel.req.has(i.req)) &&
+    FACETS.every(([k])=>sel[k].size===0||sel[k].has(i[k])) &&
     (!starredOnly||STARS.has(i.id)) &&
     (!q||i.prompt.toLowerCase().includes(q)));
   if(sort==='fast') d=[...d].sort((a,b)=>a.t-b.t);
@@ -171,10 +172,7 @@ function filtered(){
 // (so counts answer "how many would I get if I picked this")
 function facetCounts(k){
   const base=DB.images.filter(i=>
-    (k==='model'||sel.model.size===0||sel.model.has(i.model)) &&
-    (k==='style'||sel.style.size===0||sel.style.has(i.style)) &&
-    (k==='category'||sel.category.size===0||sel.category.has(i.category)) &&
-    (k==='req'||sel.req.size===0||sel.req.has(i.req)) &&
+    FACETS.every(([other])=>other===k||sel[other].size===0||sel[other].has(i[other])) &&
     (!q||i.prompt.toLowerCase().includes(q)));
   const c={};
   base.forEach(i=>{const v=i[k]; if(v!=null)c[v]=(c[v]||0)+1;});
@@ -182,6 +180,10 @@ function facetCounts(k){
 }
 function apply(){
   const d=filtered();
+  const query=new URLSearchParams();
+  FACETS.forEach(([k])=>{if(sel[k].size)query.set(k,[...sel[k]].sort().join(','));});
+  if(sort!=='top')query.set('sort',sort);if(q)query.set('q',q);
+  history.replaceState(null,'',location.pathname+(query.size?'?'+query.toString():''));
   $('#sub').textContent=`${d.length} / ${DB.n} · ${DB.models.join(' · ')}`;
   const pages=Math.max(1,Math.ceil(d.length/pageSize));
   page=Math.min(Math.max(0,page),pages-1);
@@ -210,7 +212,7 @@ function cellHtml(im){
     <span class=badge style="background:${mcolor(im.model)}">${im.model}</span>
     <span class=tt>${im.aes!=null?'★'+im.aes.toFixed(1)+' ':''}${im.t}s</span>
     ${ADMIN?`<span class="star${STARS.has(im.id)?' on':''}" data-star="${im.id}" title="flag for print-prep upscale">${STARS.has(im.id)?'★':'☆'}</span>`:''}
-    <div class=cap>${esc(im.prompt)}</div></div>`;
+    <div class=cap>${im.subjectLabel?`<b>${esc(im.subjectLabel)}</b> · ${esc(im.artDirection||'')} · ${esc(im.qualityLane||'')}<br>`:''}${esc(im.prompt)}</div></div>`;
 }
 function toggleStar(id,el){
   const on=!STARS.has(id);
@@ -271,7 +273,7 @@ function syncControls(){
       const span=el.querySelector('.cnt'); if(span) span.textContent=` (${c[el.dataset.v]||0})`;
     });
   });
-  const n=sel.model.size+sel.style.size+sel.category.size+sel.req.size+(q?1:0);
+  const n=FACETS.reduce((sum,[k])=>sum+sel[k].size,0)+(q?1:0);
   const b=$('#fbadge'); b.textContent=n||''; b.style.display=n?'inline-flex':'none';
 }
 $('#expbtn').onclick=()=>$('#hdr').classList.toggle('open');
@@ -298,6 +300,7 @@ function showLb(){
     `<span style="color:${mcolor(im.model)};font-weight:700">${im.model}</span>`+
     `<span>⏱ ${im.t}s</span><span>seed ${im.seed}</span>`+
     (im.style?`<span>${im.style}</span>`:'')+`<span>${im.category}</span>`+
+    (im.project?`<span>${im.project}</span><span>${im.subjectId}</span><span>${im.qualityLane}</span>`:'')+
     `<span>${lbIdx+1} / ${lbList.length}</span>`;
   if(ADMIN){const on=STARS.has(im.id);
     $('#lbmeta').innerHTML+=`<span id=lbstar class="${on?'on':''}">${on?'★ starred':'☆ star'}</span>`;
