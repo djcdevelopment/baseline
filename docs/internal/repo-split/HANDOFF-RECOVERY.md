@@ -34,7 +34,17 @@ implement via Sonnet subagents, offload drafts/triage to HEARTH `gcp-gemini`.
 AGENTS.md, CI no-reach-in guard, `tools/Assert-RepoIdentity.ps1` — verified
 passing in-repo AND refusing (exit 1) from a wrong checkout.
 
-### Phase 1 — IN FLIGHT 🟡 (updated 2026-08-12 ~00:20 PT)
+### Phase 1 — COMPLETE ✅ (sealed 2026-08-12 ~00:25 PT)
+**Tag `split-base-20260811` exists and is pushed** — the extraction
+precondition is satisfied. Landing round: `9541b78f` (scripts), `5077fd75`
+(contracts), `70982ebc` (test split, 166+185=351), `9928743e` (Studio carve,
+route parity 10/10), journaled at `aceb2eb4`. Exit sweep: python 210/210,
+Game.sln 0 errors on SDK9, roadmap:test green, ceremony hook 46/46. Known
+non-blockers: 3 pre-existing ModpackInstallerTests failures (flagged as a
+separate task); Quest.Studio deliberately NOT in Game.sln (it leaves in P3).
+**Execution mode: EXTERNAL from here** — run
+`EXTERNAL-AGENT-PROMPTS.md` P1→P6 on the external service; the low-capacity
+Claude session only validates reports. Detail below is historical:
 - **1.6 script retargets: DONE, committed `9541b78f`** (companion i5 scripts →
   `Lumberjacks/tools/companion/`; p7 lane `-ModArtifact`; headless lab
   `-ModDll` alias; New-WorkbenchZip `-RepoBlobBase`; render_quest_lab
