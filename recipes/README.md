@@ -11,26 +11,25 @@ at [`github.com/djcdevelopment/comfy`](https://github.com/djcdevelopment/comfy).
 
 ## Available recipes
 
-### Quest catalogs
+### Quest catalogs — moved
 
-[`quest-catalogs/`](quest-catalogs/) harvests guild trackers into canonical
+[`comfy-quest/recipes/quest-catalogs/`](https://github.com/djcdevelopment/comfy-quest/tree/main/recipes/quest-catalogs)
+harvests guild trackers into canonical
 catalogs and anomaly reports, then renders the local quest picker. Its contracts
-are [`schema.md`](quest-catalogs/schema.md) and
-[`quest-view-schema.md`](quest-catalogs/quest-view-schema.md).
+are [`schema.md`](https://github.com/djcdevelopment/comfy-quest/blob/main/recipes/quest-catalogs/schema.md)
+and [`quest-view-schema.md`](https://github.com/djcdevelopment/comfy-quest/blob/main/recipes/quest-catalogs/quest-view-schema.md).
 
 ```powershell
+cd C:\path\to\comfy-quest
 python .\recipes\quest-catalogs\harvest.py
 python .\recipes\quest-catalogs\validate.py .\data\processed\quest-catalog-slayers.json
 python .\recipes\quest-catalogs\validate.py .\data\processed\quest-catalog-rangers.json
 python .\recipes\quest-catalogs\render_quest_picker.py
 ```
 
-The prune also removed the committed catalog outputs under `data/processed/`,
-so the `validate.py` lines above operate on files that `harvest.py` regenerates
-— run the steps in order rather than validating first. The recipe's inputs
-(`data/raw/*-guild-tracker.xlsx`) and its rendered picker
-([`../data/processed/quest-picker.html`](../data/processed/quest-picker.html))
-are still committed.
+Baseline keeps source data and a rendered picker snapshot for provenance. The
+post-split handoff back into Baseline is a tagged Quest release plus manifest, byte
+count, and SHA-256 digest—not a source-tree reach-in.
 
 ### Quest submission bridge (raw material)
 

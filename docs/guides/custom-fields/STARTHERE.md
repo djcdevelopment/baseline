@@ -32,17 +32,21 @@ One extraction-verified correction to keep: the famous creature stats
 not on `Humanoid`. Dictionaries therefore flatten inheritance with a
 "declared by" column. This is also the guide's best concrete OOP lesson.
 
-## The assets (all in this repo)
+## The assets and their authority
+
+Baseline retains the community-facing guide and generated snapshots. The extraction,
+annotation, and dictionary pipeline is implemented in `comfy-quest`; consume its
+verified artifacts explicitly when rebuilding a Baseline page.
 
 | Asset | What it is |
 |---|---|
-| [`tools/component-packets/`](../../../tools/component-packets/README.md) | The pipeline: dll → extract packet (JSON) → LLM-drafted, human-reviewed annotations → markdown field dictionary. Three scripted steps, ~1 min per component. |
-| `tools/component-packets/samples/` | Worked packets + dictionaries: `Piece`, `WearNTear`, `Humanoid`(+`Character`), `MonsterAI`(+`BaseAI`), `Fireplace` (packet only). 250 annotated fields. |
+| [`comfy-quest/tools/component-packets/`](https://github.com/djcdevelopment/comfy-quest/blob/main/tools/component-packets/README.md) | The owning pipeline: dll → extract packet (JSON) → LLM-drafted, human-reviewed annotations → markdown field dictionary. |
+| `comfy-quest/tools/component-packets/samples/` | Owning source for worked packets and dictionaries. Transfer a release artifact with its manifest, byte count, and SHA-256 digest; do not read a sibling checkout. |
 | [`index.html`](index.html) (this directory) | The guide front door: lessons + reference, GitHub-Pages-ready. |
 | [`example-fireplace.html`](example-fireplace.html), [`example-wearntear.html`](example-wearntear.html), [`example-monsterai.html`](example-monsterai.html) | The lesson pages — L1→L3 layered, SVG diagrams + hover charts, one component each. The template for new lessons. |
 | [`atlas-explorer.html`](atlas-explorer.html) (+ `build_explorer.py`) | Interactive search over the full atlas — 336 components, 194 ZDO keys, 119 RPCs, cross-linked. Rebuild after re-sweeping the atlas. |
-| `tools/component-packets/diff_atlas.py` | Patch-day changelog: diff the committed atlas against a fresh sweep; the output is the guide's update worklist. |
-| `fieldlab/NETCODE-MAP.md`, `fieldlab/REMOTE-PLAYER-LIFECYCLE-MAP.md` | The evidence discipline this guide inherits: every claim cites the decompiled source; regenerate, don't re-research. |
+| [`comfy-quest/tools/component-packets/diff_atlas.py`](https://github.com/djcdevelopment/comfy-quest/blob/main/tools/component-packets/diff_atlas.py) | Patch-day changelog: diff the committed atlas against a fresh sweep; the output is the guide's update worklist. |
+| Historical FieldLab maps | The evidence discipline this guide inherits: every claim cites the decompiled source; regenerate, don't re-research. |
 
 ## The confidence contract (non-negotiable)
 
@@ -66,7 +70,8 @@ extractor could have produced — extract it.
   template generalizes. Which single format won (if any) is still open.
 - Miker has not yet reviewed the `(?)` annotation rows — the queue is
   packaged for him in [`annotation-review-queue.md`](annotation-review-queue.md)
-  (61 rows, regenerate with `make_review_queue.py`).
+  (61 rows; rebuild with `python make_review_queue.py --samples <verified-samples-artifact>
+  --output annotation-review-queue.md`).
 - **Publishing surface is undecided** — the pages live in the repo; community
   sharing currently means screenshots or sending files. GitHub Pages on this
   (already public) repo is the zero-infra option; a Derek decision.
@@ -77,19 +82,24 @@ extractor could have produced — extract it.
 
 ## How to do the common things
 
-- **Add a component on request** (the live Discord loop):
-  `cd tools/component-packets` → `dotnet run -- <dll-path> <Component>` →
+- **Add a component on request** (the live Discord loop): in the owning
+  [`comfy-quest` pipeline](https://github.com/djcdevelopment/comfy-quest/tree/main/tools/component-packets),
+  run `dotnet run -- <dll-path> <Component>` →
   draft annotations per `annotation-prompt.md` → `python assemble_dictionary.py
   <packet> <annotations>`.
 - **After a game patch:** re-run the extractor for every packet in `samples/`;
   diff the output — changed fields are exactly what the guide must update.
+- **Rebuild the explorer from a transferred artifact:**
+  `python build_explorer.py --atlas <verified-atlas-artifact> --output atlas-explorer.html`.
+- **Rebuild the review queue from transferred artifacts:**
+  `python make_review_queue.py --samples <verified-samples-artifact> --output annotation-review-queue.md`.
 - **New lesson page:** copy the structure of `example-fireplace.html`
   (concept → breakdown → worked example → code-level), swap in the component's
   packet data. Keep charts over raw tables; keep both themes working.
 
 ## Boundary
 
-This guide and its tooling are Baseline community deliverables: self-contained,
-extraction-friendly, no lab/HEARTH dependencies. The annotation step is a
-generic LLM prompt template on purpose — anyone can run the whole pipeline with
-a licensed Valheim install, the .NET 8 SDK, Python, and any capable model.
+This guide and its page builders are Baseline community deliverables: self-contained,
+artifact-explicit, and free of sibling-checkout or lab/HEARTH dependencies. The
+extraction and annotation pipeline belongs to `comfy-quest`; its outputs cross into
+Baseline only as immutable, hash-verified release artifacts.

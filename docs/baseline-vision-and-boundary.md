@@ -3,7 +3,13 @@
 Recorded 2026-07-29 from Derek's own framing (lightly cleaned; treat this as the canonical
 product statement until he revises it).
 
-## What Baseline is
+> **Repository-authority amendment — 2026-08-12.** “Baseline” below names the
+> product thesis and fleet assembled in the monorepo era. The Baseline repository is
+> now the knowledge, evidence, corpus, and discovery hub. Active implementation lives
+> in the sovereign repositories indexed by [REPO-MAP.md](../REPO-MAP.md); this page
+> does not grant the hub ownership of their code or runtime state.
+
+## What the Baseline fleet is
 
 Think of the name: **Baseline is a toolkit to build an entire community on, in Valheim** —
 with the things most hobbyists never get to have:
@@ -46,29 +52,29 @@ package, page, zip, doc, or walkthrough intended for the community.** Concretely
   `C:\work\commandcenter` paths in anything community-facing. (The Workbench privacy
   scanner already flags commandcenter paths — that guard is now understood as a
   product-boundary guard, not just a privacy one.)
-- Community-facing automation must run without HEARTH — which is why
-  `tools/workbench/new_announcement_draft.py` and `distill_feedback.py` are
-  deterministic/LLM-free with optional prompt-out files: the operator's fleet is an
-  *accelerant*, never a *requirement*.
-- The `network/mcp` Comfy gateway is a different thing — it's Baseline's own localhost
-  mod-dev tool and stays in the toolkit; don't confuse the two. It ships in Baseline's
-  own Docker image alongside the rest of the build tooling. That is where project MCP
-  surface belongs: **in the product, containerized** — never bolted onto HEARTH.
-- A loopback port is not a project identity. Baseline Dev MCP must self-attest its
+- Community-facing automation must run without HEARTH. Workbench automation owned by
+  `lumberjacks-platform` remains deterministic/LLM-free where a private model would
+  otherwise become a requirement: the operator's fleet is an *accelerant*, never a
+  dependency.
+- The `network/mcp` Comfy gateway is a different thing: it is a project-local,
+  containerized development surface owned and released by
+  [`isolate`](https://github.com/djcdevelopment/isolate), not HEARTH and not the
+  Baseline hub. Do not confuse the two.
+- A loopback port is not a project identity. The released Isolate MCP must self-attest its
   source root, revision/hash, image, profile, provider set, caller registry, ledger,
   and selected port; a healthy listener from another checkout is a provenance failure.
-  Baseline Dev/Lab uses the explicit project-owned port `8721`. The legacy
-  `ComfyGatewayBoot` task is disabled without deletion and its retired `:8720`
-  listener is stopped; rollback requires an explicit operator action.
+  Its canonical Compose publication is `127.0.0.1:8722`. Port `8721` was the explicit
+  pre-split Baseline Dev/Lab publication; the legacy `ComfyGatewayBoot` task was
+  disabled without deletion and its retired `:8720` listener was stopped.
 - **The rule runs in BOTH directions, and the inbound one is the easier to miss.**
   Everything above forbids HEARTH leaking *out* into Baseline. The reverse is equally
-  forbidden: **Baseline must not report into, register with, or depend on HEARTH as a
-  destination** — no Baseline runtime telemetry, runner timings, job state, or ledger
+  forbidden: **fleet products must not report into, register with, or depend on HEARTH
+  as a destination** — no product runtime telemetry, runner timings, job state, or ledger
   writes routed to `mcp__hearth__*`, a "Hearth Hub", or anything else on the operator's
   fleet. HEARTH is Derek's *cross-project* lab door, shared by every repo he works in;
   wiring one project's machinery into it makes a general-purpose tool carry a single
   project's concerns, and silently makes Baseline's behaviour depend on hardware no
-  contributor has. If Baseline needs a hub, Baseline ships one.
+  contributor has. If a product needs a hub, its owning repository ships one.
   (Added 2026-08-01: a proposal to route per-runner `Update` timings into "Hearth Hub"
   cleared every bullet above, because all of them were written outbound-only.)
 
@@ -86,5 +92,6 @@ substrate hobbyist communities never get — and they're the thing Baseline demo
 
 - [PD-5 — The local Workbench is Baseline's ownership appliance](decisions/pd-5-local-workbench-ownership-appliance.md)
 - [PD-6 — The Baseline Dev MCP is a development/lab-only control plane](decisions/pd-6-development-mcp-lifecycle.md)
+- [PD-9 — Sovereign add-on repositories with Baseline as the hub](decisions/pd-9-repository-split.md)
 - [Baseline Workbench operating model](workbench-operating-model.md)
 - [2026-08-01 product and development-loop review](audit/2026-08-01-workbench-product-review.md)

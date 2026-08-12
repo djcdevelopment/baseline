@@ -38,9 +38,9 @@ New durable artifacts:
   what it does **not** cover.
 - `Lumberjacks/docs/roadmap/prune-audit-20260721.json` — the reason for all 268 primary deletions.
   The files go; the rationale doesn't.
-- ADRs [0005](../docs/adr/0005-carry-forward-unreproducible-artifacts.md),
-  [0006](../docs/adr/0006-git-bundle-transport-no-vm-credentials.md),
-  [0007](../docs/adr/0007-prune-audit-signal-discipline.md).
+- ADRs [0005](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0005-carry-forward-unreproducible-artifacts.md),
+  [0006](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0006-git-bundle-transport-no-vm-credentials.md),
+  [0007](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0007-prune-audit-signal-discipline.md).
 - Memory: `baseline-unified-repo`, `streamline-over-two-repo-ceremony`,
   `powershell-utf8-roundtrip-corrupts-files`, `p7-deployment-topology`, `valheim-world-reload-delay`.
 
@@ -226,13 +226,13 @@ irony, in this retro's own fleet second opinion.
 45 files changed, 13,718 insertions, 1,482 deletions. Tests 523/525 to **528/528**.
 
 New durable artifacts:
-- [`Lumberjacks/docs/network/area-of-interest-findings.md`](../../Lumberjacks/docs/network/area-of-interest-findings.md) — what the AoI testing learned and why none of it reached the code.
-- [`Lumberjacks/docs/network/aoi-knee-experiment-brief.md`](../../Lumberjacks/docs/network/aoi-knee-experiment-brief.md) — self-contained brief for the capacity-frontier experiment.
-- [`fieldlab/docs/config-surface-decisions.md`](../docs/config-surface-decisions.md) — all 107 config keys as eight decisions with counter-reasons.
-- [`fieldlab/docs/audit-2026-07-21-conditional-logic.svg`](../docs/audit-2026-07-21-conditional-logic.svg) — the audit drawn for posterity.
+- [`Lumberjacks/docs/network/area-of-interest-findings.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/Lumberjacks/docs/network/area-of-interest-findings.md) — what the AoI testing learned and why none of it reached the code.
+- [`Lumberjacks/docs/network/aoi-knee-experiment-brief.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/Lumberjacks/docs/network/aoi-knee-experiment-brief.md) — self-contained brief for the capacity-frontier experiment.
+- [`fieldlab/docs/config-surface-decisions.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/config-surface-decisions.md) — all 107 config keys as eight decisions with counter-reasons.
+- [`fieldlab/docs/audit-2026-07-21-conditional-logic.svg`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/audit-2026-07-21-conditional-logic.svg) — the audit drawn for posterity.
 - [`fieldlab/evidence/aoi-density-pressure-matrix-20260704/`](../evidence/aoi-density-pressure-matrix-20260704/README.md) — the rescued density dataset.
-- [`network/mod/ComfyNetworkSense/SWARM-HARNESS-REMOVED.md`](../../network/mod/ComfyNetworkSense/SWARM-HARNESS-REMOVED.md) — the deletion's recovery pointer and counter-argument.
-- ADR [0008](../docs/adr/0008-liveness-is-not-admission.md).
+- [`network/mod/ComfyNetworkSense/SWARM-HARNESS-REMOVED.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/network/mod/ComfyNetworkSense/SWARM-HARNESS-REMOVED.md) — the deletion's recovery pointer and counter-argument.
+- ADR [0008](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0008-liveness-is-not-admission.md).
 - Memory: `guardrails-are-mode-scoped`.
 
 ## The team retro — our collaboration across the seats
@@ -593,7 +593,7 @@ pivot itself cost the most tokens and all seven of Derek's BS-calls.
 | `821ed3a` | Increment 2 — `first_hit` + `weapon_used`. |
 | `474c647` | Dropped the ingress's redundant telemetry-key check (the change that shipped as `inc1-r2`). |
 
-New durable artifacts: ADR [0012](../docs/adr/0012-gameplay-telemetry-is-client-side.md); memories
+New durable artifacts: ADR [0012](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0012-gameplay-telemetry-is-client-side.md); memories
 `community-dashboard-already-exists`, `p7-gateway-image-pinned`, `gameplay-capture-is-client-side`;
 the `omen-dashboard` verify runbook; a live Gameplay Feed on the dashboard. Validated by live login:
 `killing_blow $enemy_leech`, `first_hit`, and `weapon_used = Unarmed` (Derek punched it) all rendered.

@@ -1,5 +1,8 @@
 # Handoff — the queue after the 2026-07-21 audit
 
+> **HISTORICAL:** This handoff records the former monorepo and is not an operational
+> queue. Use [`REPO-MAP.md`](../../REPO-MAP.md) for current authority.
+
 > **Stale handoff (redirect added 2026-07-29):** superseded by `HANDOFF-2026-07-29.md`
 > at the repo root, the current canonical handoff. This file is retained as a
 > historical record of the 2026-07-21 session and must not be used for cold pickup.
@@ -43,7 +46,7 @@ Still open, needing the seat / infra / a live world:
   commits are local only.
 - Tests **528/528**. Mod builds 0 warnings. Config surface **107 → 73 keys**.
 - The intermittent `Game.Simulation.Tests` failure is fixed (`d5bed21`).
-- Read [ADR 0010](../../fieldlab/docs/adr/0010-consistency-is-predictability.md) before touching AoI.
+- Read [ADR 0010](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0010-consistency-is-predictability.md) before touching AoI.
 - **Do not delete `fieldlab/autonomous/`** — it is the live definition of a running gateway and
   a running Valheim server.
 - The P7 VM is running and billing, by decision.
@@ -117,7 +120,7 @@ to the changed-entity count, and moving an entity across 100.0 units moves it be
 ## 4 · Run the AoI knee sweep
 
 **Do:** follow
-[`Lumberjacks/docs/network/aoi-knee-experiment-brief.md`](../../Lumberjacks/docs/network/aoi-knee-experiment-brief.md)
+[`Lumberjacks/docs/network/aoi-knee-experiment-brief.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/Lumberjacks/docs/network/aoi-knee-experiment-brief.md)
 — it is self-contained and pastes as an opening prompt. Sweep the three-tier shape first:
 `NearRadius` ~30, `MidRadius` ~64, `MidTickInterval` for the thinned rate.
 
@@ -181,7 +184,7 @@ is a landmark within its reach of the observer*.
 selector, `Position` is absolute, `structural_anchor` is already rank 2, the reliable lane is
 already region-wide and unfiltered, and the manifest already has a broadcast wire. Today
 `DistanceMeters` means *observation* distance; nothing means *visibility* range. See
-[landmark-reach-design.md](../../Lumberjacks/docs/network/landmark-reach-design.md).
+[landmark-reach-design.md](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/Lumberjacks/docs/network/landmark-reach-design.md).
 
 **Test:** an object marked with reach R is delivered to a client at distance R while an
 unmarked peer object at the same distance is not, and the datagram path shows **no** added
@@ -244,9 +247,9 @@ no ZDO ownership, which is the far-field proxy prototype task 7 needs. Read the 
 # Record
 
 [Retro](../../fieldlab/retro/SESSION-RETRO-2026-07-21.md) (two, the second an addendum) ·
-[the mess](../../fieldlab/docs/audit-2026-07-21-conditional-logic.svg) ·
-[the sixteen twists](../../fieldlab/docs/audit-2026-07-21-the-twists.svg) ·
-[AoI findings](../../Lumberjacks/docs/network/area-of-interest-findings.md) ·
-ADRs [0008](../../fieldlab/docs/adr/0008-liveness-is-not-admission.md) ·
-[0009](../../fieldlab/docs/adr/0009-verify-against-an-independent-source.md) ·
-[0010](../../fieldlab/docs/adr/0010-consistency-is-predictability.md)
+[the mess](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/audit-2026-07-21-conditional-logic.svg) ·
+[the sixteen twists](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/audit-2026-07-21-the-twists.svg) ·
+[AoI findings](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/Lumberjacks/docs/network/area-of-interest-findings.md) ·
+ADRs [0008](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0008-liveness-is-not-admission.md) ·
+[0009](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0009-verify-against-an-independent-source.md) ·
+[0010](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0010-consistency-is-predictability.md)

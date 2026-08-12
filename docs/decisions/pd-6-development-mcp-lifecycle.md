@@ -6,6 +6,14 @@ in [`workbench-operating-model.md`](../workbench-operating-model.md). The separa
 HEARTH product boundary remains canonical in
 [`baseline-vision-and-boundary.md`](../baseline-vision-and-boundary.md).
 
+> **Authority amendment — 2026-08-12.** The development/lab-only lifecycle
+> decision remains accepted, but [`isolate`](https://github.com/djcdevelopment/isolate)
+> now owns the MCP kernel, caller/API contracts, Compose runtime, and release lane.
+> Its canonical Compose publication is `127.0.0.1:8722` to kernel port `8720`.
+> Port `8721` below records the pre-split Baseline Dev MCP resolution; it is not the
+> Baseline hub's current runtime identity. The hub may connect to a released Isolate
+> runtime, but owns no MCP implementation or state.
+
 Operational resolution, 2026-08-01: the stale `ComfyGatewayBoot` logon task was
 disabled (not deleted), its identity-checked retired-checkout process was stopped,
 and host port `8720` was released. Baseline Dev/Lab uses the explicit loopback
@@ -170,8 +178,8 @@ operations from receiving the stricter contracts they require.
 ## Sources
 
 - [`baseline-vision-and-boundary.md`](../baseline-vision-and-boundary.md)
-- [`network/mcp/README.md`](../../network/mcp/README.md)
-- [`network/mcp/AGENTS.md`](../../network/mcp/AGENTS.md)
-- [`network/mcp/contracts/commands.json`](../../network/mcp/contracts/commands.json)
+- [`network/mcp/README.md`](https://github.com/djcdevelopment/isolate/blob/main/network/mcp/README.md)
+- [`network/mcp/AGENTS.md`](https://github.com/djcdevelopment/isolate/blob/main/network/mcp/AGENTS.md)
+- [`network/mcp/contracts/commands.json`](https://github.com/djcdevelopment/isolate/blob/main/network/mcp/contracts/commands.json)
 - [`2026-08-01-hearth-boundary-audit.md`](../audit/2026-08-01-hearth-boundary-audit.md)
 - [`2026-08-01-workbench-product-review.md`](../audit/2026-08-01-workbench-product-review.md)

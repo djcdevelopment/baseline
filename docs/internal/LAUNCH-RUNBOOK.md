@@ -1,5 +1,9 @@
 # Launch runbook — operator
 
+> **HISTORICAL:** This 2026-08-06 runbook describes the former monorepo deployment
+> surface. It is retained as evidence, not as current operating instruction; use
+> [`REPO-MAP.md`](../../REPO-MAP.md) to locate the owning repository.
+
 **What this is:** the operator's working page for taking Baseline's tools to a community.
 What is proven, what still needs testing, what to fall back to, what installing actually
 involves, what to say, and where the friction is.
@@ -35,7 +39,7 @@ Full list in [`GLOSSARY.md`](GLOSSARY.md); these are the ones this page leans on
 | **Cutover mode** | Which stack owns world state. `native` = vanilla Valheim sync with telemetry still on. |
 | **C-gates** | Numbered acceptance gates for the netcode cutover. C0–C8 + C10a done on AM4; **C10b never green**. |
 | **r42** | The Gateway session-plane fix cut landed 2026-08-05 (`b206c31`). Unit-tested only, never deployed. |
-| **Enrollment lane vs. harness lane** | Two different paths world data can take. Every proof ran the **harness** lane; every real player runs the **enrollment** lane, which has never been exercised on P7. That mismatch is [ADR 0017](../../fieldlab/docs/adr/0017-prove-the-lane-users-ship-on.md). |
+| **Enrollment lane vs. harness lane** | Two different paths world data can take. Every proof ran the **harness** lane; every real player runs the **enrollment** lane, which has never been exercised on P7. That mismatch is [ADR 0017](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0017-prove-the-lane-users-ship-on.md). |
 
 ---
 

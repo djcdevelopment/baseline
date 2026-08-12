@@ -1,13 +1,10 @@
 # Documentation map
 
-Most of what lived here — the core thesis, positioning, governance and adoption
-essays, the persona and perspective lenses, the method playbook and its source
-transcript, and a generated repo-map snapshot — was removed in the July 2026
-prune. It described community strategy for a repo whose live purpose is now the
-Valheim server, its release pipeline, and the mod. That material is recoverable
-from git history and from `C:\work\comfy`.
+Baseline keeps fleet-level decisions, cross-boundary architecture, historical
+evidence, and durable product context. Active implementation documentation belongs
+to the sovereign repository named in [the repository map](../REPO-MAP.md).
 
-What remains is the cross-boundary architecture and dataset notes:
+Start with:
 
 - **Product boundary:** [`baseline-vision-and-boundary.md`](baseline-vision-and-boundary.md).
 - **Workbench operating model:** [`workbench-operating-model.md`](workbench-operating-model.md),
@@ -39,12 +36,14 @@ What remains is the cross-boundary architecture and dataset notes:
 
 Explanations and decisions that cross implementation boundaries. Project-level
 governance/product/posture decisions live in [`decisions/`](decisions/README.md).
-Runnable code,
-operator commands, raw evidence and generated data belong in the area they serve
-— `infra/`, `network/`, `Lumberjacks/`, or `fieldlab/`.
+Runnable product code and operator commands belong in the owning sovereign
+repository. Raw historical evidence and generated discovery data may remain here
+when Baseline is their declared archive or projection owner.
 
 Technical netcode decisions stay with their system as ADRs under
-[`../fieldlab/docs/adr/`](../fieldlab/docs/adr/). Release manifests, receipts, and
+[`lumberjacks-platform/fieldlab/docs/adr/`](https://github.com/djcdevelopment/lumberjacks-platform/tree/main/fieldlab/docs/adr).
+Release manifests, receipts, and
 the append-only implementation journal stay under
-[`../Lumberjacks/docs/roadmap/`](../Lumberjacks/docs/roadmap/README.md). The separation
+[`lumberjacks-platform/Lumberjacks/docs/roadmap/`](https://github.com/djcdevelopment/lumberjacks-platform/tree/main/Lumberjacks/docs/roadmap).
+The separation
 keeps one decision in one canonical home while allowing plans and runbooks to link it.

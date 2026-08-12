@@ -2,13 +2,16 @@
 
 Adopted 2026-07-29 (Derek). This directory holds the canonical rationale for
 significant, long-lived project decisions. The technical netcode track keeps its own
-ADRs (`fieldlab/docs/adr/`); PDs are the governance/product/posture track.
+ADRs in
+[`lumberjacks-platform/fieldlab/docs/adr/`](https://github.com/djcdevelopment/lumberjacks-platform/tree/main/fieldlab/docs/adr);
+PDs are the fleet-level governance/product/posture track.
 
 ## The lifecycle
 
 **Registers are queues, not archives.**
 
-1. Open decision → a register entry (`DECISIONS-PENDING.md`, root or fieldlab).
+1. Open fleet decision → the root [`DECISIONS-PENDING.md`](../../DECISIONS-PENDING.md).
+   Product-local decisions use the owning sovereign repository's queue.
 2. Decision made → the entry becomes **one line + a link**.
 3. Rationale with lasting value → graduates into a PD here.
 4. The register links to the PD; the PD is the last word on *why*.
@@ -46,8 +49,8 @@ beats a taxonomy of ten empty ones.
 - [PD-2 — Security posture & the First Stranger gate](pd-2-security-posture-first-stranger-gate.md)
 - [PD-3 — Public community-data posture](pd-3-public-community-data.md)
 - [PD-4 — What counts as proof: evidence paths and falsifiable guards](pd-4-evidence-standard.md)
-- [PD-5 — The local Workbench is Baseline's ownership appliance](pd-5-local-workbench-ownership-appliance.md)
-- [PD-6 — The Baseline Dev MCP is a development/lab-only control plane](pd-6-development-mcp-lifecycle.md)
+- [PD-5 — The local Workbench is Baseline's ownership appliance](pd-5-local-workbench-ownership-appliance.md) — implementation authority amended to `lumberjacks-platform`
+- [PD-6 — The Baseline Dev MCP is a development/lab-only control plane](pd-6-development-mcp-lifecycle.md) — runtime authority amended to `isolate`
 - [PD-7 — Lab runtime provenance and canonical session boundary](pd-7-lab-runtime-provenance-and-session-boundary.md)
 - [PD-8 — Isolated runtime and toolset repository architecture](pd-8-isolated-runtime-and-toolset-repository.md)
 - [PD-9 — Sovereign add-on repositories with Baseline as the hub](pd-9-repository-split.md)

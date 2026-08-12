@@ -4,6 +4,13 @@ Status: adopted 2026-08-01 (Derek). Canonical *why* for the local Docker
 Workbench's place in the product. The evolving *how* lives in
 [`workbench-operating-model.md`](../workbench-operating-model.md).
 
+> **Authority amendment — 2026-08-12.** The ownership-appliance decision remains
+> accepted, but its implementation authority is now
+> [`lumberjacks-platform`](https://github.com/djcdevelopment/lumberjacks-platform).
+> In the decision text below, “Baseline” names the product/fleet at the time of
+> adoption; it does not assign Workbench code, Compose, or operator state to the
+> Baseline hub repository. Baseline retains this rationale and discovery links only.
+
 ## Decision
 
 Baseline's primary human product surface is a loopback-only local Docker
@@ -132,5 +139,5 @@ Those choices may change without reopening the ownership-appliance decision.
 - [`m4-2-compose-stack.md`](../../plans/m4-2-compose-stack.md)
 - [`m4-3-lab-mode-keys.md`](../../plans/m4-3-lab-mode-keys.md)
 - [`m4-4-localhost-demo.md`](../../plans/m4-4-localhost-demo.md)
-- [`Lumberjacks/tools/companion/README.md`](../../Lumberjacks/tools/companion/README.md)
+- [`Lumberjacks/tools/companion/README.md`](https://github.com/djcdevelopment/lumberjacks-platform/blob/main/Lumberjacks/tools/companion/README.md)
 - [`2026-08-01-workbench-product-review.md`](../audit/2026-08-01-workbench-product-review.md)

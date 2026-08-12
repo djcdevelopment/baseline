@@ -122,9 +122,9 @@ dl.fine dd{margin:0}
     <span class="glyph">B</span>
     <span class="name">BASELINE</span>
   </div>
-  <h1>A toolkit to build an entire community on, in Valheim</h1>
-  <p class="sub">With the things most hobbyist servers never get to have: identity,
-    telemetry and testing as first-class parts of the stack instead of afterthoughts.</p>
+  <h1>The map, evidence, and shared knowledge behind a Valheim project fleet</h1>
+  <p class="sub">Baseline is the hub. NetworkSense, Quest, the service platform, and
+    the MCP kernel each keep their implementation in a sovereign repository.</p>
   <div class="rule"></div>
   <div class="chain">
     <b>Server</b><i>&rarr;</i><b>Gateway</b><i>&rarr;</i><b>Player</b><i>&rarr;</i><b>Mod</b><i>&rarr;</i><b>BepInEx</b><i>&rarr;</i><b>Harmony</b><i>&rarr;</i><b>Unity</b><i>&rarr;</i><b>transpiling</b>
@@ -133,8 +133,8 @@ dl.fine dd{margin:0}
 
 <section><div class="col">
   <p>The communities this is for <strong>already do this work</strong> &mdash; with mods,
-    spreadsheets, Discord bots, checklists, screenshots. Baseline doesn't replace any of
-    that. It's meant to let people spend less time on paperwork and tracking, and more
+    spreadsheets, Discord bots, checklists, screenshots. The fleet doesn't replace any of
+    that. It is meant to let people spend less time on paperwork and tracking, and more
     time making things.</p>
 </div></section>
 
@@ -157,7 +157,7 @@ dl.fine dd{margin:0}
 <section>
   <div class="head">
     <div class="eyebrow">Try something right now</div>
-    <h2>The Community Workbench</h2>
+    <h2>The platform-owned Community Workbench</h2>
     <p class="muted" style="max-width:36rem">A catalog of tools you can download and run
       on your own machine tonight. Every card says what the thing actually does today
       &mdash; not what it's going to do.</p>
@@ -224,7 +224,7 @@ dl.fine dd{margin:0}
       including that it broke &mdash; is the contribution.</p>
     <div class="links">
       <a href="https://discord.gg/JCDaYQ68kN">Join the Discord</a>
-      <a href="https://github.com/djcdevelopment/baseline">Read the code on GitHub</a>
+      <a href="https://github.com/djcdevelopment/baseline/blob/main/REPO-MAP.md">Browse the repository map</a>
       <a href="https://am4.tail8e749c.ts.net/roadmap">Follow the roadmap</a>
     </div>
   </div>
@@ -250,14 +250,11 @@ dl.fine dd{margin:0}
       you take pieces of it and use them yourself, that's the highest compliment.</p>
   </div>
   <div class="areas">
-    <div class="area"><b>Lumberjacks/</b><span>The service stack: Gateway, eventlog,
-      progression, operatorapi, and the append-only roadmap journal.</span></div>
-    <div class="area"><b>network/mod/</b><span>The BepInEx plugin: ZDO redirect,
-      handshake, telemetry, quest tracking.</span></div>
-    <div class="area"><b>fieldlab/</b><span>The netcode-replacement R&amp;D program and its
-      ground truth.</span></div>
-    <div class="area"><b>infra/gcp/p7/</b><span>Release, deployment and
-      rollback.</span></div>
+    <div class="area"><b><a href="https://github.com/djcdevelopment/networksense">networksense</a></b><span>The NetworkSense BepInEx mod, HUD, telemetry, and release lane.</span></div>
+    <div class="area"><b><a href="https://github.com/djcdevelopment/comfy-quest">comfy-quest</a></b><span>Quest contracts, Lab, Runtime, Studio, catalogs, and bridge tooling.</span></div>
+    <div class="area"><b><a href="https://github.com/djcdevelopment/lumberjacks-platform">lumberjacks-platform</a></b><span>Gateway, services, Workbench, live FieldLab, and deployment.</span></div>
+    <div class="area"><b><a href="https://github.com/djcdevelopment/isolate">isolate</a></b><span>The development MCP kernel, contracts, containers, and release surface.</span></div>
+    <div class="area"><b><a href="https://github.com/djcdevelopment/baseline/blob/main/REPO-MAP.md">baseline</a></b><span>The fleet map, durable decisions, historical evidence, corpus, and discovery projections.</span></div>
   </div>
 </section>
 
@@ -270,8 +267,8 @@ dl.fine dd{margin:0}
       deployed source. Qualifying stewards keep the profit: no separate agreement, no
       royalty. Each version converts to AGPL-3.0-only no later than its Change Date.</dd>
     <dt>Note</dt>
-    <dd><code>main</code> is force-pushed by background automation. Long-lived branches
-      and forks rot fast &mdash; read AGENTS.md before you touch anything.</dd>
+    <dd>Implementation changes belong in the owning repository above. Baseline keeps the
+      durable map, evidence, and public discovery surfaces that connect them.</dd>
   </dl>
   <p class="fine disclaimer">Not affiliated with or endorsed by Iron Gate AB or Coffee
     Stain Publishing.</p>

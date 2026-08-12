@@ -1,5 +1,8 @@
 # Plan — cutover to `baseline` (full-stack monorepo)
 
+> **HISTORICAL:** This plan records the 2026-07 monorepo cutover and is not a current
+> repository plan. Current ownership is defined by [`REPO-MAP.md`](../REPO-MAP.md).
+
 2026-07-21. Written at the close of the window that deployed `m5-recipients-20260720-r1`
 and world-tested recipient-scoped delivery end to end. Target repo:
 `https://github.com/djcdevelopment/baseline` (private, empty at time of writing) —
@@ -134,12 +137,12 @@ Two things this plan assumed turned out to be wrong, and both mattered:
   `8ca27eda`, with 471 dirty files, and a compose file that still built three of the five
   services from VM-local source. The five-service gate this plan asked for (item 3) existed in
   the repo but had never existed on the VM. Re-provisioning meant re-pointing the deployment
-  source, not copying files. → ADR [0006](docs/adr/0006-git-bundle-transport-no-vm-credentials.md).
+  source, not copying files. → ADR [0006](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0006-git-bundle-transport-no-vm-credentials.md).
 - **"Confirm the result reproduces what was world-tested"** is not fully achievable by rebuild.
   The mod DLL cannot be rebuilt to its shipped hash at any commit; the .NET 8 SDK embeds the git
   HEAD sha in the PDB. The tested artifacts were carried forward and the gap recorded, rather
   than rebuilt into different bytes. → ADR
-  [0005](docs/adr/0005-carry-forward-unreproducible-artifacts.md).
+  [0005](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0005-carry-forward-unreproducible-artifacts.md).
 
 Evidence: `Lumberjacks/docs/roadmap/m5-v3-acceptance-receipt.json` (what passed, and what it
 does **not** cover), `m5-v3-reprovision-receipt.json` (what changed on the VM and how to roll

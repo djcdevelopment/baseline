@@ -10,7 +10,7 @@ implementation, per [`fieldlab/plan-baseline-cutover.md`](../../fieldlab/plan-ba
 
 `comfy`'s content lives at the repo root, history preserved unmodified — original commit
 SHAs still resolve (e.g. `git show 433f1cc3`). The Lumberjacks service tree lives under
-[`Lumberjacks/`](../../Lumberjacks/README.md), landed via `git subtree`, with its full
+[`Lumberjacks/`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/Lumberjacks/README.md), landed via `git subtree`, with its full
 original history preserved as the second parent of the merge commit.
 
 If `git log --follow` on a `Lumberjacks/`-prefixed path stops at the merge boundary,

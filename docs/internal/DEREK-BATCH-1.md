@@ -1,5 +1,9 @@
 # DEREK BATCH 1 — Decide & Seed (~45–60 min, no game, minimal terminal)
 
+> **HISTORICAL:** This 2026-07 checklist records the former monorepo workflow. Do not
+> execute it against the current fleet; use [`REPO-MAP.md`](../../REPO-MAP.md) to find
+> the owning repository.
+
 Everything below needs *you*; nothing else does. Work top to bottom. Items marked ⏳ get
 finalized by the agent after your answers. Status of the wider rollout when you left:
 **Phase 0 done** (in-flight networking work landed + pushed, retro written, lane pinned —
@@ -53,13 +57,13 @@ anyone, or post `00-announcement.md` (hardcoded denylist, no flag). Setup walkth
 `Lumberjacks/docs/workbench/discord/09-discord-bot-setup.md`.
 
 0. **Tick-box version of everything below:**
-   [`tools/workbench/discord/WORKBOOK.md`](../../tools/workbench/discord/WORKBOOK.md) — also
+   [`tools/workbench/discord/WORKBOOK.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/tools/workbench/discord/WORKBOOK.md) — also
    carries the paste-ready handoff block for the dashboard agent.
 1. ✅ **Done.** Bot `Baseline-helper` created and authorized; token at
    `%USERPROFILE%\.baseline\discord.env`. `whoami` green.
 2. ✅ **Done.** Dry run approved and applied — the live plan hash matched the
    pre-approved offline receipt exactly (`6aba648cba55`), so what was read is what
-   shipped. Receipt: [`receipts/2026-07-29-plan.md`](../../tools/workbench/discord/receipts/2026-07-29-plan.md).
+   shipped. Receipt: [`receipts/2026-07-29-plan.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/tools/workbench/discord/receipts/2026-07-29-plan.md).
    Thread URLs recorded in `tools/workbench/discord/provision-state.json`.
 3. ⏳ **STILL OPEN — the four catalog threads.** Seeds 01–04 contain `<ONEPAGER-URL>` /
    `<ACCESS-URL>`; posting them before `/workbench` is live would put literal

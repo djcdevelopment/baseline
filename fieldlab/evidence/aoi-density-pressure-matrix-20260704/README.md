@@ -5,7 +5,7 @@ in a retired source repo. These were never tracked in git. They are committed he
 they are the only surviving record of the area-of-interest density campaign, and because a
 `var/` directory in a retired checkout is not a durable home for evidence.
 
-See [`Lumberjacks/docs/network/area-of-interest-findings.md`](../../../Lumberjacks/docs/network/area-of-interest-findings.md)
+See [`Lumberjacks/docs/network/area-of-interest-findings.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/Lumberjacks/docs/network/area-of-interest-findings.md)
 for what they mean and what to do next.
 
 ## What these three files actually are

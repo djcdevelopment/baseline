@@ -1,9 +1,10 @@
 # Annotation review queue
 
 Every field description the drafting model flagged low-confidence with `(?)`.
-To clear a row: verify (or fix) the description in the matching
-`tools/component-packets/samples/annotations-*.json` file and delete its `(?)`,
-then re-run `python make_review_queue.py` and re-assemble the dictionaries.
+To clear a row: verify (or fix) the description in the matching source
+`annotations-*.json` artifact in the owning `comfy-quest` repository and delete its
+`(?)`. After transferring a verified samples artifact, rebuild this snapshot with
+`python make_review_queue.py --samples <verified-samples-artifact> --output annotation-review-queue.md`.
 
 ## `annotations-humanoid.json` — 34 rows
 

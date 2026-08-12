@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Build site/index.html — the Baseline front door.
+"""Build site/index.html — the Baseline fleet-hub front door.
 
-The site root is the platform's, not any one tool's. Articles live under their own
+The site root is the hub's, not any one product's. Articles live under their own
 slug (see tools/selfie-stick/article/build.py); this page is what a stranger reaches
 first, and its copy is derived from README.md and docs/baseline-vision-and-boundary.md
 rather than invented.
@@ -21,10 +21,9 @@ ART = os.path.join(REPO, "tools", "selfie-stick", "article")
 OUT = os.path.join(REPO, "site", "index.html")
 AUDIENCES = os.path.join(REPO, "corpus", "audiences.json")
 
-TITLE = "Baseline — a toolkit to build a Valheim community on"
-DESC = ("Identity, telemetry and testing as first-class parts of a Valheim server "
-        "stack instead of afterthoughts. Tools you can run on your own machine "
-        "tonight, and honest notes about what is not ready.")
+TITLE = "Baseline — the Valheim project fleet hub"
+DESC = ("The durable repository map, decisions, evidence, public corpus, and discovery "
+        "surfaces for a fleet of sovereign Valheim projects.")
 
 tpl = open(os.path.join(HERE, "landing.html"), encoding="utf-8").read()
 tokens = open(os.path.join(HERE, "tokens.css"), encoding="utf-8").read()

@@ -179,6 +179,13 @@ dl.fine dd{margin:0}
 </header>
 
 <section><div class="col">
+  <p class="warn"><strong>Historical snapshot.</strong> This page records the 2026-08-06
+    Baseline vertical slice. Active Quest implementation and contracts now belong to
+    <a href="https://github.com/djcdevelopment/comfy-quest">comfy-quest</a>; this page is
+    retained as a public evidence narrative, not an implementation authority.</p>
+</div></section>
+
+<section><div class="col">
   <p>The guild masters this is for <strong>already run quests</strong> &mdash; in Google
     Sheets, Word docs, pinned Discord messages, and years of accumulated house style. The
     absorption engine's one rule: <strong>their content passes through verbatim</strong>;
@@ -425,21 +432,20 @@ dl.fine dd{margin:0}
 
 <footer>
   <dl class="fine">
-    <dt>Live</dt>
+    <dt>Published snapshot</dt>
     <dd><a href="/baseline/questpicker/">djcdevelopment.github.io/baseline/questpicker/</a></dd>
-    <dt>Contracts</dt>
-    <dd><code>recipes/quest-catalogs/schema.md</code> (canonical catalog) &middot;
-      <code>recipes/quest-catalogs/quest-view-schema.md</code> (player selection) &middot;
-      the submission package under <code>outbox/</code></dd>
-    <dt>Code</dt>
-    <dd><code>recipes/quest-catalogs/</code> (absorption) &middot;
-      <code>handoffs/comfy-control-surface/Core/</code> (mod runtime) &middot;
-      <code>handoffs/comfy-control-surface/bridge-consumer/</code> (review/export)</dd>
+    <dt>Current contracts</dt>
+    <dd><a href="https://github.com/djcdevelopment/comfy-quest/blob/main/recipes/quest-catalogs/schema.md">catalog schema</a> &middot;
+      <a href="https://github.com/djcdevelopment/comfy-quest/blob/main/recipes/quest-catalogs/quest-view-schema.md">player-selection schema</a></dd>
+    <dt>Current code</dt>
+    <dd><a href="https://github.com/djcdevelopment/comfy-quest/tree/main/recipes/quest-catalogs">absorption and picker</a> &middot;
+      <a href="https://github.com/djcdevelopment/comfy-quest/tree/main/network/mod/ComfyQuestRuntime">mod runtime</a> &middot;
+      <a href="https://github.com/djcdevelopment/comfy-quest/tree/main/tools/quest-bridge">review and export bridge</a></dd>
     <dt>Depth</dt>
-    <dd>The full layer-by-layer write-up lives in
-      <code>docs/quest-vertical-slice-architecture.md</code>.</dd>
+    <dd>The full layer-by-layer write-up is preserved in the
+      <a href="https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/docs/quest-vertical-slice-architecture.md">historical Baseline architecture record</a>.</dd>
   </dl>
-  <p class="fine disclaimer">Written from the working tree on 2026-08-06. Counts (314
+  <p class="fine disclaimer">Historical evidence written from the Baseline working tree on 2026-08-06. Counts (314
     quests, three communities) reflect the catalogs as of the Etheiry creator-events
     harvest.</p>
 </footer>

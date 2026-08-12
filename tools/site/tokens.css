@@ -2,8 +2,8 @@
    Inlined at build time by both tools/site/build_landing.py and
    tools/selfie-stick/article/build.py, so the two pages cannot drift apart.
 
-   The palette is lifted from the Community Workbench (Lumberjacks/src/Game.Gateway/
-   Community/workbench.html) so the public site reads as one surface with the tool
+   The palette is lifted from the platform-owned Community Workbench
+   (lumberjacks-platform/Lumberjacks/src/Game.Gateway/Community/workbench.html), so the public site reads as one surface with the tool
    that already exists: a dark blue-green ground with a single warm timber accent.
 
    Dark is the default and the designed-for case. Light is a real second theme, not

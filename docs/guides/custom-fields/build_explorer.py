@@ -1,16 +1,24 @@
-"""Build atlas-explorer.html from the swept component atlas.
+"""Build an explorer page from an explicitly supplied component-atlas artifact.
 
 Embeds the atlas JSON inline (minified) so the page is fully self-contained —
 works from file://, a Discord-shared file, or GitHub Pages with no fetch/CORS.
-Re-run after regenerating the atlas.
+The caller supplies both input and output paths; this script never reaches into a
+sibling repository or assumes a checkout layout.
 """
+import argparse
 import json
 from pathlib import Path
 
-HERE = Path(__file__).parent
-ATLAS = HERE / "../../../tools/component-packets/samples/valheim-component-atlas.json"
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--atlas", required=True, type=Path,
+                    help="verified valheim-component-atlas.json artifact")
+parser.add_argument("--output", required=True, type=Path,
+                    help="destination HTML path")
+args = parser.parse_args()
+if not args.atlas.is_file():
+    parser.error(f"atlas artifact does not exist: {args.atlas}")
 
-atlas = json.loads(ATLAS.read_text())
+atlas = json.loads(args.atlas.read_text(encoding="utf-8"))
 # Trim per-component Source (repeated 336x) — the page shows the top-level one.
 for c in atlas["Components"]:
     c.pop("Source", None)
@@ -126,7 +134,7 @@ TEMPLATE = r"""<!doctype html>
   </div>
 
   <div class="hint">Extracted facts only — nothing here is hand-written. Descriptions live in the reviewed
-    <a href="../../../tools/component-packets/README.md">field dictionaries</a>; lessons at the <a href="index.html">guide home</a>.</div>
+    <a href="https://github.com/djcdevelopment/comfy-quest/blob/main/tools/component-packets/README.md">field dictionaries</a>; lessons at the <a href="index.html">guide home</a>.</div>
   <footer id="foot"></footer>
 </div>
 
@@ -246,6 +254,6 @@ TEMPLATE = r"""<!doctype html>
 </html>
 """
 
-out = HERE / "atlas-explorer.html"
+out = args.output
 out.write_text(TEMPLATE.replace("__ATLAS__", data.replace("</", "<\\/")), encoding="utf-8")
-print(f"{out.name}: {out.stat().st_size // 1024} KB")
+print(f"{out}: {out.stat().st_size // 1024} KB")

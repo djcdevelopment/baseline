@@ -10,9 +10,9 @@ The contract is:
 ## Three layers, three different jobs
 
 1. **Authoritative artifacts** stay with the thing a person or agent would edit. A
-   narrative has an `artifact.json` beside its HTML/template; the Workbench remains
-   `Lumberjacks/docs/workbench/workbench.json`; the roadmap remains its append-only
-   JSONL journal; a dispatch is the starter post and applied tags in Discord.
+   narrative has an `artifact.json` beside its HTML/template; the Workbench and
+   append-only roadmap journal remain in `lumberjacks-platform`; a dispatch is the
+   starter post and applied tags in Discord.
 2. **Mirrors** make an external authority rebuildable offline. The dispatch capture is
    an exact, public-by-contract mirror of forum starter posts. It carries Discord IDs
    and links and never pretends to outrank Discord.
@@ -28,8 +28,8 @@ the common schema does not have to predict the next useful interpretation.
 
 [`sources.json`](sources.json) is a registry of source *families*, not a catalog of
 every item. Sidecars are found by glob. Workbench and roadmap use explicit adapters
-because they already have strong native schemas. The optional Discord mirror is read
-when it exists.
+over their pinned `corpus/mirrors/lumberjacks/` snapshots because their authority is
+external. The optional Discord mirror is read when it exists.
 
 An `artifact.json` is valid when:
 
@@ -61,6 +61,15 @@ python tools/corpus/test_corpus.py
 `--check` rebuilds every byte in memory and compares it with the committed projection.
 It also validates source containment, audience references, unique IDs, provenance
 hashes, and feed shape.
+
+Refresh the platform mirror only from an already-pushed 40-character commit:
+
+```powershell
+python tools/corpus/sync_lumberjacks_mirror.py --revision <commit-sha>
+python tools/corpus/sync_lumberjacks_mirror.py --check --revision <commit-sha>
+python tools/corpus/build.py
+python tools/corpus/build.py --check
+```
 
 To create a reviewed starter post through the existing bot, inspect the dry run and
 then explicitly publish it:

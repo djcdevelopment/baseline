@@ -81,7 +81,7 @@ Three design facts worth carrying forward:
   gallery plan so the two cannot drift apart again.
 - **Files parse independently.** One typo'd draft costs its own quests and nothing else.
 - **Reload drops cooldowns**, diverging from the shipping mod's session-long 60 s on purpose.
-  Recorded in [`network/tuning-ledger.md`](../network/tuning-ledger.md).
+  Recorded in [`network/tuning-ledger.md`](https://github.com/djcdevelopment/networksense/blob/main/network/tuning-ledger.md).
 
 > The draft located quest files at `BepInEx/config/ComfyQuestLab/`. The actual config directory is
 > hyphenated, `comfy-quest-lab/`, matching every other path the mod uses.
@@ -110,7 +110,7 @@ update as unavailable rather than taking the mod down.
 
 The superseded draft described `lab_export` as emitting "a formatted Quest Submission Bridge
 payload into the outbox folder". That completion-submission path was removed on purpose:
-[fieldlab ADR-0018 — quest proof is the EventLog row](../fieldlab/docs/adr/0018-quest-proof-is-the-eventlog-row.md)
+[fieldlab ADR-0018 — quest proof is the EventLog row](https://github.com/djcdevelopment/lumberjacks-platform/blob/main/fieldlab/docs/adr/0018-quest-proof-is-the-eventlog-row.md)
 replaced outbox payloads with a durable server EventLog row as the proof of completion, and
 `tools/quest-bridge/bridge_consumer.py` now explicitly rejects schema-1 outbox payloads.
 

@@ -76,7 +76,7 @@ proof-of-concept kit is fetched from the archive by whoever takes segment 3.
 > aim-at-target, an unattended orbit runner, per-frame receipts), and segment
 > 4's ffmpeg cut is no longer on the path. It ran on 2026-08-06: 161
 > structures, 1,411 frames, unattended. Current status lives in
-> [`Lumberjacks/docs/workbench/tools/camera-gallery.md`](../../Lumberjacks/docs/workbench/tools/camera-gallery.md);
+> [`Lumberjacks/docs/workbench/tools/camera-gallery.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/Lumberjacks/docs/workbench/tools/camera-gallery.md);
 > the write-up is at <https://djcdevelopment.github.io/baseline/selfie-stick/>.
 >
 > This directory's contents are unaffected — they remain byte-exact from the

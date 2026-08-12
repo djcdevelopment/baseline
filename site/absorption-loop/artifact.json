@@ -4,7 +4,7 @@
   "id": "story:absorption-loop",
   "kind": "story",
   "title": "From a leader's spreadsheet to a killing blow, and back with proof",
-  "summary": "A guild's untouched quest tracker becomes a player picker, an in-game objective, and evidence for a human review decision.",
+  "summary": "Historical 2026-08-06 evidence of a guild tracker becoming a player picker, in-game objective, and human-review evidence; current authority is comfy-quest.",
   "audiences": {
     "primary": ["creator", "moderator"],
     "relevant": ["curious", "player-tester", "admin", "modder", "developer"]

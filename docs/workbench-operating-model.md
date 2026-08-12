@@ -273,7 +273,7 @@ declare:
 | Rollback/cleanup | define recovery before mutation |
 | Graduation state | experimental, candidate, stable operator, retired |
 
-[`network/mcp/contracts/commands.json`](../network/mcp/contracts/commands.json) already
+[`network/mcp/contracts/commands.json`](https://github.com/djcdevelopment/isolate/blob/main/network/mcp/contracts/commands.json) already
 contains audience, transport, stability, requirements, side effects, examples, and
 return descriptions. It is a seed, not yet the complete Workbench registry.
 
@@ -499,13 +499,13 @@ Until a row's evidence path has run, label it candidate or unverified according 
   [`m4-3-lab-mode-keys.md`](../plans/m4-3-lab-mode-keys.md), and
   [`m4-4-localhost-demo.md`](../plans/m4-4-localhost-demo.md)
 - Current Companion distribution:
-  [`Lumberjacks/tools/companion/README.md`](../Lumberjacks/tools/companion/README.md)
+  [`Lumberjacks/tools/companion/README.md`](https://github.com/djcdevelopment/lumberjacks-platform/blob/main/Lumberjacks/tools/companion/README.md)
 - Dev MCP contract and lifecycle today:
-  [`network/mcp/README.md`](../network/mcp/README.md),
-  [`network/mcp/AGENTS.md`](../network/mcp/AGENTS.md), and
-  [`network/mcp/contracts/commands.json`](../network/mcp/contracts/commands.json)
+  [`network/mcp/README.md`](https://github.com/djcdevelopment/isolate/blob/main/network/mcp/README.md),
+  [`network/mcp/AGENTS.md`](https://github.com/djcdevelopment/isolate/blob/main/network/mcp/AGENTS.md), and
+  [`network/mcp/contracts/commands.json`](https://github.com/djcdevelopment/isolate/blob/main/network/mcp/contracts/commands.json)
 - Physical-client lane:
-  [`tools/i5/README.md`](../tools/i5/README.md)
+  [`tools/i5/README.md`](https://github.com/djcdevelopment/networksense/blob/main/tools/i5/README.md)
 - Evidence standard:
   [PD-4](decisions/pd-4-evidence-standard.md)
 - Product decisions:

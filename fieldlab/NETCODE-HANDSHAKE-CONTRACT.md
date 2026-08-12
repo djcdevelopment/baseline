@@ -1,8 +1,11 @@
 # Valheim Connection-Handshake Contract — rung I5 (P6) deliverable
 
+> **HISTORICAL:** This contract records the former monorepo implementation. Current
+> implementation authority is the repository named in [`REPO-MAP.md`](../REPO-MAP.md).
+
 The field-by-field + ordered-gate contract the Lumberjacks handshake responder must
 satisfy for a Valheim client to complete a connection against a Lumberjacks-fronted
-peer. This is P6 step 1. It extends **Funnel 5** of [NETCODE-MAP.md](NETCODE-MAP.md)
+peer. This is P6 step 1. It extends **Funnel 5** of [NETCODE-MAP.md](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/NETCODE-MAP.md)
 (the I0 map) into an executable spec that the responder (`ValheimHandshakeService`)
 and the loopback shim both consume.
 

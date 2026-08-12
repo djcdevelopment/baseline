@@ -59,7 +59,7 @@ temporarily disconnected. The new Player then has a fresh godmode flag and can f
 from a test altitude before the next teleport action runs.
 
 The fix is now in
-[`NativeCutoverScenarioController.cs`](../../network/mod/ComfyNetworkSense/Core/Services/NativeCutoverScenarioController.cs:93):
+[`NativeCutoverScenarioController.cs`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/network/mod/ComfyNetworkSense/Core/Services/NativeCutoverScenarioController.cs#L93):
 the controller maintains the survival invariant even while `JoinedClientReady` is
 false, re-arms godmode on the current Player, and rejects a dead Player instead of
 continuing. This is a general lesson: rebind safety and identity-dependent state at

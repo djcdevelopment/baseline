@@ -1,9 +1,9 @@
 # Security Policy
 
-Baseline is pre-alpha, maintained by one human (with many AI agents), with a single
-live deployment operated by the maintainer. This policy is written for that reality —
-honest about what a solo maintainer can promise, and deliberately public about known
-risk (see the transparency section).
+Baseline is a pre-alpha fleet hub maintained by one human (with many AI agents).
+Product runtimes and deployments live in independently versioned repositories. This
+policy is written for that reality — honest about what a solo maintainer can promise,
+and deliberately public about known risk (see the transparency section).
 
 ## Supported versions
 
@@ -39,9 +39,11 @@ believe the recorded disposition underestimates the risk.
 
 ## Scope
 
-This repository and the live Workbench/Gateway surfaces operated by the maintainer.
-The retired pre-cutover archive repositories are out of scope (unmaintained by
-design).
+This repository's hub content, Pages projections, and release/mirror import tooling.
+Runtime reports belong to the repository that owns the affected surface: use
+[`REPO-MAP.md`](REPO-MAP.md) to route Workbench/Gateway, mod, Quest, MCP, or shard
+issues. The retired pre-cutover archive repositories are out of scope (unmaintained
+by design).
 
 ---
 

@@ -2,8 +2,9 @@
 
 Sources for the public GitHub Pages site at <https://djcdevelopment.github.io/baseline/>.
 
-The site root is **Baseline as a whole** — what a stranger reaches first. Individual
-tools and write-ups live under their own slug beneath it, never at `/`.
+The site root is the **Baseline fleet hub** — what a stranger reaches first. Product
+implementation stays in the sovereign repositories listed in [`REPO-MAP.md`](../../REPO-MAP.md);
+individual hub projections and write-ups live under their own slug beneath `/`.
 
 | | |
 | --- | --- |
@@ -19,10 +20,11 @@ python tools/corpus/build.py
 
 ## Where the copy comes from
 
-The landing copy is derived from [`README.md`](../../README.md) and
-[`docs/baseline-vision-and-boundary.md`](../../docs/baseline-vision-and-boundary.md),
-which is the canonical product statement. **Change those first, then mirror here** —
-this page is a rendering of the position, not a second place to invent one.
+The landing copy is derived from [`README.md`](../../README.md),
+[`REPO-MAP.md`](../../REPO-MAP.md), and
+[`docs/baseline-vision-and-boundary.md`](../../docs/baseline-vision-and-boundary.md).
+Together they define the hub boundary and product authorities. **Change those first,
+then mirror here** — this page is a rendering of the position, not a second authority.
 
 Two rules it inherits from the boundary doc:
 

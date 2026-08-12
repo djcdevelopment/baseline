@@ -150,7 +150,7 @@ line held, but that discipline needs to be structural, not adrenaline-dependent.
 3. **`L-2026-07-31-3` — Session-scoped identifiers must not outlive their session in any banked
    state.** ZDO uids are reassigned per server boot; a bank keyed only on world identity replays
    phantoms. The epoch contract must incorporate session identity. → **ADR**
-   ([0016](../docs/adr/0016-banked-state-must-carry-session-identity.md)).
+   ([0016](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0016-banked-state-must-carry-session-identity.md)).
 4. **`L-2026-07-31-4` — Falsify on pristine substrate before building remediation.** The leak was
    real, observable, and coincidental; one clean-zone failure disproved it in ten minutes after a
    day of belief. → **practice.**

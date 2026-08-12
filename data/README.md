@@ -12,18 +12,23 @@ through ongoing code churn.
 - [`processed/`](processed/) contains derived catalogs, anomaly reports, joined datasets, and the
   generated quest picker.
 
-## Main flow
+## Quest-picker snapshot
 
 ```text
-raw guild sheets + recipe configuration
-  -> recipes/quest-catalogs/harvest.py
-  -> processed quest catalogs + anomaly reports
-  -> recipes/quest-catalogs/render_quest_picker.py
-  -> processed/quest-picker.html
+comfy-quest release asset + manifest
+  -> SHA-256 and byte-count verification
+  -> processed/quest-picker.html (Baseline mirror)
 ```
+
+The generator and catalog contracts moved to
+[`comfy-quest/recipes/quest-catalogs/`](https://github.com/djcdevelopment/comfy-quest/tree/main/recipes/quest-catalogs).
+The currently committed picker predates the first post-split release and is retained
+as a historical snapshot. Refresh is BLOCKED until a signed/tagged Quest release
+exists; do not regenerate it from a sibling checkout or imply it is release-backed.
 
 Weapon source files similarly flow into the joined JSON documented under
 [`../docs/datasets/`](../docs/datasets/).
 
-Raw artifacts are evidence. Processed artifacts should be reproducible from a named source and tool;
-when that is not possible, document the exception beside the output.
+Raw artifacts are evidence. Processed artifacts should be reproducible from a named
+source and tool or imported from a manifest-and-hash release. When that is not
+possible, document the exception beside the output.

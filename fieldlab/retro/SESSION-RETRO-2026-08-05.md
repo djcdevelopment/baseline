@@ -149,7 +149,7 @@ was the best surprise of the night; the pipe is not our problem.
    runtime-armed harness lane; every real player rides the enrollment lane, which the new stack has
    never exercised on P7. A green proof on a lane production traffic never takes is a green light
    pointed at a wall. → **ADR**
-   ([0017](../docs/adr/0017-prove-the-lane-users-ship-on.md)).
+   ([0017](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0017-prove-the-lane-users-ship-on.md)).
 2. **`L-2026-08-05-2` — A wedged consumer must cost one resume, not a peer lockout.** No
    gateway-side stall abort plus resume-token refusal turned one stalled socket into an indefinite
    logical-peer lockout (candidates 8, 9, 11). → **doc** (fix plan items 1–2, landed).

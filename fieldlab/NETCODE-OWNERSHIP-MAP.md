@@ -1,5 +1,8 @@
 # NETCODE-OWNERSHIP-MAP — the ZDO ownership machinery (I2 grounding)
 
+> **HISTORICAL:** This source map is retained as dated research evidence. Follow
+> [`REPO-MAP.md`](../REPO-MAP.md) for current code and FieldLab authority.
+
 Companion to `NETCODE-MAP.md` (which mapped the I0/I1 ZDO send/recv funnels). This maps the
 **ownership** machinery so the P3/I2 "ownership seizure" pin is designed against verified source,
 not guessed. Primary source: decompiled `assembly_valheim.dll` (see
@@ -30,14 +33,14 @@ position. Clients never run this path. So the I2 pin is a **server-side (am4) pa
 > `OwnershipPinRunner`, which no longer exists — it was deleted on 2026-07-21 in `66f7069` with the
 > P3/P5 lab experiments. The exposure did not die with it, it was **inherited**.
 > `OwnershipLeaseCutoverRunner` attaches a *global* Harmony prefix to `ZDO.SetOwner(long)`
-> ([OwnershipLeaseCutoverRunner.cs:1137-1144](../network/mod/ComfyNetworkSense/Core/Services/OwnershipLeaseCutoverRunner.cs:1137)),
+> ([OwnershipLeaseCutoverRunner.cs:1137-1144](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/network/mod/ComfyNetworkSense/Core/Services/OwnershipLeaseCutoverRunner.cs#L1137-L1144)),
 > so the patch does fire on all five sites above — but its body, `ShouldBlockRelease`, returns
 > `false` immediately unless `ReleaseScopeDepth > 0` (:207), and that counter is incremented at
 > exactly one site: the `ReleaseNearbyZDOS` prefix (:1125-1127). So C4's lease interception is
 > scoped to the same single funnel the retired pin was, and the five client-side handlers pass
 > through untouched. Three of them — `Ship`, `Sadle`, `Vagon` — are the C10a vehicles/mounts
 > surface. Detail and the full source survey are in
-> [`docs/RESEARCH-vehicles-mounts-ownership-2026-08-01.md`](docs/RESEARCH-vehicles-mounts-ownership-2026-08-01.md).
+> [`docs/RESEARCH-vehicles-mounts-ownership-2026-08-01.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/RESEARCH-vehicles-mounts-ownership-2026-08-01.md).
 
 ## Ownership storage & API (ZDO type)
 

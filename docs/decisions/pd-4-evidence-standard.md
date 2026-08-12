@@ -57,7 +57,7 @@ something only its author can re-check.
 
 ## This is not new here — it is the better half of existing practice
 
-- [`fieldlab/docs/adr/0014-boot-must-converge-or-say-so.md`](../../fieldlab/docs/adr/0014-boot-must-converge-or-say-so.md)
+- [`fieldlab/docs/adr/0014-boot-must-converge-or-say-so.md`](https://github.com/djcdevelopment/lumberjacks-platform/blob/main/fieldlab/docs/adr/0014-boot-must-converge-or-say-so.md)
   marks itself reasoned-from-repo-files and **UNVERIFIED against the VM**, and names
   the exact cold stop/start that would close it. That is a complete evidence path.
 - The journal record schema requires `verification` and `evidence` on every note — the

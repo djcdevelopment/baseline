@@ -1,11 +1,14 @@
 # PINNED — AoI optimization work (hard hold)
 
+> **HISTORICAL:** This pin describes the former monorepo lane. It is not a current
+> work queue; use [`REPO-MAP.md`](../REPO-MAP.md) to find the owning repository.
+
 **Status: HARD HOLD. Do not pick these up without Derek re-opening them.**
 Pinned 2026-07-21.
 
 > **Update 2026-07-21 (night):** the first live 2-human authoritative test **reproduced item 2**
 > physically — co-located players cannot share an area because ZDO delivery is single-recipient.
-> Full write-up + the architecture question it raises: [`FINDINGS-multiplayer-copresence-2026-07-21.md`](FINDINGS-multiplayer-copresence-2026-07-21.md).
+> Full write-up + the architecture question it raises: [`FINDINGS-multiplayer-copresence-2026-07-21.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/FINDINGS-multiplayer-copresence-2026-07-21.md).
 > Items 1 and 2 below are no longer hypothetical; they are the confirmed next architecture work.
 
 ## Why this exists
@@ -39,7 +42,7 @@ choosing not to do right now.
    queue and per-observer AoI collide — the same area ZDO can only be delivered to
    one player's partition, so co-located players can't share buildings/portals. The
    keystone fix is an **ownership-vs-visibility split** (single writer, N readers /
-   AoI-aware fan-out), now specified in **[ADR 0013](docs/adr/0013-ownership-visibility-split.md)**
+   AoI-aware fan-out), now specified in **[ADR 0013](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0013-ownership-visibility-split.md)**
    with an evolutionary Phase 0–5 roadmap. See the findings doc for the live data.
 3. **AoI "v.5"** — hysteresis at the 30/64m band edges (old HANDOFF task 5),
    landmark punch-through, gateway landmark-announcement wiring (light up the

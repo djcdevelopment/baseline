@@ -1,11 +1,12 @@
-# Milestone plans — builder-agent briefs
+# Milestone plans — historical builder-agent briefs
 
-## Active product build strategy
+> **HISTORICAL.** These plans describe work from the Baseline monorepo era. They
+> remain useful for intent, acceptance criteria, and evidence archaeology, but their
+> local source paths and execution commands are not current. Use
+> [REPO-MAP.md](../REPO-MAP.md) to find the owning sovereign repository before
+> executing or extending a plan.
 
-Current build boundary: the mod targets net48 and the Docker Workbench image
-is its canonical/historical build workaround. It mounts Valheim read-only,
-disables plugin copying, and retains a hashable artifact receipt; host SDK
-MSB3644 is an expected boundary.
+## Workbench v1 record
 
 - [`workbench-v1-saga-strategy.md`](workbench-v1-saga-strategy.md) — the
   decision-complete, single-session Saga/Epic/Feature/Story strategy for the
@@ -19,36 +20,18 @@ MSB3644 is an expected boundary.
 - [`../docs/audit/2026-08-01-mcp-endpoint-provenance-audit.md`](../docs/audit/2026-08-01-mcp-endpoint-provenance-audit.md) —
   the read-only endpoint/process/task/ledger audit that gates MCP-sensitive work.
 
-Each file is a self-contained brief a builder agent can execute without this
-conversation. Naming: `{milestone}-{n}-{feature}.md`. Milestones come from the
-strategy roadmap (M1 Trust & Rhythm → M6 Projection); unlocks compound downhill,
-so within a milestone, lower `n` generally blocks higher `n`.
+The linked files are frozen records, not an active build queue. Current Workbench,
+Companion, deployment, and roadmap plans belong to
+[`lumberjacks-platform`](https://github.com/djcdevelopment/lumberjacks-platform);
+NetworkSense plans belong to
+[`networksense`](https://github.com/djcdevelopment/networksense); Quest plans belong
+to [`comfy-quest`](https://github.com/djcdevelopment/comfy-quest); and MCP runtime
+plans belong to [`isolate`](https://github.com/djcdevelopment/isolate).
 
-Shared context every builder should know:
+## Archived milestone catalog
 
-- **Execution control:** `full-roadmap-working-strategy.md` controls sequencing,
-  and `remaining-human-tests.md` lists the human-only gates that agents must
-  prepare around instead of rediscovering from chat history.
-- **Repo layout:** `network/` (netcode docs, mod `ComfyNetworkSense`, gateway MCP
-  in `network/mcp`), `Lumberjacks/` (net9 services — build in the `sdk:9.0`
-  container), `fieldlab/`, `docs/`, `infra/`, `tools/`, `data/`, `recipes/`.
-  The mod is net48 — the Docker Workbench image is the canonical and
-  historical build workaround; mount Valheim read-only, disable plugin copy,
-  and retain the artifact receipt. Host SDK MSB3644 is an expected boundary.
-- **Strategy docs** (retired checkout, read-only reference):
-  `C:\work\comfy\docs\adoption-strategy.md`, `positioning.md`, `governance.md`.
-  The voice rules live there: never a verdict on the past; "cheaper to care";
-  owner-controlled, opt-in, not surveillance.
-- **Design language for netcode:** `network/telemetry-and-scores.md` (equations,
-  weights, normalization) and `network/observability-and-experiments.md`
-  (experiment protocols). Scores advise before they control.
-- **Deployment:** P7 releases are immutable artifact promotions from this
-  baseline checkout: build/verify locally, promote the pinned Gateway image to
-  P7, deploy the matching server DLL, publish the client-pull package pointer,
-  then install through Companion on OMEN and i5. Do not rebuild source on P7 or
-  ship changed DLL bytes under an existing release id.
-- **Capture is client-side:** kill/combat telemetry runs on the player's client;
-  the server cannot see client-owned creatures.
+Naming was `{milestone}-{n}-{feature}.md`. The M1–M6 ordering below is retained to
+make old handoffs and receipts navigable; it does not assert current roadmap state.
 
 | Milestone | Files |
 |---|---|

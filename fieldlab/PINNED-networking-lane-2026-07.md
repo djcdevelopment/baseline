@@ -1,9 +1,12 @@
 # SUPERSEDED — Networking / ComfyNetworkSense hard hold
 
+> **HISTORICAL:** All paths below describe the pre-split monorepo. They are pinned to
+> the recorded Baseline revision and are not current execution instructions.
+
 **Status: SUPERSEDED 2026-07-30.** Derek reopened the native-network replacement
 lane after the unattended OMEN+i5 harness removed the KVM dependency. The canonical
 execution sequence is now
-[`plan-native-network-final-cutover.md`](plan-native-network-final-cutover.md).
+[`plan-native-network-final-cutover.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/plan-native-network-final-cutover.md).
 This file remains only as the historical record of why the lane was paused on
 2026-07-28; its task list and resume command are not current instructions.
 
@@ -38,21 +41,21 @@ boundary while effort moves to work the community can see, run, and take over
 ## What is pinned
 
 1. **Wave 0 two-client join + observation gates H0-1…H0-4** —
-   [`plans/remaining-human-tests.md`](../plans/remaining-human-tests.md) (join OMEN + i5 to P7
+   [`plans/remaining-human-tests.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/plans/remaining-human-tests.md) (join OMEN + i5 to P7
    with the two owned accounts; watch bounded APPLY/OBSERVE movement both directions; classify
    feel; seal or reject the visual evidence).
 2. **ADR 0013 co-presence fan-out live test** —
-   [`docs/runbook-copresence-fanout-live-test.md`](docs/runbook-copresence-fanout-live-test.md)
+   [`docs/runbook-copresence-fanout-live-test.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/runbook-copresence-fanout-live-test.md)
    (two humans standing in one base), including the 2026-07-22 "re-confirm it reproduces
    before arming" precondition from `DECISIONS-PENDING.md`.
 3. **Patch-load A/B benchmark run** —
-   [`docs/runbook-patchload-ab-benchmark.md`](docs/runbook-patchload-ab-benchmark.md) +
-   [`experiments/patchload-ab/`](experiments/patchload-ab/). Blocked on item 5.
+   [`docs/runbook-patchload-ab-benchmark.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/runbook-patchload-ab-benchmark.md) +
+   [`experiments/patchload-ab/`](https://github.com/djcdevelopment/baseline/tree/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/experiments/patchload-ab). Blocked on item 5.
 4. **CRE-E08 adaptive candidate → client DLL** — building/promoting the adaptive
    interpolation policy into the mod stays held; the candidate lives in
-   [`experiments/creative-runtime/cre-e08-adaptive-presentation-replay/`](experiments/creative-runtime/cre-e08-adaptive-presentation-replay/experiment.md).
+   [`experiments/creative-runtime/cre-e08-adaptive-presentation-replay/`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/experiments/creative-runtime/cre-e08-adaptive-presentation-replay/experiment.md).
 5. **client01/client02 one-time Steam seeding** —
-   [`docs/runbook-headless-valheim-lab.md`](docs/runbook-headless-valheim-lab.md): the lab
+   [`docs/runbook-headless-valheim-lab.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/runbook-headless-valheim-lab.md): the lab
    clients are **not seeded** as of 2026-07-24; that single manual Steam login is the human
    step gating 3 (and native-probe capture).
 

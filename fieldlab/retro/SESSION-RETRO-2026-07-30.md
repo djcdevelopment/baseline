@@ -27,12 +27,12 @@ looked outstanding was a defect in the checker.
 
 New durable artifacts:
 
-- [`infra/gcp/p7/RUNBOOK-boot-determinism.md`](../../infra/gcp/p7/RUNBOOK-boot-determinism.md) —
+- [`infra/gcp/p7/RUNBOOK-boot-determinism.md`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/infra/gcp/p7/RUNBOOK-boot-determinism.md) —
   diagnosis, by-hand apply steps, and a next-boot procedure that captures the wedged-boot evidence
   **before** the fix destroys it.
-- [`fieldlab/docs/adr/0014`](../docs/adr/0014-boot-must-converge-or-say-so.md) — boot must converge
+- [`fieldlab/docs/adr/0014`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0014-boot-must-converge-or-say-so.md) — boot must converge
   or say so loudly.
-- [`fieldlab/docs/adr/0015`](../docs/adr/0015-pin-line-endings-for-load-bearing-bytes.md) — pin line
+- [`fieldlab/docs/adr/0015`](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0015-pin-line-endings-for-load-bearing-bytes.md) — pin line
   endings for bytes that are hashed or parsed elsewhere.
 - [`.gitattributes`](../../.gitattributes) — the repo-wide mechanism ADR 0015 decides on.
 
@@ -131,7 +131,7 @@ booting one look like the obvious move?
 
 | Lesson | Status |
 |---|---|
-| `L-2026-07-29-1` — prove bytes with shas, never narrative | **acted-on, and it still bit.** The practice worked perfectly — a measured sha is the only reason the CRLF false-positive was caught. But the lesson was captured as a note inside one workbook, never generalized, so the same root cause recurred elsewhere one day later. Now a repo-wide mechanism ([ADR 0015](../docs/adr/0015-pin-line-endings-for-load-bearing-bytes.md)) |
+| `L-2026-07-29-1` — prove bytes with shas, never narrative | **acted-on, and it still bit.** The practice worked perfectly — a measured sha is the only reason the CRLF false-positive was caught. But the lesson was captured as a note inside one workbook, never generalized, so the same root cause recurred elsewhere one day later. Now a repo-wide mechanism ([ADR 0015](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0015-pin-line-endings-for-load-bearing-bytes.md)) |
 | `L-2026-07-29-2` — omit `max_tokens` on thinking rungs | **acted-on** (offload omitted the cap; `gcp-gemini` returned 545 tokens complete, no clipping) |
 | `L-2026-07-29-7` — stopped is the default; running is booked | **acted-on** (VM never started; the single cloud call was a read-only `describe`) |
 | `L-2026-07-29-10` — verify the repo before registering a gap | **acted-on** (the "stale render" gap was checked before being acted on, and turned out not to exist) |
@@ -145,12 +145,12 @@ booting one look like the obvious move?
    reported a byte-correct deployment as stale, and the recorded response was to schedule a
    republish. A check that cries wolf does not merely fail to inform; it actively trains its
    operator to route around it. When a gate fails, establish whether the artifact or the gate is
-   wrong **before** acting. → **ADR** ([0015](../docs/adr/0015-pin-line-endings-for-load-bearing-bytes.md)).
+   wrong **before** acting. → **ADR** ([0015](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0015-pin-line-endings-for-load-bearing-bytes.md)).
 
 2. **`L-2026-07-30-2` — A silent skip is the worst failure mode a service can have.** systemd's
    `Condition*` marks a unit `inactive (dead)` with no error and no log, which is indistinguishable
    from "hasn't booted yet" — the box answers SSH and serves nothing. Prefer `Assert*` wherever
-   absence means "we cannot serve". → **ADR** ([0014](../docs/adr/0014-boot-must-converge-or-say-so.md)).
+   absence means "we cannot serve". → **ADR** ([0014](https://github.com/djcdevelopment/baseline/blob/aceb2eb48d770885a2c4171b926867f4ee82b4a4/fieldlab/docs/adr/0014-boot-must-converge-or-say-so.md)).
 
 3. **`L-2026-07-30-3` — "Verified" must name what was exercised.** The README's reliability claim
    rested on a `systemctl restart`, which never touches the mount race, the daemon's restart
