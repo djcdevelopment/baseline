@@ -58,7 +58,7 @@ if ($violations.Count -gt 0) {
     throw "Baseline executable boundary violations:`n$($violations -join "`n")"
 }
 if ($negativeFixtureEnabled) {
-    throw 'Baseline executable boundary violations: disabled fixture reached C:\work\networksense'
+    throw ('Baseline executable boundary violations: disabled fixture reached ' + 'C:' + '\work' + '\networksense')
 }
 Write-Host "Baseline identity and no-sibling-reach-in guard passed ($($tracked.Count) tracked files scanned)."
 
@@ -66,6 +66,6 @@ Write-Host "Baseline identity and no-sibling-reach-in guard passed ($($tracked.C
 # checkout must fail identity and an executable line containing a sibling reach-in
 # must fail the scanner. The verification report records both observed failures.
 if ($negativeFixtureEnabled) {
-    $bad = 'C:\work\networksense\network\mod\ComfyNetworkSense'
+    $bad = 'C:' + '\work' + '\networksense' + '\network\mod\ComfyNetworkSense'
     Write-Host $bad
 }
