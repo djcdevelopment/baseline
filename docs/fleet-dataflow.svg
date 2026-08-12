@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1060" viewBox="0 0 1280 1060" role="img" aria-labelledby="title desc">
+  <title id="title">Comfy fleet cross-repo data flow</title>
+  <desc id="desc">Creators publish immutable quest packs from Studio through Companion into the Runtime inbox for an explicit Check and Load; client telemetry streams over the Gateway into evidence JSONL; the roadmap journal mirrors into the public corpus and GitHub Pages. Each node names its owning repository and each crossing is labeled with its artifact type and verification.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#8fb9d6"/></marker>
+    <style>
+      .bg{fill:#0d1520}.zone{fill:#121f2c;stroke:#34516a;stroke-width:2}.box{fill:#193044;stroke:#69a7c9;stroke-width:2}.store{fill:#252642;stroke:#a690d4;stroke-width:2}.game{fill:#17382f;stroke:#6bc5a2;stroke-width:2}.legacy{fill:#382a24;stroke:#d7a66c;stroke-width:2}.title{fill:#f3f7fb;font:700 28px system-ui}.head{fill:#eef6fb;font:700 18px system-ui}.text{fill:#c8d7e3;font:14px system-ui}.small{fill:#9fb5c4;font:12px system-ui}.flow{fill:none;stroke:#8fb9d6;stroke-width:2.5;marker-end:url(#arrow)}.dash{stroke-dasharray:7 6}.label{fill:#b9d8ea;font:12px system-ui}
+    </style>
+  </defs>
+  <rect class="bg" width="1280" height="1060" rx="18"/>
+  <text class="title" x="42" y="46">Comfy fleet · cross-repo data flow</text>
+  <text class="small" x="42" y="68">box = service process · store = file/data artifact · game = client game runtime · legacy (dashed) = pending/unpublished · every box names its repo in [brackets]</text>
+
+  <!-- BAND 1: Quest publish pipeline -->
+  <text class="head" x="42" y="98">Quest publish pipeline</text>
+
+  <rect class="zone" x="60" y="150" width="210" height="90" rx="12"/><text class="head" x="76" y="180">Creator</text><text class="text" x="76" y="208">Authors in Quest Studio</text>
+  <rect class="game" x="330" y="118" width="240" height="130" rx="12"/><text class="head" x="346" y="148">Quest Studio</text><text class="text" x="346" y="176">[comfy-quest] Quest.Studio</text><text class="text" x="346" y="198">Compile · diff · certify</text><text class="small" x="346" y="222">Explicit Publish</text>
+  <path class="flow" d="M270,195 H326"/>
+
+  <rect class="store" x="330" y="310" width="240" height="95" rx="12"/><text class="head" x="346" y="338">Immutable .questpack</text><text class="text" x="346" y="362">manifest + experiences/</text><text class="small" x="346" y="386">optional legacy quests/</text>
+  <path class="flow" d="M450,248 V306"/><text class="label" x="458" y="280">compile+certify</text>
+
+  <rect class="box" x="60" y="310" width="210" height="95" rx="12"/><text class="head" x="76" y="338">Companion</text><text class="text" x="76" y="362">[lumberjacks-platform]</text><text class="small" x="76" y="386">Confine · certify · write</text>
+  <path class="flow" d="M330,357 H274"/><text class="label" x="285" y="345">POST</text>
+
+  <rect class="store" x="660" y="150" width="230" height="95" rx="12"/><text class="head" x="676" y="178">Runtime inbox</text><text class="text" x="676" y="202">[comfy-quest config path]</text><text class="small" x="676" y="226">atomic temp-file + rename</text>
+  <path class="flow" d="M165,405 V420 H600 V197 H656"/><text class="label" x="608" y="314">atomic inbox write</text>
+
+  <rect class="game" x="960" y="118" width="230" height="130" rx="12"/><text class="head" x="976" y="148">ComfyQuestRuntime</text><text class="text" x="976" y="172">[comfy-quest]</text><text class="text" x="976" y="196">Check(F10) / Load(F11)</text><text class="small" x="976" y="220">Explicit player controls</text>
+  <path class="flow" d="M890,197 H956"/>
+
+  <rect class="game" x="960" y="290" width="230" height="70" rx="12"/><text class="head" x="976" y="318">Gameplay</text><text class="text" x="976" y="342">[comfy-quest] runs in-world</text>
+  <path class="flow" d="M1075,248 V286"/>
+
+  <rect x="60" y="430" width="1130" height="40" rx="10" fill="none" stroke="#e8c468" stroke-width="2.5" stroke-dasharray="8 6"/>
+  <text x="76" y="455" font-family="system-ui" font-size="14" font-weight="700" fill="#e8c468">KEY BOUNDARY — Studio can go offline right after publish; Companion's write and Runtime's explicit Check/Load are all gameplay depends on.</text>
+
+  <!-- BAND 2: telemetry + mod release -->
+  <text class="head" x="42" y="506">Client telemetry &amp; mod release</text>
+
+  <rect class="game" x="60" y="524" width="230" height="90" rx="12"/><text class="head" x="76" y="552">ComfyNetworkSense</text><text class="text" x="76" y="576">[networksense] client mod</text><text class="small" x="76" y="600">Telemetry + HUD source</text>
+  <rect class="box" x="380" y="524" width="230" height="90" rx="12"/><text class="head" x="396" y="552">Game.Gateway</text><text class="text" x="396" y="576">[lumberjacks-platform]</text><text class="small" x="396" y="600">WS reliable + UDP motion</text>
+  <rect class="store" x="700" y="524" width="230" height="90" rx="12"/><text class="head" x="716" y="552">Evidence JSONL</text><text class="text" x="716" y="576">[baseline] evidence JSONL</text><text class="small" x="716" y="600">fieldlab/evidence/</text>
+  <path class="flow" d="M290,569 H376"/><text class="label" x="295" y="558">1 session, WS+UDP</text>
+  <path class="flow" d="M610,569 H696"/><text class="label" x="618" y="558">append</text>
+
+  <rect class="legacy dash" x="60" y="630" width="280" height="70" rx="12"/><text class="head" x="76" y="658">mod-v* release (pending)</text><text class="text" x="76" y="682">networksense: DLL+manifest+sha256</text>
+  <rect class="box" x="380" y="630" width="280" height="70" rx="12"/><text class="head" x="396" y="658">P7 release-cut lane</text><text class="text" x="396" y="682">[lumberjacks-platform] verify</text>
+  <path class="flow" d="M340,665 H376"/><text class="label" x="345" y="654">G6 · 0 cut yet</text>
+
+  <!-- BAND 3: build-time publishing -->
+  <text class="head" x="42" y="730">Roadmap journal → public corpus → Pages</text>
+
+  <rect class="box" x="60" y="748" width="260" height="100" rx="12"/><text class="head" x="76" y="776">Roadmap journal</text><text class="text" x="76" y="800">[lumberjacks-platform]</text><text class="small" x="76" y="824">commit-notes.jsonl + workbench.json</text>
+  <rect class="store" x="360" y="748" width="260" height="100" rx="12"/><text class="head" x="376" y="776">Corpus mirror</text><text class="text" x="376" y="800">corpus/mirrors/lumberjacks/</text><text class="small" x="376" y="824">[baseline] pinned byte+SHA-256</text>
+  <rect class="store" x="660" y="748" width="230" height="100" rx="12"/><text class="head" x="676" y="776">Corpus projections</text><text class="text" x="676" y="800">[baseline] corpus/</text><text class="small" x="676" y="824">public discovery views</text>
+  <rect class="box" x="930" y="748" width="230" height="100" rx="12"/><text class="head" x="946" y="776">GitHub Pages</text><text class="text" x="946" y="800">[baseline] site/</text><text class="small" x="946" y="824">guard G8 provenance</text>
+
+  <path class="flow" d="M320,798 H356"/><text class="label" x="322" y="787">pin: byte+SHA-256 · G8</text>
+  <path class="flow" d="M620,798 H656"/><text class="label" x="624" y="787">project</text>
+  <path class="flow" d="M890,798 H926"/><text class="label" x="892" y="787">publish</text>
+
+  <rect class="store" x="60" y="880" width="320" height="90" rx="12"/><text class="head" x="76" y="908">questlab.html + zips</text><text class="text" x="76" y="932">[comfy-quest] docs/generated/</text><text class="small" x="76" y="956">vendored by pinned tag+hash → G7</text>
+  <path class="flow" d="M150,880 V852"/><text class="label" x="158" y="868">vendored (pinned tag+hash)</text>
+
+  <text class="small" x="42" y="1020">Solid arrows: primary contract or artifact pin · dashed: pending/unpublished lane · [name] tags the owning repository on every node.</text>
+</svg>

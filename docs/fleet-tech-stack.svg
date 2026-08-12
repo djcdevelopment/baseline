@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="980" viewBox="0 0 1280 980" role="img" aria-labelledby="title desc">
+  <title id="title">Comfy fleet technology stack and deployment</title>
+  <desc id="desc">Layered stack from Unity/Valheim BepInEx mods through netstandard2.0 shared contracts, net9 ASP.NET Core services and Docker, Python/PowerShell/Node tooling, GitHub Actions CI plus NuGet and Pages, down to the OMEN, AM4, i5 and GCP P7 hosts, each band labeled with its owning repositories.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#8fb9d6"/></marker>
+    <style>
+      .bg{fill:#0d1520}.zone{fill:#121f2c;stroke:#34516a;stroke-width:2}.box{fill:#193044;stroke:#69a7c9;stroke-width:2}.store{fill:#252642;stroke:#a690d4;stroke-width:2}.game{fill:#17382f;stroke:#6bc5a2;stroke-width:2}.legacy{fill:#382a24;stroke:#d7a66c;stroke-width:2}.title{fill:#f3f7fb;font:700 28px system-ui}.head{fill:#eef6fb;font:700 18px system-ui}.text{fill:#c8d7e3;font:14px system-ui}.small{fill:#9fb5c4;font:12px system-ui}.flow{fill:none;stroke:#8fb9d6;stroke-width:2.5;marker-end:url(#arrow)}.dash{stroke-dasharray:7 6}.label{fill:#b9d8ea;font:12px system-ui}
+    </style>
+  </defs>
+  <rect class="bg" width="1280" height="980" rx="18"/>
+  <text class="title" x="42" y="46">Comfy fleet · technology stack and deployment</text>
+  <text class="small" x="42" y="68">Client mods down to hosts. Box color = role (see legend); every box names its owning repo.</text>
+
+  <!-- Band 1: client mods -->
+  <rect class="zone" x="40" y="88" width="1200" height="120" rx="16"/>
+  <text class="head" x="60" y="112">Client runtime · Unity/Valheim + BepInEx/Harmony (net48 mods)</text>
+  <rect class="game" x="60" y="126" width="560" height="70" rx="10"/><text class="head" x="76" y="148">comfy-quest · Lab + Runtime mods</text><text class="text" x="76" y="170">Unity 2019 · BepInEx 5 · Harmony patches</text>
+  <rect class="game" x="660" y="126" width="560" height="70" rx="10"/><text class="head" x="676" y="148">networksense · ComfyNetworkSense</text><text class="text" x="676" y="170">HUD console commands · Owner Score · ZDO policies</text>
+  <path class="flow" d="M640,208 V228"/>
+
+  <!-- Band 2: contracts -->
+  <rect class="zone" x="40" y="232" width="1200" height="120" rx="16"/>
+  <text class="head" x="60" y="256">Shared contracts · C# / netstandard2.0 / Newtonsoft.Json</text>
+  <rect class="store" x="60" y="270" width="370" height="70" rx="10"/><text class="head" x="76" y="292">comfy-quest contracts</text><text class="text" x="76" y="314">Quest.Contracts + Quest.Studio packages</text>
+  <rect class="store" x="450" y="270" width="370" height="70" rx="10"/><text class="head" x="466" y="292">lumberjacks-platform contracts</text><text class="text" x="466" y="314">Comfy.Transport.Contracts package</text>
+  <rect class="legacy dash" x="840" y="270" width="380" height="70" rx="10"/><text class="head" x="856" y="292">NuGet publication</text><text class="text" x="856" y="314">Pending — resolves from packages-local/ today</text>
+  <path class="flow" d="M640,352 V372"/>
+
+  <!-- Band 3: services -->
+  <rect class="zone" x="40" y="376" width="1200" height="120" rx="16"/>
+  <text class="head" x="60" y="400">Server layer · net9 ASP.NET Core + Docker</text>
+  <rect class="box" x="60" y="414" width="460" height="70" rx="10"/><text class="head" x="76" y="436">lumberjacks-platform services</text><text class="text" x="76" y="458">Gateway · Companion · Simulation + Docker images</text>
+  <rect class="box" x="540" y="414" width="330" height="70" rx="10"/><text class="head" x="556" y="436">isolate MCP kernel</text><text class="text" x="556" y="458">network/mcp/ :8720 · docker/ :8722</text>
+  <rect class="legacy dash" x="890" y="414" width="330" height="70" rx="10"/><text class="head" x="906" y="436">sovereign-shards (planned)</text><text class="text" x="906" y="458">shard_manager :8730 · router · bot</text>
+  <path class="flow" d="M640,496 V516"/>
+
+  <!-- Band 4: tooling -->
+  <rect class="zone" x="40" y="520" width="1200" height="120" rx="16"/>
+  <text class="head" x="60" y="544">Tooling · Python unittest + PowerShell 5.1 + Node generators</text>
+  <rect class="box" x="60" y="558" width="380" height="70" rx="10"/><text class="head" x="76" y="580">comfy-quest tooling</text><text class="text" x="76" y="602">199 Python tests · questlab-*, blueprints</text>
+  <rect class="box" x="460" y="558" width="380" height="70" rx="10"/><text class="head" x="476" y="580">lumberjacks-platform tooling</text><text class="text" x="476" y="602">roadmap.mjs/workbench.mjs (Node) · PS p7 lanes</text>
+  <rect class="box" x="860" y="558" width="360" height="70" rx="10"/><text class="head" x="876" y="580">networksense tooling</text><text class="text" x="876" y="602">PowerShell deploy: i5 · am4 · modpack</text>
+  <path class="flow" d="M640,640 V660"/>
+
+  <!-- Band 5: CI / NuGet / Pages -->
+  <rect class="zone" x="40" y="664" width="1200" height="120" rx="16"/>
+  <text class="head" x="60" y="688">Delivery · GitHub Actions CI + NuGet + GitHub Pages</text>
+  <rect class="box" x="60" y="702" width="400" height="70" rx="10"/><text class="head" x="76" y="724">CI · per-repo test gates</text><text class="text" x="76" y="746">166+649+185+199+25 tests across the fleet</text>
+  <rect class="legacy dash" x="480" y="702" width="340" height="70" rx="10"/><text class="head" x="496" y="724">NuGet.org package registry</text><text class="text" x="496" y="746">Pending publication (no API key)</text>
+  <rect class="store" x="840" y="702" width="380" height="70" rx="10"/><text class="head" x="856" y="724">baseline · GitHub Pages</text><text class="text" x="856" y="746">site/ ← corpus/ projections · guard G8</text>
+  <path class="flow" d="M640,784 V804"/>
+
+  <!-- Band 6: hosts -->
+  <rect class="zone" x="40" y="808" width="1200" height="132" rx="16"/>
+  <text class="head" x="60" y="832">Hosts · dev, server, client, cloud</text>
+  <rect class="box" x="60" y="846" width="275" height="80" rx="10"/><text class="head" x="76" y="868">OMEN — dev host</text><text class="text" x="76" y="890">Authoring · Workbench loopback</text>
+  <rect class="box" x="355" y="846" width="275" height="80" rx="10"/><text class="head" x="371" y="868">AM4 — server host</text><text class="text" x="371" y="890">Tailscale funnel · public origin</text>
+  <rect class="box" x="650" y="846" width="275" height="80" rx="10"/><text class="head" x="666" y="868">i5 — test client</text><text class="text" x="666" y="890">Human alpha/peer test lane</text>
+  <rect class="box" x="945" y="846" width="275" height="80" rx="10"/><text class="head" x="961" y="868">GCP P7 VM</text><text class="text" x="961" y="890">infra/gcp/p7 deploy lane</text><text class="small" x="961" y="908">lumberjacks-platform</text>
+
+  <!-- Legend -->
+  <text class="small" x="42" y="960">box = service/host · store = data or package artifact · game = client mod runtime · legacy (dashed) = planned or pending</text>
+</svg>

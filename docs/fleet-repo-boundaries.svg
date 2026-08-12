@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1050" viewBox="0 0 1280 1050" role="img" aria-labelledby="title desc">
+  <title id="title">Comfy fleet repository boundary map</title>
+  <desc id="desc">Six public repositories on github.com/djcdevelopment, each drawn as one zone holding its owned featuresets, linked by eight numbered package and artifact edges with pin mechanism and guard. Sovereign-shards is greenfield and unbuilt.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#8fb9d6"/></marker>
+    <style>
+      .bg{fill:#0d1520}.zone{fill:#121f2c;stroke:#34516a;stroke-width:2}.box{fill:#193044;stroke:#69a7c9;stroke-width:2}.store{fill:#252642;stroke:#a690d4;stroke-width:2}.game{fill:#17382f;stroke:#6bc5a2;stroke-width:2}.legacy{fill:#382a24;stroke:#d7a66c;stroke-width:2}.title{fill:#f3f7fb;font:700 28px system-ui}.head{fill:#eef6fb;font:700 18px system-ui}.text{fill:#c8d7e3;font:14px system-ui}.small{fill:#9fb5c4;font:12px system-ui}.flow{fill:none;stroke:#8fb9d6;stroke-width:2.5;marker-end:url(#arrow)}.dash{stroke-dasharray:7 6}.label{fill:#b9d8ea;font:12px system-ui}.badge{fill:#0d1520;stroke:#8fb9d6;stroke-width:2}.num{fill:#eef6fb;font:700 12px system-ui}
+    </style>
+  </defs>
+  <rect class="bg" width="1280" height="1050" rx="18"/>
+  <text class="title" x="42" y="46">Comfy fleet · repository boundary map</text>
+  <text class="small" x="42" y="68">Six public repos, one zone each. Numbered edges are package/artifact pins (legend below). Dashed brown = planned, not yet built.</text>
+
+  <!-- Row 1 zones -->
+  <rect class="zone" x="40" y="90" width="370" height="340" rx="16"/>
+  <text class="head" x="60" y="118">baseline · public index</text>
+  <text class="small" x="60" y="138">Index only — zero product code</text>
+  <rect class="box" x="60" y="156" width="330" height="58" rx="10"/><text class="head" x="76" y="176">Docs, decisions &amp; guides</text><text class="text" x="76" y="198">docs/ · PD-1..PD-9 · REPO-MAP.md</text>
+  <rect class="box" x="60" y="222" width="330" height="58" rx="10"/><text class="head" x="76" y="242">FieldLab evidence (historical)</text><text class="text" x="76" y="264">fieldlab/evidence, retro, runs</text>
+  <rect class="box" x="60" y="288" width="330" height="58" rx="10"/><text class="head" x="76" y="308">Public corpus &amp; site</text><text class="text" x="76" y="330">corpus/ · site/ → GitHub Pages</text>
+  <rect class="box" x="60" y="354" width="330" height="58" rx="10"/><text class="head" x="76" y="374">Fleet metadata</text><text class="text" x="76" y="396">data/ · corpus/mirrors/lumberjacks/</text>
+
+  <rect class="zone" x="455" y="90" width="370" height="340" rx="16"/>
+  <text class="head" x="475" y="118">lumberjacks-platform</text>
+  <text class="small" x="475" y="138">Server platform (net9) · 649 tests</text>
+  <rect class="box" x="475" y="156" width="330" height="66" rx="10"/><text class="head" x="491" y="176">Gateway / Companion / Sim</text><text class="text" x="491" y="198">ASP.NET Core net9 + Docker images</text><text class="small" x="491" y="216">Guards: G3 compose uniqueness · G4 /identity</text>
+  <rect class="box" x="475" y="230" width="330" height="58" rx="10"/><text class="head" x="491" y="250">Shared contracts (source)</text><text class="text" x="491" y="272">Game.Contracts + Transport.Contracts</text>
+  <rect class="box" x="475" y="296" width="330" height="58" rx="10"/><text class="head" x="491" y="316">Roadmap journal &amp; ceremony</text><text class="text" x="491" y="338">commit-notes.jsonl → roadmap.html</text>
+  <rect class="box" x="475" y="362" width="330" height="58" rx="10"/><text class="head" x="491" y="382">FieldLab harness + P7 lane</text><text class="text" x="491" y="404">fieldlab/scripts · infra/gcp/p7 lane</text>
+
+  <rect class="zone" x="870" y="90" width="370" height="340" rx="16"/>
+  <text class="head" x="890" y="118">comfy-quest</text>
+  <text class="small" x="890" y="138">Quest product · 185 + 199 tests</text>
+  <rect class="game" x="890" y="156" width="330" height="58" rx="10"/><text class="head" x="906" y="176">Quest mods (net48)</text><text class="text" x="906" y="198">Lab, Runtime, Contracts + .Tests</text>
+  <rect class="game" x="890" y="222" width="330" height="58" rx="10"/><text class="head" x="906" y="242">Quest Studio (net9 lib)</text><text class="text" x="906" y="264">src/Quest.Studio · authoring UI</text>
+  <rect class="game" x="890" y="288" width="330" height="58" rx="10"/><text class="head" x="906" y="308">Quest tooling</text><text class="text" x="906" y="330">component-packets, questlab-*, bridge</text>
+  <rect class="game" x="890" y="354" width="330" height="58" rx="10"/><text class="head" x="906" y="374">Python + pack tooling</text><text class="text" x="906" y="396">199 tests · blueprints, quest-packs</text>
+
+  <!-- Row 2 zones -->
+  <rect class="zone" x="40" y="500" width="370" height="340" rx="16"/>
+  <text class="head" x="60" y="528">networksense</text>
+  <text class="small" x="60" y="548">BepInEx client mod · net48</text>
+  <rect class="game" x="60" y="566" width="330" height="58" rx="10"/><text class="head" x="76" y="586">ComfyNetworkSense</text><text class="text" x="76" y="608">HUD · Owner Score · ZDO policies</text>
+  <rect class="game" x="60" y="632" width="330" height="58" rx="10"/><text class="head" x="76" y="652">Test suite</text><text class="text" x="76" y="674">.Tests net8 · 166 tests</text>
+  <rect class="box" x="60" y="698" width="330" height="58" rx="10"/><text class="head" x="76" y="718">Deploy lanes</text><text class="text" x="76" y="740">tools/i5, am4, modpack</text>
+  <rect class="legacy dash" x="60" y="764" width="330" height="58" rx="10"/><text class="head" x="76" y="784">Release lane (pending)</text><text class="text" x="76" y="806">mod-v* DLL+manifest+sha256 — 0 cut</text>
+
+  <rect class="zone" x="455" y="500" width="370" height="340" rx="16"/>
+  <text class="head" x="475" y="528">isolate</text>
+  <text class="small" x="475" y="548">MCP gateway kernel · 25 tests</text>
+  <rect class="box" x="475" y="566" width="330" height="70" rx="10"/><text class="head" x="491" y="586">MCP gateway kernel</text><text class="text" x="491" y="608">network/mcp/ · port 8720</text><text class="small" x="491" y="626">Guards: G3, G4 apply</text>
+  <rect class="box" x="475" y="644" width="330" height="58" rx="10"/><text class="head" x="491" y="664">Lab containers</text><text class="text" x="491" y="686">docker/ · compose MCP port 8722</text>
+  <rect class="box" x="475" y="710" width="330" height="58" rx="10"/><text class="head" x="491" y="730">Identity self-attestation</text><text class="text" x="491" y="752">/identity: source, revision, profile</text>
+
+  <rect class="legacy dash" x="870" y="500" width="370" height="340" rx="16"/>
+  <text class="head" x="890" y="528">sovereign-shards</text>
+  <text class="small" x="890" y="548" style="fill:#f0c987;font-weight:700">PLANNED — greenfield, zero code</text>
+  <rect class="legacy dash" x="890" y="566" width="330" height="58" rx="10"/><text class="head" x="906" y="586">ComfyPortalRouter</text><text class="text" x="906" y="608">Client plugin (planned)</text>
+  <rect class="legacy dash" x="890" y="632" width="330" height="58" rx="10"/><text class="head" x="906" y="652">shard_manager daemon</text><text class="text" x="906" y="674">Reserved port 8730 (planned)</text>
+  <rect class="legacy dash" x="890" y="698" width="330" height="58" rx="10"/><text class="head" x="906" y="718">Discord bot</text><text class="text" x="906" y="740">!party command + JWT (planned)</text>
+  <rect class="legacy dash" x="890" y="764" width="330" height="58" rx="10"/><text class="head" x="906" y="784">Armory watch sidecar</text><text class="text" x="906" y="806">Planned observer service</text>
+
+  <!-- Edges: row1 col1-col2 gap (E8) -->
+  <path class="flow" d="M455,220 L410,220"/>
+  <circle class="badge" cx="432" cy="220" r="11"/><text class="num" x="432" y="224" text-anchor="middle">8</text>
+
+  <!-- Edges: row1 col2-col3 gap (E2, E3, E7) comfy-quest -> lumberjacks-platform -->
+  <path class="flow" d="M870,180 L825,180"/>
+  <circle class="badge" cx="847" cy="180" r="11"/><text class="num" x="847" y="184" text-anchor="middle">2</text>
+  <path class="flow" d="M870,220 L825,220"/>
+  <circle class="badge" cx="847" cy="220" r="11"/><text class="num" x="847" y="224" text-anchor="middle">3</text>
+  <path class="flow" d="M870,260 L825,260"/>
+  <circle class="badge" cx="847" cy="260" r="11"/><text class="num" x="847" y="264" text-anchor="middle">7</text>
+
+  <!-- Edge: col2 vertical row1-row2 (E5) lumberjacks-platform -> isolate -->
+  <path class="flow" d="M640,430 L640,500"/>
+  <circle class="badge" cx="640" cy="465" r="11"/><text class="num" x="640" y="469" text-anchor="middle">5</text>
+
+  <!-- Edges: lumberjacks-platform <-> networksense diagonal (E4, E6) -->
+  <path class="flow" d="M520,430 V465 H390 V500"/>
+  <circle class="badge" cx="410" cy="465" r="11"/><text class="num" x="410" y="469" text-anchor="middle">4</text>
+  <path class="flow" d="M350,500 V480 H560 V430"/>
+  <circle class="badge" cx="500" cy="480" r="11"/><text class="num" x="500" y="484" text-anchor="middle">6</text>
+
+  <!-- Edge: comfy-quest -> networksense long reach (E1), dashed = longer-reach pin -->
+  <path class="flow dash" d="M1000,430 V490 H150 V500"/>
+  <circle class="badge" cx="575" cy="490" r="11"/><text class="num" x="575" y="494" text-anchor="middle">1</text>
+
+  <!-- Legend -->
+  <text class="head" x="42" y="866">Cross-repo package &amp; artifact edges</text>
+  <text class="small" x="42" y="888">1  comfy-quest → networksense — Quest.Contracts (contentFiles) · G5</text>
+  <text class="small" x="42" y="906">2  comfy-quest → lumberjacks-platform — Quest.Contracts (compiled, Companion) · G5</text>
+  <text class="small" x="42" y="924">3  comfy-quest → lumberjacks-platform — Quest.Studio pkg + IQuestStudioHost · G5</text>
+  <text class="small" x="42" y="942">4  lumberjacks-platform → networksense — Transport.Contracts (contentFiles) · G5</text>
+  <text class="small" x="660" y="888">5  lumberjacks-platform → isolate — Transport.Contracts (compiled, authority-lab) · G5</text>
+  <text class="small" x="660" y="906">6  networksense → lumberjacks-platform — mod-v* release, hash-verified (0 cut yet) · G6</text>
+  <text class="small" x="660" y="924">7  comfy-quest → lumberjacks-platform — questlab.html + workbench zips, pinned · G7</text>
+  <text class="small" x="660" y="942">8  lumberjacks-platform → baseline — roadmap journal → corpus mirror (pinned) · G8</text>
+
+  <text class="head" x="42" y="978">Guards</text>
+  <text class="small" x="42" y="998">G1 no source reach-in · G2 repo identity assert · G3 compose project-name uniqueness · G4 service /identity</text>
+  <text class="small" x="42" y="1016">G5 package-only consumption · G6 mod artifact hash gate · G7 generated-file drift · G8 corpus snapshot provenance</text>
+  <text class="small" x="42" y="1034">sovereign-shards has no live edges yet — port 8730 reserved (docs/PORTS.md); future guard: identity + port-claim lint.</text>
+</svg>
