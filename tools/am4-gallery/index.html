@@ -212,7 +212,7 @@ function cellHtml(im){
     <span class=badge style="background:${mcolor(im.model)}">${im.model}</span>
     <span class=tt>${im.aes!=null?'★'+im.aes.toFixed(1)+' ':''}${im.t}s</span>
     ${ADMIN?`<span class="star${STARS.has(im.id)?' on':''}" data-star="${im.id}" title="flag for print-prep upscale">${STARS.has(im.id)?'★':'☆'}</span>`:''}
-    <div class=cap>${im.subjectLabel?`<b>${esc(im.subjectLabel)}</b> · ${esc(im.artDirection||'')} · ${esc(im.qualityLane||'')}<br>`:''}${esc(im.prompt)}</div></div>`;
+    <div class=cap>${im.subjectLabel?`<b>${esc(im.subjectLabel)}</b> · ${esc(im.artDirection||'')} · ${esc(im.qualityLane||'')}${im.parentRank?` · child of #${im.parentRank}`:''}<br>`:''}${esc(im.prompt)}</div></div>`;
 }
 function toggleStar(id,el){
   const on=!STARS.has(id);
@@ -301,6 +301,7 @@ function showLb(){
     `<span>⏱ ${im.t}s</span><span>seed ${im.seed}</span>`+
     (im.style?`<span>${im.style}</span>`:'')+`<span>${im.category}</span>`+
     (im.project?`<span>${im.project}</span><span>${im.subjectId}</span><span>${im.qualityLane}</span>`:'')+
+    (im.parentJobId?`<span class=copy onclick="openParent('${im.parentJobId}')">↩ parent #${im.parentRank}</span><span>${im.referenceMethod} ${im.referenceStrength}</span>`:'')+
     `<span>${lbIdx+1} / ${lbList.length}</span>`;
   if(ADMIN){const on=STARS.has(im.id);
     $('#lbmeta').innerHTML+=`<span id=lbstar class="${on?'on':''}">${on?'★ starred':'☆ star'}</span>`;
@@ -317,6 +318,7 @@ function showLb(){
   });
 }
 function copyPrompt(){navigator.clipboard?.writeText(lbList[lbIdx].prompt).then(()=>toast('prompt copied'))}
+function openParent(id){const i=DB.images.findIndex(x=>x.id===id);if(i>=0)openLb(DB.images,i);else toast('parent not found')}
 function remix(){
   const im=lbList[lbIdx];
   // preselect the models that haven't run this prompt yet (fill the gaps)

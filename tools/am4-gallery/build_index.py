@@ -45,6 +45,10 @@ def main():
                 gameUse=m.get("gameUse"), qualityLane=m.get("qualityLane"),
                 comparisonId=m.get("comparisonId"), registryVersion=m.get("registryVersion"),
                 sourceRefs=m.get("sourceRefs", []),
+                parentJobId=m.get("parentJobId"), parentRank=m.get("parentRank"),
+                parentAesthetic=m.get("parentAesthetic"),
+                referenceMethod=m.get("referenceMethod"),
+                referenceStrength=m.get("referenceStrength"),
                 t=m["metrics"]["t_total_s"], ts=round(os.path.getmtime(p)),
                 aes=sc.get("aesthetic"), clip=sc.get("clip"),  # OMEN perception scores
                 starred=(m["job_id"] in starred),             # admin print-prep flag
