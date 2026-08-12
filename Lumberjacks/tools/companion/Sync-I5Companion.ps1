@@ -56,9 +56,13 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-$RepoRoot = Resolve-Path (Join-Path $PSScriptRoot '..\..')
-$LumberjacksRoot = Join-Path $RepoRoot 'Lumberjacks'
-$DeployScript = Join-Path $PSScriptRoot 'Deploy-ToI5.ps1'
+# This script lives in Lumberjacks/tools/companion; both hops are shorter from here than they
+# were from tools/i5 (two hops to repo root, then back down into Lumberjacks). LumberjacksRoot
+# is now a direct two-hop parent; Deploy-ToI5.ps1 stays in the networksense-bound tools/i5, so
+# it is resolved through RepoRoot instead of $PSScriptRoot.
+$LumberjacksRoot = Resolve-Path (Join-Path $PSScriptRoot '..\..')
+$RepoRoot = Resolve-Path (Join-Path $LumberjacksRoot '..')
+$DeployScript = Join-Path $RepoRoot 'tools\i5\Deploy-ToI5.ps1'
 $StartScript = Join-Path $PSScriptRoot 'Start-I5Companion.ps1'
 $SshArgs = @('-o', 'BatchMode=yes', '-o', 'ConnectTimeout=8', 'i5')
 
