@@ -34,26 +34,35 @@ implement via Sonnet subagents, offload drafts/triage to HEARTH `gcp-gemini`.
 AGENTS.md, CI no-reach-in guard, `tools/Assert-RepoIdentity.ps1` — verified
 passing in-repo AND refusing (exit 1) from a wrong checkout.
 
-### Phase 1 — IN FLIGHT 🟡
+### Phase 1 — IN FLIGHT 🟡 (updated 2026-08-12 ~00:20 PT)
 - **1.6 script retargets: DONE, committed `9541b78f`** (companion i5 scripts →
   `Lumberjacks/tools/companion/`; p7 lane `-ModArtifact`; headless lab
   `-ModDll` alias; New-WorkbenchZip `-RepoBlobBase`; render_quest_lab
   `--out/--check`. Suites 9/9, 8/8, 14/14 green. Behavior-preserving defaults.)
-- **1.1–1.3 contracts surgery: was RUNNING as a background Sonnet agent** when
-  this was written. Scope: move 6 quest glue files
-  (`TrackedQuest`, `QuestEvent`, `QuestViewLoader`, `QuestTriggerEvaluator`,
-  `QuestEventCatalog.g.cs`, `QuestAuthoring`) from
-  `network/mod/ComfyNetworkSense/Core/` → `network/mod/ComfyQuestContracts/ModGlue/`;
-  pack `Comfy.Quest.Contracts` + `Comfy.Transport.Contracts` (netstandard2.0,
-  lib + contentFiles sources) into a local feed `artifacts/nuget/` + root
-  `nuget.config`; retarget consumers (ComfyNetworkSense.csproj,
-  ComfyQuestLab.csproj lines ~94-99, ComfyNetworkSense.Tests links,
-  Game.Companion.csproj line 13 → PackageReference `ExcludeAssets=contentFiles`,
-  authority-lab csproj lines 11-14, Game.Contracts + new
-  `Lumberjacks/src/Comfy.Transport.Contracts/`); **gate = byte-identical
-  ComfyNetworkSense.dll + ComfyQuestLab.dll SHA256 vs pre-change build**.
-- **1.4 test-project split (ComfyQuestLab.Tests) and 1.5 Quest Studio carve:
-  NOT STARTED** — they depend on 1.1–1.3. Specs in DETAILED-MANIFEST (F3, F4).
+- **1.1–1.3 contracts surgery: DONE, committed `5077fd75`.** Both packages
+  live on the local feed (`artifacts/nuget/` + root `nuget.config`):
+  `Comfy.Quest.Contracts` (ModGlue as source-only contentFiles — deliberately
+  NOT compiled into its own lib, avoids duplicate-type errors in the test
+  project; Companion consumes the compiled assembly via CPM
+  `Directory.Packages.props`) and `Comfy.Transport.Contracts` (lib AND
+  contentFiles — ProjectReference consumers Game.Contracts/authority-lab take
+  the lib, the mod family takes source). No cross-seam Compile-Include remains.
+  Gates: xunit 351/351, python 210/210, seam-catalog regen byte-identical,
+  mod DLLs **IL-identical** to baseline (byte diff = embedded PDB
+  source-document identity only, diagnosed by decompile comparison; hashes in
+  the agent report, acceptable per plan). The stray safety stash from the
+  mid-run incident was dropped after both commits landed.
+- **1.4 test split + 1.5 Studio carve: LAUNCHED as parallel background Sonnet
+  agents** at this update. 1.4 scope: `network/mod/ComfyNetworkSense.Tests` →
+  new `network/mod/ComfyQuestLab.Tests`, gate = count conservation (combined
+  passes = 351). 1.5 scope: `Lumberjacks/src/Quest.Studio` carved from
+  Game.Companion via `IQuestStudioHost` adapter + `Comfy.Quest.Studio`
+  local package (CPM row needed), gate = route-parity + Game.Companion.Tests
+  green (SDK9 at `C:\work\dotnet9\dotnet.exe`). **If you are recovering and
+  these never reported:** check `git status --porcelain -- network/mod
+  Lumberjacks/src Lumberjacks/tests Lumberjacks/Directory.Packages.props`;
+  coherent staged work → verify gates yourself; incoherent → discard only
+  those paths back to `5077fd75` and re-run from DETAILED-MANIFEST F3/F4.
 
 ### Phases 2–5 — NOT STARTED. Follow PLAN-OF-RECORD in order.
 
