@@ -88,3 +88,23 @@ the two repositories are duplicated source with a tested contract between them, 
 independent runtime. The compose file also remains duplicated with no drift guard; which
 copy is authoritative is unresolved.
 
+## Amendment — 2026-08-12: reconciliation completed
+
+The remote blocker above is resolved: `isolate` now has
+`https://github.com/djcdevelopment/isolate.git` as `origin`. The deploy-lane boundary
+was established in commits `351aa58` and `b91adf1`; the final Baseline MCP delta was
+selectively ported and pushed in isolate commit `bf925c3`.
+
+The reconciliation used Baseline commit `593c27b` as the source delta. It ported the
+bounded Quest Lab provider, its five tests, provider registration, and the container’s
+explicit writable quest-root mapping. It deliberately rejected Baseline’s port-8721
+contract hunk: isolate retains kernel/container port 8720 and publishes the canonical
+Compose endpoint on loopback port 8722. It also retains isolate’s narrower, newer
+distribution-independence guard. The alleged second tree at
+`Lumberjacks/network/mcp` does not exist in any local Baseline ref or path history, so
+there was nothing to reconcile from it.
+
+Verified before removal from Baseline: 24 MCP unit tests passed; Compose rendered the
+Quest Lab provider and `/lab/omen-config/comfy-quest-lab`; the port mapping remained
+`127.0.0.1:8722 -> 8720`; and the canonical `comfy-gateway` image built. Isolate is now
+the sole writable source authority for this runtime.

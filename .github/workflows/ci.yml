@@ -1,0 +1,31 @@
+name: Hub CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-hub:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reject executable sibling reach-ins
+        shell: pwsh
+        run: ./tools/Assert-HubBoundary.ps1
+      - name: Verify retained Python tests
+        run: python -m unittest discover -s tests -v
+      - name: Verify corpus contracts and projections
+        run: |
+          python tools/corpus/test_corpus.py
+          python tools/corpus/sync_lumberjacks_mirror.py --check
+          python tools/corpus/build.py --check
+      - name: Verify entrypoint links
+        run: python -m unittest tests.test_entrypoint_links -v

@@ -1,95 +1,68 @@
 # Baseline
 
-**A toolkit to build an entire community on, in Valheim** — with the things most
-hobbyist servers never get to have: identity, telemetry, and testing as first-class
-parts of the stack instead of afterthoughts.
+Baseline is the hub of knowledge, evidence, and discovery for the Comfy Valheim
+toolkit. The active products are independent add-ons with their own builds, releases,
+and boundaries; this repository answers where they live, why the boundaries exist,
+and what evidence supports the project’s claims.
 
-The communities this is for already do this work — with mods, spreadsheets, Discord
-bots, checklists, screenshots. Baseline doesn't replace any of that. It's meant to let
-people spend less time on paperwork and tracking, and more time making things.
+## Start here
 
-## Try something right now
+- [Repository map](REPO-MAP.md) — implementation owner, canonical path, artifact
+  contract, and guard for every surface.
+- [Era and status map](docs/internal/START-HERE.md) — what is live, historical,
+  stopped, or awaiting an operator proof.
+- [Evidence standard](docs/decisions/pd-4-evidence-standard.md) — the difference
+  between verified, inferred, blocked, and aspirational claims.
+- [Repository split decision](docs/decisions/pd-9-repository-split.md) — why Baseline
+  became the hub and how code crosses repository boundaries.
+- [Port registry](docs/PORTS.md) — one runtime claim per local port.
 
-**→ [The Community Workbench](https://am4.tail8e749c.ts.net/workbench)**
+## The add-on fleet
 
-A catalog of tools you can download and run on your own machine tonight. Every card
-says what the thing actually does today — not what it's going to do.
-
-| Tool | What it is |
+| Repository | Owns |
 |---|---|
-| **Quest Studio + Runtime** | Authors certified experience packs in the loopback Workbench, then explicitly loads and inscribes them in a private Valheim world. The native OMEN-host/i5-peer authority boundary is live-proven. |
-| **Quest Picker** | Turns a guild's real quest tracker into a page where a player checks off what they're chasing — and the game mod reads the result. |
-| **ComfyStewardView** | Reads a Valheim world file and answers what stops being walkable once a server gets big: where is everyone building, and who owns this. |
-| **Community Telemetry** | An aggregates-only telemetry API with privacy tests that fail if a player ID, name, or position ever shows up — plus the whole stack, runnable locally. |
-| **Steam Self-Service Join** | An invite, a Steam sign-in, and a mod-pack zip with your credentials already in it. Invite-only right now — see below. |
+| [`networksense`](https://github.com/djcdevelopment/networksense) | ComfyNetworkSense mod, HUD, telemetry tests, and mod release artifacts |
+| [`lumberjacks-platform`](https://github.com/djcdevelopment/lumberjacks-platform) | Gateway/services/Companion, live FieldLab harness, roadmap, Workbench, production compose, and P7 lanes |
+| [`comfy-quest`](https://github.com/djcdevelopment/comfy-quest) | Quest Lab, Runtime, Contracts, Studio, generators, and creator release artifacts |
+| [`sovereign-shards`](https://github.com/djcdevelopment/sovereign-shards) | Greenfield router, shard manager, sidecar, and bot architecture |
+| [`isolate`](https://github.com/djcdevelopment/isolate) | MCP kernel, API contracts, container manifests, and disposable lab runtime |
 
-Two more pieces are recoverable but not running, and reviving either one is a real
-claim on it. They're listed in the catalog.
+Cross-repository code uses exact public packages. DLLs, generated pages, zips, and
+corpus inputs cross only with an immutable revision or release tag plus verified byte
+counts and SHA-256 hashes. No repository reads a sibling checkout.
 
-More detail, in plain language: **[docs/community/](docs/community/README.md)**.
+## What remains here
 
-## Come talk about it
+- durable project decisions and architecture/history documentation under `docs/`;
+- historical FieldLab evidence, retrospectives, and receipts under `fieldlab/`;
+- public discovery inputs, mirrors, deterministic projections, and Pages under
+  `corpus/`, `data/`, and `site/`;
+- operator handoffs and archived plans; and
+- small hub-owned tools for corpus, site, dispatch, provenance, and evidence work.
 
-**[Join the Discord](https://discord.gg/JCDaYQ68kN)** — every tool has its own thread.
-Running one of these once and saying what happened, including that it broke, is a
-complete contribution.
+Baseline’s Git history remains the browsable pre-split archive. Product trees were
+removed with ordinary commits; their component histories continue from the sealed
+`split-base-20260811` tag.
 
-What to expect from a solo-operator project, written down honestly:
-**[what alpha means here](docs/community/expectations.md)**.
+## Public surfaces
 
-## What is not open yet
+The public Community Workbench and roadmap are served at
+[am4.tail8e749c.ts.net](https://am4.tail8e749c.ts.net/workbench). Baseline’s
+reconstructable discovery projections are published through GitHub Pages. Runtime and
+deployment authority belongs to the owning product repository; a page mirrored here
+does not become a second source of truth.
 
-The game server is not open. You can run every tool above on your own machine, but
-this is not yet an invitation to come play on the live world — the volunteer platform
-isn't ready, and saying otherwise would waste your evening. That work is tracked in
-the open on the [roadmap](https://am4.tail8e749c.ts.net/roadmap).
+## Contributing and security
 
-## If you came to read the code
-
-People are expected to read this code, and if you take pieces of it and use them
-yourself, that's the highest compliment. Designed for extraction.
-
-- **[docs/internal/START-HERE.md](docs/internal/START-HERE.md)** — which era each area
-  belongs to, so you don't act on the wrong one. Read this before anything else.
-- **[docs/internal/BUILDING.md](docs/internal/BUILDING.md)** — the two build
-  environments, and the commit ceremony that will otherwise fail you.
-- **[CONTRIBUTING.md](CONTRIBUTING.md)** — current posture. Honest about what isn't
-  accepted yet.
-- **[docs/baseline-vision-and-boundary.md](docs/baseline-vision-and-boundary.md)** —
-  what this is for, and where its edges are.
-- **[docs/internal/GLOSSARY.md](docs/internal/GLOSSARY.md)** — the terms, including the
-  three different things called "workbench".
-
-The four load-bearing areas:
-
-- **[`Lumberjacks/`](Lumberjacks/README.md)** — the service stack: Gateway, eventlog,
-  progression, operatorapi, plus the append-only roadmap journal.
-- **[`network/mod/ComfyNetworkSense/`](network/mod/ComfyNetworkSense/README.md)** — the
-  BepInEx plugin: ZDO redirect, handshake, telemetry, quest tracking.
-- **[`fieldlab/`](fieldlab/NETCODE-MAP.md)** — the netcode-replacement R&D program and
-  its ground truth.
-- **[`infra/gcp/p7/`](infra/gcp/p7/README.md)** — release, deployment, and rollback.
-- **[`docs/quest-studio-runtime-plan.md`](docs/quest-studio-runtime-plan.md)** — the
-  Quest Studio, Runtime, and Lab split, shared contract, milestones, diagrams, and current evidence.
-
-⚠️ `main` is force-pushed by background automation. Long-lived branches and forks rot
-fast — read [AGENTS.md](AGENTS.md) before you touch anything.
-
-How this repo got its shape (the merge, and the July 2026 prune):
-[docs/internal/repo-history.md](docs/internal/repo-history.md).
+Read [AGENTS.md](AGENTS.md) before changing this hub and
+[CONTRIBUTING.md](CONTRIBUTING.md) before proposing work. Report suspected
+vulnerabilities through [the private security process](SECURITY.md), not a public
+issue.
 
 ## License
 
-Public source under the [Business Source License 1.1](LICENSE), with an automatic
-Community Steward grant for small operators — up to 100 active members and USD 25,000
-aggregate community revenue per rolling year, while publishing their complete deployed
-source. Qualifying stewards keep the profit, no separate agreement, no royalty. Each
-version converts to AGPL-3.0-only no later than the Change Date in `LICENSE`.
-
-Plain-language scope: [docs/legal/LICENSING.md](docs/legal/LICENSING.md). Larger use:
-[docs/legal/COMMERCIAL.md](docs/legal/COMMERCIAL.md). Operating principles:
-[docs/legal/STEWARDSHIP.md](docs/legal/STEWARDSHIP.md). Attribution and exclusions:
-[docs/legal/NOTICE.md](docs/legal/NOTICE.md) ·
-[docs/legal/THIRD_PARTY_NOTICES.md](docs/legal/THIRD_PARTY_NOTICES.md).
+Public source is provided under the [Business Source License 1.1](LICENSE), with the
+Community Steward grant and automatic conversion described there. Plain-language
+scope is in [the licensing guide](docs/legal/LICENSING.md).
 
 *Not affiliated with or endorsed by Iron Gate AB or Coffee Stain Publishing.*

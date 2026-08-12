@@ -3,8 +3,11 @@
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 import json
+import tempfile
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -64,6 +67,57 @@ class CorpusContractTests(unittest.TestCase):
         first = build.outputs()
         second = build.outputs()
         self.assertEqual(first, second)
+
+    def test_lumberjacks_mirror_provenance_rejects_tampering_and_missing_files(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            mirror = Path(temp)
+            revision = "1" * 40
+            receipts = []
+            for local_name, upstream_path in build.LUMBERJACKS_MIRROR_FILES.items():
+                payload = f"fixture:{local_name}\n".encode("utf-8")
+                (mirror / local_name).write_bytes(payload)
+                receipts.append({
+                    "upstream_path": upstream_path,
+                    "raw_url": f"https://raw.githubusercontent.com/djcdevelopment/lumberjacks-platform/{revision}/{upstream_path}",
+                    "local_path": local_name,
+                    "sha256": hashlib.sha256(payload).hexdigest(),
+                    "bytes": len(payload),
+                })
+            provenance = {
+                "schema": "baseline.corpus.mirror-provenance/v1",
+                "upstream_repository": "djcdevelopment/lumberjacks-platform",
+                "revision": revision,
+                "captured_at": datetime.now(timezone.utc).isoformat(),
+                "files": receipts,
+            }
+            (mirror / "provenance.json").write_text(json.dumps(provenance), encoding="utf-8")
+
+            self.assertEqual(revision, build.validate_lumberjacks_mirror(mirror)["revision"])
+
+            tampered = mirror / "workbench.json"
+            original = tampered.read_bytes()
+            tampered.write_bytes(original + b"tampered")
+            with self.assertRaisesRegex(build.CorpusError, "hash|byte count"):
+                build.validate_lumberjacks_mirror(mirror)
+            tampered.write_bytes(original)
+
+            missing = mirror / "commit-notes.jsonl"
+            missing.unlink()
+            with self.assertRaisesRegex(build.CorpusError, "missing"):
+                build.validate_lumberjacks_mirror(mirror)
+
+    def test_lumberjacks_mirror_requires_an_exact_revision_and_upstream_path(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            mirror = Path(temp)
+            (mirror / "provenance.json").write_text(json.dumps({
+                "schema": "baseline.corpus.mirror-provenance/v1",
+                "upstream_repository": "djcdevelopment/lumberjacks-platform",
+                "revision": "not-a-commit",
+                "captured_at": datetime.now(timezone.utc).isoformat(),
+                "files": [],
+            }), encoding="utf-8")
+            with self.assertRaisesRegex(build.CorpusError, "40-character SHA"):
+                build.validate_lumberjacks_mirror(mirror)
 
 
 if __name__ == "__main__":

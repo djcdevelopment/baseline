@@ -1,158 +1,91 @@
 # Glossary
 
-One-line definitions for terms used across Baseline's docs, alphabetized.
-Each entry was checked against the repo doc(s) named in parentheses.
+Short definitions for the post-split fleet. The owning repository and canonical path
+for each implementation are in [REPO-MAP.md](../../REPO-MAP.md).
 
-**AM4** — The local box that hosts the community-facing surface. Its
-`am4.tail8e749c.ts.net` name is a **Tailscale Funnel**, so it is reachable
-from the public internet, not just the tailnet — `/workbench`, `/community`,
-`/roadmap` and the downloads are served there. The funnel carries HTTP only;
-Valheim's UDP does not ride it, though ordinary tailnet peers reach UDP
-fine. AM4 also hosts unrelated co-tenants, which is why `/join` there is an
-IRC portal rather than the Gateway's enrollment flow.
-(`docs/internal/LAUNCH-RUNBOOK.md`, `docs/internal/START-HERE.md`)
+**AM4** — The local host serving the public Community Workbench and roadmap through a
+Tailscale Funnel. Its production platform definitions are owned by
+`lumberjacks-platform`; unrelated co-tenants can own other routes.
 
-**C-gates (C0–C10b)** — The numbered acceptance gates of the native-network
-cutover plan, C0 through C10b. C0–C8 and C10a are complete on AM4 with
-receipts; C10b, the P7 cutover, has no green receipt.
-(`fieldlab/plan-native-network-final-cutover.md`)
+**Baseline** — This repository: the fleet’s durable knowledge, evidence, corpus, and
+discovery hub. It preserves pre-split history but is not a writable product-code
+authority.
 
-**Cutover mode** — The mod's `lumberjacksCutoverMode` setting, which picks
-which stack owns world state. `native` means vanilla Valheim sync (with
-Lumberjacks telemetry still reporting); the Lumberjacks lanes take over
-otherwise. The AM4 lab server runs `native`.
-(`network/mod/ComfyNetworkSense/Config/PluginConfig.cs`)
+**Comfy** — The community/product display name. The old `comfy` repository is a
+historical archive; the name does not imply that current implementation belongs there.
 
-**no_go** — The stop-ship register in the volunteer roadmap: conditions that
-must be false before the volunteer platform opens. Nine entries as of
-2026-08-05, two of them explicitly labelled stop-ship.
-(`Lumberjacks/docs/roadmap/valheim-volunteer-roadmap.json`)
+**ComfyNetworkSense / NetworkSense** — The BepInEx telemetry, handshake, owner-score,
+and HUD add-on owned by the `networksense` repository.
 
-**Admitted mod release** — The `ComfyNetworkSense` build a given Gateway
-image is configured to accept; a separate identity from both the Gateway
-image release id and the public client-pull pointer (below). P7 currently
-admits `m30-rolecontrol-20260723-r1`. (`Lumberjacks/docs/decision-release-reproducibility-risk-12.md`,
-`fieldlab/PINNED-networking-lane-2026-07.md`)
+**Community Workbench** — The public tool catalog generated from
+`lumberjacks-platform/Lumberjacks/docs/workbench/workbench.json`. It is distinct from
+the loopback Companion workbench panel.
 
-**AoI** — Area of Interest: which world objects/updates a given peer is
-relevant enough to receive. Native Valheim still owns this "candidate
-relevance" judgment today. (`Lumberjacks/docs/network/area-of-interest-findings.md`,
-`fieldlab/docs/adr/0011-aoi-lives-on-the-producer.md`)
+**Companion** — The loopback operator application owned by `lumberjacks-platform`.
+It hosts Quest Studio through the published `Comfy.Quest.Studio` package but does not
+own Quest Studio’s implementation.
 
-**A-track (adoption)** — The A1-A7 roadmap track for community-adoption
-work (Discord, the Workbench catalog, onboarding), numbered separately from
-the M-milestones below. (`DECISIONS-PENDING.md`, `fieldlab/PINNED-networking-lane-2026-07.md`)
+**Contract package** — A small public NuGet seam used across repositories. Consumers
+pin exact versions such as `[0.1.0]`; in-repository consumers may use direct project or
+source links.
 
-**Baseline** — This repository: the merged toolkit combining the former
-`comfy` repo/mods with the Lumberjacks network services, for running a
-Valheim community with identity, telemetry, and testing built in as
-first-class citizens. (`README.md`, `docs/baseline-vision-and-boundary.md`)
+**Corpus mirror** — A minimal snapshot of an external public authority committed to
+Baseline so Pages can rebuild offline. It names an immutable upstream commit and is
+verified by byte count and SHA-256; it does not outrank the upstream authority.
 
-**BepInEx** — The third-party Unity/.NET plugin-loader framework Valheim
-mods run under; `ComfyNetworkSense` is pinned to BepInEx 5.4.2202. (`network/mod/ComfyNetworkSense/README.md`,
-`fieldlab/docs/harmony-patch-policy.md`)
+**FieldLab** — The netcode-replacement research program. Its live harness and working
+docs are owned by `lumberjacks-platform`; historical evidence and retrospectives remain
+in Baseline.
 
-**Client-pull pointer** — The release id the public modpack-download
-endpoint currently serves to players. It can move independently of the
-Gateway's admitted mod release but must reference the same underlying mod
-identity — e.g. P7's client-pull pointer is `m31-motionphase-20260724-r1`
-against admitted release `m30-rolecontrol-20260723-r1`. (`fieldlab/PINNED-networking-lane-2026-07.md`,
-`fieldlab/docs/runbook-companion-client-pull.md`)
+**G1–G8** — Fleet boundary guards: no reach-in, repository identity, compose identity,
+service identity, clean package-only build, artifact tamper detection, generator drift,
+and corpus provenance.
 
-**Comfy** — Two senses, disambiguate by context: (1) the retired archive
-repo (`C:\work\comfy`, github.com/djcdevelopment/comfy) whose content was
-merged into this repo's root and is now read-only history; (2) the
-community/product display name still used in running surfaces, such as the
-Community Workbench page's own title. (`README.md`, `Lumberjacks/docs/workbench/workbench.json`)
+**HEARTH / mechnet** — Derek’s personal local-AI/build fleet. It is operator
+infrastructure and never ships in a community-facing artifact.
 
-**ComfyNetworkSense** — The live BepInEx Valheim mod at
-`network/mod/ComfyNetworkSense/`: client/server telemetry, the ZDO
-redirect/handshake adapter, and the in-game HUD/debug panel. (`README.md`,
-`network/mod/ComfyNetworkSense/README.md`)
+**I1–I5** — Cross-repository integration proofs for mod artifacts, Quest packs,
+Quest pages, corpus mirrors, and the headless lab. I2 includes an intentional manual
+OMEN game-client step.
 
-**ComfyStewardView** — A separate, standalone public repo (Java, its own
-build, nothing to do with the mod or Gateway) that parses a Valheim world
-`.db` save file and serves a local map/ownership/economy dashboard. License
-is proprietary, not BSL 1.1. (`Lumberjacks/docs/workbench/tools/steward-view.md`,
-`HANDOFF-2026-07-29.md`)
+**Isolate** — The repository owning the MCP gateway kernel, API/identity contracts,
+container manifests, and disposable local lab runtime. Its canonical Compose host
+publish is loopback port 8722 to kernel port 8720.
 
-**Community Workbench** — The public `/workbench` catalog served by the
-Gateway: a stage-ladder listing of community tools generated from
-`Lumberjacks/docs/workbench/workbench.json`. Not the Companion workbench
-panel or the i5 workbench (see both below). (`HANDOFF-2026-07-29.md`)
+**Lumberjacks platform** — The .NET 9 Gateway/services/Companion stack, roadmap and
+Workbench authorities, live FieldLab harness, production compose/env templates, and P7
+release/deploy lane.
 
-**Companion workbench panel** — The operator-facing hub inside the local
-Docker "Companion" app (`127.0.0.1:8080`): local readiness, release
-identity, live trace, milestone position, and retained evidence for
-whoever is running that Companion instance. Not the public Community
-Workbench. (`plans/companion-workbench-reconstruction-strategy.md`)
+**Manifest-and-hash handoff** — A non-code boundary where a release records source
+revision, identity, byte count, and SHA-256 for each artifact. Consumers verify the
+manifest before use and prove tampering fails.
 
-**CRE-Exx** — Numbered creative-runtime experiments under
-`fieldlab/experiments/creative-runtime/` (e.g. `cre-e08-adaptive-presentation-replay`)
-testing whether Lumberjacks can make mod/presentation work observable,
-budgeted, and reversible without prematurely changing Valheim authority.
-(`fieldlab/experiments/creative-runtime/README.md`)
+**OMEN** — Derek’s primary workstation and rendered Valheim client.
 
-**FieldLab** — The experiment workspace at `fieldlab/`: current netcode
-research, source-grounded decompilation maps, ADRs, and evidence for the
-Valheim netcode-replacement program. (`README.md`, `fieldlab/NETCODE-MAP.md`)
+**P7** — The terminated GCP deployment `comfy-lumberjacks-p7`. Its historical evidence
+remains valid; its maintained release/deploy tooling belongs to
+`lumberjacks-platform`.
 
-**Golden proof** — Common shorthand for what the repo's own evidence calls
-the P7 "gold run" (2026-07-16): the validated, hash-recorded single-client
-session in which all 83,220 eligible ZDO revisions were durably received and
-acknowledged through Lumberjacks, with zero native fallback. (`fieldlab/evidence/p7-gold-run-20260716-011112-authoritative-priority-cutover/PUBLICATION.md`,
-`infra/gcp/p7/README.md`)
+**PD** — Project Decision, the durable canonical home for project-level rationale
+under `docs/decisions/`.
 
-**Harmony** — The IL runtime-patching library (HarmonyX 2.10.x) that
-`ComfyNetworkSense` uses to hook Valheim methods; patches apply
-unconditionally in `Awake` and are feature-gated at runtime inside each
-patch body. (`fieldlab/docs/harmony-patch-policy.md`)
+**Public source (BSL 1.1)** — The required description of the fleet’s source license.
+Business Source License 1.1 is not an OSI-approved open-source license.
 
-**HEARTH / mechnet** — Derek's personal local-AI/build fleet and its MCP
-gateway. Operator infrastructure only, explicitly **not part of Baseline**:
-nothing HEARTH-related may ship in a community-facing package, page, or doc.
-(`docs/baseline-vision-and-boundary.md`)
+**Quest Lab / Runtime / Studio** — The creator sandbox, in-game consumer, and authoring
+library owned by `comfy-quest`. They cross into other repositories through exact NuGet
+packages, `.questpack` files, or hash-verified release assets.
 
-**i5** — The second Valheim test client machine, a roaming laptop reachable
-over the tailnet; also runs its own local Companion instance (informally
-"the i5 workbench" in session history). (`AGENTS.md`, `tools/i5/README.md`)
+**Repository identity guard** — A pre-mutation check that the current Git remote and
+root markers name the expected sovereign repository. A directory name alone is not
+identity.
 
-**I-ladder** — The historic I0-I7 integration rungs that preceded the
-M-milestones below; superseded as the active schema but preserved as
-history. (`Lumberjacks/docs/roadmap/README.md`, `fieldlab/docs/adr/0011-aoi-lives-on-the-producer.md`)
+**Sovereign repository** — A source authority that builds, tests, and releases without
+reading a sibling checkout. Integration occurs only through formal packages or
+hash-verified artifacts.
 
-**The journal** — `Lumberjacks/docs/roadmap/commit-notes.jsonl`, the
-append-only implementation log with one record per non-merge commit; source
-material for the generated `roadmap.html`. (`Lumberjacks/docs/roadmap/README.md`)
+**Sovereign Shards** — The greenfield router/shard-manager/sidecar/bot add-on. Port
+8730 is reserved; implementation claims remain unverified until code and receipts
+exist.
 
-**Lumberjacks** — The gateway/services subsystem under `Lumberjacks/`:
-Gateway, EventLog, Progression, and OperatorApi, plus the roadmap/journal
-tooling. (`README.md`)
-
-**M-milestones** — The active M0...M7 milestone ladder in the living
-roadmap (`Lumberjacks/docs/roadmap/valheim-volunteer-roadmap.json`), the
-current schema for tracking the Lumberjacks cutover. (`Lumberjacks/docs/roadmap/valheim-volunteer-roadmap.json`)
-
-**OMEN** — Derek's primary machine: the rendered Valheim client and
-operator workstation. (`infra/gcp/p7/README.md`)
-
-**P7** — The GCP deployment, VM `comfy-lumberjacks-p7`: a real Valheim world
-plus five digest-pinned Lumberjacks services, at comfy-p7.duckdns.org. **The
-VM has been terminated since 2026-07-25**, so the hostname does not resolve to
-a running service; the public community origin is `am4.tail8e749c.ts.net`.
-(`infra/gcp/p7/README.md`, `docs/internal/START-HERE.md`)
-
-**Public source (BSL 1.1)** — The mandated description of Baseline's
-license: source is publicly visible under Business Source License 1.1
-(converting to AGPL-3.0-only at its Change Date), which is not an
-OSI-approved license — so "open source" is banned wording, enforced by a
-`roadmap.mjs` lint. (`README.md`, `Lumberjacks/docs/roadmap/valheim-volunteer-roadmap.json`)
-
-**Wave 0** — The non-human-gate command suite under `tools/wave0/` that
-reduces live two-client Valheim testing down to the observations only a
-human can still provide. (`tools/wave0/README.md`, `fieldlab/PINNED-networking-lane-2026-07.md`)
-
-**ZDO** — Zone Data Object: Valheim's persistent networked world-state
-record for an object such as a structure piece, item, creature, or
-environmental object. (`Lumberjacks/docs/roadmap/valheim-volunteer-roadmap.json`,
-`README.md`)
+**ZDO** — Zone Data Object, Valheim’s persistent networked world-state record.

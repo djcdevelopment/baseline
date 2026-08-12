@@ -1,104 +1,52 @@
-# Building and verifying Baseline
+# Building and verifying the Baseline hub
 
-Contributor-facing build/verify truth, consolidated out of `AGENTS.md`,
-`HANDOFF-2026-07-29.md`, and `Lumberjacks/docs/build-release-runbook.md`.
-Read in order — it's the order you'll hit these.
+Baseline no longer builds the mod, platform, Quest product, or MCP kernel. Those loops
+live in the owning repositories listed in [REPO-MAP.md](../../REPO-MAP.md). A source
+reference to a sibling checkout is a boundary failure, not a build shortcut.
 
-## 1. Two build environments — using the wrong one fails confusingly
+## Local hub verification
 
-### Lumberjacks services (net9) — build INSIDE a container
-
-`Lumberjacks/Dockerfile` targets `mcr.microsoft.com/dotnet/sdk:9.0`. The host
-here only has SDK 8, so a host `dotnet build`/`dotnet test` is **not** the
-release check — it fails with `NETSDK1045` before the real build is reached.
-
-From `Lumberjacks/`:
+From the Baseline root:
 
 ```powershell
-.\scripts\build.ps1 -Target Verify
+python -m unittest discover -s tests -v
+python tools\corpus\test_corpus.py
+python tools\corpus\build.py --check
+python -m unittest tests.test_entrypoint_links -v
+git diff --check
 ```
 
-That wraps `docker build --target verify -t lumberjacks-build:verify .`
-(restore, build, tests, all inside the container). For an ad hoc test run,
-the repo also uses `docker run` directly:
+The corpus check rebuilds every projection in memory and also verifies the immutable
+Lumberjacks mirror’s repository, 40-character revision, upstream paths, raw URLs,
+byte counts, and SHA-256 digests.
 
-```bash
-docker run --rm -v "${PWD}:/src" -w /src mcr.microsoft.com/dotnet/sdk:9.0 \
-  dotnet test Game.sln --filter "Category!=Performance"
-```
+## Refreshing the platform mirror
 
-Full release-cut / image-promotion steps live in
-[`Lumberjacks/docs/build-release-runbook.md`](../../Lumberjacks/docs/build-release-runbook.md).
-
-### The mod (net48) — builds in the Docker Workbench image
-
-`network/mod/ComfyNetworkSense` targets `net48`. The supported and historical
-workaround is the Docker Workbench image, which supplies the reference
-assemblies while mounting the Valheim installation read-only. A host SDK
-failure such as MSB3644 is an expected boundary; do not add a second host
-build lane. The project also has a post-build step that can copy the built DLL
-straight into `$(ValheimDir)\BepInEx\plugins`, so the canonical Workbench build
-disables that copy.
-
-Use the Workbench capability/receipt (`build.mod.release`) rather than a raw
-host build. For a deliberate local diagnostic outside the Workbench, redirect
-the output path somewhere that does not exist so the copy step no-ops — this is
-the literal value `infra/gcp/p7/scripts/New-ReleaseCut.ps1` uses:
+Choose an already-pushed `lumberjacks-platform` commit, never a moving branch or tag:
 
 ```powershell
-cd network\mod\ComfyNetworkSense
-dotnet build .\ComfyNetworkSense.csproj -c Release `
-  -p:PluginOutputPath=C:\__comfy_cut_no_plugin_copy__
+python tools\corpus\sync_lumberjacks_mirror.py --revision <40-character-sha>
+python tools\corpus\sync_lumberjacks_mirror.py --check --revision <same-sha>
+python tools\corpus\build.py
+python tools\corpus\build.py --check
 ```
 
-## 2. The commit ceremony — every non-merge commit
+The sync command uses `GH_TOKEN`, `GITHUB_TOKEN`, or the authenticated `gh` client to
+read the private upstream without printing credentials. Commit both mirrored files,
+`provenance.json`, and regenerated projections together.
 
-From `Lumberjacks/`:
+## Repository ceremony
 
-1. `npm run roadmap:note -- --milestone <M> --kind <kind> --author <you> --summary "..." --impact "..."`
-2. Stage the change **and always**: `docs/roadmap/commit-notes.jsonl`,
-   `docs/roadmap/valheim-volunteer-roadmap.json` (if milestone truth changed),
-   and the regenerated `src/Game.Gateway/Community/roadmap.html`.
-3. `npm run roadmap:check -- --staged` — must pass before you commit.
+Baseline has no roadmap-journal pre-commit ceremony. That hook and append-only journal
+belong to `lumberjacks-platform`. Commit only intentional paths, pull with
+`--ff-only` before pushing, and never force-push without explicit operator approval.
 
-That check includes a licensing-phrase lint: it **fails any new note or JSON
-edit containing "open source"** (this project is BSL 1.1, not OSI-approved).
-Write **"public source (BSL 1.1)"** instead. Full rule:
-[`Lumberjacks/AGENTS.md`](../../Lumberjacks/AGENTS.md) and
-[`Lumberjacks/docs/roadmap/README.md`](../../Lumberjacks/docs/roadmap/README.md).
+Each product repository defines its own build/test/release commands in its `AGENTS.md`
+and CI workflow. Cross-repository integration uses released packages or artifacts;
+do not run a fleet build by traversing local checkouts.
 
-Workbench catalog page edits follow the same shape, different commands: edit
-`Lumberjacks/docs/workbench/workbench.json` only, then
-`npm run workbench:render` and `npm run workbench:check`. **Never hand-edit**
-a generated HTML file (`roadmap.html`, `workbench.html`).
+## Windows encoding
 
-The workbench render is **two-phase** since 2026-07-29: commit the inputs
-(`workbench.json` + `scripts/workbench.mjs`) first, then render — a clean
-tree stamps `Published from <sha7>` naming that commit — then commit the
-regenerated HTML. A dirty-tree render stamps an unpublishable
-`Preview rendered …` line, and `workbench:check` fails a clean tree whose
-artifact still carries one. Guard tests: `npm run workbench:test`. Live
-destinations (Discord invite/threads, GitHub URLs, site routes, downloads):
-`npm run workbench:verify-live -- --pre-publish` — run automatically as a
-publish gate by `tools/workbench/Publish-WorkbenchAssets.ps1`.
-
-## 3. `main` has no long-lived branches
-
-Background automation auto-commits and **force-pushes `origin/main`** for any
-change touching the Gateway, `network/`, or `infra/gcp/p7/` — see "This
-journal runs as background automation" in [`AGENTS.md`](../../AGENTS.md). Don't
-rely on a stable base SHA or a long-lived feature branch: pull/rebase before
-you start, and never force-push to "undo" what the automation did.
-
-## 4. Community catalog zips go through one script
-
-Any zip published to the `/workbench` catalog is built only via
-`tools/workbench/New-WorkbenchZip.ps1`, which runs
-`Test-WorkbenchZipPrivacy.ps1` as a **mandatory** gate before producing the
-zip — there is no path that skips the scanner.
-
-## 5. PowerShell 5.1 encoding trap
-
-Never bulk-edit a file via `Get-Content`/`Set-Content` round-trips in Windows
-PowerShell 5.1 — it silently corrupts UTF-8 content. Use a targeted editor or
-line-level tool instead.
+Do not round-trip UTF-8 files through Windows PowerShell 5.1
+`Get-Content | Set-Content`. Use a targeted patch or the repository’s generator so
+Unicode and line endings remain stable.

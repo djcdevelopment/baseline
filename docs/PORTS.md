@@ -6,12 +6,12 @@ collisions found in code reviews trace back to this table.
 | Port | Owner | Status | Authority |
 |------|-------|--------|-----------|
 | 8710 | HEARTH MCP gateway (lab, never ships in Baseline deliverables) | live | `docs/baseline-vision-and-boundary.md` |
-| 8720 | ComfyGatewayBoot (legacy) | retired, not deleted | PD-6 |
-| 8721 | Baseline Dev/Lab MCP (`comfy-gateway`) | live, reserved | PD-6 |
-| 8722 | Provenance surface | reserved | PD-6 |
+| 8720 | Isolate MCP kernel/direct launcher | live | PD-8; `isolate/network/mcp` |
+| 8721 | Lumberjacks Companion Dev MCP host publish | reserved | PD-6; `lumberjacks-platform` |
+| 8722 | Isolate canonical Compose MCP host publish | live, loopback-only | PD-8; `isolate/docker` |
 | 8730 | Sovereign-Shards Shard Manager Daemon | **reserved, unbuilt** | `sovereign-logical-architecture-guide.md` |
-| 8080 | Lumberjacks Companion (loopback Workbench) | live | `Lumberjacks/tools/companion/README.md` |
-| 47631 | Quest Lab Sheets export companion | live (on demand) | `tools/questlab-sheets/README.md` |
+| 8080 | Lumberjacks Companion (loopback Workbench) | live | `lumberjacks-platform/Lumberjacks/tools/companion` |
+| 47631 | Quest Lab Sheets export companion | live (on demand) | `comfy-quest/tools/questlab-sheets` |
 
 Rules:
 - A loopback port is not a project identity — anything serving one must

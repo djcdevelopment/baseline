@@ -24,8 +24,14 @@ ROOT = HERE.parents[1]
 CATALOG_PATH = ROOT / "corpus" / "sources.json"
 AUDIENCES_PATH = ROOT / "corpus" / "audiences.json"
 TOKENS_PATH = ROOT / "tools" / "site" / "tokens.css"
+LUMBERJACKS_MIRROR_ROOT = ROOT / "corpus" / "mirrors" / "lumberjacks"
 PUBLIC_BASE = "https://djcdevelopment.github.io/baseline/"
 AM4_BASE = "https://am4.tail8e749c.ts.net"
+
+LUMBERJACKS_MIRROR_FILES = {
+    "workbench.json": "Lumberjacks/docs/workbench/workbench.json",
+    "commit-notes.jsonl": "Lumberjacks/docs/roadmap/commit-notes.jsonl",
+}
 
 
 class CorpusError(Exception):
@@ -77,6 +83,57 @@ def parse_time(value: str, label: str) -> datetime:
     if parsed.tzinfo is None:
         raise CorpusError(f"{label} must include a UTC offset")
     return parsed
+
+
+def validate_lumberjacks_mirror(mirror_root: Path = LUMBERJACKS_MIRROR_ROOT) -> dict[str, Any]:
+    """Fail closed when a cross-repo corpus snapshot loses immutable provenance."""
+    label = "corpus/mirrors/lumberjacks"
+    provenance_path = mirror_root / "provenance.json"
+    try:
+        provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise CorpusError(f"{label}/provenance.json is missing or invalid: {exc}") from exc
+    if provenance.get("schema") != "baseline.corpus.mirror-provenance/v1":
+        raise CorpusError(f"{label}/provenance.json has an unsupported schema")
+    if provenance.get("upstream_repository") != "djcdevelopment/lumberjacks-platform":
+        raise CorpusError(f"{label}/provenance.json names the wrong upstream repository")
+    revision = provenance.get("revision")
+    if not isinstance(revision, str) or not re.fullmatch(r"[0-9a-f]{40}", revision):
+        raise CorpusError(f"{label}/provenance.json revision must be a lowercase 40-character SHA")
+    captured_at = provenance.get("captured_at")
+    if not isinstance(captured_at, str):
+        raise CorpusError(f"{label}/provenance.json captured_at must be a timestamp")
+    parse_time(captured_at, f"{label}/provenance.json captured_at")
+    entries = provenance.get("files")
+    if not isinstance(entries, list):
+        raise CorpusError(f"{label}/provenance.json files must be an array")
+    by_name: dict[str, dict[str, Any]] = {}
+    for entry in entries:
+        if not isinstance(entry, dict) or not isinstance(entry.get("local_path"), str):
+            raise CorpusError(f"{label}/provenance.json contains an invalid file receipt")
+        local_name = entry["local_path"]
+        if local_name in by_name:
+            raise CorpusError(f"{label}/provenance.json repeats {local_name}")
+        by_name[local_name] = entry
+    if set(by_name) != set(LUMBERJACKS_MIRROR_FILES):
+        raise CorpusError(f"{label}/provenance.json must cover exactly the declared mirror files")
+    for local_name, upstream_path in LUMBERJACKS_MIRROR_FILES.items():
+        entry = by_name[local_name]
+        if entry.get("upstream_path") != upstream_path:
+            raise CorpusError(f"{label}/{local_name} has the wrong upstream path")
+        expected_url = f"https://raw.githubusercontent.com/djcdevelopment/lumberjacks-platform/{revision}/{upstream_path}"
+        if entry.get("raw_url") != expected_url:
+            raise CorpusError(f"{label}/{local_name} is not pinned to its immutable raw URL")
+        path = mirror_root / local_name
+        try:
+            payload = path.read_bytes()
+        except OSError as exc:
+            raise CorpusError(f"{label}/{local_name} is missing: {exc}") from exc
+        if entry.get("bytes") != len(payload):
+            raise CorpusError(f"{label}/{local_name} byte count does not match provenance")
+        if entry.get("sha256") != hashlib.sha256(payload).hexdigest():
+            raise CorpusError(f"{label}/{local_name} hash does not match provenance")
+    return provenance
 
 
 def load_audiences() -> tuple[list[dict[str, Any]], dict[str, dict[str, Any]]]:
@@ -296,6 +353,10 @@ def build_index() -> tuple[dict[str, Any], list[dict[str, Any]]]:
     catalog = read_json(CATALOG_PATH)
     if catalog.get("schema_version") != 1:
         raise CorpusError("corpus/sources.json.schema_version must be 1")
+    mirror_prefix = "corpus/mirrors/lumberjacks/"
+    if any(str(adapter.get("path", "")).replace("\\", "/").startswith(mirror_prefix)
+           for adapter in catalog.get("adapters", [])):
+        validate_lumberjacks_mirror()
     roles, audience_by_id = load_audiences()
     records = manifest_records(catalog, audience_by_id)
     streams: dict[str, Any] = {}

@@ -50,3 +50,4 @@ beats a taxonomy of ten empty ones.
 - [PD-6 — The Baseline Dev MCP is a development/lab-only control plane](pd-6-development-mcp-lifecycle.md)
 - [PD-7 — Lab runtime provenance and canonical session boundary](pd-7-lab-runtime-provenance-and-session-boundary.md)
 - [PD-8 — Isolated runtime and toolset repository architecture](pd-8-isolated-runtime-and-toolset-repository.md)
+- [PD-9 — Sovereign add-on repositories with Baseline as the hub](pd-9-repository-split.md)
