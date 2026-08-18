@@ -32,6 +32,15 @@ commit all of it together. `python tools/questpicker/verify_picker_pin.py` must
 pass, and `--rerender` (with `QUEST_GENERATOR_ROOT` set) is the strong check that
 the pinned generator reproduces the committed bytes exactly.
 
+**Publishing the picker.** `tools/questpicker/Publish-QuestPickerToAM4.ps1` puts
+the refresh on the live surface: it re-runs the verifier, installs the page
+hash-verified at AM4's `/srv/lumberjacks/roadmap/quest-picker.html`, and demands
+the served `X-QuestPicker-Sha256` equal the pin's recorded hash. The Gateway
+re-reads the mounted file on change, so publishing is one file copy — no image
+build, no restart. This script is the only writer of that file; the workbench
+asset publisher in lumberjacks-platform deliberately does not ship
+quest-picker.html (its sample clobbered the real page 2026-08-12 → 2026-08-17).
+
 **What is actually forbidden** is an *unattributable* page: committing bytes whose
 producing generator revision and input catalogs are not recorded in the pin. That
 was the real risk behind the earlier "wait for a signed release" rule — a release
