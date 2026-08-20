@@ -54,3 +54,4 @@ beats a taxonomy of ten empty ones.
 - [PD-7 — Lab runtime provenance and canonical session boundary](pd-7-lab-runtime-provenance-and-session-boundary.md) — implementation authority amended to `lumberjacks-platform`
 - [PD-8 — Isolated runtime and toolset repository architecture](pd-8-isolated-runtime-and-toolset-repository.md)
 - [PD-9 — Sovereign add-on repositories with Baseline as the hub](pd-9-repository-split.md)
+- [PD-10 — The Demo World is a versioned bridge to host Valheim](pd-10-demo-world-host-boundary.md)
