@@ -289,3 +289,38 @@ court now drop out with `sight line clips walls 15x/11x/23x`.
 
 Where `center_block` still earns its place is as a per-frame diagnostic, not as a
 gate. `depth_score` should not be read as "is there a scene here".
+
+## Batch C — ranks 81–120, and the sixth slot settled
+
+240 frames, 11.6 s/frame, median 5.552.
+
+| variant | n | median |
+| --- | --- | --- |
+| orbit4 | 40 | 5.695 |
+| orbit1 | 40 | 5.651 |
+| orbit2 | 40 | 5.599 |
+| orbit3 | 40 | 5.579 |
+| dawn | 40 | 5.573 |
+| weather (the A/B) | 40 | 5.035 |
+
+The A/B itself, sixth slot only, everything else in the plan identical:
+
+| sixth slot | n | median | min | max |
+| --- | --- | --- | --- | --- |
+| Clear 0.71 — sunset | 13 | **5.335** | 4.80 | 5.73 |
+| Misty 0.66 — control | 13 | 5.021 | 4.39 | 5.79 |
+| Clear 0.90 — night | 14 | 4.792 | 4.34 | 5.23 |
+| *the five golden-hour slots* | *200* | *5.636* | | |
+
+Sunset beats Misty by 0.31 and night is worse than either. But the result that
+matters is the last row: **whatever sky goes in that slot, it is the worst frame of
+the six.** The slot reuses the hero framing, and `dawn` reuses the same framing at
+0.32 and medians 5.573 — so this is the light, not the composition. `plan_shots.py`'s
+own measured table already said 0.70 sits past the falloff at 26% less contrast; the
+gallery agrees.
+
+Sunset is the answer if the slot is kept. The better answer, given the ask is
+coverage, is not to keep it: `--alt-shots 0` drops it, five frames per structure
+instead of six, **20% more structures per hour**. Batches D and F run that way.
+Light variety does not suffer — the set already holds 130 Misty frames, a dawn
+slot in every band, and night and storm across 600 first-person frames.

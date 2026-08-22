@@ -71,6 +71,10 @@ def parse_args():
                    help="haze cap. Beyond this the frame fills with atmosphere and the "
                         "build reads as a flat silhouette; better to shoot part of a big "
                         "build up close than all of it through 400 m of fog")
+    p.add_argument("--include-ids", default="",
+                   help="comma-separated cluster ids to shoot regardless of "
+                        "--skip/--top, for structures worth a camera that the "
+                        "ranking heuristic does not reach")
     p.add_argument("--exclude-sky", action="store_true",
                    help="drop clusters scan_clusters marked sky=true. A build "
                         "floating with no terrain under it blows out against the "
@@ -78,6 +82,13 @@ def parse_args():
                         "whose six frames scored 3.88-4.31 against a band median "
                         "of 5.61 and are a white mass in blue. Shoot them with a "
                         "plan that puts the ground in frame, not this one")
+    p.add_argument("--alt-shots", type=int, default=1, choices=[0, 1],
+                   help="0 drops the sixth (alternate-light) shot. Measured on "
+                        "Era 17 ranks 81-120: whatever sky goes in that slot it "
+                        "is the worst frame of the six -- sunset 0.71 medians "
+                        "5.335, Misty 0.66 medians 5.021, night 0.90 medians "
+                        "4.792, against 5.636 for the five golden-hour slots. "
+                        "Dropping it buys 20%% more structures per hour")
     p.add_argument("--alt-environment", default=WEATHER_ALT[0],
                    help="environment for the sixth (alternate-light) shot")
     p.add_argument("--alt-time", type=float, default=WEATHER_ALT[1],
@@ -179,6 +190,14 @@ def main():
         clusters = clusters[args.skip:]
     if args.top:
         clusters = clusters[: args.top]
+    want = {int(i) for i in args.include_ids.split(",") if i.strip()}
+    if want:
+        have = {c["cluster_id"] for c in clusters}
+        by_id = {c["cluster_id"]: c for c in doc["clusters"]}
+        for cid in sorted(want - have):
+            if cid not in by_id:
+                sys.exit(f"--include-ids {cid} is not a known cluster")
+            clusters.append(by_id[cid])
     if args.exclude_sky:
         skipped_here = [c["cluster_id"] for c in clusters if c.get("sky")]
         clusters = [c for c in clusters if not c.get("sky")]
@@ -211,8 +230,10 @@ def main():
         # Kept named "weather" whatever the sky is: the index supersedes on
         # (cluster, variant), so renaming the slot would orphan the frame it
         # is meant to replace rather than retire it.
-        shots.append({**base, "shot": "weather", **cams[hero],
-                      "environment": args.alt_environment, "time_of_day": args.alt_time})
+        if args.alt_shots:
+            shots.append({**base, "shot": "weather", **cams[hero],
+                          "environment": args.alt_environment,
+                          "time_of_day": args.alt_time})
 
     out = {
         "generated_from": "plan_shots.py",
@@ -222,6 +243,7 @@ def main():
         "settings": {"elevation_deg": args.elevation, "fov_v_deg": FOV_V_DEG,
                      "margin": args.margin, "max_distance_m": args.max_distance,
                      "min_clearance_m": args.min_clearance,
+                     "alt_shots": args.alt_shots,
                      "alt_environment": args.alt_environment,
                      "alt_time_of_day": args.alt_time},
         "plan": shots,
