@@ -66,6 +66,14 @@ def parse_args():
     p.add_argument("--max-join-m", type=float, default=250.0,
                    help="how far a shot may be from a cluster centre and still count "
                         "as a picture of it (default 250)")
+    p.add_argument("--run", action="append", default=[],
+                   help="include only this capture run id; repeat for multiple runs")
+    p.add_argument("--world", default=None,
+                   help="public world label stored in the gallery index")
+    p.add_argument("--crop-right-ui-px", type=int, default=0,
+                   help="remove this many pixels from the source's right edge before web rendering")
+    p.add_argument("--derived", default=None,
+                   help="optional JSON list of explicit detail frames derived from accepted orbit captures")
     return p.parse_args()
 
 
@@ -76,6 +84,13 @@ def load_clusters(path):
         return []
     with open(path, encoding="utf-8") as fh:
         return json.load(fh).get("clusters", [])
+
+
+def load_cluster_world(path):
+    if not path or not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as fh:
+        return json.load(fh).get("world")
 
 
 def nearest_cluster(clusters, x, z, max_m):
@@ -183,10 +198,22 @@ def load_names(path):
         return {str(k): str(v).strip() for k, v in json.load(fh).items() if str(v).strip()}
 
 
-def make_thumb(src, dest_path, px=THUMB_PX, quality=82):
+def make_thumb(src, dest_path, px=THUMB_PX, quality=82, crop_right_ui_px=0,
+               detail_crop_fraction=0.0):
     from PIL import Image
     with Image.open(src) as im:
         im = im.convert("RGB")
+        if crop_right_ui_px:
+            right = im.width - crop_right_ui_px
+            if right <= 0:
+                raise ValueError("right-edge UI crop is wider than the source image")
+            im = im.crop((0, 0, right, im.height))
+        if detail_crop_fraction:
+            if not 0.0 < detail_crop_fraction < 0.45:
+                raise ValueError("detail crop fraction must be between 0 and 0.45")
+            x = round(im.width * detail_crop_fraction)
+            y = round(im.height * detail_crop_fraction)
+            im = im.crop((x, y, im.width - x, im.height - y))
         im.thumbnail((px, px))
         im.save(dest_path, "WEBP", quality=quality, method=4)
 
@@ -281,6 +308,8 @@ def main():
         os.makedirs(large_dir, exist_ok=True)
 
     for run in sorted(os.listdir(args.captures)):
+        if args.run and run not in args.run:
+            continue
         run_dir = os.path.join(args.captures, run)
         if not os.path.isdir(run_dir):
             continue
@@ -366,6 +395,8 @@ def main():
     orbit_n = 0
     for rec in read_orbit_receipts(args.receipts):
         run, fname = rec.get("run"), rec.get("file")
+        if args.run and run not in args.run:
+            continue
         if rec.get("skipped") and not args.keep_rejects:
             rejected.append((run, "-", rec["skipped"]))
             continue
@@ -429,13 +460,15 @@ def main():
 
         if args.thumbs:
             try:
-                make_thumb(src, os.path.join(thumb_dir, image_id + ".webp"))
+                make_thumb(src, os.path.join(thumb_dir, image_id + ".webp"),
+                           crop_right_ui_px=args.crop_right_ui_px)
             except Exception as exc:
                 skipped.append((run, f"thumbnail failed for {fname}: {exc}"))
         if args.large:
             try:
                 make_thumb(src, os.path.join(large_dir, image_id + ".webp"),
-                           px=LARGE_PX, quality=80)
+                           px=LARGE_PX, quality=80,
+                           crop_right_ui_px=args.crop_right_ui_px)
             except Exception as exc:
                 skipped.append((run, f"large render failed for {fname}: {exc}"))
         if args.copy_full:
@@ -462,13 +495,76 @@ def main():
     if superseded:
         print(f"  {superseded} orbit frame(s) superseded by a later capture of the same angle")
 
+    derived_n = 0
+    if args.derived and os.path.exists(args.derived):
+        with open(args.derived, encoding="utf-8-sig") as fh:
+            derived_specs = json.load(fh)
+        if not isinstance(derived_specs, list):
+            sys.exit("derived frame manifest must contain a JSON list")
+        by_image_id = {row["id"]: row for row in rows}
+        for spec in derived_specs:
+            source_id = str(spec.get("source_id", ""))
+            source = by_image_id.get(source_id)
+            if source is None or source.get("source") != "orbit":
+                sys.exit(f"derived frame source is not an accepted orbit capture: {source_id}")
+            derived_id = str(spec.get("id") or f"{source_id}_detail")
+            if derived_id in by_image_id:
+                sys.exit(f"duplicate derived frame id: {derived_id}")
+            source_path = os.path.join(
+                args.orbit_captures,
+                source["run"],
+                f"{int(source['cluster_id']):04d}_{source['variant']}.png")
+            if not os.path.exists(source_path):
+                sys.exit(f"derived frame source image is missing: {source_path}")
+            row = source.copy()
+            row.update({
+                "id": derived_id,
+                "variant": str(spec.get("variant") or "detail"),
+                "source": "derived",
+                "derived_from": source_id,
+                "perspective": "detail",
+            })
+            crop = float(spec.get("crop_fraction", 0.18))
+            if args.thumbs:
+                make_thumb(source_path, os.path.join(thumb_dir, derived_id + ".webp"),
+                           crop_right_ui_px=args.crop_right_ui_px,
+                           detail_crop_fraction=crop)
+            if args.large:
+                make_thumb(source_path, os.path.join(large_dir, derived_id + ".webp"),
+                           px=LARGE_PX, quality=80,
+                           crop_right_ui_px=args.crop_right_ui_px,
+                           detail_crop_fraction=crop)
+            rows.append(row)
+            by_image_id[derived_id] = row
+            derived_n += 1
+        if derived_n:
+            print(f"  {derived_n} explicit detail frame(s) derived from accepted orbit captures")
+
     rows.sort(key=lambda r: -r["ts"])
+    orbit_n = sum(1 for row in rows if row.get("source") == "orbit")
+
+    # A later orbit run can supersede an earlier angle. Keep the generated asset
+    # directories aligned with the index so an archived era does not retain
+    # unreferenced pilot or retry frames.
+    retained_ids = {row["id"] for row in rows}
+    pruned = 0
+    for directory in (thumb_dir, large_dir, img_dir):
+        if not os.path.isdir(directory):
+            continue
+        for filename in os.listdir(directory):
+            path = os.path.join(directory, filename)
+            if os.path.isfile(path) and os.path.splitext(filename)[0] not in retained_ids:
+                os.remove(path)
+                pruned += 1
+    if pruned:
+        print(f"  {pruned} superseded generated asset(s) pruned")
 
     def facet(key):
         return sorted({r[key] for r in rows if r.get(key) is not None})
 
     doc = {
         "generated": int(__import__("time").time()),
+        "world": args.world or load_cluster_world(args.clusters),
         "n": len(rows),
         "runs": len({r["run"] for r in rows}),
         "joined": sum(1 for r in rows if "cluster_id" in r),
@@ -488,8 +584,11 @@ def main():
     # The gallery side-loads the instrument files when they exist. Both are
     # metric/reason-only — no coordinates, no creator ids — safe to serve.
     for side in (args.depth, os.path.join(os.path.dirname(args.depth), "judge.json")):
+        destination = os.path.join(args.dest, os.path.basename(side))
         if os.path.exists(side):
-            shutil.copy2(side, os.path.join(args.dest, os.path.basename(side)))
+            shutil.copy2(side, destination)
+        elif os.path.exists(destination):
+            os.remove(destination)
 
     print(f"  {len(rows):,} images across {doc['runs']} runs -> {args.dest}")
     fog_n = sum(1 for r in rows if r.get("fog"))
@@ -498,6 +597,8 @@ def main():
     if orbit_n:
         occ = sum(1 for r in rows if r.get("source") == "orbit" and r.get("occluded"))
         print(f"  {orbit_n:,} from automated orbit runs ({occ} flagged occluded)")
+    if derived_n:
+        print(f"  {derived_n:,} explicit derived detail frame(s)")
     print(f"  {doc['joined']:,} joined to a structure "
           f"({len(rows) - doc['joined']:,} without metadata)")
     if unjoined:

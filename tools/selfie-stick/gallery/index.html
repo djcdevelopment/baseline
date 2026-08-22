@@ -5,7 +5,7 @@
 <meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name=theme-color content="#0e0e12">
 <meta name=robots content="noindex, nofollow">
-<title>Era 16 — what people built</title>
+<title>Valheim — what people built</title>
 <style>
  /* Styling is lifted from the AM4 image gallery so the two read as one product.
     Layout, facet chips, pager and lightbox behave identically; only the meaning
@@ -92,7 +92,7 @@
    <svg width=14 height=14 viewBox="0 0 16 16" fill=none stroke=currentColor stroke-width=1.5 stroke-linejoin=round><path d="M1.5 3h13l-5 6v4l-3 1.4V9z"/></svg>
    Filters<span class=fbadge id=fbadge></span><span class=arr>▾</span>
   </button>
-  <b>Era 16</b>
+  <b id=worldTitle>Valheim</b>
   <span class=sub id=sub>loading…</span>
   <label class=psize>Page size <input id=psize type=number min=1 value=100></label>
  </div>
@@ -148,6 +148,7 @@ const clockOf=t=>{
 async function boot(){
   try{ DB=await (await fetch('index.json',{cache:'no-store'})).json(); }
   catch(e){ $('main').innerHTML='<div class=empty>could not load index.json</div>'; return; }
+  if(DB.world){ $('worldTitle').textContent=DB.world; document.title=`${DB.world} — what people built`; }
 
   for(const r of DB.images){ (byRun[r.run]=byRun[r.run]||[]).push(r); }
 

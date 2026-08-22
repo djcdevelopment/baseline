@@ -36,6 +36,31 @@ Takes a couple of minutes against Era 16. Useful flags:
 python tools/selfie-stick/scan_clusters.py --region in-world --top 40
 ```
 
+For a multi-snapshot Steward cache, select the era explicitly and keep its
+derived artifacts in their own namespace:
+
+```powershell
+python tools/selfie-stick/scan_clusters.py --db E:\omen\steward-era17\out\world-cache.duckdb `
+  --world-id ComfyEra17 --out tools\selfie-stick\out\era17
+```
+
+`Invoke-OrbitCapture.ps1` accepts matching `-Clusters`, `-PlanOut`,
+`-GalleryDest`, and `-DisplayIndex` arguments. It records the exact new capture
+run IDs and rebuilds the gallery from only those runs, preventing cluster IDs
+from another era from being joined to the new world.
+
+The capture entrypoint requires ComfyNetworkSense 0.4.8 or newer with
+`portalConnectionCacheEnabled = true`. It verifies activation in the BepInEx log so a
+large portal network cannot silently fall back to Valheim's main-thread scan. It also
+hides the NetworkSense HUD for the capture process and restores the operator's exact
+configuration bytes afterward. The always-visible transport recovery tab is retained
+in the running client so the portal/network instrumentation stays intact, then removed
+from the right edge of the derived 4K web images; original screenshots are not altered.
+An era may also provide `derived-frames.json` for an explicit detail crop of an accepted
+orbit capture when one template has no usable sixth sightline. These rows are labeled
+`source: derived` and retain their `derived_from` image ID; they never masquerade as a
+new camera receipt.
+
 | flag | default | what it does |
 | --- | --- | --- |
 | `--db` | the Era 16 cache | ComfyStewardView DuckDB cache path |

@@ -62,7 +62,56 @@ def parse_args():
                    help="Valheim playable world radius in metres (default 10500)")
     p.add_argument("--prefab-names", default=None,
                    help="optional JSON map of prefab hash -> name (from the in-game dump)")
+    p.add_argument("--world-id", default=None,
+                   help="scan the newest snapshot for this world id")
+    p.add_argument("--snapshot-id", type=int, default=None,
+                   help="scan one exact snapshot id (takes precedence over --world-id)")
     return p.parse_args()
+
+
+def table_columns(con, table):
+    return {row[1] for row in con.execute(f"PRAGMA table_info('{table}')").fetchall()}
+
+
+def select_snapshot(con, world_id=None, snapshot_id=None):
+    columns = table_columns(con, "world_snapshot")
+    if "snapshot_id" not in columns:
+        if world_id or snapshot_id is not None:
+            raise ValueError("legacy cache has no snapshot ids; selectors are unavailable")
+        rows = con.execute(
+            "SELECT NULL, source_path, parsed_at, NULL, NULL FROM world_snapshot"
+        ).fetchall()
+        if len(rows) != 1:
+            raise ValueError(f"cache contains {len(rows)} snapshots but cannot isolate them")
+        return rows[0]
+
+    world_id_expr = "world_id" if "world_id" in columns else "NULL"
+    world_name_expr = "world_name" if "world_name" in columns else "NULL"
+    fields = (f"snapshot_id, source_path, parsed_at, {world_id_expr} AS world_id, "
+              f"{world_name_expr} AS world_name")
+    if snapshot_id is not None:
+        row = con.execute(
+            f"SELECT {fields} FROM world_snapshot WHERE snapshot_id = ?", [snapshot_id]
+        ).fetchone()
+        if not row:
+            raise ValueError(f"snapshot id {snapshot_id} does not exist")
+        return row
+    if world_id:
+        if "world_id" not in columns:
+            raise ValueError("cache has no world_id column; use --snapshot-id")
+        row = con.execute(
+            f"SELECT {fields} FROM world_snapshot WHERE world_id = ? "
+            "ORDER BY snapshot_id DESC LIMIT 1", [world_id]
+        ).fetchone()
+        if not row:
+            raise ValueError(f"world id {world_id!r} has no snapshots")
+        return row
+    rows = con.execute(f"SELECT {fields} FROM world_snapshot ORDER BY snapshot_id").fetchall()
+    if len(rows) != 1:
+        raise ValueError(
+            f"cache contains {len(rows)} snapshots; pass --world-id or --snapshot-id"
+        )
+    return rows[0]
 
 
 class UnionFind:
@@ -111,7 +160,7 @@ def build_clusters(con, cell, y_cell, min_cell):
             CAST(floor(y / ?) AS BIGINT) AS cy,
             CAST(floor(z / ?) AS BIGINT) AS cz,
             count(*)                     AS pieces
-        FROM zdo
+        FROM selected_zdo
         WHERE category = 'BUILDING'
         GROUP BY 1, 2, 3
         HAVING count(*) >= ?
@@ -153,7 +202,7 @@ def cluster_stats(con, cell, y_cell, groups, min_pieces):
         """
         CREATE OR REPLACE TEMP TABLE piece_cluster AS
         SELECT z.x, z.y, z.z, z.prefab_name, z.creator_id, c.cid
-        FROM zdo z
+        FROM selected_zdo z
         JOIN cell_cluster c
           ON c.cx = CAST(floor(z.x / ?) AS BIGINT)
          AND c.cy = CAST(floor(z.y / ?) AS BIGINT)
@@ -221,7 +270,7 @@ def cluster_stats(con, cell, y_cell, groups, min_pieces):
     for cid, cat, n in con.execute(
         """
         SELECT f.cid, z.category, count(*)
-        FROM zdo z
+        FROM selected_zdo z
         JOIN footprint f
           ON f.cx = CAST(floor(z.x / ?) AS BIGINT)
          AND f.cz = CAST(floor(z.z / ?) AS BIGINT)
@@ -262,7 +311,25 @@ def main():
 
     print(f"opening {args.db} (read-only)", flush=True)
     con = duckdb.connect(args.db, read_only=True)
-    snap = con.execute("SELECT source_path, parsed_at FROM world_snapshot LIMIT 1").fetchone()
+    try:
+        snap = select_snapshot(con, args.world_id, args.snapshot_id)
+    except ValueError as exc:
+        sys.exit(str(exc))
+    snapshot_id, source_path, parsed_at, world_id, world_name = snap
+    zdo_columns = table_columns(con, "zdo")
+    if snapshot_id is not None and "snapshot_id" in zdo_columns:
+        con.execute(f"CREATE TEMP VIEW selected_zdo AS "
+                    f"SELECT * FROM zdo WHERE snapshot_id = {int(snapshot_id)}")
+    elif snapshot_id is not None:
+        snapshot_count = con.execute("SELECT count(*) FROM world_snapshot").fetchone()[0]
+        if snapshot_count != 1:
+            sys.exit("zdo table has no snapshot_id; cannot isolate a multi-snapshot cache")
+        con.execute("CREATE TEMP VIEW selected_zdo AS SELECT * FROM zdo")
+    else:
+        con.execute("CREATE TEMP VIEW selected_zdo AS SELECT * FROM zdo")
+    snapshot_label = world_name or world_id or os.path.basename(source_path)
+    print(f"  snapshot {snapshot_id if snapshot_id is not None else 'legacy'}: "
+          f"{snapshot_label}", flush=True)
 
     groups = build_clusters(con, args.cell, args.y_cell, args.min_cell)
     base, top_prefab, top_creator, landmarks = cluster_stats(
@@ -339,8 +406,10 @@ def main():
               "visited", "verdict", "notes"]
 
     doc = {
-        "world": os.path.basename(snap[0]) if snap else None,
-        "parsed_at": str(snap[1]) if snap else None,
+        "world": world_name or world_id or os.path.basename(source_path),
+        "world_id": world_id,
+        "snapshot_id": snapshot_id,
+        "parsed_at": str(parsed_at),
         "method": (f"3-D connected-component clustering of BUILDING ZDOs on a "
                    f"{args.cell:g}x{args.y_cell:g}x{args.cell:g} m grid "
                    f"(min {args.min_cell} pieces/cell, min {args.min_pieces} pieces/cluster, "
