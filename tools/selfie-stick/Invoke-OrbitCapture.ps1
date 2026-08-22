@@ -33,9 +33,13 @@ param(
     [string] $PlanOut = '',
     [string] $GalleryDest = '',
     [string] $RunManifest = '',
-    [int] $DisplayIndex = 1,
-    [int] $CaptureWidth = 1920,
-    [int] $CaptureHeight = 1080,
+    # Unity's -monitor is 1-based over displays and display 1 is the PRIMARY
+    # one, so DisplayIndex 0 is the panel the operator is actually looking at.
+    # DisplayIndex 1 sent every Era 17 run to OMEN's 1080p BMC adapter and the
+    # whole series shipped at half resolution before anyone looked at a PNG.
+    [int] $DisplayIndex = 0,
+    [int] $CaptureWidth = 3840,
+    [int] $CaptureHeight = 2160,
     [string] $ValheimRoot = 'C:\Program Files (x86)\Steam\steamapps\common\Valheim',
     [string] $SteamExe = 'C:\Program Files (x86)\Steam\steam.exe'
 )
@@ -193,7 +197,7 @@ $indexArgs = @((Join-Path $here 'build_valheim_index.py'), '--thumbs', '--large'
                '--names', $names,
                '--depth', (Join-Path $eraOut 'depth.json'),
                '--aesthetic', (Join-Path $eraOut 'aesthetic.json'),
-               '--crop-right-ui-px', '235',
+               '--crop-right-ui-px', '120',
                '--derived', (Join-Path $eraOut 'derived-frames.json'))
 foreach ($runId in $runIds) { $indexArgs += @('--run', $runId) }
 & python $indexArgs

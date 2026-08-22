@@ -41,6 +41,11 @@ from collections import defaultdict
 
 import duckdb
 
+# The cluster scan already knows how to isolate one snapshot out of a
+# multi-era cache; features must land on the SAME snapshot or a build's
+# furniture comes from a different world than its bounding box.
+from scan_clusters import select_snapshot, table_columns
+
 DEFAULT_DB = r"C:\work\ComfyStewardView\viewer\target\ComfyEra16.duckdb"
 
 # ---------------------------------------------------------------------------
@@ -72,16 +77,32 @@ FIRES_EXACT = {"hearth", "fire_pit", "bonfire", "piece_walltorch"}
 FIRES_PREFIX = ("piece_brazier", "piece_groundtorch")
 
 
-def expand_pattern_sets(dump_path):
-    """Concrete name sets for the pattern-defined kinds, from the prefab dump.
-
-    Only names the dump marks piece:true are considered, which keeps creature
-    and effect prefabs with 'wall' in their names out of the wall set.
-    """
+def piece_names_from_dump(dump_path):
+    """Names the prefab dump marks piece:true — which keeps creature and
+    effect prefabs with 'wall' in their names out of the wall set."""
     with open(dump_path, encoding="utf-8") as fh:
         dump = json.load(fh)
-    piece_names = [p["name"] for p in dump["prefabs"] if p.get("piece")]
+    return [p["name"] for p in dump["prefabs"] if p.get("piece")]
 
+
+def piece_names_from_cache(con):
+    """The same vocabulary, taken from the world instead of from a dictionary.
+
+    The dump left this repo with the sovereign split, and reaching into a
+    sibling checkout for it would make a run unreproducible. It is not needed:
+    category='BUILDING' is the cache's own answer to "is this a placed piece",
+    so the distinct resolved names under it are a piece list by construction —
+    and a strictly relevant one, since only names that occur in THIS world can
+    ever match a ZDO in it. Names the world never placed are the only loss.
+    """
+    return [r[0] for r in con.execute(
+        "SELECT DISTINCT prefab_name FROM selected_zdo "
+        "WHERE category = 'BUILDING' AND prefab_name IS NOT NULL "
+        "AND prefab_name NOT LIKE 'hash:%'").fetchall()]
+
+
+def expand_pattern_sets(piece_names):
+    """Concrete name sets for the pattern-defined kinds."""
     fixed = set(SEATS) | TABLES | BEDS | GATES | set(WINDOWS) | FIRES_EXACT
     doors, roofs, floors, walls = set(), set(), set(), set()
     for name in piece_names:
@@ -122,9 +143,15 @@ def parse_args():
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--db", default=DEFAULT_DB, help="ComfyStewardView DuckDB cache")
     p.add_argument("--clusters", default=os.path.join(here, "out", "clusters.json"))
+    p.add_argument("--world-id", default=None,
+                   help="pick the newest snapshot of this world id (multi-era caches)")
+    p.add_argument("--snapshot-id", type=int, default=None,
+                   help="pick one exact snapshot id")
     p.add_argument("--prefab-dump",
                    default=os.path.normpath(os.path.join(
-                       here, "..", "component-packets", "samples", "prefab-dump.json")))
+                       here, "..", "component-packets", "samples", "prefab-dump.json")),
+                   help="optional prefab dictionary; when absent the piece "
+                        "vocabulary is read from the cache itself")
     p.add_argument("--out", default=os.path.join(here, "out", "features.json"))
     p.add_argument("--top", type=int, default=80,
                    help="scan the top N clusters by score (0 = all; default 80)")
@@ -245,16 +272,37 @@ def main():
     targets = pick_targets(doc, args)
     print(f"scanning features for {len(targets)} cluster(s)")
 
-    expanded = expand_pattern_sets(args.prefab_dump)
+    con = duckdb.connect(args.db, read_only=True)
+    try:
+        snapshot_id, source_path, parsed_at, world_id, world_name = select_snapshot(
+            con, args.world_id, args.snapshot_id)
+    except ValueError as exc:
+        sys.exit(str(exc))
+    zdo_columns = table_columns(con, "zdo")
+    if snapshot_id is not None and "snapshot_id" in zdo_columns:
+        con.execute("CREATE OR REPLACE TEMP VIEW selected_zdo AS "
+                    f"SELECT * FROM zdo WHERE snapshot_id = {int(snapshot_id)}")
+    elif snapshot_id is not None:
+        if con.execute("SELECT count(*) FROM world_snapshot").fetchone()[0] != 1:
+            sys.exit("zdo table has no snapshot_id; cannot isolate a multi-snapshot cache")
+        con.execute("CREATE OR REPLACE TEMP VIEW selected_zdo AS SELECT * FROM zdo")
+    else:
+        con.execute("CREATE OR REPLACE TEMP VIEW selected_zdo AS SELECT * FROM zdo")
+    print(f"  snapshot {snapshot_id if snapshot_id is not None else 'legacy'}: "
+          f"{world_name or world_id or os.path.basename(source_path)}", flush=True)
+
+    if os.path.exists(args.prefab_dump):
+        vocabulary_source = "prefab dump"
+        piece_names = piece_names_from_dump(args.prefab_dump)
+    else:
+        vocabulary_source = "this snapshot's BUILDING rows"
+        piece_names = piece_names_from_cache(con)
+    expanded = expand_pattern_sets(piece_names)
     doors, roofs_set, floors_set, walls_set = expanded
     print(f"  vocabulary: {len(SEATS)} seats, {len(TABLES)} tables, {len(GATES)} gates, "
           f"{len(WINDOWS)} windows, {len(doors)} doors, {len(roofs_set)} roofs, "
           f"{len(floors_set)} floors, {len(walls_set)} walls (patterns expanded "
-          f"against the prefab dump)")
-
-    con = duckdb.connect(args.db, read_only=True)
-    snap = con.execute(
-        "SELECT source_path, parsed_at FROM world_snapshot LIMIT 1").fetchone()
+          f"against {vocabulary_source}, {len(piece_names):,} piece names)")
 
     con.execute("CREATE OR REPLACE TEMP TABLE feature_name "
                 "(name VARCHAR, kind VARCHAR, w INTEGER)")
@@ -275,7 +323,7 @@ def main():
     rows = con.execute(
         """
         SELECT b.cid, f.kind, z.prefab_name, f.w, z.x, z.y, z.z
-        FROM zdo z
+        FROM selected_zdo z
         JOIN feature_name f ON f.name = z.prefab_name
         JOIN cluster_box b
           ON z.x BETWEEN b.minx AND b.maxx
@@ -288,7 +336,7 @@ def main():
         """
         SELECT b.cid, count(*),
                count(*) FILTER (WHERE z.prefab_name LIKE 'hash:%')
-        FROM zdo z
+        FROM selected_zdo z
         JOIN cluster_box b
           ON z.x BETWEEN b.minx AND b.maxx
          AND z.z BETWEEN b.minz AND b.maxz
@@ -299,7 +347,7 @@ def main():
 
     total, unresolved = con.execute(
         "SELECT count(*), count(*) FILTER (WHERE prefab_name LIKE 'hash:%') "
-        "FROM zdo WHERE category='BUILDING'").fetchone()
+        "FROM selected_zdo WHERE category='BUILDING'").fetchone()
 
     # A padded box can claim a neighbour's edge pieces; the nearest centre keeps
     # each piece with the structure it belongs to.
@@ -370,12 +418,15 @@ def main():
 
     out_doc = {
         "generated_from": "scan_features.py",
-        "world": os.path.basename(snap[0]) if snap else None,
-        "snapshot_parsed_at": str(snap[1]) if snap else None,
+        "world": world_name or os.path.basename(source_path),
+        "world_id": world_id,
+        "snapshot_id": snapshot_id,
+        "snapshot_parsed_at": str(parsed_at),
         "clusters_parsed_at": doc.get("parsed_at"),
         "building_rows": total,
         "building_rows_unresolved": unresolved,
         "resolved_pct": round(100.0 * (total - unresolved) / max(total, 1), 2),
+        "vocabulary_source": vocabulary_source,
         "pad_m": args.pad,
         "count": len(features),
         "clusters": features,

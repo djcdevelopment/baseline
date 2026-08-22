@@ -44,6 +44,11 @@ FOV_V_DEG = 65.0
 # The falloff either side of midday is steep, so being 0.03 late costs a lot.
 GOLDEN_PM = 0.64
 GOLDEN_AM = 0.32
+# The sixth slot: same hero framing, different sky. Misty was the original
+# choice and remains the default so old plans reproduce, but it is a parameter
+# now — measured across series one it cost 0.65 aesthetic against every Clear
+# variant while scoring BETTER on every depth metric, so what belongs in this
+# slot is an open question that only an A/B answers.
 WEATHER_ALT = ("Misty", 0.66)
 
 
@@ -66,6 +71,10 @@ def parse_args():
                    help="haze cap. Beyond this the frame fills with atmosphere and the "
                         "build reads as a flat silhouette; better to shoot part of a big "
                         "build up close than all of it through 400 m of fog")
+    p.add_argument("--alt-environment", default=WEATHER_ALT[0],
+                   help="environment for the sixth (alternate-light) shot")
+    p.add_argument("--alt-time", type=float, default=WEATHER_ALT[1],
+                   help="time of day for the sixth (alternate-light) shot")
     p.add_argument("--min-clearance", type=float, default=3.0,
                    help="metres the camera must stay above the lowest foundation piece")
     return p.parse_args()
@@ -182,8 +191,11 @@ def main():
                           "environment": "Clear", "time_of_day": GOLDEN_PM})
         shots.append({**base, "shot": "dawn", **cams[hero],
                       "environment": "Clear", "time_of_day": GOLDEN_AM})
+        # Kept named "weather" whatever the sky is: the index supersedes on
+        # (cluster, variant), so renaming the slot would orphan the frame it
+        # is meant to replace rather than retire it.
         shots.append({**base, "shot": "weather", **cams[hero],
-                      "environment": WEATHER_ALT[0], "time_of_day": WEATHER_ALT[1]})
+                      "environment": args.alt_environment, "time_of_day": args.alt_time})
 
     out = {
         "generated_from": "plan_shots.py",
@@ -192,7 +204,9 @@ def main():
         "shots": len(shots),
         "settings": {"elevation_deg": args.elevation, "fov_v_deg": FOV_V_DEG,
                      "margin": args.margin, "max_distance_m": args.max_distance,
-                     "min_clearance_m": args.min_clearance},
+                     "min_clearance_m": args.min_clearance,
+                     "alt_environment": args.alt_environment,
+                     "alt_time_of_day": args.alt_time},
         "plan": shots,
     }
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
