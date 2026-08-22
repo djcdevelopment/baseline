@@ -324,3 +324,40 @@ coverage, is not to keep it: `--alt-shots 0` drops it, five frames per structure
 instead of six, **20% more structures per hour**. Batches D and F run that way.
 Light variety does not suffer — the set already holds 130 Misty frames, a dawn
 slot in every band, and night and storm across 600 first-person frames.
+
+## Coverage of the in-world band
+
+Structure count is the least interesting measure of "how much of it did we get" —
+the band is long and its tail is small builds. Piece mass and geographic spread say
+more:
+
+| | structures | share of in-world piece mass | 2 km cells reached |
+| --- | --- | --- | --- |
+| series one | 40 / 1025 | 18.8% | 34 / 84 |
+| after batches A, B, C | 120 / 1025 | 39.1% | 60 / 84 |
+| after D and F | 212 / 1025 | **53.0%** | **74 / 84** |
+
+Over half the built mass of the playable world, and 88% of the 2 km cells anyone
+built in. The remaining 813 structures hold 47% of the mass between them, which is
+the shape of a long tail, not a missed hub.
+
+## Batch E — first person again, with the veto on
+
+18 different structures, 312 frames, and the first run where `--max-los` was live.
+It dropped 6 of 84 vantages at plan time (602-style blind sight lines), including 4
+of cluster 627's 5 — a build dense enough that almost every line hits masonry.
+
+| | frames kept | median | runner's own occlusion rejects |
+| --- | --- | --- | --- |
+| batch B, veto off | 312 / 336 | 5.154 | 24 (7.1%) |
+| batch E, veto on | 300 / 312 | 5.175 | 12 (**3.8%**) |
+
+**The provable effect is on the rejects: the runner threw out half as many frames as
+unusable.** The aesthetic medians are a wash, and they cannot be read as a quality
+verdict either way — the two batches photograph different buildings, and batch E's
+share of frames under 4.80 is actually higher (23.3% vs 19.6%) for the same reason.
+The within-batch evidence from B is the clean one: los 10+ medianed 4.502 against
+5.222 for los 0, on the same run and the same lighting.
+
+So: the veto stops the camera being pointed into a wall, which is what it was for.
+It is not a quality knob and should not be sold as one.
