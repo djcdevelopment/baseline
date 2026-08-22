@@ -215,3 +215,77 @@ frames. Not a crisis, but free to fix. Holding the change until batch B's depth
 metrics land, so the threshold is set from measured `center_block` rather than from
 the docstring's round number — cluster 602's *court* vantage scored los=4 and still
 came out half-filled by a dark surface, so `los` alone is not the whole verdict.
+
+### Batch B results
+
+336 frames shot, 24 rejected by the runner's own occlusion check, 312 in the index.
+
+| cut | n | median aesthetic |
+| --- | --- | --- |
+| exteriors (series one + batch A) | 477 | 5.601 |
+| first person, all | 312 | 5.154 |
+| eye level | 248 | 5.162 |
+| seated | 64 | 5.104 |
+
+**`los_penalty` is confirmed as a tail signal, and the docstring's threshold is
+right.** Grouped by the penalty the planner computed and discarded:
+
+| los | n | median aesthetic |
+| --- | --- | --- |
+| 0 | 192 | 5.222 |
+| 1–4 | 80 | 4.983 |
+| 5–9 | 28 | 5.117 |
+| **10+** | **12** | **4.502** |
+
+Non-monotonic in the middle — it is not a ranker — but the 10+ bucket sits 0.72
+below los 0. Veto at ten, ignore below it. That is what the docstring already said.
+
+No vantage deserves to be dropped: gate 5.245, hall 5.186, court 5.129,
+toproom 5.105, seat 5.104 — a 0.14 spread. The 602 wall shot was a bad *placement*
+of a good vantage, which is what the los veto catches.
+
+Conditions are close too: storm 5.211, sunset 5.194, sunrise 5.193, night 5.041.
+The thunderstorm reading highest indoors is the opposite of the exterior result,
+where Misty is the floor. Weather is worth having inside and not outside.
+
+### The gallery's default sort buried every interior
+
+The aesthetic head prefers a landscape to a room by 0.45 on this set, so
+`sort==='best'` — a global descending sort on the raw score, and the default view —
+put all 477 exteriors ahead of essentially every interior. That is a fact about
+what the model likes to look at, not about the photographs.
+
+`gallery/index.html` now ranks each frame **within its own perspective** and sorts
+on that percentile, so the best room sits beside the best aerial. The old behaviour
+is kept as a second sort chip, "raw score". Verified against the live index served
+locally: the second tile is a 5.21 that outranks a 6.15, because it is the top
+frame of its own group.
+
+### The depth model is fooled by exactly the frames it was meant to catch
+
+`center_block > 0.45` was calibrated on 12 hand-labelled pilot frames and reads as
+the guard against a camera pressed against a surface. At this scale it is inert:
+**1 of 312 first-person frames and 1 of 477 exteriors**.
+
+The four cluster-602 gate frames are a photograph of a stone wall — confirmed by eye —
+and the depth model reports them as an open, layered scene:
+
+| variant | aesthetic | center_block | far_mass | depth_span | layers | depth_score |
+| --- | --- | --- | --- | --- | --- | --- |
+| gate_night | 4.31 | 0.000 | 0.536 | 0.930 | 7 | 0.590 |
+| gate_storm | 4.64 | 0.000 | 0.516 | 0.937 | 7 | 0.583 |
+| gate_sunrise | 4.46 | 0.000 | 0.518 | 0.933 | 7 | 0.576 |
+| gate_sunset | 4.44 | 0.000 | 0.517 | 0.933 | 7 | 0.575 |
+
+A monocular model handed an angled textured wall infers receding geometry, so
+`depth_score` reads **0.58** on a frame with no scene in it at all. It does not just
+miss the failure — it endorses it.
+
+`los` catches it because it is a geometric fact computed from the world's own wall
+positions rather than inferred from pixels. **Guard the plan, not the pixels.**
+`plan_interiors.py` now takes `--max-los` (default 10) and skips the vantage with a
+reason instead of shooting through masonry: cluster 602's gate, 270's gate and 909's
+court now drop out with `sight line clips walls 15x/11x/23x`.
+
+Where `center_block` still earns its place is as a per-frame diagnostic, not as a
+gate. `depth_score` should not be read as "is there a scene here".

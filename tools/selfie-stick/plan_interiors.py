@@ -76,6 +76,12 @@ def parse_args():
                         "for surgical retakes; the index keeps the newest frame "
                         "per (cluster, variant) so retunes supersede cleanly")
     p.add_argument("--region", default="in-world", choices=["all", "in-world", "outland"])
+    p.add_argument("--max-los", type=int, default=10,
+                   help="drop a vantage whose sight line clips walls this many "
+                        "times or more (0 disables). Measured over 312 first-person "
+                        "frames: los 0 medians 5.222 aesthetic, los 10+ medians "
+                        "4.502. Not a ranker -- the middle of the range is noise -- "
+                        "but the tail is real, and the tail is a wall")
     return p.parse_args()
 
 
@@ -526,6 +532,14 @@ def main():
         skipped = {n: why for n, why in (("hall", why_hall), ("toproom", why_top),
                                          ("seat", why_seat), ("gate", why_gate),
                                          ("court", why_court)) if why}
+        # vantage_hall already picks its corner by this penalty; the other four
+        # only recorded it, so a sight line straight into masonry shipped as four
+        # photographs of a wall. A gap that says why beats a camera in a wall.
+        if args.max_los:
+            blind = [(n, v) for n, v in derived if v["los"] >= args.max_los]
+            derived = [(n, v) for n, v in derived if v["los"] < args.max_los]
+            for n, v in blind:
+                skipped[n] = f"sight line clips walls {v['los']}x (>= {args.max_los})"
         notes[str(cid)] = {
             "label": label,
             "vantages": {n: {"note": v["note"], "los": v["los"]} for n, v in derived},

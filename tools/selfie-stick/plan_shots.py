@@ -71,6 +71,13 @@ def parse_args():
                    help="haze cap. Beyond this the frame fills with atmosphere and the "
                         "build reads as a flat silhouette; better to shoot part of a big "
                         "build up close than all of it through 400 m of fog")
+    p.add_argument("--exclude-sky", action="store_true",
+                   help="drop clusters scan_clusters marked sky=true. A build "
+                        "floating with no terrain under it blows out against the "
+                        "sky from every bearing -- measured on Era 17 rank 63, "
+                        "whose six frames scored 3.88-4.31 against a band median "
+                        "of 5.61 and are a white mass in blue. Shoot them with a "
+                        "plan that puts the ground in frame, not this one")
     p.add_argument("--alt-environment", default=WEATHER_ALT[0],
                    help="environment for the sixth (alternate-light) shot")
     p.add_argument("--alt-time", type=float, default=WEATHER_ALT[1],
@@ -165,10 +172,20 @@ def main():
     clusters = [c for c in doc["clusters"]
                 if args.region == "all" or c["region"] == args.region]
     clusters.sort(key=lambda c: -c["score"])
+    # Before --skip/--top, so excluding sky builds does not silently shift the
+    # band: rank N means the same structure whether or not the flag is passed.
+    dropped_sky = [c for c in clusters if args.exclude_sky and c.get("sky")]
     if args.skip:
         clusters = clusters[args.skip:]
     if args.top:
         clusters = clusters[: args.top]
+    if args.exclude_sky:
+        skipped_here = [c["cluster_id"] for c in clusters if c.get("sky")]
+        clusters = [c for c in clusters if not c.get("sky")]
+        if skipped_here:
+            print(f"  sky builds dropped from this band: "
+                  f"{', '.join(str(i) for i in skipped_here)} "
+                  f"({len(dropped_sky)} in the region overall)")
 
     shots, clipped = [], 0
     for c in clusters:

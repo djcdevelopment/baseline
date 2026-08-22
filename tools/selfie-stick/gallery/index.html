@@ -196,7 +196,7 @@ function buildPanel(){
   if(nfog) h+=`<div class=facet>Hidden</div><div class=checks>`+
     `<label class="ck${showFog?' on':''}" id=fogchip>fog <span class=cnt>${nfog}</span></label></div>`;
   h+=`<div class=facet>Sort</div><div class="checks sortrow">`;
-  for(const [k,l] of [['best','auto scored'],['recent','newest'],['rank','by rank'],['pieces','biggest build'],['height','tallest'],['stars','starred first'],['light','by time of day']])
+  for(const [k,l] of [['best','auto scored'],['absolute','raw score'],['recent','newest'],['rank','by rank'],['pieces','biggest build'],['height','tallest'],['stars','starred first'],['light','by time of day']])
     h+=`<label class=ck data-sort="${k}"${sort===k?' style="pointer-events:none"':''}>${l}</label>`;
   h+=`</div><button class=clr id=clrbtn>clear filters</button>`;
   $('panel').innerHTML=h;
@@ -215,6 +215,36 @@ function buildPanel(){
   $('clrbtn').onclick=()=>{ for(const k in sel) sel[k].clear(); page=0; buildPanel(); render(); };
 }
 
+// The aesthetic head scores a landscape above a room every time: measured over
+// this gallery the eye-level frames median 0.45 below the drone ones on the
+// same scale. Sorting the whole set on the raw number therefore buries every
+// interior behind every exterior -- a fact about what the model likes to look
+// at, not about the photographs. "auto scored" ranks each frame WITHIN its own
+// perspective and sorts on that percentile, so the best room sits beside the
+// best aerial. "raw score" keeps the unadjusted order for comparing across.
+let PCT=null, PCTN=-1;
+function pct(){
+  if(PCTN===DB.images.length) return PCT;
+  const groups={};
+  for(const r of DB.images){
+    if(r.aesthetic==null) continue;
+    const k=r.perspective||'?';
+    if(!groups[k]) groups[k]=[];
+    groups[k].push(r.aesthetic);
+  }
+  for(const k in groups) groups[k].sort((a,b)=>a-b);
+  PCT={};
+  for(const r of DB.images){
+    if(r.aesthetic==null){ PCT[r.id]=-1; continue; }
+    const g=groups[r.perspective||'?'];
+    let lo=0, hi=g.length;
+    while(lo<hi){ const mid=(lo+hi)>>1; if(g[mid]<r.aesthetic) lo=mid+1; else hi=mid; }
+    PCT[r.id]= g.length>1 ? lo/(g.length-1) : 1;
+  }
+  PCTN=DB.images.length;
+  return PCT;
+}
+
 function filtered(){
   return DB.images.filter(r=>
     (showFog||!r.fog) &&
@@ -227,7 +257,9 @@ function filtered(){
 
 function render(){
   view=filtered();
-  if(sort==='best') view.sort((a,b)=>(b.aesthetic??-1)-(a.aesthetic??-1));
+  if(sort==='best'){ const p=pct();
+    view.sort((a,b)=>(p[b.id]??-1)-(p[a.id]??-1)||(b.aesthetic??-1)-(a.aesthetic??-1)); }
+  else if(sort==='absolute') view.sort((a,b)=>(b.aesthetic??-1)-(a.aesthetic??-1));
   else if(sort==='rank') view.sort((a,b)=>(a.cluster_rank||1e9)-(b.cluster_rank||1e9)||(a.variant||'').localeCompare(b.variant||''));
   else if(sort==='pieces') view.sort((a,b)=>(b.pieces||0)-(a.pieces||0));
   else if(sort==='height') view.sort((a,b)=>(b.height_m||0)-(a.height_m||0));
