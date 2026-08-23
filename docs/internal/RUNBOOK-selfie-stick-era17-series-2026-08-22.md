@@ -411,3 +411,36 @@ Nothing is published. The live gallery still shows series one's 300 frames at 10
 - The era chips' ssh half runs for the first time on the next publish.
 - The sky builds — 17 in-world, 4 in ranks 1–216 — still have no plan that can
   photograph them. They need the ground in frame, which this planner cannot do.
+
+## Batch G, naming, and the closing position
+
+Batch G shot in-world ranks 217–264 less the sky builds: 47 structures, 235 frames,
+11.6 s/frame — inside the 11.0–11.6 band the earlier batches ran at, **with the
+vision model naming structures on the same GPU at the same time**. Measured, not
+assumed: that was the reason naming had been deferred all day, and it turned out not
+to cost anything.
+
+**266 structures now have names.** `name_structures.py` needed one fix first. Its
+`pick_frame` chose by contrast alone, which was right while every frame was a drone
+orbit and wrong the moment structures gained interiors: a hearth-lit room is often
+the highest-contrast frame a build has, so the namer was about to hand the model a
+table and a curtain and ask what the *building* is called (cluster 275 resolved to
+`court_sunrise`, 191 to `seat_night`). It now prefers a drone frame and falls back
+only for interior-only clusters.
+
+5 structures failed to name across the series. Zero duplicate names survive — 36
+base names are reused and the disambiguator separates every one with its piece count.
+
+Final position:
+
+| | structures | in-world piece mass | 2 km cells | frames |
+| --- | --- | --- | --- | --- |
+| series one | 40 / 1025 | 18.8% | 34 / 84 | 300 @ 1080p |
+| after this series | **259 / 1025** | **57.8%** | **77 / 84** | **2,081 @ 4K** |
+
+2,081 frames, all scored and depth-measured: 1,467 drone, 484 eye level, 128 seated,
+2 derived detail. 62 fog whiteouts hidden by default, 48 rejected by the runner's own
+occlusion check across ten runs.
+
+Still open: nothing is published; the era chips' ssh half runs for the first time on
+the next publish; the 17 in-world sky builds have no plan that can photograph them.
