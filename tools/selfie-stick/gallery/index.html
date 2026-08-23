@@ -122,7 +122,8 @@ let DB={images:[]}, MINE=new Set(), VOTES={}, REQS={}, CLAIMS={}, USER='anon', S
 let DEPTH={}, JUDGE={};               // instrument side-files; absent is fine
 let sel={region:new Set(),kind:new Set(),environment:new Set(),structure:new Set(),perspective:new Set()};
 let showFog=false;                    // whiteout frames stay one click away, not gone
-let sort='best', page=0, view=[], cur=-1;   // the auto score is the most useful first impression
+let sort='best', page=0, view=[], cur=-1;
+let ERAS=null;   // the auto score is the most useful first impression
 const byRun={};                       // run id -> all moods of that one setup
 
 const ENVCOLOR={Clear:'#7aa2ff',Misty:'#9ad5c8',Rain:'#8fb2d9',ThunderStorm:'#b79ae0'};
@@ -154,6 +155,11 @@ async function boot(){
 
   // Instrument side-files: depth/luma geometry and the judge's one-liners.
   // Metric-only, and optional — an old deploy without them still renders.
+  // Each published era is a complete standalone copy of this page at its own
+  // path, so nothing linked them and the archive was only reachable by typing
+  // the URL. The publisher writes eras.json with absolute hrefs under the
+  // route; absent, the chips simply do not appear.
+  try{ ERAS=await (await fetch('eras.json',{cache:'no-store'})).json(); }catch(e){}
   try{ DEPTH=await (await fetch('depth.json',{cache:'no-store'})).json(); }catch(e){}
   try{ JUDGE=await (await fetch('judge.json',{cache:'no-store'})).json(); }catch(e){}
 
@@ -181,6 +187,15 @@ function buildPanel(){
                 ['kind','Kind of place'],['environment','Weather'],
                 ['structure','Structure']];
   let h='';
+  if(ERAS&&ERAS.eras&&ERAS.eras.length>1){
+    h+=`<div class=facet>Era</div><div class=checks>`;
+    for(const e of ERAS.eras){
+      const on=e.slug===ERAS.current;
+      h+=on ? `<label class="ck on" style="pointer-events:none">${e.label}</label>`
+            : `<a class=ck href="${e.href}">${e.label}</a>`;
+    }
+    h+='</div>';
+  }
   for(const [key,label] of facets){
     const vals=facetValues(key);
     if(vals.length<2) continue;                    // a one-value facet is not a filter

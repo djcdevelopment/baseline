@@ -27,6 +27,8 @@ param(
     [string] $RenderPrefix = '',
     [string] $GalleryPath = '',
     [string] $ArchiveCurrentAs = '',
+    [string] $EraSlug = '',
+    [string] $RoutePath = '/valheim/',
     [string] $RemoteDir = '~/valheim-gallery/public',
     [string] $SshAlias = 'am4'
 )
@@ -54,6 +56,53 @@ foreach ($side in 'depth.json', 'judge.json') {
 
 & python (Join-Path $here 'scrub_index.py') (Join-Path $gallery 'index.json') (Join-Path $stage 'index.json')
 if ($LASTEXITCODE -ne 0) { throw 'scrub_index.py failed - refusing to ship an unscrubbed index' }
+
+# Each era is a complete standalone copy of the page at its own path, so until
+# now nothing linked them and the archive was reachable only by typing its URL.
+# eras.json gives the page the list; hrefs are absolute under the route because
+# the root and an archived era sit at different depths. Optional on the page --
+# a deploy without it just shows no era chips.
+$eraManifest = $null
+if ($EraSlug) {
+    if ($EraSlug -notmatch '^[a-z0-9][a-z0-9._-]*$') { throw "unsafe era slug: $EraSlug" }
+    $known = @()
+    # slug|world for every index.json already on the box -- the archived eras,
+    # and "." for the gallery currently at the root. Lets a chip read
+    # "ComfyEra16" rather than the directory name.
+    $probe = 'cd REMOTEDIR 2>/dev/null || exit 0; for f in index.json */index.json; do [ -f "$f" ] || continue; w=`grep -o ''"world":"[^"]*"'' "$f" | head -1 | sed ''s/.*:"//; s/"$//''`; echo "`dirname "$f"`|$w"; done'
+    $probe = $probe.Replace('REMOTEDIR', $RemoteDir)
+    $labels = @{}
+    $outgoingWorld = ''
+    foreach ($line in @(ssh $SshAlias $probe)) {
+        $parts = ([string]$line).Trim() -split '\|', 2
+        $slug = $parts[0]
+        $world = if ($parts.Count -gt 1) { $parts[1] } else { '' }
+        if (-not $slug) { continue }
+        if ($slug -eq '.') { $outgoingWorld = $world; continue }
+        if ($slug -eq $EraSlug -or $known -contains $slug) { continue }
+        $known += $slug
+        if ($world) { $labels[$slug] = $world }
+    }
+    # The era being archived this run is not on the box under that name yet; its
+    # label is the world that is at the root right now.
+    if ($ArchiveCurrentAs -and $known -notcontains $ArchiveCurrentAs) {
+        $known += $ArchiveCurrentAs
+        if ($outgoingWorld) { $labels[$ArchiveCurrentAs] = $outgoingWorld }
+    }
+    $label = (Get-Content -LiteralPath (Join-Path $stage 'index.json') -Raw | ConvertFrom-Json).world
+    if (-not $label) { $label = $EraSlug }
+    $entries = @([ordered]@{ slug = $EraSlug; label = $label; href = $RoutePath })
+    foreach ($slug in ($known | Sort-Object -Descending)) {
+        $entries += [ordered]@{ slug = $slug
+                                label = $(if ($labels[$slug]) { $labels[$slug] } else { $slug })
+                                href = "$RoutePath$slug/" }
+    }
+    $eraManifest = [ordered]@{ current = $EraSlug; eras = $entries }
+    $eraManifest | ConvertTo-Json -Depth 5 |
+        Set-Content -LiteralPath (Join-Path $stage 'eras.json') -Encoding utf8
+    Write-Host ("      eras.json: $EraSlug is current, siblings " +
+                $(if ($known) { $known -join ', ' } else { 'none' }))
+}
 
 $nThumb = 0; $nLarge = 0
 foreach ($kind in 'thumb', 'large') {
@@ -91,13 +140,29 @@ if ($ArchiveCurrentAs) {
     $archiveResult = ssh $SshAlias $archiveCommand
     if ($LASTEXITCODE -ne 0) { throw 'remote gallery archive failed' }
     Write-Host "      previous gallery: $archiveResult ($ArchiveCurrentAs/)"
+    if ($eraManifest) {
+        # Same list, but the archived era is the one marked current, and it needs
+        # the newer index.html to have the chips at all.
+        $archived = [ordered]@{ current = $ArchiveCurrentAs; eras = $eraManifest.eras }
+        $archivedJson = ($archived | ConvertTo-Json -Depth 5 -Compress)
+        $b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($archivedJson))
+        ssh $SshAlias "set -eu; cd $RemoteDir/'$ArchiveCurrentAs'; printf '%s' '$b64' | base64 -d > eras.json"
+        if ($LASTEXITCODE -ne 0) { throw 'writing the archived era manifest failed' }
+    }
 }
 if ($RenderPrefix) {
     ssh $SshAlias "cd $RemoteDir && tar xzf /tmp/vg-deploy.tgz && rm /tmp/vg-deploy.tgz"
 } else {
-    ssh $SshAlias "cd $RemoteDir && rm -rf ./thumb ./large ./img && rm -f ./index.html ./index.json ./depth.json ./judge.json && tar xzf /tmp/vg-deploy.tgz && rm /tmp/vg-deploy.tgz"
+    ssh $SshAlias "cd $RemoteDir && rm -rf ./thumb ./large ./img && rm -f ./index.html ./index.json ./depth.json ./judge.json ./eras.json && tar xzf /tmp/vg-deploy.tgz && rm /tmp/vg-deploy.tgz"
 }
 if ($LASTEXITCODE -ne 0) { throw 'remote extract failed' }
+if ($ArchiveCurrentAs -and $eraManifest) {
+    # The archived copy was taken from the OUTGOING deploy, so its index.html
+    # predates the era chips. Give it the page just uploaded; its own index.json
+    # and renders are untouched.
+    ssh $SshAlias "set -eu; cd $RemoteDir; cp -a index.html '$ArchiveCurrentAs/index.html'"
+    if ($LASTEXITCODE -ne 0) { throw 'refreshing the archived era page failed' }
+}
 
 Write-Host '[5/5] verify'
 $remoteIndex = Join-Path $stage 'remote-index.json'
