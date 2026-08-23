@@ -361,3 +361,53 @@ The within-batch evidence from B is the clean one: los 10+ medianed 4.502 agains
 
 So: the veto stops the camera being pointed into a wall, which is what it was for.
 It is not a quality knob and should not be sold as one.
+
+## Batch D — the sixth slot removed, and what the ranking is actually good for
+
+250 frames over **50** structures (six-slot batches got 40 for the same frame count),
+11.3 s/frame, 250/250 receipts, **zero occluded**.
+
+| batch | shape | whole-batch median |
+| --- | --- | --- |
+| C, ranks 81–120 | six slots, Misty sixth | 5.512 |
+| D, ranks 121–168 | five golden slots | **5.628** |
+
+Like for like the five golden frames are unchanged — A 5.659, C 5.620, D 5.628 —
+so dropping the slot did not improve the survivors, it removed the drag. The gain
+is a cleaner batch median and 25% more structures per frame budget.
+
+**The ranking heuristic orders coverage well and quality not at all.** Three builds
+were forced into this batch with `--include-ids` because batch B had photographed
+their interiors and they had no exterior: clusters 42, 275 and 191, at ranks 604,
+545 and 575. Their 15 frames median **5.747** — the highest subset in the batch, above
+every band the ranking put ahead of them. With ranks 41–80 already having scored
+identically to ranks 1–40, the picture is consistent: piece mass and compactness say
+where the *stuff* is, not where the photographs are. Interior feature richness looks
+like the better targeting signal, and the feature scan already computes it.
+
+## Batch F and the final position
+
+225 frames over 45 structures, ranks 169–216 less the sky builds.
+
+**Nine runs, 1,849 frames in the gallery**: 1,235 drone, 484 eye level, 128 seated,
+2 derived detail. 45 rejected by the runner's own occlusion check across the whole
+series, 62 flagged as fog whiteouts and hidden by default.
+
+| | structures | in-world piece mass | 2 km cells |
+| --- | --- | --- | --- |
+| series one | 40 / 1025 | 18.8% | 34 / 84 |
+| after this series | **212 / 1025** | **53.0%** | **74 / 84** |
+
+Nothing is published. The live gallery still shows series one's 300 frames at 1080p.
+
+## What is queued and what is open
+
+- `bandG-shotplan.tsv` is planned and unshot: in-world ranks 217–264, sky excluded,
+  five frames per structure.
+- `name_structures.py` never ran for Era 17 — every label in the gallery is still
+  derived ("hub · 8,026") rather than seen ("Snowy Pine Haven"). It needs the vision
+  model on OMEN, which was not answering on :11434, and it wants the GPU that the
+  captures were using.
+- The era chips' ssh half runs for the first time on the next publish.
+- The sky builds — 17 in-world, 4 in ranks 1–216 — still have no plan that can
+  photograph them. They need the ground in frame, which this planner cannot do.
