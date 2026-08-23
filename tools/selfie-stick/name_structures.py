@@ -80,8 +80,16 @@ def frame_quality(path):
 
 
 def pick_frame(rows, thumb_dir):
-    """The frame most likely to show the place clearly: prefer clear weather,
-    then the highest-contrast readable frame."""
+    """The frame most likely to show the place clearly: prefer a frame that
+    shows the whole structure, then clear weather, then the highest-contrast
+    readable one.
+
+    The perspective filter matters now that a structure can carry interiors. A
+    hearth-lit room is often the highest-contrast frame a build has, and it is
+    the worst possible thing to hand a model that has been asked to name the
+    BUILDING -- it can see a table and no roofline. Interior-only clusters fall
+    back to whatever they have."""
+    rows = [r for r in rows if r.get("perspective") == "drone"] or rows
     cands = [r for r in rows if r.get("environment") == "Clear"] or rows
     best, best_q = None, -1
     for r in cands:
