@@ -754,3 +754,55 @@ sky whiteout and waits for the re-shoot. One of them named itself — 2072 has
 into the published gallery index, but a wipe of `out/` loses them and there is
 no backend to regenerate them. Worth persisting somewhere tracked before the
 next era.
+
+## The light: daylight leads, night earns its place
+
+Judged by eye on 2026-08-24, eight builds, identical camera at 0.64 and 0.71.
+**Golden hour wins, but not by enough to throw the twilight frames away.**
+
+What daylight does that twilight cannot:
+
+- **tree shadows** — the sun is low enough to rake across terrain and read it
+- **white caps on the water** — the sea has texture instead of being a flat plane
+- **build materials are legible** — you can tell what a wall is made of, which for a
+  gallery of *what people built* is close to the whole point
+
+What twilight does that daylight cannot:
+
+- it shows the **lighting** — and the lighting turns out to be designed. Braziers,
+  candles, groundtorches, hearths placed so a base is comfortable to be in after
+  dark. That is a deliberate act by the builder and daylight hides it completely.
+
+So the rule is not "shoot golden" but **golden leads, twilight is the second frame
+on builds that earn it**. This needs no special-casing in the gallery: the aesthetic
+head marks darker frames down on principle, so golden already sorts first. The
+supersede fix is what makes the pair possible at all — before it, the 0.71 frames
+retired the 0.64 ones instead of joining them.
+
+### Which builds earn it — and why we cannot answer that yet
+
+A twilight frame pays off in proportion to how many light sources a build has, and
+**the scan cannot count them**. `FIRES_EXACT`/`FIRES_PREFIX` in `scan_features.py`
+were written from the craftable build menu, so the world's most-placed light sources
+are invisible:
+
+| prefab | placed in Era 17 | by |
+| --- | --- | --- |
+| `Candle_resin` | 34,988 | 108 creators |
+| `MountainKit_brazier` | 34,015 | 30 |
+| `MountainKit_brazier_purple` | 28,247 | 31 |
+| `MountainKit_brazier_blue` | 24,624 | 34 |
+| `CastleKit_groundtorch_green` | 23,369 | 23 |
+| `CastleKit_groundtorch_blue` | 20,656 | 20 |
+| `CastleKit_groundtorch` | 13,833 | 20 |
+| `CastleKit_brazier` | 13,615 | 23 |
+| `fire_pit_iron` | 6,207 | 102 |
+
+Same root cause as the seats: a vocabulary written from the crafting UI against a
+world built from the prefab table. Fixing it gives a light count per build, and the
+light count is the targeting signal for a twilight pass — the first targeting rule
+in this project with a reason behind it rather than a correlation.
+
+It needs hand-auditing, not a bulk add: a pattern sweep for "fire" also matches
+`DvergerMageFire` (a creature effect) and would happily swallow anything with
+`torch` in the name.
