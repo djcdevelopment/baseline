@@ -71,6 +71,11 @@ def parse_args():
                    help="haze cap. Beyond this the frame fills with atmosphere and the "
                         "build reads as a flat silhouette; better to shoot part of a big "
                         "build up close than all of it through 400 m of fog")
+    p.add_argument("--aim-height", type=float, default=0.5,
+                   help="where in the build's height to aim, 0 = foundations, "
+                        "1 = ridge (default 0.5, the middle of the box). Looking "
+                        "down at a build, the middle of its box is inside it and "
+                        "the sight line is blocked by its own roof")
     p.add_argument("--fixed-elevation", action="store_true",
                    help="use --elevation as given instead of tilting by shape. "
                         "elevation_for() levels off on tall builds because "
@@ -139,12 +144,20 @@ def elevation_for(cluster, default_deg):
     return max(18.0, min(default_deg, default_deg - 60.0 * ratio))
 
 
-def camera_for(cluster, azimuth_deg, elevation_deg, margin, max_distance, clearance):
+def camera_for(cluster, azimuth_deg, elevation_deg, margin, max_distance, clearance,
+               aim_height=0.5):
     """Where to stand, and where to look, to frame this structure from one bearing."""
     cx, cz = cluster["center_x"], cluster["center_z"]
     # Aim at the middle of the box vertically, not the median piece height: a tower's
     # mass sits above its median, and aiming low tips the whole build out of frame.
-    cy = (cluster["min_y"] + cluster["max_y"]) / 2.0
+    #
+    # aim_height moves that point through the build's height, 0 = the foundations
+    # and 1 = the ridge. The default 0.5 is right for a camera coming in from the
+    # side, and wrong for one looking down: the mid-height of the box is INSIDE the
+    # structure, so a steep sight line hits the roof before it arrives and the
+    # occlusion probe reports blocked every single time. Era 17's sky platforms
+    # came back 76% occluded at 22 degrees and 100% at 65 for exactly that reason.
+    cy = cluster["min_y"] + (cluster["max_y"] - cluster["min_y"]) * aim_height
 
     # Frame on the compact extent, not the bounding diagonal. A cluster's diagonal is
     # inflated by sprawl -- outbuildings, walls, a dock -- so framing on it pushes the
@@ -243,8 +256,8 @@ def main():
     for c in clusters:
         azimuths, long_x = orbit_azimuths(c["size_x"], c["size_z"])
         elev = args.elevation if args.fixed_elevation else elevation_for(c, args.elevation)
-        cams = [camera_for(c, a, elev, args.margin,
-                           args.max_distance, args.min_clearance) for a in azimuths]
+        cams = [camera_for(c, a, elev, args.margin, args.max_distance,
+                           args.min_clearance, args.aim_height) for a in azimuths]
         if not cams[0]["frames_whole_build"]:
             clipped += 1
 
@@ -276,6 +289,7 @@ def main():
         "settings": {"elevation_deg": args.elevation, "fov_v_deg": FOV_V_DEG,
                      "margin": args.margin, "max_distance_m": args.max_distance,
                      "min_clearance_m": args.min_clearance,
+                     "aim_height": args.aim_height,
                      "time_of_day": args.time_of_day,
                      "max_height_m": args.max_height_m,
                      "alt_shots": args.alt_shots,

@@ -41,10 +41,12 @@ $queue = @(
     [ordered]@{
         name    = 'sky'
         plan    = 'sky-probe'
-        what    = '14 sky platforms, 4 orbits at night + 1 at dawn, fixed 65 deg aimed down'
-        why     = 'their frames measure luma 207-233 against a gallery median of 96 and ' +
-                  'are all fog-flagged. Darkness and a downward angle are the two ' +
-                  'untried variables. Pass = the fog veto stops firing'
+        what    = '14 sky platforms at dawn, 74 deg (16 off vertical), aimed at the ridge'
+        why     = 'daytime side-on frames measure luma 207-233 against a gallery median ' +
+                  'of 96 and are all fog-flagged. Overhead at 65 deg came back 100% ' +
+                  'occluded and side-on at 22 deg 76%, because the default aim point is ' +
+                  'the middle of the bounding box, which is INSIDE the build -- a steep ' +
+                  'sight line hits the roof first. Aiming at the ridge fixed it: 0% occluded'
     },
     [ordered]@{
         name    = 'creators'
@@ -157,6 +159,7 @@ $indexArgs = @((Join-Path $here 'build_valheim_index.py'), '--thumbs', '--large'
                '--depth', (Join-Path $era 'depth.json'),
                '--aesthetic', (Join-Path $era 'aesthetic.json'),
                '--crop-right-ui-px', '120',
+               '--crop-top-ui-px', '128',
                '--derived', (Join-Path $era 'derived-frames.json'))
 foreach ($id in $runIds) { $indexArgs += @('--run', [string]$id) }
 & python $indexArgs

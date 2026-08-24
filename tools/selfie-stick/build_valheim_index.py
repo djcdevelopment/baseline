@@ -72,6 +72,16 @@ def parse_args():
                    help="public world label stored in the gallery index")
     p.add_argument("--crop-right-ui-px", type=int, default=0,
                    help="remove this many pixels from the source's right edge before web rendering")
+    p.add_argument("--crop-top-from-run", default="",
+                   help="only apply --crop-top-ui-px to runs at or after this run id. "
+                        "The quest bar appears in captures from 2026-08-24 and in none "
+                        "of the 33 runs before it, so cropping every frame would shave "
+                        "6%% off 2,081 images to remove something that is not in them")
+    p.add_argument("--crop-top-ui-px", type=int, default=0,
+                   help="strip this many pixels off the top of derived web images. "
+                        "ComfyQuest's overhead creator bar has no hide switch and "
+                        "burns into every frame captured after 2026-08-24; 128 "
+                        "clears it on a 3840x2160 capture. Originals are untouched")
     p.add_argument("--derived", default=None,
                    help="optional JSON list of explicit detail frames derived from accepted orbit captures")
     return p.parse_args()
@@ -251,7 +261,7 @@ def load_names(path):
 
 
 def make_thumb(src, dest_path, px=THUMB_PX, quality=82, crop_right_ui_px=0,
-               detail_crop_fraction=0.0):
+               crop_top_ui_px=0, detail_crop_fraction=0.0):
     from PIL import Image
     with Image.open(src) as im:
         im = im.convert("RGB")
@@ -260,6 +270,14 @@ def make_thumb(src, dest_path, px=THUMB_PX, quality=82, crop_right_ui_px=0,
             if right <= 0:
                 raise ValueError("right-edge UI crop is wider than the source image")
             im = im.crop((0, 0, right, im.height))
+        if crop_top_ui_px:
+            # ComfyQuest draws an overhead creator bar that has no hide switch,
+            # so from 2026-08-24 it is burned into the top of every capture:
+            # measured at y 92-127, x 1200-2639 on a 3840x2160 frame. Nothing
+            # here can stop it being rendered, only decline to publish it.
+            if crop_top_ui_px >= im.height:
+                raise ValueError("top UI crop is taller than the source image")
+            im = im.crop((0, crop_top_ui_px, im.width, im.height))
         if detail_crop_fraction:
             if not 0.0 < detail_crop_fraction < 0.45:
                 raise ValueError("detail crop fraction must be between 0 and 0.45")
@@ -447,6 +465,14 @@ def main():
 
     # ---- automated orbit runs -------------------------------------------------
     orbit_n = 0
+    def top_crop_for(run):
+        """The bar is a per-run fact, so the crop has to be one too."""
+        if not args.crop_top_ui_px:
+            return 0
+        if args.crop_top_from_run and (run or "") < args.crop_top_from_run:
+            return 0
+        return args.crop_top_ui_px
+
     for rec in read_orbit_receipts(args.receipts):
         run, fname = rec.get("run"), rec.get("file")
         if args.run and run not in args.run:
@@ -516,14 +542,16 @@ def main():
         if args.thumbs:
             try:
                 make_thumb(src, os.path.join(thumb_dir, image_id + ".webp"),
-                           crop_right_ui_px=args.crop_right_ui_px)
+                           crop_right_ui_px=args.crop_right_ui_px,
+                           crop_top_ui_px=top_crop_for(run))
             except Exception as exc:
                 skipped.append((run, f"thumbnail failed for {fname}: {exc}"))
         if args.large:
             try:
                 make_thumb(src, os.path.join(large_dir, image_id + ".webp"),
                            px=LARGE_PX, quality=80,
-                           crop_right_ui_px=args.crop_right_ui_px)
+                           crop_right_ui_px=args.crop_right_ui_px,
+                           crop_top_ui_px=top_crop_for(run))
             except Exception as exc:
                 skipped.append((run, f"large render failed for {fname}: {exc}"))
         if args.copy_full:

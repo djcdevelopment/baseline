@@ -568,3 +568,67 @@ y=5000 — without it only 2 of the 14 got a steep angle.
 **The test is not a judgement call**: does the fog veto stop firing, and does
 `luma_mean` land near 96? If it still fires, that is the answer — record that these
 are not photographable with this rig and leave `--exclude-sky` on.
+
+## The sky probe, answered — 2026-08-24
+
+Three attempts, and the operator's framing is what solved it.
+
+| attempt | elevation | aim | light | occluded | luma_mean |
+| --- | --- | --- | --- | --- | --- |
+| the original band | 18–27° | box mid | golden 0.64 | — | **207–233**, all fog-flagged |
+| probe 1 | 65° fixed | box mid | night 0.90 | **100%** | 21 |
+| probe 2 | 22° fixed | box mid | night 0.90 | **76%** | 6–8 (black) |
+| **probe 3** | **74° fixed** | **ridge** | **dawn 0.32** | **0%** | **55.5** |
+
+Two independent faults, and I had only found one.
+
+**Darkness fixes the blowout** — that much was mine, and probe 1 proved it: luma fell
+from 207–233 to 21. But night *side-on* is simply black (probe 2 at luma 6–8): with no
+terrain and no sky to catch light, a low angle at night has nothing in it. Dawn is the
+light that works at altitude.
+
+**The aim point was the real bug, and it is not sky-specific.** `camera_for` aims at
+`(min_y + max_y) / 2` — the middle of the bounding box, which is *inside the
+structure*. A steep sight line hits the roof before it arrives, so the occlusion probe
+reports blocked every time; that is why 65° came back 100% occluded and 22° 76%.
+`--aim-height` moves the aim through the build's height (0 = foundations, 1 = ridge,
+default 0.5 unchanged), and aiming at the ridge took occlusion to **zero**.
+
+The operator's method, given before any of this was measured: find the weighted centre,
+go up until straight down shows most of the build, then come off vertical by about 16°
+— because the 40–45° used on the ground exists to catch the terrain around a building,
+and a sky platform has none. `center_x` is already `avg(x)`, so the centroid was there;
+16° off vertical is 74° elevation; and coming *off* vertical rather than orbiting at it
+is what clears the roofline.
+
+**The verdict is split, and worth stating plainly.** All 14 platforms captured, 70 of
+70 frames kept, 5 fog-flagged instead of 6 of 6. They are legible now. They also
+median **4.69 against a gallery median of 5.47** — the weakest set in the gallery.
+Fixing the camera could not fix the subject: a plate against empty sky has no
+landscape, no context and no depth layers, which is what the scorer rewards. Keep them
+— 14 tiles out of 282, and they are a real thing people built — but leave
+`--exclude-sky` on for bulk bands so they do not consume capture time at scale.
+
+## A mod artifact, and why the fix is a crop rather than a fix
+
+ComfyQuest's overhead creator bar draws unconditionally: "Demo World: First Portal
+1.0.0 · CHECK · EXPAND F9", measured at **y 92–127, x 1200–2639** on a 3840×2160
+frame. Neither quest config carries a visibility switch, and the 05:48 build deployed
+today has `CreatorBar` but no `ShowCreatorBar`, no `HideDuringCapture`, and no
+reference to `orbit-request.json`.
+
+Measured across all 38 capture runs, it is in **today's five runs and no others** —
+every one of the 2,081 published frames is clean. So the crop is scoped by run:
+`--crop-top-ui-px 128 --crop-top-from-run 20260824`. Cropping unconditionally would
+have taken 6% off two thousand images to remove something not in them. Verified
+through the real `make_thumb`: the top band goes from 0.60 static to 0.000, and the
+originals stay 3840×2160.
+
+Parking `ComfyQuest*.dll` for the capture session was considered and rejected:
+killing the runner's *task* skips its restore block, which would leave the install
+without the quest mods, and other agents are iterating on them right now.
+
+**The fix belongs in the mod** — read `orbit-request.json` and stay hidden for that
+session, as ComfyNetworkSense already does. Until then the crop holds, and because
+every frame is scored, re-taking the affected structures later is one `--include-ids`
+run rather than a re-survey.
