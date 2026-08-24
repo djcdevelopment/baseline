@@ -468,3 +468,56 @@ class DuplicateFrameTests(unittest.TestCase):
                                        "--alt-environment", "Misty"])
         self.assertIn("weather", {s["shot"] for s in plan["plan"]})
 
+
+class SupersedeTests(unittest.TestCase):
+    """A newer frame replaces an older one only when it is the same photograph.
+
+    The slot names orbit1..4 mean "the four bearings", not "the four bearings at
+    one time of day", so every re-shoot reuses them. Keying supersede on
+    (cluster, variant) alone made a deliberate 0.71 re-shoot of 30 builds retire
+    their 0.64 originals -- 150 frames, silently, and the best thirty at that.
+
+    These call build_valheim_index.supersede_key itself; a local copy of the rule
+    would pass whatever the index builder actually did.
+    """
+
+    @staticmethod
+    def _row(cid, variant, ts, env="Clear", tod=0.64):
+        return {"source": "orbit", "cluster_id": cid, "variant": variant,
+                "ts": ts, "environment": env, "time_of_day": tod}
+
+    @classmethod
+    def _collapse(cls, rows):
+        best = {}
+        for r in rows:
+            key = BUILD.supersede_key(r)
+            if key not in best or r["ts"] > best[key]["ts"]:
+                best[key] = r
+        return [r for r in rows if best.get(BUILD.supersede_key(r)) is r]
+
+    def test_the_key_carries_the_light(self):
+        self.assertEqual(
+            BUILD.supersede_key(self._row(7, "orbit2", 1, env="Misty", tod=0.66)),
+            (7, "orbit2", "Misty", 0.66))
+
+    def test_a_retake_in_the_same_light_supersedes(self):
+        keep = self._collapse([self._row(1, "orbit1", 100),
+                               self._row(1, "orbit1", 200)])
+        self.assertEqual(len(keep), 1)
+        self.assertEqual(keep[0]["ts"], 200, "the newer capture wins")
+
+    def test_the_same_angle_in_different_light_is_a_different_photograph(self):
+        keep = self._collapse([self._row(1, "orbit1", 100, tod=0.64),
+                               self._row(1, "orbit1", 200, tod=0.71)])
+        self.assertEqual(len(keep), 2)
+
+    def test_a_different_sky_also_survives(self):
+        keep = self._collapse([self._row(1, "orbit1", 100, env="Clear"),
+                               self._row(1, "orbit1", 200, env="Misty")])
+        self.assertEqual(len(keep), 2)
+
+    def test_different_builds_never_collide(self):
+        keep = self._collapse([self._row(1, "orbit1", 100),
+                               self._row(2, "orbit1", 200)])
+        self.assertEqual(len(keep), 2)
+

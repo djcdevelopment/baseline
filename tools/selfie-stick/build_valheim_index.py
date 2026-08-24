@@ -288,6 +288,20 @@ def make_thumb(src, dest_path, px=THUMB_PX, quality=82, crop_right_ui_px=0,
         im.save(dest_path, "WEBP", quality=quality, method=4)
 
 
+def supersede_key(row):
+    """What makes an orbit frame the same photograph as another.
+
+    The light belongs in here. Slot names orbit1..4 mean "the four bearings",
+    not "the four bearings at one time of day", and every re-shoot reuses them,
+    so a key of (cluster, variant) alone treats any later frame as a newer
+    version of an earlier one. On 2026-08-24 a deliberate re-shoot of 30 builds
+    at time 0.71 silently retired their 0.64 originals that way -- 150 frames,
+    the best-photographing thirty in the gallery, replaced rather than joined.
+    """
+    return (row.get("cluster_id"), row.get("variant"),
+            row.get("environment"), row.get("time_of_day"))
+
+
 def perspective_of(variant):
     """Where the lens stood. seat_* rides a chair; the other interior vantages
     stand at eye height; everything else is the drone doing orbits and sweeps."""
@@ -562,21 +576,31 @@ def main():
     # rank then fills the first page with one building. Most of those extras are
     # from superseded builds anyway: 200 m of haze, the wrong golden hour, the
     # occlusion check that only flagged. Keep the newest capture of each angle.
+    #
+    # The light is part of the angle. Superseding on (cluster, variant) alone
+    # says a frame is a newer version of any earlier frame that happens to share
+    # a slot name, and slot names are reused: orbit1..4 mean "the four bearings",
+    # not "the four bearings at one time of day". On 2026-08-24 a deliberate
+    # re-shoot of 30 builds at time 0.71 silently retired their 0.64 originals --
+    # 150 frames, the best-photographing thirty in the gallery, replaced rather
+    # than joined. Two photographs taken in different light are not versions of
+    # each other, so environment and time belong in the identity.
     best = {}
     for r in rows:
         if r.get("source") != "orbit":
             continue
-        key = (r.get("cluster_id"), r.get("variant"))
+        key = supersede_key(r)
         if key not in best or r["ts"] > best[key]["ts"]:
             best[key] = r
     superseded = sum(1 for r in rows
                      if r.get("source") == "orbit"
-                     and best.get((r.get("cluster_id"), r.get("variant"))) is not r)
+                     and best.get(supersede_key(r)) is not r)
     rows = [r for r in rows
             if r.get("source") != "orbit"
-            or best.get((r.get("cluster_id"), r.get("variant"))) is r]
+            or best.get(supersede_key(r)) is r]
     if superseded:
-        print(f"  {superseded} orbit frame(s) superseded by a later capture of the same angle")
+        print(f"  {superseded} orbit frame(s) superseded by a later capture "
+              f"of the same angle in the same light")
 
     derived_n = 0
     if args.derived and os.path.exists(args.derived):
