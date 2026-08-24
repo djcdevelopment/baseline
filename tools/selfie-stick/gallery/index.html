@@ -51,7 +51,8 @@
  .cell .star i{font-style:normal;font-size:12px;margin-left:2px;vertical-align:2px}
  body.canstar .cell .star{display:block}
  .acts{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 12px}
- .act{background:#2a2a35;border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer}
+ .act{background:#2a2a35;border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+ .ico{flex:0 0 auto}
  .act:hover{border-color:var(--accent)}
  .hint{font-size:12px;color:var(--mut);line-height:1.5}
  .empty{color:var(--mut);text-align:center;padding:50px 10px;font-size:14px}
@@ -66,6 +67,12 @@
  #lb .stage{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:0}
  #lb .stage img{max-width:100%;max-height:100%;object-fit:contain}
  #lb .info{background:var(--panel);border-top:1px solid var(--line);padding:12px 16px calc(14px + env(safe-area-inset-bottom));max-height:48vh;overflow:auto}
+ #lb .crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:7px;font-size:12px;color:var(--mut);margin-bottom:9px}
+ #lb .crumbs a,#lb .crumbs .here{display:inline-flex;align-items:center;gap:5px}
+ #lb .crumbs a{color:var(--mut);cursor:pointer;border-bottom:1px solid transparent}
+ #lb .crumbs a:hover{color:var(--fg);border-bottom-color:var(--line)}
+ #lb .crumbs .here{color:var(--accent)}
+ #lb .crumbs .sep{opacity:.45}
  #lb .pr{font-size:14px;line-height:1.45;color:#fff;margin-bottom:8px}
  #lb .meta{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;margin-bottom:10px}
  #lb .meta span{background:#2a2a35;padding:2px 8px;border-radius:6px}
@@ -107,6 +114,7 @@
  <span class="nav-a nx" onclick="step(1)">›</span>
  <div class=stage><img id=lbimg alt=""></div>
  <div class=info>
+  <div class=crumbs id=lbcrumbs></div>
   <div class=pr id=lbtitle></div>
   <div class=meta id=lbmeta></div>
   <div class=acts id=lbdrill></div>
@@ -124,7 +132,7 @@ let DEPTH={}, JUDGE={};               // instrument side-files; absent is fine
 let sel={region:new Set(),kind:new Set(),environment:new Set(),structure:new Set(),perspective:new Set(),area:new Set()};
 let showFog=false;                    // whiteout frames stay one click away, not gone
 let sort='showcase', page=0, view=[], cur=-1;
-let ERAS=null;   // the auto score is the most useful first impression
+let ERAS=null, pinned=null;   // the auto score is the most useful first impression
 const byRun={};        // run id -> every frame of that capture run
 const byCluster={};    // structure key -> every frame of that build
 const byArea={};       // area key -> every frame in that 2 km neighbourhood
@@ -141,11 +149,27 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;',
 // differ. Labels only became unique when name_structures.py disambiguated them;
 // an unnamed cluster still falls back to a derived label like "build · 2,671",
 // and two of those collide into one chip that filters both builds at once.
+// Drawn, not typed. The first cut of the drill-in buttons used U+25A6 and
+// U+1F5FA and both came out as tofu on Windows: the bytes were correct UTF-8 and
+// the charset was declared, the glyphs just are not in the font stack. The
+// Filters funnel in the header had already solved this with an inline path, so
+// everything pictographic uses one now. Nothing above U+2606 survives in this
+// file, which is the only version of "it renders everywhere" that holds up.
+const ICON={
+  grid:'M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z',
+  pin:'M8 14.5S3 9.9 3 6.4a5 5 0 0 1 10 0c0 3.5-5 8.1-5 8.1z M8 7.9a1.6 1.6 0 1 0 0-3.2 1.6 1.6 0 0 0 0 3.2z',
+  home:'M2.5 7.2 8 2.5l5.5 4.7 M4 6.6v7h8v-7',
+  camera:'M2 5h2.5l1-1.5h5L11.5 5H14v8H2z M8 11a2.4 2.4 0 1 0 0-4.8 2.4 2.4 0 0 0 0 4.8z',
+};
+const svg=k=>`<svg class=ico width=14 height=14 viewBox="0 0 16 16" fill=none `+
+  `stroke=currentColor stroke-width=1.5 stroke-linejoin=round><path d="${ICON[k]}"/></svg>`;
+
 const structOf=r=>r.label||(r.cluster_rank!=null?`#${r.cluster_rank}`:'unmatched');
 const structKey=r=>r.cluster_id!=null?'c'+r.cluster_id:'i'+r.id;
 const areaKey=r=>r.area_id!=null?'a'+r.area_id:null;
 // "near Pirate Hideout · 4,443" is the chip's text; a sentence wants the
 // disambiguating piece count off the end.
+const shortName=r=>(r.label||'this build').replace(/ · [\d,]+$/,'');
 const areaPhrase=r=>(r.area_label||'in this area').replace(/ · [\d,]+$/,'');
 
 // Valheim's time of day is a 0..1 fraction of the day, 0.5 being noon. Shown raw
@@ -197,8 +221,8 @@ function applyHash(){
   const m=/^#(build|area)=(\w+)$/.exec(location.hash||'');
   if(!m){ sort='showcase'; return; }   // no hash is the front door
   const [,kind,id]=m;
-  if(kind==='build') sel.structure.add('c'+id); else sel.area.add('a'+id);
-  sort='best';                    // showcase would collapse it back to one frame
+  if(kind==='build'){ sel.structure.add('c'+id); sort='best'; }
+  else { sel.area.add('a'+id); sort='showcase'; }
 }
 function routeFromHash(){
   applyHash(); page=0; closeLb(); buildPanel(); render();
@@ -272,12 +296,7 @@ function buildPanel(){
   // Clearing filters returns to the front door, not to a filterless list of all
   // 2,081 frames -- a drill-in switched the sort off showcase, and leaving it off
   // is how someone ends up back in the wall of variants they just escaped.
-  $('clrbtn').onclick=()=>{
-    for(const k in sel) sel[k].clear();
-    sort='showcase'; page=0;
-    try{ history.pushState(null,'',location.pathname+location.search); }catch(e){}
-    buildPanel(); render();
-  };
+  $('clrbtn').onclick=()=>goHome(false);
 }
 
 // The aesthetic head scores a landscape above a room every time: measured over
@@ -322,10 +341,16 @@ function pct(){
 // is -- otherwise an interior-only build never wins its own slot.
 function onedown(rows){
   const p=pct(), best=new Map();
+  // `pinned` wins its build's slot outright. Scoping to an area keeps the
+  // collapse on, and the photograph already open is usually NOT its build's best
+  // frame -- without this it drops out of `view` and the drill-in closes the
+  // viewer instead of re-scoping it.
+  const rank=r=>[r.id===pinned?1:0, p[r.id]??-1, r.aesthetic??-1];
+  const better=(a,b)=>{ const x=rank(a), y=rank(b);
+    return x[0]!==y[0]?x[0]>y[0] : x[1]!==y[1]?x[1]>y[1] : x[2]>y[2]; };
   for(const r of rows){
     const k=structKey(r), cur=best.get(k);
-    if(!cur||(p[r.id]??-1)>(p[cur.id]??-1)||
-       ((p[r.id]??-1)===(p[cur.id]??-1)&&(r.aesthetic??-1)>(cur.aesthetic??-1))) best.set(k,r);
+    if(!cur||better(r,cur)) best.set(k,r);
   }
   return [...best.values()];
 }
@@ -438,26 +463,45 @@ function openLb(i){
     `<span id=lbstar class="${MINE.has(r.id)?'on':''}">${MINE.has(r.id)?'★ voted':'☆ vote'}${nv?' · '+nv:''}</span>`;
   $('lbstar').onclick=()=>toggleStar(r.id,true);
 
+  // Where am I, and how do I get out. The row doubles as the navigation: whichever
+  // segment matches the active filter is inert and accented, the others are the
+  // moves available from here. Home closes the viewer, because "back to the
+  // scrolling I came from" is the thing that was missing.
+  const seen=x=>showFog||!x.fog;
+  const nAll=new Set(DB.images.filter(seen).map(structKey)).size;
+  const scope=sel.structure.size?'build':sel.area.size?'area':'all';
+  const nHere=(byCluster[structKey(r)]||[]).filter(seen).length;
+  const nArea=r.area_id!=null
+    ? new Set((byArea['a'+r.area_id]||[]).filter(seen).map(structKey)).size : 0;
+  const crumb=(here,id,html)=>here?`<span class=here>${html}</span>`:`<a id=${id}>${html}</a>`;
+  let cb=crumb(scope==='all','cbhome',`${svg('home')} All ${nAll} builds`);
+  if(r.area_id!=null&&nArea>1)
+    cb+=`<span class=sep>›</span>`+
+        crumb(scope==='area','cbarea',`${esc(areaPhrase(r))} · ${nArea} builds`);
+  cb+=`<span class=sep>›</span>`+
+      crumb(scope==='build','cbbuild',`${esc(shortName(r))} · ${nHere} shot${nHere===1?'':'s'}`);
+  $('lbcrumbs').innerHTML=cb;
+  if($('cbhome')) $('cbhome').onclick=()=>goHome(true);
+  if($('cbarea')) $('cbarea').onclick=()=>drillTo('area','a'+r.area_id,r.id);
+  if($('cbbuild')) $('cbbuild').onclick=()=>drillTo('structure',structKey(r),r.id);
+
   // Drill-ins: the showcase deliberately hides this build's other frames and the
   // rest of its neighbourhood, so the way back in has to live here, on the photo
   // the visitor is already looking at.
-  // Count what the drill-in will actually show, not what exists: promising six
-  // shots and landing on five is a small lie the fog filter tells for you.
-  const visible=x=>showFog||!x.fog;
-  const nshots=(byCluster[structKey(r)]||[]).filter(visible).length;
-  const nearby=r.area_id!=null
-    ? new Set((byArea['a'+r.area_id]||[]).filter(visible).map(structKey)).size : 0;
+  // Counts are what the drill-in will actually show, not what exists: promising
+  // six shots and landing on five is a small lie the fog filter tells for you.
+  // A button for the scope you are already in is noise, so it is dropped.
   $('lbdrill').innerHTML =
-    (nshots>1 ? `<button class=act id=actall>▦ all ${nshots} shots of this build</button>` : '') +
-    (nearby>1 ? `<button class=act id=actarea>🗺 ${nearby-1} more ${esc(areaPhrase(r))}</button>` : '');
+    (nHere>1&&scope!=='build' ? `<button class=act id=actall>${svg('grid')} all ${nHere} shots of this build</button>` : '') +
+    (nArea>1&&scope!=='area' ? `<button class=act id=actarea>${svg('pin')} ${nArea-1} more ${esc(areaPhrase(r))}</button>` : '');
   if($('actall')) $('actall').onclick=()=>drillTo('structure', structKey(r), r.id);
   if($('actarea')) $('actarea').onclick=()=>drillTo('area', 'a'+r.area_id, r.id);
 
   // structure-level actions
   const nreq=REQS[r.cluster_id]||0, claimed=CLAIMS[r.cluster_id];
   $('lbacts').innerHTML = r.cluster_id==null ? '' : (SIGNEDIN
-    ? `<button class=act id=actreq>📷 more shots of this${nreq?` · ${nreq}`:''}</button>
-       <button class=act id=actmine>🏠 ${claimed?`claimed by ${esc(claimed)}`:'this one is mine'}</button>
+    ? `<button class=act id=actreq>${svg('camera')} more shots of this${nreq?` · ${nreq}`:''}</button>
+       <button class=act id=actmine>${svg('home')} ${claimed?`claimed by ${esc(claimed)}`:'this one is mine'}</button>
        <button class=act id=actnot>not mine</button>`
     : `<span class=hint>${nreq?`${nreq} request(s) for this build · `:''}${claimed?`claimed by ${esc(claimed)} · `:''}sign in to ask for more shots or claim this build</span>`);
   if($('actreq')) $('actreq').onclick=()=>sendSignal('request',r,{note:''});
@@ -469,12 +513,22 @@ function openLb(i){
   // 240 frames across 40 structures -- it was listing hundreds of unrelated
   // thumbnails. Label by variant, since a build's frames differ by angle and
   // vantage rather than by time.
-  // Fog whiteouts are hidden by default, and a thumbnail that cannot be opened
-  // is a dead end -- clicking it would drill in and still not find the frame.
-  const sibs=(byCluster[structKey(r)]||[r]).filter(x=>showFog||!x.fog||x.id===r.id);
+  // The strip follows the scope. Standing in an area it lists the NEIGHBOURS,
+  // one frame each, which is what makes the area button visibly do something --
+  // otherwise the click changed only the URL. Fog whiteouts stay out either way:
+  // a thumbnail that cannot be opened is a dead end.
+  const inArea = scope==='area' && r.area_id!=null;
+  const sibs = inArea
+    ? onedown((byArea['a'+r.area_id]||[]).filter(seen))
+        .sort((a,b)=>(a.id===r.id?-1:b.id===r.id?1:0)||
+                     (b.aesthetic??-1)-(a.aesthetic??-1))
+    : (byCluster[structKey(r)]||[r]).filter(x=>seen(x)||x.id===r.id);
+  $('lbrtitle').textContent = inArea
+    ? `${sibs.length} builds ${areaPhrase(r)}`
+    : 'every shot of this build';
   $('lbrends').innerHTML=sibs.map(s=>`<div class="rend${s.id===r.id?' cur':''}" data-id="${esc(s.id)}">
      <div class=fr><img loading=lazy src="thumb/${esc(s.id)}.webp" alt=""></div>
-     <div class=lab>${esc((s.variant||'').replace(/^[a-d]_/,'')||clockOf(s.time_of_day))}</div></div>`).join('');
+     <div class=lab>${esc(inArea?shortName(s):((s.variant||'').replace(/^[a-d]_/,'')||clockOf(s.time_of_day)))}</div></div>`).join('');
   $('lbrends').querySelectorAll('.rend').forEach(el=>{
     // In the showcase only one frame per build is in `view`, so a sibling
     // thumbnail usually is not. Drill in first, then land on it.
@@ -492,8 +546,16 @@ function openLb(i){
 // which would otherwise collapse the drilled-in set straight back to the one
 // frame already on screen.
 function drillTo(key, value, keepId){
-  sel[key].clear(); sel[key].add(value);
-  if(sort==='showcase') sort='best';
+  // Both scope filters clear first: standing in a build and clicking through to
+  // its area must widen to the area, not intersect the two into the one build.
+  pinned=keepId||null;
+  sel.structure.clear(); sel.area.clear();
+  sel[key].add(value);
+  // An area is a set of buildings and a building is a set of photographs, so
+  // scoping to an area keeps the one-per-build collapse and arrow-right walks
+  // the neighbours. Dropping into 87 frames -- eight of each of twelve builds --
+  // would be the repetition problem again, one level up.
+  sort = key==='area' ? 'showcase' : 'best';
   page=0; buildPanel(); render();
   const j=view.findIndex(v=>v.id===keepId);
   if(j>=0){ page=Math.floor(j/pageSize()); render(); openLb(j); } else closeLb();
@@ -503,6 +565,16 @@ function drillTo(key, value, keepId){
   try{ history.pushState(null,'',key==='structure'?`#build=${cid}`:`#area=${cid}`); }catch(e){}
 }
 function pageSize(){ return Math.max(1,parseInt($('psize').value)||100); }
+// Clearing filters returns to the front door, not to a filterless list of all
+// 2,081 frames -- a drill-in switched the sort off showcase, and leaving it off
+// is how someone ends up back in the wall of variants they just escaped.
+function goHome(close){
+  for(const k in sel) sel[k].clear();
+  sort='showcase'; page=0; pinned=null;
+  try{ history.pushState(null,'',location.pathname+location.search); }catch(e){}
+  buildPanel(); render();
+  if(close) closeLb();
+}
 function closeLb(){ $('lb').classList.remove('show'); }
 function step(d){ const j=cur+d; if(j>=0&&j<view.length) openLb(j); }
 
