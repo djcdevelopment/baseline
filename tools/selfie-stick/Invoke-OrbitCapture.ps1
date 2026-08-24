@@ -57,6 +57,7 @@ $receipts = Join-Path $cfg 'shotplan-receipts.jsonl'
 $logOutput = Join-Path $ValheimRoot 'BepInEx\LogOutput.log'
 $networkSenseDll = Join-Path $ValheimRoot 'BepInEx\plugins\ComfyNetworkSense.dll'
 $networkSenseConfig = Join-Path $cfg 'djcdevelopment.valheim.comfynetworksense.cfg'
+$questRuntimeConfig = Join-Path $cfg 'djcdevelopment.valheim.comfyquestruntime.cfg'
 
 if (Get-Process valheim -ErrorAction SilentlyContinue) {
     throw 'Valheim is already running. Close it first -- the DLL and plan are read at startup.'
@@ -120,6 +121,28 @@ $quietNetworkSenseConfig = [regex]::Replace(
     $networkSenseConfigText,
     '(?m)^(\s*showHudOnStart\s*=\s*)true\s*$',
     '${1}false')
+
+# ComfyQuest draws an overhead creator bar whenever quest content exists. It has
+# no hide switch until ComfyQuestRuntime carries ShowCreatorBar, and without one
+# it burns "Demo World ... EXPAND F9" across the top of every frame. Same
+# treatment as the NetworkSense HUD: quiet it for the session, restore the
+# operator's exact bytes afterwards, and say nothing if the mod is not installed.
+$questRuntimeConfigBytes = $null
+if (Test-Path -LiteralPath $questRuntimeConfig) {
+    $questRuntimeConfigBytes = [IO.File]::ReadAllBytes($questRuntimeConfig)
+    $questRuntimeConfigText = [Text.Encoding]::UTF8.GetString($questRuntimeConfigBytes)
+    if ($questRuntimeConfigText -match '(?m)^\s*ShowCreatorBar\s*=') {
+        $quietQuestConfig = [regex]::Replace(
+            $questRuntimeConfigText,
+            '(?m)^(\s*ShowCreatorBar\s*=\s*)true\s*$',
+            '${1}false')
+        Write-Host '      quest creator bar hidden for this session'
+    } else {
+        $quietQuestConfig = $null
+        Write-Warning ('ComfyQuestRuntime has no ShowCreatorBar setting -- its overhead ' +
+                       'bar will burn into these frames. Update the mod, or park its DLL.')
+    }
+}
 try {
     # The NetworkSense IMGUI panel is useful interactively but should not be
     # burned into public gallery frames. Restore the operator's exact bytes
@@ -128,6 +151,10 @@ try {
         $networkSenseConfig,
         $quietNetworkSenseConfig,
         [Text.UTF8Encoding]::new($false))
+    if ($quietQuestConfig) {
+        [IO.File]::WriteAllText($questRuntimeConfig, $quietQuestConfig,
+                                [Text.UTF8Encoding]::new($false))
+    }
     $launchStartedAtUtc = [DateTime]::UtcNow
     Start-Process -FilePath $SteamExe -ArgumentList '-applaunch', '892970', '-console', `
         '-screen-fullscreen', '0', '-screen-width', "$CaptureWidth", '-screen-height', "$CaptureHeight", `
@@ -155,6 +182,9 @@ try {
     }
 } finally {
     [IO.File]::WriteAllBytes($networkSenseConfig, $networkSenseConfigBytes)
+    if ($questRuntimeConfigBytes) {
+        [IO.File]::WriteAllBytes($questRuntimeConfig, $questRuntimeConfigBytes)
+    }
 }
 
 if (-not (Test-Path -LiteralPath $logOutput) -or
