@@ -109,8 +109,9 @@
  <div class=info>
   <div class=pr id=lbtitle></div>
   <div class=meta id=lbmeta></div>
+  <div class=acts id=lbdrill></div>
   <div class=acts id=lbacts></div>
-  <div class=rtitle>every light this was shot in</div>
+  <div class=rtitle id=lbrtitle>every shot of this build</div>
   <div class=rends id=lbrends></div>
  </div>
 </div>
@@ -120,11 +121,13 @@
 // ---- state ----
 let DB={images:[]}, MINE=new Set(), VOTES={}, REQS={}, CLAIMS={}, USER='anon', SIGNEDIN=false;
 let DEPTH={}, JUDGE={};               // instrument side-files; absent is fine
-let sel={region:new Set(),kind:new Set(),environment:new Set(),structure:new Set(),perspective:new Set()};
+let sel={region:new Set(),kind:new Set(),environment:new Set(),structure:new Set(),perspective:new Set(),area:new Set()};
 let showFog=false;                    // whiteout frames stay one click away, not gone
-let sort='best', page=0, view=[], cur=-1;
+let sort='showcase', page=0, view=[], cur=-1;
 let ERAS=null;   // the auto score is the most useful first impression
-const byRun={};                       // run id -> all moods of that one setup
+const byRun={};        // run id -> every frame of that capture run
+const byCluster={};    // structure key -> every frame of that build
+const byArea={};       // area key -> every frame in that 2 km neighbourhood
 
 const ENVCOLOR={Clear:'#7aa2ff',Misty:'#9ad5c8',Rain:'#8fb2d9',ThunderStorm:'#b79ae0'};
 const $=id=>document.getElementById(id);
@@ -134,7 +137,16 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;',
 // from the place's most distinctive trait ("major hub · 19,720") and a hand-written
 // name in cluster-names.json overrides it. Rank and piece count alone identified a
 // cluster but said nothing about what it was.
+// A facet filters on a KEY and displays TEXT, and for structures the two must
+// differ. Labels only became unique when name_structures.py disambiguated them;
+// an unnamed cluster still falls back to a derived label like "build · 2,671",
+// and two of those collide into one chip that filters both builds at once.
 const structOf=r=>r.label||(r.cluster_rank!=null?`#${r.cluster_rank}`:'unmatched');
+const structKey=r=>r.cluster_id!=null?'c'+r.cluster_id:'i'+r.id;
+const areaKey=r=>r.area_id!=null?'a'+r.area_id:null;
+// "near Pirate Hideout · 4,443" is the chip's text; a sentence wants the
+// disambiguating piece count off the end.
+const areaPhrase=r=>(r.area_label||'in this area').replace(/ · [\d,]+$/,'');
 
 // Valheim's time of day is a 0..1 fraction of the day, 0.5 being noon. Shown raw
 // in a corner it reads as a score out of one, which is the opposite of what it
@@ -151,7 +163,11 @@ async function boot(){
   catch(e){ $('main').innerHTML='<div class=empty>could not load index.json</div>'; return; }
   if(DB.world){ $('worldTitle').textContent=DB.world; document.title=`${DB.world} — what people built`; }
 
-  for(const r of DB.images){ (byRun[r.run]=byRun[r.run]||[]).push(r); }
+  for(const r of DB.images){
+    (byRun[r.run]=byRun[r.run]||[]).push(r);
+    (byCluster[structKey(r)]=byCluster[structKey(r)]||[]).push(r);
+    const a=areaKey(r); if(a) (byArea[a]=byArea[a]||[]).push(r);
+  }
 
   // Instrument side-files: depth/luma geometry and the judge's one-liners.
   // Metric-only, and optional — an old deploy without them still renders.
@@ -169,23 +185,44 @@ async function boot(){
   await loadSignals();
   document.body.classList.add('canstar');
 
+  applyHash();
   buildPanel(); render();
 }
+
+// #build=182 / #area=7 -- what makes a drill-in a link rather than a button.
+// Reading it is one function so that arriving at the URL, editing the hash by
+// hand, and pressing Back all land in the same state.
+function applyHash(){
+  sel.structure.clear(); sel.area.clear();
+  const m=/^#(build|area)=(\w+)$/.exec(location.hash||'');
+  if(!m){ sort='showcase'; return; }   // no hash is the front door
+  const [,kind,id]=m;
+  if(kind==='build') sel.structure.add('c'+id); else sel.area.add('a'+id);
+  sort='best';                    // showcase would collapse it back to one frame
+}
+function routeFromHash(){
+  applyHash(); page=0; closeLb(); buildPanel(); render();
+}
+addEventListener('popstate', routeFromHash);
+addEventListener('hashchange', routeFromHash);
 
 function facetValues(key){
   const f={};
   for(const r of DB.images){
-    const v=key==='structure'?structOf(r):r[key];
-    if(v==null) continue;
-    f[v]=(f[v]||0)+1;
+    let v,t;
+    if(key==='structure'){ v=structKey(r); t=structOf(r); }
+    else if(key==='area'){ v=areaKey(r); t=r.area_label; }
+    else { v=r[key]; t=v; }
+    if(v==null||t==null) continue;
+    (f[v]=f[v]||{n:0,t:t}).n++;
   }
-  return Object.entries(f).sort((a,b)=>b[1]-a[1]);
+  return Object.entries(f).sort((a,b)=>b[1].n-a[1].n);
 }
 
 function buildPanel(){
   const facets=[['region','Region'],['perspective','Perspective'],
                 ['kind','Kind of place'],['environment','Weather'],
-                ['structure','Structure']];
+                ['area','Area'],['structure','Structure']];
   let h='';
   if(ERAS&&ERAS.eras&&ERAS.eras.length>1){
     h+=`<div class=facet>Era</div><div class=checks>`;
@@ -198,10 +235,15 @@ function buildPanel(){
   }
   for(const [key,label] of facets){
     const vals=facetValues(key);
-    if(vals.length<2) continue;                    // a one-value facet is not a filter
+    if(vals.length<2&&!sel[key].size) continue;    // a one-value facet is not a filter
+    // Only the 40 commonest values get a chip, and a drill-in can select a build
+    // far outside that -- 478 has six frames against the top structure's dozens.
+    // Without this the filter is on, invisible, and only "clear filters" escapes.
+    const shown=vals.slice(0,40);
+    for(const e of vals) if(sel[key].has(e[0])&&!shown.includes(e)) shown.push(e);
     h+=`<div class=facet>${label}</div><div class=checks>`;
-    for(const [v,n] of vals.slice(0,40)){
-      h+=`<label class=ck data-k="${esc(key)}" data-v="${esc(v)}"><input type=checkbox>${esc(v)} <span class=cnt>${n}</span></label>`;
+    for(const [v,{n,t}] of shown){
+      h+=`<label class=ck data-k="${esc(key)}" data-v="${esc(v)}"><input type=checkbox>${esc(t)} <span class=cnt>${n}</span></label>`;
     }
     h+='</div>';
   }
@@ -211,7 +253,7 @@ function buildPanel(){
   if(nfog) h+=`<div class=facet>Hidden</div><div class=checks>`+
     `<label class="ck${showFog?' on':''}" id=fogchip>fog <span class=cnt>${nfog}</span></label></div>`;
   h+=`<div class=facet>Sort</div><div class="checks sortrow">`;
-  for(const [k,l] of [['best','auto scored'],['absolute','raw score'],['recent','newest'],['rank','by rank'],['pieces','biggest build'],['height','tallest'],['stars','starred first'],['light','by time of day']])
+  for(const [k,l] of [['showcase','every build'],['best','auto scored'],['absolute','raw score'],['recent','newest'],['rank','by rank'],['pieces','biggest build'],['height','tallest'],['stars','starred first'],['light','by time of day']])
     h+=`<label class=ck data-sort="${k}"${sort===k?' style="pointer-events:none"':''}>${l}</label>`;
   h+=`</div><button class=clr id=clrbtn>clear filters</button>`;
   $('panel').innerHTML=h;
@@ -227,7 +269,15 @@ function buildPanel(){
     el.onclick=()=>{ sort=el.dataset.sort; page=0; buildPanel(); render(); };
   });
   if($('fogchip')) $('fogchip').onclick=()=>{ showFog=!showFog; page=0; buildPanel(); render(); };
-  $('clrbtn').onclick=()=>{ for(const k in sel) sel[k].clear(); page=0; buildPanel(); render(); };
+  // Clearing filters returns to the front door, not to a filterless list of all
+  // 2,081 frames -- a drill-in switched the sort off showcase, and leaving it off
+  // is how someone ends up back in the wall of variants they just escaped.
+  $('clrbtn').onclick=()=>{
+    for(const k in sel) sel[k].clear();
+    sort='showcase'; page=0;
+    try{ history.pushState(null,'',location.pathname+location.search); }catch(e){}
+    buildPanel(); render();
+  };
 }
 
 // The aesthetic head scores a landscape above a room every time: measured over
@@ -260,6 +310,26 @@ function pct(){
   return PCT;
 }
 
+// One frame per build, best first. The gallery holds about eight photographs of
+// every structure, so a score-ordered view of all of them puts six near-identical
+// tiles in a row and arrowing through the lightbox reads as the same few popular
+// builds over and over. That is the right answer to "which photographs are best"
+// and the wrong one to "what did people build", which is what a visitor is asking.
+//
+// Runs AFTER filtering, never before: drilling into one build has to show all of
+// that build's frames, and it does exactly because the collapse sees the filtered
+// set. Best-of is by percentile within perspective for the same reason the sort
+// is -- otherwise an interior-only build never wins its own slot.
+function onedown(rows){
+  const p=pct(), best=new Map();
+  for(const r of rows){
+    const k=structKey(r), cur=best.get(k);
+    if(!cur||(p[r.id]??-1)>(p[cur.id]??-1)||
+       ((p[r.id]??-1)===(p[cur.id]??-1)&&(r.aesthetic??-1)>(cur.aesthetic??-1))) best.set(k,r);
+  }
+  return [...best.values()];
+}
+
 function filtered(){
   return DB.images.filter(r=>
     (showFog||!r.fog) &&
@@ -267,12 +337,16 @@ function filtered(){
     (!sel.perspective.size||sel.perspective.has(r.perspective)) &&
     (!sel.kind.size||sel.kind.has(r.kind)) &&
     (!sel.environment.size||sel.environment.has(r.environment)) &&
-    (!sel.structure.size||sel.structure.has(structOf(r))));
+    (!sel.area.size||sel.area.has(areaKey(r))) &&
+    (!sel.structure.size||sel.structure.has(structKey(r))));
 }
 
 function render(){
   view=filtered();
-  if(sort==='best'){ const p=pct();
+  if(sort==='showcase'){ const p=pct();
+    view=onedown(view);
+    view.sort((a,b)=>(p[b.id]??-1)-(p[a.id]??-1)||(b.aesthetic??-1)-(a.aesthetic??-1)); }
+  else if(sort==='best'){ const p=pct();
     view.sort((a,b)=>(p[b.id]??-1)-(p[a.id]??-1)||(b.aesthetic??-1)-(a.aesthetic??-1)); }
   else if(sort==='absolute') view.sort((a,b)=>(b.aesthetic??-1)-(a.aesthetic??-1));
   else if(sort==='rank') view.sort((a,b)=>(a.cluster_rank||1e9)-(b.cluster_rank||1e9)||(a.variant||'').localeCompare(b.variant||''));
@@ -282,7 +356,7 @@ function render(){
   else if(sort==='stars') view.sort((a,b)=>(MINE.has(b.id)?1:0)-(MINE.has(a.id)?1:0)||(VOTES[b.id]||0)-(VOTES[a.id]||0)||b.ts-a.ts);
   else view.sort((a,b)=>b.ts-a.ts);
 
-  const n=Math.max(1,parseInt($('psize').value)||100);
+  const n=pageSize();
   const pages=Math.max(1,Math.ceil(view.length/n));
   page=Math.min(page,pages-1);
   const slice=view.slice(page*n,page*n+n);
@@ -290,7 +364,9 @@ function render(){
   const active=Object.values(sel).reduce((a,s)=>a+s.size,0);
   $('fbadge').style.display=active?'inline-flex':'none';
   $('fbadge').textContent=active;
-  $('sub').textContent=`${view.length} of ${DB.n} photographs · ${DB.runs} setups`;
+  $('sub').textContent = sort==='showcase'
+    ? `${view.length} builds · ${DB.n.toLocaleString()} photographs`
+    : `${view.length} of ${DB.n} photographs · ${DB.runs} setups`;
 
   $('main').innerHTML = slice.length
     ? `<div class=grid>${slice.map(cellHtml).join('')}</div>` +
@@ -362,6 +438,21 @@ function openLb(i){
     `<span id=lbstar class="${MINE.has(r.id)?'on':''}">${MINE.has(r.id)?'★ voted':'☆ vote'}${nv?' · '+nv:''}</span>`;
   $('lbstar').onclick=()=>toggleStar(r.id,true);
 
+  // Drill-ins: the showcase deliberately hides this build's other frames and the
+  // rest of its neighbourhood, so the way back in has to live here, on the photo
+  // the visitor is already looking at.
+  // Count what the drill-in will actually show, not what exists: promising six
+  // shots and landing on five is a small lie the fog filter tells for you.
+  const visible=x=>showFog||!x.fog;
+  const nshots=(byCluster[structKey(r)]||[]).filter(visible).length;
+  const nearby=r.area_id!=null
+    ? new Set((byArea['a'+r.area_id]||[]).filter(visible).map(structKey)).size : 0;
+  $('lbdrill').innerHTML =
+    (nshots>1 ? `<button class=act id=actall>▦ all ${nshots} shots of this build</button>` : '') +
+    (nearby>1 ? `<button class=act id=actarea>🗺 ${nearby-1} more ${esc(areaPhrase(r))}</button>` : '');
+  if($('actall')) $('actall').onclick=()=>drillTo('structure', structKey(r), r.id);
+  if($('actarea')) $('actarea').onclick=()=>drillTo('area', 'a'+r.area_id, r.id);
+
   // structure-level actions
   const nreq=REQS[r.cluster_id]||0, claimed=CLAIMS[r.cluster_id];
   $('lbacts').innerHTML = r.cluster_id==null ? '' : (SIGNEDIN
@@ -373,15 +464,45 @@ function openLb(i){
   if($('actmine')) $('actmine').onclick=()=>sendSignal('claim',r,{mine:true});
   if($('actnot')) $('actnot').onclick=()=>sendSignal('claim',r,{mine:false});
 
-  const sibs=byRun[r.run]||[];
+  // Siblings of this BUILD. This used to key on run, which was right when a run
+  // meant 23 light variants of one viewpoint and is wrong now that a run means
+  // 240 frames across 40 structures -- it was listing hundreds of unrelated
+  // thumbnails. Label by variant, since a build's frames differ by angle and
+  // vantage rather than by time.
+  // Fog whiteouts are hidden by default, and a thumbnail that cannot be opened
+  // is a dead end -- clicking it would drill in and still not find the frame.
+  const sibs=(byCluster[structKey(r)]||[r]).filter(x=>showFog||!x.fog||x.id===r.id);
   $('lbrends').innerHTML=sibs.map(s=>`<div class="rend${s.id===r.id?' cur':''}" data-id="${esc(s.id)}">
      <div class=fr><img loading=lazy src="thumb/${esc(s.id)}.webp" alt=""></div>
-     <div class=lab>${esc(clockOf(s.time_of_day)||(s.variant||'').replace(/^[a-d]_/,''))}</div></div>`).join('');
+     <div class=lab>${esc((s.variant||'').replace(/^[a-d]_/,'')||clockOf(s.time_of_day))}</div></div>`).join('');
   $('lbrends').querySelectorAll('.rend').forEach(el=>{
-    el.onclick=()=>{ const j=view.findIndex(v=>v.id===el.dataset.id); if(j>=0) openLb(j); };
+    // In the showcase only one frame per build is in `view`, so a sibling
+    // thumbnail usually is not. Drill in first, then land on it.
+    el.onclick=()=>{
+      const j=view.findIndex(v=>v.id===el.dataset.id);
+      if(j>=0) return openLb(j);
+      drillTo('structure', structKey(r), el.dataset.id);
+    };
   });
   $('lb').classList.add('show');
 }
+// Apply a filter from inside the lightbox and stay on the same photograph.
+// Two things are easy to get wrong here: `view` is rebuilt, so `cur` has to be
+// re-found by id rather than reused; and the sort has to come off showcase,
+// which would otherwise collapse the drilled-in set straight back to the one
+// frame already on screen.
+function drillTo(key, value, keepId){
+  sel[key].clear(); sel[key].add(value);
+  if(sort==='showcase') sort='best';
+  page=0; buildPanel(); render();
+  const j=view.findIndex(v=>v.id===keepId);
+  if(j>=0){ page=Math.floor(j/pageSize()); render(); openLb(j); } else closeLb();
+  const cid=value.replace(/^[ca]/,'');
+  // pushState, not replaceState: Back is how a visitor expects to get out of a
+  // build and return to the showcase they were browsing.
+  try{ history.pushState(null,'',key==='structure'?`#build=${cid}`:`#area=${cid}`); }catch(e){}
+}
+function pageSize(){ return Math.max(1,parseInt($('psize').value)||100); }
 function closeLb(){ $('lb').classList.remove('show'); }
 function step(d){ const j=cur+d; if(j>=0&&j<view.length) openLb(j); }
 

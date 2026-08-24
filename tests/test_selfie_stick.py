@@ -93,5 +93,61 @@ class GalleryImageTests(unittest.TestCase):
                 BUILD.make_thumb(source, pathlib.Path(temp_dir) / "bad.webp", crop_right_ui_px=10)
 
 
+class AreaAssignmentTests(unittest.TestCase):
+    """Neighbourhoods on a 2 km grid, and the promise that they ship no location."""
+
+    @staticmethod
+    def cluster(cid, x, z, pieces=100):
+        return {"cluster_id": cid, "center_x": x, "center_z": z, "pieces": pieces}
+
+    def test_same_cell_shares_an_area(self):
+        areas = BUILD.assign_areas(
+            [self.cluster(1, 10, 10), self.cluster(2, 1990, 1990)], {})
+        self.assertEqual(areas[1][0], areas[2][0])
+
+    def test_neighbouring_cells_are_separate_areas(self):
+        areas = BUILD.assign_areas(
+            [self.cluster(1, 1990, 10), self.cluster(2, 2010, 10)], {})
+        self.assertNotEqual(areas[1][0], areas[2][0])
+
+    def test_negative_coordinates_land_in_their_own_cell(self):
+        areas = BUILD.assign_areas(
+            [self.cluster(1, -10, -10), self.cluster(2, 10, 10)], {})
+        self.assertNotEqual(areas[1][0], areas[2][0])
+
+    def test_ids_are_a_sequence_ordered_by_mass_not_a_grid_reference(self):
+        """The id must not encode the cell, because a cell is a coordinate.
+
+        This is the assertion that keeps area_id out of scrub_index.py's DROP
+        list: ids are 1..N ordered by piece mass, so they say which area is
+        biggest and nothing whatsoever about where it is.
+        """
+        clusters = [self.cluster(1, -8000, 4000, pieces=10),
+                    self.cluster(2, 6000, -2000, pieces=900),
+                    self.cluster(3, 0, 0, pieces=100)]
+        areas = BUILD.assign_areas(clusters, {})
+        self.assertEqual([1, 2, 3], sorted(a for a, _ in areas.values()))
+        self.assertEqual(1, areas[2][0])          # heaviest area is id 1
+        self.assertEqual(3, areas[1][0])          # lightest is last
+
+    def test_label_prefers_a_named_build_over_a_bigger_nameless_one(self):
+        """An area named after a build nobody photographed is worse than a number.
+
+        Only photographed structures get names, and the biggest build in a cell
+        is usually not one of them.
+        """
+        clusters = [self.cluster(1, 10, 10, pieces=9000),
+                    self.cluster(2, 20, 20, pieces=5)]
+        self.assertEqual("near Black Tower",
+                         BUILD.assign_areas(clusters, {"2": "Black Tower"})[1][1])
+
+    def test_label_falls_back_to_the_area_number(self):
+        areas = BUILD.assign_areas([self.cluster(1, 10, 10)], {})
+        self.assertEqual("area 1", areas[1][1])
+
+    def test_area_fields_are_absent_for_an_unknown_cluster(self):
+        self.assertEqual({}, BUILD.area_fields({}, {"cluster_id": 99}))
+
+
 if __name__ == "__main__":
     unittest.main()

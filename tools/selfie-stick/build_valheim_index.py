@@ -86,6 +86,58 @@ def load_clusters(path):
         return json.load(fh).get("clusters", [])
 
 
+# Neighbourhoods, on a fixed 2 km grid. Proximity clustering was tried first and
+# chains: single-linkage at 800 m swallowed 953 of Era 17's 1,025 in-world builds
+# into one "area", and at 300 m almost every build was its own. A grid does not
+# chain, stays put as coverage deepens, and at 2 km leaves only 23 of 269
+# photographed builds without a photographed neighbour.
+AREA_CELL_M = 2000.0
+
+
+def assign_areas(clusters, names):
+    """cluster_id -> (area_id, area_label).
+
+    The id is a SEQUENCE NUMBER, deliberately. The obvious id is the grid cell,
+    and a grid cell is a coordinate at 2 km resolution — precisely what
+    scrub_index.py exists to keep off a public host. Ordering the sequence by
+    piece mass makes it stable and reveals nothing about where anything is.
+
+    The label names the area after its largest build, so a chip reads "near
+    Black Tower" rather than "area 7". That is an adjacency fact, which this
+    feature is inherently about; it is not a position.
+    """
+    cells = {}
+    for c in clusters:
+        key = (int(c["center_x"] // AREA_CELL_M), int(c["center_z"] // AREA_CELL_M))
+        cells.setdefault(key, []).append(c)
+
+    ranked = sorted(cells.values(),
+                    key=lambda members: (-sum(m["pieces"] for m in members),
+                                         min(m["cluster_id"] for m in members)))
+    out = {}
+    for area_id, members in enumerate(ranked, start=1):
+        # The biggest build in a cell is usually one nobody has photographed, and
+        # only photographed builds get names -- so rank by "has a name" first.
+        # Naming an area after a build the visitor cannot click through to is
+        # worse than a number.
+        landmark = max(members,
+                       key=lambda m: (1 if (names or {}).get(str(m["cluster_id"])) else 0,
+                                      m["pieces"], -m["cluster_id"]))
+        named = (names or {}).get(str(landmark["cluster_id"]))
+        label = f"near {named}" if named else f"area {area_id}"
+        for m in members:
+            out[m["cluster_id"]] = (area_id, label)
+    return out
+
+
+def area_fields(areas, cluster):
+    """The two shippable area fields for a joined row, or nothing if unknown."""
+    found = areas.get(cluster["cluster_id"])
+    if not found:
+        return {}
+    return {"area_id": found[0], "area_label": found[1]}
+
+
 def load_cluster_world(path):
     if not path or not os.path.exists(path):
         return None
@@ -276,6 +328,7 @@ def main():
     clusters = load_clusters(args.clusters)
     by_id = {c["cluster_id"]: c for c in clusters}
     names = load_names(args.names)
+    areas = assign_areas(clusters, names)
     # Per-image aesthetic scores, if they have been computed. These say something
     # about the photograph; the cluster score only says something about the
     # building, and is identical across all six frames of it.
@@ -373,6 +426,7 @@ def main():
                     "builders": cluster["distinct_creators"],
                     "top_creator_id": cluster.get("top_creator_id"),
                 })
+                row.update(area_fields(areas, cluster))
             rows.append(row)
 
             if args.thumbs:
@@ -455,6 +509,7 @@ def main():
                 "top_creator_id": cluster.get("top_creator_id"),
                 "shot_distance_m": 0.0,
             })
+            row.update(area_fields(areas, cluster))
         rows.append(row)
         orbit_n += 1
 
@@ -573,6 +628,7 @@ def main():
         "variants": facet("variant"),
         "kinds": facet("kind"),
         "perspectives": facet("perspective"),
+        "areas": facet("area_label"),
         "images": rows,
     }
 

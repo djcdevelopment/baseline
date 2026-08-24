@@ -13,6 +13,11 @@ import sys
 
 DROP = ("x", "y", "z", "top_creator_id")
 
+# area_id and area_label deliberately survive. area_id is a sequence number
+# ordered by piece mass, not a grid cell -- a grid cell index IS a coordinate at
+# the cell's resolution, and would belong in DROP above. Keep it opaque: if you
+# ever make it human-readable ("cell -4,2"), it has to be dropped here instead.
+
 
 def main():
     if len(sys.argv) != 3:
