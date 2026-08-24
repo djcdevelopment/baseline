@@ -71,6 +71,23 @@ def parse_args():
                    help="haze cap. Beyond this the frame fills with atmosphere and the "
                         "build reads as a flat silhouette; better to shoot part of a big "
                         "build up close than all of it through 400 m of fog")
+    p.add_argument("--fixed-elevation", action="store_true",
+                   help="use --elevation as given instead of tilting by shape. "
+                        "elevation_for() levels off on tall builds because "
+                        "shooting a spire from above gives you a roof -- correct "
+                        "on the ground, backwards for a platform floating at "
+                        "y=5000 where the alternative to aiming down is open sky")
+    p.add_argument("--time-of-day", type=float, default=GOLDEN_PM,
+                   help="time for the four orbit slots (default the measured golden "
+                        "hour). The dawn slot keeps its own value -- it exists to be "
+                        "a second light, not to follow this one")
+    p.add_argument("--max-height-m", type=float, default=300.0,
+                   help="drop clusters taller than this. Not a taste call: the "
+                        "clustering chains a sky platform to ground builds through a "
+                        "vertical column and calls the result one structure. Era 17 "
+                        "has three over 1,300 m tall, one of them 2,297 m with a "
+                        "5,195 m diagonal, and aiming a camera at that centroid puts "
+                        "it in empty air. The tallest real build measured is 177.9 m")
     p.add_argument("--include-ids", default="",
                    help="comma-separated cluster ids to shoot regardless of "
                         "--skip/--top, for structures worth a camera that the "
@@ -206,10 +223,26 @@ def main():
                   f"{', '.join(str(i) for i in skipped_here)} "
                   f"({len(dropped_sky)} in the region overall)")
 
+    # Last, AFTER --include-ids: a 2 km column is not a structure, and no flag
+    # should be able to force a camera to aim at the centroid of one. Placed
+    # before the include step this guard passed --include-ids "2,68" straight
+    # through and planned fifteen shots of two vertical chains. Loud, because a
+    # silent skip is how you spend an afternoon wondering where a cluster went.
+    if args.max_height_m:
+        broken = [c for c in clusters if c["size_y"] > args.max_height_m]
+        if broken:
+            clusters = [c for c in clusters if c["size_y"] <= args.max_height_m]
+            print(f"  dropped {len(broken)} cluster(s) taller than "
+                  f"{args.max_height_m:g} m -- union-find chained a sky platform "
+                  f"to the ground through a column; these are not buildings:")
+            for c in sorted(broken, key=lambda c: -c["size_y"]):
+                print(f"    cluster {c['cluster_id']}: {c['size_y']:,.0f} m tall, "
+                      f"{c['diagonal_m']:,.0f} m diagonal, {c['pieces']:,} pieces")
+
     shots, clipped = [], 0
     for c in clusters:
         azimuths, long_x = orbit_azimuths(c["size_x"], c["size_z"])
-        elev = elevation_for(c, args.elevation)
+        elev = args.elevation if args.fixed_elevation else elevation_for(c, args.elevation)
         cams = [camera_for(c, a, elev, args.margin,
                            args.max_distance, args.min_clearance) for a in azimuths]
         if not cams[0]["frames_whole_build"]:
@@ -224,7 +257,7 @@ def main():
 
         for i, cam in enumerate(cams):
             shots.append({**base, "shot": f"orbit{i + 1}", **cam,
-                          "environment": "Clear", "time_of_day": GOLDEN_PM})
+                          "environment": "Clear", "time_of_day": args.time_of_day})
         shots.append({**base, "shot": "dawn", **cams[hero],
                       "environment": "Clear", "time_of_day": GOLDEN_AM})
         # Kept named "weather" whatever the sky is: the index supersedes on
@@ -243,6 +276,8 @@ def main():
         "settings": {"elevation_deg": args.elevation, "fov_v_deg": FOV_V_DEG,
                      "margin": args.margin, "max_distance_m": args.max_distance,
                      "min_clearance_m": args.min_clearance,
+                     "time_of_day": args.time_of_day,
+                     "max_height_m": args.max_height_m,
                      "alt_shots": args.alt_shots,
                      "alt_environment": args.alt_environment,
                      "alt_time_of_day": args.alt_time},

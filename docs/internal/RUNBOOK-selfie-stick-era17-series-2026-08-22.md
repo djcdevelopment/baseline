@@ -477,3 +477,94 @@ page reads it correctly. Verified both directions:
 Note for whoever checks this next: the in-app browser pane cannot fetch subresources
 from the tailnet host — the HTML loads and every `fetch`/`XHR` fails — so the live
 page was verified over HTTP rather than by looking at it. Use a real browser.
+
+## Correction: nothing about a structure predicts how well it photographs
+
+This log earlier claimed the three builds forced in with `--include-ids` at ranks
+604/545/575 "median 5.747, the highest subset in the batch", and inferred that
+interior feature richness would make a better targeting signal. **That was wrong.**
+It pooled 15 frames across three builds and was carried by one of them. Per build,
+against a population mean of 5.513 and sd of 0.275:
+
+| cluster | per-build median | |
+| --- | --- | --- |
+| 42 | 5.261 | **−0.91 sd** |
+| 275 | 5.585 | +0.26 sd |
+| 191 | 5.353 | **−0.58 sd** |
+
+Two of the three are below average, and feature richness predicts nothing either —
+seats **−0.252**, tables −0.123, the composite −0.056.
+
+The real result is stronger than the claim it replaces. Across 268 builds with three
+or more scored frames, **no structural attribute predicts photo quality**:
+
+| attribute | r |
+| --- | --- |
+| height (`size_y`) | −0.189 |
+| **the ranking score** | **−0.136** |
+| distinct prefabs | −0.128 |
+| density (pieces/m²) | −0.089 |
+| pieces | −0.034 |
+| portals, footprint, signs | ≈ 0 |
+
+All near zero, most negative. And within-build spread (sd 0.239) is nearly the whole
+of between-build spread (sd 0.275) — which frame you keep matters about as much as
+which building you point at. There is nothing to tune. A targeting rule that claims
+to pick better-photographing builds is selling a correlation that is not there.
+
+## So targeting optimises the community instead
+
+Of 296 in-world creators (excluding those whose only build is a sky platform or a
+clustering artifact), **163 appear in the gallery and 133 do not**. `pick_targets.py`
+selects in a cascade — unrepresented creators, then 2 km cells with no photograph at
+all, then the old score order for depth — and emits ids for `plan_shots.py
+--include-ids`. The score survives as a tie-break inside a tier; it is a fine
+ordering heuristic and not a quality one.
+
+Creator ids never leave the box: `scrub_index.py` drops `top_creator_id`, and the
+selector reads the local `clusters.json` and emits cluster ids.
+
+The first batch it picks is 48 builds by 48 distinct creators, sitting at **old ranks
+967–1294** — the tail a score-descending sweep would never have reached. It moves
+representation 163 → 211 of 296. Plan built: `out/era17/creators-1.tsv`, 240 shots.
+
+## Chained clusters, which is what a third of the "sky" problem was
+
+`sky` is `med_y > 500`, and it was hiding a different fault. Three of the 17 are not
+sky builds — union-find chained a sky platform to ground builds through a vertical
+column:
+
+| id | pieces | size_y | diagonal | standoff the planner wanted |
+| --- | --- | --- | --- | --- |
+| 2 | 3,049 | **2,297 m** | 5,195 m | 4,676 m |
+| 68 | 626 | **1,418 m** | 1,419 m | 1,277 m |
+| 109 | 699 | **1,325 m** | 1,460 m | 1,314 m |
+
+`plan_shots.py` now drops anything over `--max-height-m` (default 300; the tallest
+real build measured is **177.9 m**) and says which and why. The threshold is on height
+only — a 600 m *diagonal* is a real sprawling district, not a chain.
+
+The guard runs **after** `--include-ids`, not before. Placed before it, as first
+written, `--include-ids "2,68"` walked straight past it and planned fifteen shots of
+two vertical columns. There is a test for exactly that.
+
+## The 14 real sky platforms: probe built, capture queued
+
+They sit at y ≈ 5,030–5,080, so terrain cannot be got into frame at any distance
+inside the haze cap. The frames are a blowout, and the veto already catches them:
+cluster 1157's six frames measure `luma_mean` **207–233** against a gallery median of
+**96.2**, and all six are fog-flagged. The cost is capture time, not gallery quality.
+
+Two untried variables, both cheap, in one pass rather than the two originally planned
+— the `dawn` slot keeps its own time of day, so a single plan carries both:
+
+`out/era17/sky-probe.tsv` — 14 platforms, 70 shots: four orbits at **night (0.90)**
+plus one at **dawn (0.32)**, all at a **fixed 65° elevation** so the camera aims down
+and the far field is the distant ground rather than open sky. That needed
+`--fixed-elevation`: `elevation_for()` levels off on tall subjects because shooting a
+spire from above gives you a roof, which is right on the ground and backwards at
+y=5000 — without it only 2 of the 14 got a steep angle.
+
+**The test is not a judgement call**: does the fog veto stop firing, and does
+`luma_mean` land near 96? If it still fires, that is the answer — record that these
+are not photographable with this rig and leave `--exclude-sky` on.
