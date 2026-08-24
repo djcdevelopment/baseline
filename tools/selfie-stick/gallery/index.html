@@ -51,7 +51,15 @@
  .cell .star i{font-style:normal;font-size:12px;margin-left:2px;vertical-align:2px}
  body.canstar .cell .star{display:block}
  .acts{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 12px}
- .act{background:#2a2a35;border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+ /* Three tiers, deliberately unalike: navigation, then things you can press,
+    then things you can only read. The first cut styled a clickable vote chip and
+    fourteen read-only facts identically, and nobody could tell which was which. */
+ .act{background:#2a2a35;border:1px solid #3a3a47;color:var(--fg);border-radius:9px;
+      padding:8px 13px;font-size:13px;font-weight:600;cursor:pointer;
+      display:inline-flex;align-items:center;gap:7px;line-height:1}
+ .act:hover{background:#33333f;border-color:var(--accent)}
+ .act.pri{border-color:var(--accent);color:var(--accent)}
+ .act.pri:hover{background:var(--accent);color:#0b0b10}
  .ico{flex:0 0 auto}
  .act:hover{border-color:var(--accent)}
  .hint{font-size:12px;color:var(--mut);line-height:1.5}
@@ -67,17 +75,23 @@
  #lb .stage{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:0}
  #lb .stage img{max-width:100%;max-height:100%;object-fit:contain}
  #lb .info{background:var(--panel);border-top:1px solid var(--line);padding:12px 16px calc(14px + env(safe-area-inset-bottom));max-height:48vh;overflow:auto}
- #lb .crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:7px;font-size:12px;color:var(--mut);margin-bottom:9px}
+ #lb .navbar{margin:0 0 10px}
+ #lb .navlabel{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin-bottom:4px}
+ #lb .crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px;color:var(--mut)}
  #lb .crumbs a,#lb .crumbs .here{display:inline-flex;align-items:center;gap:5px}
- #lb .crumbs a{color:var(--mut);cursor:pointer;border-bottom:1px solid transparent}
- #lb .crumbs a:hover{color:var(--fg);border-bottom-color:var(--line)}
- #lb .crumbs .here{color:var(--accent)}
+ #lb .crumbs a{color:var(--fg);cursor:pointer;border-bottom:1px solid var(--line)}
+ #lb .crumbs a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+ #lb .crumbs .here{color:var(--accent);font-weight:600}
  #lb .crumbs .sep{opacity:.45}
- #lb .pr{font-size:14px;line-height:1.45;color:#fff;margin-bottom:8px}
- #lb .meta{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;margin-bottom:10px}
- #lb .meta span{background:#2a2a35;padding:2px 8px;border-radius:6px}
- #lbstar{cursor:pointer;background:#2a2a35;padding:2px 8px;border-radius:6px}
- #lbstar.on{background:#ffd24a;color:#0b0b10;font-weight:700}
+ #lb .pr{line-height:1.4;color:#fff;margin-bottom:10px}
+ #lb .pr b{font-size:16px;display:block}
+ #lb .pr i{font-style:normal;font-size:13px;color:var(--mut)}
+ #lb .meta{display:flex;flex-wrap:wrap;gap:5px;font-size:11px;margin:2px 0 12px;color:var(--mut)}
+ #lb .meta span{background:#20202a;padding:2px 7px;border-radius:5px}
+ #lbstar.on{background:#ffd24a;border-color:#ffd24a;color:#0b0b10}
+ #lbstar.on:hover{background:#ffd24a;border-color:#fff}
+ #lb .hintrow{font-size:12px;color:var(--mut);line-height:1.5;margin:-4px 0 10px}
+ #lb .hintrow:empty{display:none}
  #lb .rtitle{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);margin:4px 0 6px}
  #lb .rends{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
  #lb .rends::-webkit-scrollbar{display:none}
@@ -114,11 +128,14 @@
  <span class="nav-a nx" onclick="step(1)">›</span>
  <div class=stage><img id=lbimg alt=""></div>
  <div class=info>
-  <div class=crumbs id=lbcrumbs></div>
+  <div class=navbar>
+   <div class=navlabel>Where you are</div>
+   <div class=crumbs id=lbcrumbs></div>
+  </div>
   <div class=pr id=lbtitle></div>
+  <div class=acts id=lbactions></div>
+  <div class=hintrow id=lbhint></div>
   <div class=meta id=lbmeta></div>
-  <div class=acts id=lbdrill></div>
-  <div class=acts id=lbacts></div>
   <div class=rtitle id=lbrtitle>every shot of this build</div>
   <div class=rends id=lbrends></div>
  </div>
@@ -434,9 +451,15 @@ function openLb(i){
   // failing.
   $('lbimg').src='large/'+r.id+'.webp';
   $('lbimg').onerror=()=>{ $('lbimg').onerror=null; $('lbimg').src='thumb/'+r.id+'.webp'; };
-  $('lbtitle').textContent = r.pieces
-    ? `${r.pieces.toLocaleString()} pieces, ${Math.round(r.height_m)} m tall`
-    : 'unmatched shot';
+  // The build has a name now; leading with it makes this read as a caption
+  // rather than as a row of measurements.
+  const facts=[];
+  if(r.pieces) facts.push(`${r.pieces.toLocaleString()} pieces`);
+  if(r.height_m) facts.push(`${Math.round(r.height_m)} m tall`);
+  if(r.builders>1) facts.push(`${r.builders} builders`);
+  $('lbtitle').innerHTML = r.pieces
+    ? `<b>${esc(shortName(r))}</b><i>${esc(facts.join(' · '))}</i>`
+    : '<b>unmatched shot</b>';
   const bits=[];
   if(r.cluster_rank) bits.push('rank #'+r.cluster_rank);
   if(r.region) bits.push(r.region);
@@ -459,9 +482,7 @@ function openLb(i){
   const j=JUDGE[r.id];
   if(j&&j.score!=null) bits.push(`judge ${j.score} — ${j.reason||''}`);
   const nv=VOTES[r.id]||0;
-  $('lbmeta').innerHTML=bits.map(b=>`<span>${esc(b)}</span>`).join('')+
-    `<span id=lbstar class="${MINE.has(r.id)?'on':''}">${MINE.has(r.id)?'★ voted':'☆ vote'}${nv?' · '+nv:''}</span>`;
-  $('lbstar').onclick=()=>toggleStar(r.id,true);
+  $('lbmeta').innerHTML=bits.map(b=>`<span>${esc(b)}</span>`).join('');
 
   // Where am I, and how do I get out. The row doubles as the navigation: whichever
   // segment matches the active filter is inert and accented, the others are the
@@ -491,19 +512,30 @@ function openLb(i){
   // Counts are what the drill-in will actually show, not what exists: promising
   // six shots and landing on five is a small lie the fog filter tells for you.
   // A button for the scope you are already in is noise, so it is dropped.
-  $('lbdrill').innerHTML =
-    (nHere>1&&scope!=='build' ? `<button class=act id=actall>${svg('grid')} all ${nHere} shots of this build</button>` : '') +
-    (nArea>1&&scope!=='area' ? `<button class=act id=actarea>${svg('pin')} ${nArea-1} more ${esc(areaPhrase(r))}</button>` : '');
+  // Everything pressable, in one row, in one place. Voting used to sit as the
+  // fifteenth chip in a line of fourteen read-only facts styled exactly like it,
+  // and the two drill-ins lived in a separate row below -- three groups of
+  // controls scattered through a wall of text.
+  const nreq=REQS[r.cluster_id]||0, claimed=CLAIMS[r.cluster_id];
+  const voted=MINE.has(r.id);
+  let acts=`<button class="act${voted?' on':''}" id=lbstar>${voted?'★':'☆'} `+
+           `${voted?'voted':'vote'}${nv?` · ${nv}`:''}</button>`;
+  if(nHere>1&&scope!=='build')
+    acts+=`<button class="act pri" id=actall>${svg('grid')} all ${nHere} shots of this build</button>`;
+  if(nArea>1&&scope!=='area')
+    acts+=`<button class="act pri" id=actarea>${svg('pin')} ${nArea-1} more ${esc(areaPhrase(r))}</button>`;
+  if(r.cluster_id!=null&&SIGNEDIN)
+    acts+=`<button class=act id=actreq>${svg('camera')} more shots of this${nreq?` · ${nreq}`:''}</button>`+
+          `<button class=act id=actmine>${svg('home')} ${claimed?`claimed by ${esc(claimed)}`:'this one is mine'}</button>`+
+          `<button class=act id=actnot>not mine</button>`;
+  $('lbactions').innerHTML=acts;
+  $('lbhint').innerHTML = (r.cluster_id!=null&&!SIGNEDIN)
+    ? `${nreq?`${nreq} request(s) for this build · `:''}${claimed?`claimed by ${esc(claimed)} · `:''}`+
+      `sign in to ask for more shots or claim this build`
+    : '';
+  $('lbstar').onclick=()=>toggleStar(r.id,true);
   if($('actall')) $('actall').onclick=()=>drillTo('structure', structKey(r), r.id);
   if($('actarea')) $('actarea').onclick=()=>drillTo('area', 'a'+r.area_id, r.id);
-
-  // structure-level actions
-  const nreq=REQS[r.cluster_id]||0, claimed=CLAIMS[r.cluster_id];
-  $('lbacts').innerHTML = r.cluster_id==null ? '' : (SIGNEDIN
-    ? `<button class=act id=actreq>${svg('camera')} more shots of this${nreq?` · ${nreq}`:''}</button>
-       <button class=act id=actmine>${svg('home')} ${claimed?`claimed by ${esc(claimed)}`:'this one is mine'}</button>
-       <button class=act id=actnot>not mine</button>`
-    : `<span class=hint>${nreq?`${nreq} request(s) for this build · `:''}${claimed?`claimed by ${esc(claimed)} · `:''}sign in to ask for more shots or claim this build</span>`);
   if($('actreq')) $('actreq').onclick=()=>sendSignal('request',r,{note:''});
   if($('actmine')) $('actmine').onclick=()=>sendSignal('claim',r,{mine:true});
   if($('actnot')) $('actnot').onclick=()=>sendSignal('claim',r,{mine:false});
