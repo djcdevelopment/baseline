@@ -724,3 +724,33 @@ builds have no table and 16 no fire, and the missing fire vocabulary includes
 groundtorches (~58,000). That one needs hand-auditing, not a bulk add: a pattern sweep
 matched `UnstableLavaRock` and `trader_wagon_destructable` as "tables" on the
 substring `-table-`.
+
+## TODO: structure naming has no live backend
+
+`name_structures.py` posts to Ollama on `127.0.0.1:11434`. That port stopped
+listening when `OllamaBoot` was disabled for good, so the step has been failing
+ever since — it prints `named 0, failed N` and the pipeline continues, because a
+missing name is not worth stopping a capture for. As of 2026-08-24, **51 of 317
+photographed structures have no name** (all of the `20260824-083226` creators
+run), and every future capture adds to that.
+
+Two ways forward, and one of them is not a URL swap:
+
+1. **Route through the HEARTH door** (`127.0.0.1:8710/mcp`). The door speaks MCP
+   over HTTP, not Ollama's `/api/generate`, so this is a client rewrite. Confirm
+   a vision-capable rung first — this script exists precisely because it looks at
+   the picture, so a text-only backend is no backend at all.
+2. **Accept the derived label.** `build_valheim_index.py` already falls back to
+   "major hub · 9,603" — accurate, forgettable, never wrong. This is the honest
+   do-nothing option and the gallery works.
+
+Named by hand for now, which is fine at 51 and not at 500. 50 of the 51 were
+written on 2026-08-24 by looking at each build's best frame; cluster 1157 was a
+sky whiteout and waits for the re-shoot. One of them named itself — 2072 has
+`COMMUNITY KITCHEN` carved into its roof, so that is what it is called.
+
+**Those names live only in `out/era17/cluster-names.json`, which is gitignored**
+(the whole `out/` tree is, because it carries real coordinates). They survive
+into the published gallery index, but a wipe of `out/` loses them and there is
+no backend to regenerate them. Worth persisting somewhere tracked before the
+next era.

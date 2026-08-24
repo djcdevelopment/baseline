@@ -13,6 +13,21 @@ Resolution is the whole trick: at 512px (the gallery thumbnail size) qwen2.5vl
 answers "Valheim Fort" for everything. At 1280px it finds the Christmas tree.
 Full-size 4K frames are rejected by the endpoint as too large.
 
+TODO (2026-08-24): THIS SCRIPT HAS NO LIVE BACKEND. It posts to Ollama on
+127.0.0.1:11434, and that port stopped listening when OllamaBoot was disabled
+for good. Every run since then reports "named 0, failed N" and the gallery falls
+back to the derived label. 51 of 317 photographed Era 17 structures are unnamed
+because of it, and every future capture adds to the pile.
+
+The fix is to route through the HEARTH door (127.0.0.1:8710/mcp) instead, which
+is not a URL swap: the door speaks MCP over HTTP rather than Ollama's
+/api/generate, and a vision-capable rung has to be confirmed before committing
+to it -- the whole point of this script is that it looks at the picture, so a
+text-only backend is no backend at all. Until then the honest fallback is the
+derived label, which is accurate and forgettable but never wrong.
+
+Named by hand in the meantime; see the runbook.
+
 Usage:
   python name_structures.py [--index out/gallery/index.json] [--limit N]
                             [--force] [--dry-run] [--model qwen2.5vl:7b]

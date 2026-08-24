@@ -54,6 +54,17 @@ $queue = @(
         what    = '48 builds by 48 builders with nothing in the gallery yet'
         why     = 'representation moves 163 -> 211 of 296 creators. These sit at old ' +
                   'ranks 967-1294, so a score-ordered sweep would never reach them'
+    },
+    [ordered]@{
+        name    = 'twilight'
+        plan    = 'twilight-1'
+        what    = 'the 30 best-photographing builds, re-shot at time 0.71'
+        why     = 'the three highest-scoring frames in the whole 2,181-frame corpus ' +
+                  'are at 0.71 -- and all three are interiors. No exterior has ever ' +
+                  'been shot at that time. Same builds and same bearings as their ' +
+                  'existing 0.64 orbits, so it is a like-for-like A/B you can judge ' +
+                  'by eye. Do NOT judge it by the score: the aesthetic head reads ' +
+                  'global tone, so it marks dimmer frames down regardless of merit'
     }
 )
 
