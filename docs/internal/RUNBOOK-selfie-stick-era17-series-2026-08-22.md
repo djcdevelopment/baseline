@@ -444,3 +444,36 @@ occlusion check across ten runs.
 
 Still open: nothing is published; the era chips' ssh half runs for the first time on
 the next publish; the 17 in-world sky builds have no plan that can photograph them.
+
+## Published
+
+`/valheim/` now serves the full series: 2,081 images, 10 runs, scrubbed of
+coordinates and creator ids (8,324 fields dropped across 2,081 rows, verified on
+the deployed copy). 237 MB of renders shipped.
+
+Three things the publish path got wrong the first time it ran for real, all found
+before anything was broken:
+
+1. **The era probe died on PowerShell quoting.** Passed literally, `ssh` received
+   `[^"]*` with its quotes eaten by 5.1's native-argument re-parsing and grep failed
+   with "Unmatched [". The probe is delivered base64 now, the same way the manifest
+   write already was.
+2. **The world pattern did not match the file.** The index is written
+   `"world": "ComfyEra17"` with a space; the pattern required none. Every label came
+   back empty.
+3. **`era16/index.json` has no `world` key at all** — it predates the `--world` flag —
+   so its chip falls back to the slug. Not a bug, but the reason one chip reads
+   `era16` and the other reads `ComfyEra17`.
+
+And the chips only worked one way: an archived era is a whole page at its own path,
+and era16 still had the page from its own generation. `-SiblingErasOnly` refreshes
+every published era's manifest and hands each one the current page, shipping no
+renders; the same step now runs at the end of every publish. era16's index.json
+carries the full modern schema — `perspective`, `aesthetic`, `fog` — so the current
+page reads it correctly. Verified both directions:
+`/valheim/eras.json` reports `current: era17`, `/valheim/era16/eras.json` reports
+`current: era16`.
+
+Note for whoever checks this next: the in-app browser pane cannot fetch subresources
+from the tailnet host — the HTML loads and every `fetch`/`XHR` fails — so the live
+page was verified over HTTP rather than by looking at it. Use a real browser.

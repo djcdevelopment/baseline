@@ -28,6 +28,7 @@ param(
     [string] $GalleryPath = '',
     [string] $ArchiveCurrentAs = '',
     [string] $EraSlug = '',
+    [switch] $SiblingErasOnly,
     [string] $RoutePath = '/valheim/',
     [string] $RemoteDir = '~/valheim-gallery/public',
     [string] $SshAlias = 'am4'
@@ -68,9 +69,25 @@ if ($EraSlug) {
     $known = @()
     # slug|world for every index.json already on the box -- the archived eras,
     # and "." for the gallery currently at the root. Lets a chip read
-    # "ComfyEra16" rather than the directory name.
-    $probe = 'cd REMOTEDIR 2>/dev/null || exit 0; for f in index.json */index.json; do [ -f "$f" ] || continue; w=`grep -o ''"world":"[^"]*"'' "$f" | head -1 | sed ''s/.*:"//; s/"$//''`; echo "`dirname "$f"`|$w"; done'
-    $probe = $probe.Replace('REMOTEDIR', $RemoteDir)
+    # "ComfyEra16" rather than the directory name; eras written before the
+    # --world flag existed have no world key and keep their slug.
+    #
+    # Delivered base64 because PowerShell 5.1 re-parses a native command's
+    # arguments and eats the embedded quotes: passed literally, grep received a
+    # bare [^"]* and failed with "Unmatched [".
+    $probeScript = @'
+cd REMOTEDIR 2>/dev/null || exit 0
+for f in index.json */index.json; do
+  [ -f "$f" ] || continue
+  w=$(grep -o '"world"[[:space:]]*:[[:space:]]*"[^"]*"' "$f" | head -1 |
+      sed 's/.*"world"[[:space:]]*:[[:space:]]*"//; s/"$//')
+  echo "$(dirname "$f")|$w"
+done
+'@
+    $probeScript = $probeScript.Replace('REMOTEDIR', $RemoteDir)
+    $probe = 'echo ' +
+             [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($probeScript)) +
+             ' | base64 -d | sh'
     $labels = @{}
     $outgoingWorld = ''
     foreach ($line in @(ssh $SshAlias $probe)) {
@@ -89,7 +106,9 @@ if ($EraSlug) {
         $known += $ArchiveCurrentAs
         if ($outgoingWorld) { $labels[$ArchiveCurrentAs] = $outgoingWorld }
     }
-    $label = (Get-Content -LiteralPath (Join-Path $stage 'index.json') -Raw | ConvertFrom-Json).world
+    $labelSource = if ($SiblingErasOnly) { Join-Path $gallery 'index.json' }
+                   else { Join-Path $stage 'index.json' }
+    $label = (Get-Content -LiteralPath $labelSource -Raw | ConvertFrom-Json).world
     if (-not $label) { $label = $EraSlug }
     $entries = @([ordered]@{ slug = $EraSlug; label = $label; href = $RoutePath })
     foreach ($slug in ($known | Sort-Object -Descending)) {
@@ -102,6 +121,39 @@ if ($EraSlug) {
         Set-Content -LiteralPath (Join-Path $stage 'eras.json') -Encoding utf8
     Write-Host ("      eras.json: $EraSlug is current, siblings " +
                 $(if ($known) { $known -join ', ' } else { 'none' }))
+
+    # An archived era is a whole page at its own path, so the chips only work
+    # both ways if each sibling also gets a manifest naming ITSELF current, and
+    # a copy of the page that reads one. Its own index.json and renders are
+    # never touched. Idempotent; ships no images.
+    $syncLines = @('set -eu', "cd $RemoteDir")
+    foreach ($slug in @($EraSlug) + @($known)) {
+        $doc = [ordered]@{ current = $slug; eras = $entries }
+        $b64 = [Convert]::ToBase64String(
+            [Text.Encoding]::UTF8.GetBytes(($doc | ConvertTo-Json -Depth 5 -Compress)))
+        if ($slug -eq $EraSlug) {
+            $syncLines += "echo $b64 | base64 -d > eras.json"
+        } else {
+            # guarded with if/fi, not `continue`: this is a flat script, and
+            # `continue` outside a loop aborts it under set -e
+            $syncLines += "if [ -d '$slug' ]; then"
+            $syncLines += "  echo $b64 | base64 -d > '$slug/eras.json'"
+            $syncLines += "  cp -a index.html '$slug/index.html'"
+            $syncLines += "fi"
+        }
+    }
+    $eraSyncScript = ($syncLines -join "`n") + "`n"
+}
+
+if ($SiblingErasOnly) {
+    if (-not $EraSlug) { throw '-SiblingErasOnly needs -EraSlug' }
+    Write-Host '[chips] refreshing era manifests on the box (no renders shipped)'
+    ssh $SshAlias ("echo " +
+        [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($eraSyncScript)) +
+        ' | base64 -d | sh')
+    if ($LASTEXITCODE -ne 0) { throw 'era chip sync failed' }
+    Write-Host '      done'
+    return
 }
 
 $nThumb = 0; $nLarge = 0
@@ -156,6 +208,13 @@ if ($RenderPrefix) {
     ssh $SshAlias "cd $RemoteDir && rm -rf ./thumb ./large ./img && rm -f ./index.html ./index.json ./depth.json ./judge.json ./eras.json && tar xzf /tmp/vg-deploy.tgz && rm /tmp/vg-deploy.tgz"
 }
 if ($LASTEXITCODE -ne 0) { throw 'remote extract failed' }
+if ($eraSyncScript) {
+    ssh $SshAlias ("echo " +
+        [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($eraSyncScript)) +
+        ' | base64 -d | sh')
+    if ($LASTEXITCODE -ne 0) { throw 'era chip sync failed' }
+    Write-Host '      era chips synced across every published era'
+}
 if ($ArchiveCurrentAs -and $eraManifest) {
     # The archived copy was taken from the OUTGOING deploy, so its index.html
     # predates the era chips. Give it the page just uploaded; its own index.json
