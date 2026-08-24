@@ -415,3 +415,56 @@ class OverlayDetectionTests(unittest.TestCase):
                                   tolerance=50.0)
         self.assertEqual(code, 0)
 
+
+class DuplicateFrameTests(unittest.TestCase):
+    """The dawn and weather slots re-use the hero camera and change only the
+    light. Ask for a plan already shot at that light and they collapse onto an
+    orbit, and the game takes the same photograph twice. The 2026-08-24 sky
+    re-shoot lost 14 of 70 frames -- 20%, on every single structure -- that way.
+    """
+
+    def _plan(self, tmp, extra):
+        clusters = [_cluster(i, creator=i, x=i * 400.0, z=0.0, score=100 - i,
+                             size_x=30.0, size_z=18.0) for i in (1, 2, 3)]
+        cpath = pathlib.Path(tmp) / "c.json"
+        cpath.write_text(json.dumps({"world": "T", "clusters": clusters}),
+                         encoding="utf-8")
+        out = pathlib.Path(tmp) / "p.json"
+        text = _run(PLAN, ["plan_shots.py", "--clusters", str(cpath),
+                           "--out", str(out)] + extra)
+        return json.loads(out.read_text(encoding="utf-8")), text
+
+    def test_the_default_plan_still_takes_six_frames_each(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            plan, _ = self._plan(tmp, [])
+        self.assertEqual(plan["shots"], 18)
+        self.assertEqual(len(plan["plan"]), 18)
+
+    def test_shooting_at_dawn_drops_the_dawn_retake(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            plan, text = self._plan(tmp, ["--time-of-day", "0.32", "--alt-shots", "0"])
+        self.assertEqual(plan["shots"], 12, "four orbits each, no fifth duplicate")
+        self.assertNotIn("dawn", {s["shot"] for s in plan["plan"]})
+
+    def test_the_drop_is_reported_and_says_what_it_matched(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _, text = self._plan(tmp, ["--time-of-day", "0.32", "--alt-shots", "0"])
+        self.assertIn("dropped 3 duplicate frame(s)", text)
+        self.assertRegex(text, r"dawn was identical to orbit\d on 3 structure")
+
+    def test_every_frame_in_a_plan_is_a_different_photograph(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            plan, _ = self._plan(tmp, ["--time-of-day", "0.32"])
+        keys = [(s["camera"]["x"], s["camera"]["y"], s["camera"]["z"],
+                 s["yaw_deg"], s["pitch_deg"], s["environment"], s["time_of_day"])
+                for s in plan["plan"]]
+        self.assertEqual(len(keys), len(set(keys)))
+
+    def test_a_weather_slot_at_a_different_sky_survives(self):
+        """Only identical frames go. The alt slot is still doing work when it
+        actually changes something."""
+        with tempfile.TemporaryDirectory() as tmp:
+            plan, _ = self._plan(tmp, ["--time-of-day", "0.32",
+                                       "--alt-environment", "Misty"])
+        self.assertIn("weather", {s["shot"] for s in plan["plan"]})
+

@@ -252,7 +252,7 @@ def main():
                 print(f"    cluster {c['cluster_id']}: {c['size_y']:,.0f} m tall, "
                       f"{c['diagonal_m']:,.0f} m diagonal, {c['pieces']:,} pieces")
 
-    shots, clipped = [], 0
+    shots, clipped, duplicates = [], 0, []
     for c in clusters:
         azimuths, long_x = orbit_azimuths(c["size_x"], c["size_z"])
         elev = args.elevation if args.fixed_elevation else elevation_for(c, args.elevation)
@@ -268,18 +268,58 @@ def main():
         base = {"cluster_id": c["cluster_id"], "label": label,
                 "pieces": c["pieces"], "height_m": c["size_y"], "region": c["region"]}
 
+        # A frame is distinct if any of these differ. The dawn and weather slots
+        # re-use the hero camera and only change the light, so when a plan is
+        # already being shot at that light they stop being a second light and
+        # become a second request for the same photograph. On the sky re-shoot of
+        # 2026-08-24 -- --time-of-day 0.32, which is the value the dawn slot
+        # hardcodes -- that hit 14 of 14 structures.
+        #
+        # What comes back is NOT 14 identical files, and it is worth knowing why
+        # before trusting this guard for more than it does. Valheim's sky moves
+        # between shots: of those 14 pairs only 2 matched (mean |difference|
+        # 0.008 and 0.160 luma out of 255), 2 more landed within 2.2, and the
+        # remaining 10 ranged from 3.5 to 50.8. So the slot is not wasted film so
+        # much as a re-roll of the cloud position wearing a lighting variant's
+        # name. Drop it, and ask for the light you actually wanted.
+        def distinct(shot):
+            cam = shot["camera"]
+            key = (cam["x"], cam["y"], cam["z"],
+                   round(shot["yaw_deg"], 1), round(shot["pitch_deg"], 1),
+                   shot["environment"], round(shot["time_of_day"], 3))
+            if key in seen:
+                duplicates.append((c["cluster_id"], shot["shot"], seen[key]))
+                return False
+            seen[key] = shot["shot"]
+            return True
+
+        seen = {}
         for i, cam in enumerate(cams):
-            shots.append({**base, "shot": f"orbit{i + 1}", **cam,
-                          "environment": "Clear", "time_of_day": args.time_of_day})
-        shots.append({**base, "shot": "dawn", **cams[hero],
-                      "environment": "Clear", "time_of_day": GOLDEN_AM})
+            shot = {**base, "shot": f"orbit{i + 1}", **cam,
+                    "environment": "Clear", "time_of_day": args.time_of_day}
+            if distinct(shot):
+                shots.append(shot)
+        dawn = {**base, "shot": "dawn", **cams[hero],
+                "environment": "Clear", "time_of_day": GOLDEN_AM}
+        if distinct(dawn):
+            shots.append(dawn)
         # Kept named "weather" whatever the sky is: the index supersedes on
         # (cluster, variant), so renaming the slot would orphan the frame it
         # is meant to replace rather than retire it.
         if args.alt_shots:
-            shots.append({**base, "shot": "weather", **cams[hero],
-                          "environment": args.alt_environment,
-                          "time_of_day": args.alt_time})
+            weather = {**base, "shot": "weather", **cams[hero],
+                       "environment": args.alt_environment,
+                       "time_of_day": args.alt_time}
+            if distinct(weather):
+                shots.append(weather)
+
+    if duplicates:
+        by_slot = {}
+        for _, slot, same_as in duplicates:
+            by_slot[(slot, same_as)] = by_slot.get((slot, same_as), 0) + 1
+        print(f"  dropped {len(duplicates)} duplicate frame(s) -- same camera, same light:")
+        for (slot, same_as), n in sorted(by_slot.items()):
+            print(f"    {slot} was identical to {same_as} on {n} structure(s)")
 
     out = {
         "generated_from": "plan_shots.py",
