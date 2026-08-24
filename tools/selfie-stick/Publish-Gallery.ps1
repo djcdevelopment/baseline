@@ -1,10 +1,12 @@
 <#
 .SYNOPSIS
-    Publish the interactive gallery to the /valheim/ route on AM4.
+    Publish the interactive gallery to the /valheim/ route on the front door.
 
 .DESCRIPTION
-    The route is the long-lived Caddy handle_path serving ~/valheim-gallery/public
-    on AM4 (NOT the funnel-demo lane). Previous pushes were hand-rolled tarballs;
+    The front door is FX99: /srv/sites/valheim, served at /valheim/ by the
+    directory convention in infra/fx99 (NOT the funnel-demo lane). It moved off AM4
+    on 2026-08-24 because AM4 is on wifi and measured 0.56 MB/s against FX99's 14,
+    and because AM4 was at 95% disk. Previous pushes were hand-rolled tarballs;
     this script is that same lane with two things made unforgettable:
 
       1. The shipped index.json is SCRUBBED (scrub_index.py drops x/y/z and
@@ -14,13 +16,13 @@
          previous era cannot linger. A run-prefix delta remains available for
          updates to the same gallery, but cannot be combined with era archival.
 
-    Talks to the box only through the `am4` ssh alias — the tailnet hostname
-    stays out of this public repo.
+    Talks to the box only through an ssh alias — the tailnet hostname stays out of
+    this public repo.
 
 .EXAMPLE
-    .\Publish-GalleryToAM4.ps1                          # full replacement
-    .\Publish-GalleryToAM4.ps1 -RenderPrefix 20260808-  # same-gallery delta
-    .\Publish-GalleryToAM4.ps1 -GalleryPath .\out\era17\gallery -ArchiveCurrentAs era16
+    .\Publish-Gallery.ps1                          # full replacement
+    .\Publish-Gallery.ps1 -RenderPrefix 20260808-  # same-gallery delta
+    .\Publish-Gallery.ps1 -GalleryPath .\out\era17\gallery -ArchiveCurrentAs era16
 #>
 [CmdletBinding()]
 param(
@@ -30,8 +32,9 @@ param(
     [string] $EraSlug = '',
     [switch] $SiblingErasOnly,
     [string] $RoutePath = '/valheim/',
-    [string] $RemoteDir = '~/valheim-gallery/public',
-    [string] $SshAlias = 'am4'
+    [string] $RemoteDir = '/srv/sites/valheim',
+    [string] $SshAlias = 'fx99',
+    [int]    $HttpPort = 8190
 )
 
 $ErrorActionPreference = 'Stop'
@@ -179,10 +182,43 @@ scp -q $tgz "${SshAlias}:/tmp/vg-deploy.tgz"
 if ($LASTEXITCODE -ne 0) { throw 'scp failed' }
 
 Write-Host '[4/5] extract on the box'
+# A full push replaces the render directories, so pointing this at the wrong
+# path deletes someone's data. The guard used to compare against a hardcoded
+# ~/valheim-gallery/public, which stopped meaning anything when the front door
+# moved to FX99. What actually matters is not the host's layout: the target must
+# be an absolute path, not a root or a home directory, and must either be empty
+# or already be a gallery. Anything else is a typo.
 $resolvedRemoteDir = "$(ssh $SshAlias "cd $RemoteDir && pwd -P")".Trim()
-$expectedRemoteDir = "$(ssh $SshAlias 'cd ~/valheim-gallery/public && pwd -P')".Trim()
-if ($LASTEXITCODE -ne 0 -or -not $expectedRemoteDir -or $resolvedRemoteDir -ne $expectedRemoteDir) {
-    throw "refusing to update unexpected remote path: $resolvedRemoteDir"
+if ($LASTEXITCODE -ne 0 -or -not $resolvedRemoteDir) {
+    throw "could not resolve remote path $RemoteDir on $SshAlias"
+}
+if ($resolvedRemoteDir -notmatch '^/' -or
+    ($resolvedRemoteDir -split '/' | Where-Object { $_ }).Count -lt 2) {
+    throw "refusing to publish to a top-level path: $resolvedRemoteDir"
+}
+# Single-quoted here-string with a placeholder, same as the era probe above.
+# A double-quoted string would let PowerShell evaluate $( ) locally before ssh
+# ever sees it, and the failure is a Get-ChildItem parameter error that says
+# nothing about what went wrong.
+$galleryProbe = @'
+cd 'REMOTEDIR' || exit 1
+# a current render
+[ -f index.json ] && exit 0
+[ -f index.html ] && exit 0
+# a gallery root holding only archived eras -- what a fresh migration looks like
+# before its first publish, and a real state rather than a typo
+for d in */; do [ -f "$d/index.json" ] && exit 0; done
+# genuinely empty
+[ -z "$(ls -A .)" ] && exit 0
+exit 1
+'@
+$galleryProbe = $galleryProbe.Replace('REMOTEDIR', $resolvedRemoteDir)
+$probeB64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($galleryProbe))
+ssh $SshAlias "echo $probeB64 | base64 -d | sh" | Out-Null
+$looksLikeGallery = if ($LASTEXITCODE -eq 0) { 'ok' } else { 'no' }
+if ("$looksLikeGallery".Trim() -ne 'ok') {
+    throw ("refusing to replace $resolvedRemoteDir - it is neither empty nor an " +
+           'existing gallery. Check -RemoteDir and -SshAlias.')
 }
 if ($ArchiveCurrentAs) {
     if ($ArchiveCurrentAs -notmatch '^[a-z0-9][a-z0-9._-]*$') {
@@ -242,6 +278,33 @@ if ($creatorLeaks -ne 0) { throw 'deployed index.json still carries top_creator_
 if ($coordinateLeaks -ne 0) { throw 'deployed index.json still carries coordinates - scrub did not take' }
 Write-Host "      remote index reports $($remoteDoc.world), $($remoteDoc.n) images"
 Write-Host '      scrub verified: no creator ids or coordinates in the deployed index'
+
+# Everything above checked the FILE. None of it checks that anything SERVES the
+# file, so all of it passes green against a stopped web server -- which is how a
+# publish can report success while the route 404s. Ask the route.
+#
+# base64 again: the quoting in a curl-plus-python one-liner does not survive
+# PowerShell's native-argument handling, and the failure is a bash syntax error
+# that says nothing about the deploy.
+$routeCheck = @'
+S=$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:PORTROUTE")
+N=$(curl -s "http://127.0.0.1:PORTROUTEindex.json" | python3 -c "import json,sys; print(len(json.load(sys.stdin)['images']))" 2>/dev/null)
+echo "$S ${N:-0}"
+'@
+$routeCheck = $routeCheck.Replace('PORT', "$HttpPort").Replace('ROUTE', $RoutePath)
+$checkB64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($routeCheck))
+$routeResult = "$(ssh $SshAlias "echo $checkB64 | base64 -d | sh")".Trim() -split '[\s]+'
+if ($routeResult[0] -ne '200') {
+    throw ("the files deployed but $RoutePath does not serve them " +
+           "(HTTP '$($routeResult[0])' on ${SshAlias}:$HttpPort). " +
+           'The web server is the thing to look at, not the payload.')
+}
+if ($routeResult[1] -ne "$($expectedDoc.n)") {
+    throw ("$RoutePath serves $($routeResult[1]) images but the payload has " +
+           "$($expectedDoc.n) -- the route is pointed somewhere stale.")
+}
+Write-Host "      route verified: $RoutePath answers 200 with $($routeResult[1]) images"
+
 Remove-Item -Force $tgz -Confirm:$false
 Remove-Item -Recurse -Force $stage -Confirm:$false
 Write-Host 'done - check the live gallery in a browser'

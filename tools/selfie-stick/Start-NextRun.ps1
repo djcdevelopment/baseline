@@ -17,7 +17,7 @@
     rather than stopping.
 
     It does NOT publish. That is a separate, deliberate act:
-        .\Publish-GalleryToAM4.ps1 -GalleryPath .\out\era17\gallery -EraSlug era17
+        .\Publish-Gallery.ps1 -GalleryPath .\out\era17\gallery -EraSlug era17
 
 .EXAMPLE
     .\Start-NextRun.ps1                 # what is queued?
@@ -104,7 +104,7 @@ if (-not $Run) {
     }
     Write-Host ''
     Write-Host '  Nothing here publishes. When the gallery looks right:' -ForegroundColor DarkGray
-    Write-Host '    .\Publish-GalleryToAM4.ps1 -GalleryPath .\out\era17\gallery -EraSlug era17' -ForegroundColor DarkGray
+    Write-Host '    .\Publish-Gallery.ps1 -GalleryPath .\out\era17\gallery -EraSlug era17' -ForegroundColor DarkGray
     Write-Host ''
     return
 }
@@ -182,4 +182,4 @@ if ($chosen.name -eq 'sky') {
     Write-Host '  these are not photographable with this rig -- leave --exclude-sky on.' -ForegroundColor Gray
 }
 Write-Host '  Review it, then publish when it looks right:' -ForegroundColor Gray
-Write-Host '    .\Publish-GalleryToAM4.ps1 -GalleryPath .\out\era17\gallery -EraSlug era17' -ForegroundColor DarkGray
+Write-Host '    .\Publish-Gallery.ps1 -GalleryPath .\out\era17\gallery -EraSlug era17' -ForegroundColor DarkGray

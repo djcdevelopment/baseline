@@ -1,0 +1,7 @@
+# Intentionally empty.
+#
+# The main Caddyfile does `import /etc/caddy/sites-enabled/*.caddy` and Caddy
+# treats a glob that matches nothing as an error, so this file exists to keep
+# the front door valid when no services are configured yet. Leave it here.
+#
+# To add a service, drop a sibling file next to this one. See README.md.

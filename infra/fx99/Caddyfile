@@ -1,0 +1,64 @@
+# FX99 front door.
+#
+# One routing layer. Tailscale terminates TLS and forwards everything here; it
+# never routes a path itself. That is the whole difference from AM4, where half
+# the routes live in `tailscale serve` and half in a 134-line Caddy block, and
+# "where is this URL handled?" has two possible answers.
+#
+# Port 8190 matches AM4 on purpose, so notes and muscle memory survive the move.
+#
+# There are exactly two ways to add something:
+#
+#   static   drop a directory at /srv/sites/<slug>/  ->  served at /<slug>/
+#            no config change, no reload, no edit to this file
+#
+#   service  add /etc/caddy/sites-enabled/<slug>.caddy  ->  caddy reload
+#            this file is never edited again
+#
+# Deploy with infra/fx99/deploy.ps1, which validates before it reloads. Do not
+# hand-edit on the box; that is how AM4 grew seventeen backup Caddyfiles.
+
+:8190 {
+	encode zstd gzip
+
+	log {
+		output file /var/log/caddy/access.log {
+			roll_size 20MiB
+			roll_keep 5
+		}
+	}
+
+	# A gallery page pulls hundreds of small webps and the same visitor pulls
+	# them again on every scroll back. Renders are content-addressed by run id,
+	# so they never change under a given name and can be cached hard.
+	@renders path_regexp ^/[a-z0-9][a-z0-9._-]*/(thumb|large|img)/
+	header @renders Cache-Control "public, max-age=604800, immutable"
+
+	# index.json changes on every publish, so it must not be.
+	@data path *.json
+	header @data Cache-Control "no-cache"
+
+	route {
+		# Services first, one file each. Explicit `route` rather than leaving
+		# it to Caddy's specificity sorting: a service must beat a same-named
+		# directory, and that ordering should be visible here rather than
+		# inferred and then explained in a comment when it surprises someone.
+		import /etc/caddy/sites-enabled/*.caddy
+
+		# /slug -> /slug/ so the convention works without the trailing slash.
+		@bare path_regexp bare ^/([a-z0-9][a-z0-9._-]*)$
+		redir @bare /{re.bare.1}/ 308
+
+		# Static by convention.
+		@site path_regexp site ^/([a-z0-9][a-z0-9._-]*)/(.*)$
+		handle @site {
+			root * /srv/sites/{re.site.1}
+			rewrite * /{re.site.2}
+			file_server
+		}
+
+		handle {
+			respond "fx99 front door — nothing served at this path. `site list` on the box shows what is." 404
+		}
+	}
+}

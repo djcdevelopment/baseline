@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# site — what is this box serving?
+#
+# AM4 has no answer to that question: you read a 134-line Caddyfile and hope you
+# spotted every handle block. This prints it.
+#
+#   site list          every URL served, static and proxied
+#   site check <slug>  does that URL actually answer, and with what
+#
+# Installed at /usr/local/bin/site by infra/fx99/deploy.ps1.
+
+set -euo pipefail
+
+SITES=/srv/sites
+ENABLED=/etc/caddy/sites-enabled
+PORT=8190
+HOST=fx99.tail8e749c.ts.net
+
+usage() { sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'; exit "${1:-0}"; }
+
+cmd_list() {
+	printf '\n  STATIC  — a directory under %s, served at /<slug>/\n\n' "$SITES"
+	if [ -d "$SITES" ] && [ -n "$(ls -A "$SITES" 2>/dev/null)" ]; then
+		for d in "$SITES"/*/; do
+			slug=$(basename "$d")
+			size=$(du -shx "$d" 2>/dev/null | cut -f1)
+			files=$(find "$d" -type f 2>/dev/null | wc -l)
+			index=$([ -f "$d/index.html" ] && echo "" || echo "   (no index.html)")
+			printf '    %-22s %6s  %6s files  https://%s/%s/%s\n' \
+				"$slug" "$size" "$files" "$HOST" "$slug" "$index"
+		done
+	else
+		printf '    (none yet — rsync a directory into %s)\n' "$SITES"
+	fi
+
+	printf '\n  SERVICES — one file each in %s\n\n' "$ENABLED"
+	local found=0
+	for f in "$ENABLED"/*.caddy; do
+		[ -e "$f" ] || continue
+		# a comment-only file is the placeholder, not a service
+		grep -qE '^[[:space:]]*[^#[:space:]]' "$f" || continue
+		found=1
+		printf '    %-22s %s\n' "$(basename "$f" .caddy)" \
+			"$(grep -oE 'reverse_proxy[[:space:]]+\S+' "$f" | head -1 | awk '{print "-> "$2}')"
+		grep -oE 'handle(_path)?[[:space:]]+\S+' "$f" | awk '{printf "      %s\n", $2}'
+	done
+	[ "$found" -eq 1 ] || printf '    (none — see %s/README.md)\n' "$ENABLED"
+	printf '\n'
+}
+
+cmd_check() {
+	local slug="${1:?usage: site check <slug>}"
+	local url="http://127.0.0.1:$PORT/$slug/"
+	printf '  %s\n' "$url"
+	curl -s -o /dev/null -w '    status   %{http_code}\n    bytes    %{size_download}\n    time     %{time_total}s\n' "$url"
+}
+
+case "${1:-list}" in
+	list)  cmd_list ;;
+	check) shift; cmd_check "$@" ;;
+	-h|--help|help) usage ;;
+	*) printf 'unknown command: %s\n\n' "$1" >&2; usage 1 ;;
+esac
