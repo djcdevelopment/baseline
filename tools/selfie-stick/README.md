@@ -24,6 +24,28 @@ ZDOs in 3-D, and writes one row per structure:
 Outputs land in `out/`: `clusters.json` (for the web app and the mod),
 `clusters.csv`, and `clusters.xlsx` (filtered and frozen, ready to annotate).
 
+## Picking up where the last session left off
+
+Capture runs are queued as plan files, and one script knows what is waiting and how
+to start it. Run it with no arguments:
+
+```powershell
+cd tools\selfie-stick
+.\Start-NextRun.ps1
+```
+
+It prints each queued run — how many shots, roughly how long, what it is for and what
+would count as it working — tells you whether Valheim is in the way, and gives you the
+one line that starts it. `-Run <name>` fires it, then scores the frames, names any new
+structures and rebuilds the gallery. It never publishes; that stays a separate act.
+
+The era arguments are the thing worth not typing by hand. Point a run at the wrong
+`clusters.json` and every frame joins to another era's cluster ids — the mislabelling
+era isolation exists to prevent, and it does not announce itself.
+
+The reasoning behind what is queued, and the measurements behind it, are in
+[`docs/internal/RUNBOOK-selfie-stick-era17-series-2026-08-22.md`](../../docs/internal/RUNBOOK-selfie-stick-era17-series-2026-08-22.md).
+
 ## Run it
 
 ```bash
