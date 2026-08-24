@@ -61,6 +61,11 @@ SEATS = {
     "piece_bench01": 1, "piece_blackmarble_bench": 1,
     "piece_blackwood_bench": 1, "piece_blackwood_bench01": 1,
     "piece_logbench01": 1,
+    # Not in the build menu -- dump piece:false -- so a vocabulary written from
+    # the crafting UI misses them. This world builds from the prefab table, and
+    # 7,453 of these carry a creator id under category='BUILDING'. The far larger
+    # dungeon-generated population is UNKNOWN/INTERIOR and never reaches here.
+    "dvergrprops_chair": 2, "mountainkit_chair": 2, "dvergrprops_stool": 1,
 }
 TABLES = {"piece_table", "piece_table_oak", "piece_table_round", "piece_blackmarble_table"}
 BEDS = {"bed", "piece_bed02", "goblin_bed", "ashwood_bed"}

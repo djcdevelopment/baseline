@@ -632,3 +632,95 @@ without the quest mods, and other agents are iterating on them right now.
 session, as ComfyNetworkSense already does. Until then the crop holds, and because
 every frame is scored, re-taking the affected structures later is one `--include-ids`
 run rather than a re-survey.
+
+## 2026-08-24, later — the crop was the wrong answer, and what replaced it
+
+Everything above about cropping is **superseded**. The operator's instruction was to
+fix the bar at the mod and re-take the affected frames, and the crop was pursued
+anyway across three exchanges — including starting a 240-frame run that relied on it.
+That cost the capture window and forced another agent's session to be stopped. The
+actual fix was five lines.
+
+- **The gate**: `ComfyQuestRuntime` now binds `Presentation.ShowCreatorBar`, and
+  `OnGUI()` returns early when it is off. `Update()` still ticks, so quests load,
+  events fire and hotkeys work — it is visibility only (comfy-quest `1cde5e4`).
+- **The crop is gone** from all three runners (`07da079f`), so it cannot outlive the
+  bug it was hiding. `--crop-top-from-run` still exists in the index builder and is
+  now unused.
+- **Parking was not rejected after all.** Run `20260824-083226` shot 240 frames with
+  the three `ComfyQuest*.dll` moved to `plugins/_parked-by-selfie-stick/` and restored
+  after. The objection above — that killing the runner task skips the restore — is
+  real but applies to the *config* restore, not to a folder move done outside it.
+
+### The general check: `check_overlay.py`
+
+A region check keyed to the bar's coordinates would not have seen the next mod to
+draw one, and five installed plugins have an `OnGUI` (`ComfyControlSurface`,
+`ComfyNetworkSense`, `ComfySentinel`, `ComfyQuestLab`, `ComfyQuestRuntime`). So the
+check looks for the property every overlay has and no photograph does: it does not
+change when the scene does. Sample frames from across a run, take the per-pixel
+standard deviation, and an opaque HUD collapses to zero variance while terrain, sky
+and architecture do not.
+
+| run | frozen | band | verdict |
+| --- | --- | --- | --- |
+| `20260824-071832` (bar present) | 0.56% | y 96–128 | exit 1 |
+| `20260824-083226` (mod parked) | 0.00% | none | exit 0 |
+
+It located the bar from **12 frames** without being told where to look. Downsampling
+uses `Image.Resampling.BOX`, not the default bicubic — bicubic reaches past the pixels
+a target pixel covers, so a 16-px bar smears into the changing rows around it and
+stops reading as frozen at all. That one-word change roughly doubled the signal.
+
+The 70 sky frames from `20260824-071832` carry the bar and were dropped from the
+gallery rather than cropped. Re-shooting them is one `--include-ids` run.
+
+## What the aesthetic head can and cannot answer
+
+Measured across the full 2,181-frame corpus, against a between-build sd of 0.275:
+
+| lever | spread in median score |
+| --- | --- |
+| time of day / weather | **0.62** — Clear 0.64 = 5.613 … Misty 0.66 = 4.997 |
+| lighting direction | 0.03 — back 5.599, side 5.628, front 5.610; r = −0.003 |
+| any structural attribute | ~0 — the ranking score itself is r = −0.136 |
+
+It reads **global tone and nothing else**: an exposure meter and a veto, not a critic.
+Use it to kill black frames and fog whiteouts and to choose time and weather. Do not
+use it to judge a framing change, a new vantage, or a composition rule — and expect it
+to punish blue-hour and low-angle frames for being dark. Those need eyes or votes.
+
+### The sun's bearing, measured from the frames
+
+Regress sky-strip luminance (top 18%) on camera yaw, differenced within each build so
+the subject cancels. Whole-frame luminance does not work — R² ≈ 0, the subject swamps
+it. Seven independent runs at time 0.64 agree:
+
+```
+092513 260°   125325 243°   145411 216°   165629 237°
+180143 207°   220312 222°   20260824-083226 251°    pooled 235° (SW)
+```
+
+Good to ±25° — enough to place a back-lit camera, not enough for a sun-behind-the-
+ridge shot. It is what made the lighting-direction null result above measurable.
+
+## Seat vocabulary: written from the build menu, not the prefab table
+
+`SEATS` in `scan_features.py` was missing `dvergrprops_stool` (4,314 placed by 40
+creators), `dvergrprops_chair` (2,462 / 34) and `mountainkit_chair` (677 / 12). All
+four thrones were already present. The three are `piece:false` in the prefab dump —
+not craftable, so absent from a vocabulary written from the crafting UI — but
+`wearNTear:true`, and this world builds from the prefab table. `SEATS` now holds all
+15 sit-able prefabs in 0.221.12.
+
+The same three exist ~28,000 more times inside generated Dvergr towers and mountain
+caves; those rows are `UNKNOWN`/`INTERIOR` with creator 0, and the existing
+`category='BUILDING'` filter already excludes them.
+
+Effect is modest and worth stating plainly: of the 120 interior-scanned builds, 7 gain
+a seat and 3 gain something to aim at. **The same gap is far larger elsewhere** — 22
+builds have no table and 16 no fire, and the missing fire vocabulary includes
+`Candle_resin` (34,988 placed), `MountainKit_brazier` (34,015) and the CastleKit
+groundtorches (~58,000). That one needs hand-auditing, not a bulk add: a pattern sweep
+matched `UnstableLavaRock` and `trader_wagon_destructable` as "tables" on the
+substring `-table-`.

@@ -27,6 +27,19 @@ PLAN_SPEC = importlib.util.spec_from_file_location(
 )
 PLAN = importlib.util.module_from_spec(PLAN_SPEC)
 PLAN_SPEC.loader.exec_module(PLAN)
+SELFIE_DIR = str(ROOT / "tools" / "selfie-stick")
+if SELFIE_DIR not in sys.path:
+    sys.path.insert(0, SELFIE_DIR)          # scan_features imports scan_clusters
+FEAT_SPEC = importlib.util.spec_from_file_location(
+    "scan_features", ROOT / "tools" / "selfie-stick" / "scan_features.py"
+)
+FEAT = importlib.util.module_from_spec(FEAT_SPEC)
+FEAT_SPEC.loader.exec_module(FEAT)
+OVER_SPEC = importlib.util.spec_from_file_location(
+    "check_overlay", ROOT / "tools" / "selfie-stick" / "check_overlay.py"
+)
+OVER = importlib.util.module_from_spec(OVER_SPEC)
+OVER_SPEC.loader.exec_module(OVER)
 PICK_SPEC = importlib.util.spec_from_file_location(
     "pick_targets", ROOT / "tools" / "selfie-stick" / "pick_targets.py"
 )
@@ -296,3 +309,109 @@ class BrokenClusterGuardTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SeatVocabularyTests(unittest.TestCase):
+    """Every sit-able prefab in Valheim 0.221.12, not every craftable one.
+
+    The vocabulary was first written from the build menu, so the three seats that
+    are world props rather than recipes were missing -- the prefab dump marks them
+    piece:false. They are wearNTear:true, players place them from the prefab table,
+    and 7,453 of them in Era 17 carry a creator id. Deleting them again because
+    they do not start with "piece_" is the regression this guards.
+    """
+
+    PROP_SEATS = ("dvergrprops_chair", "dvergrprops_stool", "mountainkit_chair")
+
+    def test_prop_seats_are_in_the_vocabulary(self):
+        for name in self.PROP_SEATS:
+            self.assertIn(name, FEAT.SEATS, f"{name} is sit-able and player-placed")
+
+    def test_every_throne_is_present(self):
+        thrones = [n for n in FEAT.SEATS if "throne" in n]
+        self.assertCountEqual(
+            thrones,
+            ["piece_throne01", "piece_throne02",
+             "piece_blackmarble_throne", "piece_bone_throne"])
+
+    def test_a_throne_outranks_a_chair_which_outranks_a_stool(self):
+        self.assertGreater(FEAT.SEATS["piece_throne01"], FEAT.SEATS["dvergrprops_chair"])
+        self.assertGreater(FEAT.SEATS["dvergrprops_chair"], FEAT.SEATS["dvergrprops_stool"])
+
+    def test_the_scan_only_ever_reads_placed_pieces(self):
+        """The prop seats also exist in their thousands inside generated dungeons.
+        Those rows are UNKNOWN/INTERIOR; only the BUILDING filter keeps them out."""
+        source = io.open(
+            ROOT / "tools" / "selfie-stick" / "scan_features.py", encoding="utf-8"
+        ).read()
+        self.assertIn("category = 'BUILDING'", source)
+        self.assertIn("category='BUILDING'", source)
+
+
+class OverlayDetectionTests(unittest.TestCase):
+    """A mod drawing on the frames is found by what it does not do: change.
+
+    Written against the run that shipped the ComfyQuest bar. The check must not
+    know where a bar lives -- the next mod to draw one will put it somewhere else.
+    """
+
+    W, H = 320, 240
+
+    def _run_dir(self, tmp, overlay_rows=None):
+        import numpy as np
+        d = pathlib.Path(tmp) / "run"
+        d.mkdir()
+        rng = np.random.default_rng(7)
+        for i in range(8):
+            # Coarse blocks, not per-pixel noise: the check downsamples 8x, and
+            # white noise averages to a constant under that, which would make an
+            # empty frame look as frozen as a HUD. Real frames carry structure at
+            # every scale, so the fixture has to as well.
+            coarse = rng.integers(0, 255, (self.H // 8, self.W // 8), dtype=np.uint8)
+            frame = np.kron(coarse, np.ones((8, 8), dtype=np.uint8))
+            if overlay_rows:
+                lo, hi = overlay_rows
+                frame[lo:hi, 40:280] = 200          # same pixels in every frame
+            Image.fromarray(frame, mode="L").save(d / f"{i:02d}.png")
+        return str(d)
+
+    def _check(self, directory, **kw):
+        argv = ["check_overlay.py", "--run", directory, "--sample", "8"]
+        for k, v in kw.items():
+            argv += [f"--{k.replace('_', '-')}", str(v)]
+        out = io.StringIO()
+        old, sys.argv = sys.argv, argv
+        try:
+            with contextlib.redirect_stdout(out):
+                code = OVER.main()
+        finally:
+            sys.argv = old
+        return code, out.getvalue()
+
+    def test_noise_alone_is_clean(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            code, text = self._check(self._run_dir(tmp))
+        self.assertEqual(code, 0, text)
+        self.assertIn("Clean", text)
+
+    def test_a_static_band_fails_and_is_located(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            code, text = self._check(self._run_dir(tmp, overlay_rows=(24, 40)))
+        self.assertEqual(code, 1, text)
+        self.assertIn("static horizontal band", text)
+        # located within one downsampled row of the truth, never hard-coded
+        self.assertRegex(text, r"y (16|24)-(40|48)")
+
+    def test_the_band_is_found_wherever_it_is_drawn(self):
+        """The bar sat at the top. Nothing about the method depends on that."""
+        with tempfile.TemporaryDirectory() as tmp:
+            code, text = self._check(self._run_dir(tmp, overlay_rows=(180, 196)))
+        self.assertEqual(code, 1, text)
+        self.assertRegex(text, r"y 1[78]\d-(19|20)\d")
+
+    def test_tolerance_can_forgive_a_small_static_feature(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            code, _ = self._check(self._run_dir(tmp, overlay_rows=(24, 40)),
+                                  tolerance=50.0)
+        self.assertEqual(code, 0)
+
