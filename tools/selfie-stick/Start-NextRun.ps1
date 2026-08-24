@@ -159,7 +159,6 @@ $indexArgs = @((Join-Path $here 'build_valheim_index.py'), '--thumbs', '--large'
                '--depth', (Join-Path $era 'depth.json'),
                '--aesthetic', (Join-Path $era 'aesthetic.json'),
                '--crop-right-ui-px', '120',
-               '--crop-top-ui-px', '128',
                '--derived', (Join-Path $era 'derived-frames.json'))
 foreach ($id in $runIds) { $indexArgs += @('--run', [string]$id) }
 & python $indexArgs
