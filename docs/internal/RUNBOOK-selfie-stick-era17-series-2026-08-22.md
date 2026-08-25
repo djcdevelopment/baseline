@@ -1055,6 +1055,15 @@ the cool lobe) is *colour* separation: how different the two lights actually are
 - **Colour separation peaks in clear daylight**: golden 121.2, dawn 120.8 — because
   a deep blue sky is the most saturated cool field this game produces. Storm has the
   *worst* colour gap (74.5) precisely because a storm is grey, not blue.
+
+**Scope on that last one, added the same day it was written.** Every storm frame in
+this corpus is `ThunderStorm`, because that is the only storm this project has ever
+forced. The envs dump the storm lane landed on 2026-08-25 shows the game ships **39
+environments** and at least five are storms — `Ashlands_storm`, `Ashlands_SeaStorm`,
+`Mistlands_thunder`, `SnowStorm`, `Twilight_SnowStorm` — carrying different palettes.
+So 74.5 is a **`ThunderStorm` floor, not a storm floor**, and "a storm is grey, not
+blue" is unsupported as a general claim. `opponent_gap` is the right instrument to
+rank the other four, and until it has, this row describes one environment.
 - **Sunset is the floor of brightness separation, in both places**: 0.079 inside and
   0.078 outside, against 0.078–0.217 across everything else. Ambient and fire share a
   hue, so the source has nothing to stand out from. **This is the limit that was being
@@ -1150,3 +1159,57 @@ That same frame corrected a vocabulary entry. `piece_FairylightGarland` was clas
 warm from its name; the six in cluster 275 are the **blue** point lights along the
 wall. `LIGHT_HUE` now says blue, which moves the world's cool share from 51.0% to
 **51.6%** of weighted light. Names are not evidence about colour; frames are.
+
+## Running three lanes at once: what serialises, and what the lock does not cover
+
+2026-08-25. Three sessions worked this pipeline concurrently — storm photography,
+night-sky positioning, and colour limits — all three in `C:\work\baseline` itself with
+nothing committed. `4a6184e3` is the shared ancestor they diverge from; after it the
+two other lanes moved to `.claude/worktrees/lane-storm` and `lane-nightsky`, each with a
+**directory junction** at `tools/selfie-stick/out` back to the real one. Code isolated,
+data shared, because `out/` is gitignored and a bare worktree cannot run a single tool
+without it.
+
+**One session owns the capture schedule and nobody else fires.** The only guard in the
+scripts is `Get-Process valheim`, which is a TOCTOU race: two sessions can both see
+"not running", both launch, and each restore the operator's BepInEx config over the
+other. A run did fire outside the schedule at 07:29:15, three minutes before the
+instruction reached the lane that fired it — the window was real and open.
+
+### Four things are shared mutable state, and the lock only covers two
+
+| | protected by the capture lock? |
+| --- | --- |
+| the running game and its BepInEx configs | yes |
+| `out/era17/gallery/` and the index | yes, by the same serialisation |
+| **the installed `ComfyCameraProof.dll`** | **no** — one file, two lanes build it |
+| **`worlds_local/ComfyEra17.db`** | **no** — and it bit |
+
+**The mod DLL** is a singleton. Two lanes committing to the same `Plugin.cs` in
+`_retired/comfy` means whoever installs last wins and the other lane shoots against a
+mod it did not build. Both lanes claimed the same 07:11 build; the way to settle that is
+to **read the binary, not the claims** — `grep -a` the installed DLL for the method
+names each lane added. It carried `WidenLightLod`, `DriveFlash` *and* `ReadSkyTimes`, so
+both were in it and neither claim was wrong. Check provenance before every capture.
+
+**The world file is the one nobody thought of.** Copying `ComfyEra17.db` to a second
+capture node while a capture was live produced a **torn copy, 41,320 bytes larger than
+the source**, because Valheim rewrote the file at 07:33:45 mid-copy. Anything that reads
+`worlds_local` — a copy, a backup, a `save-tools` parse — races a running capture the
+same way. It is 1.3 GB, so the loss is measured in minutes of transfer. Verify with
+`md5` on both ends, and treat "is anything reading the world?" as part of the
+pre-flight, not just "is Valheim running?".
+
+### Pre-flight before firing a run
+
+1. Valheim is not running.
+2. No index rebuild is in flight — the tail of `Start-NextRun.ps1` re-derives every web
+   image, and a second run's rebuild collides with it.
+3. Nothing is reading `worlds_local`.
+4. The installed DLL carries the features the plan needs, and its `Plugin.cs` tree is
+   clean at a known sha. Record that sha with the run.
+
+`settleSeconds` lives in `BepInEx/config/com.comfy.camera-proof.cfg` and is read at
+plugin `Awake`. **BepInEx rewrites that file from memory on shutdown**, so it can only
+be edited with the game closed.
+
