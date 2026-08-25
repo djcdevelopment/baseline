@@ -51,6 +51,54 @@ GOLDEN_AM = 0.32
 # slot is an open question that only an A/B answers.
 WEATHER_ALT = ("Misty", 0.66)
 
+# The storm slot. ThunderStorm is the best-scoring condition this project has
+# measured -- indoors, where it beats sunset, sunrise and night. Outdoors it has
+# never been shot at all: every one of the 300 ThunderStorm receipts in 4,536 is
+# an interior. The exterior claim "weather is worth having inside and not
+# outside" came from comparing Clear against Misty, so exterior storm is
+# untested here rather than tested and lost.
+#
+# 0.58 is not a measured optimum. It is the only storm time this project has
+# ever used, which makes new exterior frames directly comparable to the 300
+# interiors instead of being a second unknown.
+STORM = ("ThunderStorm", 0.58)
+
+# Off-axis, so a driven flash rakes across the build instead of backlighting it
+# into a silhouette. Negative is anticlockwise from the camera-to-subject line.
+STORM_FLASH_BEARING = -35.0
+
+
+def validate_tsv(path):
+    """Re-read the TSV the way the mod's LoadShotPlan does: split on tabs, drop
+    short lines, parse floats. A row this check drops is a row the mod drops.
+
+    Worth having from the moment this file started writing an empty mode column
+    at index 13 to keep fires and flash at 14 and 15. The mod scrapes positionally
+    and skips only on len < 12, so a column in the wrong place is not an error
+    anywhere -- it is a run that shoots the right places in the wrong light."""
+    ok, bad = 0, 0
+    with open(path, encoding="utf-8") as fh:
+        for raw in fh:
+            line = raw.strip()
+            if not line or line.startswith("#"):
+                continue
+            fields = line.split("\t")
+            if len(fields) < 12:
+                bad += 1
+                continue
+            try:
+                int(fields[0])
+                for i in (2, 3, 4, 5, 6, 8, 9, 10, 11):
+                    float(fields[i])
+                if len(fields) > 14:
+                    assert fields[14] in ("0", "1")
+                if len(fields) > 15 and fields[15]:
+                    float(fields[15])
+                ok += 1
+            except (ValueError, AssertionError):
+                bad += 1
+    return ok, bad
+
 
 def parse_args():
     here = os.path.dirname(os.path.abspath(__file__))
@@ -93,6 +141,11 @@ def parse_args():
                         "has three over 1,300 m tall, one of them 2,297 m with a "
                         "5,195 m diagonal, and aiming a camera at that centroid puts "
                         "it in empty air. The tallest real build measured is 177.9 m")
+    p.add_argument("--cluster-ids", default="",
+                   help="comma-separated cluster ids to shoot and nothing else "
+                        "(overrides --top/--skip). Same name and same meaning as "
+                        "plan_interiors.py's flag; --include-ids is the additive "
+                        "one, which is not what a re-shoot of a known set wants")
     p.add_argument("--include-ids", default="",
                    help="comma-separated cluster ids to shoot regardless of "
                         "--skip/--top, for structures worth a camera that the "
@@ -111,6 +164,23 @@ def parse_args():
                         "5.335, Misty 0.66 medians 5.021, night 0.90 medians "
                         "4.792, against 5.636 for the five golden-hour slots. "
                         "Dropping it buys 20%% more structures per hour")
+    p.add_argument("--fires", action="store_true",
+                   help="hold the builders' fires lit for every frame. A capture "
+                        "world copy loads with every hearth burned to zero, so "
+                        "without this the lighting a build was designed around is "
+                        "simply not in the picture")
+    p.add_argument("--storm-shots", type=int, default=0, choices=(0, 1, 2, 3),
+                   help="storm frames on the hero framing: 1 = fires held, "
+                        "2 = plus an unlit control, 3 = plus a flash-lit frame")
+    p.add_argument("--storm-only", action="store_true",
+                   help="emit the storm slots and nothing else. For a re-shoot of "
+                        "builds that already have their golden and twilight frames "
+                        "on disk, where another four orbits would be film spent "
+                        "reproducing what is already in the gallery")
+    p.add_argument("--storm-environment", default=STORM[0])
+    p.add_argument("--storm-time", type=float, default=STORM[1])
+    p.add_argument("--flash-bearing", type=float, default=STORM_FLASH_BEARING,
+                   help="degrees off the camera-to-subject line to place the strike")
     p.add_argument("--alt-environment", default=WEATHER_ALT[0],
                    help="environment for the sixth (alternate-light) shot")
     p.add_argument("--alt-time", type=float, default=WEATHER_ALT[1],
@@ -216,6 +286,14 @@ def main():
     # Before --skip/--top, so excluding sky builds does not silently shift the
     # band: rank N means the same structure whether or not the flag is passed.
     dropped_sky = [c for c in clusters if args.exclude_sky and c.get("sky")]
+    if args.cluster_ids:
+        wanted = [int(s) for s in args.cluster_ids.split(",") if s.strip()]
+        by_cid = {c["cluster_id"]: c for c in clusters}
+        missing = [cid for cid in wanted if cid not in by_cid]
+        if missing:
+            sys.exit(f"--cluster-ids {missing} not in {args.clusters} "
+                     f"(wrong era? cluster ids are not stable across eras)")
+        clusters = [by_cid[cid] for cid in wanted]
     if args.skip:
         clusters = clusters[args.skip:]
     if args.top:
@@ -286,7 +364,8 @@ def main():
             cam = shot["camera"]
             key = (cam["x"], cam["y"], cam["z"],
                    round(shot["yaw_deg"], 1), round(shot["pitch_deg"], 1),
-                   shot["environment"], round(shot["time_of_day"], 3))
+                   shot["environment"], round(shot["time_of_day"], 3),
+                   shot.get("fires", False), shot.get("flash"))
             if key in seen:
                 duplicates.append((c["cluster_id"], shot["shot"], seen[key]))
                 return False
@@ -294,22 +373,45 @@ def main():
             return True
 
         seen = {}
-        for i, cam in enumerate(cams):
-            shot = {**base, "shot": f"orbit{i + 1}", **cam,
-                    "environment": "Clear", "time_of_day": args.time_of_day}
+        if not args.storm_only:
+            for i, cam in enumerate(cams):
+                shot = {**base, "shot": f"orbit{i + 1}", **cam,
+                        "environment": "Clear", "time_of_day": args.time_of_day,
+                        "fires": args.fires, "flash": None}
+                if distinct(shot):
+                    shots.append(shot)
+            dawn = {**base, "shot": "dawn", **cams[hero],
+                    "environment": "Clear", "time_of_day": GOLDEN_AM,
+                    "fires": args.fires, "flash": None}
+            if distinct(dawn):
+                shots.append(dawn)
+
+        # Storm as an A/B rather than a frame. "storm" is the one worth having;
+        # "storm_dark" is the control that says whether holding the fires did
+        # anything, and without it a good storm frame only proves storms are
+        # pretty. "storm_flash" is the third question and the one that can come
+        # back empty -- if the strike turns out to be a sky element carrying no
+        # light, the receipt says sky_only and that is the answer.
+        storm_slots = [
+            ("storm", True, None),
+            ("storm_dark", False, None),
+            ("storm_flash", True, args.flash_bearing),
+        ][:args.storm_shots]
+        for name, fires, flash in storm_slots:
+            shot = {**base, "shot": name, **cams[hero],
+                    "environment": args.storm_environment,
+                    "time_of_day": args.storm_time,
+                    "fires": fires, "flash": flash}
             if distinct(shot):
                 shots.append(shot)
-        dawn = {**base, "shot": "dawn", **cams[hero],
-                "environment": "Clear", "time_of_day": GOLDEN_AM}
-        if distinct(dawn):
-            shots.append(dawn)
         # Kept named "weather" whatever the sky is: the index supersedes on
         # (cluster, variant), so renaming the slot would orphan the frame it
         # is meant to replace rather than retire it.
-        if args.alt_shots:
+        if args.alt_shots and not args.storm_only:
             weather = {**base, "shot": "weather", **cams[hero],
                        "environment": args.alt_environment,
-                       "time_of_day": args.alt_time}
+                       "time_of_day": args.alt_time,
+                       "fires": args.fires, "flash": None}
             if distinct(weather):
                 shots.append(weather)
 
@@ -334,7 +436,13 @@ def main():
                      "max_height_m": args.max_height_m,
                      "alt_shots": args.alt_shots,
                      "alt_environment": args.alt_environment,
-                     "alt_time_of_day": args.alt_time},
+                     "alt_time_of_day": args.alt_time,
+                     "fires": args.fires,
+                     "storm_only": args.storm_only,
+                     "storm_shots": args.storm_shots,
+                     "storm_environment": args.storm_environment,
+                     "storm_time_of_day": args.storm_time,
+                     "flash_bearing_deg": args.flash_bearing},
         "plan": shots,
     }
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
@@ -349,18 +457,27 @@ def main():
     tsv = os.path.splitext(args.out)[0] + ".tsv"
     with open(tsv + ".tmp", "w", encoding="utf-8", newline="\n") as fh:
         fh.write("# cluster_id\tshot\tcam_x\tcam_y\tcam_z\tyaw\tpitch\tenv\ttime\t"
-                 "aim_x\taim_y\taim_z\tlabel\n")
+                 "aim_x\taim_y\taim_z\tlabel\tmode\tfires\tflash\n")
         for s in shots:
             c, a = s["camera"], s["aim"]
+            flash = "" if s.get("flash") is None else f"{s['flash']:g}"
             fh.write(f"{s['cluster_id']}\t{s['shot']}\t{c['x']}\t{c['y']}\t{c['z']}\t"
                      f"{s['yaw_deg']}\t{s['pitch_deg']}\t{s['environment']}\t"
                      f"{s['time_of_day']}\t{a['x']}\t{a['y']}\t{a['z']}\t"
-                     f"{s['label'].replace(chr(9), ' ')}\n")
+                     f"{s['label'].replace(chr(9), ' ')}\t"
+                     f"\t{1 if s.get('fires') else 0}\t{flash}\n")
     os.replace(tsv + ".tmp", tsv)
 
     print(f"  {len(clusters)} structures -> {len(shots)} shots")
     print(f"  {args.out}")
     print(f"  {tsv}  (this is the one the mod reads)")
+    ok, bad = validate_tsv(tsv)
+    print(f"  TSV validation: {ok} row(s) parse the way LoadShotPlan parses, "
+          f"{bad} would drop")
+    if args.fires or args.storm_shots:
+        held = sum(1 for s in shots if s.get("fires"))
+        lit = sum(1 for s in shots if s.get("flash") is not None)
+        print(f"  light: {held} frame(s) hold the builders' fires, {lit} drive a flash")
     if clipped:
         print(f"  {clipped} structure(s) too big to frame whole inside the "
               f"{args.max_distance:g} m haze cap — shot closer, partial frame")

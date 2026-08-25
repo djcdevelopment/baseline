@@ -2,6 +2,8 @@ import contextlib
 import importlib.util
 import io
 import json
+import math
+import os
 import pathlib
 import sys
 import tempfile
@@ -45,6 +47,16 @@ PICK_SPEC = importlib.util.spec_from_file_location(
 )
 PICK = importlib.util.module_from_spec(PICK_SPEC)
 PICK_SPEC.loader.exec_module(PICK)
+INTERIOR_SPEC = importlib.util.spec_from_file_location(
+    "plan_interiors", ROOT / "tools" / "selfie-stick" / "plan_interiors.py"
+)
+INTERIOR = importlib.util.module_from_spec(INTERIOR_SPEC)
+INTERIOR_SPEC.loader.exec_module(INTERIOR)
+NIGHT_SPEC = importlib.util.spec_from_file_location(
+    "plan_nightsky", ROOT / "tools" / "selfie-stick" / "plan_nightsky.py"
+)
+NIGHT = importlib.util.module_from_spec(NIGHT_SPEC)
+NIGHT_SPEC.loader.exec_module(NIGHT)
 
 
 def _cluster(cid, creator, x=0.0, z=0.0, score=10.0, size_y=20.0, **extra):
@@ -348,6 +360,274 @@ class SeatVocabularyTests(unittest.TestCase):
         self.assertIn("category='BUILDING'", source)
 
 
+class LightVocabularyTests(unittest.TestCase):
+    """Every deliberate light source, not every craftable one.
+
+    The vocabulary was four exact names plus a ("piece_brazier",
+    "piece_groundtorch") prefix tuple -- and the prefix half counted nothing.
+    expand_pattern_sets() used it only to keep torches out of the wall set;
+    feature_rows() emitted FIRES_EXACT alone. So 80,010 placed torches and
+    braziers in Era 17 matched a pattern and were then discarded, and the whole
+    vocabulary reached 6.5% of the world's 173,541 lights. A night pass targets
+    on this count, so the miss is the difference between finding the builds
+    someone lit on purpose and finding the builds with a cooking fire.
+    """
+
+    MOST_PLACED = ("piece_groundtorch_wood", "piece_groundtorch_mist",
+                   "piece_groundtorch_green", "piece_dvergr_lantern",
+                   "dvergrprops_lantern_standing", "piece_Lavalantern",
+                   "MountainKit_brazier", "Candle_resin",
+                   "piece_FairylightGarland", "CastleKit_groundtorch")
+
+    def test_the_most_placed_lights_are_in_the_vocabulary(self):
+        for name in self.MOST_PLACED:
+            self.assertIn(name, FEAT.LIGHTS, f"{name} lights a build after dark")
+
+    def test_the_old_prefix_names_now_actually_emit_rows(self):
+        """The regression that motivated this: matched by a pattern, counted by
+        nothing. Every prefix name must reach the lookup table as a fire row."""
+        rows = FEAT.feature_rows((set(), set(), set(), set()))
+        fires = {name for name, kind, _w in rows if kind == "fire"}
+        for name in FEAT.LIGHTS:
+            self.assertIn(name, fires)
+        self.assertTrue(
+            any(n.startswith("piece_groundtorch") for n in fires),
+            "ground torches are the most-placed light in the world")
+
+    def test_unlit_variants_are_never_lights(self):
+        """A sweep for "torch" matches these, and they emit nothing."""
+        for name in ("CastleKit_groundtorch_unlit",
+                     "CastleKit_metal_groundtorch_unlit"):
+            self.assertNotIn(name, FEAT.LIGHTS)
+
+    def test_creature_effects_and_crafting_glow_are_never_lights(self):
+        """DvergerMageFire is a creature effect; a forge's glow is incidental and
+        counting it would track workshop density rather than lighting design."""
+        for name in ("DvergerMageFire", "forge", "blackforge", "smelter",
+                     "charcoal_kiln", "piece_oven", "blastfurnace",
+                     "dverger_demister_broken", "crystal_wall_1x1"):
+            self.assertNotIn(name, FEAT.LIGHTS)
+
+    def test_an_open_flame_outweighs_a_torch_which_outweighs_a_candle(self):
+        self.assertGreater(FEAT.LIGHTS["hearth"], FEAT.LIGHTS["piece_groundtorch_wood"])
+        self.assertGreater(FEAT.LIGHTS["piece_groundtorch_wood"], FEAT.LIGHTS["Candle_resin"])
+
+    def test_lights_are_excluded_from_the_pattern_sets(self):
+        """piece_walltorch contains "wall" and is not a wall; the fixed set has
+        to shadow the pattern sweep or every torch becomes masonry."""
+        _doors, _roofs, _floors, walls = FEAT.expand_pattern_sets(
+            ["piece_walltorch", "wood_wall_log", "piece_groundtorch_wood"])
+        self.assertIn("wood_wall_log", walls)
+        self.assertNotIn("piece_walltorch", walls)
+
+    def test_the_feature_join_itself_reads_placed_pieces_only(self):
+        """The pre-existing BUILDING assertion passed against the *count*
+        queries while the feature join had no category filter at all -- so a
+        build whose padded box touched a Dvergr tower inherited its lights."""
+        source = io.open(
+            ROOT / "tools" / "selfie-stick" / "scan_features.py", encoding="utf-8"
+        ).read()
+        join = source.split("JOIN feature_name f ON f.name = z.prefab_name", 1)[1]
+        self.assertIn("category = 'BUILDING'", join.split(".fetchall()", 1)[0])
+
+
+class CelestialArcTests(unittest.TestCase):
+    """The sky's geometry, pinned to the measurement that produced it.
+
+    comfyproof_sky walked EnvMan's directional light through 41 times of day and
+    the closed form reproduces every lit sample to 0.001 degrees. These fixtures
+    are lifted straight out of that dump, so if anyone "simplifies" the arc the
+    test fails against the game rather than against an opinion.
+    """
+
+    # (time, azimuth, altitude, is the light warm i.e. the sun)
+    DUMP = [
+        (0.000, 180.0, 45.0, False), (0.100, 225.8, 34.9, False),
+        (0.200, 257.1, 12.6, False), (0.300, 102.9, 12.6, True),
+        (0.400, 134.2, 34.9, True), (0.500, 180.0, 45.0, True),
+        (0.640, 239.7, 26.8, True), (0.700, 257.1, 12.6, True),
+        (0.800, 102.9, 12.6, False), (0.900, 134.2, 34.9, False),
+        (0.975, 167.4, 44.3, False),
+    ]
+
+    def test_the_arc_reproduces_the_dump(self):
+        for t, az, alt, warm in self.DUMP:
+            rise = NIGHT.SUN_RISE_T if warm else NIGHT.MOON_RISE_T
+            got_az, got_alt = NIGHT.body_direction(t, rise)
+            self.assertAlmostEqual(got_az, az, delta=0.1, msg=f"azimuth at t={t}")
+            self.assertAlmostEqual(got_alt, alt, delta=0.1, msg=f"altitude at t={t}")
+
+    def test_both_bodies_rise_east_and_set_west(self):
+        rise_az, rise_alt = NIGHT.body_direction(NIGHT.MOON_RISE_T)
+        self.assertAlmostEqual(rise_az, 90.0, delta=0.1)
+        self.assertAlmostEqual(rise_alt, 0.0, delta=0.1)
+        # A hair before the handover: at exactly rise+0.5 this body has set and
+        # the other one is rising, which is what the dump shows at t=0.25 (az 90,
+        # altitude 0, intensity 0).
+        set_az, set_alt = NIGHT.body_direction(NIGHT.MOON_RISE_T + 0.4999)
+        self.assertAlmostEqual(set_az, 270.0, delta=0.1)
+        self.assertAlmostEqual(set_alt, 0.0, delta=0.1)
+
+    def test_neither_body_ever_gets_higher_than_45_degrees(self):
+        """Which is why the roofline constraint bites at all: a body that went
+        overhead could never share a frame with the roof you are standing on."""
+        peak = max(NIGHT.body_direction(t / 200.0)[1] for t in range(201))
+        self.assertAlmostEqual(peak, 45.0, delta=0.01)
+
+    def test_the_sun_at_golden_hour_agrees_with_the_frames(self):
+        """Independent check: regressing sky-strip luminance on camera yaw over
+        seven capture runs pooled to 235 +/- 25 degrees for t=0.64."""
+        az, _alt = NIGHT.body_direction(0.64, NIGHT.SUN_RISE_T)
+        self.assertLess(abs(az - 235.0), 25.0)
+
+    def test_night_is_the_moon_half_of_the_day(self):
+        for t in (0.75, 0.8, 0.9, 0.99, 0.0, 0.1, 0.25):
+            self.assertTrue(NIGHT.is_night(t), t)
+        for t in (0.26, 0.32, 0.5, 0.64, 0.71, 0.74):
+            self.assertFalse(NIGHT.is_night(t), t)
+
+
+class NightSkyPlanTests(unittest.TestCase):
+    """The rooftop plan, checked against the geometry it claims to satisfy."""
+
+    def _rooftops(self, reach=None):
+        reach = reach or {str(b): 12.0 for b in range(0, 360, 30)}
+        return {"world": "T", "structures": [{
+            "cluster_id": 7, "lights": 300, "light_pieces": 100, "pieces": 5000,
+            "height_m": 30.0, "region": "in-world", "above_base_m": 22.0,
+            "stance": {"x": 100.0, "y": 60.0, "z": 200.0},
+            "exposure": 8, "exposure_of": 16, "platforms": 3, "reach_m": reach,
+        }]}
+
+    def _run(self, tmp, extra=(), reach=None):
+        roof = os.path.join(tmp, "rooftops.json")
+        clusters = os.path.join(tmp, "clusters.json")
+        out = os.path.join(tmp, "nightsky.json")
+        with io.open(roof, "w", encoding="utf-8") as fh:
+            json.dump(self._rooftops(reach), fh)
+        with io.open(clusters, "w", encoding="utf-8") as fh:
+            json.dump({"clusters": [_cluster(7, 1)]}, fh)
+        argv = ["plan_nightsky.py", "--rooftops", roof, "--clusters", clusters,
+                "--names", os.path.join(tmp, "none.json"), "--out", out] + list(extra)
+        old = sys.argv
+        sys.argv = argv
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                NIGHT.main()
+        finally:
+            sys.argv = old
+        with io.open(out, encoding="utf-8") as fh:
+            return json.load(fh), os.path.splitext(out)[0] + ".tsv"
+
+    def test_every_camera_looks_up(self):
+        """The one thing that separates this from every other planner here."""
+        with tempfile.TemporaryDirectory() as tmp:
+            doc, _tsv = self._run(tmp)
+            self.assertTrue(doc["plan"])
+            for shot in doc["plan"]:
+                self.assertLess(shot["pitch_deg"], 0.0, shot["shot"])
+
+    def test_the_roofline_stays_in_the_bottom_of_the_frame(self):
+        """elevation + atan(h_eye / reach) is where the parapet lands below the
+        optical axis, and past half the vertical FOV it has left the picture --
+        which is the sky-platform frame that medians 4.69."""
+        with tempfile.TemporaryDirectory() as tmp:
+            doc, _tsv = self._run(tmp)
+            h = doc["settings"]["h_eye_m"]
+            half = doc["settings"]["fov_v_deg"] / 2.0
+            for shot in doc["plan"]:
+                below = shot["elevation_deg"] + math.degrees(
+                    math.atan(h / shot["reach_m"]))
+                self.assertLessEqual(below, half + 1e-6, shot["shot"])
+
+    def test_the_aim_point_reproduces_the_planned_angles(self):
+        """The mod recomputes yaw/pitch from `aim` if occlusion recovery fires.
+        If that recomputation disagrees with the plan, a rescued frame is a
+        different photograph than the one that was designed."""
+        with tempfile.TemporaryDirectory() as tmp:
+            doc, _tsv = self._run(tmp)
+            for shot in doc["plan"]:
+                lens, aim = shot["lens"], shot["aim"]
+                dx = aim["x"] - lens["x"]
+                dy = aim["y"] - lens["y"]
+                dz = aim["z"] - lens["z"]
+                n = math.sqrt(dx * dx + dy * dy + dz * dz)
+                yaw = math.degrees(math.atan2(dx, dz)) % 360.0
+                pitch = -math.degrees(math.asin(dy / n))
+                self.assertAlmostEqual(n, doc["settings"]["aim_distance_m"], delta=0.3)
+                self.assertAlmostEqual(
+                    (yaw - shot["yaw_deg"] + 180) % 360 - 180, 0.0, delta=0.5)
+                self.assertAlmostEqual(pitch, shot["pitch_deg"], delta=0.5)
+
+    def test_repeats_are_distinct_variants(self):
+        """Cloud position is a re-roll, so the plan shoots the same stance more
+        than once -- but the index supersedes on (cluster, variant, environment,
+        time). Repeats sharing a name would retire each other instead of joining,
+        which is exactly how 150 golden frames were quietly replaced."""
+        with tempfile.TemporaryDirectory() as tmp:
+            doc, _tsv = self._run(tmp, ["--repeats", "3"])
+            keys = [(s["cluster_id"], s["shot"], s["environment"], s["time_of_day"])
+                    for s in doc["plan"]]
+            self.assertEqual(len(keys), len(set(keys)))
+            self.assertGreaterEqual(len(keys), 3)
+
+    def test_the_mod_can_parse_every_row_as_a_rooftop_shot(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _doc, tsv = self._run(tmp)
+            ok, bad = INTERIOR.validate_tsv(tsv, mode="rooftop")
+            self.assertGreater(ok, 0)
+            self.assertEqual(bad, 0)
+
+    def test_daylight_is_refused_rather_than_planned(self):
+        """There is nothing to point at: the sun is the lit body from 0.25 to
+        0.75, and this composition is the moon and the star field."""
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaises(SystemExit):
+                self._run(tmp, ["--times", "0.64"])
+
+    def test_a_tight_roof_is_stepped_back_from(self):
+        """The stance is the highest flat block, which on a big build is often a
+        turret whose edge is a few metres away -- close enough that the roofline
+        lands near the bottom edge as a sliver instead of a near layer. Backing
+        along the reverse bearing buys forward roof."""
+        tight = {str(b): 8.0 for b in range(0, 360, 30)}
+        with tempfile.TemporaryDirectory() as tmp:
+            doc, _tsv = self._run(tmp, reach=tight)
+            self.assertTrue(doc["plan"])
+            for shot in doc["plan"]:
+                self.assertGreater(shot["step_back_m"], 0.0)
+                self.assertGreater(shot["reach_m"], 8.0)
+
+    def test_a_roof_too_small_for_the_tilt_is_refused_not_shipped(self):
+        """At t=0.90 the moon is 34.9 degrees up, so the axis is steep, and a 4 m
+        rooftop cannot keep the parapet inside the bottom of the frame even after
+        stepping back as far as the roof allows. The
+        answer is no frame, not a frame with no near layer in it -- that is the
+        sky-platform shot, and it medians 4.69 against a gallery median of 5.47."""
+        cramped = {str(b): 4.0 for b in range(0, 360, 30)}
+        with tempfile.TemporaryDirectory() as tmp:
+            doc, _tsv = self._run(tmp, reach=cramped)
+            self.assertEqual(doc["plan"], [])
+
+    def test_the_same_roof_works_once_the_moon_is_lower(self):
+        """Which makes it a scheduling problem rather than a dead end."""
+        cramped = {str(b): 4.0 for b in range(0, 360, 30)}
+        with tempfile.TemporaryDirectory() as tmp:
+            doc, _tsv = self._run(tmp, ["--times", "0.83"], reach=cramped)
+            self.assertTrue(doc["plan"])
+            for shot in doc["plan"]:
+                self.assertLess(shot["pitch_deg"], 0.0)
+
+    def test_the_gallery_gives_these_frames_their_own_perspective(self):
+        """The aesthetic head prefers a landscape to a room by 0.45 and marks
+        dark frames down on principle, and the gallery ranks within perspective.
+        Without a bucket of their own every night frame sinks by construction."""
+        self.assertEqual(BUILD.perspective_of("moon1"), "rooftop")
+        self.assertEqual(BUILD.perspective_of("moon2_r3"), "rooftop")
+        self.assertEqual(BUILD.perspective_of("orbit1"), "drone")
+        self.assertEqual(BUILD.perspective_of("seat_night"), "seated")
+
+
 class OverlayDetectionTests(unittest.TestCase):
     """A mod drawing on the frames is found by what it does not do: change.
 
@@ -482,9 +762,10 @@ class SupersedeTests(unittest.TestCase):
     """
 
     @staticmethod
-    def _row(cid, variant, ts, env="Clear", tod=0.64):
+    def _row(cid, variant, ts, env="Clear", tod=0.64, fires=False, flash=None):
         return {"source": "orbit", "cluster_id": cid, "variant": variant,
-                "ts": ts, "environment": env, "time_of_day": tod}
+                "ts": ts, "environment": env, "time_of_day": tod,
+                "fires": fires, "flash_bearing_deg": flash}
 
     @classmethod
     def _collapse(cls, rows):
@@ -498,7 +779,30 @@ class SupersedeTests(unittest.TestCase):
     def test_the_key_carries_the_light(self):
         self.assertEqual(
             BUILD.supersede_key(self._row(7, "orbit2", 1, env="Misty", tod=0.66)),
-            (7, "orbit2", "Misty", 0.66))
+            (7, "orbit2", "Misty", 0.66, False, None))
+
+    def test_holding_the_fires_makes_a_different_photograph(self):
+        """The A/B depends on this. Re-shooting a plan with --fires reuses every
+        variant name at the same environment and the same time, so if the held
+        frames superseded the unheld ones the comparison they were taken to make
+        would be deleted on the way into the gallery."""
+        keep = self._collapse([self._row(1, "orbit1", 100, fires=False),
+                               self._row(1, "orbit1", 200, fires=True)])
+        self.assertEqual(len(keep), 2)
+
+    def test_a_flash_lit_frame_is_a_different_photograph(self):
+        keep = self._collapse([self._row(1, "storm", 100, fires=True),
+                               self._row(1, "storm", 200, fires=True, flash=-35.0)])
+        self.assertEqual(len(keep), 2)
+
+    def test_a_row_from_before_the_light_columns_still_keys(self):
+        """Every receipt written before this existed has no fires field at all,
+        and the whole 4,536-receipt back catalogue has to keep collapsing the
+        way it did."""
+        old = {"source": "orbit", "cluster_id": 3, "variant": "orbit1",
+               "ts": 1, "environment": "Clear", "time_of_day": 0.64}
+        self.assertEqual(BUILD.supersede_key(old),
+                         (3, "orbit1", "Clear", 0.64, False, None))
 
     def test_a_retake_in_the_same_light_supersedes(self):
         keep = self._collapse([self._row(1, "orbit1", 100),

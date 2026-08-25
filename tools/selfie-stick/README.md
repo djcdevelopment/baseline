@@ -43,6 +43,19 @@ The era arguments are the thing worth not typing by hand. Point a run at the wro
 `clusters.json` and every frame joins to another era's cluster ids — the mislabelling
 era isolation exists to prevent, and it does not announce itself.
 
+Two of the queued runs need the light held. `plan_shots.py --fires` and
+`plan_interiors.py --fires` mark every frame so the mod holds the builders' own
+fires lit for the shot; `--storm-shots 3 --storm-only` emits the exterior storm
+A/B (`storm`, `storm_dark`, `storm_flash`) on the hero framing and nothing else.
+Both write two optional trailing TSV columns, so every plan already on disk still
+reads exactly as it did.
+
+Why it is needed is the uncomfortable part: a capture world copy loads with every
+hearth, brazier and groundtorch burned to zero, because `Fireplace` catches up the
+fuel that should have burned while the zone was unloaded. Every twilight and night
+frame in the gallery was shot in a build whose lights were out. See the runbook
+section "The lights were never on".
+
 The reasoning behind what is queued, and the measurements behind it, are in
 [`docs/internal/RUNBOOK-selfie-stick-era17-series-2026-08-22.md`](../../docs/internal/RUNBOOK-selfie-stick-era17-series-2026-08-22.md).
 The readable summary of what those measurements mean for *how to aim the camera* — the
@@ -212,6 +225,11 @@ viewpoints is the right trade for a machine.
   permanently.
 - **Builder IDs are not names.** 660 distinct `creator_id`s attribute cleanly,
   but turning one into a person needs the running viewer's player records.
+- **A held fire that gets culled looks exactly like a cold one.** `LightLod`
+  drops light at 40 m and shadow at 20 m, and its static `m_lightLimit` caps how
+  many lights burn at once no matter the distance. The capture widens both for
+  the shot; if a storm frame still comes back dark, check `light_lods` in the
+  receipt before blaming the weather.
 - **No metric here can judge a photograph.** Luminance and contrast find black
   frames and empty frames; they called the best hand-shot image of the first
   session "thin". Ranking is what the gallery votes are for.

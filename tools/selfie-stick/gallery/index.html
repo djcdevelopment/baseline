@@ -154,6 +154,10 @@ const byRun={};        // run id -> every frame of that capture run
 const byCluster={};    // structure key -> every frame of that build
 const byArea={};       // area key -> every frame in that 2 km neighbourhood
 
+// Four names, hand-picked long before anyone dumped the list the game actually
+// has -- comfy-camera-proof-envs.json is written at the top of every plan run
+// now, so this map can be filled in from measurement rather than guessed at.
+// Anything missing already falls back to grey at the call site.
 const ENVCOLOR={Clear:'#7aa2ff',Misty:'#9ad5c8',Rain:'#8fb2d9',ThunderStorm:'#b79ae0'};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));

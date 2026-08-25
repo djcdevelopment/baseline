@@ -720,8 +720,8 @@ caves; those rows are `UNKNOWN`/`INTERIOR` with creator 0, and the existing
 Effect is modest and worth stating plainly: of the 120 interior-scanned builds, 7 gain
 a seat and 3 gain something to aim at. **The same gap is far larger elsewhere** — 22
 builds have no table and 16 no fire, and the missing fire vocabulary includes
-`Candle_resin` (34,988 placed), `MountainKit_brazier` (34,015) and the CastleKit
-groundtorches (~58,000). That one needs hand-auditing, not a bulk add: a pattern sweep
+`Candle_resin` (2,511 placed), `MountainKit_brazier` (3,799) and the CastleKit
+groundtorches (6,130). That one needs hand-auditing, not a bulk add: a pattern sweep
 matched `UnstableLavaRock` and `trader_wagon_destructable` as "tables" on the
 substring `-table-`.
 
@@ -786,17 +786,31 @@ A twilight frame pays off in proportion to how many light sources a build has, a
 were written from the craftable build menu, so the world's most-placed light sources
 are invisible:
 
-| prefab | placed in Era 17 | by |
-| --- | --- | --- |
-| `Candle_resin` | 34,988 | 108 creators |
-| `MountainKit_brazier` | 34,015 | 30 |
-| `MountainKit_brazier_purple` | 28,247 | 31 |
-| `MountainKit_brazier_blue` | 24,624 | 34 |
-| `CastleKit_groundtorch_green` | 23,369 | 23 |
-| `CastleKit_groundtorch_blue` | 20,656 | 20 |
-| `CastleKit_groundtorch` | 13,833 | 20 |
-| `CastleKit_brazier` | 13,615 | 23 |
-| `fire_pit_iron` | 6,207 | 102 |
+| prefab | placed in Era 17 | by | *as first written* |
+| --- | --- | --- | --- |
+| `MountainKit_brazier_purple` | 4,175 | 24 creators | *28,247* |
+| `MountainKit_brazier` | 3,799 | 21 | *34,015* |
+| `MountainKit_brazier_blue` | 2,744 | 29 | *24,624* |
+| `CastleKit_groundtorch_green` | 2,657 | 20 | *23,369* |
+| `Candle_resin` | 2,511 | 68 | *34,988* |
+| `CastleKit_groundtorch_blue` | 1,864 | 16 | *20,656* |
+| `CastleKit_groundtorch` | 1,609 | 18 | *13,833* |
+| `CastleKit_brazier` | 1,591 | 21 | *13,615* |
+| `fire_pit_iron` | 679 | 69 | *6,207* |
+
+**Corrected 2026-08-25.** The right-hand column is what this table said when it was
+written, and every one of those figures counted **all nine snapshots** in the cache
+(Era 16 x3, a synthetic replay x5, Era 17) with no `category` filter — the same defect
+this runbook records for `scan_features.py` itself two sections earlier, reappearing in
+its own prose. The corrected column is `snapshot_id = 107 AND category = 'BUILDING'`,
+which is what the scan actually sees. Roughly an order of magnitude, and the ordering
+changes too: `Candle_resin` was never the most-placed light in this world.
+
+The conclusion is unchanged and if anything sharper. Against the old four-name
+vocabulary the numbers are: **173,541** lights placed in Era 17, of which the old
+`FIRES_EXACT` ever matched **11,225 — 6.5%**, missing **162,316**. Braziers and
+groundtorches alone are **98,449** of them. The same all-snapshot figures appeared in
+the seat-vocabulary section below and are corrected there too.
 
 Same root cause as the seats: a vocabulary written from the crafting UI against a
 world built from the prefab table. Fixing it gives a light count per build, and the
@@ -807,6 +821,188 @@ It needs hand-auditing, not a bulk add: a pattern sweep for "fire" also matches
 `DvergerMageFire` (a creature effect) and would happily swallow anything with
 `torch` in the name.
 
+## The fuel-burners were out (and not every light is a fuel-burner)
+
+Judged by eye is how the twilight verdict above was reached, and the thing it
+found -- that the lighting is designed, and daylight hides it -- was measured on
+frames where a lot of the lighting was **switched off** -- but not all of it, and
+how much is still unmeasured. The first draft of this section said "every one of
+them" and that was too strong; the correction is at the end of it.
+
+`Fireplace` keeps three synced values: `fuel`, `state`, and `lastTime`. The last
+of those exists so that when a zone loads back in, the fire burns down the fuel
+that should have burned while nobody was there. A capture run opens a
+**disposable copy** of a world whose builders last touched it months ago, so the
+first `UpdateFireplace` tick after load takes every hearth, brazier, candle and
+groundtorch in it to zero.
+
+Read out of `assembly_valheim.dll` 0.221.12 with `ilspycmd`, because the atlas
+annotation layer has been inverted before and believing it cost ComfyQuestLab
+two rounds of watching a gallery fall down:
+
+```
+IsBurning() = !m_blocked && state == 1 && !underwater
+              && (fuel > 0f || m_infiniteFuel)
+```
+
+and `UpdateFireplace`'s drain sits behind `IsBurning() && !m_infiniteFuel`. So
+`m_infiniteFuel` is honest, and on its own it makes a fire burn at fuel zero.
+
+### Three levers, and only one of them was the obvious one
+
+**Fuel** is the one you think of first, and it is not sufficient.
+
+**Wet is a separate mechanism, and `m_disableCoverCheck` does not gate it.**
+`CheckWet()` runs off its own `InvokeRepeating("CheckEnv", 4, 4)`; when
+`EnvMan.IsWet()` it swaps `m_enabledObjectHigh` for `m_enabledObjectLow` and
+toggles off anything with `m_canTurnOff`. That is the storm case exactly --
+the one condition that puts the lights out before you photograph them, which is
+a fair part of why storm reads badly outdoors and could not hurt indoors, where
+the psystems are off under shelter. `m_disableCoverCheck` only clears
+`m_blocked`, which is the buried-under-terrain and no-headroom test.
+
+**`LightLod` culls the light before it reaches the lens.** Default
+`m_lightDistance` is 40 m and `m_shadowDistance` 20 m, against orbits planned out
+to 120 m. Worse, `LightLod.m_lightLimit` is a *static* cap on how many lights may
+be on at once regardless of distance -- the one that bites a hall with thirty
+braziers in it. A held fire that gets culled photographs identically to a cold
+one, so this is the lever that decides whether the other two are visible at all.
+
+`m_infiniteFuel`, `m_disableCoverCheck`, `m_wet` and `m_blocked` are plain
+instance fields, not synced: holding them writes nothing to the world. Only
+`fuel` and `state` are ZDO-backed, both are written only when they differ, both
+are restored, and both are guarded on `ZNetView.IsOwner()`.
+
+### What is queued, and what would count as it working
+
+Two runs, both A/Bs against frames already on disk.
+
+| run | what | against |
+| --- | --- | --- |
+| `storm` | the 30 twilight builds, 3 storm frames each | their own 0.64 and 0.71 orbits |
+| `hearth` | interior band A, 324 frames, fires held | its own 324 unlit twins |
+
+The exterior storm slot emits three frames per build on the hero framing:
+`storm` (fires held), `storm_dark` (the control), `storm_flash` (fires plus a
+driven strike). Without the control a good frame proves only that storms are
+pretty. `supersede_key` now carries `fires` and `flash_bearing_deg` for the same
+reason the 0.71 incident put the light in it: re-shooting a plan with `--fires`
+reuses every variant name at the same environment and the same time, so without
+it the lit frames would retire the unlit ones and delete the comparison on the
+way into the gallery. There is a test for that.
+
+Receipts now carry `fires_found`, `fires_burning`, `fires_wet`, `fires_lit`,
+`fires_unowned` and `light_lods`. **`fires_found` is the per-build light count
+this project has been blocked on.** The section above says the scan cannot
+produce one because `FIRES_EXACT`/`FIRES_PREFIX` were written from the craftable
+build menu and miss ~200k placements, and that fixing it needs a hand audit. It
+does not: the camera is standing in the room and can count the components. The
+hand audit is still worth doing for *targeting* -- you want the count before you
+choose what to shoot -- but the vocabulary is no longer the only way to get one.
+
+### How far this actually reaches -- an open question, not a finding
+
+`IsBurning()` permits a light to survive the catch-up burn entirely:
+`fuel > 0f || m_infiniteFuel`. A prefab shipped with `m_infiniteFuel` set never
+had fuel to lose, and a decorative light with no `Fireplace` component at all
+was never in this mechanism to begin with. So the claim is about **fuel-burners
+that had burned down**, which is narrower than "the lights".
+
+The colour lane measured the same thing from the pixel side and found frames
+that disprove the strong version outright: `20260822-134535_0275_hall_night`
+has four wall torches burning with real light pools on the stone, in a build
+that also holds 5 `hearth` and 10 `fire_pit` with no open flame alight
+anywhere. Warm mass at night also tracks fire proximity across vantages --
+seat 25.1%, hall 11.0%, gate 4.4%, court 2.3%, toproom 1.8% -- so those rooms
+were not dark. Two mechanisms, one dead and one alive, in the same photograph.
+
+That distinction sets `hearth-1`'s scope, and nothing on disk answers it: the
+committed prefab dump carries `hash/name/netView/piece/wearNTear` for 3,458
+prefabs and no `Fireplace` or `Light` fields at all, and its generator left with
+the sovereign split. Which of these are fuel-burners and which are always-on
+props is a **mod-side dump**, not a guess from names -- and names have already
+misled once, on `piece_FairylightGarland`, which reads as warm and is a blue
+point light.
+
+The population is also an order of magnitude smaller than the counts printed
+further up this runbook, which are **all-snapshot** figures. The cache holds nine
+snapshots and Era 17 is `snapshot_id=107`; scoped to it and to
+`category='BUILDING'`:
+
+| prefab | this runbook said | Era 17, actually |
+| --- | --- | --- |
+| `Candle_resin` | 34,988 | **2,511** |
+| MountainKit braziers (3) | ~87,000 | **10,718** |
+| CastleKit groundtorches (3) | ~58,000 | **6,130** |
+
+Same defect this runbook documents for the scan elsewhere, reappearing in its own
+prose. The `LIGHTS` total of 173,541 is correctly scoped; these three lines were
+not. One number in that table argues for the always-on reading before any dump
+runs: `CastleKit_groundtorch_unlit` exists as its own prefab and is placed **5
+times** in Era 17, against 6,130 lit ones. Builders are not choosing a lit
+variant and then fuelling it six thousand times.
+
+### The environment list, dumped at last
+
+`comfy-camera-proof-envs.json` was written for the first time on 2026-08-25 at
+07:29, by the night-sky lane's `moon1` run picking up the new build. The game has
+**39 environments**. This project shoots four of them.
+
+```
+Ashlands_ashrain  Ashlands_ashrain_clear  Ashlands_CinderRain  Ashlands_meteorshower
+Ashlands_misty    Ashlands_SeaStorm       Ashlands_storm       Bonemass
+Caves             CavesHildir             Clear                Crypt
+CryptHildir       Darklands_dark          DeepForest Mist      Eikthyr
+Fader             GDKing                  Ghosts               GoblinKing
+Heath clear       InfectedMine            LightRain            Mistlands_clear
+Mistlands_rain    Mistlands_thunder       Misty                Moder
+nofogts           Queen                   Rain                 Snow
+SnowStorm         SunkenCrypt             SwampRain            ThunderStorm
+Twilight_Clear    Twilight_Snow           Twilight_SnowStorm
+```
+
+Three things in there change open questions rather than adding options:
+
+- **`Twilight_Clear`, `Twilight_Snow`, `Twilight_SnowStorm`.** The twilight lane
+  synthesises twilight by forcing `Clear` and setting the clock to 0.71. The game
+  ships purpose-built twilight environments and none has ever been used. Whether
+  they beat a late `Clear` is one A/B on the same 30 builds.
+- **Storms plural.** `ThunderStorm` is one of at least six: `Ashlands_storm`,
+  `Ashlands_SeaStorm`, `Mistlands_thunder`, `SnowStorm`, `Twilight_SnowStorm`.
+  The colour lane measured `opponent_gap` bottoming out in `ThunderStorm` at 74.5
+  because a storm is grey rather than blue -- these carry different palettes, and
+  a grey-storm floor is not a storm floor.
+- **`nofogts`.** Reads as a no-fog debug environment. Six sky-platform frames are
+  fog-flagged whiteouts and the fog veto exists to hide them; an environment that
+  removes fog is worth one probe before more machinery is built to work around it.
+
+`SetForceEnvironment` takes any of these regardless of biome, so an Ashlands
+storm over a meadow castle is available. It will look wrong in a way that is a
+photographic choice rather than a bug.
+
+### What could come back empty, and that being fine
+
+`Thunder.DoFlash` is private and picks its bearing at random, so `DriveFlash`
+does the same work against the same public `m_flashEffect` at a bearing the plan
+chooses, then rotates the spawned `Light`s back at the subject -- which is what
+DoFlash does, and the reason a strike lights the scene rather than only the sky.
+The spawned `LightFlicker` is re-timed to a flat hold, because a real strike is
+shorter than the shutter is reliable at 4K. The light is the game's; the exposure
+is ours, and the receipt records the bearing and the hold.
+
+It may still be worth nothing. If the flash prefab in this build carries no
+`Light` at all the receipt says `sky_only`, and if the accessibility setting
+`ReduceFlashingLights` is on it says `reduced_flashing` -- both zero the effect,
+and both are answers rather than failures. The test is `luma_mean` (already
+computed per image by `depth_layers.py`) between each flash frame and its
+no-flash twin. No delta means the flash is scenery, and part 4 stops there.
+
+Nothing here has been photographed yet. The mechanism is verified against the
+assembly and the plans are on disk; whether a lit build is a *better photograph*
+than a cold one is a question for the two runs and for eyes, not for the
+aesthetic head, which reads global tone and will mark every storm frame down on
+principle.
+
 ## The findings, written up
 
 [`aiming-the-selfie-stick.html`](aiming-the-selfie-stick.html) is the readable version of
@@ -814,3 +1010,143 @@ everything above: what the four photographic-technique literatures actually name
 these 2,509 frames measured against them, and a ranked list of shots worth taking. It
 carries the charts. This runbook stays the raw record; that page is the summary, and it
 is also published as an artifact.
+
+## The colour of the light: where a warm source stops separating — 2026-08-25
+
+The question was where the RGB/hex output of a light source stops being
+distinguishable from the weather and the time of day, and whether being inside or
+outside a structure changes the answer. It needed no new capture: the corpus
+already holds **153 matched (cluster, vantage) quads** — 612 frames where camera,
+build and framing are identical and the only variable is the light.
+
+`color_layers.py` measures it. PIL and numpy only, no model and no venv, 2,509
+frames in 102 s. Two chroma lobes (warm wrapping zero, cool 170–270°), their
+centroids in hex, and two different separations that turn out **not** to peak in
+the same place.
+
+| where | condition | n | scene_v | warm % | cool % | lift | opp gap | warm | cool | ambient |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| inside | sunrise | 85 | 0.333 | 18.3 | 21.8 | 0.116 | 85.3 | `#765041` | `#182E36` | `#323639` |
+| inside | **storm** | 84 | 0.313 | 16.6 | **23.9** | **0.122** | 78.2 | `#754F40` | `#1F3538` | `#353B37` |
+| inside | sunset | 86 | 0.332 | 16.8 | 23.0 | **0.079** | 87.6 | `#6E4A3C` | `#182E3D` | `#2E343A` |
+| inside | night | 81 | 0.267 | 14.6 | **11.9** | 0.097 | 76.7 | `#674132` | `#111E26` | `#282A27` |
+| outside | sunrise | 61 | 0.331 | 8.7 | 35.4 | 0.099 | 96.2 | `#725443` | `#1B4053` | `#2C4147` |
+| outside | storm | 63 | 0.311 | 5.0 | 33.1 | 0.117 | 74.5 | `#6E5440` | `#21393F` | `#354241` |
+| outside | sunset | 63 | 0.338 | 5.9 | 46.7 | **0.078** | **104.9** | `#6D4D3E` | `#1B3B4F` | `#293F4A` |
+| outside | night | 59 | 0.233 | 4.4 | 21.9 | **0.148** | 78.1 | `#634232` | `#0E202C` | `#19272B` |
+
+Drone exteriors for scale — not matched, so different framings, but n is large:
+
+| | condition | n | scene_v | warm % | cool % | lift | opp gap |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| drone | Clear 0.64 | 1221 | 0.528 | 4.1 | 48.5 | 0.119 | **121.2** |
+| drone | Clear 0.32 | 343 | 0.468 | 2.1 | 61.2 | 0.134 | 120.8 |
+| drone | Clear 0.71 | 106 | 0.362 | **12.7** | 60.3 | **0.170** | 106.9 |
+| drone | Misty 0.66 | 34 | 0.735 | 1.3 | 6.2 | **0.041** | 90.2 |
+| drone | Clear 0.90 | 10 | 0.141 | 0.2 | 19.9 | **0.217** | 78.1 |
+
+### There are two separations and they do not peak together
+
+**`lift`** (warm_v − scene_v) is *brightness* separation: how much the warm part of
+the frame outshines the frame. **`opp gap`** ((R−B) of the warm lobe minus (R−B) of
+the cool lobe) is *colour* separation: how different the two lights actually are.
+
+- **Brightness separation peaks in the dark**: night 0.148–0.217, storm 0.117–0.122.
+- **Colour separation peaks in clear daylight**: golden 121.2, dawn 120.8 — because
+  a deep blue sky is the most saturated cool field this game produces. Storm has the
+  *worst* colour gap (74.5) precisely because a storm is grey, not blue.
+- **Sunset is the floor of brightness separation, in both places**: 0.079 inside and
+  0.078 outside, against 0.078–0.217 across everything else. Ambient and fire share a
+  hue, so the source has nothing to stand out from. **This is the limit that was being
+  asked about**, and it is a light, not a place.
+
+So the two cannot be maximised at once. Golden hour gives the biggest colour
+difference and the smallest glow; night gives the biggest glow and almost no colour
+difference. **Storm indoors is the compromise**: lift 0.122 (within 20% of the best
+anywhere) with a real cold field still in frame at 23.9% cool. Sunrise indoors is its
+close rival and has a better colour gap (85.3 vs 78.2) — those two are the shortlist,
+and choosing between them is an eye question, not a number question.
+
+### Inside or outside is a bigger lever than the weather
+
+Warm mass indoors runs **3x** what it does outdoors in every one of the four
+conditions (14.6–18.3% against 4.4–8.7%), and the ranking is unchanged by weather.
+The cool field runs the other way outdoors (21.9–46.7% against 11.9–23.9%). Being
+under a roof is what puts a warm source and a cold field in the same frame at all.
+
+Night indoors is the interesting failure: the warm mass survives (14.6%) but the cool
+lobe **collapses to 11.9%**, the lowest in the table. A hearth at night with the
+shutters effectively closed is a lantern in a void — which is the measured version of
+what judging by eye already said about night frames.
+
+### 0.71 is the worst light indoors and one of the best outdoors
+
+Both the interior `sunset` slot and the exterior `Clear 0.71` frames sit at time 0.71,
+and they land at opposite ends: lift **0.079 inside**, **0.170 outside** — the best of
+any clear exterior time. Indoors a low sun floods the room through the openings and
+the fire cannot compete with it; outdoors the same sun rakes a warm facade against a
+60% blue sky.
+
+This matters for the queued **twilight run**, which is exterior: the measurement
+*supports* it. It is only an interior 0.71 pass that would be aiming at the floor.
+
+### What could not be measured, and why it is not a tuning problem
+
+A per-frame **light-source detector** was built twice and cut both times.
+
+1. Warm pixels above the frame's p90 plus an absolute floor, judged by whether the
+   ring around them sits above the frame mean. The ring test reads 0.12–0.15 on
+   daylight exteriors that contain no light source at all.
+2. The corrected local gradient, core minus ring. It ranks a hand-checked sunlit
+   meadow (0.13) **above** a hand-checked blown-out hearth (0.056), because a big soft
+   flame has a bright ring and dry grass does not.
+
+The decisive test: across 114 builds with a fixed-vocabulary light scan, the metric
+correlates **r = 0.02–0.09** with how many warm lights the build actually holds, in
+every condition. It is not measuring fire. The frames were checked by eye and the
+verdict was confirmed both ways — the meadow frame has no source in it and scores
+like the hearth frame does.
+
+The reason is structural, not a threshold: in daylight the sun *is* the source and
+every lit surface is its pool, so "brightest warm region" resolves to whatever the sun
+falls on. `bright_warm_frac` survives in the output as a description of the frame,
+with the docstring saying plainly that it is not a detector, so this does not get
+rebuilt.
+
+### Which of the builders' lights were actually burning
+
+A parallel session has queued a `hearth` re-shoot on the premise that "a capture
+world copy loads with every fire burned to zero — Fireplace catches up the fuel that
+should have burned while the zone was unloaded". The corpus says that is right about
+**fuel-burning** fires and wrong as a statement about the frames, and the difference
+decides how much of the existing interior set has to be re-taken.
+
+Warm mass at night, when a lit source is the only light there is:
+
+| vantage | aims at | n | scene_v | warm % |
+| --- | --- | --- | --- | --- |
+| seat | a table beside the fire | 32 | 0.338 | **25.1** |
+| hall | the fires themselves | 32 | 0.228 | **11.0** |
+| gate | the gate, from outside | 33 | 0.240 | 4.4 |
+| court | open sky, no fire | 32 | 0.216 | 2.3 |
+| toproom | a window | 24 | 0.231 | **1.8** |
+
+A vantage aimed at fire carries 6x the warm mass of one aimed at a window in the same
+buildings on the same night, and a seat beside one carries 14x. So the rooms were not
+dark, and the 300 existing interiors are not all worthless.
+
+Checked by eye on `20260822-134535_0275_hall_night`, which resolves it: **four wall
+torches burning** with real light pools on the stone, and a strung garland burning.
+Cluster 275 also holds **5 `hearth` and 10 `fire_pit`**, and no open fire is alight
+anywhere in that frame. Wall torches and garlands do not consume fuel; hearths and
+fire pits do.
+
+So the premise holds for the fuel-burners and the re-shoot is worth running — but the
+claim to carry forward is the narrow one. What was missing from those frames is
+**open-flame light specifically**, not the builders' lighting design, most of which is
+torches, braziers and lanterns and was in the picture all along.
+
+That same frame corrected a vocabulary entry. `piece_FairylightGarland` was classified
+warm from its name; the six in cluster 275 are the **blue** point lights along the
+wall. `LIGHT_HUE` now says blue, which moves the world's cool share from 51.0% to
+**51.6%** of weighted light. Names are not evidence about colour; frames are.

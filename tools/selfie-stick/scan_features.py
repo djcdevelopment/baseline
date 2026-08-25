@@ -78,8 +78,81 @@ WINDOWS = {
     "Piece_grausten_window_2x2": 4,
     "Piece_grausten_window_4x2": 8,
 }
-FIRES_EXACT = {"hearth", "fire_pit", "bonfire", "piece_walltorch"}
-FIRES_PREFIX = ("piece_brazier", "piece_groundtorch")
+# Light sources, hand-audited against Era 17's placed BUILDING rows rather than
+# written from the crafting UI. The previous vocabulary -- four exact names plus
+# a ("piece_brazier", "piece_groundtorch") prefix tuple -- reached 6.5% of the
+# 173,541 lights this world holds, and the prefix half reached NONE of them:
+# expand_pattern_sets() used it to keep torches out of the wall set and
+# feature_rows() only ever emitted FIRES_EXACT, so 80,010 placed torches and
+# braziers matched a pattern and were then dropped on the floor.
+#
+# Weights are how much a piece lights a scene after dark: 3 an open flame you
+# can read a room by, 2 a torch or lantern, 1 a small or decorative emitter.
+# The kind stays "fire" because plan_interiors.py aims vantages at f["fires"].
+LIGHTS = {
+    # open flame
+    "bonfire": 3, "hearth": 3, "fire_pit": 3, "fire_pit_iron": 3,
+    "fire_pit_haldor": 3, "fire_pit_hildir": 3, "BogWitch_Fire_Pit": 3,
+    "MountainKit_brazier": 3, "MountainKit_brazier_blue": 3,
+    "MountainKit_brazier_purple": 3, "CastleKit_brazier": 3,
+    "piece_brazierceiling01": 3, "piece_brazierfloor01": 3, "piece_brazierfloor02": 3,
+    # torches and lanterns
+    "piece_groundtorch": 2, "piece_groundtorch_wood": 2, "piece_groundtorch_green": 2,
+    "piece_groundtorch_blue": 2, "piece_groundtorch_mist": 2,
+    "CastleKit_groundtorch": 2, "CastleKit_groundtorch_blue": 2,
+    "CastleKit_groundtorch_green": 2, "piece_walltorch": 2,
+    "piece_dvergr_lantern": 2, "piece_dvergr_lantern_pole": 2,
+    "dvergrprops_lantern": 2, "dvergrprops_lantern_standing": 2,
+    "Pickable_DvergrLantern": 2, "piece_Lavalantern": 2, "piece_wisplure": 2,
+    "dverger_demister_large": 2, "piece_jackoturnip": 2,
+    # small and decorative emitters
+    "Candle_resin": 1, "Candle_resin_bogwitch": 1, "piece_FairylightGarland": 1,
+    "piece_CelebrationGarland": 1, "piece_xmasgarland": 1, "piece_xmastree": 1,
+    "GlowingMushroom": 1, "lavarock_ashlands1": 1, "UnstableLavaRock": 1,
+    "LeviathanLava": 1, "dverger_demister": 1,
+}
+
+# Audited and deliberately NOT lights, with the reason, because the next person
+# to sweep for "torch" or "fire" will match every one of them:
+#   CastleKit_groundtorch_unlit, CastleKit_metal_groundtorch_unlit  unlit by name
+#   DvergerMageFire                                   a creature effect, not a piece
+#   dverger_demister_broken                           broken, emits nothing
+#   forge*, blackforge*, smelter, blastfurnace,       crafting stations: the glow is
+#   charcoal_kiln, piece_oven, incinerator,           incidental, and counting them
+#   piece_cookingstation*                             tracks workshops, not lighting
+#   crystal_wall_1x1                                  translucent, not emissive; a window
+#   GuckSack, Pickable_Mushroom_*, Pickable_*Stand    resources that happen to glow
+
+# What each light EMITS, which is not the same question as how much. Valheim's
+# coloured flames -- the Mistlands and CastleKit/MountainKit variants, and every
+# Dvergr lantern -- put out green, blue, purple and cyan light, and they are not
+# a minority: measured over Era 17's 173,541 placed lights they are 51.6% of the
+# weighted total, so this world is lit MORE by coloured light than by fire
+# (warm 48.4%, green 22.5%, cyan 17.1%, blue 8.4%, purple 3.6%). A hall lit by
+# blue braziers photographs backwards from one lit by a hearth, so the colour
+# has to reach the planner rather than being counted away.
+#
+# Anything absent is warm, which is the default because fire is the default.
+LIGHT_HUE = {
+    "piece_groundtorch_blue": "blue", "MountainKit_brazier_blue": "blue",
+    "CastleKit_groundtorch_blue": "blue",
+    "piece_groundtorch_green": "green", "CastleKit_groundtorch_green": "green",
+    "piece_groundtorch_mist": "green", "GlowingMushroom": "green",
+    "MountainKit_brazier_purple": "purple",
+    # Checked against a frame, not against the name: cluster 275's six
+    # garlands are the blue point lights strung along the wall in
+    # 20260822-134535_0275_hall_night. "Fairylight" reads warm and is not.
+    "piece_FairylightGarland": "blue",
+    "piece_dvergr_lantern": "cyan", "piece_dvergr_lantern_pole": "cyan",
+    "dvergrprops_lantern": "cyan", "dvergrprops_lantern_standing": "cyan",
+    "Pickable_DvergrLantern": "cyan", "dverger_demister": "cyan",
+    "dverger_demister_large": "cyan", "piece_wisplure": "cyan",
+}
+WARM = "warm"
+
+
+def hue_of(name):
+    return LIGHT_HUE.get(name, WARM)
 
 
 def piece_names_from_dump(dump_path):
@@ -108,10 +181,10 @@ def piece_names_from_cache(con):
 
 def expand_pattern_sets(piece_names):
     """Concrete name sets for the pattern-defined kinds."""
-    fixed = set(SEATS) | TABLES | BEDS | GATES | set(WINDOWS) | FIRES_EXACT
+    fixed = set(SEATS) | TABLES | BEDS | GATES | set(WINDOWS) | set(LIGHTS)
     doors, roofs, floors, walls = set(), set(), set(), set()
     for name in piece_names:
-        if name in fixed or name.startswith(FIRES_PREFIX):
+        if name in fixed:
             continue
         low = name.lower()
         if "_door" in low:
@@ -134,7 +207,7 @@ def feature_rows(fixed_and_expanded):
     rows += [(n, "bed", 1) for n in BEDS]
     rows += [(n, "gate", 1) for n in GATES]
     rows += [(n, "window", w) for n, w in WINDOWS.items()]
-    rows += [(n, "fire", 1) for n in FIRES_EXACT]
+    rows += [(n, "fire", w) for n, w in LIGHTS.items()]
     rows += [(n, "door", 1) for n in doors]
     rows += [(n, "roof", 1) for n in roofs]
     rows += [(n, "floor", 1) for n in floors]
@@ -305,7 +378,7 @@ def main():
     expanded = expand_pattern_sets(piece_names)
     doors, roofs_set, floors_set, walls_set = expanded
     print(f"  vocabulary: {len(SEATS)} seats, {len(TABLES)} tables, {len(GATES)} gates, "
-          f"{len(WINDOWS)} windows, {len(doors)} doors, {len(roofs_set)} roofs, "
+          f"{len(WINDOWS)} windows, {len(LIGHTS)} lights, {len(doors)} doors, {len(roofs_set)} roofs, "
           f"{len(floors_set)} floors, {len(walls_set)} walls (patterns expanded "
           f"against {vocabulary_source}, {len(piece_names):,} piece names)")
 
@@ -334,6 +407,7 @@ def main():
           ON z.x BETWEEN b.minx AND b.maxx
          AND z.z BETWEEN b.minz AND b.maxz
          AND z.y BETWEEN b.miny AND b.maxy
+        WHERE z.category = 'BUILDING'
         """).fetchall()
     print(f"  {len(rows):,} feature piece(s) matched")
 
@@ -371,7 +445,7 @@ def main():
     features = {}
     print()
     print(f"  {'cid':>5} {'drift':>7} {'seats':>5} {'tables':>6} {'gates':>5} "
-          f"{'windows':>7} {'fires':>5} {'doors':>5} {'bands':>5} {'open%':>5}")
+          f"{'windows':>7} {'fires':>5} {'lit':>5} {'warm':>5} {'doors':>5} {'bands':>5} {'open%':>5}")
     for c in sorted(targets, key=lambda c: c.get("rank") or 0):
         cid = c["cluster_id"]
         kinds = per_cluster.get(cid, {})
@@ -390,6 +464,10 @@ def main():
                 out.append(rec)
             return out
 
+        fires = named("fire", LIGHTS)
+        for p in fires:
+            p["hue"] = hue_of(p["name"])
+
         n_now, n_unres = counts.get(cid, (0, 0))
         drift = (n_now - c["pieces"]) / c["pieces"] * 100 if c["pieces"] else 0.0
         entry = {
@@ -405,7 +483,18 @@ def main():
             "gates": named("gate"),
             "doors": named("door"),
             "windows": named("window", WINDOWS),
-            "fires": named("fire"),
+            "fires": fires,
+            # How lit this build is after dark, weighted. This is the targeting
+            # signal for a night pass: the first rule in this project with a
+            # reason behind it rather than a correlation.
+            "lights": sum(p["w"] for p in fires),
+            # Split by emitted colour, because the two earn different
+            # photographs. warm_lights is who earns a hearth shot: a warm source
+            # against a cold sky is the whole composition, and measured across
+            # the 153 matched condition quads it is the only pairing where a
+            # source separates from ambient at all (see color_layers.py).
+            "warm_lights": sum(p["w"] for p in fires if p["hue"] == WARM),
+            "cool_lights": sum(p["w"] for p in fires if p["hue"] != WARM),
             "floor_bands": bands,
             "roof_grid": grid,
             "walls": thin(walls),
@@ -419,6 +508,7 @@ def main():
         print(f"  {cid:>5} {drift:>+6.1f}% {len(entry['seats']):>5} "
               f"{len(entry['tables']):>6} {len(entry['gates']):>5} "
               f"{len(entry['windows']):>7} {len(entry['fires']):>5} "
+              f"{entry['lights']:>5} {entry['warm_lights']:>5} "
               f"{len(entry['doors']):>5} {len(bands):>5} {open_pct:>4.0f}%{flag}")
 
     out_doc = {

@@ -76,6 +76,11 @@ def parse_args():
                         "for surgical retakes; the index keeps the newest frame "
                         "per (cluster, variant) so retunes supersede cleanly")
     p.add_argument("--region", default="in-world", choices=["all", "in-world", "outland"])
+    p.add_argument("--fires", action="store_true",
+                   help="hold the builders' fires lit for every frame. This lane "
+                        "exists because interiors carry their own hearth light -- "
+                        "but a capture world copy loads with every hearth burned to "
+                        "zero, so until now that light was never actually in frame")
     p.add_argument("--max-los", type=int, default=10,
                    help="drop a vantage whose sight line clips walls this many "
                         "times or more (0 disables). Measured over 312 first-person "
@@ -456,9 +461,12 @@ def vantage_court(f, cluster, gate_v):
 
 # ---------------------------------------------------------------------------
 
-def validate_tsv(path):
+def validate_tsv(path, mode="interior"):
     """Re-read the TSV the way the mod's LoadShotPlan does: split on tabs, drop
-    short lines, parse floats. A row this check drops is a row the mod drops."""
+    short lines, parse floats. A row this check drops is a row the mod drops.
+
+    plan_nightsky.py writes the same contract with mode=rooftop, so the mode is
+    a parameter rather than a second copy of this function."""
     ok, bad = 0, 0
     with open(path, encoding="utf-8") as fh:
         for raw in fh:
@@ -473,7 +481,14 @@ def validate_tsv(path):
                 int(fields[0])
                 for i in (2, 3, 4, 5, 6, 8, 9, 10, 11):
                     float(fields[i])
-                assert fields[13] == "interior"
+                assert fields[13] == mode
+                # fires and flash are read positionally at 14 and 15. A column
+                # inserted anywhere earlier does not error in the mod, it shifts
+                # every later field and shoots the wrong thing in silence.
+                if len(fields) > 14:
+                    assert fields[14] in ("0", "1")
+                if len(fields) > 15 and fields[15]:
+                    float(fields[15])
                 ok += 1
             except (ValueError, AssertionError):
                 bad += 1
@@ -565,6 +580,7 @@ def main():
                     "distance_m": round(dist, 1),
                     "environment": env, "time_of_day": tod,
                     "mode": "interior",
+                    "fires": args.fires,
                 })
 
     out = {
@@ -574,7 +590,8 @@ def main():
         "shots": len(shots),
         "settings": {"lens_offset_m": LENS_OFFSET, "eye_stand_m": EYE_STAND,
                      "eye_seat_m": EYE_SEAT,
-                     "conditions": [list(c) for c in CONDITIONS]},
+                     "conditions": [list(c) for c in CONDITIONS],
+                     "fires": args.fires},
         "vantages": notes,
         "plan": shots,
     }
@@ -589,13 +606,14 @@ def main():
     tsv = os.path.splitext(args.out)[0] + ".tsv"
     with open(tsv + ".tmp", "w", encoding="utf-8", newline="\n") as fh:
         fh.write("# cluster_id\tshot\tcam_x\tcam_y\tcam_z\tyaw\tpitch\tenv\ttime\t"
-                 "aim_x\taim_y\taim_z\tlabel\tmode\n")
+                 "aim_x\taim_y\taim_z\tlabel\tmode\tfires\tflash\n")
         for s in shots:
             c_, a = s["camera"], s["aim"]
             fh.write(f"{s['cluster_id']}\t{s['shot']}\t{c_['x']}\t{c_['y']}\t{c_['z']}\t"
                      f"{s['yaw_deg']}\t{s['pitch_deg']}\t{s['environment']}\t"
                      f"{s['time_of_day']}\t{a['x']}\t{a['y']}\t{a['z']}\t"
-                     f"{s['label'].replace(chr(9), ' ')}\t{s['mode']}\n")
+                     f"{s['label'].replace(chr(9), ' ')}\t{s['mode']}\t"
+                     f"{1 if s.get('fires') else 0}\t\n")
     os.replace(tsv + ".tmp", tsv)
 
     ok, bad = validate_tsv(tsv)

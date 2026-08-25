@@ -37,6 +37,8 @@ $era = Join-Path $here 'out\era17'
 $perception = 'C:\work\omen-perception\venv\Scripts\python.exe'
 
 # One row per queued run. Adding the next one is a row, not a new script.
+# 'runner' is optional and defaults to the orbit runner; interior bands name the
+# interior one. Both take the same era arguments, so the branch is one variable.
 $queue = @(
     [ordered]@{
         name    = 'sky'
@@ -56,6 +58,18 @@ $queue = @(
                   'ranks 967-1294, so a score-ordered sweep would never reach them'
     },
     [ordered]@{
+        name    = 'nightsky'
+        plan    = 'nightsky'
+        what    = 'stand on the high ground of a build and look up at the moon'
+        why     = 'every frame in the gallery was composed by a planner that puts ' +
+                  'the camera outside a build and aims DOWN at it -- plan_shots.py ' +
+                  'says so itself. That is why the 14 exterior night frames median ' +
+                  '4.79 and are murk: not the light, a camera pointed at the ground ' +
+                  'at midnight. The two best night frames in the corpus are ' +
+                  'courtyard vantages that happen to look up. Judge these by ' +
+                  'depth_layers.py and by eye, NEVER by the aesthetic score'
+    },
+    [ordered]@{
         name    = 'twilight'
         plan    = 'twilight-1'
         what    = 'the 30 best-photographing builds, re-shot at time 0.71'
@@ -65,6 +79,34 @@ $queue = @(
                   'existing 0.64 orbits, so it is a like-for-like A/B you can judge ' +
                   'by eye. Do NOT judge it by the score: the aesthetic head reads ' +
                   'global tone, so it marks dimmer frames down regardless of merit'
+    },
+    [ordered]@{
+        name    = 'storm'
+        plan    = 'storm-1'
+        what    = 'the same 30 builds as the twilight run, 3 storm frames each: ' +
+                  'fires held, fires out, fires plus a driven strike'
+        why     = 'ThunderStorm is the best condition this project has measured -- ' +
+                  'indoors. Outdoors it has never been shot at all: all 300 storm ' +
+                  'receipts of 4,536 are interiors, and the exterior verdict came ' +
+                  'from Clear against Misty, so storm outside is untested rather ' +
+                  'than tested and lost. These 30 already have 0.64 and 0.71 frames ' +
+                  'on identical bearings, so the storm joins a three-way comparison ' +
+                  'instead of starting a new one. storm_dark is the control: without ' +
+                  'it a good frame only proves storms are pretty, not that holding ' +
+                  'the builders fires did anything'
+    },
+    [ordered]@{
+        name    = 'hearth'
+        plan    = 'hearth-1'
+        runner  = 'Invoke-InteriorCapture.ps1'
+        what    = 'interior band A re-shot with the builders fires held lit'
+        why     = 'this lane exists because interiors carry their own hearth light, ' +
+                  'and it turns out they never did. A capture world copy loads with ' +
+                  'every fire burned to zero -- Fireplace catches up the fuel that ' +
+                  'should have burned while the zone was unloaded -- so all 300 ' +
+                  'existing storm interiors were shot in rooms whose lights were out. ' +
+                  'Same builds, same vantages, same four conditions, so every frame ' +
+                  'has its own unlit twin already on disk'
     }
 )
 
@@ -122,7 +164,8 @@ if (Get-Process valheim -ErrorAction SilentlyContinue) {
 Write-Host ("starting '{0}': {1} shots over {2} structures, about {3} min" -f
             $chosen.name, $facts.Shots, $facts.Structures, $facts.Minutes) -ForegroundColor Cyan
 
-& (Join-Path $here 'Invoke-OrbitCapture.ps1') -SkipPlan `
+$runner = if ($chosen.Contains('runner')) { $chosen.runner } else { 'Invoke-OrbitCapture.ps1' }
+& (Join-Path $here $runner) -SkipPlan `
     -World 'ComfyEra17' -Character 'tugcorp' `
     -Clusters (Join-Path $era 'clusters.json') `
     -PlanOut (Join-Path $era "$($chosen.plan).json") `

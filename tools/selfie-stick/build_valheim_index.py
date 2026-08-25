@@ -297,19 +297,38 @@ def supersede_key(row):
     version of an earlier one. On 2026-08-24 a deliberate re-shoot of 30 builds
     at time 0.71 silently retired their 0.64 originals that way -- 150 frames,
     the best-photographing thirty in the gallery, replaced rather than joined.
+
+    Whether the builders' fires were held lit belongs in here for the same
+    reason, and more sharply: re-shooting a plan with --fires reuses every
+    variant name at the same environment and the same time, so without it the
+    lit frames would retire the unlit ones and delete the comparison they were
+    taken to make. The control is not an older version of the photograph. It is
+    the other half of it.
     """
     return (row.get("cluster_id"), row.get("variant"),
-            row.get("environment"), row.get("time_of_day"))
+            row.get("environment"), row.get("time_of_day"),
+            bool(row.get("fires")), row.get("flash_bearing_deg"))
 
 
 def perspective_of(variant):
     """Where the lens stood. seat_* rides a chair; the other interior vantages
-    stand at eye height; everything else is the drone doing orbits and sweeps."""
+    stand at eye height; moon* stands on the build's own roof looking out at the
+    sky; everything else is the drone doing orbits and sweeps.
+
+    The bucket is not cosmetic. The gallery ranks each frame WITHIN its
+    perspective and sorts on that percentile, because the aesthetic head reads
+    global tone -- it prefers a landscape to a room by 0.45 on this set and marks
+    anything dark down on principle. Without a bucket of their own, every night
+    frame would lose a raw-score fight with a golden-hour aerial by construction
+    and sink to the bottom of the page.
+    """
     v = variant or ""
     if v.startswith("seat_"):
         return "seated"
     if v.startswith(("hall_", "toproom_", "gate_", "court_")):
         return "eye level"
+    if v.startswith("moon"):
+        return "rooftop"
     return "drone"
 
 
@@ -527,6 +546,20 @@ def main():
             "occluded": bool(rec.get("occluded")),
             "pieces_near_aim": rec.get("pieces_near_aim"),
             "lens_offset_m": rec.get("lens_offset_m"),
+            # What was lit, and what was there to light. fires_found is the first
+            # per-build light count this project has ever had: the scan cannot
+            # produce one because scan_features.py's fire vocabulary was written
+            # from the craftable build menu, but the camera was standing in the
+            # room and counted the components. Kept on every row, held or not,
+            # because "this build has 31 fires and we shot it dark" is exactly
+            # the row worth finding later.
+            "fires": bool(rec.get("fires")),
+            "fires_found": rec.get("fires_found"),
+            "fires_burning": rec.get("fires_burning"),
+            "fires_wet": rec.get("fires_wet"),
+            "fires_lit": rec.get("fires_lit"),
+            "flash": rec.get("flash"),
+            "flash_bearing_deg": rec.get("flash_bearing_deg"),
         }
         if cluster:
             # Exact, not nearest: this shot was planned for this structure.
@@ -676,6 +709,7 @@ def main():
         "runs": len({r["run"] for r in rows}),
         "joined": sum(1 for r in rows if "cluster_id" in r),
         "environments": facet("environment"),
+        "flashes": facet("flash"),
         "regions": facet("region"),
         "variants": facet("variant"),
         "kinds": facet("kind"),
