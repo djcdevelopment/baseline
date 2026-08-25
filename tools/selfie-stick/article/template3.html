@@ -1,0 +1,430 @@
+<title>The light they built for</title>
+<style>
+@font-face{font-family:AB;src:url(__FONT_BODY__) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:AB;src:url(__FONT_BODYSB__) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:AM;src:url(__FONT_MONO__) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:AM;src:url(__FONT_MONOB__) format("woff2");font-weight:700;font-display:swap}
+
+__TOKENS__
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:17px;line-height:1.68;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+
+/* ---- rhythm: one owner for vertical space ---- */
+.wrap{display:flex;flex-direction:column;gap:0}
+section{padding:0 20px}
+.col{max-width:var(--measure);margin:0 auto;display:flex;flex-direction:column;gap:1.15rem}
+.wide{max-width:64rem;margin:0 auto;display:flex;flex-direction:column;gap:.9rem}
+.mid{max-width:48rem;margin:0 auto;display:flex;flex-direction:column;gap:.9rem}
+section+section{margin-top:1.7rem}
+section:has(> .col h3){margin-top:3rem}
+section:has(> .col > .head){margin-top:4.6rem}
+header.hero+section{margin-top:3.4rem}
+.col>*,.wide>*,.mid>*,figure>*,.foot>*{min-width:0}
+
+p{margin:0}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:600}
+a{color:var(--wood);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--wood) 40%,transparent)}
+a:hover{border-bottom-color:var(--wood)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--wood);outline-offset:3px;border-radius:3px}
+
+/* ---- hero ---- */
+.hero{position:relative;padding:0;margin:0}
+.hero img{width:100%;height:min(78vh,700px);object-fit:cover;object-position:center 42%}
+.hero-scrim{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:20px;background:linear-gradient(to bottom,transparent 30%,var(--scrim) 88%)}
+.hero-inner{max-width:64rem;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:.85rem}
+.eyebrow{font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--wood)}
+.eyebrow .up{border-bottom:1px solid color-mix(in srgb,var(--wood) 45%,transparent)}
+.eyebrow span{opacity:.5;margin:0 .2em}
+h1{font-family:var(--mono);font-weight:700;letter-spacing:-.02em;line-height:1.08;
+  font-size:clamp(1.32rem,6.6vw,3.4rem);overflow-wrap:break-word}
+.standfirst{max-width:38rem;color:var(--muted);font-size:clamp(1rem,2vw,1.16rem);line-height:1.55}
+.credit{font-family:var(--mono);font-size:.66rem;color:var(--dim);letter-spacing:.05em}
+
+/* ---- type ---- */
+h2{font-family:var(--mono);font-weight:700;font-size:clamp(1.3rem,3vw,1.75rem);
+  letter-spacing:-.015em;line-height:1.2}
+h3{font-family:var(--mono);font-weight:700;font-size:.95rem;letter-spacing:.01em;color:var(--ink)}
+.lede{font-size:1.1rem;color:var(--muted);line-height:1.6}
+.head{display:flex;flex-direction:column;gap:.5rem}
+strong{font-weight:600;color:var(--ink)}
+em{font-style:italic;color:var(--muted)}
+code{font-family:var(--mono);font-size:.86em;color:var(--wood);
+  background:color-mix(in srgb,var(--wood) 11%,transparent);padding:.08em .34em;border-radius:4px}
+
+/* ---- figures ---- */
+figure{margin:0;display:flex;flex-direction:column;gap:.55rem}
+figcaption{font-family:var(--mono);font-size:.7rem;line-height:1.55;color:var(--dim);
+  letter-spacing:.01em}
+figcaption b{color:var(--muted);font-weight:700}
+.shot{border-radius:3px;overflow:hidden;background:#000;border:1px solid var(--line)}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem}
+@media(max-width:720px){.grid3,.grid4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.grid2{grid-template-columns:1fr}}
+.tile{position:relative;display:flex;flex-direction:column;gap:.4rem}
+.tile .lab{display:flex;justify-content:space-between;gap:.6rem;font-family:var(--mono);
+  font-size:.66rem;color:var(--dim);letter-spacing:.02em}
+.tile .lab b{color:var(--muted);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tile .lab .n{color:var(--wood);font-weight:700;font-variant-numeric:tabular-nums;flex:0 0 auto}
+
+/* contact sheet */
+.sheet{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:3px}
+.sheet img{aspect-ratio:16/9;object-fit:cover;border-radius:2px}
+
+/* ---- data ---- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.stat{background:var(--paper);padding:.85rem .95rem;display:flex;flex-direction:column;gap:.2rem}
+.stat .v{font-family:var(--mono);font-weight:700;font-size:1.28rem;color:var(--wood);
+  font-variant-numeric:tabular-nums;line-height:1.1}
+.stat .k{font-family:var(--mono);font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--dim)}
+
+pre{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:4px;
+  padding:.9rem 1rem;overflow-x:auto;font-family:var(--mono);font-size:.73rem;line-height:1.65;
+  color:var(--muted);white-space:pre;tab-size:4}
+pre b{color:var(--ink);font-weight:700}
+pre i{color:var(--wood);font-style:normal}
+pre u{color:var(--dim);text-decoration:none}
+pre .c{color:var(--dim)}
+
+.eq{background:var(--paper);border:1px solid var(--line);border-left:2px solid var(--wood);
+  border-radius:4px;padding:.85rem 1rem;overflow-x:auto;font-family:var(--mono);font-size:.82rem;
+  line-height:1.9;color:var(--ink);white-space:pre}
+.eq .n{color:var(--wood)}
+.eq .cm{display:block;font-size:.7rem;color:var(--dim);line-height:1.55;margin-top:.55rem}
+
+.note{border-left:2px solid var(--line2);padding:.15rem 0 .15rem 1rem;color:var(--muted);
+  font-size:.94rem}
+.warn{border-left-color:var(--amber)}
+
+table{border-collapse:collapse;width:100%;font-size:.78rem;font-family:var(--mono)}
+th,td{text-align:left;padding:.5rem .7rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-weight:700}
+td{color:var(--muted)}
+td b{color:var(--ink);font-weight:700}
+td.n{font-variant-numeric:tabular-nums;color:var(--wood);white-space:nowrap}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--paper)}
+.tbl table tr:last-child td{border-bottom:none}
+
+ul{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.5rem}
+li::marker{color:var(--wood)}
+
+/* ---- diagrams ---- */
+.dia{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:1rem;
+  overflow-x:auto}
+.dia svg{width:100%;height:auto;min-width:560px;display:block}
+svg text{font-family:var(--mono);fill:var(--ink)}
+.s-lab{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;fill:var(--dim)}
+.s-ttl{font-size:13px;font-weight:700;fill:var(--ink)}
+.s-sub{font-size:10.5px;fill:var(--muted)}
+.s-num{font-size:19px;font-weight:700;fill:var(--wood)}
+.s-tag{font-size:9.5px;font-weight:700;letter-spacing:.05em;fill:var(--dim)}
+.s-box{fill:var(--panel);stroke:var(--line2);stroke-width:1}
+.s-lane{fill:none;stroke:var(--line);stroke-width:1;stroke-dasharray:3 4}
+.s-arr{stroke:var(--line2);stroke-width:1.4;fill:none}
+.s-hi{stroke:var(--wood);stroke-width:1.6;fill:none}
+
+/* ---- footer ---- */
+footer{border-top:1px solid var(--line);margin-top:5rem;padding:2.5rem 20px 3.5rem;
+  background:var(--paper)}
+.foot{max-width:48rem;margin:0 auto;display:flex;flex-direction:column;gap:1.1rem}
+.repo{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--mono);font-size:.82rem;
+  font-weight:700;border:1px solid var(--wood);color:var(--wood);border-radius:4px;
+  padding:.7rem 1.1rem;align-self:flex-start;
+  background:color-mix(in srgb,var(--wood) 9%,transparent)}
+.repo:hover{background:color-mix(in srgb,var(--wood) 18%,transparent)}
+.fmeta{font-family:var(--mono);font-size:.68rem;color:var(--dim);line-height:1.8}
+.fmeta b{color:var(--muted);font-weight:700}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <img src="__HERO_SRC__" alt="A timber pier settlement at dusk, its lamps lit against a blue sky">
+  <div class="hero-scrim"><div class="hero-inner">
+    <div class="eyebrow"><a class="up" href="../../">Baseline</a> <span>/</span>
+    <a class="up" href="../">selfie-stick</a> <span>/</span> part 3 &middot; light</div>
+    <h1>The light they built for</h1>
+    <p class="standfirst">Part one taught arithmetic to fly a drone. Part two went
+      indoors. This one asks the only question the rig had never asked &mdash; which
+      light to shoot in &mdash; and finds that the answer belongs to the people who
+      built the houses.</p>
+    <div class="credit">__HERO_CAP__</div>
+  </div></div>
+</header>
+
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">What came out</div>
+    <h2>The same building, twice</h2>
+  </div>
+  <p class="lede">Same rule as the earlier parts: the photographs first, and the
+    arithmetic afterwards. Each pair below is the <strong>identical camera</strong>
+    &mdash; same position, same bearing, same aim point &mdash; separated only by the
+    hour. Golden at <code>0.64</code>, then twilight at <code>0.71</code>.</p>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    __PAIR_TILES__
+    <figcaption>Left, golden hour. Right, twilight. Nothing moved but the sun. The
+      difference you are looking at is not a framing decision, a lens or a filter
+      &mdash; it is one number in a shot plan.</figcaption>
+  </figure>
+</div></section>
+
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">The ask</div>
+    <h2>One light, never examined</h2>
+  </div>
+  <p>Every exterior in this gallery had been shot at the same hour. Not by accident
+    &mdash; a measurement in the first series said golden hour beat the alternatives,
+    and after that nobody looked again. Two thousand photographs later that single
+    unexamined constant was the largest thing in the pipeline nobody had tested.</p>
+  <p>What restarted the question was a coincidence in the data. The three
+    highest-scoring frames in the entire corpus all sat at <code>0.71</code> &mdash;
+    an hour the exterior rig had never once used. All three were interiors, shot
+    through a window by a different planner that happened to schedule dusk.</p>
+  <div class="note">The exteriors had never been to that hour. The interiors went
+    there every run, and came back with the best frames in the gallery.</div>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="grid4">__STRIP_TILES__</div>
+    <figcaption><b>__STRIP_LABEL__</b> from a single bearing, through every sky the
+      rig has ever set. One camera position, one aim point, seven values of one
+      variable. Sunrise and storm read as weather; dawn and golden read as
+      architecture; dusk and night read as somebody living there.</figcaption>
+  </figure>
+</div></section>
+
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">The instrument</div>
+    <h2>Finding the sun without asking the game</h2>
+  </div>
+  <p>To place a camera relative to the light you have to know where the light is, and
+    the mod does not report it. It turns out the photographs do. Every frame already
+    records the bearing its camera faced; the sky at the top of the frame is brighter
+    toward the sun. Regress one against the other and the sun falls out.</p>
+  <p>The first attempt failed, usefully. Averaged over the whole frame the luminance
+    is dominated by the building &mdash; a dark hall and a pale one differ far more
+    than two skies do &mdash; and the fit came back at <strong>R&sup2; near zero</strong>.
+    Restricting the measurement to the top eighteen percent of the frame, and
+    subtracting each build's own mean so the subject cancels, recovers the signal.</p>
+</div></section>
+
+<section><div class="mid">
+  <div class="dia">__SVG_SUN__</div>
+</div></section>
+
+<section><div class="col">
+  <p>Seven independent capture runs, all shot at <code>0.64</code>, agree on a bearing
+    in the south-west:</p>
+  <div class="tbl"><table>
+    <tr><th>Run</th><th>Frames</th><th>Bearing</th></tr>
+    <tr><td>092513</td><td class="n">160</td><td class="n">260&deg;</td></tr>
+    <tr><td>125325</td><td class="n">156</td><td class="n">243&deg;</td></tr>
+    <tr><td>145411</td><td class="n">160</td><td class="n">216&deg;</td></tr>
+    <tr><td>165629</td><td class="n">200</td><td class="n">237&deg;</td></tr>
+    <tr><td>180143</td><td class="n">180</td><td class="n">207&deg;</td></tr>
+    <tr><td>220312</td><td class="n">180</td><td class="n">222&deg;</td></tr>
+    <tr><td>083226</td><td class="n">180</td><td class="n">251&deg;</td></tr>
+    <tr><td><b>pooled</b></td><td class="n">1,216</td><td class="n"><b>235&deg;</b></td></tr>
+  </table></div>
+  <p>Good to about &plusmn;25&deg;. Enough to put a camera on the far side of a
+    building from the sun; not enough to place a sunset behind a particular chimney.</p>
+</div></section>
+
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">The first thing it proved</div>
+    <h2>A null result, and what it was really about</h2>
+  </div>
+  <p>With the bearing known, every golden-hour frame in the gallery could be labelled
+    by how it stood to the light. Back-lit, side-lit, front-lit &mdash; a distinction
+    that every photography guide treats as fundamental.</p>
+  <div class="stats">
+    <div class="stat"><div class="v">5.599</div><div class="k">back-lit</div></div>
+    <div class="stat"><div class="v">5.628</div><div class="k">side-lit</div></div>
+    <div class="stat"><div class="v">5.610</div><div class="k">front-lit</div></div>
+    <div class="stat"><div class="v">&minus;0.003</div><div class="k">correlation</div></div>
+  </div>
+  <p>Nothing. A spread of three hundredths across 1,087 frames, against a
+    build-to-build spread of 0.275. Either lighting direction genuinely does not
+    matter in Valheim's soft golden light, or the thing doing the judging cannot see
+    it.</p>
+  <p>It is the second one, and finding that out was worth more than the shot it was
+    meant to plan.</p>
+</div></section>
+
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">The instrument, again</div>
+    <h2>What the judge can actually answer</h2>
+  </div>
+  <p>The gallery ranks on an aesthetic model borrowed from open image research. Asked
+    what moves its score across 2,181 frames, it gives a very clear answer, and it is
+    not the answer anyone assumed:</p>
+  <div class="tbl"><table>
+    <tr><th>Lever</th><th>Spread in median score</th><th></th></tr>
+    <tr><td><b>Time of day and weather</b></td><td class="n">0.62</td><td>it sees this clearly</td></tr>
+    <tr><td>Lighting direction</td><td class="n">0.03</td><td>blind</td></tr>
+    <tr><td>Any structural attribute</td><td class="n">&asymp; 0</td><td>blind</td></tr>
+  </table></div>
+  <p>It reads <strong>global tone</strong>. It is an exposure meter and a veto &mdash;
+    excellent at killing a black frame or a fog whiteout, and constitutionally unable
+    to tell you whether a photograph is well made. Every question about composition
+    put to it comes back answered in brightness.</p>
+  <div class="note warn">Which sets a trap this article had to walk around: a
+    dim-but-beautiful frame scores low <em>because it is dim</em>. Blue hour, night
+    interiors and low-angle shots are all marked down on principle. Any verdict on
+    them has to come from eyes.</div>
+</div></section>
+
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">The verdict</div>
+    <h2>Daylight leads</h2>
+  </div>
+  <p>Thirty builds, shot from the identical camera in both lights, judged by a person
+    rather than the model. Daylight wins, and the reasons are all about legibility:
+    it rakes shadows across terrain, it puts white caps on the water, and it makes
+    build materials readable &mdash; which for a gallery of <em>what people built</em>
+    is most of the job.</p>
+</div></section>
+
+<section><div class="mid">
+  <div class="dia">__SVG_VERDICT__</div>
+</div></section>
+
+<section><div class="col">
+  <p>Twenty-nine of thirty. And one exception, which is the photograph at the top of
+    this page &mdash; a pier settlement whose lamps do more for it than the sun does.</p>
+  <div class="note">The model agrees with the human verdict here, at 5.911 against
+    5.611. That agreement is worth exactly nothing as evidence: it marks the brighter
+    frame up by default. Two instruments reaching the same answer for unrelated
+    reasons is a coincidence, not a confirmation.</div>
+</div></section>
+
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">What the other light is for</div>
+    <h2>Somebody lit these for themselves</h2>
+  </div>
+  <p>Twilight loses on legibility and keeps its place anyway, for a reason that has
+    nothing to do with the camera. It is the only light in which the builders'
+    <em>own</em> lighting is visible.</p>
+  <p>Braziers along a wall. Candles on a table nobody eats at. Groundtorches marking
+    a path between two buildings that a player already knows the way between. None of
+    it is necessary &mdash; Valheim asks for light only to keep the dark from being
+    dangerous, and these are far past that. Somebody placed them so a house would be
+    pleasant to come home to after dark.</p>
+</div></section>
+
+<section><div class="wide">
+  <figure>
+    <div class="grid4">__NIGHT_TILES__</div>
+    <figcaption>Daylight hides all of this completely. It is the one thing a
+      photograph of a building can show that a plan view of the same building
+      cannot.</figcaption>
+  </figure>
+</div></section>
+
+<section><div class="col">
+  <p>So the rule is not "shoot golden". It is <strong>golden leads, and twilight is
+    the second frame on the builds that earn it</strong> &mdash; and no special case
+    is needed to make that happen, because the model already sorts daylight first for
+    its own unrelated reasons.</p>
+  <p>Which leaves one question: <em>which</em> builds earn it. The honest answer is
+    that the pipeline cannot tell yet, and the reason is a good one.</p>
+</div></section>
+
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">The blind spot</div>
+    <h2>Two hundred thousand lights nobody counted</h2>
+  </div>
+  <p>A twilight frame is worth taking in proportion to how much light the builder
+    placed. That is the first targeting rule this project has had that is a mechanism
+    rather than a correlation &mdash; you can say why it is true before measuring it.</p>
+  <p>It cannot be computed, because the scan does not know most of the lights exist.
+    The vocabulary of what counts as a light was written from Valheim's craftable
+    build menu. This world is built from the prefab table, and the most-placed light
+    sources in it are not craftable at all:</p>
+  <div class="tbl"><table>
+    <tr><th>Prefab</th><th>Placed</th><th>Builders</th></tr>
+    <tr><td><b>Candle_resin</b></td><td class="n">34,988</td><td class="n">108</td></tr>
+    <tr><td><b>MountainKit_brazier</b></td><td class="n">34,015</td><td class="n">30</td></tr>
+    <tr><td><b>MountainKit_brazier_purple</b></td><td class="n">28,247</td><td class="n">31</td></tr>
+    <tr><td><b>MountainKit_brazier_blue</b></td><td class="n">24,624</td><td class="n">34</td></tr>
+    <tr><td><b>CastleKit_groundtorch_green</b></td><td class="n">23,369</td><td class="n">23</td></tr>
+    <tr><td><b>CastleKit_groundtorch_blue</b></td><td class="n">20,656</td><td class="n">20</td></tr>
+    <tr><td><b>CastleKit_groundtorch</b></td><td class="n">13,833</td><td class="n">20</td></tr>
+    <tr><td><b>CastleKit_brazier</b></td><td class="n">13,615</td><td class="n">23</td></tr>
+    <tr><td><b>fire_pit_iron</b></td><td class="n">6,207</td><td class="n">102</td></tr>
+  </table></div>
+  <p>Around two hundred thousand light sources, invisible to the thing that decides
+    what to photograph. The same blind spot had already been found once, in the
+    furniture: three chairs that players place constantly were missing from the seat
+    vocabulary for exactly the same reason, and the interior planner had been quietly
+    walking past them for months.</p>
+  <div class="note">A vocabulary written from a game's crafting UI describes the game
+    the designers shipped. A world four thousand hours in is built out of whatever is
+    reachable, and that is a different list.</div>
+</div></section>
+
+<section><div class="col">
+  <div class="head">
+    <div class="eyebrow">Still open</div>
+    <h2>What this does not do yet</h2>
+  </div>
+  <ul>
+    <li><strong>The light count.</strong> Until the fire vocabulary is repaired by
+      hand &mdash; and it has to be by hand, because a pattern match for
+      <code>fire</code> swallows a creature effect &mdash; twilight is a blanket
+      re-shoot rather than a targeted one.</li>
+    <li><strong>The judge still cannot see composition.</strong> Everything in this
+      article about framing rests on human verdicts. Pairwise comparison on a model
+      with opinions is the unbuilt next instrument, same as it was at the end of part
+      two.</li>
+    <li><strong>Blue hour proper.</strong> <code>0.71</code> is dusk, not the narrow
+      window where the sky still holds colour and interior light reads strongest. The
+      hour was chosen because interiors had already proved it, not because anyone
+      searched for the best one.</li>
+    <li><strong>These are still other people's houses.</strong> Every frame stays
+      <code>published: false</code> until a person promotes it. Nothing here consents
+      on anyone's behalf, and the lighting is the most personal thing the pipeline has
+      photographed so far.</li>
+  </ul>
+</div></section>
+
+<footer><div class="foot">
+  <div class="eyebrow">The code &middot; the series</div>
+  <p>The planning half &mdash; the shot planner, the light measurement, the overlay
+    check that keeps a mod's HUD out of the frames &mdash; is open and lives in the
+    Baseline repo alongside everything the earlier parts described.</p>
+  <a class="repo" href="https://github.com/djcdevelopment/baseline/tree/main/tools/selfie-stick">
+    github.com/djcdevelopment/baseline &rarr; tools/selfie-stick</a>
+  <a class="repo" href="../">&larr; Part 1 &mdash; photographing a world nobody had time to look at</a>
+  <a class="repo" href="../part-2/">&larr; Part 2 &mdash; standing where the builders stood</a>
+  <div class="fmeta">
+    <b>Run</b> &nbsp;&nbsp;&nbsp;__COUNT_TW__ twilight frames over 30 builds &middot;
+    matched to __COUNT_GO__ golden frames &middot; __COUNT_ALL__ in the gallery<br>
+    <b>Light</b> &nbsp;Sun bearing recovered from 1,216 frames across seven runs
+    &middot; pooled 235&deg; &plusmn;25&deg;<br>
+    <b>Note</b> &nbsp;&nbsp;Coordinates and builder IDs are withheld throughout, same
+    as parts one and two. The scan outputs are gitignored for the same reason.
+  </div>
+</div></footer>
+
+</div>
