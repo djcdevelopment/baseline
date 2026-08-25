@@ -23,6 +23,8 @@
 
 # Generated, hashed, published — LF always.
 *.html                text eol=lf
+*.json                text eol=lf
+*.jsonl               text eol=lf
 
 # Linux-destined infrastructure — LF always.
 *.sh                  text eol=lf
