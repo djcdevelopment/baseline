@@ -490,21 +490,22 @@ class CelestialArcTests(unittest.TestCase):
 class NightSkyPlanTests(unittest.TestCase):
     """The rooftop plan, checked against the geometry it claims to satisfy."""
 
-    def _rooftops(self, reach=None):
+    def _rooftops(self, reach=None, platforms=None):
         reach = reach or {str(b): 12.0 for b in range(0, 360, 30)}
-        return {"world": "T", "structures": [{
+        extra = {"platforms_detail": platforms} if platforms else {}
+        return {"world": "T", "structures": [dict(extra, **{
             "cluster_id": 7, "lights": 300, "light_pieces": 100, "pieces": 5000,
             "height_m": 30.0, "region": "in-world", "above_base_m": 22.0,
             "stance": {"x": 100.0, "y": 60.0, "z": 200.0},
             "exposure": 8, "exposure_of": 16, "platforms": 3, "reach_m": reach,
-        }]}
+        })]}
 
-    def _run(self, tmp, extra=(), reach=None):
+    def _run(self, tmp, extra=(), reach=None, platforms=None):
         roof = os.path.join(tmp, "rooftops.json")
         clusters = os.path.join(tmp, "clusters.json")
         out = os.path.join(tmp, "nightsky.json")
         with io.open(roof, "w", encoding="utf-8") as fh:
-            json.dump(self._rooftops(reach), fh)
+            json.dump(self._rooftops(reach, platforms), fh)
         with io.open(clusters, "w", encoding="utf-8") as fh:
             json.dump({"clusters": [_cluster(7, 1)]}, fh)
         argv = ["plan_nightsky.py", "--rooftops", roof, "--clusters", clusters,
@@ -617,6 +618,37 @@ class NightSkyPlanTests(unittest.TestCase):
             self.assertTrue(doc["plan"])
             for shot in doc["plan"]:
                 self.assertLess(shot["pitch_deg"], 0.0)
+
+    def test_a_stance_under_its_own_masonry_is_refused(self):
+        """The failure the first capture run actually had. All 16 frames came
+        back clearance="planned" and occluded=false and not one had sky in it:
+        four of them are a photograph of cluster 182's own lattice. The mod's
+        raycast masks terrain, static_solid and Default, and player pieces are on
+        the piece layer, so for a camera standing inside its own build that check
+        is blind. This one is computed from the world's positions instead."""
+        roofed = [{"stance": {"x": 100.0, "y": 60.0, "z": 200.0},
+                   "reach_m": {str(b): 12.0 for b in range(0, 360, 30)},
+                   "skyline_deg": {str(b): 40.0 for b in range(0, 360, 30)}}]
+        with tempfile.TemporaryDirectory() as tmp:
+            doc, _tsv = self._run(tmp, platforms=roofed)
+            self.assertEqual(doc["plan"], [])
+
+    def test_an_open_stance_on_the_same_build_is_still_taken(self):
+        """A build is only dropped when EVERY candidate stance is boxed in --
+        the highest flat block is not reliably the one with sky over it, so the
+        scan offers several and the planner picks."""
+        blocked = {"stance": {"x": 100.0, "y": 66.0, "z": 200.0},
+                   "reach_m": {str(b): 12.0 for b in range(0, 360, 30)},
+                   "skyline_deg": {str(b): 40.0 for b in range(0, 360, 30)}}
+        open_one = {"stance": {"x": 130.0, "y": 60.0, "z": 200.0},
+                    "reach_m": {str(b): 12.0 for b in range(0, 360, 30)},
+                    "skyline_deg": {str(b): 0.0 for b in range(0, 360, 30)}}
+        with tempfile.TemporaryDirectory() as tmp:
+            doc, _tsv = self._run(tmp, platforms=[blocked, open_one])
+            self.assertTrue(doc["plan"])
+            for shot in doc["plan"]:
+                self.assertEqual(shot["platform"], 1)
+                self.assertEqual(shot["camera"]["y"], 60.0)
 
     def test_the_gallery_gives_these_frames_their_own_perspective(self):
         """The aesthetic head prefers a landscape to a room by 0.45 and marks

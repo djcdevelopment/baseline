@@ -1150,3 +1150,175 @@ That same frame corrected a vocabulary entry. `piece_FairylightGarland` was clas
 warm from its name; the six in cluster 275 are the **blue** point lights along the
 wall. `LIGHT_HUE` now says blue, which moves the world's cool share from 51.0% to
 **51.6%** of weighted light. Names are not evidence about colour; frames are.
+
+## The night lane: it was never the light, it was the camera
+
+The series read "night is the worst light" off the sixth-slot A/B — Clear 0.90 medianed
+**4.792** against 5.636 for the five golden slots, the worst of the three skies tested.
+That reading is wrong, and the reason is visible in `plan_shots.py`'s own comment:
+
+> The camera is always above the aim point here, so a correct pitch is always positive.
+
+Every one of the 2,509 frames was composed by a planner that stands outside a build and
+aims **down** at it. At midnight that is a photograph of dark ground. The 14 exterior
+night frames are murk with no sky in them at all.
+
+The counter-evidence was already in the corpus. `0629_court_night` and `0532_court_night`
+are interior *courtyard* vantages that happen to look up — `pitch` −20.51 and −27.97 —
+and they are the best night frames in the set: moon, ring, star field, lit brazier,
+layered rock. Nothing needed inventing. What was missing was a planner that puts the lens
+on a roof and aims it at the sky on purpose.
+
+### Where the sky is, exactly
+
+`comfyproof_sky` (new console command, and armed from `orbit-request.json` via a
+`sky_times` list so it runs unattended like everything else) walked EnvMan's directional
+light through 41 times of day. One arc, and colour and intensity say which body is on it:
+
+| | colour | intensity | window |
+| --- | --- | --- | --- |
+| sun | 1.00, 0.87, 0.64 | 1.50 | t 0.25 → 0.75 |
+| moon | 0.41, 0.49, 0.68 | 1.20 | t 0.75 → midnight → 0.25 |
+
+Both rise due east at 0°, peak due south at **45°**, set due west. At t=0.25 and t=0.75
+intensity is 0 and colour black — the handovers. The closed form reproduces **all 39 lit
+samples to 0.001°**:
+
+```
+theta(t) = 180 * frac((t - rise) / 0.5)        rise = 0.25 sun, 0.75 moon
+alt(t)   = asin(K * sin theta)                 K = sin 45 = 0.70711
+az(t)    = atan2(cos theta, -K * sin theta)
+```
+
+Independent check: it puts the sun at **239.7°** at t=0.64, against the **235° ± 25**
+this runbook already had from regressing sky-strip luminance on camera yaw over seven
+runs. Two instruments, one from the engine and one from pixels, inside the error bar.
+
+It is in `plan_nightsky.py:body_direction()` with the dump samples pinned as a test
+fixture, so a later simplification fails against the game rather than against an opinion.
+
+### Two negative findings worth as much as the positive one
+
+**EnvMan has no moon object and no phase field.** The dump enumerated every field and
+every `Get*`/`Is*` method matching `moon|phase|sun` and returned only
+`m_sunHorizonTransition{H,L}`, `m_sunFogColor` and `GetSunDirection`; all 61 renderers in
+the sky hierarchy are cloud, water and fog. The disc is drawn by the sky material. **Moon
+phase cannot be set for a shot** — it is whatever the world's day gives, and the two
+frames above prove it varies: both are t=0.90, one near-full and one a thin crescent.
+
+**The rendered disc is not where the light comes from.** Fitting the disc's limb in
+frames from different runs at t=0.90 — camera yaws 30° apart, so it cannot be an
+artifact — puts it at azimuth **77.0 and 79.6**, while the light sits at **134.2**.
+World-azimuth spread across detections is 19° against 51° camera-relative, which is what
+says it is a fixed body. Use 134.2 for moonlight *on surfaces*; do not use it to place
+the disc. Altitude and disc radius are **not** recoverable from limb fitting — the same
+body measured 41.3° and 63.7° altitude, because a short arc of a huge circle trades
+centre distance against radius.
+
+### The rooftop equations
+
+Three bands: sky above the axis, treetops and ridges in the middle, the roof you are
+standing on along the bottom. Constants are measured, not assumed — `fov` is 65 on every
+receipt, and the lens lands **1.65 m above the placed point** (`lens_offset_m` 1.72–2.04).
+
+```
+alt_target = alt_body - rho                     rho = 0 until the disc is measured
+e          = alt_target - atan(f_sky * tan(fov_v/2))        axis elevation
+pitch      = -e                                             Unity: + looks down
+roofline in frame  <=>  e + atan(h_eye / R) <= fov_v / 2
+parapet on the lower third  <=>  e + atan(h_eye / R) = 20.9 deg
+aim point  A = lens + 25 m along the axis
+```
+
+That last line is the one that lets the whole thing run on the mod as installed. The
+runner uses `aim` for three gates and none is framing: it counts pieces within 60 m of
+it, raycasts to it, and recomputes yaw/pitch from it if recovery fires. A point 25 m up
+the sight line keeps the build inside the piece sphere, puts the raycast into open sky,
+and reproduces the planned angles exactly if recovery ever does fire.
+
+Two constraints close from opposite sides and between them they pick the hour. The camera
+only looks *up* while the body is above the sky-fraction offset (16° at the default), so
+t must be past ~0.81 and before ~0.19. The roofline only survives while
+`e + atan(h_eye/R) <= 32.5`, so a 20 m terrace takes a 43° moon and a 4 m turret top
+needs it under 25°. A build that fails is a scheduling problem, not a dead end.
+
+### The first run: mechanically perfect, and zero photographs of the sky
+
+`20260825-072915`, 16 frames over 8 builds. Every receipt: `clearance: "planned"` (the
+camera stayed exactly where it was put), `occluded: false`, `pieces_near_aim` 1,483–30,930.
+**And the disc appears in 0 of 16.** Four frames of cluster 182 — "Black Tower", the
+most-lit build in the world at 1,869 weighted lights — are a photograph of its own
+diamond lattice.
+
+Three faults, and only the third is about aiming:
+
+1. **The mod's occlusion check cannot see player builds.** `IsOccluded` masks
+   `terrain`, `static_solid` and `Default`; placed pieces are on the `piece` layer, which
+   `PiecesNear` uses and the raycast does not. For an orbit at 120 m the blockers are
+   trees and hillsides so it works; for a camera standing inside its own build it is
+   blind. **Not changed** — adding `piece` to that mask would make every orbit start
+   reporting its own subject as an obstruction and trigger lift-and-swing across three
+   lanes. The guard belongs in the plan.
+2. **A ZDO's position is the piece's pivot, not the top of its mesh.** A 2 m wall
+   pivoting at 67 reaches 69, and a column-top model reading 67 puts the eye inside
+   masonry and calls it sky. Measured on 182: grausten pillar arches pivot **1.35 m below
+   the lens** and fill the frame. `scan_rooftops.py` now adds a 2 m piece-top allowance.
+3. **A single-ray skyline threads the gaps.** The first skyline walk sampled one column
+   line per bearing and reported 0.0° due east from inside a 22,393-piece tower, while
+   **1,449 piece pivots sat above the eye** in that corridor. The frame is 97° wide; the
+   guard now sweeps a ±15° fan at 5° steps and takes the worst, which guards the middle
+   of the frame where the sky band lives and tolerates the edges — a wall at the border
+   is a near layer, a wall up the middle is a wall.
+
+With all three in, 182 reads **18.1°** of its own masonry in its clearest direction
+against a planned 18.9° axis, and is dropped. Of 21 scanned builds, 5 now drop and 15
+plan. This is `plan_interiors.py`'s `--max-los` lesson arriving a second time in a
+different costume: **guard the plan, not the pixels.**
+
+The scan also stopped emitting one verdict per build. The highest flat 3×3 block is not
+reliably the one with sky over it, so `scan_rooftops.py` emits up to five well-separated
+candidate stances, each with its own reach and skyline map, and the planner picks.
+
+### The light vocabulary reached 6.5% of this world's lights
+
+Targeting a night pass by light count needed `scan_features.py` to be able to count
+lights. It could not. `FIRES_EXACT` held four names and `FIRES_PREFIX` held two prefixes —
+and the prefix half counted **nothing**: `expand_pattern_sets()` used it only to keep
+torches out of the wall set, and `feature_rows()` emitted `FIRES_EXACT` alone. So 80,010
+placed torches and braziers matched a pattern and were then dropped on the floor.
+
+Hand-audited against Era 17's placed `BUILDING` rows, sorted by placement count and
+accepted by eye: **43 prefabs, 173,541 placed lights, 150,553 assigned to a cluster, 456
+of 2,204 structures with none.** The old vocabulary reached **11,225 of them, 6.5%**.
+Weights are 3 for an open flame, 2 for a torch or lantern, 1 for a small emitter. The
+exclusions are recorded in the source with reasons, because the next person to sweep for
+`torch` or `fire` will match every one of them: unlit variants
+(`CastleKit_groundtorch_unlit`), creature effects (`DvergerMageFire`), crafting stations
+whose glow is incidental (`forge*`, `smelter`, `charcoal_kiln`, `piece_oven`), and
+`crystal_wall_1x1`, which is translucent rather than emissive and is already a window.
+
+Note for anyone comparing against the fire table earlier in this runbook: those counts
+(`Candle_resin` 34,988, `MountainKit_brazier` 34,015) are **all ZDOs including
+dungeon-generated props**. Under `category='BUILDING'` they are 2,511 and 3,799. The
+dungeon population is real and it is not anybody's build.
+
+**A second bug fell out of the same audit.** The feature join in `scan_features.py` had no
+category filter at all — only the *count* queries did, which is why the existing
+`test_the_scan_only_ever_reads_placed_pieces` passed while the join was wide open. Any
+build whose padded box touched a Dvergr tower inherited its props. Fixed, and the test now
+asserts against the join itself rather than against the file.
+
+### Open
+
+- **Nothing has yet photographed the sky.** The guard is in and the plan is replanned; it
+  has not been shot. That is the next run and it is the only thing that closes this.
+- **`rho` is unmeasured.** `--rho` defaults to 0 and aims at the body's centre;
+  `sky_check.py` reports the residual between where the planner put the body and where it
+  landed, which is the equation validating itself and the only way to get `rho`.
+- **Terrain is still unguarded at plan time.** Valheim generates it from the seed and no
+  offline heightmap exists — but terrain *is* in the mod's raycast mask, so the two checks
+  cover each other. Pieces and trees are guarded here; hillsides are guarded there.
+- `sky_check.py` is deliberately conservative and will refuse rather than fabricate: on
+  the frames it was validated against it found the one unambiguous disc and rejected the
+  ring feature and a water reflection that an earlier naive sweep had happily reported as
+  a moon at −21.6° altitude, below the horizon.

@@ -53,6 +53,18 @@ FLAT_TOLERANCE_M = 1.0
 # which is what puts a near layer against the frame border, the thing
 # depth_layers.py calls edge_frame and rewards.
 DROP_M = 1.5
+# A ZDO's position is the piece's PIVOT, not the top of its mesh. A 2 m wall
+# whose pivot sits at 67 reaches 69, and a column-top model that reads 67 puts
+# the camera's eye inside masonry and calls it sky. Measured on cluster 182:
+# grausten pillar arches pivoting 1.35 m BELOW the lens are what filled the frame.
+PIECE_TOP_M = 2.0
+# The skyline cannot be one ray. The frame is 97 degrees wide, and a single ray
+# through a pillared hall threads the gaps between columns and reports open sky
+# from inside a tower -- which is exactly what happened on the first run. Guard
+# the central fan, where the moon and the sky band live, and tolerate the edges:
+# a wall at the frame border is a near layer, a wall up the middle is a wall.
+SKYLINE_FAN_DEG = 15.0
+SKYLINE_FAN_STEP_DEG = 5.0
 
 
 def parse_args():
@@ -81,6 +93,14 @@ def parse_args():
                         "treetops and no horizon, which is three of the four bands "
                         "this composition is built from")
     p.add_argument("--include-sky", dest="exclude_sky", action="store_false")
+    p.add_argument("--h-eye", type=float, default=1.65,
+                   help="lens height above the roof, for the skyline angles "
+                        "(measured: the mod places the player and the lens ends "
+                        "up 1.65 m above that point)")
+    p.add_argument("--platforms", type=int, default=5,
+                   help="how many candidate stances to emit per build. The "
+                        "highest flat block is not always the one with sky over "
+                        "it, so the planner needs a choice rather than a verdict")
     p.add_argument("--pad", type=float, default=4.0,
                    help="metres of x/z slack around each frozen bounding box")
     return p.parse_args()
@@ -150,9 +170,10 @@ def platforms(tops):
     seats and the lights were both written from the crafting UI against a world
     built from the prefab table, and both were wrong.
 
-    Note there is no "is the sky above it" test, because a column's top IS its
-    highest piece: nothing in this world can be over it. The first draft carried
-    one and it was vacuous.
+    Note there is no "is the sky above it" test here, because a column's top IS
+    its highest piece: nothing can be over it in its own column. What CAN be over
+    it is the rest of the build, one column across -- see skyline(), which is the
+    test that actually matters and the one the first capture run lacked.
     """
     out = []
     for (ix, iz), _top in tops.items():
@@ -177,6 +198,44 @@ def platforms(tops):
     # you can see over the edge from it.
     out.sort(key=lambda p: (-p["level"], -p["exposure"]))
     return out
+
+
+def skyline(tops, x0, z0, eye_y, bearing_deg, limit_m=80.0):
+    """The highest thing in the way, as an angle above the lens, along a bearing.
+
+    This is the guard the first run needed and did not have. All 16 frames came
+    back clearance="planned" and occluded=false, and not one of them had sky in
+    it: the camera was looking straight into the build's own lattice or into a
+    tree canopy. The mod's raycast could not see either -- IsOccluded masks
+    "terrain", "static_solid" and "Default" and player pieces are on the "piece"
+    layer, so for a camera standing inside its own build the check is blind.
+
+    So do it here, from the world's own positions, the same way plan_interiors.py
+    settled the identical problem indoors: guard the plan, not the pixels. Uses
+    EVERY category rather than just BUILDING, because the thing that filled the
+    top of the best frame in that run was a tree.
+
+    Terrain is still not covered -- Valheim generates it from the seed and no
+    heightmap exists offline -- but terrain IS in the mod's raycast mask, so the
+    two checks cover each other.
+    """
+    worst = 0.0
+    offset = -SKYLINE_FAN_DEG
+    while offset <= SKYLINE_FAN_DEG + 1e-9:
+        az = math.radians(bearing_deg + offset)
+        sx, sz = math.sin(az), math.cos(az)
+        d = CELL
+        while d <= limit_m:
+            key = (math.floor((x0 + sx * d) / CELL),
+                   math.floor((z0 + sz * d) / CELL))
+            top = tops.get(key)
+            if top is not None:
+                angle = math.degrees(math.atan2(top + PIECE_TOP_M - eye_y, d))
+                if angle > worst:
+                    worst = angle
+            d += CELL
+        offset += SKYLINE_FAN_STEP_DEG
+    return round(worst, 1)
 
 
 def reach(tops, ix, iz, level, bearing_deg, limit_m=40.0):
@@ -249,23 +308,25 @@ def main():
           c["min_z"] - args.pad, c["max_z"] + args.pad) for c in targets])
     rows = con.execute(
         """
-        SELECT b.cid, z.x, z.y, z.z
+        SELECT b.cid, z.category, z.x, z.y, z.z
         FROM selected_zdo z
         JOIN cluster_box b
           ON z.x BETWEEN b.minx AND b.maxx
          AND z.z BETWEEN b.minz AND b.maxz
          AND z.y BETWEEN b.miny AND b.maxy
-        WHERE z.category = 'BUILDING'
         """).fetchall()
     per_cluster = defaultdict(list)
-    for cid, x, y, z in rows:
-        per_cluster[cid].append((x, y, z))
+    per_cluster_all = defaultdict(list)
+    for cid, category, x, y, z in rows:
+        per_cluster_all[cid].append((x, y, z))
+        if category == "BUILDING":
+            per_cluster[cid].append((x, y, z))
 
     bearings = list(range(0, 360, 30))
     out, skipped = [], []
     print()
     print(f"  {'cid':>6} {'lights':>6} {'pieces':>7} {'stance_y':>8} "
-          f"{'above':>6} {'exposure':>9} {'reach_m':>9}")
+          f"{'above':>6} {'exposure':>9} {'reach_m':>9} {'plat':>3} {'sky_deg':>7}")
     for c in sorted(targets, key=lambda c: -lit.get(c["cluster_id"], 0)):
         cid = c["cluster_id"]
         pieces = per_cluster.get(cid, [])
@@ -273,6 +334,7 @@ def main():
             skipped.append((cid, "no pieces in the frozen box"))
             continue
         tops = column_tops(pieces)
+        tops_all = column_tops(per_cluster_all.get(cid, pieces))
         found = platforms(tops)
         if not found:
             # Not a failure to report quietly: a build with no flat 6x6 m
@@ -280,12 +342,45 @@ def main():
             # that this composition has nowhere to put the camera.
             skipped.append((cid, "no flat 6x6 m platform"))
             continue
-        best = found[0]
+
+        # Several candidates, not one verdict. The highest flat block is not
+        # reliably the one with sky over it: on the first run the tallest block
+        # of the most-lit build in the world sat under its own lattice, and all
+        # four frames are a photograph of that lattice.
+        candidates = []
+        for block in found:
+            if any(max(abs(block["ix"] - c["ix"]), abs(block["iz"] - c["iz"])) < 3
+                   for c in candidates):
+                continue                  # same spot on the roof, one shot
+            candidates.append(block)
+            if len(candidates) >= args.platforms:
+                break
+
+        detail = []
+        for block in candidates:
+            bx = (block["ix"] + 0.5) * CELL
+            bz = (block["iz"] + 0.5) * CELL
+            by = block["level"]
+            eye = by + args.h_eye
+            detail.append({
+                "stance": {"x": round(bx, 1), "y": round(by, 2), "z": round(bz, 1)},
+                "above_base_m": round(by - c["min_y"], 1),
+                "exposure": block["exposure"], "exposure_of": block["ring"],
+                "reach_m": {b: reach(tops, block["ix"], block["iz"], by, b)
+                            for b in bearings},
+                "skyline_deg": {b: skyline(tops_all, bx, bz, eye, b)
+                                for b in bearings},
+            })
+
+        best = candidates[0]
         sx = (best["ix"] + 0.5) * CELL
         sz = (best["iz"] + 0.5) * CELL
         sy = best["level"]
-        reaches = {b: reach(tops, best["ix"], best["iz"], sy, b) for b in bearings}
+        reaches = detail[0]["reach_m"]
+        open_sky = min(min(d["skyline_deg"].values()) for d in detail)
         out.append({
+            "platforms_detail": detail,
+            "clearest_skyline_deg": open_sky,
             "cluster_id": cid,
             "lights": lit.get(cid, 0),
             "light_pieces": n_lights.get(cid, 0),
@@ -301,7 +396,8 @@ def main():
         })
         print(f"  {cid:>6} {lit.get(cid, 0):>6} {c['pieces']:>7,} {sy:>8.1f} "
               f"{sy - c['min_y']:>6.1f} {best['exposure']:>4}/{best['ring']:<4} "
-              f"{min(reaches.values()):>4.0f}-{max(reaches.values()):<4.0f}")
+              f"{min(reaches.values()):>4.0f}-{max(reaches.values()):<4.0f} "
+              f"{len(detail):>3} {open_sky:>7.1f}")
 
     doc_out = {
         "generated_from": "scan_rooftops.py",
@@ -309,6 +405,7 @@ def main():
         "snapshot_id": snapshot_id,
         "settings": {"cell_m": CELL, "flat_tolerance_m": FLAT_TOLERANCE_M,
                      "drop_m": DROP_M, "bearings": bearings,
+                     "h_eye_m": args.h_eye, "platforms_per_build": args.platforms,
                      "min_lights": args.min_lights, "pad_m": args.pad},
         "light_census": {str(c["cluster_id"]): lit.get(c["cluster_id"], 0)
                          for c in clusters if lit.get(c["cluster_id"], 0)},
