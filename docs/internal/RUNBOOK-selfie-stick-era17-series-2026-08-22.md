@@ -1211,7 +1211,59 @@ Warm mass at night, when a lit source is the only light there is:
 | toproom | a window | 24 | 0.231 | **1.8** |
 
 A vantage aimed at fire carries 6x the warm mass of one aimed at a window in the same
-buildings on the same night, and a seat beside one carries 14x. So the rooms were not
+buildings on the same night, and a seat beside one carries 14x.
+
+**Corrected the same day: that gradient does not show what it was read as showing.**
+The storm lane asked whether it could be interiority re-expressed rather than fire
+proximity. Tested by holding enclosure constant — working *within* a single vantage, so
+geometry and framing are fixed and only the build's own light count varies — warm mass
+does not track how many warm lights a build holds:
+
+| vantage | warm mass | r(warm %, warm_lights) | n | t | p |
+| --- | --- | --- | --- | --- | --- |
+| seat | 25.1% | −0.018 | 32 | −0.10 | 0.92 |
+| hall | 11.0% | +0.112 | 32 | +0.62 | 0.54 |
+| gate | 4.4% | +0.278 | 33 | +1.61 | 0.12 |
+| court | 2.3% | +0.393 | 32 | +2.34 | **0.026** |
+| toproom | 1.8% | −0.021 | 24 | −0.10 | 0.92 |
+
+**These are five nulls, one of them noisier than the rest.** Only `court` clears p<0.05,
+and across ten tests (five vantages × two conditions) a Bonferroni threshold is 0.005,
+which it does not approach. Nothing here is significant.
+
+A first draft of this correction argued from the *ordering* — most warm mass, least
+relationship — and that argument does not survive contact with the table: `seat` has the
+most warm mass at r = −0.018 and `toproom` has the least at r = −0.021. Those are the
+same number at opposite ends of the gradient, so the ordering is not monotonic and the
+inversion was doing rhetorical work the data does not support.
+
+**The conclusion stands on a narrower and better argument.** `hall` and `seat` are the
+two vantages that *aim at fires* — `vantage_hall` scores a floor band ×1.5 for holding
+one and aims at the fire centroid — and they return r = −0.018 and +0.112. A detector
+pointed at the thing it is supposed to detect, correlating with nothing, is the whole
+result. The gradient is not needed and should not be leaned on.
+
+**And the null is weaker than it looks, for a reason worth stating.** `warm_lights` is a
+per-*build* count while a vantage sees a fraction of the build: thirty braziers spread
+over 100 m put almost none of themselves in a seat frame. The predictor is mismatched to
+the measurement, so some of this null is guaranteed by construction. That is an argument
+against over-reading it, not against the conclusion.
+
+**The better test needs no new capture.** Every `storm-1a`/`1b` receipt carries
+`fires_found` — Fireplaces within 80 m of the *aim point*, per shot — which is far closer
+to "lights in frame" than a whole-build vocabulary count. Correlating warm mass and
+`bright_warm_frac` against per-shot `fires_found` across those 90 frames tests the
+instrument rather than the vocabulary. `fires_found` is itself biased — an 80 m radius
+rather than a frustum, so it counts fires behind the camera — so it is a better proxy and
+not a good one. The clean version is lights within the view cone, which the mod could
+compute and does not.
+
+**What this changes in practice:** `warm_frac` is a poor instrument for fire and a good
+one for enclosure. For a fires-on/off comparison at fixed camera and fixed sky,
+`bright_warm_frac` is the separating metric — a lit hearth at 3 m in a dark room is warm
+*and* bright, while a table 0.35 m from the lens at night is warm and not bright. Its
+docstring saying it is not a fire detector remains true; it detects bright warm regions,
+which is a different and here more useful thing. So the rooms were not
 dark, and the 300 existing interiors are not all worthless.
 
 Checked by eye on `20260822-134535_0275_hall_night`, which resolves it: **four wall
@@ -1338,3 +1390,144 @@ direction — `--max-los` catching what `depth_score` endorsed, `depth_score` re
 the IL. Guard the plan, not the pixels; and check the thing, not the report of the
 thing.
 
+## The storm A/B, the settle A/B, and a bar that burned two runs — 2026-08-25
+
+Three runs shot through a single scheduling session: `nightsky` (30 frames),
+`storm-1a` (45, settle 6) and `storm-1b` (45, settle 3). All three verified clean with
+`check_overlay.py` before anything was read off them. Two earlier attempts at the storm
+halves — 61 frames — were dropped, not cropped; see the creator-bar section below.
+
+### settleSeconds 3 is safe and it is 29% faster. Adopt it.
+
+Frame cadence had a **10.0 s floor rather than a distribution** (median and p10 both
+10.0), and all of it was configured sleep. The principled floor is ~3 s: `UpdateFireplace`
+ticks every 2 s and `LightLod` re-reads on a 1 s coroutine. Tested by splitting the same
+30 builds **interleaved by rank** — not halved, because `twilight-1` is rank-ordered and
+rank tracks build size, so first-15/last-15 would have measured subject difficulty.
+
+| half | settle | frames | occluded | median gap | aesthetic | depth |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1a | 6 | 45 | **0** | 10.24 s | 5.465 | 0.566 |
+| 1b | 3 | 45 | **0** | **7.24 s** | 5.498 | 0.497 |
+
+**Zero occlusion rejects in both halves** — the objective measure, and it shows no
+degradation. 7.24 s against 10.24 s is the 3 s saving landing exactly where predicted,
+29% off every frame in the queue.
+
+The predicted failure mode did not appear. If 3 s missed the 2 s `UpdateFireplace` tick,
+frames would look dark while `fires_lit` read correct. Measured as
+`fires_found − fires_lit − fires_burning` — fires present at the shutter that the hold
+pass never saw — settle 6 medians **+2** and settle 3 medians **+0**. Settle 3 has *less*
+of the artefact, not more.
+
+Nor does settle 3 under-stream the world. `fires_found` medians 23 on 1a and 12 on 1b,
+which looks alarming until you remember the halves are different builds. The clean test
+is within a build: how much does the count grow between the first and third shot at the
+same camera? **Zero in both halves.** By shutter time the world has fully arrived at
+either settle value; the 23-vs-12 gap is the buildings.
+
+### Holding the builders' fires lit does almost nothing to the photograph
+
+Within-build, 30 matched `storm` / `storm_dark` pairs — identical camera, sky and clock,
+differing only in whether the fires were held:
+
+| metric | median delta | mean delta | direction |
+| --- | --- | --- | --- |
+| `bright_warm_frac` | **+0.007** pts | +0.079 | 20/30 positive |
+| `warm_frac` | +0.010 pts | +0.093 | 18/30 positive |
+| `scene_v` | +0.002 | +0.010 | 18/30 positive |
+
+Against a within-build noise scale of **5.5 points** across lighting conditions, these are
+some five hundred times smaller. 20/30 positive is weakly directional (binomial p ~ 0.10)
+— consistent with a real but useless effect.
+
+**State the manipulation before reading the null.** The receipts say a build carries
+~30 fires at the shutter, of which **~25.7 already burn with no intervention** and a
+stable **~4.4 are genuinely dead**. So holding lights roughly four more out of thirty.
+The honest claim is *lighting four more fires out of thirty does essentially nothing to
+the frame*, **not** *the builders' fires do not matter*. `fires_lit` is an unweighted
+count — a bonfire and a `Candle_resin` are both 1 — so if those four are the fuel-burners
+they are also the largest emitters in the room and this null is surprising. The light
+dump resolves it by giving `Light.intensity` per prefab; until then the effect size is
+"4.4 of 30 fires, luminance weight unknown".
+
+Two things the same receipts settled for free. `storm_flash`'s hold-time population and
+its shutter population are **both 455** — identical — so the streaming gap that made the
+first shot of each build undercount closes completely by the third. And the count of
+genuinely dead fires is stable at 4.33 / 4.40 across variants including one that holds
+and one that does not, which **exonerates the light restore**: were it failing, the
+control would inherit fires lit by the previous shot and the whole A/B would compare a
+lit frame to a lit frame.
+
+### The night sky: disc found in 0 of 30, and it is not cloud
+
+`sky_check.py` fits the moon's limb, converts it back to a world bearing through the
+receipt's own yaw/pitch/fov, and compares against where the planner aimed. Across the
+30 rooftop frames: **0 discs**. The diagnostic was agreed in advance — high star counts
+with good luma means a clear sky and a wrong bearing, low counts mean cloud:
+
+- stars median **149**, and **22 of 30** frames carry more than 100 (max 373)
+- luma median 22.4, **16 of 30** inside the 20-186 band
+- **26 of 30** held the planned stance
+
+So the sky was open and the moon was not in frame. The planner aimed at azimuth 78, taken
+from limb fits in **two frames from two runs** — and moon phase varies by in-game day and
+cannot be forced. 0-of-30 at that bearing is the first real evidence against 78. What is
+*not* impeached is the stance guard: the camera went where it was told, and the build that
+produced the earlier lattice photographs correctly dropped out of the plan.
+
+### The creator bar, again — and why two smart readings both got it wrong
+
+`storm-1a` and `storm-1b` were shot twice. The first pair carried the ComfyQuest overhead
+bar burned across `y 96-128`, full width: "COMFY QUEST / Nothing playing / CHECK /
+EXPAND F9". 61 frames, dropped.
+
+The runner **warned about it, correctly, at launch** — and was talked past twice, on two
+independent wrong readings:
+
+- *"The DLLs are parked, so the mod cannot draw."* False: BepInEx scans `plugins/`
+  recursively and a subfolder loads (see the parking correction above).
+- *"The setting was renamed to `CreatorBarHotkey`, so the bar is hotkey-summoned and
+  nothing presses F9."* False: `F9` **expands** an already-drawn bar. The button in the
+  contaminated frames reads `EXPAND F9`.
+
+The real mechanism is a **bootstrap problem**. `ShowCreatorBar` lives in `[Presentation]`
+and `CreatorBarHotkey` in `[Runtime]` — two keys, two sections, two jobs. BepInEx only
+materialises a plugin's config defaults **when the plugin loads**, so the runner reads the
+file before the key exists, correctly warns, and has nothing to switch off. The game then
+writes `ShowCreatorBar = true` and the bar draws. The runner was right and powerless.
+
+The fix is one value with the game closed, after which the runner's own quieting
+mechanism takes over and prints "quest creator bar hidden for this session". **No code
+change.** A queued "fix" to make the warning accept `CreatorBarHotkey` was cancelled — it
+would have permanently silenced a true warning.
+
+The config had said so all along. Line 21 of
+`djcdevelopment.valheim.comfyquestruntime.cfg`, directly above the key:
+
+> Draw the overhead creator surface. OFF hides every Runtime overlay and changes nothing
+> else — quests still load, events still fire, hotkeys still work. **For unattended
+> screenshot capture, where the bar otherwise burns into every frame.**
+
+### Do not use a static-pixel test on night or storm frames
+
+The naive version of `check_overlay.py` — fraction of pixels in the band that are
+bit-identical across frames — is **confounded by darkness**, and near-black frames are
+exactly what a night-and-storm programme produces:
+
+| run | naive static % | truth |
+| --- | --- | --- |
+| nightsky | 4.61% | clean |
+| storm-1a (first) | 5.81% | **contaminated** |
+| 20260824-100400 | 0.00% | clean |
+
+The clean night run scores closer to the contaminated run than to the clean daylight one,
+and the naive test even placed 186 "static" columns at `x 1261-1474` — precisely where
+`COMFY QUEST` and `Nothing playing` sit — on a patch of starless sky. `check_overlay.py`
+uses per-pixel standard deviation across *varied* frames for this reason. It also cannot
+validate a 2-frame smoke test at a fixed camera, where nothing in the scene changes
+either: for that, crop the band and **look at it**.
+
+The blast radius was bounded by measurement rather than assumption: `check_overlay.py`
+over four earlier runs across three days reads **0.00%** on all of them, and on `nightsky`
+too. Only the two first-attempt storm runs were affected.
