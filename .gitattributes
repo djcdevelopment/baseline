@@ -26,6 +26,10 @@
 data/processed/quest-catalog-*.json text eol=lf
 corpus/mirrors/lumberjacks/*.json text eol=lf
 corpus/mirrors/lumberjacks/*.jsonl text eol=lf
+tools/site/*.py       text eol=lf
+tools/site/*.css      text eol=lf
+tools/selfie-stick/article/*.py text eol=lf
+tools/selfie-stick/article/*.md text eol=lf
 
 # Linux-destined infrastructure — LF always.
 *.sh                  text eol=lf

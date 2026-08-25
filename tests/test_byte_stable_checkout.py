@@ -24,6 +24,21 @@ def pinned_paths() -> list[str]:
         (mirror_root / entry["local_path"]).relative_to(ROOT).as_posix()
         for entry in provenance["files"]
     )
+
+    manifests = subprocess.run(
+        ["git", "ls-files", "--", "*artifact.json"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.splitlines()
+    for manifest_name in manifests:
+        manifest_path = ROOT / manifest_name
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        paths.extend(
+            (manifest_path.parent / source_name).relative_to(ROOT).as_posix()
+            for source_name in manifest["source_files"]
+        )
     return sorted(set(paths))
 
 
