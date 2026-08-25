@@ -1167,7 +1167,37 @@ Warm mass at night, when a lit source is the only light there is:
 | toproom | a window | 24 | 0.231 | **1.8** |
 
 A vantage aimed at fire carries 6x the warm mass of one aimed at a window in the same
-buildings on the same night, and a seat beside one carries 14x. So the rooms were not
+buildings on the same night, and a seat beside one carries 14x.
+
+**Corrected the same day: that gradient is enclosure, not fire.** The storm lane asked
+whether it could be interiority re-expressed rather than fire proximity, and it can.
+Holding enclosure constant by working *within* a single vantage — same geometry, same
+framing rule, only the build's own light count varying — warm mass does not track how
+many warm lights a build actually holds:
+
+| vantage | warm mass | r(warm %, warm_lights) |
+| --- | --- | --- |
+| seat | **25.1%** | **−0.018** |
+| hall | 11.0% | +0.112 |
+| gate | 4.4% | +0.278 |
+| court | 2.3% | **+0.393** |
+| toproom | 1.8% | −0.021 |
+
+**The ordering is inverted, and that is the result.** The vantages carrying the most
+warm mass have the *least* relationship to the light count. If warm mass measured fire,
+`hall` and `seat` — the two vantages that aim at fires — are where the correlation would
+live, and they are where it is absent. A seat vantage is a lens 0.35 m from a table with
+wooden surfaces filling the frame: that is material warmth at close range, and it reads
+the same in a build with one candle as in one with thirty braziers. The modest `court`
+and `gate` figures are the two most open vantages, where a larger denser build puts more
+lit *stuff* in frame — a size effect.
+
+So `warm_frac` is a **poor instrument for fire** and a good one for enclosure. For a
+fires-on/off comparison at fixed camera and fixed sky, `bright_warm_frac` is the metric
+that separates them: a lit hearth at 3 m in a dark room is warm *and* bright, while a
+table 0.35 m from the lens at night is warm and not bright. It was kept in
+`color_layers.py` with a docstring saying it is not a fire detector, which remains true —
+it detects bright warm regions, and that is a different and here more useful thing. So the rooms were not
 dark, and the 300 existing interiors are not all worthless.
 
 Checked by eye on `20260822-134535_0275_hall_night`, which resolves it: **four wall
