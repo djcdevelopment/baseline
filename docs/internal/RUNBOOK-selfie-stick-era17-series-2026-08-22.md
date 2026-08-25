@@ -1192,20 +1192,46 @@ to **read the binary, not the claims** — `grep -a` the installed DLL for the m
 names each lane added. It carried `WidenLightLod`, `DriveFlash` *and* `ReadSkyTimes`, so
 both were in it and neither claim was wrong. Check provenance before every capture.
 
-**The world file is the one nobody thought of.** Copying `ComfyEra17.db` to a second
-capture node while a capture was live produced a **torn copy, 41,320 bytes larger than
-the source**, because Valheim rewrote the file at 07:33:45 mid-copy. Anything that reads
-`worlds_local` — a copy, a backup, a `save-tools` parse — races a running capture the
-same way. It is 1.3 GB, so the loss is measured in minutes of transfer. Verify with
-`md5` on both ends, and treat "is anything reading the world?" as part of the
-pre-flight, not just "is Valheim running?".
+**The world file is the one nobody thought of, and it failed two ways at once.**
+Copying `ComfyEra17.db` to a second capture node while a capture was live produced a
+destination **41,320 bytes larger than the source**. Two distinct mechanisms were in
+play and it is worth keeping them apart, because only one of them looks like a failure:
+
+1. **The source moved under the read.** Valheim rewrote the file at 07:33:45 mid-copy.
+   Anything that reads `worlds_local` — a copy, a backup, a `save-tools` parse — races a
+   running capture the same way.
+2. **`scp` does not truncate the destination.** Writing 1,299,599,565 bytes over an
+   existing 1,299,640,885-byte file leaves the last **41,320 bytes** of the old file
+   in place. That arithmetic is exact, and it is the mechanism that explains the number
+   observed. It is the nastier of the two: the result passes a size check, passes a
+   "the transfer completed" check, and is silently wrong.
+
+3. **Three writers, one destination.** Killed transfers do not always die. A shell that
+   is killed leaves its `scp` children running, so "I killed it" is a statement about
+   intent rather than about the process table — verified live: two `scp` processes were
+   still reading the live world minutes after being reported dead, while a third wrote a
+   frozen snapshot to the *same* destination path. Three concurrent non-truncating
+   writers into one file produce interleaved garbage that passes a size check, passes a
+   "transfer completed" check, and passes casual inspection.
+
+So `rm` the destination first, and verify with `md5` on both ends rather than by size.
+"Is anything reading the world?" belongs in the pre-flight next to "is Valheim
+running?" — but the better fix is to stop the two contending at all. **Copy from a
+frozen backup snapshot, never from the live world.** A `*_backup_auto-*.db` plus its
+`.fwl` is a day older, which changes fuel, `lastTime` and player position and moves no
+build, and cluster ids come from `clusters.json` regardless. A capture node has no
+business reading a file the game is actively writing.
 
 ### Pre-flight before firing a run
 
 1. Valheim is not running.
 2. No index rebuild is in flight — the tail of `Start-NextRun.ps1` re-derives every web
    image, and a second run's rebuild collides with it.
-3. Nothing is reading `worlds_local`.
+3. Nothing is reading the **live** world file. Not "nothing is reading
+   `worlds_local`" — the backups live there too, and a transfer from a frozen
+   snapshot is exactly what you want. Check **command lines**, not process names:
+   `Get-CimInstance Win32_Process -Filter "Name='scp.exe'"` and read what each one
+   is actually copying.
 4. The installed DLL carries the features the plan needs, and its `Plugin.cs` tree is
    clean at a known sha. Record that sha with the run.
 
