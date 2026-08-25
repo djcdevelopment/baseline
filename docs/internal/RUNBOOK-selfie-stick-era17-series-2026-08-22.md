@@ -652,6 +652,32 @@ actual fix was five lines.
   after. The objection above — that killing the runner task skips the restore — is
   real but applies to the *config* restore, not to a folder move done outside it.
 
+  **Correction, 2026-08-25: moving a DLL into a subfolder of `plugins/` does not park
+  anything. BepInEx scans `plugins/` recursively.** Verified from `LogOutput.log` during
+  a live capture, with all three DLLs sitting in `_parked-by-selfie-stick/`:
+
+  ```
+  Loading [Comfy Camera Proof 0.2.0]      Loading [ComfyNetworkSense 0.5.80]
+  Loading [ComfySentinel 1.5.0]           Loading [ComfyQuestLab 0.2.0]
+  Loading [ComfyControlSurface 0.6.0]     Loading [ComfyQuestRuntime 0.1.0]
+  ```
+
+  Both quest mods load and Harmony-patch the game during every capture —
+  `MineRock.Damage`, `Pickable.Interact`, `Pickable.RPC_Pick` among others. Any
+  conclusion in this file that rests on "the mod was parked" needs re-reading; that
+  run's frames were never protected by the folder move.
+
+  **They are clean for an unrelated reason**, which is why nobody noticed. The setting
+  was renamed rather than removed — the config now reads
+  `## Legacy creator-surface key; migrated into CreatorBarHotkey.` with
+  `CreatorBarHotkey = F9`, and the runtime logs `Runtime ready. CreatorBar=F9`. The bar
+  is **hotkey-toggled**, nothing presses F9 during an unattended run, and the camera
+  mod's own bindings are the arrow keys. That is also why all 2,525 existing frames are
+  clean. The unconditional bar belonged to an older `ComfyQuestRuntime`.
+
+  To actually unload a plugin, move it **out of the `plugins/` tree entirely**, not
+  into a subfolder of it.
+
 ### The general check: `check_overlay.py`
 
 A region check keyed to the bar's coordinates would not have seen the next mod to
@@ -1257,6 +1283,10 @@ reported as fine:
   `static_solid` and `Default` while placed pieces sit on the `piece` layer. A receipt
   that says the shot was clear is a statement about what the raycast could see.
   **The photograph over the receipt.**
+- Three DLLs were in a folder named `_parked-by-selfie-stick`. Checking the directory
+  was the right instinct and still gave the wrong answer, because the question was not
+  "what is in `plugins/`" but "what did BepInEx load" — and it loads recursively. Only
+  `LogOutput.log` answers that. **The loader over the directory.**
 
 That is the same lesson this runbook already records three times from the other
 direction — `--max-los` catching what `depth_score` endorsed, `depth_score` reading
