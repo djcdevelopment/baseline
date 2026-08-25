@@ -881,11 +881,28 @@ and `UpdateFireplace`'s drain sits behind `IsBurning() && !m_infiniteFuel`. So
 **Wet is a separate mechanism, and `m_disableCoverCheck` does not gate it.**
 `CheckWet()` runs off its own `InvokeRepeating("CheckEnv", 4, 4)`; when
 `EnvMan.IsWet()` it swaps `m_enabledObjectHigh` for `m_enabledObjectLow` and
-toggles off anything with `m_canTurnOff`. That is the storm case exactly --
-the one condition that puts the lights out before you photograph them, which is
-a fair part of why storm reads badly outdoors and could not hurt indoors, where
-the psystems are off under shelter. `m_disableCoverCheck` only clears
+toggles off anything with `m_canTurnOff`. `m_disableCoverCheck` only clears
 `m_blocked`, which is the buried-under-terrain and no-headroom test.
+
+**Corrected 2026-08-25 by the light dump: this lever is almost inert, and two of
+us leaned on it.** The IL is right about what `CheckWet` does; what neither of us
+checked is *how many prefabs it can reach*. Of the 43 in the light vocabulary,
+exactly **one** carries `m_canTurnOff = true` — `Candle_resin`, whose light is
+`intensity 2.0 x range 1.0`, the weakest emitter in the set. Sixteen have a
+`Fireplace` with `m_canTurnOff = false`, so weather cannot touch them, and
+**twenty-one have no `Fireplace` component at all**, so weather is irrelevant to
+them. `bonfire` (range 20), `piece_groundtorch` (15), `piece_walltorch` (12) and
+both fire pits (10) all stay lit straight through a thunderstorm.
+
+This retracts a claim the colour lane published off the back of this paragraph:
+that measured warm mass of **5.0% outside in a storm against 16.6% inside** was
+`CheckWet` extinguishing the outdoor fires, "mechanism and measurement agreeing".
+The measurement stands and the mechanism does not — `CheckWet` cannot produce an
+effect that size when it reaches one candle. The inside/outside gap is real and
+its cause is still open; the obvious remaining candidate is simply that an
+outdoor storm frame is mostly grey sky and wet ground while an indoor one is
+mostly warm material. Same error class as the 41,320-byte copy: a real
+observation attributed to a mechanism that cannot generate it.
 
 **`LightLod` culls the light before it reaches the lens.** Default
 `m_lightDistance` is 40 m and `m_shadowDistance` 20 m, against orbits planned out
@@ -1487,3 +1504,94 @@ either: for that, crop the band and **look at it**.
 The blast radius was bounded by measurement rather than assumption: `check_overlay.py`
 over four earlier runs across three days reads **0.00%** on all of them, and on `nightsky`
 too. Only the two first-attempt storm runs were affected.
+
+## What the light dump said — 2026-08-25
+
+387 light prefabs and all 39 environments, one world load, no screenshots, ~2 minutes.
+`out/era17/lights.json`, from `ComfyCameraProof` at `19fd460`.
+
+### Only one of our 43 lights can be blown out by weather
+
+| | count | can weather extinguish it? |
+| --- | --- | --- |
+| `Fireplace` with `m_canTurnOff = true` | **1** (`Candle_resin`) | yes |
+| `Fireplace` with `m_canTurnOff = false` | 16 | no |
+| **no `Fireplace` component at all** | **21** | irrelevant |
+
+The one reachable prefab is the weakest emitter in the vocabulary. See the retraction
+above: this is why the `CheckWet` lever cannot explain the inside/outside storm gap.
+
+The 21 with no `Fireplace` are the structural surprise. Every `MountainKit` and
+`CastleKit` brazier and groundtorch, every Dvergr lantern, the Mistlands torch, the fairy
+garland, `piece_Lavalantern` and `GlowingMushroom` are **pure lights** — no fuel, no
+wetness, no state. They cannot go out under any condition, and they are a large share of
+what this world placed.
+
+### The fires that CAN go dark are the big ones
+
+Light power taken as `intensity x range^2`, summed over what the 30 A/B builds actually
+placed:
+
+| | placed | share of count | share of light |
+| --- | --- | --- | --- |
+| fuel-burners (can go dark) | 3,595 | 33.9% | **55.4%** |
+| always-on | 7,014 | 66.1% | 44.6% |
+
+Per build the fuel-burning share of light medians **74.2%**. So the mechanism is real and
+large in principle. Individually:
+
+| prefab | intensity | range | power |
+| --- | --- | --- | --- |
+| `bonfire` | 2.00 | 20.0 | **800** |
+| `piece_groundtorch` | 1.50 | 15.0 | 338 |
+| `piece_walltorch` | 1.50 | 12.0 | 216 |
+| `fire_pit` / `fire_pit_iron` | 2.00 | 10.0 | 200 |
+| `hearth` | 1.50 | **3.0** | **14** |
+| `Candle_resin` | 2.00 | 1.0 | **2** |
+
+**`hearth` is a small light.** Range 3 m against a bonfire's 20 — power 14 against 800,
+a factor of 57. The name has been carrying an implication the prefab does not support,
+including in the name of the `hearth-1` run.
+
+### Which resolves the fires null, and it was never a fair test
+
+The A/B moved `bright_warm_frac` by +0.007 points. The dump says why, and it is not that
+fire does not matter:
+
+- **The weather path reaches one candle.** Clearing `m_wet` in the hold could never have
+  done anything at ThunderStorm.
+- **The fuel path had mostly not fired.** The receipts say ~25.7 of ~30 fires per build
+  were *already burning* with no intervention, leaving ~4.4 genuinely dead.
+- So the manipulation was ~4.4 fires of unknown prefab out of thirty, in a world where
+  the big emitters were already alight.
+
+The honest conclusion: **the experiment could not have detected an effect, because the
+effect was not available to be produced.** That is a different result from "holding fires
+does nothing", and it is the one the evidence supports.
+
+What it does *not* settle is whether a genuinely dark build would photograph differently,
+because the corpus does not contain one. The receipts do not record the prefab of a dead
+fire, so which of the 4.4 they were is unknown — the cheapest fix is recording prefab
+names alongside `fires_burning`.
+
+### hearth-1 is not worth 324 frames on its current premise
+
+The premise moved from "every fire burned to zero" to "fuel-burners only" to "a stable
+~4.4 per build", and the dump adds that the single prefab the run is named after emits at
+power 14. 74.2% of a build's light *could* go dark, but empirically ~85% of fires were
+lit anyway. Re-scope to builds measured genuinely dark, or drop it.
+
+### 15 of 39 environments put fires out — and three are not obviously wet
+
+`wets_fires = m_isWet OR m_windMax >= 0.8`, computed for all 39 without shooting a frame:
+
+`Ashlands_SeaStorm`, `Ashlands_storm` (windMax **3.00**), `Bonemass`, `Eikthyr`,
+**`Heath clear`**, `LightRain`, `Mistlands_rain`, `Mistlands_thunder`, `Moder`, `Rain`,
+`SnowStorm`, `SwampRain`, `ThunderStorm`, `Twilight_SnowStorm`, `nofogts`.
+
+**`Heath clear` wets fires at `m_isWet = false`**, purely on `windMax = 0.80` — the
+high-wind case predicted before the dump existed, and the reason the rule is an OR. The
+two boss environments `Eikthyr` and `Moder` do the same at windMax 1.00.
+
+Of the four this project has ever shot, only `ThunderStorm` wets fires — which matters
+less than it sounds, given the one-candle reach above.
