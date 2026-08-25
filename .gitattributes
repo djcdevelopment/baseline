@@ -23,7 +23,8 @@
 
 # Generated, hashed, published — LF always.
 *.html                text eol=lf
-*.json                text eol=lf
+data/processed/quest-catalog-*.json text eol=lf
+corpus/mirrors/lumberjacks/*.json text eol=lf
 corpus/mirrors/lumberjacks/*.jsonl text eol=lf
 
 # Linux-destined infrastructure — LF always.
