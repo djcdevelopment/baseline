@@ -1169,35 +1169,57 @@ Warm mass at night, when a lit source is the only light there is:
 A vantage aimed at fire carries 6x the warm mass of one aimed at a window in the same
 buildings on the same night, and a seat beside one carries 14x.
 
-**Corrected the same day: that gradient is enclosure, not fire.** The storm lane asked
-whether it could be interiority re-expressed rather than fire proximity, and it can.
-Holding enclosure constant by working *within* a single vantage — same geometry, same
-framing rule, only the build's own light count varying — warm mass does not track how
-many warm lights a build actually holds:
+**Corrected the same day: that gradient does not show what it was read as showing.**
+The storm lane asked whether it could be interiority re-expressed rather than fire
+proximity. Tested by holding enclosure constant — working *within* a single vantage, so
+geometry and framing are fixed and only the build's own light count varies — warm mass
+does not track how many warm lights a build holds:
 
-| vantage | warm mass | r(warm %, warm_lights) |
-| --- | --- | --- |
-| seat | **25.1%** | **−0.018** |
-| hall | 11.0% | +0.112 |
-| gate | 4.4% | +0.278 |
-| court | 2.3% | **+0.393** |
-| toproom | 1.8% | −0.021 |
+| vantage | warm mass | r(warm %, warm_lights) | n | t | p |
+| --- | --- | --- | --- | --- | --- |
+| seat | 25.1% | −0.018 | 32 | −0.10 | 0.92 |
+| hall | 11.0% | +0.112 | 32 | +0.62 | 0.54 |
+| gate | 4.4% | +0.278 | 33 | +1.61 | 0.12 |
+| court | 2.3% | +0.393 | 32 | +2.34 | **0.026** |
+| toproom | 1.8% | −0.021 | 24 | −0.10 | 0.92 |
 
-**The ordering is inverted, and that is the result.** The vantages carrying the most
-warm mass have the *least* relationship to the light count. If warm mass measured fire,
-`hall` and `seat` — the two vantages that aim at fires — are where the correlation would
-live, and they are where it is absent. A seat vantage is a lens 0.35 m from a table with
-wooden surfaces filling the frame: that is material warmth at close range, and it reads
-the same in a build with one candle as in one with thirty braziers. The modest `court`
-and `gate` figures are the two most open vantages, where a larger denser build puts more
-lit *stuff* in frame — a size effect.
+**These are five nulls, one of them noisier than the rest.** Only `court` clears p<0.05,
+and across ten tests (five vantages × two conditions) a Bonferroni threshold is 0.005,
+which it does not approach. Nothing here is significant.
 
-So `warm_frac` is a **poor instrument for fire** and a good one for enclosure. For a
-fires-on/off comparison at fixed camera and fixed sky, `bright_warm_frac` is the metric
-that separates them: a lit hearth at 3 m in a dark room is warm *and* bright, while a
-table 0.35 m from the lens at night is warm and not bright. It was kept in
-`color_layers.py` with a docstring saying it is not a fire detector, which remains true —
-it detects bright warm regions, and that is a different and here more useful thing. So the rooms were not
+A first draft of this correction argued from the *ordering* — most warm mass, least
+relationship — and that argument does not survive contact with the table: `seat` has the
+most warm mass at r = −0.018 and `toproom` has the least at r = −0.021. Those are the
+same number at opposite ends of the gradient, so the ordering is not monotonic and the
+inversion was doing rhetorical work the data does not support.
+
+**The conclusion stands on a narrower and better argument.** `hall` and `seat` are the
+two vantages that *aim at fires* — `vantage_hall` scores a floor band ×1.5 for holding
+one and aims at the fire centroid — and they return r = −0.018 and +0.112. A detector
+pointed at the thing it is supposed to detect, correlating with nothing, is the whole
+result. The gradient is not needed and should not be leaned on.
+
+**And the null is weaker than it looks, for a reason worth stating.** `warm_lights` is a
+per-*build* count while a vantage sees a fraction of the build: thirty braziers spread
+over 100 m put almost none of themselves in a seat frame. The predictor is mismatched to
+the measurement, so some of this null is guaranteed by construction. That is an argument
+against over-reading it, not against the conclusion.
+
+**The better test needs no new capture.** Every `storm-1a`/`1b` receipt carries
+`fires_found` — Fireplaces within 80 m of the *aim point*, per shot — which is far closer
+to "lights in frame" than a whole-build vocabulary count. Correlating warm mass and
+`bright_warm_frac` against per-shot `fires_found` across those 90 frames tests the
+instrument rather than the vocabulary. `fires_found` is itself biased — an 80 m radius
+rather than a frustum, so it counts fires behind the camera — so it is a better proxy and
+not a good one. The clean version is lights within the view cone, which the mod could
+compute and does not.
+
+**What this changes in practice:** `warm_frac` is a poor instrument for fire and a good
+one for enclosure. For a fires-on/off comparison at fixed camera and fixed sky,
+`bright_warm_frac` is the separating metric — a lit hearth at 3 m in a dark room is warm
+*and* bright, while a table 0.35 m from the lens at night is warm and not bright. Its
+docstring saying it is not a fire detector remains true; it detects bright warm regions,
+which is a different and here more useful thing. So the rooms were not
 dark, and the 300 existing interiors are not all worthless.
 
 Checked by eye on `20260822-134535_0275_hall_night`, which resolves it: **four wall
