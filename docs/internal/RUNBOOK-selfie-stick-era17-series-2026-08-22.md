@@ -696,6 +696,32 @@ actual fix was five lines.
   after. The objection above — that killing the runner task skips the restore — is
   real but applies to the *config* restore, not to a folder move done outside it.
 
+  **Correction, 2026-08-25: moving a DLL into a subfolder of `plugins/` does not park
+  anything. BepInEx scans `plugins/` recursively.** Verified from `LogOutput.log` during
+  a live capture, with all three DLLs sitting in `_parked-by-selfie-stick/`:
+
+  ```
+  Loading [Comfy Camera Proof 0.2.0]      Loading [ComfyNetworkSense 0.5.80]
+  Loading [ComfySentinel 1.5.0]           Loading [ComfyQuestLab 0.2.0]
+  Loading [ComfyControlSurface 0.6.0]     Loading [ComfyQuestRuntime 0.1.0]
+  ```
+
+  Both quest mods load and Harmony-patch the game during every capture —
+  `MineRock.Damage`, `Pickable.Interact`, `Pickable.RPC_Pick` among others. Any
+  conclusion in this file that rests on "the mod was parked" needs re-reading; that
+  run's frames were never protected by the folder move.
+
+  **They are clean for an unrelated reason**, which is why nobody noticed. The setting
+  was renamed rather than removed — the config now reads
+  `## Legacy creator-surface key; migrated into CreatorBarHotkey.` with
+  `CreatorBarHotkey = F9`, and the runtime logs `Runtime ready. CreatorBar=F9`. The bar
+  is **hotkey-toggled**, nothing presses F9 during an unattended run, and the camera
+  mod's own bindings are the arrow keys. That is also why all 2,525 existing frames are
+  clean. The unconditional bar belonged to an older `ComfyQuestRuntime`.
+
+  To actually unload a plugin, move it **out of the `plugins/` tree entirely**, not
+  into a subfolder of it.
+
 ### The general check: `check_overlay.py`
 
 A region check keyed to the bar's coordinates would not have seen the next mod to
@@ -1099,6 +1125,15 @@ the cool lobe) is *colour* separation: how different the two lights actually are
 - **Colour separation peaks in clear daylight**: golden 121.2, dawn 120.8 — because
   a deep blue sky is the most saturated cool field this game produces. Storm has the
   *worst* colour gap (74.5) precisely because a storm is grey, not blue.
+
+**Scope on that last one, added the same day it was written.** Every storm frame in
+this corpus is `ThunderStorm`, because that is the only storm this project has ever
+forced. The envs dump the storm lane landed on 2026-08-25 shows the game ships **39
+environments** and at least five are storms — `Ashlands_storm`, `Ashlands_SeaStorm`,
+`Mistlands_thunder`, `SnowStorm`, `Twilight_SnowStorm` — carrying different palettes.
+So 74.5 is a **`ThunderStorm` floor, not a storm floor**, and "a storm is grey, not
+blue" is unsupported as a general claim. `opponent_gap` is the right instrument to
+rank the other four, and until it has, this row describes one environment.
 - **Sunset is the floor of brightness separation, in both places**: 0.079 inside and
   0.078 outside, against 0.078–0.217 across everything else. Ambient and fire share a
   hue, so the source has nothing to stand out from. **This is the limit that was being
@@ -1194,3 +1229,112 @@ That same frame corrected a vocabulary entry. `piece_FairylightGarland` was clas
 warm from its name; the six in cluster 275 are the **blue** point lights along the
 wall. `LIGHT_HUE` now says blue, which moves the world's cool share from 51.0% to
 **51.6%** of weighted light. Names are not evidence about colour; frames are.
+
+## Running three lanes at once: what serialises, and what the lock does not cover
+
+2026-08-25. Three sessions worked this pipeline concurrently — storm photography,
+night-sky positioning, and colour limits — all three in `C:\work\baseline` itself with
+nothing committed. `4a6184e3` is the shared ancestor they diverge from; after it the
+two other lanes moved to `.claude/worktrees/lane-storm` and `lane-nightsky`, each with a
+**directory junction** at `tools/selfie-stick/out` back to the real one. Code isolated,
+data shared, because `out/` is gitignored and a bare worktree cannot run a single tool
+without it.
+
+**One session owns the capture schedule and nobody else fires.** The only guard in the
+scripts is `Get-Process valheim`, which is a TOCTOU race: two sessions can both see
+"not running", both launch, and each restore the operator's BepInEx config over the
+other. A run did fire outside the schedule at 07:29:15, three minutes before the
+instruction reached the lane that fired it — the window was real and open.
+
+### Four things are shared mutable state, and the lock only covers two
+
+| | protected by the capture lock? |
+| --- | --- |
+| the running game and its BepInEx configs | yes |
+| `out/era17/gallery/` and the index | yes, by the same serialisation |
+| **the installed `ComfyCameraProof.dll`** | **no** — one file, two lanes build it |
+| **`worlds_local/ComfyEra17.db`** | **no** — and it bit |
+
+**The mod DLL** is a singleton. Two lanes committing to the same `Plugin.cs` in
+`_retired/comfy` means whoever installs last wins and the other lane shoots against a
+mod it did not build. Both lanes claimed the same 07:11 build; the way to settle that is
+to **read the binary, not the claims** — `grep -a` the installed DLL for the method
+names each lane added. It carried `WidenLightLod`, `DriveFlash` *and* `ReadSkyTimes`, so
+both were in it and neither claim was wrong. Check provenance before every capture.
+
+**The world file is the one nobody thought of, and it failed two ways at once.**
+Copying `ComfyEra17.db` to a second capture node while a capture was live produced a
+destination **41,320 bytes larger than the source**. Two distinct mechanisms were in
+play and it is worth keeping them apart, because only one of them looks like a failure:
+
+1. **The source moved under the read.** Valheim rewrote the file at 07:33:45 mid-copy.
+   Anything that reads `worlds_local` — a copy, a backup, a `save-tools` parse — races a
+   running capture the same way.
+2. **`scp` does not truncate the destination.** Writing 1,299,599,565 bytes over an
+   existing 1,299,640,885-byte file leaves the last **41,320 bytes** of the old file
+   in place. That arithmetic is exact, and it is the mechanism that explains the number
+   observed. It is the nastier of the two: the result passes a size check, passes a
+   "the transfer completed" check, and is silently wrong.
+
+3. **Three writers, one destination.** Killed transfers do not always die. A shell that
+   is killed leaves its `scp` children running, so "I killed it" is a statement about
+   intent rather than about the process table — verified live: two `scp` processes were
+   still reading the live world minutes after being reported dead, while a third wrote a
+   frozen snapshot to the *same* destination path. Three concurrent non-truncating
+   writers into one file produce interleaved garbage that passes a size check, passes a
+   "transfer completed" check, and passes casual inspection.
+
+So `rm` the destination first, and verify with `md5` on both ends rather than by size.
+"Is anything reading the world?" belongs in the pre-flight next to "is Valheim
+running?" — but the better fix is to stop the two contending at all. **Copy from a
+frozen backup snapshot, never from the live world.** A `*_backup_auto-*.db` plus its
+`.fwl` is a day older, which changes fuel, `lastTime` and player position and moves no
+build, and cluster ids come from `clusters.json` regardless. A capture node has no
+business reading a file the game is actively writing.
+
+### Pre-flight before firing a run
+
+1. Valheim is not running.
+2. No index rebuild is in flight — the tail of `Start-NextRun.ps1` re-derives every web
+   image, and a second run's rebuild collides with it.
+3. Nothing is reading the **live** world file. Not "nothing is reading
+   `worlds_local`" — the backups live there too, and a transfer from a frozen
+   snapshot is exactly what you want. Check **command lines**, not process names:
+   `Get-CimInstance Win32_Process -Filter "Name='scp.exe'"` and read what each one
+   is actually copying.
+4. The installed DLL carries the features the plan needs, and its `Plugin.cs` tree is
+   clean at a known sha. Record that sha with the run.
+
+`settleSeconds` lives in `BepInEx/config/com.comfy.camera-proof.cfg` and is read at
+plugin `Awake`. **BepInEx rewrites that file from memory on shutdown**, so it can only
+be edited with the game closed.
+
+### The rule all four steps are instances of
+
+**Verify state, not the report of the command that was supposed to change it.**
+
+Every check above earned its place by catching something that had already been
+reported as fine:
+
+- Two lanes each claimed the same mod build. Reading the installed binary for the
+  method names each had added showed it carried *both*, so neither claim was wrong and
+  neither was sufficient. **The binary over the claim.**
+- A transfer was reported killed. Two of its `scp` children were still reading the live
+  world minutes later, because what died was the wrapper shell — the job-control stop
+  returned success and reaped neither child. **The PID over the kill.**
+- Sixteen frames came back `clearance="planned"`, `occluded=false`, `pieces_near_aim`
+  up to 30,930. The moon is in zero of them, because `IsOccluded` masks `terrain`,
+  `static_solid` and `Default` while placed pieces sit on the `piece` layer. A receipt
+  that says the shot was clear is a statement about what the raycast could see.
+  **The photograph over the receipt.**
+- Three DLLs were in a folder named `_parked-by-selfie-stick`. Checking the directory
+  was the right instinct and still gave the wrong answer, because the question was not
+  "what is in `plugins/`" but "what did BepInEx load" — and it loads recursively. Only
+  `LogOutput.log` answers that. **The loader over the directory.**
+
+That is the same lesson this runbook already records three times from the other
+direction — `--max-los` catching what `depth_score` endorsed, `depth_score` reading
+0.58 on a photograph of a stone wall, and the atlas annotation layer inverted against
+the IL. Guard the plan, not the pixels; and check the thing, not the report of the
+thing.
+

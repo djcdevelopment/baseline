@@ -81,19 +81,42 @@ $queue = @(
                   'global tone, so it marks dimmer frames down regardless of merit'
     },
     [ordered]@{
-        name    = 'storm'
-        plan    = 'storm-1'
-        what    = 'the same 30 builds as the twilight run, 3 storm frames each: ' +
-                  'fires held, fires out, fires plus a driven strike'
+        name    = 'storm-1a'
+        plan    = 'storm-1a'
+        settle  = 6
+        what    = '15 builds, 3 storm frames each, settleSeconds 6 -- the control half'
         why     = 'ThunderStorm is the best condition this project has measured -- ' +
                   'indoors. Outdoors it has never been shot at all: all 300 storm ' +
                   'receipts of 4,536 are interiors, and the exterior verdict came ' +
                   'from Clear against Misty, so storm outside is untested rather ' +
-                  'than tested and lost. These 30 already have 0.64 and 0.71 frames ' +
-                  'on identical bearings, so the storm joins a three-way comparison ' +
-                  'instead of starting a new one. storm_dark is the control: without ' +
-                  'it a good frame only proves storms are pretty, not that holding ' +
-                  'the builders fires did anything'
+                  'than tested and lost. Each build gets storm (fires held), ' +
+                  'storm_dark (control) and storm_flash (fires plus a driven ' +
+                  'strike), and all 30 already have 0.64 and 0.71 frames on ' +
+                  'identical bearings, so this joins a three-way comparison rather ' +
+                  'than starting one. THIS HALF ALSO CARRIES THE SETTLE A/B at the ' +
+                  'current settleSeconds of 6. Run 1a and 1b back to back and change ' +
+                  'nothing else'
+    },
+    [ordered]@{
+        name    = 'storm-1b'
+        plan    = 'storm-1b'
+        settle  = 3
+        what    = 'the other 15 builds, identical plan, settleSeconds 3'
+        why     = 'the throughput half of the A/B. Frame cadence is a 10.0 s floor ' +
+                  'rather than a distribution -- median and p10 are both 10.0 -- and ' +
+                  'it is all configured sleep, so 6 -> 3 is roughly 1.4x on the whole ' +
+                  'queue for free IF the frames hold up. The principled floor is 3 s: ' +
+                  'UpdateFireplace ticks every 2 s and LightLod re-reads on a 1 s ' +
+                  'coroutine, so at 3 the tick lands with about a second to spare. ' +
+                  'The two halves are INTERLEAVED BY RANK, not split first-15 / ' +
+                  'last-15, because twilight-1 is rank-ordered and rank tracks build ' +
+                  'size -- halving it would have measured subject difficulty instead ' +
+                  'of settle time. Read it on the occlusion-reject rate plus depth ' +
+                  'and colour, never on the aesthetic head: all 90 frames are dark ' +
+                  'storms and it reads global tone. If 1b fires look dark while ' +
+                  'fires_lit reads correct in the receipt, that is the 2 s tick ' +
+                  'missing the 3 s wait -- an artefact of the experiment, so re-run ' +
+                  'at 4 rather than calling 3 a failure'
     },
     [ordered]@{
         name    = 'hearth'
