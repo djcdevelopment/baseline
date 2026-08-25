@@ -806,3 +806,11 @@ in this project with a reason behind it rather than a correlation.
 It needs hand-auditing, not a bulk add: a pattern sweep for "fire" also matches
 `DvergerMageFire` (a creature effect) and would happily swallow anything with
 `torch` in the name.
+
+## The findings, written up
+
+[`aiming-the-selfie-stick.html`](aiming-the-selfie-stick.html) is the readable version of
+everything above: what the four photographic-technique literatures actually name, what
+these 2,509 frames measured against them, and a ranked list of shots worth taking. It
+carries the charts. This runbook stays the raw record; that page is the summary, and it
+is also published as an artifact.

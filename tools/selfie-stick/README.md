@@ -45,6 +45,9 @@ era isolation exists to prevent, and it does not announce itself.
 
 The reasoning behind what is queued, and the measurements behind it, are in
 [`docs/internal/RUNBOOK-selfie-stick-era17-series-2026-08-22.md`](../../docs/internal/RUNBOOK-selfie-stick-era17-series-2026-08-22.md).
+The readable summary of what those measurements mean for *how to aim the camera* — the
+technique literature, the correlations, and a ranked shot list — is
+[`docs/internal/aiming-the-selfie-stick.html`](../../docs/internal/aiming-the-selfie-stick.html).
 
 ## Run it
 
