@@ -1239,3 +1239,28 @@ business reading a file the game is actively writing.
 plugin `Awake`. **BepInEx rewrites that file from memory on shutdown**, so it can only
 be edited with the game closed.
 
+### The rule all four steps are instances of
+
+**Verify state, not the report of the command that was supposed to change it.**
+
+Every check above earned its place by catching something that had already been
+reported as fine:
+
+- Two lanes each claimed the same mod build. Reading the installed binary for the
+  method names each had added showed it carried *both*, so neither claim was wrong and
+  neither was sufficient. **The binary over the claim.**
+- A transfer was reported killed. Two of its `scp` children were still reading the live
+  world minutes later, because what died was the wrapper shell — the job-control stop
+  returned success and reaped neither child. **The PID over the kill.**
+- Sixteen frames came back `clearance="planned"`, `occluded=false`, `pieces_near_aim`
+  up to 30,930. The moon is in zero of them, because `IsOccluded` masks `terrain`,
+  `static_solid` and `Default` while placed pieces sit on the `piece` layer. A receipt
+  that says the shot was clear is a statement about what the raycast could see.
+  **The photograph over the receipt.**
+
+That is the same lesson this runbook already records three times from the other
+direction — `--max-los` catching what `depth_score` endorsed, `depth_score` reading
+0.58 on a photograph of a stone wall, and the atlas annotation layer inverted against
+the IL. Guard the plan, not the pixels; and check the thing, not the report of the
+thing.
+
