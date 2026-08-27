@@ -60,6 +60,14 @@ def parse_args():
                    help="a pixel varying less than this across the sample is frozen")
     p.add_argument("--tolerance", type=float, default=0.05,
                    help="percent of the frame allowed to be frozen before failing")
+    p.add_argument("--min-luma", type=float, default=16.0,
+                   help="a pixel darker than this across the whole sample is not "
+                        "counted as frozen: black sky is static because nothing is "
+                        "there, a HUD is static because something is drawn there")
+    p.add_argument("--ignore-right-px", type=int, default=0,
+                   help="width of a right-edge strip to exclude, for a surface that "
+                        "is deliberately retained in the client and cropped from the "
+                        "derived images (match build_valheim_index --crop-right-ui-px)")
     return p.parse_args()
 
 
@@ -75,7 +83,7 @@ def sample_frames(directory, count):
 
 
 def variance_map(paths):
-    """Per-pixel standard deviation of luminance across the sample."""
+    """Per-pixel standard deviation and mean of luminance across the sample."""
     first = Image.open(paths[0])
     size = (first.width // SCALE, first.height // SCALE)
     stack = np.stack([
@@ -83,7 +91,7 @@ def variance_map(paths):
                    dtype=np.float32)
         for p in paths
     ])
-    return stack.std(axis=0), first.size
+    return stack.std(axis=0), stack.mean(axis=0), first.size
 
 
 def bands(mask, axis, threshold=0.25):
@@ -106,13 +114,28 @@ def main():
     args = parse_args()
     directory = args.run or args.images
     paths, total = sample_frames(directory, args.sample)
-    sd, full = variance_map(paths)
-    frozen = sd < args.sd
+    sd, mean, full = variance_map(paths)
+
+    # Frozen AND lit. On a night run 62% of the frame sits below luma 16 and is
+    # bit-identical whether or not anything is drawn on it, so plain variance
+    # reports the sky as an overlay and the check can never pass. That is the
+    # same darkness confound that made a naive static-pixel test score a clean
+    # night run (4.61%) worse than a contaminated daylight one (0.00%).
+    dark = mean < args.min_luma
+    frozen = (sd < args.sd) & ~dark
+    if args.ignore_right_px > 0:
+        frozen[:, -max(1, args.ignore_right_px // SCALE):] = False
     pct = 100.0 * frozen.mean()
 
     print(f"  {os.path.basename(directory.rstrip(os.sep))}: "
           f"{len(paths)} of {total} frames at {full[0]}x{full[1]}")
-    print(f"  {pct:.2f}% of the frame never changes across the sample "
+    if dark.mean() > 0.2:
+        print(f"  {100.0 * dark.mean():.1f}% of the frame is below luma "
+              f"{args.min_luma:g} and is not judged (a dark scene, not a surface)")
+    if args.ignore_right_px > 0:
+        print(f"  right {args.ignore_right_px} px excluded -- cropped from the "
+              f"derived images anyway")
+    print(f"  {pct:.2f}% of the frame is frozen AND lit "
           f"(fails above {args.tolerance:.2f}%)")
 
     found = False

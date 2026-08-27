@@ -29,6 +29,7 @@ param(
     [double] $Elevation = 40,
     [int] $TimeoutMinutes = 60,
     [switch] $SkipPlan,
+    [switch] $SkipIndex,
     [string] $Clusters = '',
     [string] $PlanOut = '',
     [string] $GalleryDest = '',
@@ -230,8 +231,15 @@ $indexArgs = @((Join-Path $here 'build_valheim_index.py'), '--thumbs', '--large'
                '--crop-right-ui-px', '120',
                '--derived', (Join-Path $eraOut 'derived-frames.json'))
 foreach ($runId in $runIds) { $indexArgs += @('--run', $runId) }
-& python $indexArgs
-if ($LASTEXITCODE -ne 0) { throw 'build_valheim_index.py failed' }
+if ($SkipIndex) {
+    # The run manifest above is still written -- that is this step's durable output.
+    # Only the rebuild is skipped, for a caller that owns the tail and would
+    # otherwise pay for two full derivations of ~2,600 web images.
+    Write-Host '      -SkipIndex: manifest written, rebuild left to the caller'
+} else {
+    & python $indexArgs
+    if ($LASTEXITCODE -ne 0) { throw 'build_valheim_index.py failed' }
+}
 Write-Host ''
 Write-Host "done: $captured shot(s) this run"
 Write-Host "runs: $($runIds -join ', ')"

@@ -26,18 +26,39 @@ Outputs land in `out/`: `clusters.json` (for the web app and the mod),
 
 ## Picking up where the last session left off
 
-Capture runs are queued as plan files, and one script knows what is waiting and how
-to start it. Run it with no arguments:
+One driver knows every run, which machine shoots it, what has already fired, and what
+would count as it working. Run it with no arguments:
 
 ```powershell
 cd tools\selfie-stick
-.\Start-NextRun.ps1
+.\Invoke-SelfieStick.ps1
 ```
 
-It prints each queued run — how many shots, roughly how long, what it is for and what
-would count as it working — tells you whether Valheim is in the way, and gives you the
-one line that starts it. `-Run <name>` fires it, then scores the frames, names any new
-structures and rebuilds the gallery. It never publishes; that stays a separate act.
+It prints the registry: how many shots, roughly how long, the verdict that decides
+whether the run worked, and a **status derived from evidence** rather than kept by
+hand. That last part is the point. The queue it replaces had no notion of done, so
+three of its seven rows still advertised captures that had already been shot days
+earlier.
+
+```powershell
+.\Invoke-SelfieStick.ps1 -Run <name> -Preflight    # every check, fires nothing
+.\Invoke-SelfieStick.ps1 -Run <name> -Plan         # plan it, then shoot it
+.\Invoke-SelfieStick.ps1 -Run <name> -On am4       # override the host
+```
+
+Captures run on **OMEN** or on **AM4**, and the driver owns the difference. On OMEN it
+calls `Invoke-OrbitCapture.ps1` / `Invoke-InteriorCapture.ps1`, which keep their own
+launch, wait, and byte-exact config restore. On AM4 it stages the plan over ssh, calls
+`run-capture.sh`, then pulls the frames and receipts back — removing the destination
+first and hashing both ends, because `scp` does not truncate and a short write leaves a
+stale tail that passes every size check.
+
+It also owns the two settings that used to be edited by hand with the game closed:
+`settleSeconds` (the old queue declared it on two rows and read it nowhere) and the
+`light_dump` arming of `orbit-request.json`, which takes precedence over a shot plan and
+will dump and quit instead of shooting.
+
+It never publishes; that stays a separate act.
 
 The era arguments are the thing worth not typing by hand. Point a run at the wrong
 `clusters.json` and every frame joins to another era's cluster ids — the mislabelling

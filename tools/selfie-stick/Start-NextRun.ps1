@@ -1,3 +1,25 @@
+# SUPERSEDED by Invoke-SelfieStick.ps1 (2026-08-27).
+#
+# This script is kept because the OMEN capture path has years of muscle memory in
+# it, but it has three defects the driver exists to fix, and they are worth naming
+# rather than rediscovering:
+#
+#   1. The queue has no notion of DONE. Three of its seven rows still advertise
+#      captures that fired on 2026-08-24: creators-1 is run 20260824-083226,
+#      twilight-1 is 20260824-100400, sky-probe is 20260824-094718.
+#   2. `settle` is DECLARED on storm-1a and storm-1b and read nowhere in this
+#      file. The settleSeconds A/B was run by hand-editing the mod's cfg.
+#   3. The tail's  @(Get-Content capture-runs.json -Raw | ConvertFrom-Json)  yields
+#      a ONE-element array holding an Object[], because ConvertFrom-Json in PS 5.1
+#      emits an array as a single object rather than enumerating it. Every --run
+#      argument then collapses into ONE 287-character space-joined id that matches
+#      no run, so build_valheim_index skips every run and writes an empty index.
+#      Note the capture runners do NOT have this bug: they foreach over the raw
+#      ConvertFrom-Json result, which enumerates correctly and yields all 18 ids.
+#      It is the @() wrapper around the pipeline that breaks it, here only.
+#
+# Use:  .\Invoke-SelfieStick.ps1
+#
 <#
 .SYNOPSIS
     Show what capture runs are queued, and fire one when Valheim is free.
