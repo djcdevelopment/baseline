@@ -195,6 +195,39 @@ $registry = @(
                   '56 deg away from the moon. Superseded by nightsky-2.'
     },
     [ordered]@{
+        name    = 'channel-1'
+        lane    = 'channel'
+        plan    = 'channel-1'
+        host    = 'am4'
+        settle  = 3
+        runIds  = @()
+        planner = 'plan_channel.py'
+        # Prerequisite (not re-run per capture, like scan_rooftops):
+        #   python scan_channels.py --rooftops out/era17/rooftops.json \
+        #          --out out/era17/channels.json
+        plannerArgs = @(
+            '--channels', '<era>\channels.json',
+            '--clusters', '<era>\clusters.json',
+            '--names',    '<era>\cluster-names.json',
+            '--times',    '0.85,0.95,0.05',
+            '--sky-band', '0.25',
+            '--shots',    '2'
+        )
+        what    = '58 frames over 12 builds: down the channel, moon raking from off-axis'
+        why     = 'aiming AT the moon composes the moon, which is the least interesting ' +
+                  'thing a night frame can do. This picks the bearing by the CHANNEL -- ' +
+                  'how high the canopy stands above the lens, and how far the ray runs ' +
+                  'before it reaches open water -- then requires the moon 40-140 deg ' +
+                  'off-axis so its light rakes across the near roofline instead of ' +
+                  'flattening it. Pitch is set so clear sky occupies the top quarter. ' +
+                  'It also decouples the shot from moon phase and cloud: a direct moon ' +
+                  'shot needs a disc, a raked one needs only that the moon is up.'
+        verdict = 'stars in the top sixth-to-third with the skyline where it was planned, ' +
+                  'and depth_layers layers/far_mass up against the corpus -- depth ' +
+                  'through variance is the whole objective. NOT the aesthetic head, and ' +
+                  'NOT sky_check: there is deliberately no disc to find.'
+    },
+    [ordered]@{
         name    = 'nightsky-2'
         lane    = 'night'
         plan    = 'nightsky-2'
