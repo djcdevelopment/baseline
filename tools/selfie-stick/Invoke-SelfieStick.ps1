@@ -113,7 +113,9 @@ $registry = @(
         plan    = 'sky-probe'
         host    = 'omen'
         settle  = 3
-        runIds  = @('20260824-094718')   # INFERRED: 70 planned rows against 68 frames.
+        runIds  = @('20260824-094718')   # 70 planned rows, 70 receipts, 14 clusters,
+                                         # Clear @ 0.32, pitch 74.0-86.2. 68 joined:
+                                         # 70 captured less 2 rejects.
         what    = '14 sky platforms at dawn, 74 deg (16 off vertical), aimed at the ridge'
         why     = 'daytime side-on frames measure luma 207-233 against a gallery median ' +
                   'of 96 and are all fog-flagged. Overhead at 65 deg came back 100% ' +
@@ -187,7 +189,45 @@ $registry = @(
                   'median 149 with 22/30 above 100, and 26/30 held the planned stance. The ' +
                   'bearing came from limb fits in two frames from two runs at one time. ' +
                   'Superseded by night-ephemeris; do not re-shoot this bearing.'
-        verdict = 'FAILED: sky_check disc count 0 of 30'
+        verdict = 'FAILED, and for a reason now measured: it set --body-azimuth 78 ' +
+                  'from a limb fit on two frames, while the disc actually sits on the ' +
+                  'directional light (134.2 at t=0.90) to within 1.7 deg. It was aimed ' +
+                  '56 deg away from the moon. Superseded by nightsky-2.'
+    },
+    [ordered]@{
+        name    = 'nightsky-2'
+        lane    = 'night'
+        plan    = 'nightsky-2'
+        host    = 'am4'
+        settle  = 3
+        runIds  = @()
+        planner = 'plan_nightsky.py'
+        # NO --body-azimuth. That is the whole fix. night-ephemeris measured the
+        # disc against the arc equations over six frames at three times: azimuth
+        # residual mean -0.01 deg (|max| 1.7), altitude mean -0.62 deg (|max| 2.3).
+        # The disc IS the light, so the planner's own equations already put the
+        # camera on the moon and forcing a bearing can only move it off.
+        plannerArgs = @(
+            '--rooftops', '<era>\rooftops.json',
+            '--clusters', '<era>\clusters.json',
+            '--names',    '<era>\cluster-names.json',
+            '--times',    '0.90',
+            '--bearings', '2',
+            '--repeats',  '2',
+            '--sky-margin', '3.0',
+            '--top',      '15'
+        )
+        what    = '30 rooftop frames over 15 builds, aimed by the arc equations alone'
+        why     = 'the original run set --body-azimuth 78 from a limb fit on two ' +
+                  'frames and missed the moon by 56 degrees. Measurement says rho is ' +
+                  '0 and the disc sits on the directional light to within 1.7 deg, so ' +
+                  'the correct plan is the DEFAULT one. Repeats carry distinct variant ' +
+                  'names because cloud position is a re-roll, not a setting.'
+        verdict = 'a disc in a good fraction of 30, by EYE or by a fixed sky_check. ' +
+                  'sky_check returned nan on all 21 night-ephemeris frames while the ' +
+                  'moon is plainly visible in six of them -- it is conservative to the ' +
+                  'point of being useless on a clipped or bloomed disc. Do not read a ' +
+                  '0 from it as an absence again.'
     },
     [ordered]@{
         name    = 'night-ephemeris'
@@ -225,6 +265,9 @@ $registry = @(
                   'Altitude and disc radius are NOT recoverable by limb fitting -- a short ' +
                   'arc of a huge circle trades centre distance against radius -- so this ' +
                   'sweeps the sky and lets sky_check report the residual instead.'
+        # ANSWERED 2026-08-27 by run 20260827-085344: the disc IS the light. Azimuth
+        # residual mean -0.01 deg (|max| 1.7), altitude mean -0.62 (|max| 2.3), over
+        # six frames at three times. rho is 0. sky_check saw none of it.
         verdict = 'sky_check finds a disc in >0 frames AND the bearing residual is small. ' +
                   '0 of N is a RESULT: high star counts mean a wrong bearing, low star ' +
                   'counts mean cloud, and those want different answers. Do not re-run on ' +
@@ -834,13 +877,17 @@ function Invoke-Tail {
 
     if ($Row.lane -eq 'night') {
         Write-Host '  verdict: sky_check (NOT the aesthetic head)'
-        $sc = @((Join-Path $here 'sky_check.py'),
-                '--plan', (Join-Path $era "$($Row.plan).json"),
-                '--depth', (Join-Path $era 'depth.json'),
-                '--out', (Join-Path $era "skycheck-$($Row.name).json"))
-        foreach ($id in $RunIds) { $sc += @('--run', $id) }
-        & python $sc
-        if ($LASTEXITCODE -ne 0) { Write-Warning 'sky_check did not finish; the frames are on disk' }
+        # sky_check's --run is a single value, not an append action: passing it
+        # twice keeps only the last and silently drops the other run. One call per
+        # run id, one output per run id.
+        foreach ($id in $RunIds) {
+            & python (Join-Path $here 'sky_check.py') `
+                --plan (Join-Path $era "$($Row.plan).json") `
+                --receipts $receipts --captures $orbitCaps --run $id `
+                --depth (Join-Path $era 'depth.json') `
+                --out (Join-Path $era "skycheck-$($Row.name)-$id.json")
+            if ($LASTEXITCODE -ne 0) { Write-Warning "sky_check did not finish for $id; the frames are on disk" }
+        }
     }
 
     Write-Host ''

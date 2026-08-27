@@ -50,6 +50,11 @@ SCALE = 8
 # night sky that are both.
 LUMA_MIN = 90.0
 CYAN_MIN = 25.0
+# A disc bright enough to bloom saturates toward white and loses its blue-red
+# separation entirely. Nothing else in a night sky saturates: stars are single
+# pixels below the area floor, and lanterns and fires are warm, so they fail the
+# circle fit rather than this threshold.
+WHITE_MIN = 200.0
 # A component smaller than this is a lantern, a fairy light, or guck.
 MIN_AREA_FRAC = 0.005
 # The ring is the reason this file is not four lines long. It is a long thin
@@ -57,7 +62,16 @@ MIN_AREA_FRAC = 0.005
 # feature has a huge radius and a beautifully small residual -- so residual alone
 # accepts it. Bounding the radius is what separates them: the moon fits at about
 # 1,600 px on a 4K frame, a ring segment at tens of thousands.
-RADIUS_MIN_PX = 400.0
+# Measured, not assumed. On 20260827-085344 the moon's saturated core fits at
+# r = 253 px full-res with a median residual of 0.79 against 1.58 allowed -- a
+# clean fit, rejected only by the old 400 px floor. The note above saying "the
+# moon fits at about 1,600 px" cannot be the disc: at a focal length of 1,695 px
+# (65 deg vertical on a 2160 px frame) 1,600 px is an angular RADIUS of 43 deg,
+# wider than the frame's own half-height. 253 px is 8.5 deg, which is the value
+# rho had been missing. The upper bound is what separates the ring segment, and
+# the circle residual is what rejects a lit tent: the two tents in that frame fit
+# at 4.06 and 1.46 against tolerances of 1.37 and 1.12.
+RADIUS_MIN_PX = 150.0
 RADIUS_MAX_PX = 4000.0
 
 
@@ -162,8 +176,20 @@ def fit_circle(points):
 
 def find_disc(small, lum, h, w):
     """The moon, or None. Returns full-resolution centre, radius and residual."""
+    # Cyan OR saturated-white. The cyan test describes a dim, unbloomed disc; a
+    # bright one blooms to near-white and its blue-red collapses. Measured on
+    # 0026_moon2t005y150.png the moon reads blue-red +8.3 over the blob and +4.0
+    # across its brightest 500 px, against CYAN_MIN 25 -- so the moon was never
+    # entering the candidate mask, and sky_check reported nan on 21 frames while
+    # the disc was plainly visible in six of them.
+    #
+    # The gates below still have to pass: area, a circle fit under 5% residual,
+    # the radius window, and brighter inside its own edge than outside. A warm
+    # lantern or fire fails the circle fit; those are what this could otherwise
+    # have let in.
     mask = [[lum[y][x] > LUMA_MIN
-             and (small[y][x][2] - small[y][x][0]) > CYAN_MIN
+             and ((small[y][x][2] - small[y][x][0]) > CYAN_MIN
+                  or lum[y][x] > WHITE_MIN)
              for x in range(w)] for y in range(h)]
     best = None
     for cells in components(mask, h, w, int(MIN_AREA_FRAC * h * w))[:4]:
