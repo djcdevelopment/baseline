@@ -186,6 +186,14 @@ def parse_args():
                    help=f"sit on the parapet instead: h-eye {EYE_SEATED_M}")
     p.add_argument("--min-lights", type=int, default=0,
                    help="skip builds with fewer weighted lights than this")
+    p.add_argument("--sky-margin", type=float, default=3.0,
+                   help="degrees the optical axis must clear the build's own "
+                        "skyline by. The first run shot 16 frames that all came "
+                        "back clearance=planned and occluded=false and not one "
+                        "had sky in it: the mod raycasts against terrain, "
+                        "static_solid and Default, and player pieces are on the "
+                        "piece layer, so for a camera standing inside its own "
+                        "build that check is blind. Guard the plan, not the pixels")
     p.add_argument("--min-above-base", type=float, default=4.0,
                    help="metres the stance must sit above the build's foundations, "
                         "so a one-storey shed is not called high ground")
@@ -222,7 +230,7 @@ def reach_at(reaches, bearing):
     return best if best is not None else 4.0
 
 
-def choose_bearings(reaches, az_body, elevation, h_eye, want):
+def choose_bearings(plats, az_body, elevation, h_eye, want, sky_margin):
     """Pick the directions to look.
 
     Two things decide it, and the giant disc is what lets them coexist. The body
@@ -240,10 +248,18 @@ def choose_bearings(reaches, az_body, elevation, h_eye, want):
     """
     half_v = FOV_V_DEG / 2.0
     scored = []
-    for key in reaches:
+    for index, plat in enumerate(plats):
+      reaches = plat["reach_m"]
+      skylines = plat.get("skyline_deg") or {}
+      for key in reaches:
         bearing = float(key)
         # Keep the body's centre inside the frame width, with margin.
         if bearing_gap(bearing, az_body) > FOV_H_DEG / 2.0 - 8.0:
+            continue
+        # The build's own masonry, measured from the world's own positions.
+        # Nothing else in the chain can see it.
+        sky = skylines.get(key, 0.0)
+        if elevation < sky + sky_margin:
             continue
         reach = reach_at(reaches, bearing)
         # Step back from the parapet, which is what a photographer does. The
@@ -260,16 +276,18 @@ def choose_bearings(reaches, az_body, elevation, h_eye, want):
         below_axis = elevation + math.degrees(math.atan(h_eye / max(reach, 0.5)))
         if below_axis > half_v:
             continue                      # the roofline falls out of the bottom
-        scored.append((abs(below_axis - EDGE_BELOW_AXIS_DEG), bearing, reach,
-                       below_axis, step_back))
+        scored.append((abs(below_axis - EDGE_BELOW_AXIS_DEG), index, bearing,
+                       reach, below_axis, step_back, sky))
     scored.sort()
     picked = []
-    for _penalty, bearing, reach, below_axis, step_back in scored:
+    for _penalty, index, bearing, reach, below_axis, step_back, sky in scored:
         # Two shots down the same wall are one shot. Keep them apart.
         if any(bearing_gap(bearing, p["bearing"]) < 45.0 for p in picked):
             continue
         picked.append({"bearing": bearing, "reach_m": round(reach, 1),
                        "step_back_m": round(step_back, 1),
+                       "platform": index, "skyline_deg": sky,
+                       "stance": plats[index]["stance"],
                        "edge_below_axis_deg": round(below_axis, 2)})
         if len(picked) >= want:
             break
@@ -327,7 +345,12 @@ def main():
             dropped.append((cid, "not in this era's clusters.json"))
             continue
         label = names.get(str(cid)) or f"cluster {cid}"
-        stance = s["stance"]
+        # Several candidate stances per build, because the highest flat block is
+        # not reliably the one with sky over it. A rooftops.json without them
+        # degrades to the single stance and no skyline guard, which is the old
+        # behaviour stated rather than hidden.
+        plats = s.get("platforms_detail") or [{
+            "stance": s["stance"], "reach_m": s["reach_m"], "skyline_deg": {}}]
 
         made = 0
         for t in times:
@@ -339,8 +362,8 @@ def main():
             # Frame the lower limb once rho is known; the centre until then.
             alt_target = alt_body - args.rho
             elevation = alt_target - frame_offset_deg(args.sky_fraction, FOV_V_DEG)
-            picked = choose_bearings(s["reach_m"], az_body, elevation,
-                                     h_eye, args.bearings)
+            picked = choose_bearings(plats, az_body, elevation, h_eye,
+                                     args.bearings, args.sky_margin)
             if not picked:
                 continue
             for i, pick in enumerate(picked, start=1):
@@ -361,6 +384,7 @@ def main():
                     # roof between the lens and the drop.
                     back = pick["step_back_m"]
                     ar_back = math.radians(yaw)
+                    stance = pick["stance"]
                     stand = {"x": round(stance["x"] - back * math.sin(ar_back), 1),
                              "y": stance["y"],
                              "z": round(stance["z"] - back * math.cos(ar_back), 1)}
@@ -390,6 +414,8 @@ def main():
                         "moon_altitude_deg": round(alt_body, 2),
                         "reach_m": pick["reach_m"],
                         "step_back_m": pick["step_back_m"],
+                        "platform": pick["platform"],
+                        "skyline_deg": pick["skyline_deg"],
                         "edge_below_axis_deg": pick["edge_below_axis_deg"],
                         "lights": s["lights"], "above_base_m": s["above_base_m"],
                         "region": s.get("region", cluster.get("region")),
@@ -397,8 +423,8 @@ def main():
                     })
                     made += 1
         if not made:
-            dropped.append((cid, "no bearing keeps both the moon and the roofline "
-                                 "in frame"))
+            dropped.append((cid, "no stance has open sky toward the moon with "
+                                 "the roofline still in frame"))
 
     if dropped:
         print()
@@ -416,6 +442,7 @@ def main():
             "h_eye_m": h_eye, "sky_fraction": args.sky_fraction, "rho_deg": args.rho,
             "times": times, "environment": args.environment,
             "bearings": args.bearings, "repeats": args.repeats,
+            "sky_margin_deg": args.sky_margin,
             "aim_distance_m": AIM_DISTANCE_M,
             "edge_below_axis_deg": round(EDGE_BELOW_AXIS_DEG, 2),
         },
