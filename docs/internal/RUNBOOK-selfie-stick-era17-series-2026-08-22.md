@@ -1811,3 +1811,108 @@ asserts against the join itself rather than against the file.
   the frames it was validated against it found the one unambiguous disc and rejected the
   ring feature and a water reflection that an earlier naive sweep had happily reported as
   a moon at −21.6° altitude, below the horizon.
+
+## One driver, and AM4 as the capture host — 2026-08-27
+
+The three lanes were folded into `tools/selfie-stick/Invoke-SelfieStick.ps1`. OMEN
+became the brain (planning, scoring, index — it has `clusters.json`, the DuckDB cache
+and the perception venv) and AM4 the hands. The existing runners were kept: their
+`finally` block restores the operator's BepInEx config bytes on every exit path, and
+that is not worth re-deriving.
+
+### The queue had no notion of done, and three of seven rows were lying
+
+Matching plan row counts against receipts settled it: `twilight-1` (150 rows) is run
+`20260824-100400` (150 receipts, Clear at 0.71/0.32), `creators-1` (240) is
+`20260824-083226`, and `sky-probe` (70) is `20260824-094718` — 70 receipts, 14 distinct
+clusters, pitch 74.0–86.2, which is the row's own description exactly. All three still
+advertised themselves as waiting.
+
+The driver derives status from `capture-runs.json` plus the receipts instead of from a
+hand-kept flag. `settle` got the same treatment: it was **declared** on `storm-1a` and
+`storm-1b` and read nowhere in the script, so the A/B that adopted 3 was run by editing
+the mod cfg by hand.
+
+### AM4 was one assertion away from re-shooting Era 17 at 1080p
+
+`/etc/X11/xorg.conf` on AM4 is a symlink flipped by `sudo valheim-display
+headless|monitor`, and the monitor variant pins `Virtual 1920 1080`. `run-capture.sh`
+launches with `-screen-width 3840 -screen-height 2160`. **A 4K window cannot exist in a
+1080p framebuffer** — Unity clamps to the screen, writes 1080p frames, and every other
+check passes. That is exactly how the Era 17 series shipped at 1080p off OMEN's BMC
+adapter.
+
+`DISPLAY=:0 xrandr --fb 3840x2160` grows the framebuffer without touching the symlink;
+the panel becomes a 1080p viewport panning over a 4K screen, so a human can still watch.
+The driver now asserts the X screen is at least the capture size and names both remedies.
+Frames came back **3840×2160**, confirmed.
+
+Also worth recording: `xrandr --props` shows **`EDID:` empty** on that output, so X fell
+back to the generic VESA ladder (1920x1080 / 1600x900 / 1280x1024 / … / 640x480) and a
+fabricated 527×296 mm panel. The config comment asserting "the panel's native 1920x1080"
+is describing a fallback, not the hardware.
+
+### The staged payload reproduced the creator-bar bug by construction
+
+`bepinex-payload.tar.gz` carries `BepInEx/plugins/_parked-by-selfie-stick/` with
+`ComfyQuestRuntime.dll`, `ComfyQuestLab.dll` and `ComfyQuestContracts.dll`, and BepInEx
+scans `plugins/` recursively. Its shipped quest config has **no `ShowCreatorBar` key at
+all**, only `CreatorBarHotkey = F9`. A fresh AM4 install therefore starts in precisely
+the state that burned 61 frames.
+
+AM4 now has **no quest DLL under `plugins/` at any depth** — a structural guarantee
+rather than a config flag, which is the right shape for a machine whose only job is to
+hold a camera. Its `ComfyCameraProof.dll` was also stale (`bc66f907…` = `fe82739`,
+predating the light dump and `fires_in_view`); it is now `bc4ca9e4…`, md5-verified equal
+to OMEN's.
+
+### check_overlay could not pass a night run
+
+It reported **3.70% frozen** on a clean night capture. Of those static pixels **95.3%
+were near-black**, and 61.8% of the whole frame sits below luma 16 — near-black pixels
+are bit-identical whether or not anything is drawn on them. No row or column was ≥50%
+static, i.e. there was no band.
+
+The fix keeps the tool's own principle — look for the property every overlay has and no
+photograph does — and sharpens it to **frozen AND lit**. Black sky is static because
+nothing is there; a HUD is static because something is drawn there. `--min-luma`
+(default 16) and `--ignore-right-px` (for the NetworkSense transport tab, which is
+deliberately retained in the client and cropped from derived images) landed together.
+
+A second limit is the tool's own documented one: with four frames of one roof at two
+bearings it still measured 0.35% frozen-and-lit, all of it the same lit tents and fire
+appearing in both frames — "too much scene to tell an overlay from a wall". So the
+driver hard-fails on a **band** at any sample size, and treats a bandless percentage as
+*inconclusive* when the plan has too few distinct cameras. A guard that fires on a case
+it cannot judge is decoration.
+
+### Start-NextRun's index rebuild wrote an empty gallery
+
+`@(Get-Content capture-runs.json -Raw | ConvertFrom-Json)` yields a **one-element array
+holding an `Object[]`**, because `ConvertFrom-Json` in PS 5.1 emits an array as a single
+object rather than enumerating it. Every `--run` argument then collapses into one
+287-character space-joined id, `run not in args.run` is true for every real run, and
+`build_valheim_index` skips all of them.
+
+The capture runners do **not** share this: they `foreach` over the raw result, which
+enumerates correctly and yields all 18 ids. It is the `@()` wrapper around the pipeline
+that breaks it. The driver reads the manifest through one helper and asserts the index
+never loses frames across a rebuild.
+
+### The night lane was aiming at the light, not the disc
+
+The 0-of-30 result is explained by the plan, not the sky. `plan_nightsky` aims at the
+body azimuth from the arc equations — which is where the **light** is (134.2° at t=0.90)
+— while the disc was limb-fitted at **~78°**. Bearing freedom is `|yaw − az_body| <
+rho + fov_h/2`, so at rho 0 the allowed swath is ±48.5° and 78° falls just outside it.
+The original plan chose yaws 120/180/240; **nothing pointed near the disc**.
+
+The replacement is an ephemeris **survey**: run the planner once per forced
+`--body-azimuth` (60, 90, 120, 150, 180), merge, and dedupe on (cluster, yaw, time),
+which is a photograph's real identity. Variants carry their yaw — the index supersedes
+on (cluster, variant, environment, time_of_day) and same-named frames retire each other.
+Result: 21 shots, 21 distinct variants, yaw coverage 30°–210°, and **13 of 21 frames now
+contain azimuth 78 within their field of view** against effectively zero before.
+
+`t=0.80` is refused rather than planned: the moon is at 12.6° altitude, below the 16°
+sky-fraction offset, so the camera would have to look down.
