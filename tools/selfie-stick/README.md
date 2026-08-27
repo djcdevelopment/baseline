@@ -60,6 +60,47 @@ will dump and quit instead of shooting.
 
 It never publishes; that stays a separate act.
 
+## Two ways to photograph a night
+
+**`plan_nightsky.py` aims at the moon.** It solves where the body is from the
+engine's own arc and puts it at a chosen fraction up the frame, tilting the camera
+*up*. Validated: the disc sits on the directional light to within 0.2 degrees median,
+and its angular radius is about 6 degrees (`--rho`, which defaulted to 0 for a long
+time and biases every aim point by roughly a disc radius).
+
+**`plan_channel.py` aims down a channel and leaves the moon out of frame.** It exists
+because aiming at the moon composes the moon, which is the least interesting thing a
+night frame can do. A full moon is a lamp, and a lamp is worth more raking across a
+scene from off-axis than sitting in the middle of it.
+
+```powershell
+python scan_channels.py --rooftops out\era17ooftops.json --out out\era17\channels.json
+python plan_channel.py  --channels out\era17\channels.json --out out\era17\channel-1.json
+```
+
+`scan_channels.py` measures, per stance and bearing, **how high the canopy stands
+above the lens** and **how far the ray runs before it reaches open water**. The canopy
+angle is the measurement a gap distance cannot make: from a 68 m roof a 20 m fir on
+30 m ground tops out at 50 m and is not in the picture at all, while the same fir
+closes the view completely from a 12 m roof. A tree's ZDO carries its pivot, which is
+real ground elevation, so exactly one constant is assumed (`--tree-height`) and a
+wrong value moves every angle the same way.
+
+Open water comes from `<World>_mapTexCache`, the 2048x2048 biome PNG Valheim writes
+beside the save. The runbook previously recorded that seaward direction "is not
+derivable from the DuckDB cache (no terrain)" — true of the cache, false of the
+machine.
+
+`plan_channel.py` then picks the bearing by the channel, **refuses any bearing within
+40 degrees of the moon** (that is the shot the other planner already takes) and any
+beyond 140 (moon behind the camera, flat frontal light), and sets pitch so clear sky
+fills the top sixth-to-third of the frame. Every pitch it emits is *positive* — tilted
+down — which is the opposite of the night planner and the reason its frames can show
+depth at all.
+
+A useful side effect: it does not need a disc. A direct moon shot depends on phase and
+cloud; a raked one needs only that the moon is up.
+
 The era arguments are the thing worth not typing by hand. Point a run at the wrong
 `clusters.json` and every frame joins to another era's cluster ids — the mislabelling
 era isolation exists to prevent, and it does not announce itself.
