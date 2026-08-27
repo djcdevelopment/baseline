@@ -69,15 +69,40 @@ import math
 import os
 import sys
 
-# Tall enough that the canopy closes overhead. Small firs, bushes, stumps and
-# logs are deliberately absent: they block a walking eye and not a rooftop one.
-# Chosen by placement count off the cache, then read back for obvious mistakes --
-# a pattern sweep for "tree" would also collect FirTree_small_dead and stubbe.
-TALL_TREES = (
-    "Pinetree_01", "FirTree", "Beech1", "Birch1", "Birch2", "Birch1_aut",
-    "Birch2_aut", "SwampTree1", "SwampTree2", "Oak1", "FirTree_oldLog",
-    "AshlandsTree1", "AshlandsTree2", "AshlandsTree3", "YggdrasilRoot",
-)
+# Built from this world's placement counts across EVERY category, then audited by
+# eye -- not from what Valheim ships or from what a name suggests. The first pass
+# here was written from knowledge of the game and missed YggaShoot_small1, which
+# is the fourth most placed vegetation prefab in Era 17 at 472,679, plus
+# YggaShoot1/2/3 at about 143,000 each. Cluster 26 has seven of them 24 m from the
+# stance with pivots 8 m below the lens, and the frame that plan shot is solid
+# foliage. That is the third time in this project a prefab vocabulary written from
+# outside the world was wrong in it; the seats and the lights were the first two.
+#
+# Category is deliberately NOT filtered. People plant trees: Birch1 appears 38,464
+# times as BUILDING against 25,762 as UNKNOWN, and FirTree 21,989 times.
+#
+# The value is assumed canopy height above the ZDO pivot, which is real ground
+# elevation. A Yggdrasil shoot is not a beech and one constant for both was too
+# crude once the shoots were in the list.
+TALL_TREES = {
+    "YggaShoot1": 34.0, "YggaShoot2": 34.0, "YggaShoot3": 34.0,
+    "YggaShoot_small1": 18.0, "YggdrasilRoot": 26.0,
+    "Pinetree_01": 22.0, "FirTree": 18.0,
+    "Beech1": 14.0, "Oak1": 16.0,
+    "Birch1": 14.0, "Birch2": 14.0, "Birch1_aut": 14.0, "Birch2_aut": 14.0,
+    "SwampTree1": 14.0, "SwampTree2": 14.0,
+    "AshlandsTree1": 16.0, "AshlandsTree2": 16.0, "AshlandsTree3": 16.0,
+    "AshlandsTree6_big": 20.0,
+}
+# Excluded on purpose, each for a reason a pattern sweep would not have found:
+#   FirTree_small (1.29M), Beech_small1/2  saplings, below a rooftop lens
+#   *_Stub, ShootStump, *_log, FirTree_oldLog, FirTree_small_dead   felled or stumps
+#   ashwood_decowall_tree (60,993)          a decorative WALL, not a tree
+#   piece_xmastree                          a decoration
+#   FireFlies, fire_pit, bonfire            matched "%fir%" and are not vegetation
+# That last line is the whole argument for auditing a sweep: "fir" is inside
+# "FireFlies", and a previous "-table-" sweep in this project swallowed
+# UnstableLavaRock the same way.
 
 OCEAN_RGB = (0x33, 0x33, 0x33)
 PIXEL_SIZE_M = 10.0
@@ -103,11 +128,11 @@ def parse_args():
                    help="how far to look for the first tree")
     p.add_argument("--sea-reach", type=float, default=4000.0,
                    help="how far to look for open water")
-    p.add_argument("--tree-height", type=float, default=20.0,
-                   help="assumed canopy height above a tall tree's ZDO pivot. THE ONE "
-                        "guessed number here, and it is isolated on purpose: the pivot "
-                        "elevation is real data, so a wrong H shifts every canopy angle "
-                        "the same way and a single measured frame recalibrates it")
+    p.add_argument("--tree-scale", type=float, default=1.0,
+                   help="multiplier on every assumed canopy height in TALL_TREES. The "
+                        "heights are the only guessed numbers here -- the pivot "
+                        "elevation is real data -- so this one knob recalibrates all of "
+                        "them together against a frame with a visible treeline")
     p.add_argument("--cluster-ids", default="")
     return p.parse_args()
 
@@ -175,7 +200,7 @@ def main():
         st = b["stance"]
         x0, z0 = st["x"], st["z"]
         rows = con.execute(f"""
-            SELECT x, y, z FROM zdo
+            SELECT x, y, z, prefab_name FROM zdo
             WHERE prefab_name IN ({names})
               AND x BETWEEN {x0 - args.reach} AND {x0 + args.reach}
               AND z BETWEEN {z0 - args.reach} AND {z0 + args.reach}
@@ -183,6 +208,8 @@ def main():
         tx = np.array([r[0] for r in rows], dtype=float)
         ty = np.array([r[1] for r in rows], dtype=float)
         tz = np.array([r[2] for r in rows], dtype=float)
+        th = np.array([TALL_TREES.get(r[3], 14.0) * args.tree_scale for r in rows],
+                      dtype=float)
         # The lens rides 1.65 m above the stance the mod places the player on.
         eye_y = st["y"] + 1.65
 
@@ -204,7 +231,7 @@ def main():
                 # 50 m and is not in the picture at all, which is why a gap
                 # distance alone says nothing about whether you can see out.
                 if inside.any():
-                    rise = ty[inside] + args.tree_height - eye_y
+                    rise = ty[inside] + th[inside] - eye_y
                     canopy = float(np.degrees(np.arctan2(rise, along[inside])).max())
                 else:
                     canopy = None
@@ -242,8 +269,8 @@ def main():
             "bearings": args.bearings, "corridor_m": args.corridor,
             "near_m": args.near, "reach_m": args.reach,
             "sea_reach_m": args.sea_reach, "pixel_size_m": PIXEL_SIZE_M,
-            "tree_height_m_ASSUMED": args.tree_height,
-            "tall_trees": list(TALL_TREES),
+            "tree_heights_m_ASSUMED": {k: v * args.tree_scale for k, v in TALL_TREES.items()},
+
         },
         "structures": out,
     }

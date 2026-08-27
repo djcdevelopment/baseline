@@ -2015,3 +2015,56 @@ Detection is still 5 of 22 rather than 22 of 22, and the cause is known and unfi
 disc clipped by the frame border loses the interior edge pixels a limb fit needs. The
 frames are fine; the measurement is conservative. Do not read that ratio as a
 photographic result -- that is the mistake this whole section exists to record.
+
+### The channel lane, and a prefab vocabulary wrong for the third time
+
+Derek's composition rule, which is not the one plan_nightsky implements: "aiming at
+the moon itself is boring, using the lighting of a full moon at that angle... is
+creative", and "see down a channel to get the depth of vision from ground
+construction out into the sea... just solid stars caught in the top 1/3 to 1/6".
+
+`scan_channels.py` + `plan_channel.py` implement it. Bearing is chosen by the
+channel, the moon is required 40-140 degrees off-axis, and pitch places the skyline
+so clear sky fills the top sixth-to-third. Every emitted pitch is positive -- tilted
+DOWN -- which is why the existing night frames cannot show this composition at all:
+all of them are aimed above the horizon, so the depth is off the bottom of the frame.
+
+**Open water is derivable after all.** The colour lane recorded that seaward
+direction "is not derivable from the DuckDB cache (no terrain)". True of the cache,
+false of the machine: Valheim writes `<World>_mapTexCache` beside the save, a
+2048x2048 PNG of biome colours with Ocean at #333333. The mapping was solved rather
+than assumed -- 10 m/px centred on 1024, from the world disc measuring 1005 px in
+half-width and centring on column 1023.0 -- and the row direction fixed by a
+physical prior: under it Mountain pixels carry a mean build min_y of 127.9 m against
+64.8 on land, and flipped they come out lowest, which terrain cannot do.
+
+**The tree vocabulary was wrong, and it was wrong the same way as the last two.**
+The first `TALL_TREES` was written from knowledge of Valheim rather than from this
+world's placement counts. It missed `YggaShoot_small1` -- the **fourth most placed
+vegetation prefab in Era 17 at 472,679** -- plus `YggaShoot1/2/3` at about 143,000
+each. Cluster 26 has seven of them 24 m from its stance with pivots 8 m below the
+lens, the planner called that bearing open, and the frame it shot
+(`0026_chan1t005y150.png`) is solid foliage: 6.1% sky in the top third against 14.9%
+green.
+
+Rebuilt from counts across EVERY category and audited by eye, it drops cluster 26
+from 7 open bearings to 2 and removes exactly the bearing that failed. Two details
+worth keeping:
+
+- **Category must not be filtered.** People plant trees. `Birch1` appears 38,464
+  times as BUILDING against 25,762 as UNKNOWN; `FirTree` 21,989 times.
+- **The sweep needs auditing, again.** The pattern `%fir%` matched `FireFlies` and
+  `fire_pit`, and `%tree%` matched `ashwood_decowall_tree`, which is a decorative
+  wall. This is the same failure as the `-table-` sweep that swallowed
+  `UnstableLavaRock`.
+
+The heights above each pivot remain the only guessed numbers, isolated in one dict
+with a single `--tree-scale` knob, because the pivot elevation itself is real data.
+
+**Result of the first run (20260827-092614, 58 frames):** 46 of 58 have a top third
+that is over 40% sky and under 12% foliage, and check_overlay is clean at 0.00%. The
+band structure works. What does NOT yet work is *selecting* the good ones: the quick
+"blue-dominant equals sky" proxy used to rank them scored a frame of a giant cyan
+Yggdrasil glow as 100% sky. Ranking these frames needs a real measurement, which is
+the same lesson as everywhere else here -- guard the plan with geometry, and judge
+the frame with something that measures the thing you wanted.
