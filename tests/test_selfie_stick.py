@@ -57,6 +57,11 @@ NIGHT_SPEC = importlib.util.spec_from_file_location(
 )
 NIGHT = importlib.util.module_from_spec(NIGHT_SPEC)
 NIGHT_SPEC.loader.exec_module(NIGHT)
+CHAN_SPEC = importlib.util.spec_from_file_location(
+    "plan_channel", ROOT / "tools" / "selfie-stick" / "plan_channel.py"
+)
+CHAN = importlib.util.module_from_spec(CHAN_SPEC)
+CHAN_SPEC.loader.exec_module(CHAN)
 
 
 def _cluster(cid, creator, x=0.0, z=0.0, score=10.0, size_y=20.0, **extra):
@@ -857,3 +862,135 @@ class SupersedeTests(unittest.TestCase):
                                self._row(2, "orbit1", 200)])
         self.assertEqual(len(keep), 2)
 
+
+class ChannelPlanTests(unittest.TestCase):
+    """Down the channel, moon off-axis, stars in the top sixth-to-third.
+
+    The rule these guard is Derek's: aiming AT the moon composes the moon, which
+    is the least interesting thing a night frame can do. The moon is a lamp.
+    """
+
+    def _channels(self, bearings=None):
+        if bearings is None:
+            bearings = {}
+            for b in range(0, 360, 15):
+                bearings[str(b)] = {"first_tree_m": 900.0, "trees_near": 0,
+                                    "sea_at_m": None, "sea_run_m": 0.0,
+                                    "canopy_deg": -4.0}
+        return {"world": "T", "settings": {}, "structures": [{
+            "cluster_id": 7, "lights": 300, "reach_m": {str(b): 12.0 for b in range(0, 360, 30)},
+            "stance": {"x": 100.0, "y": 60.0, "z": 200.0},
+            "tall_trees_in_range": 500, "bearings": bearings,
+        }]}
+
+    def _run(self, tmp, extra=(), bearings=None):
+        chan = os.path.join(tmp, "channels.json")
+        clusters = os.path.join(tmp, "clusters.json")
+        out = os.path.join(tmp, "channel.json")
+        with io.open(chan, "w", encoding="utf-8") as fh:
+            json.dump(self._channels(bearings), fh)
+        with io.open(clusters, "w", encoding="utf-8") as fh:
+            json.dump({"clusters": [_cluster(7, 1)]}, fh)
+        argv = ["plan_channel.py", "--channels", chan, "--clusters", clusters,
+                "--names", os.path.join(tmp, "none.json"), "--out", out] + list(extra)
+        old = sys.argv
+        sys.argv = argv
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                CHAN.main()
+        finally:
+            sys.argv = old
+        with io.open(out, encoding="utf-8") as fh:
+            return json.load(fh), os.path.splitext(out)[0] + ".tsv"
+
+    def test_no_shot_ever_points_at_the_moon(self):
+        """The refusal that gives this planner its reason to exist."""
+        with tempfile.TemporaryDirectory() as tmp:
+            doc, _ = self._run(tmp)
+            self.assertTrue(doc["plan"])
+            for shot in doc["plan"]:
+                self.assertGreaterEqual(shot["moon_offset_deg"],
+                                        doc["settings"]["min_moon_offset_deg"])
+
+    def test_the_moon_is_never_behind_the_camera_either(self):
+        """Frontal moonlight is as flat as pointing at it."""
+        with tempfile.TemporaryDirectory() as tmp:
+            doc, _ = self._run(tmp)
+            for shot in doc["plan"]:
+                self.assertLessEqual(shot["moon_offset_deg"],
+                                     doc["settings"]["max_moon_offset_deg"])
+
+    def test_the_skyline_lands_where_the_sky_band_asks(self):
+        """v = tan(delta)/tan(fov_v/2); the skyline must sit at 1 - 2*band."""
+        with tempfile.TemporaryDirectory() as tmp:
+            doc, _ = self._run(tmp, extra=["--sky-band", "0.2"])
+            want_v = 1.0 - 2.0 * 0.2
+            for shot in doc["plan"]:
+                delta = shot["skyline_deg"] - shot["elevation_deg"]
+                v = (math.tan(math.radians(delta))
+                     / math.tan(math.radians(CHAN.FOV_V / 2.0)))
+                # elevation_deg is stored rounded to 2 dp for the TSV: 0.005 deg, about
+                # 1e-4 of frame height. Assert what the file promises.
+                self.assertAlmostEqual(v, want_v, places=3)
+
+    def test_a_sixth_of_sky_tilts_further_down_than_a_third(self):
+        """More ground in frame means a lower axis, not a different subject."""
+        with tempfile.TemporaryDirectory() as tmp:
+            sixth, _ = self._run(tmp, extra=["--sky-band", "0.167"])
+        with tempfile.TemporaryDirectory() as tmp:
+            third, _ = self._run(tmp, extra=["--sky-band", "0.333"])
+        self.assertGreater(sixth["plan"][0]["pitch_deg"], third["plan"][0]["pitch_deg"])
+
+    def test_a_canopy_above_the_lens_is_refused_not_shot(self):
+        """The measurement that a gap distance cannot make."""
+        walled = {}
+        for b in range(0, 360, 15):
+            walled[str(b)] = {"first_tree_m": 40.0, "trees_near": 30,
+                              "sea_at_m": None, "sea_run_m": 0.0,
+                              "canopy_deg": 18.0}
+        with tempfile.TemporaryDirectory() as tmp:
+            doc, _ = self._run(tmp, bearings=walled)
+            self.assertEqual(doc["plan"], [])
+
+    def test_open_water_outranks_bare_distance(self):
+        """Depth through variance is the objective; water is the strongest cue."""
+        mixed = {}
+        for b in range(0, 360, 15):
+            mixed[str(b)] = {"first_tree_m": 1200.0, "trees_near": 0,
+                             "sea_at_m": None, "sea_run_m": 0.0, "canopy_deg": -4.0}
+        mixed["90"] = {"first_tree_m": 400.0, "trees_near": 0,
+                       "sea_at_m": 300.0, "sea_run_m": 800.0, "canopy_deg": -4.0}
+        with tempfile.TemporaryDirectory() as tmp:
+            doc, _ = self._run(tmp, extra=["--times", "0.0", "--shots", "1"],
+                               bearings=mixed)
+            self.assertTrue(doc["plan"])
+            self.assertEqual(doc["plan"][0]["yaw_deg"], 90.0)
+
+    def test_every_frame_is_a_different_photograph(self):
+        """The index supersedes on (cluster, variant, environment, time)."""
+        with tempfile.TemporaryDirectory() as tmp:
+            doc, _ = self._run(tmp)
+            keys = {(s["cluster_id"], s["shot"], s["environment"], s["time_of_day"])
+                    for s in doc["plan"]}
+            self.assertEqual(len(keys), len(doc["plan"]))
+
+    def test_the_aim_point_reproduces_the_planned_angles(self):
+        """If FindClearView fires, LookAngles(lens, aim) must recover yaw/pitch."""
+        with tempfile.TemporaryDirectory() as tmp:
+            doc, _ = self._run(tmp)
+            for shot in doc["plan"]:
+                dx = shot["aim"]["x"] - shot["lens"]["x"]
+                dy = shot["aim"]["y"] - shot["lens"]["y"]
+                dz = shot["aim"]["z"] - shot["lens"]["z"]
+                yaw = math.degrees(math.atan2(dx, dz)) % 360.0
+                pitch = -math.degrees(math.asin(dy / math.sqrt(dx*dx + dy*dy + dz*dz)))
+                # aim is stored to 1 dp; over a 25 m sight line that is 0.05 m, so
+                # 0.115 deg. The mod needs this only to reproduce framing if
+                # recovery fires, and 0.2 deg is well inside that.
+                self.assertAlmostEqual(yaw, shot["yaw_deg"], delta=0.2)
+                self.assertAlmostEqual(pitch, shot["pitch_deg"], delta=0.2)
+
+    def test_daylight_is_refused_rather_than_planned(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaises(SystemExit):
+                self._run(tmp, extra=["--times", "0.5"])
