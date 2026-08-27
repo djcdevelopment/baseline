@@ -283,6 +283,50 @@ miss the failure — it endorses it.
 
 `los` catches it because it is a geometric fact computed from the world's own wall
 positions rather than inferred from pixels. **Guard the plan, not the pixels.**
+
+### The occlusion check cannot see a building
+
+Third instrument, same shape, and this one is in the mod rather than in a model.
+`IsOccluded` raycasts against `LayerMask.GetMask("terrain", "static_solid",
+"Default")`. Player-placed pieces are on the **`piece`** layer, and the same file
+proves it: `PiecesNear`, twelve lines below, masks `("piece", "static_solid")` to
+count them. So the occlusion check is blind to player builds, and returns
+`occluded=false` with the lens flat against masonry.
+
+The night-sky lane found it the expensive way: 16 frames back with
+`clearance="planned"`, `occluded=false` and `pieces_near_aim` up to 30,930 --
+mechanically flawless receipts -- of which four are a photograph of cluster 182's
+own diamond lattice. `FindClearView` is built entirely on `IsOccluded`, so the
+whole lift-and-swing recovery shares the blindness.
+
+The docstring is honest about what it does ("a shot straight into a hillside")
+and the receipt field is called `occluded`, which is not. The gap between those
+two is the whole bug.
+
+**What it does and does not touch.** Exterior orbits stand off at up to 120 m,
+where the blockers are trees and hillsides -- which the mask does cover, and
+demonstrably: 4% of frames needed recovery and six of eight successful lifts
+landed at +40 m, which is tree-clearing behaviour. So occlusion-reject rate
+remains a valid objective read for exteriors, including the settle A/B. It is
+**not** usable on interiors, where the camera is inside the geometry the mask
+cannot see; there the guard is `los`, computed from the world's own wall
+positions. It also qualifies the batch B/E reject-count comparison above, which
+was measured on first-person interiors -- whatever those rejects caught, it was
+terrain and static geometry, not builds. That conclusion survives because it
+rested on within-batch `los`, not on the reject counts.
+
+**Deliberately not fixed.** Adding `"piece"` to the mask is a one-word change
+that would break every exterior orbit, because an orbit aims *at* a build and
+would then report its own subject as an obstruction and start lifting and
+swinging away from it. The `dist * 0.85f` shortening is not nearly enough slack
+for a 100 m structure. A real fix needs to distinguish the subject's own pieces
+from everything else, and then the whole corpus needs re-baselining against the
+new reject rate. That is a lap of its own, not a patch.
+
+Three instruments now, three failures, one shape: `--max-los` caught what
+`center_block` endorsed, `depth_score` read 0.58 on a photograph of a stone wall,
+and `IsOccluded` reports clear against masonry. Every one of them was a
+pixel-or-proxy measure standing in for a geometric fact the world already knew.
 `plan_interiors.py` now takes `--max-los` (default 10) and skips the vantage with a
 reason instead of shooting through masonry: cluster 602's gate, 270's gate and 909's
 court now drop out with `sight line clips walls 15x/11x/23x`.
