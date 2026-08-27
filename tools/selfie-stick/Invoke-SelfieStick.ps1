@@ -217,17 +217,19 @@ $registry = @(
             '--sky-margin', '3.0',
             '--top',      '15'
         )
-        what    = '30 rooftop frames over 15 builds, aimed by the arc equations alone'
+        what    = '22 rooftop frames over 11 builds, aimed by the arc equations alone'
         why     = 'the original run set --body-azimuth 78 from a limb fit on two ' +
                   'frames and missed the moon by 56 degrees. Measurement says rho is ' +
                   '0 and the disc sits on the directional light to within 1.7 deg, so ' +
                   'the correct plan is the DEFAULT one. Repeats carry distinct variant ' +
                   'names because cloud position is a re-roll, not a setting.'
-        verdict = 'a disc in a good fraction of 30, by EYE or by a fixed sky_check. ' +
-                  'sky_check returned nan on all 21 night-ephemeris frames while the ' +
-                  'moon is plainly visible in six of them -- it is conservative to the ' +
-                  'point of being useless on a clipped or bloomed disc. Do not read a ' +
-                  '0 from it as an absence again.'
+        verdict = 'discs found, with the azimuth residual against the ARC EQUATIONS ' +
+                  'near zero -- not against sky_check own d_az column, which compares to ' +
+                  'the plan stored bearing and is meaningless once --body-azimuth is ' +
+                  'forced. Reference: the original run re-measured after the sky_check ' +
+                  'fix gives 6 discs, residual mean +0.86 deg, rho 6.45. A 0 from ' +
+                  'sky_check is still not evidence of absence: a disc clipped by the ' +
+                  'frame border loses the edge pixels a limb fit needs.'
     },
     [ordered]@{
         name    = 'night-ephemeris'
@@ -325,15 +327,39 @@ function Get-PlanFacts {
     }
 }
 
+function Get-RunIds {
+    <#
+      The registry's `runIds` seeds history that predates this driver. Everything
+      the driver shoots comes back through run-provenance-<name>.json, which it
+      writes itself -- so the mapping closes the loop instead of needing a human
+      to remember to edit source after every capture. That is the failure this
+      whole registry exists to stop; it would be absurd to reintroduce it here.
+    #>
+    param($Row)
+    $ids = @()
+    foreach ($id in $Row.runIds) { if ($id) { $ids += [string]$id } }
+    $prov = Join-Path $era "run-provenance-$($Row.name).json"
+    if (Test-Path -LiteralPath $prov) {
+        try {
+            $j = [IO.File]::ReadAllText($prov) | ConvertFrom-Json
+            foreach ($id in $j.run_ids) {
+                if ($id -and $ids -notcontains [string]$id) { $ids += [string]$id }
+            }
+        } catch { }
+    }
+    return $ids
+}
+
 function Get-RunStatus {
     <#
       Derived from evidence, never hand-maintained. A row is done when the runs it
       claims are on the accepted list. This is the check the old queue lacked.
     #>
     param($Row, [string[]] $Accepted)
-    if (-not $Row.runIds -or $Row.runIds.Count -eq 0) { return 'queued' }
-    $missing = @($Row.runIds | Where-Object { $Accepted -notcontains $_ })
-    if ($missing.Count -eq $Row.runIds.Count) { return 'queued' }
+    $rowRuns = Get-RunIds -Row $Row
+    if ($rowRuns.Count -eq 0) { return 'queued' }
+    $missing = @($rowRuns | Where-Object { $Accepted -notcontains $_ })
+    if ($missing.Count -eq $rowRuns.Count) { return 'queued' }
     if ($missing.Count -gt 0) { return "partial (not accepted: $($missing -join ', '))" }
     if ($Row.verdict -like 'FAILED*') { return 'done (verdict failed)' }
     return 'done'
@@ -931,7 +957,7 @@ if ($On) { $row.host = $On }
 
 $status = Get-RunStatus -Row $row -Accepted $accepted
 if ($status -like 'done*' -and -not $Force) {
-    throw "'$Run' is already $status (runs: $($row.runIds -join ', ')). Use -Force to shoot it again."
+    throw "'$Run' is already $status (runs: $((Get-RunIds -Row $row) -join ', ')). Use -Force to shoot it again."
 }
 
 Write-Host ''
