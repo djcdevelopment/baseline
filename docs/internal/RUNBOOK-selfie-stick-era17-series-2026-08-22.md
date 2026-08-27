@@ -1899,20 +1899,55 @@ enumerates correctly and yields all 18 ids. It is the `@()` wrapper around the p
 that breaks it. The driver reads the manifest through one helper and asserts the index
 never loses frames across a rebuild.
 
-### The night lane was aiming at the light, not the disc
+### The disc IS the light, and the 78-degree bearing was a bad fit
 
-The 0-of-30 result is explained by the plan, not the sky. `plan_nightsky` aims at the
-body azimuth from the arc equations — which is where the **light** is (134.2° at t=0.90)
-— while the disc was limb-fitted at **~78°**. Bearing freedom is `|yaw − az_body| <
-rho + fov_h/2`, so at rho 0 the allowed swath is ±48.5° and 78° falls just outside it.
-The original plan chose yaws 120/180/240; **nothing pointed near the disc**.
+The lane's §3.2 finding -- "the rendered disc is NOT where the light comes from",
+with the disc limb-fitted at azimuth ~78 against a directional light at 134.2 at
+t=0.90 -- is **wrong**, and the same section says why it was fragile: limb fitting a
+short arc of a huge circle trades centre distance against radius, and the same body
+measured 41.3 and 63.7 degrees of altitude. The azimuth fit was no better than the
+altitude fit.
 
-The replacement is an ephemeris **survey**: run the planner once per forced
-`--body-azimuth` (60, 90, 120, 150, 180), merge, and dedupe on (cluster, yaw, time),
-which is a photograph's real identity. Variants carry their yaw — the index supersedes
-on (cluster, variant, environment, time_of_day) and same-named frames retire each other.
-Result: 21 shots, 21 distinct variants, yaw coverage 30°–210°, and **13 of 21 frames now
-contain azimuth 78 within their field of view** against effectively zero before.
+Run `20260827-085344` measured the disc directly instead. Twenty-one frames, one roof,
+yaw swept 30-210 in 30-degree steps across five times. Six frames put a disc-sized
+saturated blob above the horizon; converting each blob centroid to a world bearing
+through the pinhole (focal length from the 65-degree vertical FOV, rotated by the
+frame's own yaw and elevation) and comparing against the arc equations:
 
-`t=0.80` is refused rather than planned: the moon is at 12.6° altitude, below the 16°
-sky-fraction offset, so the camera would have to look down.
+| t | disc az | light az | d az | disc alt | light alt | d alt |
+|---|---|---|---|---|---|---|
+| 0.90 | 134.3 | 134.2 | +0.1 | 35.1 | 34.9 | +0.2 |
+| 0.90 | 135.3 | 134.2 | +1.1 | 33.6 | 34.9 | -1.3 |
+| 0.95 | 153.6 | 155.3 | -1.7 | 42.6 | 42.3 | +0.3 |
+| 0.95 | 155.9 | 155.3 | +0.6 | 40.0 | 42.3 | -2.3 |
+| 0.05 | 205.0 | 204.7 | +0.3 | 42.1 | 42.3 | -0.2 |
+| 0.05 | 204.3 | 204.7 | -0.4 | 41.7 | 42.3 | -0.6 |
+
+**Azimuth residual mean -0.01 degrees, |max| 1.7. Altitude mean -0.62, |max| 2.3.**
+`rho` is 0. The disc sits on the directional light, and `plan_nightsky`'s own equations
+were already pointing the camera at the moon.
+
+So the 0-of-30 was not a mystery about where the moon renders. The run set
+`--body-azimuth 78` and therefore aimed **56 degrees away from it**. The correct plan
+is the DEFAULT one: omit `--body-azimuth` entirely. Deleting an argument is the whole
+fix.
+
+### sky_check returns false negatives, and one cost a lane a week
+
+On the same 21 frames sky_check reported `nan` for every disc and `0/21` overall --
+while the moon is large, bloomed and plainly visible in the corner of
+`0026_moon2t005y150.png`. It is doing what its own notes promise ("deliberately
+conservative and refuses rather than fabricates... expect false negatives, not false
+positives"), and a disc clipped by the frame edge gives a limb fit no arc to work with.
+
+The consequence is that **a 0 from sky_check is not evidence of absence.** The lane read
+one as a real result and spent its remaining effort on the bearing. The discriminator
+that section proposes -- high star counts mean clear sky and a wrong bearing -- was
+sound and pointed the right way; what was missing was looking at the picture, which is
+the third time in this project that the fastest instrument available was the frame
+itself.
+
+Two follow-ups, neither done here: sky_check should accept a clipped disc (fit against
+the visible arc plus the frame boundary, or fall back to a saturated-blob centroid,
+which is all the measurement above needed), and it should report *why* it refused rather
+than emitting `nan`.
