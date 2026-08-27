@@ -1986,3 +1986,32 @@ The remaining limitation is unfixed and known: only 6 of 30 and 2 of 21 are foun
 because a disc clipped by the frame border loses the interior edge pixels a limb fit
 needs. Falling back to a saturated-blob centroid would find the rest -- that is all
 the manual measurement above used.
+
+### The night lane closes: residual 0.2 degrees, rho about 6
+
+`nightsky-2` (run `20260827-090252`, 22 frames over 11 builds on AM4) is the same
+plan as the original with **one argument deleted**: no `--body-azimuth`, so the camera
+is aimed by the arc equations alone.
+
+| frame | d az | d alt | rho |
+|---|---|---|---|
+| 0013_moon1_r2 | -0.0 | -0.6 | 5.8 |
+| 0211_moon1_r2 | +0.6 | -0.2 | 5.8 |
+| 0042_moon1 | -0.1 | +0.1 | 6.4 |
+| 0042_moon1_r2 | -0.7 | +0.2 | 6.2 |
+| 0448_moon1 | +0.2 | -0.3 | 5.5 |
+
+**Median azimuth residual 0.2 degrees**, every frame inside +/-0.7, altitude inside
++/-0.6. This is the first time sky_check's own success condition -- "a small residual
+is the equation validating itself" -- has actually been met. 20 of 22 kept the planned
+stance.
+
+`rho` now has three independent measurements: **6.45** (original run 20260825-075415
+re-measured, n=6), **5.5** (ephemeris sweep 20260827-085344, n=2) and **5.8**
+(here, n=5). Call it **6 degrees** and feed it back as `--rho`; it has been 0 until now,
+which biases every aim point by roughly a disc radius.
+
+Detection is still 5 of 22 rather than 22 of 22, and the cause is known and unfixed: a
+disc clipped by the frame border loses the interior edge pixels a limb fit needs. The
+frames are fine; the measurement is conservative. Do not read that ratio as a
+photographic result -- that is the mistake this whole section exists to record.
