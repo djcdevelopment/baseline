@@ -1932,22 +1932,57 @@ So the 0-of-30 was not a mystery about where the moon renders. The run set
 is the DEFAULT one: omit `--body-azimuth` entirely. Deleting an argument is the whole
 fix.
 
-### sky_check returns false negatives, and one cost a lane a week
+### sky_check could not see the moon, and the 0-of-30 was its fault
 
-On the same 21 frames sky_check reported `nan` for every disc and `0/21` overall --
-while the moon is large, bloomed and plainly visible in the corner of
-`0026_moon2t005y150.png`. It is doing what its own notes promise ("deliberately
-conservative and refuses rather than fabricates... expect false negatives, not false
-positives"), and a disc clipped by the frame edge gives a limb fit no arc to work with.
+Two gates, each tuned against a reference the disc does not match.
 
-The consequence is that **a 0 from sky_check is not evidence of absence.** The lane read
-one as a real result and spent its remaining effort on the bearing. The discriminator
-that section proposes -- high star counts mean clear sky and a wrong bearing -- was
-sound and pointed the right way; what was missing was looking at the picture, which is
-the third time in this project that the fastest instrument available was the frame
-itself.
+**The cyan mask.** Candidates needed `(blue - red) > 25`. A moon bright enough to
+bloom saturates toward white: on `0026_moon2t005y150.png` it reads blue-red **+8.3**
+across the blob and **+4.0** across its brightest 500 px. The disc was never entering
+the candidate set at all. The test is right for a dim, unbloomed disc and wrong for a
+bright one, so it is now cyan **OR** near-saturated-white. Every later gate is
+unchanged, and the circle residual still does the discriminating: the two lit tents in
+that same frame fit at 4.06 and 1.46 against tolerances of 1.37 and 1.12.
 
-Two follow-ups, neither done here: sky_check should accept a clipped disc (fit against
-the visible arc plus the frame boundary, or fall back to a saturated-blob centroid,
-which is all the measurement above needed), and it should report *why* it refused rather
-than emitting `nan`.
+**The radius floor.** `RADIUS_MIN_PX` was 400. The moon's core fits at **253 px**
+full-res with a median residual of **0.79 against 1.58 allowed** -- a clean fit thrown
+away on the floor. The source note claiming "the moon fits at about 1,600 px on a 4K
+frame" cannot be describing the disc: at a focal length of 1,695 px (65 deg vertical
+over 2,160 px) 1,600 px is an angular *radius* of 43 degrees, wider than the frame's
+own half-height. Floor lowered to 150.
+
+What that recovers is the point. Re-run against **the original run
+`20260825-075415`** -- the one that reported 0 of 30 and blocked the lane:
+
+| frame | t | disc az | light az | d az | rho |
+|---|---|---|---|---|---|
+| 1135_moon1 | 0.90 | 135.2 | 134.2 | +0.98 | 6.5 |
+| 1135_moon1_r2 | 0.90 | 135.3 | 134.2 | +1.08 | 6.7 |
+| 0273_moon1 | 0.90 | 135.1 | 134.2 | +0.88 | 6.4 |
+| 0273_moon1_r2 | 0.90 | 135.1 | 134.2 | +0.88 | 6.5 |
+| 0061_moon1 | 0.90 | 134.9 | 134.2 | +0.68 | 6.2 |
+| 0061_moon1_r2 | 0.90 | 134.9 | 134.2 | +0.68 | 6.1 |
+
+**Six discs, three builds, azimuth residual mean +0.86 deg (|max| 1.08).** `rho`
+median **6.45 deg** -- a value that had defaulted to 0 since this lane began, now
+measured twice independently (6.45 here, 5.5 on `20260827-085344`).
+
+**The moon was in the lane's own frames all along.** The 56-degree aiming error from
+`--body-azimuth 78` is real and worth fixing, because it puts the moon at the frame
+edge instead of composed -- but it is not what produced the zero. A measurement
+failure was read as a photographic one, and the lane spent its remaining effort on the
+bearing.
+
+Two things follow for anyone reading a 0 from this tool. First, its own note --
+"deliberately conservative, expect false negatives" -- was accurate and was still not
+cautious enough: a false negative here was indistinguishable from a real result and
+was acted on as one. Second, its printed line "a large azimuth residual means the
+rendered disc is not at the directional light, which is a real finding and not a bug"
+is a trap when the plan carried a forced `--body-azimuth`, because the residual is
+computed against the plan's stored bearing, not against the equations. On the
+ephemeris sweep it prints 85 deg while the true residual is 0.3.
+
+The remaining limitation is unfixed and known: only 6 of 30 and 2 of 21 are found,
+because a disc clipped by the frame border loses the interior edge pixels a limb fit
+needs. Falling back to a saturated-blob centroid would find the rest -- that is all
+the manual measurement above used.
