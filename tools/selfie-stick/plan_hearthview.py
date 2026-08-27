@@ -80,6 +80,17 @@ def parse_args():
                         "more than this (advisory grid, same as interiors)")
     p.add_argument("--environment", default="Clear",
                    help="the only sky with stars and a visible moon")
+    p.add_argument("--cluster-points", default="",
+                   help="cluster-zdos.parquet (per-piece x/y/z); enables the "
+                        "exterior guard counts on every candidate opening")
+    p.add_argument("--exterior-only", action="store_true",
+                   help="skip openings the guard reads as interior partitions "
+                        "(counts are printed either way)")
+    p.add_argument("--near-reject", type=int, default=15,
+                   help="reject when same-cluster pieces in the sight cone "
+                        "2-10 m beyond the opening reach this count")
+    p.add_argument("--far-reject", type=int, default=40,
+                   help="reject when the 2-30 m cone count reaches this")
     return p.parse_args()
 
 
@@ -112,6 +123,87 @@ def moon_times(bearing, args):
     return [(v[1], v[2], v[3], side) for side, v in sorted(best.items())]
 
 
+class PointStore:
+    """Per-cluster piece positions from cluster-zdos.parquet, fetched lazily.
+
+    One duckdb query per cluster against a 37 MB file is milliseconds; loading
+    all 3.5M rows up front to plan 14 buildings is not worth the memory.
+    """
+
+    def __init__(self, path):
+        import duckdb
+        self._con = duckdb.connect()
+        self._path = path.replace("\\", "/")
+        self._cache = {}
+
+    def points(self, cid):
+        if cid not in self._cache:
+            self._cache[cid] = self._con.execute(
+                "SELECT x, y, z FROM read_parquet(?) WHERE cluster_id = ?",
+                [self._path, int(cid)]).fetchall()
+        return self._cache[cid]
+
+
+def exterior_counts(points, g, ox, oz):
+    """Same-cluster pieces in the sight cone beyond the opening.
+
+    An interior partition NECESSARILY puts its blocking wall a few metres past
+    the "gate"; a real exterior opening has nothing of its own building there.
+    Cone: 28 deg half-angle about the outward axis (the doorway crops the view
+    to roughly this from a 3-5.5 m stance), y within [-1.0, +3.5] of the
+    opening so eaves overhead never disqualify a good gate, and two along-ray
+    bands -- near [2, 10] m is the discriminator, far [2, 30] m the tie-break
+    (a fence at 20 m is legitimate; a wall at 6 m is a room).
+    """
+    cos_lim = math.cos(math.radians(28.0))
+    near = far = 0
+    for x, y, z in points:
+        if not (g["y"] - 1.0 <= y <= g["y"] + 3.5):
+            continue
+        dx, dz = x - g["x"], z - g["z"]
+        along = dx * ox + dz * oz
+        if along < 2.0 or along > 30.0:
+            continue
+        horiz = math.hypot(dx, dz)
+        if horiz <= 0.0 or along / horiz < cos_lim:
+            continue
+        far += 1
+        if along <= 10.0:
+            near += 1
+    return near, far
+
+
+def terrain_rise(grid, g, ox, oz):
+    """Advisory only: does the sight line die into a hillside?
+
+    The cache carries ~3 m median residual against built-up ground, so this
+    flags, it never rejects.
+    """
+    if grid is None:
+        return None
+    for d in range(5, 45, 5):
+        gy = grid.ground_y(g["x"] + ox * d, g["z"] + oz * d)
+        if gy > g["y"] + 2.0:
+            return {"at_m": d, "ground_y": round(gy, 1)}
+    return None
+
+
+def water_reach(grid, g, ox, oz):
+    """First distance along the outward ray where the world is open water.
+
+    Added when the piece-cone counts failed their five-gate truth set (440
+    read 58 near pieces and it faces the sea; 612 read 0 and it faces a
+    flush lattice). Both PROVEN exterior gates face water; all three duds
+    face inland rooms -- so water-reach is the candidate discriminator.
+    """
+    if grid is None:
+        return None
+    for d in range(10, 105, 10):
+        if grid.is_water(g["x"] + ox * d, g["z"] + oz * d):
+            return d
+    return None
+
+
 def main():
     args = parse_args()
     here = os.path.dirname(os.path.abspath(__file__))
@@ -128,6 +220,15 @@ def main():
         ranked = sorted(clusters.items(), key=lambda kv: kv[1]["rank"])
         picked = ranked
     inside_steps = [float(d) for d in args.inside_m.split(",")]
+
+    store, tgrid = None, None
+    if args.cluster_points:
+        store = PointStore(args.cluster_points)
+        try:
+            from terrain import TerrainGrid
+            tgrid = TerrainGrid.load()
+        except Exception as e:      # advisory layer; planning proceeds without
+            print(f"  terrain advisory unavailable: {e}")
 
     shots, notes, planned = [], {}, 0
     for cid, f in picked:
@@ -180,6 +281,23 @@ def main():
         oz = (g["z"] - hall["cz"]) / hall_dist(g)
         bearing = math.degrees(math.atan2(ox, oz)) % 360.0
 
+        guard = None
+        if store is not None:
+            near, far = exterior_counts(store.points(cid), g, ox, oz)
+            guard = {"near_2_10m": near, "far_2_30m": far,
+                     "opening": f"{kind}:{g['name']}",
+                     "terrain_rise": terrain_rise(tgrid, g, ox, oz),
+                     "water_at_m": water_reach(tgrid, g, ox, oz)}
+            print(f"  {cid:>5} guard: near={near:<4} far={far:<4} "
+                  f"water={str(guard['water_at_m']):<5} {kind}:{g['name']}"
+                  + (f"  TERRAIN RISES {guard['terrain_rise']}"
+                     if guard["terrain_rise"] else ""))
+            if args.exterior_only and (near >= args.near_reject
+                                       or far >= args.far_reject):
+                skip(f"exterior guard: near={near} far={far} "
+                     f"({kind}:{g['name']} reads as an interior partition)")
+                continue
+
         times = moon_times(bearing, args)
         if not times:
             skip(f"moon never rakes bearing {bearing:.0f} at "
@@ -215,6 +333,7 @@ def main():
         notes[cid] = {
             "label": label, "opening": f"{kind}:{g['name']}",
             "bearing": round(bearing, 1), "stance_inside_m": stance_d,
+            "guard": guard,
             "times": [{"t": t, "moon_offset": off, "moon_alt": alt,
                        "side": side} for t, off, alt, side in times],
         }

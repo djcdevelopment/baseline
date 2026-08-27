@@ -2463,3 +2463,73 @@ Not sampled: whether the push's dark-interior -> bright-exterior ramp (YAVG 34
 -> 80 over the move) reads as intentional or as exposure drift; audio (none
 captured, and the panel has no audio device); 4K clip cost; whether a longer
 flash hold than 0.35 s reads better at 60 fps; any move but push and pan.
+
+## The showcase round -- four launches, two new genres, and the flash says "ok" (2026-08-27, late)
+
+Derek freed AM4 for ~2 hours (the B70 benchmark owns OMEN; every frame and every
+encode ran on the 5070). Four game launches: 4K re-shoot of the proven geometry
+(RUN 20260827-230926, 8/8), a 1080p probe of nine candidate gates plus five
+hover-channel rows (RUN 20260827-231431, 14/14), the merged 4K keepers
+(RUN 20260827-232224, 6/6), and clips (20260827-233012, 3/3 moving).
+
+**The exterior guard failed its truth set on both signals, and that is the
+result.** Pre-registered expectations: 270/612 reject, 504/524 pass, 440 pass
+despite its closed leaf. Measured (near [2,10] m cone count / far [2,30] m /
+water-reach along the outward ray):
+
+    504  15/23   w10    exterior (the proof shot)
+    440  58/152  w20    exterior -- its own building stands seaward of the gate
+    270  67/68   w-     dud
+    524  35/36   w10    inward (sits over water anyway)
+    612   0/0    w10    dud -- the lattice is FLUSH, inside the 2 m dead zone
+
+No threshold separates {504,440} from {270,524,612}; water-reach fails the same
+way. A zero cone is NOT evidence of exterior -- 445 read 0/0 and opened into a
+monster pen, 518 read 0/1 and opened into a crystal room. The probe run stayed
+the classifier. One pattern emerged at n=1, recorded not hardened: 474 -- the
+only candidate with BOTH a sparse cone AND far water (5/15 w100) -- was the only
+true window of the nine.
+
+**474 is the first true hearthview since 504.** Open double doors under an arch,
+torch on stone right, starlit meadow and flower hedge beyond -- and its
+ThunderStorm t=0.71 variant is the hero of the round: violet rain sheeting past
+the arch, warm torchlight inside. **627 found a genre nobody planned: the storm
+alley.** Its hall-level "gate" put the stance OUTSIDE, between two buildings --
+lantern glow raking a timber wall, snowy path leading back, lit rain overhead.
+Wrong per the plan, right as a photograph.
+
+**All five hover-channel rows are one clean null.** A 600 m water lane at night
+with no anchor in frame is not a photograph; advancing past the roof edge
+removed the anchor entirely, and the lateral-anchor row missed the silhouette
+too. If the lane idea returns, it returns in daylight or with a lit foreground.
+
+**4K clips are geometrically impossible on this X setup.** The window sits at
++1+18 in an exactly 3840x2160 framebuffer, so a full-4K grab runs off-screen and
+ffmpeg refuses at startup. (The failed launch's game never armed clips -- the
+harness's cleanup trap restored orbit-request.json before the mod's boot settle
+read it. No ghost receipts.) The 1080p60 fallback ran clean: 243/235/102 fps
+effective slices, all three freezedetect-moving at 10.00 s.
+
+**The driven flash fires in clips.** With the return finally logged, all three
+clips report `flash at 6.00s -> ok`, and the push clip's YAVG trace shows a
+structured event at the drive time: dip 82 -> 75.7 at 6.0-6.1, ramp to a 90.7
+plateau at ~7.0, decay by 7.4 -- the same +10 magnitude the stills measured.
+The earlier no-show now reads as "may never have fired at all" (its return was
+discarded). Driven-vs-ambient attribution still needs a control clip
+(flash_at=-1, same env and clock).
+
+Also confirmed: ComfyQuestRuntime burns a small green chip into the right edge
+of every frame -- the harness warns exactly this at launch. Park its DLL for
+future runs, or crop at publish.
+
+Re-run the slices:
+  ssh homebase '~/valheim-capture/run-capture.sh --plan /home/derek/valheim-capture/plans/showcase-4k.tsv --width 3840 --height 2160'
+  ssh homebase '~/valheim-capture/run-capture.sh --plan /home/derek/valheim-capture/plans/probe-gates-hover.tsv --width 1920 --height 1080'
+  ssh homebase '~/valheim-capture/run-capture.sh --plan /home/derek/valheim-capture/plans/keepers-4k.tsv --width 3840 --height 2160'
+  ssh homebase '~/valheim-capture/run-clips.sh --plan /home/derek/valheim-capture/plans/clips-showcase.tsv --width 1920 --height 1080 --fps 60'
+  python plan_hearthview.py --cluster-ids 504,524,270,612,440 --cluster-points "E:/omen/steward-era17-arch/cluster-zdos.parquet" --out out/era17/guard-validate.json
+
+Not sampled: a flash control clip; second time-variants at 474/627; the hover
+lane in daylight; the 602/195 probe frames (shot, never reviewed); whether an
+undecorated window or a wider framebuffer unlocks 4K clips; flash holds beyond
+0.35 s; the 1080p-vs-4K effect on colour metrics.
