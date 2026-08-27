@@ -2411,3 +2411,55 @@ Baseline product code, so this lap records the defect instead of migrating it in
 the hub. Remaining uncertainty: one 1080p build/weather realization, natural
 lightning and portal animation, a second-generation CRF 16 encode, visual rather
 than automated chrome detection, no audio, no driven flash, and no 4K pass.
+
+### Video: driven camera clips (20260827-123029, 4 clips, 1080p60)
+
+Derek: "i think that same hardware could be leveraged for this only we create
+little fly by scripts, then our timing with the lightening and conveying a
+feeling vs showing a picture steps up again another level."
+
+Built: `clipplan.tsv` (18 positional columns: start pose, end pose, duration,
+easing, flash offset, flash bearing) armed by `"clips": true` in
+orbit-request.json; `plan_clips.py` generates it from framings that have
+already been shot and looked at; `run-clips.sh` records the session with
+x11grab + h264_nvenc on AM4's 5070 and slices afterwards from the UTC stamps
+the mod writes per clip. Mod commit `6450278`.
+
+**The hot loop does no IO** -- Derek's constraint, and the same trap as the
+raw-socket POST that froze a main thread for ten seconds. A Unity coroutine is
+on the main thread, so log lines, receipts, environment/clock and world waits
+all sit outside the motion loop. Motion moves the PLAYER with debug-fly on
+rather than taking over the camera; the boom is already 0 for stills.
+
+**Results, all four clips: `moving`.** 2384/2281/1056/943 frames over 10.00s
+(the game renders at 94-238 fps; the recording is 60). Durations 10.00-10.01
+against 10.00 planned. The C9 failure -- perfect receipts over frozen panels --
+did not repeat, and freezedetect is the gate that would have caught it.
+
+Two things the first take taught:
+
+1. **x11grab captured the DESKTOP, not the game.** The window sits at `+1+18`
+   under openbox, so a `:0+0,0` grab of 1920x1080 caught the title bar and a
+   strip of desktop. The stills never had this because the mod captures Unity's
+   own framebuffer. `run-clips.sh` now measures the window with `xwininfo` and
+   grabs its exact rectangle -- which means the recorder must start AFTER the
+   window exists, which is safe because the first clip is a minute away.
+2. **A bright object in frame is not evidence of the flash.** The cyan blaze
+   filling half of 0504's push is a PORTAL ("CREATOR HQ" on the sign beside
+   it), present at t=5.0 before the strike was due.
+
+**The driven flash did not fire visibly, and that is the open edge.** Per-frame
+`signalstats` YAVG across the scheduled window is smooth -- 78.3 at t=6.00
+drifting to 80.3 by 6.35, no spike -- while a genuine 34 -> 89.6 spike sits at
+t=1.3 and decays over ~1.5s, which is ambient ThunderStorm lightning (that
+environment fires its own strikes; a luma spike alone cannot attribute one).
+`DriveFlash`'s return value is DISCARDED in the clip path -- the still path
+records it in the receipt. Log it before theorising further.
+
+Re-run the slice:
+  ssh homebase '~/valheim-capture/run-clips.sh --plan ~/valheim-capture/plans/clips-1.tsv --width 1920 --height 1080 --fps 60'
+
+Not sampled: whether the push's dark-interior -> bright-exterior ramp (YAVG 34
+-> 80 over the move) reads as intentional or as exposure drift; audio (none
+captured, and the panel has no audio device); 4K clip cost; whether a longer
+flash hold than 0.35 s reads better at 60 fps; any move but push and pan.
