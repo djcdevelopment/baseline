@@ -6,8 +6,10 @@ was 23 frames of one viewpoint varying only the light. Automated, that is backwa
 the camera can be anywhere instantly, and six photographs from six angles say far
 more about a building than twenty-three of one wall.
 
-So: six shots per structure — four orbit angles plus two light variants — placed
-from the bounding box scan_clusters.py already computes.
+So: six shots per structure — four orbit angles plus two light variants. When the
+coordinate artifact from export_cluster_points.py is present, framing is solved
+against every BUILDING ZDO in camera space: projected width, projected height, and
+front-to-back depth all contribute. The old cluster bounding box remains the fallback.
 
 No terrain data is needed. Valheim generates terrain from the world seed and the
 save holds only objects, so no offline heightmap exists. But a cluster's min_y is
@@ -17,6 +19,7 @@ otherwise land inside a hillside.
 
 Usage:
   python plan_shots.py [--clusters out/clusters.json] [--out out/shotplan.json]
+                       [--cluster-points cluster-zdos.parquet]
                        [--top N] [--region in-world] [--elevation 40]
                        [--max-distance 200]
 """
@@ -29,6 +32,9 @@ import sys
 # Valheim's vertical field of view. Framing math is in vertical FOV because the
 # window is 16:9 and height is the binding constraint for a tall build.
 FOV_V_DEG = 65.0
+ASPECT = 16.0 / 9.0
+FOV_H_DEG = math.degrees(
+    2.0 * math.atan(math.tan(math.radians(FOV_V_DEG / 2.0)) * ASPECT))
 
 # Measured golden hours, taken from the 207-frame sweep rather than assumed. The
 # first version of this planner used 0.70 and 0.30 because they *sound* like golden
@@ -105,6 +111,10 @@ def parse_args():
     p = argparse.ArgumentParser(description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--clusters", default=os.path.join(here, "out", "clusters.json"))
+    p.add_argument("--cluster-points", default="",
+                   help="cluster-zdos.parquet from export_cluster_points.py. If omitted, "
+                        "use that filename beside clusters.json when present; otherwise "
+                        "retain bounding-box framing")
     p.add_argument("--names", default=os.path.join(here, "out", "cluster-names.json"))
     p.add_argument("--out", default=os.path.join(here, "out", "shotplan.json"))
     p.add_argument("--region", default="in-world", choices=["all", "in-world", "outland"])
@@ -202,6 +212,110 @@ def orbit_azimuths(size_x, size_z):
     return [(base + 45.0 + i * 90.0) % 360.0 for i in range(4)], long_axis_is_x
 
 
+def load_cluster_points(path, clusters, cluster_doc):
+    """Load exact frozen-cluster ZDO positions and reject crossed-era artifacts."""
+    import duckdb
+
+    if not clusters:
+        return {}
+    parquet = path.replace("'", "''").replace("\\", "/")
+    con = duckdb.connect()
+    con.execute(f"CREATE TEMP VIEW point_source AS SELECT * FROM read_parquet('{parquet}')")
+    columns = {row[1] for row in con.execute("PRAGMA table_info('point_source')").fetchall()}
+    required = {"snapshot_id", "world_id", "cluster_id", "zdo_index", "x", "y", "z"}
+    missing = sorted(required - columns)
+    if missing:
+        con.close()
+        sys.exit(f"cluster point artifact is missing: {', '.join(missing)}")
+
+    metadata = con.execute(
+        "SELECT DISTINCT snapshot_id, world_id FROM point_source ORDER BY snapshot_id, world_id"
+    ).fetchall()
+    expected = (cluster_doc.get("snapshot_id"), cluster_doc.get("world_id"))
+    if len(metadata) != 1 or metadata[0] != expected:
+        con.close()
+        sys.exit(f"cluster point artifact belongs to {metadata}, but clusters.json is {expected}")
+
+    con.execute("CREATE TEMP TABLE wanted_cluster (cluster_id BIGINT, pieces BIGINT)")
+    con.executemany("INSERT INTO wanted_cluster VALUES (?, ?)",
+                    [(int(c["cluster_id"]), int(c["pieces"])) for c in clusters])
+    mismatches = con.execute("""
+        SELECT w.cluster_id, w.pieces, count(p.zdo_index) AS actual
+        FROM wanted_cluster w
+        LEFT JOIN point_source p USING (cluster_id)
+        GROUP BY w.cluster_id, w.pieces
+        HAVING count(p.zdo_index) != w.pieces
+        ORDER BY w.cluster_id
+        """).fetchall()
+    if mismatches:
+        con.close()
+        first = mismatches[0]
+        sys.exit("cluster point membership does not match frozen clusters.json: "
+                 f"cluster {first[0]} expected {first[1]}, found {first[2]} "
+                 f"({len(mismatches)} mismatch(es))")
+
+    rows = con.execute("""
+        SELECT p.cluster_id, p.x, p.y, p.z
+        FROM point_source p
+        JOIN wanted_cluster w USING (cluster_id)
+        ORDER BY p.cluster_id, p.zdo_index
+        """).fetchall()
+    con.close()
+    points = {int(c["cluster_id"]): [] for c in clusters}
+    for cid, x, y, z in rows:
+        xyz = (float(x), float(y), float(z))
+        if not all(math.isfinite(v) for v in xyz):
+            sys.exit(f"cluster point artifact has a non-finite coordinate in cluster {cid}")
+        points[int(cid)].append(xyz)
+    return points
+
+
+def framing_from_points(points, aim, azimuth_deg, elevation_deg, margin):
+    """Solve camera distance against every ZDO in camera space.
+
+    For point i, distance D must leave enough forward room for both its horizontal
+    and vertical angular offsets.  ``depth_i`` is the term the old axis-aligned
+    bounding-box calculation omitted: points on the camera-facing side consume
+    camera distance even when width and height stay unchanged.
+    """
+    az = math.radians(azimuth_deg)
+    el = math.radians(elevation_deg)
+    sin_a, cos_a = math.sin(az), math.cos(az)
+    sin_e, cos_e = math.sin(el), math.cos(el)
+
+    # Camera sits from aim along back; right/up span its image plane.
+    back = (sin_a * cos_e, sin_e, cos_a * cos_e)
+    right = (cos_a, 0.0, -sin_a)
+    up = (-sin_a * sin_e, cos_e, -cos_a * sin_e)  # back x right
+    tan_h = math.tan(math.radians(FOV_H_DEG / 2.0))
+    tan_v = math.tan(math.radians(FOV_V_DEG / 2.0))
+
+    right_values, up_values, depth_values, ys = [], [], [], []
+    ideal = 0.0
+    ax, ay, az0 = aim
+    for x, y, z in points:
+        rel = (x - ax, y - ay, z - az0)
+        image_x = sum(rel[i] * right[i] for i in range(3))
+        image_y = sum(rel[i] * up[i] for i in range(3))
+        depth = sum(rel[i] * back[i] for i in range(3))
+        right_values.append(image_x)
+        up_values.append(image_y)
+        depth_values.append(depth)
+        ys.append(y)
+        ideal = max(ideal, depth + margin * max(abs(image_x) / tan_h,
+                                                abs(image_y) / tan_v))
+
+    # Keep the prior planner's 8 m minimum subject size for tiny point sets.
+    ideal = max(ideal, margin * 4.0 / tan_v)
+    return {
+        "ideal_distance_m": ideal,
+        "world_height_m": max(ys) - min(ys),
+        "projected_width_m": max(right_values) - min(right_values),
+        "projected_height_m": max(up_values) - min(up_values),
+        "depth_m": max(depth_values) - min(depth_values),
+    }
+
+
 def elevation_for(cluster, default_deg):
     """A tower and a plaza want opposite camera heights.
 
@@ -215,7 +329,7 @@ def elevation_for(cluster, default_deg):
 
 
 def camera_for(cluster, azimuth_deg, elevation_deg, margin, max_distance, clearance,
-               aim_height=0.5):
+               aim_height=0.5, points=None):
     """Where to stand, and where to look, to frame this structure from one bearing."""
     cx, cz = cluster["center_x"], cluster["center_z"]
     # Aim at the middle of the box vertically, not the median piece height: a tower's
@@ -229,15 +343,19 @@ def camera_for(cluster, azimuth_deg, elevation_deg, margin, max_distance, cleara
     # came back 76% occluded at 22 degrees and 100% at 65 for exactly that reason.
     cy = cluster["min_y"] + (cluster["max_y"] - cluster["min_y"]) * aim_height
 
-    # Frame on the compact extent, not the bounding diagonal. A cluster's diagonal is
-    # inflated by sprawl -- outbuildings, walls, a dock -- so framing on it pushes the
-    # camera far enough back that the thing people came to see is a smudge in the middle
-    # of a hazy frame. Measured on Dragon's Den: diagonal 252 m wants the camera 267 m
-    # out, while its compact extent of 150 m wants 136 m. The second is the photograph.
-    subject = max(cluster["size_y"],
-                  min(cluster["size_x"], cluster["size_z"]),
-                  8.0)
-    ideal = (subject / 2.0) / math.tan(math.radians(FOV_V_DEG / 2.0)) * margin
+    # The point path solves the field-of-view inequalities against every ZDO, including
+    # each point's camera-axis depth. The fallback retains the measured compact-extent
+    # heuristic; framing on the full diagonal pushed Dragon's Den 267 m into haze.
+    geometry = None
+    if points:
+        geometry = framing_from_points(
+            points, (cx, cy, cz), azimuth_deg, elevation_deg, margin)
+        ideal = geometry["ideal_distance_m"]
+    else:
+        subject = max(cluster["size_y"],
+                      min(cluster["size_x"], cluster["size_z"]),
+                      8.0)
+        ideal = (subject / 2.0) / math.tan(math.radians(FOV_V_DEG / 2.0)) * margin
     distance = min(ideal, max_distance)
     fits = ideal <= max_distance
 
@@ -257,7 +375,7 @@ def camera_for(cluster, azimuth_deg, elevation_deg, margin, max_distance, cleara
     yaw = math.degrees(math.atan2(dx, dz)) % 360.0
     pitch = math.degrees(-math.asin(max(-1.0, min(1.0, dy / n))))
 
-    return {
+    result = {
         "azimuth_deg": round(azimuth_deg, 1),
         "camera": {"x": round(x, 1), "y": round(y, 1), "z": round(z, 1)},
         "aim": {"x": round(cx, 1), "y": round(cy, 1), "z": round(cz, 1)},
@@ -267,6 +385,18 @@ def camera_for(cluster, azimuth_deg, elevation_deg, margin, max_distance, cleara
         "elevation_deg": round(elevation_deg, 1),
         "frames_whole_build": fits,
     }
+    if geometry:
+        result.update({
+            "geometry_source": "zdo_xyz",
+            "geometry_points": len(points),
+            "zdo_height_m": round(geometry["world_height_m"], 1),
+            "zdo_projected_width_m": round(geometry["projected_width_m"], 1),
+            "zdo_projected_height_m": round(geometry["projected_height_m"], 1),
+            "zdo_depth_m": round(geometry["depth_m"], 1),
+        })
+    else:
+        result["geometry_source"] = "cluster_bbox"
+    return result
 
 
 def main():
@@ -330,17 +460,35 @@ def main():
                 print(f"    cluster {c['cluster_id']}: {c['size_y']:,.0f} m tall, "
                       f"{c['diagonal_m']:,.0f} m diagonal, {c['pieces']:,} pieces")
 
+    point_path = args.cluster_points
+    if not point_path:
+        candidate = os.path.join(os.path.dirname(os.path.abspath(args.clusters)),
+                                 "cluster-zdos.parquet")
+        if os.path.isfile(candidate):
+            point_path = candidate
+    if args.cluster_points and not os.path.isfile(args.cluster_points):
+        sys.exit(f"cluster point artifact not found: {args.cluster_points}")
+    points_by_cluster = {}
+    if point_path:
+        print(f"  loading exact per-ZDO x/y/z from {point_path}", flush=True)
+        points_by_cluster = load_cluster_points(point_path, clusters, doc)
+        print(f"  {sum(len(v) for v in points_by_cluster.values()):,} points across "
+              f"{len(points_by_cluster):,} selected structures", flush=True)
+
     shots, clipped, duplicates = [], 0, []
     for c in clusters:
+        points = points_by_cluster.get(c["cluster_id"])
         azimuths, long_x = orbit_azimuths(c["size_x"], c["size_z"])
         elev = args.elevation if args.fixed_elevation else elevation_for(c, args.elevation)
         cams = [camera_for(c, a, elev, args.margin, args.max_distance,
-                           args.min_clearance, args.aim_height) for a in azimuths]
+                           args.min_clearance, args.aim_height, points) for a in azimuths]
         if not cams[0]["frames_whole_build"]:
             clipped += 1
 
-        # The broadest silhouette: looking along the short axis shows the long face.
-        hero = 0 if long_x else 1
+        # With points, broadest is measured in the actual camera plane. The fallback
+        # keeps the bbox rule: looking along the short axis shows the long face.
+        hero = (max(range(len(cams)), key=lambda i: cams[i]["zdo_projected_width_m"])
+                if points else (0 if long_x else 1))
 
         label = names.get(str(c["cluster_id"])) or f"cluster {c['cluster_id']}"
         base = {"cluster_id": c["cluster_id"], "label": label,
@@ -445,6 +593,7 @@ def main():
                      "flash_bearing_deg": args.flash_bearing},
         "plan": shots,
     }
+    out["settings"]["cluster_points"] = os.path.abspath(point_path) if point_path else None
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     tmp = args.out + ".tmp"
     with open(tmp, "w", encoding="utf-8") as fh:

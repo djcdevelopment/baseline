@@ -57,7 +57,9 @@ param(
     [int]      $CaptureHeight = 2160,
     [string]   $ValheimRoot = 'C:\Program Files (x86)\Steam\steamapps\common\Valheim',
     [string]   $Am4Alias = 'homebase',
-    [string]   $Am4Valheim = '/home/derek/valheim'
+    [string]   $Am4Valheim = '/home/derek/valheim',
+    [string]   $Am4MonitorMode = '1920x1080',
+    [string]   $CaptureDllReference = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -74,6 +76,9 @@ $manualCaps  = Join-Path $cfg 'comfy-manual-captures'
 $proofCfg    = Join-Path $cfg 'com.comfy.camera-proof.cfg'
 $requestJson = Join-Path $cfg 'orbit-request.json'
 $am4Cfg      = "$Am4Valheim/BepInEx/config"
+if (-not $CaptureDllReference) {
+    $CaptureDllReference = Join-Path $plugins 'ComfyCameraProof.dll'
+}
 
 $World     = 'ComfyEra17'
 $Character = 'tugcorp'
@@ -307,6 +312,39 @@ $registry = @(
                   '0 of N is a RESULT: high star counts mean a wrong bearing, low star ' +
                   'counts mean cloud, and those want different answers. Do not re-run on ' +
                   'the hypothesis that maybe it passes.'
+    },
+    [ordered]@{
+        name    = 'coverage-xyz-4k-smoke'
+        lane    = 'coverage'
+        plan    = 'coverage-xyz-4k-smoke'
+        host    = 'am4'
+        settle  = 3
+        runIds  = @()
+        what    = '10-frame 4K acceptance slice: one typical and one near-cap exact-point build'
+        why     = 'This is the first series-scale promotion of per-ZDO camera-space framing. ' +
+                  'Cluster 2003 is typical; cluster 1077 reaches 117.8 m against the 120 m ' +
+                  'haze cap. Both use frozen snapshot-107 membership, five useful Clear ' +
+                  'frames, and the builders'' fires. The physical display must remain 1080p ' +
+                  'while the X framebuffer and Valheim window are 4K.'
+        verdict = '10/10 files are 3840x2160; monitor is 1920x1080 before and after; ' +
+                  'receipts and pull-back hashes agree; no static overlay band; all rows ' +
+                  'retain the structure after runtime placement'
+    },
+    [ordered]@{
+        name    = 'coverage-xyz-4k-remainder'
+        lane    = 'coverage'
+        plan    = 'coverage-xyz-4k-remainder'
+        host    = 'am4'
+        settle  = 3
+        runIds  = @()
+        what    = '230-frame 4K coverage series over 46 previously unrepresented creators'
+        why     = 'The frozen 48-build cohort advances creator representation from 211 to ' +
+                  '259 of 296. Nine initially selected builds were replaced because exact ' +
+                  'camera-axis depth would exceed the 120 m haze cap. Every retained orbit ' +
+                  'frames against exact x/y/z membership and keeps the physical monitor at ' +
+                  '1920x1080. Fire only after coverage-xyz-4k-smoke passes.'
+        verdict = '230/230 files are 3840x2160; monitor remains 1920x1080; every planned ' +
+                  'cluster has five receipts; pull-back hashes agree; no static overlay band'
     }
 )
 #
@@ -413,6 +451,17 @@ function Invoke-Ssh {
         throw "ssh $Am4Alias failed (exit $LASTEXITCODE): $Command"
     }
     return $out
+}
+
+function Assert-Am4MonitorMode {
+    param([string] $State)
+    $active = @($State -split ',' | Where-Object { $_.Trim() })
+    $bad = @($active | Where-Object { $_ -notmatch ":$([regex]::Escape($Am4MonitorMode))$" })
+    if ($active.Count -eq 0 -or $bad.Count -gt 0) {
+        throw ("AM4's active monitor mode must remain $Am4MonitorMode while Valheim " +
+               "uses the larger X framebuffer (got: '$State')")
+    }
+    Write-Host "      physical monitor remains $State"
 }
 
 # -------------------------------------------------------------- preflight --
@@ -533,6 +582,7 @@ pgrep -x valheim.x86_64 >/dev/null 2>&1 && echo "running=yes" || echo "running=n
 echo "dll=$(md5sum ~/valheim/BepInEx/plugins/ComfyCameraProof.dll 2>/dev/null | awk '{print $1}')"
 echo "renderer=$(DISPLAY=:0 glxinfo -B 2>/dev/null | sed -n 's/^OpenGL renderer string: //p')"
 echo "screen=$(DISPLAY=:0 xrandr --query 2>/dev/null | sed -n 's/^Screen 0:.*current \([0-9]* x [0-9]*\),.*/\1/p' | tr -d ' ')"
+echo "monitor=$(DISPLAY=:0 xrandr --current 2>/dev/null | sed -En 's/^([^ ]+) connected (primary )?([0-9]+x[0-9]+)\+.*/\1:\3/p' | paste -sd, -)"
 echo "overlay=$(find ~/valheim/BepInEx/plugins -name 'ComfyQuest*.dll' | wc -l)"
 echo "portal=$(grep -cE '^[[:space:]]*portalConnectionCacheEnabled[[:space:]]*=[[:space:]]*true' ~/valheim/BepInEx/config/djcdevelopment.valheim.comfynetworksense.cfg)"
 echo "world=$(md5sum ~/.config/unity3d/IronGate/Valheim/worlds_local/ComfyEra17.db 2>/dev/null | awk '{print $1}')"
@@ -560,12 +610,16 @@ echo "world=$(md5sum ~/.config/unity3d/IronGate/Valheim/worlds_local/ComfyEra17.
                "       Or flip to the headless X config:  ssh $Am4Alias 'sudo valheim-display headless'")
     }
     Write-Host "      X screen is $($kv['screen'])"
+    Assert-Am4MonitorMode -State $kv['monitor']
 
-    $localDll = (Get-FileHash -LiteralPath (Join-Path $plugins 'ComfyCameraProof.dll') -Algorithm MD5).Hash.ToLower()
-    if ($kv['dll'] -ne $localDll) {
-        throw "AM4's ComfyCameraProof.dll is $($kv['dll']) but OMEN's is $localDll -- the two nodes would not be running the same code"
+    if (-not (Test-Path -LiteralPath $CaptureDllReference)) {
+        throw "capture DLL reference is missing: $CaptureDllReference"
     }
-    Write-Host "      ComfyCameraProof.dll matches OMEN: $localDll"
+    $localDll = (Get-FileHash -LiteralPath $CaptureDllReference -Algorithm MD5).Hash.ToLower()
+    if ($kv['dll'] -ne $localDll) {
+        throw "AM4's ComfyCameraProof.dll is $($kv['dll']) but the reference is $localDll -- the capture would not run proven code"
+    }
+    Write-Host "      ComfyCameraProof.dll matches reference: $localDll"
 
     if ([int]$kv['overlay'] -ne 0) { throw "AM4 has $($kv['overlay']) ComfyQuest*.dll under plugins/ -- they would burn a creator bar into the frames" }
     Write-Host '      no overlay plugin is loadable on AM4'
@@ -705,6 +759,9 @@ function Invoke-CaptureAm4 {
         "~/valheim-capture/run-capture.sh --plan '$remotePlan' --world '$World' --character '$Character' --timeout $TimeoutMinutes --width $CaptureWidth --height $CaptureHeight"
     $rc = $LASTEXITCODE
     foreach ($line in $out) { Write-Host "      | $line" }
+
+    $monitorAfter = ((Invoke-Ssh "DISPLAY=:0 xrandr --current 2>/dev/null | sed -En 's/^([^ ]+) connected (primary )?([0-9]+x[0-9]+)\+.*/\1:\3/p' | paste -sd, -") -join '').Trim()
+    Assert-Am4MonitorMode -State $monitorAfter
     if ($rc -ne 0) { throw "run-capture.sh failed (exit $rc)" }
 
     $runIds = @()
@@ -840,6 +897,7 @@ function Write-Provenance {
     Push-Location 'C:\work\_retired\comfy'
     try { $modSha = (& git rev-parse HEAD) -join '' } catch { $modSha = 'unknown' } finally { Pop-Location }
     $baseSha = (& git -C $here rev-parse --short HEAD) -join ''
+    $captureDll = if ($Host_ -eq 'am4') { $CaptureDllReference } else { Join-Path $plugins 'ComfyCameraProof.dll' }
     $prov = [ordered]@{
         label         = $Row.name
         lane          = $Row.lane
@@ -847,7 +905,8 @@ function Write-Provenance {
         fired_at      = (Get-Date).ToString('yyyy-MM-ddTHH:mm:ss')
         settle        = $Row.settle
         plan_rows     = $Facts.Rows
-        dll_md5       = (Get-FileHash -LiteralPath (Join-Path $plugins 'ComfyCameraProof.dll') -Algorithm MD5).Hash
+        dll_md5       = (Get-FileHash -LiteralPath $captureDll -Algorithm MD5).Hash
+        monitor_mode  = if ($Host_ -eq 'am4') { $Am4MonitorMode } else { $null }
         mod_head      = $modSha
         baseline_head = $baseSha
         capture_size  = "${CaptureWidth}x${CaptureHeight}"

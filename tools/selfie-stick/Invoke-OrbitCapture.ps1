@@ -42,7 +42,8 @@ param(
     [int] $CaptureWidth = 3840,
     [int] $CaptureHeight = 2160,
     [string] $ValheimRoot = 'C:\Program Files (x86)\Steam\steamapps\common\Valheim',
-    [string] $SteamExe = 'C:\Program Files (x86)\Steam\steam.exe'
+    [string] $SteamExe = 'C:\Program Files (x86)\Steam\steam.exe',
+    [string] $ClusterPoints = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -90,8 +91,11 @@ Write-Host "      portal cache preflight passed (ComfyNetworkSense $networkSense
 
 if (-not $SkipPlan) {
     Write-Host '[1/5] planning shots'
-    & python (Join-Path $here 'plan_shots.py') --top $Top --region $Region `
-        --max-distance $MaxDistance --elevation $Elevation --clusters $Clusters --names $names --out $PlanOut
+    $planArgs = @((Join-Path $here 'plan_shots.py'), '--top', $Top, '--region', $Region,
+                  '--max-distance', $MaxDistance, '--elevation', $Elevation,
+                  '--clusters', $Clusters, '--names', $names, '--out', $PlanOut)
+    if ($ClusterPoints) { $planArgs += @('--cluster-points', $ClusterPoints) }
+    & python $planArgs
     if ($LASTEXITCODE -ne 0) { throw 'plan_shots.py failed' }
 }
 

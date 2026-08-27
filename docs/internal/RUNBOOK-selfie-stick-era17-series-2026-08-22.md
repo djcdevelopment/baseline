@@ -2068,3 +2068,346 @@ band structure works. What does NOT yet work is *selecting* the good ones: the q
 Yggdrasil glow as 100% sky. Ranking these frames needs a real measurement, which is
 the same lesson as everywhere else here -- guard the plan with geometry, and judge
 the frame with something that measures the thing you wanted.
+
+---
+
+## 2026-08-27, second night: R&D laps on AM4 (1080p probe protocol)
+
+R&D mode: probes shoot at 1920x1080 (`run-capture.sh --width 1920 --height 1080`)
+for speed and disk; a keeper is re-shot at 4K by re-running its plan rows, which
+re-rolls its sky anyway. All runs this night on AM4; OMEN untouchable (benchmark
+window) and its era17 capture tree parked by the creator lane at
+`C:\work\comfy-quest\captures\install-cleanup\omen-era17-20260827T102804Z\`.
+
+**storm_flash read (no new capture; runs 20260825-091907/094829).** The lever
+that was built and never read WORKS: luma_mean vs the no-flash twin median
++10.0, mean +11.2, 26/30 builds positive (max +39.1), against the storm_dark
+control at median -0.7. Receipts: 50 shots armed, bearing -35, hold 1.2 s. Of
+the two storm levers, holding fires is a null and the driven flash is real.
+Open: a bearing/hold sweep, and the 4 negative builds (587, 629, 1160, 1927).
+
+**nightsky-3 (20260827-104128, 48 frames, 4K).** Derek's verdict by eye, frame
+confirmed: the moon-aimed planner composes discs and its own foreground (a trunk
+mid-frame on cluster 26 at rho 6). Genre retired as a default; frames kept as
+selection stock. The rho feedback worked mechanically; the composition is the
+problem, not the aim.
+
+**channel-1b (20260827-105152, 48 frames, 4K, shot names suffixed `b`).**
+Cloud re-roll of the committed channel-1 plan. Eyeballed cluster 13 chan1-y300
+against its morning twin: identical roof-dominated framing under two different
+skies -- the dome fills the middle band, no water run in frame. The 46/58
+composition claim was scored by the blue-dominant proxy that reads teal haze as
+sky; the channel guard constrains the FAR field (canopy, ray run) and nothing
+constrains the NEAR field (the stance's own roof under a pitch-down axis). Same
+family as the night lane photographing its own lattice. Next lap: a near-field
+clause in scan_channels, and eyeball the morning run's proxy-best frames.
+
+**hearthview-1 (20260827-110128, 22 frames, 1080p) -- NEW GENRE PROBE.**
+plan_hearthview.py: stand in the hall a few metres inside the gate, fires held,
+look out the opening; per-bearing the CLOCK is solved so the moon rakes 40-140
+deg off-axis at 8-22 deg altitude (long shadows). Every stance held
+(clearance=planned, placed==planned 22/22). Three edges, all from receipts plus
+three frames:
+
+1. **Openable state is invisible to the plan and unactuated by the mod.**
+   cluster 440's darkwood_gate is CLOSED in frame; the plan cannot know and the
+   mod cannot open it. Fix candidates: a door lever shaped exactly like
+   HoldFiresLit (owner-guarded ZDO write, restore after), or filter openings to
+   always-open prefabs.
+2. **aim_y = gate - 2 m digs into rising terrain: occluded on 11 of 22 rows**
+   (the raycast cannot see the closed piece-layer doors, so occluded=true here
+   means GROUND). hearthview-2 raises the aim to gate + 0.8.
+3. **The warm side must be required, not hoped for: fires_in_view 0-7.** The
+   lever mostly worked (142 lit across the run; the sweep-zero was one row,
+   0195, a streaming race, 1 of 22) but no rule put a fire between lens and
+   gate. hearthview-2 prefers torch-lit openings (vantage_gate's lit() rule).
+
+One frame (0504_hearthrt805) inverted the brief by accident -- down the hall
+toward the blazing hearth with the cold night bleeding in at the open door --
+and is the best warm/cool frame of the night. The genre is real; the doors are
+the blocking edge.
+
+Re-run the slice:
+  ssh homebase '~/valheim-capture/run-capture.sh --plan ~/valheim-capture/plans/hearthview-2.tsv --width 1920 --height 1080'
+
+Not sampled this night: Twilight_Clear (twilight-2.tsv staged, unfired); whether
+any opening prefab in features.json stands open by default; terrain past the
+door (no offline heightmap -- the occluded receipt is the only instrument);
+channel morning frames beyond cluster 13; the 1080p-vs-4K effect on the colour
+metrics (ratios, assumed resolution-independent, unverified).
+
+### The instakill lap: god mode was on, and the rig died anyway
+
+Derek, watching AM4's panel during hearthview-2: "i'm getting instakilled.
+might want to make sure godmode is on." It was on -- and that is the lap.
+
+Instrumented `SetInvulnerable` (mod commit `1600fa4` in the comfy archive) to
+read back god/ghost/fly after setting and to WARN when reflection finds
+nothing; the old version could miss both lookups silently. The readback said
+`god now True, ghost now True` -- and the rig still died, twice, in a 2-shot
+probe at cluster 504. Chronology from LogOutput: placed at the stance before
+the build streamed in, the rig fell (no floor), and because zone streaming
+follows the player the falling rig dragged the load target down with it --
+`world never arrived (0 pieces) -- shot skipped` -- until the fall ended in a
+void death god mode does not cover.
+
+Fix: debug-fly, NetworkSense's own route-teleport safeguard, via the direct
+`Player.ToggleDebugFly()` API (console `fly` is cheat-gated client-side).
+Re-probe at the same stance: `god/ghost/fly True`, ZERO deaths, and the
+previously-empty zone arrived at 492 pieces -- fly killed the fall AND
+anchored the stream, fixing the "world never arrived" skip as the same bug.
+Installed on AM4 only (OMEN's plugins belong to the creator lane tonight);
+md5 6e32a2d3ecc3a025ef9907bf3f199450. Rooftop/orbit runs never tripped this; ground stances do.
+
+Two side finds: AM4's capture character is `durracktu` (tugcorp's .fch never
+made the trip; auto-boot picked what exists), and `plan_interiors.validate_tsv`
+returns `(ok, bad)` -- earlier tonight it was read backwards, and a
+PowerShell-BOM'd TSV makes it miscount the header as a bad row (the mod's own
+`File.ReadAllLines` strips the BOM and is unaffected).
+
+### hearthview-2 rerun with the immortal rig (20260827-112856, 22 frames, 1080p)
+
+Zero deaths, zero "world never arrived", terrain occlusion 11 -> 7 after the
+aim raise. Composition readout by eye: the hall-level "gate" is often an
+INTERIOR partition, not an exterior doorway -- 270 stands in a banner corridor
+against a fire-bloomed pillar, 612 faces decorative lattice, 524 frames a
+shrine tableau through open doors (a keeper as a photograph, still inward).
+0504 remains the proof the brief composes: hall run, burning hearth in the
+sight line, sea-and-sky slot beyond. Next lap: an exterior-ness guard -- count
+pieces in a cone BEYOND the opening along the outward ray (few = it leads
+outside, many = it leads to another room), from the same features/walls data
+the wall-bite check already reads. Doors that are shut stay the other open
+edge (door lever, shaped like the fires lever).
+
+### hearthstorm-1: the cozy thesis lands on first contact
+
+Derek: "nothing makes a house or a hut or a leanto feel more cozy than a
+hearth/fire against a raging storm." Every storm frame ever shot was at
+t=0.58; the storm x clock x interior-doorway cross had never been run.
+
+- twilight-2 = `20260827-113624` (120 @ 1080p) -- first use of the game's own
+  Twilight_Clear in project history. Caveat found mid-lap: AM4 deliberately
+  runs Derek's blur-on look (depth of field etc.) while the whole OMEN corpus
+  is blur-off, so the cross-node A/B against 20260824-100400 carries the
+  post-effect stack as a second variable. twilight-2c (same rows, env Clear,
+  shot names suffixed `c`) re-shoots the synthesized twin ON AM4 so the
+  twilight A/B becomes single-variable.
+- hearthstorm-1 = `20260827-115700` (22 @ 1080p): hearthview-2 geometry, env
+  ThunderStorm, fires held, driven flash -35 on every row; the l/r moon sides
+  are moot under cloud so they became the two clocks -- `stormnight` (t~0.2/0.8)
+  and `stormtwil` (0.71, the first storm-twilight ever).
+
+By eye: `0504_stormtwil` caught the flash mid-hold -- violet sky through both
+openings, lit rain streaks, storm fog rolling through the hall, the longfire
+holding orange against all of it. `0524_stormnight` shows the other use of the
+same lever: the strike as a door-edge RIM LIGHT on the shrine tableau. Neither
+image resembles anything in the 2,633-frame corpus. The genre stack that
+produced them: doorway framing (hearthview) + lit-opening rule + held fires +
+driven flash + clock as a free variable + Derek's deliberate DOF look on AM4.
+
+### Terrain is no longer "not derivable": tools/selfie-stick/terrain.py
+
+Every lane in this project has recorded the same gap -- "no offline heightmap",
+"seaward is not derivable", aim lines digging into rising ground, occlusion
+receipts as the only instrument. A subagent lap closed it.
+
+The `<World>_heightTexCache` beside the save is a plain 2048x2048 RGBA8 PNG.
+Byte-guessing failed; the encoding came from decompiling `Minimap` out of
+`assembly_valheim.dll` and reading the codec both ways:
+
+    height_m = ((R << 8) + G) / 127.5
+
+big-endian 16-bit fixed point, absolute world metres, 0-510, negative worldgen
+heights clamped to 0 (deep ocean reads exactly 0.0), B=0/A=255 padding. It is
+pristine `WorldGenerator.GetBiomeHeight` -- no player terraforming in it.
+
+Georef, from `GenerateWorldMap`'s own loop: `col = (x-6)/12 + 1024`,
+`row = 1023 - (z-6)/12`. **12 m/px, north-up, half-texel offset.**
+
+> **`scan_channels.py`'s mapTexCache georef is WRONG and so is its ocean test.**
+> Pinned against 824 build anchors: correlation **+0.941** under the decompiled
+> mapping against **+0.01** under scan_channels' (10 m/px, +z down). And the
+> decompiled `GetPixelColor` says Ocean is **WHITE**; scan_channels' `0x333333`
+> "ocean" is a dark LAND biome averaging 38.3 m of worldgen height. Its
+> `sea_at_m` / `sea_run_m` outputs inherit both errors. Not modified by that lap
+> -- the channel lane owns the fix. NOTE the near-field roof problem logged
+> above is SEPARATE: cluster 13's chosen bearing 30 profiles as 600 m of
+> unbroken water under the new instrument, so that bearing was right anyway.
+
+Validation (`out/era17/terrain-validation.md`): 245,075 flood-fill-isolated
+ocean pixels, **100.000%** below y=30; structure residual (min_y - ground)
+median **-2.86 m** (pivots bury slightly below grade), |resid| median 3.11,
+p90 9.04, 94.7% within 15 m; worst outliers are all water-sited stilt builds,
+coherent rather than mapping error. Cluster 440's hearthview gate: ground 32.19
+against floor ~33.8, with open water 50 m east -- that doorway really does face
+the sea.
+
+Source 2 landed too: a byte-exact walk of the frozen backup's packed ZDO stream
+(formats from decompiled `ZDOMan.Load`/`ZDO.Load`/`TerrainComp`, 8,922,012 ZDOs
+traversed without desync) pulled **22,039 `_TerrainCompiler` zones ->
+2,864,118 terraformed vertices** into `out/era17/terrain-edits.npz`. Residuals
+improve with the layer on (edited-anchor median 3.27 -> 2.70) and a
+transposed-axis control scores worse, which is what pins vertex order. Every
+query reports which layer answered it; the extractor refuses the live
+`ComfyEra17.db` by name.
+
+    python terrain.py --probe -5758.8,-1547.9
+    python terrain.py --profile -6258.8,-1547.9 -5258.8,-1547.9 --steps 200 \
+        --edits out/era17/terrain-edits.npz --png out/era17/terrain-profile.png
+
+### R&D lap: clean 2 m motion at cluster 504 (2026-08-27)
+
+**VERIFIED:** one 1080p capture proves the motion path without operator chrome.
+The session-scoped wrapper changed NetworkSense `isModEnabled` from `true` to
+`false`, retained `portalConnectionCacheEnabled = true`, and restored both the
+NetworkSense config and pre-existing `orbit-request.json` byte-for-byte on exit.
+The NetworkSense config SHA-256 was
+`217c14758239bb89b06926db0b49f28b9070f122a0e2e088059fcd340bce66c7`
+before and after; the request SHA-256 was
+`c25bff61ecc3cbda1d6d215879d903eb25183b517f4e7bd8bbb2bf569f4c5cc1`
+before and after. The game was idle after the run. The log independently records
+`Portal connection cache enabled; interval=5s.` during the capture.
+
+Run `20260827-133124` produced
+`/home/derek/valheim-capture/clips/20260827-133124/0504_stormtwil_push2m_clean.mp4`:
+26,004,367 bytes, SHA-256
+`3c084114876095fa151579123696b94bf4a9a283c111bc2f0334e1ddcb538f65`,
+1920x1080, 513 decoded frames (`nb_frames` metadata says 609), average frame
+rate `36540/611` (~59.8 fps), duration 8.555013 s. Its receipt records an 8.002
+s wall-clock move from
+`(4677.3, 36.27, -6784.2)` to `(4677.7, 36.27, -6782.2)`, fixed yaw/pitch
+`12.69/1.61`, `ThunderStorm`, time 0.71, and no driven flash (`flash_at=-1`).
+Full-resolution frames at 0.5, 4.25, and 8.0 s show no `NET SHOW`, title bar,
+desktop, cursor, or crosshair. Door, pillar, fire, and floor parallax visibly
+advance across those frames while the hearth and storm opening remain composed.
+
+**Edge found; lap stopped:** the cyan Creator HQ portal is only a glow near the
+midpoint but enters strongly at the right edge by 8.0 s. This is cleaner than the
+earlier 7 m push, but the endpoint is not yet a keeper. The next bounded probe is
+either a roughly 1.25 m push or a slight left yaw bias, not both at once.
+
+Exact rerun from an operator shell:
+
+    ssh homebase '~/valheim-capture/run-clips-clean-lap.sh ~/valheim-capture/plans/clips-clean-1.tsv'
+
+The AM4 staging inputs are `clips-clean-1.tsv` (236 bytes, SHA-256
+`b449925d4b83454408362cf804a0aa59ed6a1f380bc1de8f373fe460ed13eaef`)
+and `run-clips-clean-lap.sh` (3,179 bytes, SHA-256
+`34ac3eedb8f54860c1cedfbbd6036cb6c14cd1acf564dc5f49d2eafd31e1a758`).
+They are reproducibility staging, not an authoritative product implementation.
+
+Uncertainty intentionally left for the next lap: this is one move on one build,
+at 1080p only; natural storm variation was uncontrolled; no driven flash or 4K
+pass was attempted; camera motion was verified by frame inspection rather than
+an automated image-space metric; and the pre-existing orbit request remains
+armed because this lap did not create it.
+
+#### Follow-up lap: distance-only 1.25 m probe
+
+**VERIFIED:** run `20260827-133955` changed only the endpoint distance, from the
+2 m plan's `(4677.7, 36.27, -6782.2)` to `(4677.55, 36.27, -6782.97)`; clock,
+weather, duration, easing, start, yaw, pitch, flash posture, capture size, and
+operator-chrome suppression were held fixed. The plan was 241 bytes with
+SHA-256 `e2eabe7d0ec90e371ee374b5611b49b250aaa772e749b385f253e671933d6c8e`.
+
+The resulting
+`/home/derek/valheim-capture/clips/20260827-133955/0504_stormtwil_push125cm_clean.mp4`
+is 21,343,540 bytes with SHA-256
+`1160ea36dd4ceefae0967d0aa681a1ef53a44029f1866e9bd003c7f6cc06a3d8`;
+it is 1920x1080 at 60 fps, 513 decoded frames (`nb_frames` metadata says 617),
+duration 8.563021 s. The receipt records 8.001 s wall time, 2,218 game-update
+frames at 277.21 fps, and no driven flash. NetworkSense stayed visually absent,
+portal-cache activation was logged, both operator-state hashes restored exactly,
+and Valheim was idle afterward.
+
+Full-resolution 0.5, 4.25, and 8.0 s frames verify motion and a smaller endpoint
+advance than the 2 m control. The shorter move reduces the visible portal ring,
+but does not remove the endpoint distraction: a cyan pulse and its floor cast
+remain beside the near right-hand door. Natural portal/storm animation prevents
+brightness from being a controlled A/B, but the static door and ring geometry
+show that the two endpoint positions are distinct.
+
+**Edge found; distance lap stopped:** shortening translation alone cannot clean
+the right edge without making the already-subtle move still smaller. The next
+one-variable probe holds the 1.25 m path and biases both yaw endpoints 3 degrees
+left (`12.69 -> 9.69`) to move the hearth toward center and the portal outward.
+
+#### Follow-up lap: 3-degree left-yaw probe
+
+**VERIFIED:** run `20260827-134827` held the 1.25 m plan fixed and changed only
+both yaw endpoints from `12.69` to `9.69`. The 248-byte plan SHA-256 is
+`a70cd4b97ffdc06a86d6c0d12d50f7a5c7ad55818b0b8d47865ba199668c16eb`.
+The resulting
+`/home/derek/valheim-capture/clips/20260827-134827/0504_stormtwil_push125cm_yawleft3_clean.mp4`
+is 25,834,095 bytes with SHA-256
+`a6d0730f178fdabd89d4c55ead3ade61271d2ae4a1dc2562066de9e9562286bb`;
+it is 1920x1080, average frame rate `11340/191` (~59.4 fps), 512 decoded frames,
+and duration 8.610026 s. Its receipt records 8.001 s wall time, 2,137 game-update
+frames at 267.09 fps, and yaw `[9.69, 9.69]`. Portal-cache activation, exact
+operator-state restoration, and post-run game idle were verified again.
+
+Frames at 0.5, 4.25, and 8.0 s confirm the expected direction: compared with the
+zero-bias 1.25 m clip, the right-hand door and portal move outward and the hearth
+moves toward center. The endpoint still catches a saturated cyan portal pulse,
+however, so 3 degrees is directionally useful but not enough separation.
+
+**Edge found; yaw lap stopped:** preserve the 1.25 m move and advance exactly one
+more 3-degree left-yaw step (`9.69 -> 6.69`). This tests whether the portal can
+leave the action-safe frame before the left foreground becomes intrusive.
+
+#### Follow-up lap: 6-degree yaw bracket and publish-safe cut
+
+**VERIFIED:** run `20260827-135453` held the 1.25 m path fixed and changed only
+both yaw endpoints from `9.69` to `6.69`. Its 248-byte plan has SHA-256
+`59bb4609be9fd67bb9eb66020159908dd4df53bd8a1f1c5c086f0a9abbc585e9`.
+The raw sliced artifact
+`0504_stormtwil_push125cm_yawleft6_clean.mp4` is 25,078,078 bytes with SHA-256
+`24dd7765fa490218c96edd9337c22eb6fcb7aaf6e85b333b6d487c7dd3e8bef5`.
+Its receipt records 8.002 s wall time, 2,139 game-update frames at 267.32 fps,
+and yaw `[6.69, 6.69]`. Portal-cache activation, exact operator-state restoration,
+and post-run game idle were verified again.
+
+The second yaw step again moves the portal and right-hand door outward and moves
+the hearth toward center. It also establishes the other side of the composition
+bracket: the blue hanging banner becomes prominent at left. The result is more
+balanced than the zero-bias clip, but it does not make the portal disappear; a
+natural cyan pulse remains visible near the endpoint.
+
+A one-frame-per-second contact sheet exposed a separate publish blocker missed by
+start/mid/end inspection: the raw slice returns to normal gameplay with HUD and
+minimap in its final fraction of a second. The transition begins between 8.1 and
+8.2 s. The AM4 staging runner deliberately slices from 0.25 s before the receipt
+start through 0.25 s after its end (`dur = wall_s + 0.5`) using stream copy, so
+the post-roll outlives the driven-camera state. Its discontinuous timestamps also
+made a copy-only 8.10 s trim report an invalid 11.95 s result; that attempt was
+rejected.
+
+The raw capture was preserved. A deterministic publish cut normalized the first
+486 decoded frames onto a fresh 60 fps timeline:
+
+    ffmpeg -hide_banner -loglevel error -y -i 0504_stormtwil_push125cm_yawleft6_clean.mp4 \
+      -vf "select='lt(n,486)',setpts=N/(60*TB)" -frames:v 486 -an \
+      -c:v libx264 -preset slow -crf 16 -pix_fmt yuv420p -r 60 \
+      -movflags +faststart 0504_stormtwil_push125cm_yawleft6_publish.mp4
+
+**Publish artifact:**
+`/home/derek/valheim-capture/clips/20260827-135453/0504_stormtwil_push125cm_yawleft6_publish.mp4`
+is 9,211,189 bytes with SHA-256
+`f20c47ab4a40cb0aad6ee3d4ac173e517c938b67b43cbc5ebcc04fee9f723d47`.
+Both local and AM4 `ffprobe -count_frames` report 1920x1080, 60/1 fps, exactly
+486 decoded frames, and exactly 8.100000 s. The first frame, final frame, and
+full-sequence contact sheet contain no NetworkSense text, title bar, desktop,
+cursor, crosshair, HUD, or minimap. `freezedetect=n=-60dB:d=0.5` emits no
+`freeze_start`, and the frame sequence visibly advances.
+
+Exact capture rerun used by this lap:
+
+    ssh homebase '~/valheim-capture/run-clips-clean-lap.sh ~/valheim-capture/plans/clips-clean-125cm-yawleft6.tsv'
+
+**Edge found; publish lap stopped:** the one clean motion deliverable now exists,
+but the staging runner's raw per-receipt products are not publication-safe until
+their tail policy and timestamps are normalized. That runner is not authoritative
+Baseline product code, so this lap records the defect instead of migrating it into
+the hub. Remaining uncertainty: one 1080p build/weather realization, natural
+lightning and portal animation, a second-generation CRF 16 encode, visual rather
+than automated chrome detection, no audio, no driven flash, and no 4K pass.

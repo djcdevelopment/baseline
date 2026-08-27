@@ -1,0 +1,139 @@
+{
+  "repositories": {
+    "djcdevelopment/baseline": {
+      "commit": {
+        "sha": "f54aec820b8b4da0ccce919c7bfbe29f257b1002",
+        "date": "2026-08-18T06:03:19Z",
+        "subject": "Give the quest picker a publish lane that the pin gates",
+        "url": "https://github.com/djcdevelopment/baseline/commit/f54aec820b8b4da0ccce919c7bfbe29f257b1002"
+      },
+      "workflows": {
+        "ci.yml": [
+          {
+            "head_sha": "f54aec820b8b4da0ccce919c7bfbe29f257b1002",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/djcdevelopment/baseline/actions/runs/32105312883"
+          }
+        ]
+      },
+      "files": {
+        "corpus/mirrors/lumberjacks/provenance.json": "{\"schema\":\"baseline-corpus-mirror/v1\",\"revision\":\"d5128c03d1df5c2ab45adf042bcc7e8c48ad290b\"}"
+      },
+      "compares": {}
+    },
+    "djcdevelopment/networksense": {
+      "commit": {
+        "sha": "8d9ced6179569d9049af982bb47e41e2f8b56a19",
+        "date": "2026-08-12T08:35:42Z",
+        "subject": "fix: enforce expected version during bundle verification",
+        "url": "https://github.com/djcdevelopment/networksense/commit/8d9ced6179569d9049af982bb47e41e2f8b56a19"
+      },
+      "workflows": {
+        "ci.yml": [
+          {
+            "head_sha": "8d9ced6179569d9049af982bb47e41e2f8b56a19",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/djcdevelopment/networksense/actions/runs/31579060267"
+          }
+        ]
+      },
+      "files": {
+        "eng/dependencies.interim.props": "<Project><PropertyGroup><ComfyQuestContractsVersion>0.1.0-local</ComfyQuestContractsVersion><ComfyTransportContractsVersion>0.1.0-local</ComfyTransportContractsVersion></PropertyGroup></Project>"
+      },
+      "compares": {}
+    },
+    "djcdevelopment/lumberjacks-platform": {
+      "commit": {
+        "sha": "2510553bddf1fbae6a4ea9c14ff923ca05b153d8",
+        "date": "2026-08-18T06:03:38Z",
+        "subject": "Stop shipping the sample quest picker over the real page",
+        "url": "https://github.com/djcdevelopment/lumberjacks-platform/commit/2510553bddf1fbae6a4ea9c14ff923ca05b153d8"
+      },
+      "workflows": {
+        "ci.yml": [
+          {
+            "head_sha": "2510553bddf1fbae6a4ea9c14ff923ca05b153d8",
+            "status": "completed",
+            "conclusion": "failure",
+            "html_url": "https://github.com/djcdevelopment/lumberjacks-platform/actions/runs/32105327988"
+          }
+        ]
+      },
+      "files": {
+        "Lumberjacks/docs/workbench/quest-release.lock.json": "{\"schema\":\"lumberjacks-quest-release-lock/v1\",\"release_tag\":\"quest-v0.2.0-split-proof\",\"revision\":\"a7043648fe171152f71c5af743a2b81a9f8eef02\"}",
+        "Lumberjacks/Directory.Packages.props": "<Project><ItemGroup><PackageVersion Include=\"Comfy.Quest.Contracts\" Version=\"[0.1.0-local]\" /><PackageVersion Include=\"Comfy.Quest.Studio\" Version=\"[0.1.0-local]\" /></ItemGroup></Project>",
+        "Lumberjacks/src/Comfy.Transport.Contracts/Comfy.Transport.Contracts.csproj": "<Project><PropertyGroup><PackageId>Comfy.Transport.Contracts</PackageId><Version>0.1.0-local</Version></PropertyGroup></Project>"
+      },
+      "compares": {
+        "d5128c03d1df5c2ab45adf042bcc7e8c48ad290b...2510553bddf1fbae6a4ea9c14ff923ca05b153d8": "ahead"
+      }
+    },
+    "djcdevelopment/comfy-quest": {
+      "commit": {
+        "sha": "0fd6db103ee20691880e4c9fa9fd962f86ef4dd3",
+        "date": "2026-08-19T08:25:02Z",
+        "subject": "Harden contracts spine review findings",
+        "url": "https://github.com/djcdevelopment/comfy-quest/commit/0fd6db103ee20691880e4c9fa9fd962f86ef4dd3"
+      },
+      "workflows": {
+        "ci.yml": [
+          {
+            "head_sha": "0fd6db103ee20691880e4c9fa9fd962f86ef4dd3",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/djcdevelopment/comfy-quest/actions/runs/32232520011"
+          }
+        ]
+      },
+      "files": {
+        "network/mod/ComfyQuestContracts/ComfyQuestContracts.csproj": "<Project><PropertyGroup><PackageId>Comfy.Quest.Contracts</PackageId><Version>0.2.0-local</Version></PropertyGroup></Project>",
+        "src/Quest.Studio/Quest.Studio.csproj": "<Project><PropertyGroup><PackageId>Comfy.Quest.Studio</PackageId><Version>0.2.0-local</Version></PropertyGroup></Project>"
+      },
+      "compares": {
+        "a7043648fe171152f71c5af743a2b81a9f8eef02...0fd6db103ee20691880e4c9fa9fd962f86ef4dd3": "ahead"
+      }
+    },
+    "djcdevelopment/sovereign-shards": {
+      "commit": {
+        "sha": "a62ece0952ec7cbc391020539052c1f46810cd21",
+        "date": "2026-08-19T08:01:10Z",
+        "subject": "lab: add three-client manual substrate gate",
+        "url": "https://github.com/djcdevelopment/sovereign-shards/commit/a62ece0952ec7cbc391020539052c1f46810cd21"
+      },
+      "workflows": {
+        "ci.yml": [
+          {
+            "head_sha": "a62ece0952ec7cbc391020539052c1f46810cd21",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/djcdevelopment/sovereign-shards/actions/runs/32230563317"
+          }
+        ]
+      },
+      "files": {},
+      "compares": {}
+    },
+    "djcdevelopment/isolate": {
+      "commit": {
+        "sha": "372a48ebb0db60ca70fc994867fe981c8e6af173",
+        "date": "2026-08-12T16:21:45Z",
+        "subject": "PRIVATE-SUBJECT-MUST-NOT-LEAK",
+        "url": "https://github.com/djcdevelopment/isolate/commit/372a48ebb0db60ca70fc994867fe981c8e6af173"
+      },
+      "workflows": {
+        "ci.yml": [
+          {
+            "head_sha": "372a48ebb0db60ca70fc994867fe981c8e6af173",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/djcdevelopment/isolate/actions/runs/31617179947"
+          }
+        ]
+      },
+      "files": {},
+      "compares": {}
+    }
+  }
+}

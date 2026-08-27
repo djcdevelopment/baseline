@@ -6,6 +6,10 @@ subjects, and emit a shot list you can fly.
 For the story of how this was built and what the data turned out to be hiding,
 read [`TUTORIAL.md`](TUTORIAL.md).
 
+For the 2026-08-27 clean-motion capture receipt, including the accepted artifact,
+rejected variants, and the raw-slicer defect, read
+[`MOTION-RESULTS-2026-08-27.md`](MOTION-RESULTS-2026-08-27.md).
+
 ## What it does today
 
 `scan_clusters.py` reads ComfyStewardView's DuckDB analytics cache read-only —
@@ -214,6 +218,25 @@ may be 0 or absent — you lose attribution, nothing else. `prefab_name` may be 
 hash. If your parser gives you those columns, this works, and it does not care
 what produced them.
 
+`clusters.json` intentionally keeps only aggregate bounds. For exact per-piece
+height and camera-relative depth, generate its private `cluster-zdos.parquet`
+companion with `export_cluster_points.py`; `plan_shots.py --cluster-points ...`
+then frames against every ZDO rather than a flat box. The schema, frozen-id rule,
+camera math, verified Era17 receipt, and rerun commands live in
+[`ZDO-COORDINATES.md`](ZDO-COORDINATES.md).
+
+The first component-local roof-semantics lap, its frozen photographic holdout,
+and the failed planner-promotion gate are recorded in
+[`ROOF-SEMANTICS-RESULTS-2026-08-27.md`](ROOF-SEMANTICS-RESULTS-2026-08-27.md).
+Those semantics remain report-only.
+
+On AM4, capture resolution and physical monitor mode are deliberately separate:
+Valheim uses the 3840x2160 X framebuffer while `Invoke-SelfieStick.ps1` guards the
+active output at 1920x1080 before and after a run. The first 240-frame exact-point
+series, its hashes, display proof, runtime recoveries, and deferred-publication
+edge are recorded in
+[`COVERAGE-XYZ-4K-RESULTS-2026-08-27.md`](COVERAGE-XYZ-4K-RESULTS-2026-08-27.md).
+
 The contract exists so no one is *technically* locked in. ComfyStewardView —
 which built the cache used here — is proprietary, all rights reserved. If this
 pipeline could only ever run on its output, a community with its own parser
@@ -225,8 +248,10 @@ Concretely, to run this against your own server's world:
 1. Parse your world `.db` with any tool that can emit ZDO position, category,
    prefab, and creator — write it to the schema above.
 2. `python scan_clusters.py --db your-world.duckdb` → your structures, ranked.
-3. `python make_waypoints.py --install` → the shot list, in your game.
-4. Fly it with the camera mod and shoot.
+3. Optional for exact 3-D framing: `python export_cluster_points.py --db
+   your-world.duckdb --clusters out/clusters.json`.
+4. `python make_waypoints.py --install` → the shot list, in your game.
+5. Fly it with the camera mod and shoot.
 
 The schema contract is an anti-lock-in guarantee, not a licence workaround. The
 code in this directory is governed by the repository's
@@ -258,7 +283,8 @@ Treat this tool as a bridge for the Valheim era, not as the architecture.
 
 ```text
 scan_clusters.py        world .db cache  ->  clusters.json      structures + geometry
-plan_shots.py           clusters.json    ->  shotplan.tsv       6 camera positions each
+export_cluster_points.py cache + clusters -> cluster-zdos.parquet exact frozen membership
+plan_shots.py           clusters + points -> shotplan.tsv       depth-aware camera positions
 Invoke-OrbitCapture.ps1 shotplan.tsv     ->  screenshots        unattended, no keyboard
 build_valheim_index.py  screenshots      ->  index.json         joined back to structures
 name_structures.py      screenshots      ->  cluster-names.json named by a vision model
@@ -271,10 +297,11 @@ Two ways to shoot:
 arrow keys in game — right for the next build, left for the previous, up to capture
 the current framing in 23 lights. You choose every composition.
 
-**Unattended.** `Invoke-OrbitCapture.ps1 -Top 40` plans six angles per structure
-from its bounding box, launches the game, opens the world, places and aims the
-camera, waits for the world to stream in, recovers from a blocked view, shoots,
-and quits. Nobody touches the keyboard.
+**Unattended.** `Invoke-OrbitCapture.ps1 -Top 40` plans six angles per structure,
+using exact per-ZDO height and depth when `-ClusterPoints` is supplied and the
+bounding box otherwise. It launches the game, opens the world, places and aims
+the camera, waits for the world to stream in, recovers from a blocked view,
+shoots, and quits. Nobody touches the keyboard.
 
 The automated path exists because a human pays for *moving* and a machine does
 not. Twenty-three frames of one viewpoint was the right trade for a person; six
@@ -282,6 +309,9 @@ viewpoints is the right trade for a machine.
 
 ## Known rough edges
 
+- **A ZDO coordinate is a prefab pivot, not a mesh corner.** Point-cloud framing
+  captures placement depth but can under-frame the outer half-extents of a sparse
+  piece. See [`ZDO-COORDINATES.md`](ZDO-COORDINATES.md).
 - **Prefab names are hashes.** StewardView's cache does not resolve building
   pieces. A one-time in-game dump of `ZNetScene`'s prefab table would fix it
   permanently.

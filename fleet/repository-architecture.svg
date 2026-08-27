@@ -1,0 +1,308 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1560" role="img" aria-labelledby="title desc">
+  <title id="title">Baseline fleet repository architecture</title>
+  <desc id="desc">Why the original research monorepo was split into Baseline and five sovereign product repositories, what each repository owns, how Quest Contracts, Studio, Lab, and Runtime fit together, which immutable package and artifact contracts cross repositories, and how every repository ties back to Baseline through decisions, evidence, status, and discovery rather than source-code coupling.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8aa99a"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#89c4fb"/>
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c4a0f4"/>
+    </marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f19086"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#000000" flood-opacity="0.28"/>
+    </filter>
+    <style>
+      .bg { fill: #0b1110; }
+      .panel { fill: #111a17; stroke: #30483b; stroke-width: 2; }
+      .node { stroke-width: 2; filter: url(#shadow); }
+      .baseline { fill: #173025; stroke: #80d29d; }
+      .repo { fill: #14221d; stroke: #5e806f; }
+      .quest { fill: #18283a; stroke: #80bdf6; }
+      .platform { fill: #282039; stroke: #b995ea; }
+      .greenfield { fill: #30271a; stroke: #dfbd70; }
+      .isolate { fill: #20252d; stroke: #8fa7c4; }
+      .external { fill: #2b241a; stroke: #d4b66e; }
+      .before { fill: #33211e; stroke: #ef9186; }
+      .after { fill: #173025; stroke: #80d29d; }
+      .inner { fill: #202d28; stroke: #506d60; stroke-width: 1.5; }
+      .inner-blue { fill: #20354a; stroke: #729fca; stroke-width: 1.5; }
+      .lane { fill: #17221e; stroke: #486659; stroke-width: 1.5; }
+      .allow { fill: #163025; stroke: #74c996; stroke-width: 2; }
+      .deny { fill: #36211e; stroke: #ef8f84; stroke-width: 2; }
+      .chip { fill: #26342e; stroke: #5f7b6e; stroke-width: 1; }
+      .chip-blue { fill: #22384d; stroke: #6e9dc8; stroke-width: 1; }
+      .chip-purple { fill: #34294a; stroke: #a787d1; stroke-width: 1; }
+      .chip-amber { fill: #3a301e; stroke: #b99a57; stroke-width: 1; }
+      .observe { fill: none; stroke: #769185; stroke-width: 2.5; stroke-dasharray: 8 7; marker-end: url(#arrow); }
+      .flow { fill: none; stroke: #89c4fb; stroke-width: 3; marker-end: url(#arrow-blue); }
+      .flow-purple { fill: none; stroke: #c4a0f4; stroke-width: 3; marker-end: url(#arrow-purple); }
+      .future { fill: none; stroke: #dfbd70; stroke-width: 2.5; stroke-dasharray: 8 7; marker-end: url(#arrow); }
+      .deny-line { fill: none; stroke: #f19086; stroke-width: 4; marker-end: url(#arrow-warn); }
+      .title { fill: #eff8f2; font: 700 38px system-ui, -apple-system, "Segoe UI", sans-serif; }
+      .subtitle { fill: #aabdb2; font: 18px system-ui, -apple-system, "Segoe UI", sans-serif; }
+      .section { fill: #88dca8; font: 700 23px system-ui, -apple-system, "Segoe UI", sans-serif; letter-spacing: 0.3px; }
+      .node-title { fill: #f3f9f5; font: 700 20px system-ui, -apple-system, "Segoe UI", sans-serif; }
+      .repo-title { fill: #f4faf6; font: 700 22px system-ui, -apple-system, "Segoe UI", sans-serif; }
+      .body { fill: #cbd8d1; font: 15px system-ui, -apple-system, "Segoe UI", sans-serif; }
+      .body-small { fill: #c5d2cb; font: 14px system-ui, -apple-system, "Segoe UI", sans-serif; }
+      .small { fill: #a9bbb1; font: 13px system-ui, -apple-system, "Segoe UI", sans-serif; }
+      .tiny { fill: #9caf9f; font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; }
+      .micro { fill: #9fc9ed; font: 10px ui-monospace, SFMono-Regular, Consolas, monospace; }
+      .label { fill: #c2d2ca; font: 600 13px system-ui, -apple-system, "Segoe UI", sans-serif; }
+      .mono { fill: #d8e8df; font: 13px ui-monospace, SFMono-Regular, Consolas, monospace; }
+      .chip-text { fill: #dce9e2; font: 700 12px ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: 0.2px; }
+      .green { fill: #88daa7; }
+      .blue { fill: #8fc7fb; }
+      .purple { fill: #cab0f2; }
+      .amber { fill: #efca79; }
+      .red { fill: #f39a90; }
+      .white { fill: #f3f9f5; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="2000" height="1560"/>
+  <text class="title" x="45" y="52">Why the repositories are separate—and how they tie back to Baseline</text>
+  <text class="subtitle" x="45" y="82">One durable hub for meaning and proof · five sovereign implementation authorities · explicit immutable seams</text>
+
+  <!-- Why the split -->
+  <rect class="panel" x="35" y="105" width="1930" height="175" rx="18"/>
+  <text class="section" x="65" y="142">1 · Why the monorepo became a fleet</text>
+
+  <g aria-label="Before the split">
+    <rect class="node before" x="65" y="160" width="660" height="96" rx="13"/>
+    <text class="node-title" x="92" y="189">BEFORE · one discoverable research trunk</text>
+    <text class="body" x="92" y="216">Product code shared paths, build props, local feeds, release scripts,</text>
+    <text class="body" x="92" y="239">compose identities, and commit ceremony—so local success hid coupling.</text>
+  </g>
+
+  <path class="deny-line" d="M 750 208 H 1008"/>
+  <rect class="chip" x="785" y="167" width="188" height="28" rx="14"/>
+  <text class="chip-text" x="810" y="186">PD-9 · 2026-08-12</text>
+  <text class="small" x="782" y="235">sealed split-base-20260811</text>
+
+  <g aria-label="After the split">
+    <rect class="node after" x="1035" y="160" width="900" height="96" rx="13"/>
+    <text class="node-title" x="1062" y="189">AFTER · Baseline hub + independently usable add-ons</text>
+    <text class="body" x="1062" y="216">Each product builds, tests, releases, and can be removed without a sibling checkout.</text>
+    <text class="body" x="1062" y="239">Small code seams are exact packages; larger seams are hash-verified artifacts.</text>
+  </g>
+
+  <!-- Main topology -->
+  <rect class="panel" x="35" y="300" width="1930" height="745" rx="18"/>
+  <text class="section" x="65" y="338">2 · Authority topology</text>
+
+  <!-- observation spokes behind nodes -->
+  <path class="observe" d="M 220 625 C 300 570, 430 560, 570 542"/>
+  <path class="observe" d="M 610 625 C 670 590, 720 570, 770 542"/>
+  <path class="observe" d="M 1000 625 V 542"/>
+  <path class="observe" d="M 1390 625 C 1330 590, 1280 570, 1230 542"/>
+  <path class="observe" d="M 1780 625 C 1700 570, 1570 560, 1430 542"/>
+  <path class="flow-purple" d="M 1030 625 V 560 H 1110 V 542"/>
+
+  <!-- Baseline -->
+  <g aria-label="Baseline hub repository">
+    <rect class="node baseline" x="420" y="365" width="1120" height="177" rx="16"/>
+    <text class="repo-title" x="452" y="398">BASELINE · durable fleet hub</text>
+    <text class="small green" x="452" y="422">The stable answer to “where does it live, why is it shaped this way, and what proves it?”</text>
+
+    <rect class="inner" x="452" y="442" width="310" height="72" rx="9"/>
+    <text class="label green" x="470" y="465">MAP + WHY</text>
+    <text class="body-small" x="470" y="488">REPO-MAP · PD-9 · pre-split history</text>
+
+    <rect class="inner" x="782" y="442" width="310" height="72" rx="9"/>
+    <text class="label green" x="800" y="465">EVIDENCE</text>
+    <text class="body-small" x="800" y="488">PD-4 · decisions · historical receipts</text>
+
+    <rect class="inner" x="1112" y="442" width="396" height="72" rx="9"/>
+    <text class="label green" x="1130" y="465">DISCOVERY + OBSERVATION</text>
+    <text class="body-small" x="1130" y="488">corpus mirrors · Pages · living fleet status</text>
+  </g>
+
+  <rect class="deny" x="665" y="554" width="670" height="34" rx="17"/>
+  <text class="chip-text red" x="701" y="576">NOT A META-BUILD · NO PRODUCT SOURCE · NO DEPLOYMENT OR RUNTIME AUTHORITY</text>
+
+  <g aria-label="Public users, contributors, and agents">
+    <rect class="node external" x="1600" y="385" width="330" height="125" rx="14"/>
+    <text class="node-title" x="1630" y="419">Users · builders · agents</text>
+    <text class="body" x="1630" y="448">Start at Baseline instead of scanning</text>
+    <text class="body" x="1630" y="471">five repositories; follow canonical links</text>
+    <text class="body" x="1630" y="494">to the owning implementation.</text>
+  </g>
+  <path class="flow" d="M 1540 444 H 1600"/>
+  <text class="label" x="1547" y="430">map · status</text>
+
+  <g aria-label="Observation legend">
+    <line x1="65" y1="599" x2="130" y2="599" class="observe"/>
+    <text class="small" x="145" y="604">read-only HEAD · exact-HEAD CI · release/evidence metadata → Baseline</text>
+    <line x1="650" y1="599" x2="715" y2="599" class="flow-purple"/>
+    <text class="small" x="730" y="604">immutable Platform corpus mirror → Baseline</text>
+  </g>
+
+  <!-- Product repositories -->
+  <g aria-label="NetworkSense sovereign repository">
+    <rect class="node repo" x="40" y="625" width="360" height="385" rx="15"/>
+    <text class="repo-title" x="67" y="660">NETWORKSENSE</text>
+    <text class="small green" x="67" y="682">sovereign game-observability add-on</text>
+    <text class="label" x="67" y="716">WHY THIS BOUNDARY</text>
+    <text class="body-small" x="67" y="740">The licensed game edge, telemetry, HUD,</text>
+    <text class="body-small" x="67" y="761">tests, and mod release cadence move together.</text>
+    <text class="label" x="67" y="798">OWNS</text>
+    <text class="body-small" x="67" y="822">• BepInEx mod + HUD</text>
+    <text class="body-small" x="67" y="845">• telemetry and game-independent tests</text>
+    <text class="body-small" x="67" y="868">• i5/mod release and deployment tooling</text>
+    <rect class="chip" x="67" y="896" width="306" height="74" rx="9"/>
+    <text class="label green" x="85" y="920">SHIPS</text>
+    <text class="body-small" x="85" y="944">mod-v* DLL + manifest + byte count</text>
+    <text class="body-small" x="85" y="963">+ SHA-256 + boundary receipt</text>
+  </g>
+
+  <g aria-label="Comfy Quest sovereign repository">
+    <rect class="node quest" x="430" y="625" width="360" height="385" rx="15"/>
+    <text class="repo-title" x="457" y="660">COMFY QUEST</text>
+    <text class="small blue" x="457" y="682">one creator → certified artifact → game vertical</text>
+    <text class="label" x="457" y="714">WHY THIS BOUNDARY</text>
+    <text class="body-small" x="457" y="738">These surfaces share the quest contract and</text>
+    <text class="body-small" x="457" y="758">iteration loop—not platform hosting or telemetry.</text>
+
+    <rect class="inner-blue" x="457" y="778" width="306" height="45" rx="8"/>
+    <text class="label blue" x="474" y="798">CONTRACTS</text>
+    <text class="tiny" x="570" y="798">schemas · evaluator · exact NuGet</text>
+    <text class="tiny" x="474" y="816">shared spine used by Studio, Lab, and Runtime</text>
+
+    <rect class="inner-blue" x="457" y="839" width="133" height="66" rx="8"/>
+    <text class="label blue" x="474" y="861">STUDIO</text>
+    <text class="tiny" x="474" y="880">Author · Rehearse</text>
+    <text class="tiny" x="474" y="896">Publish</text>
+    <path class="flow" d="M 590 872 H 628"/>
+    <text class="micro" x="587" y="858">.questpack</text>
+    <rect class="inner-blue" x="630" y="839" width="133" height="66" rx="8"/>
+    <text class="label blue" x="647" y="861">RUNTIME</text>
+    <text class="tiny" x="647" y="880">interpret · adapt</text>
+    <text class="tiny" x="647" y="896">receipt · hot-load</text>
+
+    <rect class="inner-blue" x="457" y="920" width="306" height="51" rx="8"/>
+    <text class="label blue" x="474" y="942">QUEST LAB</text>
+    <text class="tiny" x="563" y="942">apprenticeship · live seam visibility</text>
+    <text class="tiny" x="474" y="961">practice, explain, inspect, capture, and prove</text>
+  </g>
+
+  <g aria-label="Lumberjacks Platform sovereign repository">
+    <rect class="node platform" x="820" y="625" width="360" height="385" rx="15"/>
+    <text class="repo-title" x="847" y="660">LUMBERJACKS PLATFORM</text>
+    <text class="small purple" x="847" y="682">sovereign hosting + operations program</text>
+    <text class="label" x="847" y="716">WHY THIS BOUNDARY</text>
+    <text class="body-small" x="847" y="740">Services, deployment, operator UX, and the</text>
+    <text class="body-small" x="847" y="761">roadmap evolve as one implementation program.</text>
+    <text class="label" x="847" y="798">OWNS</text>
+    <text class="body-small" x="847" y="822">• Gateway · services · Companion</text>
+    <text class="body-small" x="847" y="845">• transport contracts · identity APIs</text>
+    <text class="body-small" x="847" y="868">• Workbench · roadmap · FieldLab</text>
+    <text class="body-small" x="847" y="891">• production compose · P7 lane</text>
+    <rect class="chip-purple" x="847" y="912" width="306" height="58" rx="9"/>
+    <text class="label purple" x="865" y="936">SHIPS</text>
+    <text class="body-small" x="865" y="958">packages · images · HTTP identity · locks</text>
+  </g>
+
+  <g aria-label="Sovereign Shards greenfield repository">
+    <rect class="node greenfield" x="1210" y="625" width="360" height="385" rx="15"/>
+    <text class="repo-title" x="1237" y="660">SOVEREIGN SHARDS</text>
+    <text class="small amber" x="1237" y="682">greenfield · PD-4 UNVERIFIED</text>
+    <text class="label" x="1237" y="716">WHY THIS BOUNDARY</text>
+    <text class="body-small" x="1237" y="740">Speculative sharding must be falsifiable</text>
+    <text class="body-small" x="1237" y="761">without coupling shipped products to it.</text>
+    <text class="label" x="1237" y="798">OWNS WHEN PROVEN</text>
+    <text class="body-small" x="1237" y="822">• portal router · shard manager</text>
+    <text class="body-small" x="1237" y="845">• async sidecar · community bot</text>
+    <text class="body-small" x="1237" y="868">• on-demand world lifecycle</text>
+    <rect class="chip-amber" x="1237" y="896" width="306" height="74" rx="9"/>
+    <text class="label amber" x="1255" y="920">FIRST GATE</text>
+    <text class="body-small" x="1255" y="944">three Steam clients · native gateway</text>
+    <text class="body-small" x="1255" y="963">· two independently persisted worlds</text>
+  </g>
+
+  <g aria-label="Isolate sovereign repository">
+    <rect class="node isolate" x="1600" y="625" width="360" height="385" rx="15"/>
+    <text class="repo-title" x="1627" y="660">ISOLATE</text>
+    <text class="small blue" x="1627" y="682">private developer/lab substrate</text>
+    <text class="label" x="1627" y="716">WHY THIS BOUNDARY</text>
+    <text class="body-small" x="1627" y="740">Disposable MCP/container infrastructure is</text>
+    <text class="body-small" x="1627" y="761">not product hosting and is not HEARTH.</text>
+    <text class="label" x="1627" y="798">OWNS</text>
+    <text class="body-small" x="1627" y="822">• MCP kernel + API contracts</text>
+    <text class="body-small" x="1627" y="845">• disposable Compose lab stacks</text>
+    <text class="body-small" x="1627" y="868">• container/provenance toolset</text>
+    <rect class="chip" x="1627" y="896" width="306" height="74" rx="9"/>
+    <text class="label blue" x="1645" y="920">BOUNDARY</text>
+    <text class="body-small" x="1645" y="944">versioned image + /identity + API</text>
+    <text class="body-small" x="1645" y="963">optional lab; products never report to it</text>
+  </g>
+
+  <!-- Contract map -->
+  <rect class="panel" x="35" y="1065" width="1930" height="455" rx="18"/>
+  <text class="section" x="65" y="1103">3 · The only allowed cross-repository seams</text>
+  <text class="small" x="625" y="1103">Arrow direction is producer → consumer. Baseline observes all five; only Platform corpus is mirrored into its tree.</text>
+
+  <g aria-label="Quest contracts package flow">
+    <rect class="lane" x="65" y="1130" width="600" height="105" rx="12"/>
+    <text class="label blue" x="90" y="1157">COMFY QUEST → PLATFORM + NETWORKSENSE</text>
+    <text class="mono" x="90" y="1183">Comfy.Quest.Contracts [exact version]</text>
+    <text class="small" x="90" y="1208">Small shared schemas/types cross as a package, never a ProjectReference.</text>
+  </g>
+
+  <g aria-label="Transport contracts package flow">
+    <rect class="lane" x="700" y="1130" width="580" height="105" rx="12"/>
+    <text class="label purple" x="725" y="1157">PLATFORM → NETWORKSENSE</text>
+    <text class="mono" x="725" y="1183">Comfy.Transport.Contracts [exact version]</text>
+    <text class="small" x="725" y="1208">Transport identity stays platform-owned; the mod consumes exact bytes.</text>
+  </g>
+
+  <g aria-label="NetworkSense mod release flow">
+    <rect class="lane" x="1315" y="1130" width="620" height="105" rx="12"/>
+    <text class="label green" x="1340" y="1157">NETWORKSENSE → PLATFORM P7</text>
+    <text class="mono" x="1340" y="1183">mod-v* DLL + manifest + bytes + SHA-256</text>
+    <text class="small" x="1340" y="1208">Platform verifies the built release; it never rebuilds mod source.</text>
+  </g>
+
+  <g aria-label="Quest Studio package and release asset flow">
+    <rect class="lane" x="65" y="1250" width="600" height="105" rx="12"/>
+    <text class="label blue" x="90" y="1277">COMFY QUEST → PLATFORM WORKBENCH</text>
+    <text class="mono" x="90" y="1303">Comfy.Quest.Studio [exact] + quest-v* release lock</text>
+    <text class="small" x="90" y="1328">Studio code is packaged; Lab/Picker pages and zips are hash-locked assets.</text>
+  </g>
+
+  <g aria-label="Platform corpus mirror flow to Baseline">
+    <rect class="lane" x="700" y="1250" width="580" height="105" rx="12"/>
+    <text class="label purple" x="725" y="1277">PLATFORM → BASELINE</text>
+    <text class="mono" x="725" y="1303">pushed 40-char SHA → pinned mirror → G8</text>
+    <text class="small" x="725" y="1328">Workbench/roadmap inputs gain provenance; authority stays in Platform.</text>
+  </g>
+
+  <g aria-label="Isolate development runtime contract">
+    <rect class="lane" x="1315" y="1250" width="620" height="105" rx="12"/>
+    <text class="label blue" x="1340" y="1277">ISOLATE → BASELINE DEV CLIENT + CONTRIBUTORS</text>
+    <text class="mono" x="1340" y="1303">versioned container image + /identity + MCP API</text>
+    <text class="small" x="1340" y="1328">Optional lab boundary; no source bind-mount, product reporting, or HEARTH.</text>
+  </g>
+
+  <g aria-label="Allowed boundary mechanisms">
+    <rect class="allow" x="65" y="1380" width="910" height="106" rx="13"/>
+    <text class="node-title green" x="92" y="1411">ALLOWED · explicit, immutable, independently verifiable</text>
+    <text class="body-small" x="92" y="1439">exact NuGet package · tagged/revisioned artifact · manifest · byte count · SHA-256</text>
+    <text class="body-small" x="92" y="1465">pushed-SHA corpus mirror · repository identity · current-head CI · evidence link</text>
+  </g>
+
+  <g aria-label="Forbidden boundary mechanisms">
+    <rect class="deny" x="1005" y="1380" width="930" height="106" rx="13"/>
+    <text class="node-title red" x="1032" y="1411">FORBIDDEN · implicit source-tree coupling</text>
+    <text class="body-small" x="1032" y="1439">sibling checkout reach-in · cross-repo ProjectReference · shared build props · local-path default</text>
+    <text class="body-small" x="1032" y="1465">convenience code copy · Baseline meta-build · mirror treated as writable authority</text>
+  </g>
+
+  <text class="small" x="65" y="1542">Baseline ties the fleet together semantically—with a canonical map, durable rationale, evidence, provenance, and public discovery—not by owning or compiling every product.</text>
+</svg>

@@ -1,0 +1,87 @@
+# /world/ — Steward World View (Valheim spatial map, Era 17 snapshot 107).
+#
+# NOT DEPLOYED. This file is a proposal; see the precondition below before it
+# goes anywhere near deploy.ps1.
+#
+# What it is: a Javalin/JDK17 service, compose project `steward-world`, container
+# `steward-world`, published on AM4 as 127.0.0.1:7081 -> 8091. It serves its own
+# page at the container root (`/`, `/lab.js`, `/lab.css`, `/vendor/leaflet/...`)
+# plus a small API: /api/health, /api/bootstrap, /api/manifest, /api/points,
+# /api/selection, /api/context, /api/artifacts/{snapshot}/{file}, and in public
+# mode /api/auth/discord/{start,callback}, /api/auth/session, /api/auth/logout,
+# /api/feedback. That is the whole route surface; there is nothing else to allow.
+#
+# It has never been a Caddy route on AM4. Today /world is a second-layer
+# `tailscale serve` mount straight to 127.0.0.1:7081, which is why it does not
+# appear in AM4's Caddyfile and why it 404'd for 74 minutes on 2026-08-24: the
+# mount did not exist yet, so /world/ fell through the `/` mount into Caddy,
+# missed the hand-maintained @public allowlist, and hit `handle { respond 404 }`.
+# tailscaled logged `serve: creating a new proxy handler for http://127.0.0.1:7081`
+# at 19:42:02Z; the last 404 was 19:40:50Z. Moving the route here is the fix for
+# the class of bug, not just that instance — one routing layer, one answer to
+# "where is this URL handled".
+#
+# ---- PRECONDITION: this 502s as written -------------------------------------
+#
+# The container binds loopback only, so FX99 cannot reach it. Measured from FX99:
+# `curl http://am4:7081/api/health` -> exit 7, connect failed. (Its neighbour
+# am4:4000 answers 200 from here, because that one publishes on the tailnet
+# interface as well.) AM4 is read-only in this pass, so the change is written
+# down rather than made: in docker-compose.am4.yml, publish 7081 on the tailnet
+# address the way the :4000 service already does, and recompose.
+#
+# deploy.ps1 runs `caddy validate`, which parses this file and says nothing about
+# whether the backend answers. Landing this before AM4 republishes the port turns
+# a working /world/ into a 502 on the next deploy for any unrelated reason.
+#
+# ---- What this does and does not buy ----------------------------------------
+#
+# The service still runs on AM4, so every request crosses AM4's wifi. Measured
+# 2026-08-24, same 85,810-byte lab.js: 0.35-0.61 MB/s from FX99, 43-65 MB/s from
+# AM4's own loopback, against FX99's 14 MB/s for its local static. That matches
+# the 0.56 MB/s in README.md. The payload here is light -- 456 KB of artifacts
+# across 8 files -- so the hop costs about a second on a cold load rather than
+# the minutes it costs the photo gallery. It is still a hop, and it stacks: FX99
+# funnel -> FX99 Caddy -> AM4 -> app.
+#
+# So this makes /world/ addressable from one front door. It does not make it
+# faster. That arrives when the container moves to FX99, at which point the only
+# edit is the address on the reverse_proxy line below.
+#
+# ---- Known breakage at cutover ----------------------------------------------
+#
+# The map itself is read-only GETs and survives the move untouched. Two things
+# do not, both because the app pins its own public identity:
+#
+#   1. LabServer.requireSameOrigin() compares the browser Origin header against
+#      the origin of STEWARD_PUBLIC_URL, which is AM4's. Served from FX99, the
+#      two POSTs -- /api/feedback and /api/auth/logout -- get
+#      400 "Cross-origin submissions are not accepted".
+#   2. FeedbackConfig.callbackUri() is STEWARD_PUBLIC_URL.resolve(
+#      "api/auth/discord/callback"), and the session cookie's Path comes from
+#      STEWARD_PUBLIC_URL's path. Discord sends the user back to AM4, and the
+#      identity cookie lands on AM4's host, so "Connect Discord" never completes
+#      on FX99.
+#
+# Both need STEWARD_PUBLIC_URL repointed at this front door AND the new callback
+# added to the Discord application's OAuth redirect allowlist. Neither is a Caddy
+# change, and the second is not on this box at all. Cut the route and the env in
+# the same window, or the feedback button breaks quietly while the map looks fine.
+
+handle_path /world/* {
+	# handle_path, not handle: the app serves its page at the container root and
+	# derives its API base from the page URL (APP_BASE = new URL('.', location.href)),
+	# so it works under any prefix as long as the prefix is stripped going in.
+	# This mirrors exactly what `tailscale serve` does for /world on AM4 today,
+	# which is what keeps this a move rather than a rewrite.
+	#
+	# That same APP_BASE is why the trailing slash is load-bearing: at /world the
+	# base resolves to / and the app would call /api/* at the root. The main
+	# Caddyfile's @bare rule redirects /world -> /world/ 308 after this import,
+	# so bare /world is covered -- but only because this block does not match it.
+	#
+	# Rate limiting keys on the first X-Forwarded-For entry, which tailscaled
+	# fills with the real client before Caddy appends its own hop, so per-visitor
+	# limits survive the extra proxy.
+	reverse_proxy am4:7081
+}

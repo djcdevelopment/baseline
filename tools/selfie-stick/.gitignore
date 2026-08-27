@@ -6,3 +6,4 @@
 # reason to publish someone's home coordinates to save a rerun.
 out/
 out-*/
+cluster-zdos.parquet

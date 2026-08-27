@@ -1,0 +1,194 @@
+{
+  "schema": "baseline-fleet-intent/v1",
+  "title": "Comfy Valheim fleet status",
+  "review_after_days": 30,
+  "repositories": [
+    {
+      "id": "baseline",
+      "github": "djcdevelopment/baseline",
+      "name": "Baseline",
+      "branch": "main",
+      "workflow": "ci.yml",
+      "visibility": "full",
+      "purpose": "Fleet map, durable decisions, evidence, corpus, and public discovery.",
+      "current_focus": "Keep the sovereign fleet understandable while turning the five Quest design intents into durable authority.",
+      "next_outcome": "Publish an automatically refreshed fleet status surface and land the five intent documents with PD-4 evidence labels.",
+      "done_when": "Users and builders can see current repository health, next outcomes, and cross-repository pins from one public page.",
+      "blocker": null,
+      "claim_state": "VERIFIED",
+      "intent_as_of": "2026-08-19"
+    },
+    {
+      "id": "networksense",
+      "github": "djcdevelopment/networksense",
+      "name": "NetworkSense",
+      "branch": "main",
+      "workflow": "ci.yml",
+      "visibility": "full",
+      "purpose": "NetworkSense mod, HUD, game-independent tests, and mod release lane.",
+      "current_focus": "Preserve the sovereign mod boundary and its exact package and artifact gates.",
+      "next_outcome": "Remove the bounded HTTP test's observed nondeterminism while keeping the 166-case release proof green.",
+      "done_when": "Repeated focused and full test runs are stable and the verifiable mod bundle lane remains green.",
+      "blocker": null,
+      "claim_state": "INFERRED",
+      "intent_as_of": "2026-08-19"
+    },
+    {
+      "id": "lumberjacks-platform",
+      "github": "djcdevelopment/lumberjacks-platform",
+      "name": "Lumberjacks Platform",
+      "branch": "main",
+      "workflow": "ci.yml",
+      "visibility": "full",
+      "purpose": "Gateway, services, Companion, Workbench, live FieldLab, and deployment lanes.",
+      "current_focus": "Recover the platform's governance and public projection after the repository split.",
+      "next_outcome": "Restore CI, re-affirm the roadmap focus, and correct every stale Workbench ownership promise.",
+      "done_when": "All five CI jobs pass and the hosted Workbench names only current sovereign owners and paths.",
+      "blocker": null,
+      "claim_state": "VERIFIED",
+      "intent_as_of": "2026-08-19"
+    },
+    {
+      "id": "comfy-quest",
+      "github": "djcdevelopment/comfy-quest",
+      "name": "Comfy Quest",
+      "branch": "main",
+      "workflow": "ci.yml",
+      "visibility": "full",
+      "purpose": "Quest Contracts, Runtime, Lab, Studio, generators, and creator release assets.",
+      "current_focus": "Build the five-intent identity and evidence spine across Contracts, Runtime, and Studio.",
+      "next_outcome": "Close the Studio-to-Live creator loop with immutable development revisions and correlated runtime receipts.",
+      "done_when": "One creator can publish, activate, observe, revise, and explain one Event without restarting the game.",
+      "blocker": "The final validation lap requires the operator-controlled OMEN game client and private world.",
+      "claim_state": "BLOCKED",
+      "intent_as_of": "2026-08-19"
+    },
+    {
+      "id": "sovereign-shards",
+      "github": "djcdevelopment/sovereign-shards",
+      "name": "Sovereign Shards",
+      "branch": "main",
+      "workflow": "ci.yml",
+      "visibility": "full",
+      "purpose": "Greenfield shard manager, portal router, sidecar, and community bot architecture.",
+      "current_focus": "Keep the architecture honest while preparing the manual three-client substrate gate.",
+      "next_outcome": "Run the documented gateway and two-shard proof with three independently controlled Steam clients.",
+      "done_when": "Both migration falsifiers pass and only the manual substrate is promoted from UNVERIFIED to VERIFIED.",
+      "blocker": "The proof requires three controlled Steam clients and an authorized live field-test session.",
+      "claim_state": "UNVERIFIED",
+      "intent_as_of": "2026-08-19"
+    },
+    {
+      "id": "isolate",
+      "github": "djcdevelopment/isolate",
+      "name": "Isolate",
+      "branch": "main",
+      "workflow": "ci.yml",
+      "visibility": "sanitized",
+      "purpose": "Private MCP kernel, container contracts, and disposable lab runtime.",
+      "current_focus": "Keep the MCP and container boundary green while resolving the older developer-tool charter.",
+      "next_outcome": "Reconcile the current repository map with the retained toolset and add repository identity and no-reach-in guards.",
+      "done_when": "One durable decision names the owned tools and CI proves the resulting boundary with positive and negative fixtures.",
+      "blocker": null,
+      "claim_state": "INFERRED",
+      "intent_as_of": "2026-08-19"
+    }
+  ],
+  "seams": [
+    {
+      "id": "quest-release-platform",
+      "label": "Quest release to Platform Workbench",
+      "artifact": "quest-v* release lock",
+      "kind": "revision_lock",
+      "producer": "comfy-quest",
+      "consumer": "lumberjacks-platform",
+      "consumer_path": "Lumberjacks/docs/workbench/quest-release.lock.json",
+      "revision_field": "revision",
+      "label_field": "release_tag"
+    },
+    {
+      "id": "platform-baseline-corpus",
+      "label": "Platform corpus to Baseline",
+      "artifact": "roadmap and Workbench mirror revision",
+      "kind": "revision_lock",
+      "producer": "lumberjacks-platform",
+      "consumer": "baseline",
+      "consumer_path": "corpus/mirrors/lumberjacks/provenance.json",
+      "revision_field": "revision"
+    },
+    {
+      "id": "quest-contracts-platform",
+      "label": "Quest Contracts to Platform",
+      "artifact": "Comfy.Quest.Contracts",
+      "kind": "package_version",
+      "producer": "comfy-quest",
+      "consumer": "lumberjacks-platform",
+      "producer_value": {
+        "path": "network/mod/ComfyQuestContracts/ComfyQuestContracts.csproj",
+        "format": "xml_text",
+        "selector": ".//Version"
+      },
+      "consumer_value": {
+        "path": "Lumberjacks/Directory.Packages.props",
+        "format": "xml_attribute",
+        "selector": ".//PackageVersion[@Include='Comfy.Quest.Contracts']",
+        "attribute": "Version"
+      }
+    },
+    {
+      "id": "quest-studio-platform",
+      "label": "Quest Studio to Platform",
+      "artifact": "Comfy.Quest.Studio",
+      "kind": "package_version",
+      "producer": "comfy-quest",
+      "consumer": "lumberjacks-platform",
+      "producer_value": {
+        "path": "src/Quest.Studio/Quest.Studio.csproj",
+        "format": "xml_text",
+        "selector": ".//Version"
+      },
+      "consumer_value": {
+        "path": "Lumberjacks/Directory.Packages.props",
+        "format": "xml_attribute",
+        "selector": ".//PackageVersion[@Include='Comfy.Quest.Studio']",
+        "attribute": "Version"
+      }
+    },
+    {
+      "id": "quest-contracts-networksense",
+      "label": "Quest Contracts to NetworkSense",
+      "artifact": "Comfy.Quest.Contracts",
+      "kind": "package_version",
+      "producer": "comfy-quest",
+      "consumer": "networksense",
+      "producer_value": {
+        "path": "network/mod/ComfyQuestContracts/ComfyQuestContracts.csproj",
+        "format": "xml_text",
+        "selector": ".//Version"
+      },
+      "consumer_value": {
+        "path": "eng/dependencies.interim.props",
+        "format": "xml_text",
+        "selector": ".//ComfyQuestContractsVersion"
+      }
+    },
+    {
+      "id": "transport-contracts-networksense",
+      "label": "Transport Contracts to NetworkSense",
+      "artifact": "Comfy.Transport.Contracts",
+      "kind": "package_version",
+      "producer": "lumberjacks-platform",
+      "consumer": "networksense",
+      "producer_value": {
+        "path": "Lumberjacks/src/Comfy.Transport.Contracts/Comfy.Transport.Contracts.csproj",
+        "format": "xml_text",
+        "selector": ".//Version"
+      },
+      "consumer_value": {
+        "path": "eng/dependencies.interim.props",
+        "format": "xml_text",
+        "selector": ".//ComfyTransportContractsVersion"
+      }
+    }
+  ]
+}

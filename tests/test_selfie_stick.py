@@ -32,6 +32,16 @@ PLAN_SPEC.loader.exec_module(PLAN)
 SELFIE_DIR = str(ROOT / "tools" / "selfie-stick")
 if SELFIE_DIR not in sys.path:
     sys.path.insert(0, SELFIE_DIR)          # scan_features imports scan_clusters
+ROOF_SPEC = importlib.util.spec_from_file_location(
+    "roof_semantics", ROOT / "tools" / "selfie-stick" / "roof_semantics.py"
+)
+ROOF = importlib.util.module_from_spec(ROOF_SPEC)
+ROOF_SPEC.loader.exec_module(ROOF)
+HOLDOUT_SPEC = importlib.util.spec_from_file_location(
+    "select_roof_holdout", ROOT / "tools" / "selfie-stick" / "select_roof_holdout.py"
+)
+HOLDOUT = importlib.util.module_from_spec(HOLDOUT_SPEC)
+HOLDOUT_SPEC.loader.exec_module(HOLDOUT)
 FEAT_SPEC = importlib.util.spec_from_file_location(
     "scan_features", ROOT / "tools" / "selfie-stick" / "scan_features.py"
 )
@@ -994,3 +1004,112 @@ class ChannelPlanTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaises(SystemExit):
                 self._run(tmp, extra=["--times", "0.5"])
+
+
+class RoofSemanticTests(unittest.TestCase):
+    @staticmethod
+    def _vote(bearing, area=1.0):
+        return {"bearing_deg": bearing, "tilt_deg": 45.0, "area": area,
+                "planarity": 0.0, "prefab": "wood_roof_45"}
+
+    def test_half_step_rotations_quantize_without_bankers_rounding_drift(self):
+        self.assertEqual(78.75, ROOF.quantize_bearing(78.7499))
+        self.assertEqual(78.75, ROOF.quantize_bearing(78.7501))
+
+    def test_one_opposing_slope_pair_is_a_gable(self):
+        votes = [self._vote(0.0), self._vote(0.0),
+                 self._vote(180.0), self._vote(180.0)]
+        result = ROOF.classify_roof_votes(votes, 4.0, 4,
+                                          ["wood_roof_45"] * 4)
+        self.assertEqual("gable", result["shape_estimate"])
+        self.assertEqual(90.0, result["ridge_bearing_deg"])
+
+    def test_four_slopes_without_inside_corners_are_a_hip(self):
+        votes = [self._vote(bearing) for bearing in (0.0, 0.0, 90.0, 90.0,
+                                                      180.0, 180.0, 270.0, 270.0)]
+        result = ROOF.classify_roof_votes(votes, 8.0, 8,
+                                          ["wood_roof_45"] * 8)
+        self.assertEqual("hip", result["shape_estimate"])
+        self.assertIsNone(result["ridge_bearing_deg"])
+
+    def test_inside_corners_turn_two_slope_pairs_into_cross_gables(self):
+        votes = [self._vote(bearing) for bearing in (0.0, 0.0, 90.0, 90.0,
+                                                      180.0, 180.0, 270.0, 270.0)]
+        prefabs = ["wood_roof_45"] * 7 + ["wood_roof_icorner_45"]
+        result = ROOF.classify_roof_votes(votes, 8.0, 8, prefabs)
+        self.assertEqual("gable", result["shape_estimate"])
+        self.assertIsNone(result["ridge_bearing_deg"])
+        self.assertEqual([0.0, 90.0], result["ridge_bearings_deg"])
+
+    def test_holdout_frames_are_independent_and_deterministic(self):
+        frames = {"orbit2": ["20260822_o2", "20260824_o2"],
+                  "orbit1": ["20260823_o1"],
+                  "orbit4": ["only_o4"]}
+        self.assertEqual(["20260823_o1", "20260824_o2"],
+                         HOLDOUT.chosen_frame_ids(frames))
+
+
+class ExactGeometryContractTests(unittest.TestCase):
+    @staticmethod
+    def _write_artifacts(tmp, point_x=1.0):
+        building = pathlib.Path(tmp) / "building.parquet"
+        points = pathlib.Path(tmp) / "points.parquet"
+        con = duckdb.connect()
+        con.execute("""
+            CREATE TABLE building(
+              zdo_index INTEGER, prefab_hash INTEGER, prefab_name VARCHAR,
+              category VARCHAR, x DOUBLE, y DOUBLE, z DOUBLE, has_rot INTEGER,
+              rot_x DOUBLE, rot_y DOUBLE, rot_z DOUBLE, creator_id BIGINT)
+        """)
+        con.execute("INSERT INTO building VALUES "
+                    "(7, 99, 'wood_roof_45', 'BUILDING', 1, 2, 3, 1, 0, 90, 0, 5)")
+        con.execute("COPY building TO ? (FORMAT PARQUET)", [str(building)])
+        con.execute("""
+            CREATE TABLE points(
+              snapshot_id BIGINT, world_id VARCHAR, cluster_id BIGINT,
+              zdo_index INTEGER, prefab_hash INTEGER, prefab_name VARCHAR,
+              category VARCHAR, x DOUBLE, y DOUBLE, z DOUBLE, creator_id BIGINT)
+        """)
+        con.execute("INSERT INTO points VALUES "
+                    "(107, 'W', 1, 7, 99, 'wood_roof_45', 'BUILDING', ?, 2, 3, 5)",
+                    [point_x])
+        con.execute("COPY points TO ? (FORMAT PARQUET)", [str(points)])
+        con.close()
+        return building, points
+
+    def test_exact_membership_joins_rotation_by_zdo_index(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            building, points = self._write_artifacts(tmp)
+            doc = {"snapshot_id": 107, "world_id": "W",
+                   "clusters": [{"cluster_id": 1, "pieces": 1}]}
+            con = duckdb.connect()
+            rows = ROOF.load_exact_members(con, str(building), str(points), doc, [1])
+            con.close()
+        self.assertEqual(7, rows[1][0][0])
+        self.assertEqual(90.0, rows[1][0][8])
+
+    def test_exact_membership_refuses_coordinate_drift(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            building, points = self._write_artifacts(tmp, point_x=1.5)
+            doc = {"snapshot_id": 107, "world_id": "W",
+                   "clusters": [{"cluster_id": 1, "pieces": 1}]}
+            con = duckdb.connect()
+            with self.assertRaisesRegex(ValueError, "mismatches 1"):
+                ROOF.load_exact_members(con, str(building), str(points), doc, [1])
+            con.close()
+
+    def test_point_framing_consumes_camera_axis_depth(self):
+        aim = (0.0, 0.0, 0.0)
+        flat = PLAN.framing_from_points([(0.0, 0.0, 0.0)], aim, 0.0, 0.0, 2.2)
+        # Clear the planner's intentional 8 m minimum subject-size floor so the
+        # assertion specifically observes the camera-axis depth term.
+        deep = PLAN.framing_from_points([(0.0, 0.0, 20.0)], aim, 0.0, 0.0, 2.2)
+        self.assertGreater(deep["ideal_distance_m"], flat["ideal_distance_m"])
+
+    def test_point_artifact_rejects_crossed_world_metadata(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _building, points = self._write_artifacts(tmp)
+            clusters = [{"cluster_id": 1, "pieces": 1}]
+            with self.assertRaisesRegex(SystemExit, "belongs to"):
+                PLAN.load_cluster_points(str(points), clusters,
+                                         {"snapshot_id": 107, "world_id": "OTHER"})

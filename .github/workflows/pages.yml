@@ -8,13 +8,19 @@ on:
     # data/processed pages are staged into the artifact below, so they must
     # trigger a redeploy too
     paths: ['site/**', 'corpus/**', 'tools/corpus/**', 'tools/site/**',
+            'fleet/**', 'tools/fleet/**', 'tests/test_fleet_status.py',
+            'tests/fixtures/fleet_status/**',
             'corpus/mirrors/lumberjacks/**',
             'data/processed/quest-picker.html', 'data/processed/provenance*.html',
             '.github/workflows/pages.yml']
+  schedule:
+    # Avoid the top of the hour, where GitHub's scheduled queue is busiest.
+    - cron: '17,47 * * * *'
   workflow_dispatch:
 
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 
@@ -25,13 +31,17 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+    outputs:
+      degraded: ${{ steps.fleet.outputs.degraded }}
+      warning_count: ${{ steps.fleet.outputs.warning_count }}
+      overall: ${{ steps.fleet.outputs.overall }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - uses: actions/configure-pages@v5
       - name: Verify corpus projections are reconstructable
         run: python tools/corpus/build.py --check
@@ -41,8 +51,36 @@ jobs:
           cp data/processed/quest-picker.html site/questpicker/index.html
           cp data/processed/quest-picker.html site/questpicker/quest-picker.html
           cp data/processed/provenance*.html site/questpicker/
+      - id: fleet
+        name: Render live fleet status
+        env:
+          # A read-only fine-grained token is needed for the private Isolate row.
+          # Public repositories fall back to this workflow's scoped token.
+          FLEET_READ_TOKEN: ${{ secrets.FLEET_READ_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python tools/fleet/render_status.py
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
       - id: deploy
         uses: actions/deploy-pages@v4
+
+  audit:
+    name: Fleet status audit
+    needs: [build, deploy]
+    if: ${{ always() && needs.build.result == 'success' && needs.deploy.result == 'success' && needs.build.outputs.degraded == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report the already-published degraded projection
+        run: |
+          echo "The status page was deployed with ${{ needs.build.outputs.warning_count }} warning(s)."
+          echo "Inspect /status/ and the build logs; degraded remote state is visible rather than hidden."
+          exit 1

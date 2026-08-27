@@ -80,6 +80,13 @@ the flat store.
 Two consequences, both good: no Java changes, and no new REST endpoint. The
 whole scan is a read-only query against a file that already exists.
 
+The first pipeline kept `y` only as cluster aggregates and discarded exact
+piece-to-cluster membership with its temporary tables. That later became the
+remaining height/depth boundary for automated framing. The current coordinate
+companion and camera-space solution are documented in
+[`ZDO-COORDINATES.md`](ZDO-COORDINATES.md); the rest of this tutorial preserves
+the original discovery sequence.
+
 ```text
 9,155,594 ZDOs total
 3,475,009 of them BUILDING

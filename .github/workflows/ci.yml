@@ -31,3 +31,5 @@ jobs:
           python tools/corpus/build.py --check
       - name: Verify entrypoint links
         run: python -m unittest tests.test_entrypoint_links -v
+      - name: Verify fleet intent contract
+        run: python tools/fleet/render_status.py --check-config
