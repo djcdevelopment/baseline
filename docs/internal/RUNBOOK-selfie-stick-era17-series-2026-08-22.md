@@ -2533,3 +2533,64 @@ Not sampled: a flash control clip; second time-variants at 474/627; the hover
 lane in daylight; the 602/195 probe frames (shot, never reviewed); whether an
 undecorated window or a wider framebuffer unlocks 4K clips; flash holds beyond
 0.35 s; the 1080p-vs-4K effect on colour metrics.
+
+## The ingest lap: rejoining a corpus the park split in two (2026-08-27, night)
+
+Derek asked what the last 24 hours of captures needed. Answer: everything --
+none of the 22 runs (~830 frames) were scored or indexed, and the cause was
+structural: the creator lane's 10:28 install-cleanup parked the whole era17
+corpus (56 run dirs, 4,845 receipt lines) out from under the gallery pipeline,
+whose driver reads the LIVE Steam tree. No rebuild had been possible since
+08-25; the index still said 2,633 images, newest run 08-25.
+
+The bridge, using the peer session's post-park convention (fresh tree = live
+corpus): 21 NTFS junctions from the park into the fresh tree's
+comfy-orbit-captures (zero bytes copied, nothing written into the park), 16
+runs pulled from AM4 hash-verified, receipts merged 240 -> 5,566 lines, and
+the registry brought from 23 to 38 runs. The four stale moon-probe frames
+still public from the retired shooting-at-the-moon genre (run 20260825-072915:
+Black Tower x2, Sky Temple x2) were pruned by UNREGISTERING the run -- the
+--run filter now drops them at every future rebuild, which is the only durable
+prune in a rebuild-from-receipts world.
+
+Result: 778 new renders (driver-standard 120 px right-crop, which also removes
+the ComfyQuestRuntime chip -- measured 64 px wide ending 16 px from the edge at
+BOTH 1080p and 4K), 732 surviving index rows, all 732 carrying aesthetic +
+depth scores (CPU, 2.6 frames/s, the B70s untouched). Full rebuild: 3,341
+images across 33 runs, no-frame-loss assert green against the 2,629 floor, 96
+failed captures excluded loudly (95 view-obstructed, 1 world_never_loaded --
+the instakill lap's zero-piece skip, correctly self-rejected). Two pre-existing
+park gaps surfaced: 0686_dawn/1157_dawn of 20260824-094718 are in receipts but
+missing on disk -- they were lost BEFORE the park.
+
+The scores behaved exactly as the bench memory says: top of the meter is all
+bright Clear daylight (twilight-2c orbits, the arch lane's dawn sweep), 3 of
+732 under the 4.2 veto floor, and the night keepers (474 hearthview, 627 storm
+alley) nowhere near the top -- the meter is an exposure veto, not a critic, and
+those frames were picked by eye.
+
+Three traps recorded:
+1. Cross-platform md5 verify must NORMALIZE: git-bash md5sum prints "hash
+   *file" (binary-mode asterisk), GNU prints "hash  file" -- a raw string
+   compare reports every file as a mismatch while every hash matches.
+2. build_valheim_index's --derived validation is coupled to --run: a partial
+   --run set that omits a derived frame's SOURCE run hard-fails the build even
+   though the renders are already written. Render-only passes should omit
+   --derived; the full-registry pass keeps it.
+3. The registry (capture-runs.json) carries a BOM; python must read it
+   utf-8-sig, and writes should keep the BOM for the PS 5.1 readers.
+
+Re-run the slice:
+  python build_valheim_index.py --captures "<fresh>/comfy-manual-captures" --orbit-captures "<fresh>/comfy-orbit-captures" --receipts "<fresh>/shotplan-receipts.jsonl" --clusters out/era17/clusters.json --dest out/era17/gallery --world ComfyEra17 --names out/era17/cluster-names.json --depth out/era17/depth.json --aesthetic out/era17/aesthetic.json --crop-right-ui-px 120 --derived out/era17/derived-frames.json --run <each id in out/era17/capture-runs.json>
+  (<fresh> = C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\config)
+
+Not sampled: judge_frames on the new rows; name_structures for the unnamed
+"build #NNN" clusters the arch sweep surfaced; whether the park's two missing
+dawn frames exist anywhere; the durable home question (restore the park into
+the fresh tree vs keep junctioning) -- that decision belongs to the creator
+lane and is flagged, not made.
+
+Published: full replacement to fx99, 361.3 MB payload, remote verify green --
+/valheim/ answers 200 with 3,341 images, ComfyEra17 current with era16 as
+sibling, and the deployed index confirmed scrubbed of creator ids and
+coordinates. The four moon-probe frames are off the public gallery.
