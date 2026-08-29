@@ -1,0 +1,20 @@
+{
+  "$schema": "https://creator-os.local/schemas/architectural-curriculum-experiment/v1.json",
+  "experiment_id": "architectural-css-fit-v3-replacement-holdout-source",
+  "status": "frozen-before-ocr",
+  "frozen_at": "2026-08-28T00:00:00Z",
+  "selection": {
+    "path": "habs-corpus-v3-holdout.json",
+    "sha256": "0cea996043efbfc2a024cced8caecfbdeb2d0ef8266a80326397ba9d4afb6923",
+    "buildings": 8,
+    "seed_control": null,
+    "unseen_transfer_buildings": 8
+  },
+  "acquisition": {
+    "plan": "habs-corpus-v3-acquisition-plan.json",
+    "plan_sha256": "3fa84fbd64bf72489e13c742ecf20e9932cb1c293eea1b244d4ef2f137a3dc51",
+    "sheets": 29,
+    "http_bytes": 123099962,
+    "verified": true
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://creator-os.local/schemas/architectural-css-fit-contracts/v0.json",
+  "title": "Automatic architectural CSS fit R&D contracts",
+  "$defs": {
+    "sourceRef": {
+      "type": "object",
+      "required": ["building_id", "sheet_index", "source_sha256", "source_url", "region"],
+      "properties": {
+        "building_id": {"type": "string"},
+        "sheet_index": {"type": "integer", "minimum": 1},
+        "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source_url": {"type": "string"},
+        "region": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "number"}}
+      },
+      "additionalProperties": true
+    },
+    "panelEvidence": {
+      "type": "object",
+      "required": ["schema", "id", "building_id", "sheet_index", "role", "bbox", "evidence"],
+      "properties": {
+        "schema": {"const": "architectural-panel-evidence/v0"},
+        "id": {"type": "string"},
+        "building_id": {"type": "string"},
+        "sheet_index": {"type": "integer"},
+        "role": {"enum": ["plan", "elevation", "section", "site", "detail", "unknown"]},
+        "bbox": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "number"}},
+        "evidence": {"type": "array", "items": {"$ref": "#/$defs/sourceRef"}}
+      },
+      "additionalProperties": true
+    },
+    "dimensionBinding": {
+      "type": "object",
+      "required": ["schema", "id", "panel_id", "text", "value_m", "axis", "status", "provenance"],
+      "properties": {
+        "schema": {"const": "architectural-dimension-binding/v0"},
+        "axis": {"enum": ["horizontal", "vertical", "unknown"]},
+        "status": {"enum": ["BOUND_CANDIDATE", "HELD_AMBIGUOUS", "HELD_CONTEXT"]},
+        "provenance": {"$ref": "#/$defs/sourceRef"}
+      },
+      "additionalProperties": true
+    },
+    "fitAssessment": {
+      "type": "object",
+      "required": ["schema", "building_id", "route", "gates", "panels", "bindings", "holdout", "uncertainties"],
+      "properties": {
+        "schema": {"const": "architectural-envelope-fit/v0"},
+        "building_id": {"type": "string"},
+        "route": {"enum": ["G1_METRIC_GRAPH", "G1_UNVALIDATED", "A0_TRIAGED", "HELD"]},
+        "gates": {"type": "array"},
+        "panels": {"type": "array"},
+        "bindings": {"type": "array"},
+        "holdout": {"type": "object"},
+        "uncertainties": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "corpusIndex": {
+      "type": "object",
+      "required": ["schema", "revision", "answer", "buildings", "metrics", "uncertainties"],
+      "properties": {
+        "schema": {"const": "architectural-css-fit-index/v0"},
+        "buildings": {"type": "array", "minItems": 20, "maxItems": 20}
+      },
+      "additionalProperties": true
+    }
+  }
+}

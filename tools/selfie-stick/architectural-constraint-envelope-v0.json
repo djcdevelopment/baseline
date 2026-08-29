@@ -1,0 +1,98 @@
+{
+  "$schema": "https://creator-os.local/schemas/architectural-constraint-envelope-experiment/v0.json",
+  "experiment_id": "architectural-relational-envelope-v0",
+  "status": "frozen-before-implementation",
+  "frozen_at": "2026-08-29T00:00:00Z",
+  "question": "Can a bounded rectangular-gable constraint model separate relative architectural agreement from unproven view origins, choose or reject measurement attachments, and close tn0304 without regressing sd0401 or forcing tn0305?",
+  "inputs": {
+    "css_v3_revision": "5333d5eaed593d7607e4",
+    "tn0304_water_flow_status": "WATER_FLOWING_PROVISIONAL",
+    "sd0401_accepted_f2_revision": "3d7189c1c6641f19f873",
+    "fixtures": ["tn0304", "sd0401", "tn0305"]
+  },
+  "scope": {
+    "footprint": "one orthogonal rectangular primary mass",
+    "roof": "one centered equal-pitch gable",
+    "views": "pinned existing plan, section, and elevation evidence",
+    "openings": false,
+    "appendages": false,
+    "interiors": false,
+    "arbitrary_polygons": false,
+    "live_world": false
+  },
+  "authority_tiers": [
+    "ENDPOINT_SUPPORTED_WRITTEN_DIMENSION_OR_GEOMETRIC_DATUM",
+    "HARD_GEOMETRIC_INVARIANT",
+    "CROSS_VIEW_RELATIONAL_AGREEMENT",
+    "ARCHITECTURAL_PLAUSIBILITY",
+    "SOURCE_LINE_AGREEMENT",
+    "RECONCILIATION_COST"
+  ],
+  "solver": {
+    "explicit_conflict_policy": "CONFIDENCE_WEIGHTED_COMPROMISE_WITH_IMMUTABLE_OBSERVATIONS",
+    "observation_weight": "recorded_confidence_squared",
+    "maximum_explicit_residual_m": 0.1,
+    "maximum_orthogonal_snap_degrees": 2.0,
+    "maximum_eave_pair_disagreement_m": 0.1,
+    "maximum_ridge_center_offset_ratio": 0.03,
+    "maximum_closure_gap_m": 0.05,
+    "maximum_inferred_reconciliation_m": 0.1,
+    "maximum_game_hidden_overlap_m": 0.15,
+    "minimum_roof_pitch_degrees": 15.0,
+    "maximum_roof_pitch_degrees": 60.0,
+    "minimum_usable_wall_height_m": 2.0,
+    "minimum_candidate_reduction_ratio": 0.75,
+    "iterations": 2,
+    "admission": "exactly one hypothesis satisfies every hard bound"
+  },
+  "fixtures": {
+    "tn0304": {
+      "role": "positive-development",
+      "active_views": [
+        "tn0304-s01-plan-01",
+        "tn0304-s01-section-02",
+        "tn0304-s02-elevation-01"
+      ],
+      "holdout_view": "tn0304-s02-elevation-03",
+      "excluded_views": [
+        "tn0304-s01-plan-03",
+        "tn0304-s02-elevation-02",
+        "tn0304-s02-elevation-04"
+      ],
+      "game_floor_surfaces": 1,
+      "maximum_pieces": 256
+    },
+    "sd0401": {
+      "role": "accepted-regression-control",
+      "oracle_revision": "3d7189c1c6641f19f873",
+      "maximum_major_dimension_error_m": 0.25,
+      "maximum_eave_or_ridge_error_m": 0.1,
+      "maximum_pieces": 256
+    },
+    "tn0305": {
+      "role": "negative-abstention-control",
+      "allowed_statuses": ["HELD_INSUFFICIENT_CONSTRAINTS", "HELD_AMBIGUOUS"]
+    }
+  },
+  "browser": {
+    "required_fixture": "tn0304",
+    "hardware_required": true,
+    "maximum_startup_ms": 1000.0,
+    "maximum_frame_p95_ms": 33.0
+  },
+  "automation_boundary": {
+    "network_requests": 0,
+    "source_downloads": 0,
+    "ocr_calls": 0,
+    "vlm_calls": 0,
+    "world_writes": 0,
+    "new_detector_allowed": false,
+    "existing_hough_parameters_must_be_reused": true
+  },
+  "persistence": {
+    "content_addressed_revisions": true,
+    "atomic_head": true,
+    "unchanged_rerun_validates_owned_artifacts": true
+  },
+  "promotion": "NONE_RND_ONLY"
+}

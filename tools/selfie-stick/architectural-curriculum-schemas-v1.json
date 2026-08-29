@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://creator-os.local/schemas/architectural-curriculum-contracts/v1.json",
+  "title": "Architectural Curriculum v1 contracts",
+  "$defs": {
+    "provenanceRef": {
+      "type": "object",
+      "required": ["source_sha256", "source_url", "sheet_index"],
+      "properties": {
+        "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source_url": {"type": "string"},
+        "sheet_index": {"type": "integer", "minimum": 1},
+        "region": {
+          "type": "array",
+          "prefixItems": [
+            {"type": "number"}, {"type": "number"},
+            {"type": "number"}, {"type": "number"}
+          ],
+          "minItems": 4,
+          "maxItems": 4
+        }
+      },
+      "additionalProperties": true
+    },
+    "assertion": {
+      "type": "object",
+      "required": ["id", "status", "claim", "provenance"],
+      "properties": {
+        "id": {"type": "string"},
+        "status": {"enum": ["observed", "inferred", "authored", "unresolved"]},
+        "claim": {"type": "string"},
+        "provenance": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/provenanceRef"}
+        }
+      },
+      "additionalProperties": true
+    },
+    "assessment": {
+      "type": "object",
+      "required": ["schema", "building_id", "mode", "sheets", "features", "route", "comparison"],
+      "properties": {
+        "schema": {"const": "architectural-assessment/v1"},
+        "building_id": {"type": "string"},
+        "mode": {"enum": ["REAL", "FIXTURE_SIMULATION", "BLOCKED"]},
+        "sheets": {"type": "array"},
+        "features": {"type": "object"},
+        "route": {"type": "object"},
+        "comparison": {"$ref": "#/$defs/learningComparison"}
+      },
+      "additionalProperties": true
+    },
+    "baseline": {
+      "type": "object",
+      "required": ["schema", "building_id", "mode", "lesson_free", "sheets", "features", "route"],
+      "properties": {
+        "schema": {"const": "architectural-baseline/v1"},
+        "building_id": {"type": "string"},
+        "mode": {"enum": ["REAL", "FIXTURE_SIMULATION"]},
+        "lesson_free": {"const": true},
+        "sheets": {"type": "array"},
+        "features": {"type": "object"},
+        "route": {"type": "object"}
+      },
+      "additionalProperties": true
+    },
+    "learningComparison": {
+      "type": "object",
+      "required": ["baseline_route", "cumulative_route", "advanced", "regressions", "selected"],
+      "properties": {
+        "baseline_route": {"type": "string"},
+        "cumulative_route": {"type": "string"},
+        "advanced": {"type": "boolean"},
+        "regressions": {"type": "array", "items": {"type": "string"}},
+        "selected": {"enum": ["baseline", "cumulative"]}
+      },
+      "additionalProperties": true
+    },
+    "buildingGraph": {
+      "type": "object",
+      "required": ["schema", "id", "building_id", "coordinate_frames", "levels", "footprints", "assertions"],
+      "properties": {
+        "schema": {"const": "architectural-building-graph/v1"},
+        "id": {"type": "string"},
+        "building_id": {"type": "string"},
+        "coordinate_frames": {"type": "object"},
+        "levels": {"type": "array"},
+        "footprints": {"type": "array"},
+        "roofs": {"type": "array"},
+        "openings": {"type": "array"},
+        "assertions": {"type": "array", "items": {"$ref": "#/$defs/assertion"}}
+      },
+      "additionalProperties": true
+    },
+    "lessonPack": {
+      "type": "object",
+      "required": ["schema", "layer", "prior_sha256", "status", "admitted_examples", "regressions"],
+      "properties": {
+        "schema": {"const": "architectural-lesson-pack/v1"},
+        "layer": {"type": "integer", "minimum": 0},
+        "prior_sha256": {"type": ["string", "null"]},
+        "status": {"enum": ["ACCEPTED", "REJECTED", "EMPTY"]},
+        "admitted_examples": {"type": "array"},
+        "regressions": {"type": "array"}
+      },
+      "additionalProperties": true
+    },
+    "curriculumIndex": {
+      "type": "object",
+      "required": ["schema", "revision", "seed_control", "clusters", "buildings", "outcome"],
+      "properties": {
+        "schema": {"const": "architectural-curriculum-index/v1"},
+        "revision": {"type": "string"},
+        "seed_control": {"const": "sd0401"},
+        "clusters": {"type": "array"},
+        "buildings": {"type": "array", "minItems": 20, "maxItems": 20},
+        "outcome": {"type": "object"}
+      },
+      "additionalProperties": true
+    }
+  }
+}

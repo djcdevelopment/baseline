@@ -1,0 +1,71 @@
+{
+  "$schema": "https://creator-os.local/schemas/architectural-roundtrip-experiment/v0.json",
+  "experiment_id": "architectural-roundtrip-f2-sd0401",
+  "status": "frozen-before-f2-implementation",
+  "frozen_at": "2026-08-28T00:00:00Z",
+  "inherits": {
+    "experiment": "architectural-roundtrip-v0-sd0401",
+    "accepted_revision": "c2e64ee9cd262dd1a660",
+    "source_subject": "sd0401",
+    "source_and_calibration_must_not_change": true
+  },
+  "question": "Can the same measured graph be compiled into an honest F2 Valheim weather shell by making openings into real wall bays and every appendage roof an explicit buildable plane?",
+  "requested_fidelity": "F2_WEATHER_SHELL",
+  "promotion_rule": "Grant F2 only when the target shell is mechanically closed except for operable doors, observed openings are represented above the recall floor, and no secondary roof is a flat placeholder.",
+  "non_goals": [
+    "Interior partitions or furniture",
+    "F3 traversal between every documented room",
+    "Jamb, paneling, crown, or trim fidelity",
+    "Geographic bearing recovery",
+    "Live placement without a separately safe Creator Session"
+  ],
+  "opening_gates": {
+    "minimum_observed_opening_recall": 0.8,
+    "minimum_compiled_doors": 2,
+    "minimum_compiled_windows": 6,
+    "maximum_opening_center_error_m": 0.25,
+    "maximum_wall_encroachment_into_opening_m": 0.02,
+    "maximum_unfilled_solid_wall_gap_m": 0.02,
+    "target_module_width_adaptation_must_be_explicit": true,
+    "attachment_joins_must_match_footprint_width": true
+  },
+  "roof_gates": {
+    "required_explicit_roofs": [
+      "main-gable",
+      "entry-vestibule-gable",
+      "mechanical-wing-gable"
+    ],
+    "flat_placeholders_allowed": false,
+    "minimum_plan_coverage_ratio": 0.99,
+    "maximum_main_ridge_error_m": 0.1,
+    "maximum_secondary_ridge_or_eave_error_m": 0.15,
+    "maximum_secondary_overhang_m": 0.65,
+    "maximum_weather_seam_gap_m": 0.05
+  },
+  "composition_gates": {
+    "maximum_pieces": 256,
+    "maximum_major_dimension_error_m": 0.25,
+    "physical_scale": 1.0,
+    "nonuniform_scale_allowed": false,
+    "exact_piece_xyz_and_quaternion_required": true
+  },
+  "routing_gates": {
+    "approved_fidelity_on_pass": "F2_WEATHER_SHELL",
+    "maximum_fidelity": "F2_WEATHER_SHELL",
+    "must_publish_f3_and_f4_omissions": true
+  },
+  "persistence_and_transport_gates": {
+    "kill_and_resume_after_stage": "openings",
+    "unchanged_stage_hashes_required": true,
+    "required_resolvers": [
+      "inline-base64url",
+      "http-url"
+    ],
+    "isolated_creator_contract_must_accept_pair": true
+  },
+  "live_safety": {
+    "may_restart_valheim": false,
+    "may_replace_active_session": false,
+    "send_request_only_if_all_existing_v0_preflight_constraints_pass": true
+  }
+}

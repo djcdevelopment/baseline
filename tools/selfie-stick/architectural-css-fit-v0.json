@@ -1,0 +1,105 @@
+{
+  "$schema": "https://creator-os.local/schemas/architectural-css-fit-experiment/v0.json",
+  "experiment_id": "habs-automatic-css-envelope-fit-v0",
+  "status": "frozen-before-implementation",
+  "frozen_at": "2026-08-28T00:00:00Z",
+  "question": "Can grounded OCR/CV evidence automatically produce one metric primary-envelope graph that fits plans and elevations and predicts an unseen architectural view across the frozen 20-building HABS corpus?",
+  "inputs": {
+    "selection": "habs-corpus.json",
+    "selection_sha256": "8c2d24628d4867722c9ad65c05c648cd7d9da138bacd9c196b3943ad0de977ec",
+    "buildings": 20,
+    "sheets": 69,
+    "ocr_audit": "out/architectural-curriculum/real-ocr-audit-v1",
+    "ocr_audit_revision": "017d196e9584e4c0aa98",
+    "seed_control": "sd0401",
+    "negative_controls": ["tn0305", "il0180"],
+    "expected_clean_probe": "tx1037",
+    "expected_transfer_probe": "nj0415"
+  },
+  "authority": {
+    "source_rasters": "observed drawing evidence",
+    "ocr_tokens": "observed text proposals; numeric only after strict parsing and binding",
+    "cv_lines": "geometric support candidates; never independent scale authority",
+    "catalog_metadata": "routing hints only; never visual or dimensional evidence",
+    "metric_graph": "authoritative normalized primary envelope after all promotion gates pass",
+    "css": "projection and residual instrument only; never authoritative geometry"
+  },
+  "automation_boundary": {
+    "manual_panel_crops_allowed": false,
+    "manual_dimension_roles_allowed": false,
+    "manual_geometry_overrides_allowed": false,
+    "vision_calls_allowed": false,
+    "network_requests_allowed": false,
+    "source_downloads_allowed": false,
+    "lessons_or_cross_building_geometry_hints_allowed": false
+  },
+  "geometry": {
+    "level": "PRIMARY_ENVELOPE",
+    "parameters": [
+      "width_m",
+      "depth_m",
+      "floor_count",
+      "eave_height_m",
+      "ridge_height_m",
+      "roof_kind",
+      "roof_pitch_degrees",
+      "ridge_axis"
+    ],
+    "roof_hypotheses": ["gable", "hip", "shed", "flat"],
+    "building_local_axes": {"x": "plan-right", "y": "height", "z": "plan-up"},
+    "per_panel_registration": ["translation", "uniform-scale", "cardinal-rotation", "reflection"],
+    "nonuniform_scale_allowed": false,
+    "residual_only": ["appendages", "openings", "dormers", "interiors", "complex-roof-junctions"]
+  },
+  "holdout": {
+    "selection": "section-first; otherwise lexicographically last elevation when at least two elevations exist",
+    "held_out_geometry_may_enter_fit": false,
+    "held_out_dimensions_may_enter_fit": false,
+    "shape_scoring_alignment": "similarity transform for display/shape only; cannot authorize metric scale",
+    "unvalidated_candidates_may_promote": false
+  },
+  "promotion": {
+    "minimum_independent_scale_anchors": 2,
+    "maximum_scale_anchor_spread_ratio": 0.05,
+    "maximum_cross_view_error_m": 0.25,
+    "maximum_cross_view_error_ratio": 0.03,
+    "minimum_width_depth_m": 1.5,
+    "minimum_ridge_height_m": 2.0,
+    "edge_tolerance": {
+      "source": "sd0401 accepted oracle projected-edge p95",
+      "minimum_panel_diagonal_ratio": 0.002,
+      "maximum_panel_diagonal_ratio": 0.01
+    }
+  },
+  "oracle": {
+    "graph": "out/architectural-roundtrip/sd0401/HEAD:building.graph.json",
+    "reveal_after_automatic_output_sealed": true,
+    "maximum_dimension_error_m": 0.25,
+    "maximum_dimension_error_ratio": 0.03,
+    "exact_fields": ["roof_kind", "ridge_axis"]
+  },
+  "outcomes": {
+    "corpus_g1_minimum": {"unseen_g1": 12, "building_types": 3},
+    "transfer_observed": {"unseen_g1": 2, "clusters": 2},
+    "labels": [
+      "CORPUS_G1_MINIMUM",
+      "TRANSFER_OBSERVED",
+      "INSUFFICIENT_AUTOMATIC_EVIDENCE",
+      "BLOCKED"
+    ]
+  },
+  "persistence": {
+    "content_addressed_revisions": true,
+    "atomic_head": true,
+    "unchanged_rerun_zero_evidence_or_fit_work": true,
+    "portable_report_excludes_source_tiffs": true
+  },
+  "non_goals": [
+    "Opening or secondary-mass fitting",
+    "Valheim prefab routing",
+    "Creator OS placement",
+    "Live Valheim or ZDO writes",
+    "Photorealistic rendering",
+    "Turning an R&D probe into a generalized production converter"
+  ]
+}

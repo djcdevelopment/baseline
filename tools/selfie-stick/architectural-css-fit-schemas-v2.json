@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://creator-os.local/schemas/architectural-css-fit-contracts/v2.json",
+  "title": "Causally repaired pre-CSS architecture and read-only CSS residual contracts",
+  "$defs": {
+    "authority": {"enum": ["STRICT", "TOPOLOGY_CORROBORATED", "GEOMETRIC_SUPPORT", "INFERRED", "HELD"]},
+    "dimensionBinding": {
+      "type": "object",
+      "required": ["id", "view_id", "value_m", "axis", "axis_authority", "line", "candidate_metres_per_pixel", "authority"],
+      "additionalProperties": true
+    },
+    "scaleAnchor": {
+      "type": "object",
+      "required": ["id", "kind", "origin", "metres_per_pixel", "authority"],
+      "additionalProperties": true
+    },
+    "roofDatumPair": {
+      "type": "object",
+      "required": ["id", "view_id", "relation", "ridge_datum_id", "eave_datum_ids", "authority"],
+      "properties": {"relation": {"const": "OPPOSED_SLOPES_MEET_WITH_PAIRED_EAVES"}},
+      "additionalProperties": true
+    },
+    "evidenceGraph": {
+      "type": "object",
+      "required": ["schema", "building_id", "views", "dimension_chains", "scale_anchors", "scale_consensus", "masses", "datums", "roof_datum_pairs", "promotion"],
+      "properties": {"schema": {"const": "architectural-evidence-graph/v2"}},
+      "additionalProperties": true
+    },
+    "cssResidual": {
+      "type": "object",
+      "required": ["schema", "building_id", "graph_sha256", "status", "upstream_attribution", "corrected_geometry", "discovery_operations"],
+      "properties": {
+        "schema": {"const": "architectural-css-residual/v2"},
+        "corrected_geometry": {"type": "null"},
+        "discovery_operations": {"const": 0}
+      },
+      "additionalProperties": true
+    }
+  }
+}

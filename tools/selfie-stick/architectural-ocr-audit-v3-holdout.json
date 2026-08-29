@@ -1,0 +1,46 @@
+{
+  "$schema": "https://creator-os.local/schemas/architectural-ocr-audit/v1.json",
+  "experiment_id": "habs-real-ocr-cv-audit-v3-replacement-holdout",
+  "status": "frozen-before-ocr",
+  "frozen_at": "2026-08-28T00:00:00Z",
+  "question": "What grounded OCR tokens, strict dimensions, and geometric support are present in the untouched eight-building v3 replacement holdout, without exposing those signals to development?",
+  "inputs": {
+    "selection": "habs-corpus-v3-holdout.json",
+    "selection_sha256": "0cea996043efbfc2a024cced8caecfbdeb2d0ef8266a80326397ba9d4afb6923",
+    "acquisition_plan_sha256": "3fa84fbd64bf72489e13c742ecf20e9932cb1c293eea1b244d4ef2f137a3dc51",
+    "buildings": 8,
+    "sheets": 29,
+    "source_policy": "download only the 29 masters frozen by the passing HTTP-sized acquisition plan, verify every byte and SHA-256, then prohibit network access in OCR and fit phases",
+    "planned_master_bytes_from_http": 123099962
+  },
+  "authority": {
+    "ocr_tokens": "observed text proposals with confidence and normalized region",
+    "parsed_dimensions": "accepted only when the entire feet/inches or metric expression survives strict parsing",
+    "cv_lines": "candidate geometric support only; never measurement authority without semantic or topological association",
+    "catalog_titles": "metadata comparison only; never visual evidence"
+  },
+  "success_gates": {
+    "completed_sheets": 29,
+    "minimum_sheets_with_ten_tokens_ratio": 0.5,
+    "minimum_sheets_with_strict_dimensions_ratio": 0.25,
+    "minimum_median_token_confidence": 0.6,
+    "minimum_sheets_with_role_signal_ratio": 0.25,
+    "minimum_sheets_with_anchor_candidates_ratio": 0.2
+  },
+  "outcomes": {
+    "pass": "USABLE_AS_FROZEN_HOLDOUT_EVIDENCE",
+    "fail": "INSUFFICIENT_GROUNDED_SIGNAL",
+    "always": "NOT_AUTONOMOUS_SCALE_AUTHORITY"
+  },
+  "persistence": {
+    "content_addressed_sheet_receipts": true,
+    "unchanged_rerun_must_be_zero_ocr_calls": true
+  },
+  "non_goals": [
+    "Inspecting replacement-holdout OCR or drawing contents during v3 development",
+    "Calling or emulating the unavailable VLM",
+    "Authorizing a metric graph from an uncorroborated nearest-line heuristic",
+    "Generating Valheim pieces or ZDOs",
+    "Contacting Valheim or Creator OS"
+  ]
+}

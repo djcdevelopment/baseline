@@ -1,0 +1,113 @@
+{
+  "$schema": "https://creator-os.local/schemas/architectural-css-fit-experiment/v2.json",
+  "experiment_id": "habs-pre-css-causal-repair-v2",
+  "status": "frozen-before-development-execution",
+  "frozen_at": "2026-08-28T00:00:00Z",
+  "question": "Can failures observed at the first CSS gate be repaired upstream by line-owned dimension axes, independent scale consensus, two-axis mass closure, and topology-paired roof datums, then transfer to a genuinely external HABS holdout while CSS remains read-only?",
+  "inputs": {
+    "development_selection": "habs-corpus.json",
+    "development_selection_sha256": "8c2d24628d4867722c9ad65c05c648cd7d9da138bacd9c196b3943ad0de977ec",
+    "development_buildings": 20,
+    "development_sheets": 69,
+    "development_ocr_audit": "out/architectural-curriculum/real-ocr-audit-v1",
+    "development_ocr_audit_revision": "017d196e9584e4c0aa98",
+    "css_v1_baseline_revision": "da9fb53b6e49c3718ea3",
+    "blind_selection": "habs-corpus-v2-holdout.json",
+    "blind_selection_sha256": "a70e8f18915f679a540365e3c62d4cb5e4d2f1be27ffad271ec25889e5c8f4f9",
+    "blind_buildings": 8,
+    "blind_sheets": 27,
+    "blind_source_bytes": 726848012,
+    "blind_ocr_audit": "out/architectural-curriculum/real-ocr-audit-v2-holdout",
+    "blind_ocr_audit_revision": "b1743fa5580583635f51",
+    "buildings": 28,
+    "sheets": 96
+  },
+  "evaluation": {
+    "development_buildings": [
+      "sd0401", "tx1037", "ak0535", "pa0119", "sd0412", "az0450", "tn0304",
+      "pa0461", "nc0096", "fl0159", "tn0306", "tn0305", "co0395", "nj0415",
+      "ma0779", "il0180", "ma0032", "nj1717", "tx0693", "wa0761"
+    ],
+    "revealed_v1_failure_cohort": [
+      "pa0119", "sd0412", "az0450", "tn0304", "pa0461", "nc0096", "fl0159",
+      "tn0306", "tn0305", "co0395", "nj0415", "ma0779", "il0180", "ma0032",
+      "nj1717", "tx0693", "wa0761"
+    ],
+    "regression_controls": ["sd0401", "tx1037", "ak0535"],
+    "blind_buildings": ["tn0168", "tx0577", "md2171", "mo0330", "mt0702", "pa0137", "tx1238", "va0044"],
+    "negative_controls": [],
+    "development_negative_controls": ["tn0305", "il0180"],
+    "minimum_blind_g1": 2,
+    "minimum_blind_clusters": 2,
+    "post_blind_tuning_allowed": false
+  },
+  "causal_repairs": {
+    "dimension_axis": "Prefer a nearby owned cardinal dimension line; retain token-shape axis only as held fallback.",
+    "scale_owner": "Derive each scale anchor independently from a complete notation or a strict dimension and its owned line span; promotion requires a compatible multi-origin consensus.",
+    "mass_closure": "Select one exterior extent per plan axis from closed chains or strict exterior dimensions and require a closed linework loop before primary-mass selection.",
+    "roof_datums": "Create ridge/eave datums only as a paired topology relation from opposed roof slopes in one elevation or section; numeric values require an independently calibrated view.",
+    "css": "Receive sealed evidence and metric graphs, compute residuals, and perform zero discovery or geometry correction."
+  },
+  "authority": {
+    "source_rasters": "observed drawing evidence",
+    "ocr_tokens": "observed text proposals; numeric only after strict parsing or explicitly reported topology corroboration",
+    "cv_lines": "geometric support and dimension-line ownership candidates; never standalone semantic or scale authority",
+    "evidence_graph": "owns views, dimension-line bindings, chains, scale consensus, mass closure, and paired datums before CSS",
+    "metric_graph": "authoritative normalized primary envelope only after upstream promotion gates pass",
+    "css": "read-only projection and residual instrument; cannot discover or correct geometry"
+  },
+  "automation_boundary": {
+    "manual_overrides_allowed": false,
+    "vision_calls_allowed": false,
+    "network_requests_allowed_during_fit": false,
+    "source_downloads_allowed_during_fit": false,
+    "cross_building_geometry_hints_allowed": false,
+    "strict_ocr_threshold_changes_allowed": false
+  },
+  "topology": {
+    "view_roles": ["plan", "elevation", "section", "site", "detail", "unknown"],
+    "datum_types": ["grade", "basement", "first_floor", "floor", "datum", "ceiling", "top_of_wall", "eave", "roof_edge", "ridge", "roof_peak"],
+    "maximum_cross_role_view_overlap_ratio": 0.0,
+    "dimension_chain_closure_ratio": 0.02,
+    "dimension_line_max_distance_ratio": 0.035,
+    "dimension_scale_consensus_ratio": 0.05,
+    "topology_corroborated_scale_ratio": 0.05,
+    "minimum_primary_aspect_ratio": 0.25,
+    "repaired_dimension_may_anchor_scale": false,
+    "topology_datum_requires_opposed_slopes": true
+  },
+  "promotion": {
+    "minimum_independent_scale_anchors": 2,
+    "minimum_scale_anchor_origins": 2,
+    "maximum_scale_anchor_spread_ratio": 0.05,
+    "maximum_cross_view_error_m": 0.25,
+    "maximum_cross_view_error_ratio": 0.03,
+    "minimum_width_depth_m": 1.5,
+    "minimum_ridge_height_m": 2.0,
+    "edge_tolerance_ratio": 0.01
+  },
+  "development_acceptance": {
+    "minimum_failure_cohort_selected_primary": 8,
+    "minimum_failure_cohort_scale_consensus": 4,
+    "minimum_failure_cohort_paired_roof_datums": 4,
+    "minimum_failure_cohort_g1": 2,
+    "sd0401_oracle": {"width_m": 15.928975, "depth_m": 4.333875, "ridge_height_m": 3.302},
+    "tx1037_ceiling_must_remain_typed_ceiling": true,
+    "ak0535_required_separate_masses": ["LOG CABIN", "ADDITION"],
+    "ak0535_forbidden_floor_primary_width_m": 10.9474
+  },
+  "persistence": {
+    "content_addressed_revisions": true,
+    "atomic_head": true,
+    "development_sealed_before_blind": true,
+    "unchanged_rerun_zero_evidence_or_fit_work": true
+  },
+  "non_goals": [
+    "Opening or secondary-mass promotion",
+    "VLM semantic repair",
+    "Using fresh holdout evidence during development",
+    "Valheim prefab routing or Creator OS placement",
+    "Live Valheim or ZDO writes",
+    "Changing OCR or corpus promotion tolerances"
+  ]
+}

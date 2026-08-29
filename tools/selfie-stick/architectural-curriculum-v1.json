@@ -1,0 +1,99 @@
+{
+  "$schema": "https://creator-os.local/schemas/architectural-curriculum-experiment/v1.json",
+  "experiment_id": "architectural-curriculum-habs-v1",
+  "status": "frozen-before-implementation",
+  "frozen_at": "2026-08-28T00:00:00Z",
+  "question": "Can one automatic, cumulative drawing-to-building pipeline transfer from the accepted sd0401 seed across the other 19 buildings in the frozen HABS corpus?",
+  "selection": {
+    "path": "habs-corpus.json",
+    "sha256": "8c2d24628d4867722c9ad65c05c648cd7d9da138bacd9c196b3943ad0de977ec",
+    "buildings": 20,
+    "seed_control": "sd0401",
+    "unseen_transfer_buildings": 19
+  },
+  "automation_boundary": {
+    "mode": "hybrid-local",
+    "ocr_and_geometry_own_numeric_measurements": true,
+    "vision_may_propose_semantics_but_not_authorize_dimensions": true,
+    "manual_geometry_overrides_allowed": false,
+    "vision_endpoint_environment": "COMFY_OLLAMA",
+    "vision_endpoint_default": "http://127.0.0.1:11434",
+    "vision_model": "qwen2.5vl:7b",
+    "vision_temperature": 0,
+    "unavailable_dependency_policy": "BLOCKED_NO_FALLBACK"
+  },
+  "curriculum": {
+    "bootstrap_is_lesson_free": true,
+    "features": [
+      "log_total_footprint_area_m2",
+      "mean_elevation_height_m",
+      "floor_count"
+    ],
+    "minimum_clusters": 3,
+    "maximum_clusters": 6,
+    "cluster_selection": "maximum deterministic silhouette; ties choose smaller k",
+    "ordering": "outward Pareto shells; alternate footprint and vertical growth; LOC id tie break",
+    "unresolved_feature_policy": "last cluster",
+    "continuous_run": true,
+    "maximum_retrieved_lessons": 3,
+    "lesson_admission": "all deterministic consistency gates PASS",
+    "lesson_regression_policy": "reject lesson bundle and retain prior accepted bundle"
+  },
+  "promotion": {
+    "levels": {
+      "A0_TRIAGED": "drawing sheets and view panels classified",
+      "G1_METRIC_GRAPH": "calibrated footprint, levels, height, and roof envelope",
+      "F1_MASSING": "generic physical-scale Valheim composition",
+      "F2_WEATHER_SHELL": "opening-aware walls and explicit roof planes"
+    },
+    "minimum_independent_scale_anchors": 2,
+    "maximum_scale_anchor_spread_ratio": 0.05,
+    "maximum_cross_view_error_m": 0.25,
+    "maximum_cross_view_error_ratio": 0.03,
+    "maximum_pieces": 256,
+    "physical_scale": 1.0,
+    "silent_assumptions_allowed": false
+  },
+  "outcome_ladder": {
+    "minimum": {
+      "g1_unseen": 12,
+      "f1_unseen": 8,
+      "f2_unseen": 3,
+      "g1_building_types": 3,
+      "f2_building_types": 2
+    },
+    "strong": {
+      "g1_unseen": 16,
+      "f1_unseen": 12,
+      "f2_unseen": 6
+    },
+    "wild": {
+      "g1_unseen": 19,
+      "f1_unseen": 16,
+      "f2_unseen": 10
+    },
+    "learning": {
+      "minimum_advanced_buildings": 1,
+      "or_minimum_unresolved_reduction_ratio": 0.15,
+      "prior_gate_regressions_allowed": 0
+    }
+  },
+  "rendering": {
+    "largest_promoted_candidate_startup_ms": 1000,
+    "largest_promoted_candidate_frame_p95_ms": 33,
+    "webgpu_hardware_required": true
+  },
+  "persistence": {
+    "content_addressed_stages": true,
+    "resume_after_building": true,
+    "unchanged_rerun_must_be_zero_ocr_vision_or_source_downloads": true,
+    "catalog_capsule_must_not_duplicate_source_tiffs": true
+  },
+  "non_goals": [
+    "Human correction during the automatic run",
+    "Live Valheim placement or ZDO writes",
+    "F3 interior traversal",
+    "Factoring an unproven perception adapter into Isolate",
+    "Claiming catalog metadata as visual evidence"
+  ]
+}

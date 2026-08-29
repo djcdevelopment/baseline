@@ -1,0 +1,220 @@
+{
+  "schema": "architectural-ocr-visual-adjudication/v1",
+  "audit_revision": "017d196e9584e4c0aa98",
+  "review_image": {
+    "path": "out/architectural-curriculum/real-ocr-audit-v1/revisions/017d196e9584e4c0aa98/review-contact.png",
+    "sha256": "46399593408c1950901ea9c4071037625b2831ee493b78af3269333a8c10f9e4"
+  },
+  "method": {
+    "selection": "three deterministic SHA-ordered signals per frozen pre-sort cluster; held notation fills clusters without strict parses",
+    "inspection": "manual visual comparison of each contact-sheet crop against its normalized source sheet",
+    "reviewed_signals": 18,
+    "strict_parse_signals": 15,
+    "held_control_signals": 3
+  },
+  "summary": {
+    "strict_values_visually_correct": 13,
+    "strict_value_precision": 0.866667,
+    "strict_values_eligible_as_local_constraints": 13,
+    "held_scale_controls_correct": 3,
+    "held_scale_control_precision": 1.0,
+    "autonomous_scale_authorities": 0
+  },
+  "cluster_summary": [
+    {
+      "cluster": "C00",
+      "strict_reviewed": 3,
+      "strict_values_correct": 3,
+      "held_controls_correct": 0
+    },
+    {
+      "cluster": "C01",
+      "strict_reviewed": 3,
+      "strict_values_correct": 3,
+      "held_controls_correct": 0
+    },
+    {
+      "cluster": "C02",
+      "strict_reviewed": 0,
+      "strict_values_correct": 0,
+      "held_controls_correct": 3
+    },
+    {
+      "cluster": "C03",
+      "strict_reviewed": 3,
+      "strict_values_correct": 3,
+      "held_controls_correct": 0
+    },
+    {
+      "cluster": "C04",
+      "strict_reviewed": 3,
+      "strict_values_correct": 1,
+      "held_controls_correct": 0
+    },
+    {
+      "cluster": "C05",
+      "strict_reviewed": 3,
+      "strict_values_correct": 3,
+      "held_controls_correct": 0
+    }
+  ],
+  "samples": [
+    {
+      "ordinal": 1,
+      "cluster": "C00",
+      "building_id": "sd0412",
+      "sheet_index": 1,
+      "ocr_text": "14'-2 3/4\"",
+      "verdict": "CORRECT_LOCAL_DIMENSION"
+    },
+    {
+      "ordinal": 2,
+      "cluster": "C00",
+      "building_id": "sd0401",
+      "sheet_index": 1,
+      "ocr_text": "11'-0 1/2\"",
+      "verdict": "CORRECT_LOCAL_DIMENSION"
+    },
+    {
+      "ordinal": 3,
+      "cluster": "C00",
+      "building_id": "sd0412",
+      "sheet_index": 1,
+      "ocr_text": "14'-2 3/4\"",
+      "verdict": "CORRECT_LOCAL_DIMENSION"
+    },
+    {
+      "ordinal": 4,
+      "cluster": "C01",
+      "building_id": "tx1037",
+      "sheet_index": 4,
+      "ocr_text": "CEILING | 9'-7 1/4\"",
+      "verdict": "CORRECT_LOCAL_DIMENSION"
+    },
+    {
+      "ordinal": 5,
+      "cluster": "C01",
+      "building_id": "tx1037",
+      "sheet_index": 1,
+      "ocr_text": "6'-6\"",
+      "verdict": "CORRECT_LOCAL_DIMENSION"
+    },
+    {
+      "ordinal": 6,
+      "cluster": "C01",
+      "building_id": "tx1037",
+      "sheet_index": 1,
+      "ocr_text": "8'-2\"",
+      "verdict": "CORRECT_LOCAL_DIMENSION"
+    },
+    {
+      "ordinal": 7,
+      "cluster": "C02",
+      "building_id": "tn0305",
+      "sheet_index": 2,
+      "ocr_text": "scale label 3/8 inch = 1 foot",
+      "verdict": "CORRECTLY_HELD_SCALE_LABEL"
+    },
+    {
+      "ordinal": 8,
+      "cluster": "C02",
+      "building_id": "tn0305",
+      "sheet_index": 2,
+      "ocr_text": "scale label 3/8 inch = 1 foot",
+      "verdict": "CORRECTLY_HELD_SCALE_LABEL"
+    },
+    {
+      "ordinal": 9,
+      "cluster": "C02",
+      "building_id": "tn0305",
+      "sheet_index": 1,
+      "ocr_text": "scale label 3/8 inch = 1 foot",
+      "verdict": "CORRECTLY_HELD_SCALE_LABEL"
+    },
+    {
+      "ordinal": 10,
+      "cluster": "C03",
+      "building_id": "nj0415",
+      "sheet_index": 3,
+      "ocr_text": "8'-2\"",
+      "verdict": "CORRECT_LOCAL_DIMENSION"
+    },
+    {
+      "ordinal": 11,
+      "cluster": "C03",
+      "building_id": "nj0415",
+      "sheet_index": 3,
+      "ocr_text": "8'-4\"",
+      "verdict": "CORRECT_LOCAL_DIMENSION"
+    },
+    {
+      "ordinal": 12,
+      "cluster": "C03",
+      "building_id": "nj0415",
+      "sheet_index": 2,
+      "ocr_text": "9'-2\"",
+      "verdict": "CORRECT_LOCAL_DIMENSION"
+    },
+    {
+      "ordinal": 13,
+      "cluster": "C04",
+      "building_id": "il0180",
+      "sheet_index": 3,
+      "ocr_text": "44'-8\"",
+      "verdict": "CORRECT_LOCAL_DIMENSION"
+    },
+    {
+      "ordinal": 14,
+      "cluster": "C04",
+      "building_id": "il0180",
+      "sheet_index": 4,
+      "ocr_text": "8'",
+      "verdict": "FALSE_NUMERIC_TRANSCRIPTION",
+      "reason": "OCR split a nearby compound door dimension and promoted a partial feet-only token"
+    },
+    {
+      "ordinal": 15,
+      "cluster": "C04",
+      "building_id": "il0180",
+      "sheet_index": 2,
+      "ocr_text": "5'",
+      "verdict": "FALSE_UNIT_TRANSCRIPTION",
+      "reason": "OCR promoted an inch mark in a door detail to a foot mark"
+    },
+    {
+      "ordinal": 16,
+      "cluster": "C05",
+      "building_id": "wa0761",
+      "sheet_index": 3,
+      "ocr_text": "48'-5\" x 26'-5\"",
+      "verdict": "CORRECT_LOCAL_DIMENSION"
+    },
+    {
+      "ordinal": 17,
+      "cluster": "C05",
+      "building_id": "wa0761",
+      "sheet_index": 2,
+      "ocr_text": "48'-5\" x 12'-4\"",
+      "verdict": "CORRECT_LOCAL_DIMENSION"
+    },
+    {
+      "ordinal": 18,
+      "cluster": "C05",
+      "building_id": "wa0761",
+      "sheet_index": 2,
+      "ocr_text": "48'-5\" x 16'-0\"",
+      "verdict": "CORRECT_LOCAL_DIMENSION"
+    }
+  ],
+  "promotion": {
+    "semantic_constraint_lane": "PASS_WITH_CLUSTER_ROUTING",
+    "autonomous_scale_lane": "BLOCKED",
+    "reason": "A syntactically strict local dimension is not yet an envelope role, and C04 demonstrates that OCR confidence does not prevent unit or partial-token errors.",
+    "next_gate": "Require cross-view role agreement or redundant dimension agreement before any value can authorize width, depth, or height."
+  },
+  "limitations": [
+    "This is a deterministic stratified review, not an unbiased random sample of all 214 strict parses.",
+    "Correct local dimensions were not adjudicated as global width, depth, or height.",
+    "The pre-sort cluster features are routing controls from the fixture curriculum and are not treated as visual evidence."
+  ]
+}

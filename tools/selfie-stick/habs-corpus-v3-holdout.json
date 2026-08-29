@@ -1,0 +1,70 @@
+{
+  "schema": "loc-habs-selection/v1",
+  "description": "Frozen eight-building replacement holdout for the v3 pre-CSS registration experiment. Selected before raster download or OCR from metadata-only LOC search results, then screened by exact HTTP HEAD sizes. The deterministic order is SHA-256 of '<building_type>:<loc_id>'; the solver takes the lexicographically first feasible two per type subject to seven-state diversity, 2-6 sheets per building, at most 32 sheets, hard byte budgets, and exactly two wholly unclassified catalog-caption controls. All 28 prior development and retired-holdout IDs are excluded. mt0670 was skipped because its 829,478,514 HTTP bytes exceed the 805,306,368 per-building limit.",
+  "selection_algorithm": {
+    "order": "sha256('<building_type>:<loc_id>') ascending within type",
+    "building_types": ["cabin", "barn", "farmhouse", "house"],
+    "per_type": 2,
+    "minimum_states": 6,
+    "minimum_sheets_per_building": 2,
+    "maximum_sheets_per_building": 6,
+    "maximum_total_sheets": 32,
+    "metadata_sparse_negative_controls": 2,
+    "max_total_bytes": 2147483648,
+    "max_building_bytes": 805306368,
+    "max_sheet_bytes": 536870912,
+    "excluded_prior_buildings": 28
+  },
+  "buildings": [
+    {
+      "loc_id": "sd0400",
+      "building_type": "cabin",
+      "selection_rank_sha256": "22599c363c78cff017df09c6679aa3cc70c3e8e1cac69822e1df77d31433d766",
+      "selection_reason": "First feasible classified cabin in deterministic order."
+    },
+    {
+      "loc_id": "tx0519",
+      "building_type": "cabin",
+      "selection_rank_sha256": "39d80245e1d112b7184113b4fd6439e92410b5e06af11cc887c705d125ac8e47",
+      "metadata_sparse_negative_control": true,
+      "selection_reason": "First feasible metadata-sparse cabin; retained as a negative control."
+    },
+    {
+      "loc_id": "wy0571",
+      "building_type": "barn",
+      "selection_rank_sha256": "26dfb31a6375809bdcd804ff13f137e3c787cfbf13279e34d684c8d8b0a9515e",
+      "selection_reason": "First feasible barn after the byte-budget rejection of mt0670."
+    },
+    {
+      "loc_id": "ma0678",
+      "building_type": "barn",
+      "selection_rank_sha256": "2d5639912a35b2db584b9210306e72af6d58e147c66ded8858bba38d9077a52d",
+      "metadata_sparse_negative_control": true,
+      "selection_reason": "Next feasible metadata-sparse barn; retained as a negative control."
+    },
+    {
+      "loc_id": "al1160",
+      "building_type": "farmhouse",
+      "selection_rank_sha256": "01d1548ac3be05061cbe3c2231a7e280891a64fef18a97a0ac95d44fa1e340c2",
+      "selection_reason": "First feasible classified farmhouse in deterministic order."
+    },
+    {
+      "loc_id": "tx1080",
+      "building_type": "farmhouse",
+      "selection_rank_sha256": "5c211b1564ab33cd73065a05f4eb9f8d3f10bc4e89c45fd7fee69eb3a4f56332",
+      "selection_reason": "First subsequent classified farmhouse after sparse candidates were skipped to preserve exactly two negative controls."
+    },
+    {
+      "loc_id": "md0159",
+      "building_type": "house",
+      "selection_rank_sha256": "04e078b5f5691c0604636c9b2c5e54577f747fe94ecd4c8ed64ee4cc7f2089b6",
+      "selection_reason": "First feasible classified house in deterministic order."
+    },
+    {
+      "loc_id": "dc1206",
+      "building_type": "house",
+      "selection_rank_sha256": "4f59c0a8131f4c080f979d9146167eb921d6c6cda8618c0d68ec54128270aa52",
+      "selection_reason": "First subsequent classified house after sparse candidates were skipped to preserve exactly two negative controls."
+    }
+  ]
+}

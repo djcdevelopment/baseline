@@ -832,3 +832,904 @@ self-occlusion is still not modelled. The live export is a second snapshot, not 
 feed — AM4 rewrites that world on every capture, so it was already stale when it was read.
 Whether drift matters on *other* sight lines is untested; all that is shown is that it does
 not matter on these eight.
+
+## R&D lap — exact pivots are not the physical framing envelope (2026-08-27)
+
+**Edge found:** exact per-ZDO `x/y/z` fixed height and camera-axis depth, but a pivot is
+still only one point inside a prefab. Expanding the same frozen members through the
+snap-verified/mesh-derived prefab extents and the already-PASSed `deg_unity` rotations
+materially changes the frame.
+
+`probe_oriented_framing.py` replayed the completed exact-XYZ coverage series: **240
+frames / 48 frozen clusters / 31,087 BUILDING ZDOs**. Every point joined the independent
+rotation export by `zdo_index`; prefab and x/y/z mismatches were zero, duplicate ids were
+zero, and replacing every box with a zero-sized point reproduced `plan_shots.py` within
+0.0000005 m. Player-planted vegetation was excluded from the architectural envelope by
+the existing `sight.looks_like_vegetation()` vocabulary. `family_median` geometry was
+reported but excluded from the decisive lane.
+
+The material gate passed both ways:
+
+| observation | result |
+|---|---:|
+| actual captured poses with a trusted oriented corner outside the frustum | **138 / 240 frames, 35 / 48 clusters** |
+| point-to-box distance increase at least 2 m **and** 5% | **101 frames, 29 clusters** |
+| largest required-distance increase | **23.690 m / 50.240%** |
+| limiting geometry among the 138 clipped projections | 95 snap+mesh, 26 snap, 17 mesh |
+
+This is not just the algebraic fact that a box is larger than its centre. In the
+cluster 1906 orbit-3 overlay, the oriented hull follows the photographed platform and
+crosses the bottom edge: pivot framing asks for 49.221 m and the box envelope asks for
+54.427 m. Cluster 2343 is the vertical stress case: its black-marble tower is visibly
+cut at the bottom, while the 8×2×8 snap-plus-mesh floor envelope moves the request from
+23.709 m to 35.376 m. Cluster 713 is the clean control at 102.133 m versus 102.421 m.
+
+The ignored output is `out/era17/framing-envelope-probe/result.json`, with three 4K
+projection overlays. A six-row paired handoff is ready at
+`out/era17/framing-envelope-probe/framing-envelope-rd1.tsv`: point and box variants for
+2343 (vertical), 1906 (depth), and 713 (control). Its positional TSV contract re-parsed
+6/6 rows, and every decimetre-rounded box pose retains the intended 1/1.15 frame margin.
+It is for the other AM4 photo/gallery agent; this lap did not fire it or rebuild the
+gallery.
+
+**No promotion.** `plan_shots.py` still uses `zdo_xyz`. Oriented boxes have earned the
+paired photographic probe, not production authority.
+
+Exact rerun:
+
+```powershell
+Set-Location C:\work\baseline\tools\selfie-stick
+C:\work\venvs\steward-arch\Scripts\python.exe .\probe_oriented_framing.py `
+  --plan .\out\era17\coverage-xyz-4k-smoke.json `
+  --plan .\out\era17\coverage-xyz-4k-remainder.json `
+  --run-id 20260827-161109 --run-id 20260827-162027 `
+  --clusters .\out\era17\clusters.json `
+  --cluster-points E:\omen\steward-era17-arch\cluster-zdos.parquet `
+  --building-geometry E:\omen\steward-era17-arch\building-geometry.parquet `
+  --piece-geometry .\out\era17\arch\piece-geometry.json `
+  --rotation-verify .\out\era17\arch\rotation-verify.json `
+  --control-cluster 713 `
+  --out .\out\era17\framing-envelope-probe
+```
+
+Uncertainty list: oriented boxes are massing proxies, not render meshes, and can include
+buried or occluded volume that a photograph need not show. Mesh-only non-vegetation
+bounds remain approximate even though family medians are excluded. These 48 clusters
+were selected for creator coverage rather than randomly. Runtime recovery changed some
+poses; actual-lens projection measures the landed result but does not isolate the move.
+The probe measures geometric retention, not facade legibility, foliage, exposure, haze,
+or taste. Only the paired AM4 photographs can say whether the extra distance improves
+the picture rather than merely satisfying the envelope.
+
+## R&D lap — world-save bytes can render as literal CSS 3-D (2026-08-27)
+
+**Edge found:** exact ZDO geometry is enough to make a recognizable browser-native
+building without SVG, canvas, WebGL, Three.js, or a network request. It is not enough to
+make the complete building interactive at one six-face DOM box per piece.
+
+`probe_css_render.py` joined all **861 / 861** frozen cluster-1820 members to the
+independent rotation export by `zdo_index`, with zero prefab or x/y/z mismatches. The
+already-PASSed `deg_unity` rotation receipt and prefab center offsets/extents produced 14
+physical components; the main structure contains **847 pieces**. Its self-contained HTML
+uses 847 positioned `.piece` groups, **5,082 CSS faces**, CSS perspective and
+`matrix3d()`. Absolute world coordinates are subtracted before serialization. Six planar
+prefabs needed a declared 1 cm render-only thickness so their zero-sized axis could paint.
+
+The ignored artifact at `out/era17/css-render/pilot-1820/index.html` opens directly from
+disk. Drag orbit, wheel zoom, family filters, wireframe/solid modes, and the 78.8° / 258.8°
+end presets all work. The three captured views preserve the hip roof, tower, storey mass,
+openings, and the different end approaches strongly enough to identify the same structure
+against the GLB massing and roof-end photographs. The translucent family-coloured solid is
+more legible than the minimum wireframe claim.
+
+The same page found the browser edge rather than a data edge. In headless Edge 151 on this
+workstation, the complete scene reached first paint in **176.5 ms** and contained **6,036
+DOM nodes**, but a 120-frame synthetic orbit measured **311.3 ms p50 / 381.6 ms p95 / 405.3
+ms max**. The lap's interactive gate was 50 ms p95, so it failed at the pilot and correctly
+did not run the cluster-182 stress ladder. The frozen stress membership is 22,393 ZDOs
+(22,205 with known geometry), not the older padded-bbox GLB manifest's 25,837 pieces.
+
+**No promotion.** Literal CSS 3-D has earned use as a small, static or lightly interactive
+evidence rendering. A scalable building viewer still needs a different projection or a
+piece/face aggregation lap.
+
+Exact rerun:
+
+```powershell
+Set-Location C:\work\baseline\tools\selfie-stick
+C:\work\venvs\steward-arch\Scripts\python.exe .\probe_css_render.py
+```
+
+Uncertainty list: headless Edge can use a different compositor path from a visible,
+hardware-accelerated window, so the timing edge is specifically the reproducible headless
+lane. The CSS presets preserve geometry but are not pixel-registered to the game cameras.
+Oriented boxes remain massing proxies rather than render meshes, and translucent faces do
+not model terrain, hidden-surface removal, materials, lighting, or occlusion. The 1 cm
+thickness for planar pieces is a display accommodation. Cluster 182 has 188 frozen members
+without known prefab geometry, and no stress tier was sampled because the complete pilot
+had already crossed the declared edge.
+
+## R&D lap — WebGPU removes the DOM ceiling; membership is the next edge (2026-08-27)
+
+**Clean scale sample:** no GPU edge was reached. `probe_webgpu_render.py` replaced every
+CSS face with one shared unit cube and an 80-byte per-ZDO instance record. The same
+cluster-local position, `deg_unity` rotation, prefab center offset, extents and family
+colour now pass through WGSL into an opaque depth-tested triangle pipeline or a separate
+line-list wireframe pipeline. There is no WebGL fallback, framework, GLB expansion, or
+absolute world origin in the generated scene.
+
+The 847-piece cluster-1820 control preserved the hip roof, tower, storeys, openings and
+different end approaches seen in the CSS and photographic controls. Its 67,760-byte
+instance buffer, 10,164 triangles and 13 family draw ranges started in **282.4 ms** and
+held a 300-frame orbit at **16.8 ms p95**, with **0.4 ms p95** JavaScript submission.
+
+That unlocked the only scale sample: every cluster-182 member with known prefab geometry.
+The join covered **22,393 / 22,393** frozen ZDOs with zero prefab or x/y/z mismatches;
+22,205 have geometry and 188 unknown hashes remain omitted. The result is **22,205 GPU
+instances / 266,460 triangles / 1,776,400 bytes**. In a 1600×1000 headless Edge window
+(1274×903 GPU canvas), it started in **294.7 ms** and held **16.9 ms p95**, with **0.3 ms
+p95** submission, zero validation errors and no device loss. The browser granted a real
+Intel `xe-lpg` adapter under the high-performance preference. Performance was flat against
+the pilot within the measurement's resolution.
+
+The ignored artifacts live under `out/era17/webgpu-render/`: two local-server scenes,
+five captures and `result.json`. The stress wireframe makes the full stepped complex and
+domes legible. Its opaque view also found the next edge without being asked: full frozen
+membership contains 15 vegetation-like instances. `Oak1` contributes a
+30.576×25.523×35.856 m mesh/LOD box and `AshlandsTree6_big` a 19.179×17.703×19.211 m box;
+the oak visibly masks the centre of the solid architectural view. This is the same
+vegetation-bounds problem the framing lap already identified, now exposed as scene
+semantics rather than camera math or GPU capacity. It was recorded, not filtered.
+
+**No promotion.** Instanced WebGPU has cleared the sampled rendering scale and earned a
+later viewer slice. This probe does not alter the GLB viewer or claim that unfiltered
+cluster membership is an architectural scene graph.
+
+Exact rerun:
+
+```powershell
+Set-Location C:\work\baseline\tools\selfie-stick
+C:\work\venvs\steward-arch\Scripts\python.exe .\probe_webgpu_render.py
+```
+
+Uncertainty list: `requestAdapter({powerPreference: "high-performance"})` is a hint and
+did not prove one of the two Arc Pro B70 devices was selected; the exposed adapter was
+Intel `xe-lpg`. Frame intervals include browser presentation and CPU submission rather
+than timestamp-query GPU duration, although the granted adapter reports timestamp-query
+support. The render target is the 1274×903 canvas inside the declared 1600×1000 window.
+Only one pilot and one full cluster were sampled. Oriented boxes remain massing proxies;
+opaque solids and one-pixel lines do not test transparency, terrain, textures, picking,
+culling, mesh fidelity or a visible-window compositor. The 188 missing prefab geometries
+and vegetation/LOD bounds are input omissions, not GPU failures.
+
+## R&D lap — one numeric spatial revision reaches the live boundary (2026-08-27)
+
+**Edge found before the live sample:** one reviewed 12-piece Godbuild now has a bounded
+path from a hardware WebGPU preview and numeric Unity-world X/Y/Z/yaw controls to Quest
+Lab's fixed request mailbox. The Lab side compiles the same transform into piece positions
+and rotations. The browser surface, artifact pins, mailbox contract, and mod build passed;
+the currently running Creator Session prevented the only live apply, so this is not a
+claim that placement has landed in Valheim.
+
+`probe_live_spatial_revision.py` is deliberately one asset rather than a catalog. It
+hash-verifies the plan, manifest, blueprint, and capture; stages only the byte-identical
+reviewed pair; renders the shelter through the existing 80-byte WebGPU instance path; and
+exposes X, Y/height, Z, and yaw. Apply reuses `blueprint_build` with the narrow
+`build_mode: at` shape. The request is machine/world/Creator-Session pinned, refuses a
+busy mailbox, and waits for a receipt whose schema, request id, operation, machine, world,
+session, and echoed transform all agree. Clear reuses the existing marked-build removal.
+
+The exact-placement implementation treats the requested XYZ as the blueprint's local
+bounds-minimum corner. It subtracts the captured bounds minimum, rotates each local
+position by the requested whole-building yaw, and left-composes that yaw with every
+authored piece quaternion. It never samples terrain or silently changes Y. Ordinary
+ground and sky builds keep their prior behavior. Placement fields are rejected on every
+other operation and are bounded to finite world coordinates within +/-10,500 m and yaw
+within +/-3,600 degrees. Malformed build-at requests still receive a rejection receipt;
+their invalid values are not re-parsed while writing it.
+
+The prepared control is `first-portal-progression-shelter`: 12/12 pieces, blueprint SHA-256
+`1c2e71857cfbf6ea08eb23b6e58256c484467a1dc22fa7e92f064ee19fcdc881`, capture SHA-256
+`d9f8c8f49f15917aa3d96369e5d4c04829fa32d6c6c6327a4d8a714b4bf46798`. Headless Edge
+151 granted an Intel hardware adapter and visibly submitted the 144-triangle scene with
+all four live controls at `out/live-spatial-revision/browser-edge.png`. The Lab Release
+build completed with zero warnings and zero errors; its DLL SHA-256 is
+`3befe196d945cd348fc057cf93180c9a2ad70e8f81ea206662cde8376bad2408`.
+
+**BLOCKED before sample; no request was sent.** Creator Session
+`era17-pilgrimage-20260827-r13` owns the running `ComfyEra17` process and has the prior Lab
+DLL SHA-256 `4a19455e213549d4f137d4decda632e26a581aba4a9c7be751c0de9762804377`
+loaded and pinned. Loading the new code requires a clean Creator Session preparation and
+Valheim restart. Replacing the DLL or stopping the process here would have crossed into the
+concurrent saga++ agent's active play/build lap. The live mailbox was left empty and the
+world was not mutated.
+
+Exact rerun after the next Creator Session has prepared, installed the new Lab DLL, and
+entered `ComfyEra17`:
+
+```powershell
+Set-Location C:\work\baseline
+$creator = Get-Content 'C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\config\comfy-quest-creator\session.json' -Raw | ConvertFrom-Json
+$built = (Get-FileHash 'C:\work\comfy-quest\network\mod\ComfyQuestLab\bin\Release\ComfyQuestLab.dll' -Algorithm SHA256).Hash
+$installed = (Get-FileHash 'C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\plugins\ComfyQuestLab.dll' -Algorithm SHA256).Hash
+if ($creator.state -ne 'active' -or $built -ne $installed) { throw 'Prepare and enter a new Creator Session with the spatial Lab DLL first.' }
+python .\tools\selfie-stick\probe_live_spatial_revision.py `
+  --plan C:\work\comfy-quest\examples\worldbuild\first-portal-progression-shelter\plan.json `
+  --manifest C:\work\comfy-quest\examples\worldbuild\first-portal-progression-shelter\manifest.json `
+  --blueprint C:\work\comfy-quest\examples\worldbuild\first-portal-progression-shelter\first-portal-progression-shelter.blueprint `
+  --capture C:\work\comfy-quest\examples\worldbuild\first-portal-progression-shelter\first-portal-progression-shelter.capture.json `
+  --lab-root 'C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\config\comfy-quest-lab' `
+  --expected-machine $creator.expected_machine --expected-world-uid $creator.world_uid `
+  --creator-session-id $creator.session_id --x -4539.03 --y 35.65 --z 747.481934 --yaw 37
+# In the opened page, inspect the control and press Apply in Valheim exactly once.
+```
+
+The candidate transform is 29.5 m from the captured character logout point. In the frozen
+world extract its nearest non-terrain ZDO is 13.36 m away, while nearby authored objects
+sit at Y 35.64-35.69 m; this is preflight evidence, not a terrain guarantee.
+
+**No promotion.** Exact transform composition has earned one live receipt, not a catalog,
+palette, generalized placement contract, or Creator OS integration.
+
+Uncertainty list: no new-DLL live placement or receipt exists yet. The selected ground
+height is inferred from the frozen save rather than sampled from live terrain. Bounds-min
+is deterministic but may not be the eventual semantic pivot creators want. The WebGPU
+objects are prefab massing proxies rather than meshes. Yaw composition compiled but has
+not been visually checked in-game. Chrome 151's headless screenshot lane hung while
+requesting an adapter; the same page rendered on hardware in headless Edge 151, and the
+earlier visible prototype remained fast. The current world may drift before the safe
+Creator Session boundary.
+
+## R&D lap — oriented save geometry becomes an architectural SVG (2026-08-28)
+
+**Edge crossed:** oriented prefab envelopes are sufficient for a useful vector
+architectural survey sheet. The old Godbuild `preview.svg` was a top-down pivot scatter;
+it discarded the height, depth, physical extent and rotation that distinguish a building.
+`probe_architecture_svg.py` instead projected the already-verified oriented boxes into one
+self-contained four-view plate without Valheim, meshes, canvas, WebGL, JavaScript, images,
+external fonts or a network request.
+
+The input freeze held exactly: **861 / 861** cluster-1820 members joined the independent
+rotation export with zero prefab or x/y/z mismatches, all 861 had geometry, and the largest
+of 14 connected components remained the known **847-piece** building. The source AABB was
+39.2021 × 25.2314 × 33.5280 m. Its disagreement with the independent WebGPU control after
+that control's two-decimal serialization was only 0.002121 / 0.001384 / 0.002006 m.
+
+The resulting `out/era17/architecture-svg/cluster-1820/survey.svg` contains an
+axonometric, a ridge-aligned roof plan, and bearing-labelled 78.8° / 258.8° elevations.
+Each projected face retains stable `data-zdo`, `data-prefab`, and `data-family` attributes.
+Opaque faces are back-face culled and globally depth-sorted; a projected polygon union
+adds the strong exterior line without pretending to be exact CAD hidden-line removal.
+Dimension strings report the proxy envelopes, while the title block pins the rotation
+decode, geometry sources and abbreviated evidence hashes. Absolute world coordinates are
+withheld.
+
+Both gates passed:
+
+| gate | result |
+|---|---:|
+| main component | **847 pieces** |
+| SVG structure | **7,584 elements / 1,698,993 bytes / valid XML** |
+| headless Edge 151 paint | **1,062.41 ms / 223,982-byte PNG** |
+| axonometric | tower, stacked storeys, external stair and stepped roof retained |
+| roof plan | ridge-aligned envelope and asymmetric appendages retained |
+| 78.8° control | continuous sloping thatched hip; no wall triangle |
+| 258.8° control | stone gable triangle with repeated window rows |
+
+The paired elevations are the decisive observation. They reproduce the differential that
+the AM4 photographs independently confirmed: the 78.8° end and 258.8° end cannot be
+mistaken for the same architecture. Simple painter ordering did not cross its edge on this
+building; no hidden-line follow-up was needed.
+
+The ignored evidence bundle is `out/era17/architecture-svg/cluster-1820/`: `survey.svg`,
+its `survey.png` browser capture, and `result.json` with full input hashes, projection
+spans, face counts, gate results, visual adjudication and exact rerun command.
+
+**No promotion.** One passed 847-piece plate earns a later replayable-shelter/catalog lap.
+It does not establish automatic bearing inference, floor-plan semantics, an asset schema,
+a catalog generator, Creator OS integration or CAD fidelity.
+
+Exact rerun:
+
+```powershell
+Set-Location C:\work\baseline\tools\selfie-stick
+C:\work\venvs\steward-arch\Scripts\python.exe .\probe_architecture_svg.py `
+  --visual-verdict PASS `
+  --visual-observation 'Axonometric preserves the tower, stacked storeys, external stair, and stepped roof mass.' `
+  --visual-observation 'Roof plan exposes the ridge-aligned stepped envelope and asymmetric side appendages.' `
+  --visual-observation 'The 78.8-degree elevation reads as a continuous sloping thatched hip without a wall triangle.' `
+  --visual-observation 'The 258.8-degree elevation reads as a stone gable triangle with repeated window rows and cannot be mistaken for the 78.8-degree end.'
+```
+
+Uncertainty list: oriented boxes remain massing proxies rather than mesh surfaces, so
+curves, carved profiles and material boundaries are simplified. Global face-depth sorting
+is not exact hidden-surface removal for intersecting boxes even though no decisive error
+appeared here. The roof plan is a top projection, not a semantic horizontal cut through a
+floor. Dimensions describe the proxy envelope rather than snap-grid construction lengths.
+Photographic controls include perspective, terrain, vegetation, lighting and materials
+that the plate intentionally omits. One unusually well-evidenced building says nothing yet
+about diagram legibility across small shelters, compounds, towers or vegetation-heavy
+clusters.
+
+## R&D lap — public measured drawings become a reproducible local corpus (2026-08-28)
+
+**Edge crossed:** the Library of Congress HABS collection can be queried, filtered,
+resolved to sheet-level master resources, and normalized into a byte-verifiable local
+architectural corpus without authentication or hand-downloading. This lap stops at
+acquisition. It does not infer drawing geometry, build a semantic graph, choose Valheim
+pieces, or write ZDOs.
+
+`habs_harvester.py` exposes three bounded operations: `search` filters the combined
+HABS/HAER/HALS collection by program, building type, state/location facet, explicit
+building/structure dates from item notes, and keyword; `harvest` resolves frozen or queried item IDs to drawing sheets and
+their complete TIFF/JPEG/JSON-caption variant lists; `verify` rehashes every local file
+and rejects missing, altered, escaping, or stale undeclared paths. The frozen
+`habs-corpus.json` selection prevents collection growth or search-order drift from
+silently changing the proof corpus.
+
+The accepted corpus is **20 buildings / 69 measured sheets / 127,676,740 bytes** under
+`out/loc-habs/corpus/`. Each control-number directory contains normalized
+`metadata.json`, a sheet/variant `manifest.json`, and master TIFFs named by evidence-backed
+role where metadata permits. The metadata retains the complete LOC item object alongside
+control/call/survey identifiers, all source and resource URLs, contributors, locations,
+subjects, documentation and construction dates, notes, media descriptions, repository,
+and unshortened rights fields. Download records add API size, HTTP validators, actual
+bytes, SHA-256, and decoded dimensions.
+
+The second acquisition was the determinism gate: **69 cached / 0 downloaded**, and the
+sentinel `tn0306/drawings/section-01.tif` modification time remained byte-for-byte
+unchanged. `verify --expected-buildings 20` passed 20 buildings, 69 files, 127,676,740
+bytes, all hashes and all locally decoded dimensions. Visual spot checks independently
+confirmed readable dimensions and the declared plan/section/elevation roles on Alfred's
+Cabin, a plan/section on the Dyer barn, and plans/sections/elevations on the Banta barn.
+The older Bertolet-Herbein API titles expose only
+sheet ordinals, but its masters visibly resolve to a title sheet, site sheet, and
+dimensioned first/second-floor plans; those files remain `drawing-NN` because visual
+knowledge was not silently promoted into the remote metadata classifier.
+
+The acquisition itself found the useful edge cases. A collection result's
+`photo, print, drawing` format is not evidence that measured drawings exist; a drawing
+resource is. Search resources carry integer file counts while item resources expand to
+nested sheet/variant lists. Search `medium` can be absent when item detail says
+`Measured Drawing(s): N`. A sheet may simultaneously be a plan and section. Old captions
+may say only `sheet N of M`. Master TIFF dimensions are often zero in JSON while JPEG
+dimensions are populated. Documentation dates and building dates are different fields.
+Some resource group URLs are absent even when direct sheet URLs exist. LOC also
+occasionally closed JSON responses early, and several item records advertised small
+master sizes while serving valid 130+ MiB TIFFs. The harvester retries incomplete
+responses, trusts HTTP length plus decoded-file integrity for acquisition, and preserves
+rather than erases API disagreements.
+
+Rights are carried, not summarized into a license claim. The common LOC advisory says
+U.S. Government images have no known restrictions but copied-source images may be
+restricted, and that distinction survives in every building directory.
+
+Exact rerun:
+
+```powershell
+Set-Location C:\work\baseline\tools\selfie-stick
+python .\habs_harvester.py harvest
+python .\habs_harvester.py verify --expected-buildings 20
+```
+
+**No promotion.** A trustworthy source corpus earns a later single-sheet interpretation
+probe. It does not yet earn OCR, vectorization, scale inference, a building graph, a
+catalog, prefab mapping, Creator OS integration, or architectural import.
+
+Uncertainty list: only a visual subset of the 69 sheets was adjudicated. Forty-one legacy
+sheets remain deliberately role-unclassified because LOC supplies no descriptive title.
+LOC search facets are derived from inconsistent catalog values; construction-date
+filtering therefore excludes records without explicit building/structure-date notes rather
+than guessing from documentation dates. HEAD validators plus local hashes avoid
+unchanged downloads but cannot promise LOC will never replace bytes without changing
+Content-Length or Last-Modified. The 20 records favor small forms but are a curated R&D
+sample, not a statistically representative account of HABS holdings.
+
+## R&D lap — one measured building reaches a portable Valheim candidate (2026-08-28)
+
+**Partial success at the frozen safe boundary.** `probe_architectural_roundtrip.py` took
+HABS `sd0401` through a content-addressed evidence bundle, three-anchor calibration,
+provenance-bearing metric building graph, fidelity router, three browser comparisons,
+90-piece Godbuild candidate, hardware WebGPU preview, deterministic Build Capsule, and
+read-only Creator OS preflight. CSS is a projection and measuring instrument; the graph
+remains authority.
+
+The run asked for F3 inhabitable and correctly received only F1 massing. The sheets carry
+enough evidence for a weather shell and much of an inhabitable plan, but the compiler does
+not yet resolve secondary roof junctions, opening-aware wall segmentation, or dimensioned
+interior partitions. Those omissions are named in `route.json`; none is silently filled.
+Physical scale remains 1.000. Exterior wall pivots are inset by their 0.4274 m thickness so
+their outer faces land on the measured footprint. The largest declared major residual is
+0.057 m and the plan overlay makes residuals visible.
+
+Revision `c2e64ee9cd262dd1a660` registered three independent plan anchors with 1.03%
+spread, inside the frozen 2% gate. All graph checks passed. The candidate contains 38
+`wood_floor`, 34 `woodwall`, 16 `wood_roof`, and 2 `wood_roof_45` pieces. Its blueprint
+SHA-256 is `76457ef67e0b03a09e430a52c0c04cc9e36080bc93f757c06443694da22c4005`;
+the capture SHA-256 is
+`4db4d6748d29070c81309634621d80cad034fc3b786afbfc865947a4b4d27899`.
+An isolated Quest Lab fixture hash-verified and staged that exact pair.
+
+Headless Edge 151 used an Intel hardware adapter for the 90-instance / 1,080-triangle
+WebGPU view with no validation errors, 282.2 ms startup, and 17.0 ms p95 across 30 frames.
+The view deliberately shows oriented prefab envelopes rather than claiming mesh fidelity.
+
+The deterministic 128,649-byte capsule has SHA-256
+`bc94c70a3b68784f840f0b47b74f3e972492a2be4a58778cd206c47f2737a218`.
+Inline base64url and a local HTTP URL independently resolved to those exact bytes and all
+19 internal members passed their hashes. A `gdoc:<document-id>` text-export bridge is
+implemented but remains UNVERIFIED because no shared document was supplied. The package
+contains no absolute paths.
+
+Persistence was exercised rather than asserted: the process stopped after calibration,
+resumed with acquire/inventory/calibrate cached, then completed; a following full run
+reused all eight immutable stages with zero network downloads. Source, building-local,
+and Valheim-world coordinates remain separate.
+
+**BLOCKED safely before live build.** The Creator Session is closed, Valheim is not
+running, the built and installed Lab DLL hashes differ, and world anchor/yaw is unresolved.
+No mailbox request was written and no world was mutated. Consequently there is no live
+piece receipt, ZDO diff, save extraction, or round-trip CSS claim.
+
+The next earned edge is F2: opening-aware wall bays plus the vestibule and mechanical-wing
+roof junctions on this same frozen specimen. The full artifact map, resolver commands, and
+coordinate contract are in `ARCHITECTURAL-ROUNDTRIP.md`.
+
+## R&D lap — the frozen specimen earns an F2 weather shell (2026-08-28)
+
+**Success at the frozen non-live boundary.** `probe_architectural_roundtrip_f2.py`
+inherited accepted v0 revision `c2e64ee9cd262dd1a660` without reacquiring or changing its
+evidence, calibration, or parent graph. The F2 charter required opening-aware exterior
+wall bays, explicit main/vestibule/mechanical roof planes, a closed-shell error budget,
+physical scale 1.000, no more than 256 pieces, deterministic restart/transport, and an
+isolated Creator contract pass.
+
+Revision `3d7189c1c6641f19f873` passed all 14 gates and was promoted to
+`F2_WEATHER_SHELL`. Eighteen of 19 source openings compile (94.7% recall): 3 doors and 15
+windows. Opening-center error and wall intrusion are both 0.000 m; the largest remaining
+solid-wall gap is 0.010 m. All target-module adaptations are published. The one omission,
+the vestibule east door, remains explicit because its target swing envelope exceeds the
+1.378 m host wall.
+
+Six actual roof planes replace every flat placeholder: paired 26.565-degree main slopes,
+a paired 45-degree vestibule gable, and a paired inferred 26.565-degree mechanical-wing
+gable. Plan coverage is 100%, both attachment junctions overlap with zero computed gap,
+the main ridge error is 0.026 m, vestibule eave error is 0.083 m, maximum secondary
+overhang is 0.588 m, and maximum declared weather seam is 0.045 m. The mechanical-wing
+pitch remains marked as target inference rather than measured certainty.
+
+The resulting candidate is **250 pieces / 256 allowed**. Edge 151 submitted all 250
+prefab-envelope instances (3,000 triangles) to an Intel hardware WebGPU adapter with no
+validation errors, 332.2 ms startup, and 17.7 ms frame p95 over 30 samples. The visual
+gate caught and removed a stale F1 label before acceptance.
+
+The isolated Quest Lab fixture accepted and hash-preserved the exact 250-piece pair. The
+deterministic 143,248-byte Build Capsule contains 25 members and has SHA-256
+`0630fcdec4e99c05fa38c42aacdd98d8a9c2dab40affbf8ca97240d4f83fa034`.
+Inline base64url and local HTTP transports resolved byte-identically; a separate CLI
+resolver/extraction test verified every member and the inherited revision receipt.
+
+Persistence was exercised at the new compiler boundary: execution stopped after
+`openings`, resumed with `inherit` and `openings` cached, then completed. The next run
+cached every immutable stage; only the mutable Creator preflight was re-observed.
+
+**BLOCKED safely before live build.** Creator Session is inactive, Valheim is not running,
+the installed/built Lab DLL hashes differ, and world anchor/yaw remains unresolved. No
+mailbox request was sent and no world was mutated. F3 now requires dimensioned interior
+partitions and a room/traversal graph. A live build, save extraction, and XYZ/quaternion
+round-trip are still a separate safe-session experiment, not implied by F2 promotion.
+
+## R&D lap — twenty buildings become an automatic transfer curriculum (2026-08-28)
+
+**Experiment machinery passed; architectural inference did not run.** The frozen question
+is whether the accepted `sd0401` approach can transfer automatically to the other 19 HABS
+buildings and improve as accepted examples accumulate. The charter fixes a hybrid-local
+boundary: OCR and deterministic geometry own numbers, a digest-pinned local Qwen VLM may
+propose semantics, unsupported facts remain unresolved, and no manual geometry overrides
+are allowed.
+
+`probe_architectural_curriculum.py` now executes that question as a continuous curriculum.
+It first creates a lesson-free baseline for every record, clusters the 20 on log footprint
+area, mean elevation height, and floor count, chooses 3–6 clusters by deterministic
+silhouette, then walks outward Pareto shells while alternating footprint and vertical
+growth. The fixture produced six clusters: small single-storey cabins first, then larger
+cabins/houses/farmhouses, and finally 93–175 m² two-storey barns. `sd0401` remains the
+explicit seed control even though the independent curriculum order begins with the smaller
+`pa0119`.
+
+Every later assessment retains both candidates. The control is lesson-free; the cumulative
+candidate retrieves at most three nearest mechanically accepted examples. A candidate
+that loses any previously passing deterministic gate is rejected and the baseline is
+retained. Advancement is a higher A0/G1/F1/F2 level or fewer unresolved assertions.
+Cluster checkpoints form a SHA-256 lesson chain. This makes “learning” falsifiable rather
+than a synonym for processing records in order.
+
+Fixture revision `3cfb9c3c83dad69af3df` exercised all 20 baselines and all 20 cumulative
+builds. It produced 20 normalized evidence sets, assessments, metric graphs, generic
+piece plans, three CSS views per building, WebGPU scene packages, six cumulative lesson
+packs, 20 deterministic building capsules, a catalog capsule, and a linked curriculum
+dashboard. The self-contained catalog is 36,497,944 bytes with SHA-256
+`27f897fa9d249b8f0b899926cbed7af1b9e5929e9cf667b39a9c348ffe7230b9`; source TIFFs are
+excluded, normalized PNG evidence is included, and hashes plus LOC URLs retain the master
+provenance.
+
+The fixture deliberately reports `SIMULATION_NOT_EVIDENCE`. Its synthetic proposals route
+all 19 unseen records to F2 across four building types, but that count proves only routing
+coverage. Baseline and cumulative candidates are intentionally equivalent: **0 advanced,
+0 regressions, learning NOT_DEMONSTRATED**. No fixture number is admitted as architectural
+evidence.
+
+Persistence crossed its gate. A following unchanged run validated and reused all **40 / 40**
+stage receipts with **0 OCR calls / 0 VLM calls / 0 downloads**. Verification passed all 20
+assessment/control contracts, output hashes, regression fallbacks, six lesson-chain links,
+20 capsule manifests, the catalog contract, and the no-TIFF duplication rule.
+
+The rendering gate did not pass in the current environment. The largest fixture candidate,
+`wa0761` at 199 generic pieces, received `requestAdapter returned null` from headless Edge
+on all three isolated attempts. The browser still captured a PNG, but the receipt correctly
+marks hardware/status/startup/frame gates failed rather than interpreting capture as GPU
+execution. This is a mapped environment edge; earlier accepted single-building receipts
+remain historical evidence, not permission to overwrite this run's failure.
+
+The pinned real environment is otherwise ready. Pillow 12.3.0, NumPy 2.5.0, OpenCV
+4.13.0.92, ONNX Runtime 1.29.0, RapidOCR 3.9.2, and scikit-learn 1.9.0 match the lock. Three
+RapidOCR model files are SHA-256 pinned, all 69 source TIFF hashes pass, and an independent
+OCR smoke on `sd0401` returned 99 tokens. Real revision `1434e942ff9eee95fa6e` then
+**blocked before perception** because `qwen2.5vl:7b` was not available at the managed local
+endpoint. No fixture fallback, alternate model, request, Valheim contact, or world mutation
+occurred; verification of the blocked revision passed.
+
+**No architectural promotion.** The infrastructure can now tell us whether transfer and
+learning work, but it has not yet observed them. The next earned edges are to make the
+already selected pinned VLM available without replacing the managed service, rerun the
+real 20-building curriculum, and restore a headless hardware adapter for the largest-scene
+gate. Blind visual adjudication comes only after those automatic gates produce real
+candidates.
+
+Exact fixture rerun:
+
+```powershell
+Set-Location C:\work\baseline
+python tools\selfie-stick\probe_architectural_curriculum.py run `
+  --fixture-vision `
+  --out tools\selfie-stick\out\architectural-curriculum\habs-v1-fixture
+python tools\selfie-stick\probe_architectural_curriculum.py verify `
+  --fixture-vision `
+  --out tools\selfie-stick\out\architectural-curriculum\habs-v1-fixture
+```
+
+The full workflow, outcome ladder, artifact map, and real commands are in
+[`ARCHITECTURAL-CURRICULUM.md`](ARCHITECTURAL-CURRICULUM.md).
+
+## R&D lap — the clustered real OCR lane holds water, with a named leak (2026-08-28)
+
+**The real numeric lane passed as constraint evidence, not scale authority.** With the
+pinned VLM still unavailable, `probe_habs_ocr_audit.py` ran the narrower frozen charter
+over every one of the 69 HABS sheets using the pinned RapidOCR and OpenCV stack only.
+There were no VLM calls, network requests, catalog-title numeric substitutions, Valheim
+contacts, or world writes.
+
+Final revision `017d196e9584e4c0aa98` produced 4,834 real OCR tokens, 214 strict local
+dimension candidates, 227 held dimension-like strings, and 213 nearest-line CV candidates.
+All 69 sheets cleared the ten-token gate, 37/69 carried strict dimensions, 67/69 carried
+OCR role signals, and median token confidence was 0.9875. All six gates frozen before the
+run pass, yielding `USABLE_TO_CONSTRAIN_SEMANTICS · NOT_AUTONOMOUS_SCALE_AUTHORITY`.
+
+The pre-sort was an experimental control, not decoration. The deterministic 18-signal
+board sampled three signals from each of its six routing strata. Manual comparison against
+the normalized sheets found 13/15 strict values correct and all 3/3 scale-label controls
+correctly held. C00, C01, C03, and C05 were 3/3; C02 had no strict parse and correctly held
+all three controls; C04 was only 1/3. Its misses were a compound door dimension split into
+a plausible feet-only value and an inch mark promoted to feet. A single OCR-confidence
+threshold would miss both. Cluster-specific redundancy is therefore earned for the next
+scale experiment.
+
+The visual loop caught and corrected five classes of parser defect before the result was
+frozen: metric scale/reference false positives, lumber-size false positives, ordinal
+suffixes, a scale fragment joined to an author credit, and greedy multi-token windows that
+turned local evidence into half-sheet boxes. The final join rule permits split notation
+only when the dimension begins in the first token. That change made the selected evidence
+regions local without reacquiring a single sheet.
+
+Persistence held through the iterations. Each parser revision reused all 69 immutable OCR
+artifacts and made zero OCR calls while recomputing derived facts and CV candidates. The
+final unchanged run caches all 69 stages. The visual adjudication, exact sample hash, per-
+cluster verdicts, and limitations are in
+[`architectural-ocr-review-v1.json`](architectural-ocr-review-v1.json).
+
+**No scale promotion.** A correct local measurement is not yet an envelope role. Width,
+depth, and height still require cross-view role agreement or redundant dimension agreement;
+C04 must take the stricter route. That is the next earned gate.
+
+## R&D lap — automatic HABS envelope fit reaches the vertical edge (2026-08-28)
+
+**Edge found: calibration is no longer the first missing connector; primary-mass and
+vertical semantic selection are.** `probe_architectural_css_fit.py` consumed the frozen
+69-sheet OCR/CV revision and swept all 20 buildings without OCR, VLM, network, download,
+Creator OS, Valheim, or world activity. It automatically found 168 role-panel candidates,
+bound 165 dimension candidates, calibrated panels from complete drawing-scale notation plus
+the source TIFF's 400 DPI, fitted a shared metric envelope, and reserved a section or second
+elevation before scoring.
+
+The dimension-line merger crossed the first mechanical break: ticks and printed values had
+split overall dimensions into short Hough segments. After merging only close collinear
+fragments, `tx1037` obtained three mutually compatible primary-plan anchors (1:48 plus
+46'-11" and 48'-10") and fitted a 14.8844 m by 9.840949 m plan envelope. `ak0535` independently
+reached the same pre-holdout state. Those two are `G1_UNVALIDATED`, not promotions.
+
+The held-out views stopped both. `tx1037` predicted ridge/eave at 3.922/2.054 m; its unseen
+section measured 3.163/2.358 m from calibrated linework, and its held ceiling dimension was
+2.927 m. Errors were 0.30–0.87 m, beyond both 0.25 m and 3%. `ak0535` missed its section by
+2.69–3.53 m. The post-seal `sd0401` oracle recovered width exactly at 15.928975 m but selected
+10.6426 m of compound/adjacent linework as depth instead of the 4.333875 m primary body, then
+misread eave/ridge ordering and roof class. Result: **0 validated G1, 2 G1-unvalidated,
+14 A0-triaged, 4 held; `INSUFFICIENT_AUTOMATIC_EVIDENCE`.** This is a useful negative result,
+not a converter claim.
+
+### Can't answer why
+
+| UTC phase | Visible symptom | Evidence preserved | Why still unknown | Bounded next investigation |
+|---|---|---|---|---|
+| 2026-08-28 held-out scoring | Calibrated plan width holds while depth, eave, ridge, and sometimes roof class drift | 20 assessments, 168 panel crops, automatic pre-oracle seal, accepted-oracle comparison, per-gate residuals, CSS catalog | OCR-erased connected components can still join appendages, dimension lines, grade, poche, or adjacent views; the current evidence cannot attribute each error to outline selection versus baseline/eave semantics | On `sd0401`, `tx1037`, and `ak0535` only, compare candidate structural-line families and explicit dimension-chain topology before changing any corpus gate |
+
+Exact rerun:
+
+```powershell
+Set-Location C:\work\baseline
+$python = '.\tools\selfie-stick\out\architectural-curriculum\runtime-venv\Scripts\python.exe'
+& $python .\tools\selfie-stick\probe_architectural_css_fit.py run
+& $python .\tools\selfie-stick\probe_architectural_css_fit.py verify
+& $python .\tools\selfie-stick\probe_architectural_css_fit.py serve --port 8878
+```
+
+Uncertainty list: automatic title seeds over-segment some sheets; connected linework is not
+yet a primary-mass selector; scale notation and DPI calibrate pixels but do not label which
+outline owns them; the CSS shape score is similarity-aligned and non-authoritative; floor
+count may be an explicit inference from one observed plan level; appendages, openings,
+interiors, and complex roofs were not fitted; no browser performance claim, prefab routing,
+Creator OS exchange, Valheim placement, or ZDO generation was sampled. The unchanged rerun
+cached all 20 buildings with zero evidence reads and zero fit, OCR, VLM, network, download,
+or world work; verification passed.
+
+## R&D lap — three-building topology probe separates the attribution (2026-08-28)
+
+**Edge found: the three visible misses are no longer one undifferentiated connected-component
+problem. They are ownership errors at three different joins: panel/view partitioning,
+dimension-chain ownership, and vertical datum semantics.**
+`probe_architectural_css_topology.py` was kept to the prescribed `sd0401`, `tx1037`, and
+`ak0535` slice. It reused the sealed `3899e363a8b63658dc8a` assessments and frozen real OCR,
+clustered the actual Hough line families, rendered 39 diagnostic overlays, grouped explicit
+dimension chains, and linked dimension intervals to nearby mass/datum labels. It made zero
+new OCR, VLM, network, download, Creator OS, Valheim, or world calls.
+
+The candidate evidence was sealed before the accepted `sd0401` graph was opened for this lap.
+After that reveal, three independently surviving candidates matched the accepted primary
+graph exactly: **15.928975 m width, 4.333875 m depth, and 3.302 m ridge**, each with 0 m
+residual. The useful change is not another tuned threshold; it is knowing which connector
+owned each prior failure:
+
+| Building | Current wrong ownership | Topology evidence | Attribution |
+|---|---|---|---|
+| `sd0401` | The held “section” geometry and the north elevation were allowed to share linework; the plan used the 34'-11" compound depth | Cross-role crop overlap is **0.719356** of the smaller panel; the plan chain retains the exact **14'-2 5/8"** main-body band; width/depth/ridge all pass the post-seal oracle | **Panel partition + primary-mass selection** |
+| `tx1037` | `CEILING | 9'-7 1/4"` was converted into an `eave_height_m` held-out check | Strict absolute `ROOF EDGE` values survive at 1.6764, 2.2352, and 2.26695 m; a damaged but unambiguous ridge token yields a probe-only 3.18135 m candidate; ceiling and eave are explicitly different datums | **Ceiling/eave semantic conflation**; the reported 0.873 m eave failure is invalid |
+| `ak0535` | The floor-plan fit adopted the basement overall **35'-11"** as width and the held section used the basement-bearing component as its vertical envelope | Floor-plan topology labels **LOG CABIN 20'-8" × 16'-5"** and the **ADDITION** separately; floor/basement panel overlap is **0.566**; section C retains distinct ridge, ceiling, first-floor, and basement stacks | **Panel ownership + labeled submass loss + wrong baseline family** |
+
+Result: **`ATTRIBUTION_SEPARATED`**, immutable revision
+`cf5c847a7f5232d38c0c`, 49 hashed artifacts, verification `PASS`. The structural overlays are
+not a new geometry authority; they make the line-family competition inspectable. Repaired
+near-miss dimensions are explicitly marked `REPAIRED_PROBE_ONLY` and did not alter the frozen
+strict parser or any promotion gate.
+
+Exact rerun:
+
+```powershell
+Set-Location C:\work\baseline
+$python = '.\tools\selfie-stick\out\architectural-curriculum\runtime-venv\Scripts\python.exe'
+& $python .\tools\selfie-stick\probe_architectural_css_topology.py run
+& $python .\tools\selfie-stick\probe_architectural_css_topology.py verify
+```
+
+**Next boundary:** only after Derek locks this result, revise panel partitioning,
+dimension-chain ownership, and the baseline/eave/ridge vocabulary. Do not tune the 20-building
+promotion thresholds from these three examples, and do not promote any graph from this
+diagnostic lap.
+
+## R&D lap - v3 automatic cross-sheet registration stops at correspondence (2026-08-28)
+
+**Result: acquisition risk is now bounded and plan/vertical metric spans can compose, but
+the frozen automatic correspondence gate does not survive OCR across different sheets.**
+
+The replacement holdout was frozen before raster download: eight buildings, 29 sheets,
+seven states, four building types, and two metadata-sparse controls. The new HEAD-only plan
+uses actual HTTP sizes rather than unreliable LOC API sizes. It rejected `mt0670` at
+829,478,514 bytes against the 805,306,368 building limit, then froze a passing 123,099,962-byte
+plan. Exact-plan harvesting and full SHA-256/image verification passed. Local OCR revision
+`315ba9abcf599f639fa7` passed all six evidence gates and cached all 29 sheets with zero OCR
+calls on rerun.
+
+The unchanged v2 diagnostic baseline over the original 20 plus retired eight is revision
+`7331f32e25b034d03d70`. V3 revision `5333d5eaed593d7607e4` emits 127 frame hypotheses and
+preserves all 165 cross-sheet candidates. Registration requires independent plan and vertical
+calibration, different sheets, one exact shared section marker, one compatible metric span,
+one matching floor/grade origin, and one cut-line axis. Exactly one candidate must pass; there
+are no weights, proximity tie-breaks, manual hints, or equal-scale assumptions. A distinct
+calibrated vertical view is reserved before candidate construction and CSS remains read-only.
+
+All v2 regression and retained-capability checks pass: exact `sd0401` dimensions, typed
+`tx1037` ceilings, separate `ak0535` masses, 8 selected primary masses, 6 scale consensuses,
+7 calibrated roof pairs, and both negative controls held. The scientific gate fails only at
+validated G1 (0 actual, 2 required). `tn0304` and `tn0305` each pass five of seven registration
+gates and have cross-sheet metric-span errors of 0.129833 m and 0.247305 m respectively, but
+neither cross-sheet elevation has an exact section marker or matching origin. Their marked
+sections are on the same sheet as the plan and cannot be admitted without violating the frozen
+gate.
+
+Development is unsealed, artifact verification reports `PASS / BLOCKED_AT_DEVELOPMENT_GATE`,
+and no replacement building was processed by the fitter. The cached v3 rerun executes zero
+evidence, topology, or CSS work. The next bounded experiment is upstream plan cut-line recovery:
+detect section bubbles and their cut axis geometrically, anchor them to OCR labels, and test on
+the current 28 without looking at replacement-fit results.
+
+## R&D lap — pre-CSS topology passes development and fails blind transfer (2026-08-28)
+
+**Result: deterministic ownership fixes the three diagnosed joins, but does not yet transfer
+to the untouched 17-building split.** The locked follow-up is
+`probe_architectural_css_fit_v1.py`, with frozen charter
+`architectural-css-fit-v1.json` and contracts
+`architectural-css-fit-schemas-v1.json`. It preserves the 69-sheet OCR revision, v0 promotion
+tolerances, and no-manual/no-VLM/no-network boundary. It changes the dataflow instead:
+
+```text
+OCR/CV evidence
+  -> disjoint view interiors
+  -> owned dimension chains and mass hypotheses
+  -> typed vertical datum graph
+  -> architectural-building-graph/v1
+  -> read-only architectural-css-residual/v1
+```
+
+CSS performs no panel discovery, dimension binding, mass selection, datum repair, or corrected
+geometry. Its residual artifact pins the input graph hash, emits metric and shape errors with
+one of `panel_ownership`, `dimension_chain`, `mass_ambiguity`, `datum_semantics`, or
+`cross_view_geometry`, and keeps `corrected_geometry: null`.
+
+The three-building development evidence was sealed before the accepted `sd0401` values were
+scored. All seven checks passed:
+
+| Development check | Result |
+|---|---|
+| `sd0401` primary dimensions | **15.928975 × 4.333875 m**, exact post-seal match |
+| `sd0401` typed ridge | **3.302 m**, exact post-seal match |
+| Cross-role view overlap | **0** |
+| `tx1037` ceiling vocabulary | both surviving ceiling nodes remain `ceiling`; neither is scored as eave |
+| `ak0535` mass ownership | LOG CABIN and ADDITION remain distinct |
+| `ak0535` primary width | **6.2992 m**, not the basement's 10.9474 m |
+
+That froze revision `da9fb53b6e49c3718ea3`. The remaining 17 were then exposed once. None
+reached `G1_METRIC_GRAPH`: 13 routed `A0_TRIAGED` and four routed `HELD`; `tn0305` and
+`il0180` correctly remained unpromoted. The scientific answer is therefore
+**`INSUFFICIENT_AUTOMATIC_EVIDENCE`**, not `TRANSFER_OBSERVED`.
+
+The blind gate distribution identifies the next upstream edge without authorizing a same-run
+repair:
+
+| Failed gate across 17 blind buildings | Count |
+|---|---:|
+| independent scale anchors / spread | 17 |
+| numeric and plausible primary envelope | 17 |
+| typed eave and ridge | 16 |
+| selected closed primary mass with two-axis dimensions | 14 |
+| opposed-slope gable topology | 5 |
+| independent held-out view | 3 |
+
+The first causal failures are not CSS residual tuning. They are scale-notation ownership into
+the selected plan, sparse two-axis mass closure, and missing paired eave/ridge datums. The
+aggregate sealed evidence contains 168 disjoint views, 319 observed dimension candidates,
+150 chains, 57 mass hypotheses, 98 typed datums, and 32 cross-view registrations. Six damaged
+facts earned `TOPOLOGY_CORROBORATED`; none became a sole scale anchor. The manifest covers 294
+files (14,713,373 bytes), and verification passes all 20 building artifact sets.
+
+Exact cached rerun:
+
+```powershell
+Set-Location C:\work\baseline
+$python = '.\tools\selfie-stick\out\architectural-curriculum\runtime-venv\Scripts\python.exe'
+& $python .\tools\selfie-stick\probe_architectural_css_fit_v1.py blind
+& $python .\tools\selfie-stick\probe_architectural_css_fit_v1.py verify
+```
+
+Expected receipt: revision `da9fb53b6e49c3718ea3`, 17 cached, zero executed/evidence/topology/
+CSS work, result `INSUFFICIENT_AUTOMATIC_EVIDENCE`, verification `PASS`. No OCR, VLM,
+network, download, Creator OS, Valheim, ZDO, or world activity occurred.
+
+The first post-blind rerun exposed one persistence-only defect: the completed runner tried to
+write different executed/cached counters into immutable `index.json` after all 17 receipts had
+already validated. No evidence, topology, CSS, or route changed. The source now short-circuits
+a completed blind seal, validates every receipt, and writes mutable cache counters only to the
+root report. The locked scientific revision and its automatic seals were not rewritten; a
+fresh reproduction therefore uses a fresh output root and obtains a new content address.
+
+**Next boundary:** do not tune v1 from its revealed 17. They are diagnostic evidence for a
+new charter, not a reusable blind set. The next experiment should freeze a fresh holdout and
+focus upstream on transferring complete scale notation to a disjoint plan owner, closing a
+two-axis primary mass without label-specific exceptions, and requiring paired typed eave/ridge
+evidence before CSS. Do not admit learned topology patterns or reintroduce the VLM until a new
+deterministic transfer gate passes.
+
+## R&D lap — v2 causal repairs improve upstream evidence but fail to compose (2026-08-28)
+
+**Result: the individual pre-CSS connectors improved substantially, but no building in the
+revealed v1 failure cohort yet carries all of them through CSS at once. The fresh eight-building
+fitter holdout was therefore not exposed.**
+
+The successor experiment is frozen in `architectural-css-fit-v2.json` and implemented by
+`probe_architectural_css_fit_v2.py`. It uses all 20 original buildings as development data,
+including the now-revealed 17, and reserves a new eight-building LOC set as blind. The new
+selection was made from metadata only, excludes every v1 ID, spans seven states and four
+building types, and contains 27 drawing sheets. LOC's API advertised 25,859,916 master bytes;
+the integrity-checked TIFF downloads actually total 726,848,012 bytes, a 28.1× underestimate
+that must be treated as an acquisition-planning hazard.
+
+The holdout OCR/CV lane ran locally before fitter development and was then pinned at revision
+`b1743fa5580583635f51`. It completed all 27 sheets with 1,109 tokens, 47 strict dimensions,
+76 held near-misses, 47 CV anchor candidates, 0.991 median token confidence, no VLM calls, and
+no network activity during OCR. This is frozen input production, not fitter blind exposure;
+none of its sheets, tokens, or routes were used to tune v2.
+
+V2 moves four causal repairs ahead of CSS:
+
+1. Dimension axes prefer an owned nearby cardinal line and retain token-shape orientation only
+   as a held fallback.
+2. Scale anchors are independently derived from complete notation, strict dimension-line spans,
+   or compatible x/z spans on one closed primary loop; cloned values do not count as distinct
+   origins.
+3. A missing mass axis may use a repaired OCR number only when that number is line-owned,
+   orthogonal to a strict axis, plausible, and corroborated by the same closed plan loop. It is
+   explicitly reported as topology-corroborated and can never anchor scale.
+4. Geometric ridge/eave datums are created as one opposed-slope pair. Their numeric calibration
+   must come from evidence independent of the roof topology. CSS receives the completed graph,
+   hashes it, enumerates only its two sealed principal projections, performs zero discovery, and
+   leaves `corrected_geometry: null`.
+
+The final development revision is `2c3595654934efe9a5ad`. All original regression controls
+still pass: `sd0401` remains exactly 15.928975 × 4.333875 m with a 3.302 m ridge and zero view
+overlap; `tx1037` ceiling nodes remain ceiling; and `ak0535` preserves LOG CABIN/ADDITION while
+selecting 6.2992 m instead of the basement width. Both development negative controls remain
+unpromoted.
+
+| Frozen v1 failure cohort metric (17 buildings) | v1 | v2 | Development requirement |
+|---|---:|---:|---:|
+| selected closed two-axis primary mass | 3 | **8** | 8 |
+| compatible independent scale consensus | 0 | **6** | 4 |
+| calibrated paired roof datums | 1 | **7** | 4 |
+| validated G1 | 0 | **0** | 2 |
+
+Across all 20 development buildings, `tx1037` now reaches `G1_METRIC_GRAPH`, `ak0535` reaches
+`G1_UNVALIDATED`, 14 route A0, and four remain held. Those two improved routes are known
+regression controls, however, so they cannot satisfy the frozen failure-cohort transfer check.
+Development acceptance is `FAIL`, no `DEVELOPMENT_LOCK.json` exists, and the eight-building
+fit phase has **zero exposure**. Artifact integrity verification independently reports `PASS`
+and `BLOCKED_AT_DEVELOPMENT_GATE` across 20 building receipts, 291 manifest files, and
+15,434,863 bytes.
+
+The important negative result is compositional. The development graphs contain 168 views,
+319 dimension bindings, 156 chains, 57 mass hypotheses, 245 datums, 49 roof pairs, and 21
+selected scale anchors. Mass ownership, scale consensus, and roof calibration now survive in
+isolation, but often on different sheets or different buildings. No deterministic cross-sheet
+registration currently proves that a plan mass and a vertical roof pair use the same building
+frame. CSS is correctly refusing those partial graphs.
+
+Exact cached diagnosis and verification:
+
+```powershell
+Set-Location C:\work\baseline
+$python = '.\tools\selfie-stick\out\architectural-curriculum\runtime-venv\Scripts\python.exe'
+& $python .\tools\selfie-stick\probe_architectural_css_fit_v2.py develop
+& $python .\tools\selfie-stick\probe_architectural_css_fit_v2.py verify
+```
+
+The development command exits nonzero because the scientific gate remains unmet; verification
+still passes artifact integrity and confirms zero blind exposure. Do not run `blind`, lower the
+two-G1 requirement, or inspect the fresh set to tune v2. The next earned R&D question is whether
+explicit cross-sheet frame registration can join an already-owned plan mass to an already-
+calibrated vertical roof pair without inventing geometry.

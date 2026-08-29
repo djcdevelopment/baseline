@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://creator-os.local/schemas/architectural-constraint-envelope-contracts/v0.json",
+  "title": "Bounded relational architectural-envelope contracts",
+  "$defs": {
+    "observation": {
+      "type": "object",
+      "required": ["id", "semantic", "value", "confidence", "derivation", "source_views", "source_observations"],
+      "additionalProperties": true
+    },
+    "reconciliation": {
+      "type": "object",
+      "required": ["id", "target", "before", "after", "delta", "bound", "reason"],
+      "additionalProperties": true
+    },
+    "constraintModel": {
+      "type": "object",
+      "required": ["schema", "fixture_id", "observations", "view_frames", "constraints", "hypotheses", "authority"],
+      "properties": {
+        "schema": {"const": "architectural-constraint-model/v0"}
+      },
+      "additionalProperties": true
+    },
+    "solvedGraph": {
+      "type": "object",
+      "required": ["schema", "building_id", "status", "dimensions", "footprints", "roofs", "features", "reconciliations", "game_adaptations"],
+      "properties": {
+        "schema": {"const": "architectural-solved-envelope/v0"}
+      },
+      "additionalProperties": true
+    },
+    "receipt": {
+      "type": "object",
+      "required": ["schema", "fixture_id", "status", "gates", "contradictions", "reconciliations", "artifacts", "authority"],
+      "properties": {
+        "schema": {"const": "architectural-interpretation-receipt/v0"}
+      },
+      "additionalProperties": true
+    }
+  }
+}

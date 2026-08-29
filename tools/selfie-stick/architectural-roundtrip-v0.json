@@ -1,0 +1,115 @@
+{
+  "$schema": "https://creator-os.local/schemas/architectural-roundtrip-experiment/v0.json",
+  "experiment_id": "architectural-roundtrip-v0-sd0401",
+  "status": "frozen-before-source-inspection",
+  "frozen_at": "2026-08-28T00:00:00Z",
+  "question": "Can one measured HABS building travel through evidence, a metric building graph, a routed Valheim composition, Creator OS placement, ZDO extraction, and CSS comparison without losing provenance or silently inventing detail?",
+  "subject": {
+    "loc_id": "sd0401",
+    "label": "Cedar Pass Lodge, Cabins 1 & 2",
+    "selection_basis": "Small two-sheet dwelling with metadata-advertised plan, elevations, section, dimensions, and opening details.",
+    "requested_fidelity": "F3_INHABITABLE"
+  },
+  "non_goals": [
+    "General-purpose drawing recognition",
+    "Automatic CAD-to-Valheim conversion",
+    "Photorealistic rendering",
+    "Inventing occluded or undocumented construction",
+    "Replacing or restarting an owned Creator Session"
+  ],
+  "coordinate_frames": {
+    "source_geo": "WGS84 longitude/latitude when LOC supplies it; never treated as build-local position.",
+    "sheet": "Pixels with origin at each source image's top-left, +x right, +y down.",
+    "building_local": "Metres, right-handed: +x east/right on plan, +y up, +z north/up on plan; origin at observed footprint minimum x/z on finished-floor elevation.",
+    "valheim_world": "Metres in a named world UID: local XYZ rotated about +y by yaw_degrees then translated by world_anchor_xyz.",
+    "css_validation": "A projection of the graph or composition; never the authoritative geometry store."
+  },
+  "fidelity_levels": {
+    "F0_FOOTPRINT": "Calibrated footprint only.",
+    "F1_MASSING": "Footprint, wall height, and roof envelope.",
+    "F2_WEATHER_SHELL": "Massing plus observed exterior openings and weather shell.",
+    "F3_INHABITABLE": "Traversable shell, floors, doors, and supported interior partitions.",
+    "F4_DETAIL": "Observed trim, fixtures, and detail-level fabric."
+  },
+  "routing_policy": {
+    "rule": "approved fidelity is the minimum supported by evidence, calibrated scale, semantic coverage, target vocabulary, and piece budget",
+    "unknowns": "Every missing fact remains unresolved or becomes an explicitly attributed authored decision; it is never silently filled.",
+    "requested_piece_budget": 256
+  },
+  "success_gates": {
+    "provenance": {
+      "source_hash_coverage": 1.0,
+      "source_url_coverage": 1.0,
+      "rights_coverage": 1.0
+    },
+    "calibration": {
+      "minimum_independent_scale_anchors": 2,
+      "maximum_anchor_disagreement_ratio": 0.02
+    },
+    "registration": {
+      "maximum_building_span_error_ratio": 0.02,
+      "maximum_explicit_dimension_error_m": 0.10
+    },
+    "graph": {
+      "required_assertion_statuses": [
+        "observed",
+        "inferred",
+        "authored",
+        "unresolved"
+      ],
+      "provenance_required_for_non_authored_assertions": true,
+      "checks": [
+        "closed-footprint",
+        "nonnegative-dimensions",
+        "openings-contained-by-host",
+        "roof-covers-footprint",
+        "cross-view-dimension-agreement"
+      ]
+    },
+    "router": {
+      "must_not_exceed_evidence": true,
+      "must_publish_omissions": true
+    },
+    "prefab_composition": {
+      "maximum_major_dimension_error_m": 0.25,
+      "maximum_major_dimension_error_ratio": 0.03
+    },
+    "live_build": {
+      "exact_declared_piece_count": true,
+      "position_tolerance_m": 0.01,
+      "rotation_tolerance_degrees": 0.1,
+      "maximum_undeclared_zdo_changes": 0
+    },
+    "portability": {
+      "absolute_paths_allowed": false,
+      "required_resolvers": [
+        "inline-base64url",
+        "http-url"
+      ],
+      "identical_resolved_sha256": true
+    },
+    "persistence": {
+      "kill_and_resume_after_stage": "calibrate",
+      "unchanged_stage_hashes_required": true,
+      "redownloads_allowed_on_resume": 0
+    }
+  },
+  "stage_order": [
+    "acquire",
+    "inventory",
+    "calibrate",
+    "graph",
+    "route",
+    "compose",
+    "validate-css",
+    "package",
+    "creator-preflight",
+    "live-build",
+    "roundtrip-extract"
+  ],
+  "live_safety": {
+    "policy": "Stop at creator-preflight unless the target machine, world, session, installed contract hash, and ownership are all explicitly compatible.",
+    "may_restart_valheim": false,
+    "may_replace_active_session": false
+  }
+}

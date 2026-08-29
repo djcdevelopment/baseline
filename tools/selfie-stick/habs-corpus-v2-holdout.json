@@ -1,0 +1,46 @@
+{
+  "schema": "loc-habs-selection/v1",
+  "description": "Frozen eight-building external holdout for the second pre-CSS architecture experiment. Selected by metadata only before any drawing raster was downloaded or OCR was run; 27 master sheets total, approximately 24.7 MiB according to LOC API byte metadata, spanning seven states and four building types.",
+  "buildings": [
+    {
+      "loc_id": "tn0168",
+      "building_type": "cabin",
+      "selection_reason": "Two-sheet Appalachian cabin survey; compact regional transfer case."
+    },
+    {
+      "loc_id": "tx0577",
+      "building_type": "cabin",
+      "selection_reason": "Four-sheet Texas log-cabin survey; tests a larger cabin record without reusing the v1 corpus."
+    },
+    {
+      "loc_id": "md2171",
+      "building_type": "cabin",
+      "selection_reason": "Two-sheet bunk-cabin survey; tests a non-domestic cabin program."
+    },
+    {
+      "loc_id": "mo0330",
+      "building_type": "barn",
+      "selection_reason": "Six-sheet Missouri barn survey; tests an agricultural envelope with a small master-byte footprint."
+    },
+    {
+      "loc_id": "mt0702",
+      "building_type": "barn",
+      "selection_reason": "Four-sheet Montana gambrel dairy barn; tests roof-topology transfer beyond simple cabin gables."
+    },
+    {
+      "loc_id": "pa0137",
+      "building_type": "farmhouse",
+      "selection_reason": "Two-sheet Pennsylvania farmhouse survey; compact eastern farmhouse transfer case."
+    },
+    {
+      "loc_id": "tx1238",
+      "building_type": "farmhouse",
+      "selection_reason": "Two-sheet Texas tenant-farmhouse survey; compact southern farmhouse transfer case."
+    },
+    {
+      "loc_id": "va0044",
+      "building_type": "house",
+      "selection_reason": "Five-sheet Virginia detached-house survey; tests a small urban house without row-house aggregation."
+    }
+  ]
+}

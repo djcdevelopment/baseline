@@ -1,0 +1,8 @@
+# Dedicated local curriculum environment. Runtime versions and file hashes are also
+# captured in every experiment revision; do not install these into Valheim tooling envs.
+Pillow==12.3.0
+numpy==2.5.0
+opencv-python==4.13.0.92
+onnxruntime==1.29.0
+rapidocr==3.9.2
+scikit-learn==1.9.0

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://creator-os.local/schemas/architectural-css-fit-contracts/v3.json",
+  "title": "Automatic frame, cross-sheet registration, and held-out CSS contracts",
+  "$defs": {
+    "candidateStatus": {
+      "enum": ["CANDIDATE", "REGISTERED", "HELD_AMBIGUOUS", "REJECTED"]
+    },
+    "frameHypothesis": {
+      "type": "object",
+      "required": ["id", "view_id", "kind", "axes", "origin", "scale_status", "authority"],
+      "additionalProperties": true
+    },
+    "registrationCandidate": {
+      "type": "object",
+      "required": ["id", "plan_view_id", "vertical_view_id", "status", "gates", "registration_weight"],
+      "properties": {
+        "status": {"$ref": "#/$defs/candidateStatus"},
+        "registration_weight": {"const": null}
+      },
+      "additionalProperties": true
+    },
+    "evidenceGraph": {
+      "type": "object",
+      "required": ["schema", "building_id", "frame_hypotheses", "registration_candidates", "registration", "holdout", "authority"],
+      "properties": {
+        "schema": {"const": "architectural-evidence-graph/v3"}
+      },
+      "additionalProperties": true
+    },
+    "cssResidual": {
+      "type": "object",
+      "required": ["schema", "building_id", "graph_sha256", "status", "corrected_geometry", "discovery_operations", "registration_discovery_operations"],
+      "properties": {
+        "schema": {"const": "architectural-css-residual/v3"},
+        "corrected_geometry": {"type": "null"},
+        "discovery_operations": {"const": 0},
+        "registration_discovery_operations": {"const": 0}
+      },
+      "additionalProperties": true
+    }
+  }
+}

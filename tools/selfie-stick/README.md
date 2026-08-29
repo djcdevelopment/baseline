@@ -6,6 +6,28 @@ subjects, and emit a shot list you can fly.
 For the story of how this was built and what the data turned out to be hiding,
 read [`TUTORIAL.md`](TUTORIAL.md).
 
+For the reproducible 20-building Library of Congress HABS measured-drawing corpus,
+read [`HABS-HARVESTER.md`](HABS-HARVESTER.md). That probe stops at acquisition and
+normalization; it does not convert drawings into Valheim pieces or ZDOs.
+
+For the measured-drawing → metric graph → routed Valheim candidate → portable Build
+Capsule experiments, read
+[`ARCHITECTURAL-ROUNDTRIP.md`](ARCHITECTURAL-ROUNDTRIP.md). The v0 slice establishes F1
+massing; its earned follow-on compiles opening-aware wall bays and explicit appendage roofs
+into an F2 weather shell. Both stop before live ZDO creation when the Creator Session
+boundary is unsafe or unresolved.
+
+For the automatic 20-building transfer curriculum—lesson-free controls, size/height
+clustering, cumulative lesson packs, generic compilation, GPU previews, deterministic
+capsules, and explicit success gates—read
+[`ARCHITECTURAL-CURRICULUM.md`](ARCHITECTURAL-CURRICULUM.md). Its fixture dashboard proves
+the machinery only; the real experiment fails closed when its pinned local vision model is
+not available. The independent real OCR/CV audit does run without that model: its frozen
+question is in [`architectural-ocr-audit-v1.json`](architectural-ocr-audit-v1.json), and
+the deterministic 18-signal, per-cluster visual adjudication is in
+[`architectural-ocr-review-v1.json`](architectural-ocr-review-v1.json). It admits local
+dimensions as semantic constraints while explicitly denying autonomous scale authority.
+
 For the 2026-08-27 clean-motion capture receipt, including the accepted artifact,
 rejected variants, and the raw-slicer defect, read
 [`MOTION-RESULTS-2026-08-27.md`](MOTION-RESULTS-2026-08-27.md).
@@ -306,6 +328,161 @@ shoots, and quits. Nobody touches the keyboard.
 The automated path exists because a human pays for *moving* and a machine does
 not. Twenty-three frames of one viewpoint was the right trade for a person; six
 viewpoints is the right trade for a machine.
+
+## Automatic HABS CSS envelope-fit probe
+
+`probe_architectural_css_fit.py` connects the frozen real-OCR audit to an automatic
+primary-envelope candidate and a CSS evidence viewer. It reads all 20 HABS buildings,
+finds labelled plan/elevation/section panels, combines complete printed scale notation
+with TIFF scan DPI, binds explicit dimensions to merged dimension lines, reserves an
+independent section/elevation, and publishes every promotion failure instead of completing
+the building by assumption.
+
+```powershell
+Set-Location C:\work\baseline
+$python = '.\tools\selfie-stick\out\architectural-curriculum\runtime-venv\Scripts\python.exe'
+& $python .\tools\selfie-stick\probe_architectural_css_fit.py run
+& $python .\tools\selfie-stick\probe_architectural_css_fit.py verify
+& $python .\tools\selfie-stick\probe_architectural_css_fit.py serve --port 8878
+```
+
+Revision `3899e363a8b63658dc8a` routed all 20 buildings and emitted 168 automatic
+panels with 165 bound dimension candidates. `tx1037` and `ak0535` reached
+`G1_UNVALIDATED`; neither predicted its held-out section within the frozen tolerances.
+No building reached validated G1, and the hidden `sd0401` oracle failed after recovering
+its 15.929 m width exactly. That negative result is the point of the lap: sheet calibration
+and plan fitting are connected, while primary-mass selection and vertical roof/eave
+semantics are now the bounded next gap. CSS is a projection and residual instrument;
+`building.graph.json` remains the candidate metric authority.
+
+### Three-building topology diagnostic
+
+`probe_architectural_css_topology.py` inspects that bounded gap without changing the
+20-building fitter. It is pinned to `sd0401`, `tx1037`, and `ak0535`; overlays candidate
+structural line families, measures cross-role panel overlap, groups explicit dimension
+chains, and compares mass/datum ownership. The `sd0401` candidates are sealed before its
+accepted graph is loaded.
+
+```powershell
+Set-Location C:\work\baseline
+$python = '.\tools\selfie-stick\out\architectural-curriculum\runtime-venv\Scripts\python.exe'
+& $python .\tools\selfie-stick\probe_architectural_css_topology.py run
+& $python .\tools\selfie-stick\probe_architectural_css_topology.py verify
+```
+
+Revision `cf5c847a7f5232d38c0c` reports `ATTRIBUTION_SEPARATED` and verifies 49 hashed
+artifacts. It confirms three different failures: `sd0401` panel/primary-mass ownership,
+`tx1037` ceiling-versus-eave semantics, and `ak0535` floor/basement plus labeled-submass
+ownership. This is diagnostic evidence only—no promotion gates or automatic corpus behavior
+changed.
+
+### Pre-CSS topology transfer v1
+
+`probe_architectural_css_fit_v1.py` implements the locked follow-up without changing v0.
+It emits `architectural-evidence-graph/v1` before the metric graph: view interiors are
+disjoint, dimensions belong to explicit chains, plan masses remain separate, and vertical
+labels become typed datums. The CSS stage accepts only the sealed evidence and metric graphs,
+emits `architectural-css-residual/v1`, reports upstream attribution, and always leaves
+`corrected_geometry` null.
+
+The three-building development split must pass before it can be sealed; only then can the
+remaining 17 buildings be exposed once.
+
+```powershell
+Set-Location C:\work\baseline
+$python = '.\tools\selfie-stick\out\architectural-curriculum\runtime-venv\Scripts\python.exe'
+$repro = '.\tools\selfie-stick\out\architectural-css-fit-v1-repro'
+
+# The recorded default output is already sealed; reproduce only into a fresh output root.
+& $python .\tools\selfie-stick\probe_architectural_css_fit_v1.py develop --seal --out $repro
+& $python .\tools\selfie-stick\probe_architectural_css_fit_v1.py blind --out $repro
+& $python .\tools\selfie-stick\probe_architectural_css_fit_v1.py verify --out $repro
+& $python .\tools\selfie-stick\probe_architectural_css_fit_v1.py serve --port 8879 --out $repro
+```
+
+Revision `da9fb53b6e49c3718ea3` passed all seven development checks: `sd0401` recovered
+15.928975 × 4.333875 m and a 3.302 m ridge with zero cross-role view overlap; `tx1037`
+kept ceiling separate from eave; and `ak0535` kept LOG CABIN and ADDITION separate without
+adopting the basement width. The sealed blind result was **0 validated G1, 13 A0-triaged,
+4 held; `INSUFFICIENT_AUTOMATIC_EVIDENCE`**. Both negative controls remained unpromoted.
+This v1 result must not be tuned: the blind set showed that complete scale notation rarely
+survives ownership into the selected primary plan, 14 buildings still lack a selectable
+two-axis primary mass, and 16 lack both typed eave and ridge evidence. A new experiment needs
+a new development/holdout design; these 17 are no longer blind.
+
+The unchanged blind rerun validates all 17 receipts with zero evidence reads, topology runs,
+CSS runs, OCR/VLM calls, network requests, downloads, or world work. Verification passes all
+20 artifact sets.
+
+### Pre-CSS causal repair v2
+
+`probe_architectural_css_fit_v2.py` implements the next upstream experiment without tuning or
+reusing the revealed v1 holdout as blind evidence. The old 20 buildings are development data;
+`habs-corpus-v2-holdout.json` freezes eight new LOC buildings (27 sheets, seven states, four
+building types) as the external holdout. LOC advertised 25,859,916 bytes for those masters,
+but the integrity-checked downloads total 726,848,012 bytes. The local OCR/CV audit is frozen
+at revision `b1743fa5580583635f51`: 1,109 tokens, 47 strict dimensions, 76 held near-misses,
+47 CV candidates, and zero OCR-stage network or VLM calls.
+
+The v2 evidence graph adds line-owned dimension axes, compatible scale consensus with distinct
+origins, closed-loop x/z scale anchors, topology-corroborated missing-axis extents, and paired
+ridge/eave topology. CSS still hashes the completed metric graph, performs zero discovery,
+and leaves `corrected_geometry` null.
+
+Development revision `2c3595654934efe9a5ad` is valid but deliberately **not sealed**. Against
+the 17 revealed v1 failures, selected primary masses improved from 3 to 8, honest scale
+consensus reached 6, and calibrated paired roof datums reached 7. Both development negative
+controls stayed unpromoted. The regression checks still recover exact `sd0401` geometry,
+preserve `tx1037` ceiling semantics, and keep the `ak0535` LOG CABIN/ADDITION split.
+
+The composition gate remains the stop: 0 of the 17 failure-cohort buildings reached validated
+G1 because the mass, scale, roof pair, and independent CSS view do not yet coexist on the same
+building. `tx1037` reaches G1 and `ak0535` reaches G1-unvalidated, but both are known regression
+controls. Development acceptance therefore reports `FAIL`; `blind` was never run and all eight
+fresh buildings remain unexposed to the fitter.
+
+```powershell
+Set-Location C:\work\baseline
+$python = '.\tools\selfie-stick\out\architectural-curriculum\runtime-venv\Scripts\python.exe'
+
+# Cached development diagnosis; exits nonzero because the scientific gate is unmet.
+& $python .\tools\selfie-stick\probe_architectural_css_fit_v2.py develop
+
+# Artifact integrity passes while reporting BLOCKED_AT_DEVELOPMENT_GATE.
+& $python .\tools\selfie-stick\probe_architectural_css_fit_v2.py verify
+
+# Verify the untouched holdout's local OCR evidence contract.
+& $python .\tools\selfie-stick\probe_habs_ocr_audit.py verify `
+  --charter .\tools\selfie-stick\architectural-ocr-audit-v2-holdout.json `
+  --source-charter .\tools\selfie-stick\architectural-curriculum-v2-holdout-source.json `
+  --selection .\tools\selfie-stick\habs-corpus-v2-holdout.json `
+  --corpus .\tools\selfie-stick\out\loc-habs-v2-holdout\corpus `
+  --out .\tools\selfie-stick\out\architectural-curriculum\real-ocr-audit-v2-holdout
+```
+
+Do not run v2 `blind`, lower the frozen two-G1 development threshold, or inspect the fresh
+holdout to tune the fitter. The next earned connector is cross-sheet composition: prove that a
+selected plan mass and a calibrated vertical roof pair describe the same building frame before
+CSS is asked to validate it.
+
+### Automatic frame registration v3
+
+V3 implements that connector in `probe_architectural_css_fit_v3.py` while preserving every
+v2 source and artifact. A new HTTP-sized acquisition plan froze eight replacement buildings
+(29 sheets, seven states, four types, two metadata-sparse controls) at 123,099,962 bytes before
+OCR. Its verified local OCR revision is `315ba9abcf599f639fa7`.
+
+The pinned v2 diagnostic baseline over the 28 development buildings is
+`7331f32e25b034d03d70`. V3 development revision `5333d5eaed593d7607e4` preserves all
+165 automatic candidates and all regression checks, but the gate remains **FAIL**: the original
+failure cohort retains 8 selected masses, 6 scale consensuses, and 7 calibrated roof pairs,
+yet produces 0/2 validated G1. No different-sheet plan/vertical candidate shares an exact OCR
+section marker and a matching floor/grade origin. `tn0304` and `tn0305` each pass the other five
+gates, including compatible metric span, which sharply localizes the next upstream gap.
+
+No development lock or blind artifact exists. Do not seal, run `blind`, reinterpret elevation
+direction labels as section markers, or lower the gate. See
+`HANDOFF-AUTOMATIC-CSS-FIT-V3-2026-08-28.md` for exact cached commands and the next diagnostic.
 
 ## Known rough edges
 

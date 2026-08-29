@@ -1,0 +1,106 @@
+{
+  "schema": "loc-habs-selection/v1",
+  "description": "Frozen 20-building R&D sample of small HABS cabins, houses, farmhouses, and barns with measured drawings. The mix intentionally retains both descriptive modern sheet records and older generic sheet labels so the harvester cannot hide LOC metadata drift.",
+  "buildings": [
+    {
+      "loc_id": "tn0304",
+      "building_type": "cabin",
+      "selection_reason": "Two-sheet cabin survey pairing plan/section and elevations."
+    },
+    {
+      "loc_id": "tn0305",
+      "building_type": "cabin",
+      "selection_reason": "Two-sheet cabin survey pairing plan/section and elevations."
+    },
+    {
+      "loc_id": "tn0306",
+      "building_type": "cabin",
+      "selection_reason": "Two-sheet cabin survey with explicit section, plan, and elevation titles."
+    },
+    {
+      "loc_id": "ak0535",
+      "building_type": "cabin",
+      "selection_reason": "Compact five-sheet modern survey with site plan, floor plans, elevations, sections, doors, and windows."
+    },
+    {
+      "loc_id": "pa0119",
+      "building_type": "cabin",
+      "selection_reason": "Small legacy cabin survey whose generic sheet labels exercise metadata fallback."
+    },
+    {
+      "loc_id": "pa0461",
+      "building_type": "cabin",
+      "selection_reason": "Small legacy cabin survey whose generic sheet labels exercise metadata fallback."
+    },
+    {
+      "loc_id": "nc0096",
+      "building_type": "cabin",
+      "selection_reason": "Four-sheet cabin survey with plan, sections, elevations, and outbuilding drawings."
+    },
+    {
+      "loc_id": "tx1037",
+      "building_type": "cabin",
+      "selection_reason": "Five-sheet park cabin survey with legacy generic sheet labels."
+    },
+    {
+      "loc_id": "az0450",
+      "building_type": "cabin",
+      "selection_reason": "Very small two-sheet cabin record from a different region."
+    },
+    {
+      "loc_id": "sd0401",
+      "building_type": "cabin",
+      "selection_reason": "Two-sheet lodge cabin survey combining a floor plan, two elevations, building section, and joinery details."
+    },
+    {
+      "loc_id": "fl0159",
+      "building_type": "house",
+      "selection_reason": "Small historic quarters/driver's cabin represented by legacy sheet labels."
+    },
+    {
+      "loc_id": "co0395",
+      "building_type": "barn",
+      "selection_reason": "Two-sheet barn survey with elevation, section, and cut-away axonometric."
+    },
+    {
+      "loc_id": "sd0412",
+      "building_type": "cabin",
+      "selection_reason": "Two-sheet lodge cabin survey combining a floor plan, two elevations, building section, and opening details."
+    },
+    {
+      "loc_id": "wa0761",
+      "building_type": "barn",
+      "selection_reason": "Three concise barn plans covering site, ground floor, and hayloft."
+    },
+    {
+      "loc_id": "tx0693",
+      "building_type": "barn",
+      "selection_reason": "Two concise sheets with site, loft, and first-floor plans."
+    },
+    {
+      "loc_id": "nj1717",
+      "building_type": "barn",
+      "selection_reason": "Three-sheet barn survey with plans, elevations, sections, and construction isometric."
+    },
+    {
+      "loc_id": "ma0032",
+      "building_type": "barn",
+      "selection_reason": "Tiny two-sheet barn record with a dimensioned floor plan and section."
+    },
+    {
+      "loc_id": "il0180",
+      "building_type": "farmhouse",
+      "selection_reason": "Compact legacy farmhouse survey whose generic labels test fallback behavior."
+    },
+    {
+      "loc_id": "ma0779",
+      "building_type": "farmhouse",
+      "selection_reason": "Seven-sheet legacy farmhouse record kept to represent a modest multi-sheet house."
+    },
+    {
+      "loc_id": "nj0415",
+      "building_type": "farmhouse",
+      "selection_reason": "Six-sheet legacy farmhouse record from the mid-Atlantic region."
+    }
+  ]
+}

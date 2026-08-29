@@ -1,0 +1,43 @@
+{
+  "$schema": "https://creator-os.local/schemas/architectural-ocr-audit/v1.json",
+  "experiment_id": "habs-real-ocr-cv-audit-v1",
+  "status": "frozen-before-corpus-run",
+  "frozen_at": "2026-08-28T00:00:00Z",
+  "question": "Can the pinned real OCR/CV lane recover enough grounded signals from all 69 frozen HABS sheets to constrain later semantic interpretation without inventing scale?",
+  "inputs": {
+    "selection": "habs-corpus.json",
+    "buildings": 20,
+    "sheets": 69,
+    "source_policy": "verify every existing local master byte and SHA-256; perform no downloads"
+  },
+  "authority": {
+    "ocr_tokens": "observed text proposals with confidence and normalized region",
+    "parsed_dimensions": "accepted only when the entire feet/inches or metric expression survives strict parsing",
+    "cv_lines": "candidate geometric support only; never measurement authority without semantic line association",
+    "catalog_titles": "metadata comparison only; never visual evidence"
+  },
+  "success_gates": {
+    "completed_sheets": 69,
+    "minimum_sheets_with_ten_tokens_ratio": 0.75,
+    "minimum_sheets_with_strict_dimensions_ratio": 0.4,
+    "minimum_median_token_confidence": 0.65,
+    "minimum_sheets_with_role_signal_ratio": 0.4,
+    "minimum_sheets_with_anchor_candidates_ratio": 0.3
+  },
+  "outcomes": {
+    "pass": "USABLE_TO_CONSTRAIN_SEMANTICS",
+    "fail": "INSUFFICIENT_GROUNDED_SIGNAL",
+    "always": "NOT_AUTONOMOUS_SCALE_AUTHORITY"
+  },
+  "persistence": {
+    "content_addressed_sheet_receipts": true,
+    "unchanged_rerun_must_be_zero_ocr_calls": true
+  },
+  "non_goals": [
+    "Calling or emulating the unavailable VLM",
+    "Classifying a complete building",
+    "Authorizing a metric graph from nearest-line heuristics",
+    "Generating Valheim pieces or ZDOs",
+    "Contacting Valheim, Creator OS, LOC, or any network service"
+  ]
+}

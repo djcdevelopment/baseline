@@ -1,0 +1,44 @@
+{
+  "$schema": "https://creator-os.local/schemas/architectural-ocr-audit/v1.json",
+  "experiment_id": "habs-real-ocr-cv-audit-v2-holdout",
+  "status": "frozen-before-source-download",
+  "frozen_at": "2026-08-28T00:00:00Z",
+  "question": "What grounded OCR tokens, strict dimensions, and geometric support are present in the untouched eight-building v2 holdout, without exposing those signals to v2 development?",
+  "inputs": {
+    "selection": "habs-corpus-v2-holdout.json",
+    "buildings": 8,
+    "sheets": 27,
+    "source_policy": "download only the metadata-frozen 27 master TIFFs, verify every byte and SHA-256, then prohibit further network access in OCR and fit phases",
+    "planned_master_bytes_from_loc_api": 25859916
+  },
+  "authority": {
+    "ocr_tokens": "observed text proposals with confidence and normalized region",
+    "parsed_dimensions": "accepted only when the entire feet/inches or metric expression survives strict parsing",
+    "cv_lines": "candidate geometric support only; never measurement authority without semantic or topological association",
+    "catalog_titles": "metadata comparison only; never visual evidence"
+  },
+  "success_gates": {
+    "completed_sheets": 27,
+    "minimum_sheets_with_ten_tokens_ratio": 0.5,
+    "minimum_sheets_with_strict_dimensions_ratio": 0.25,
+    "minimum_median_token_confidence": 0.6,
+    "minimum_sheets_with_role_signal_ratio": 0.25,
+    "minimum_sheets_with_anchor_candidates_ratio": 0.2
+  },
+  "outcomes": {
+    "pass": "USABLE_AS_FROZEN_HOLDOUT_EVIDENCE",
+    "fail": "INSUFFICIENT_GROUNDED_SIGNAL",
+    "always": "NOT_AUTONOMOUS_SCALE_AUTHORITY"
+  },
+  "persistence": {
+    "content_addressed_sheet_receipts": true,
+    "unchanged_rerun_must_be_zero_ocr_calls": true
+  },
+  "non_goals": [
+    "Inspecting holdout OCR or drawing contents during v2 development",
+    "Calling or emulating the unavailable VLM",
+    "Authorizing a metric graph from an uncorroborated nearest-line heuristic",
+    "Generating Valheim pieces or ZDOs",
+    "Contacting Valheim or Creator OS"
+  ]
+}

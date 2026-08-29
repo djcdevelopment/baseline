@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://creator-os.local/schemas/architectural-css-fit-contracts/v1.json",
+  "title": "Pre-CSS architectural topology and CSS residual contracts",
+  "$defs": {
+    "authority": {
+      "enum": ["STRICT", "TOPOLOGY_CORROBORATED", "GEOMETRIC_SUPPORT", "INFERRED", "HELD"]
+    },
+    "view": {
+      "type": "object",
+      "required": ["id", "role", "sheet_index", "bbox", "interior_status", "provenance"],
+      "properties": {
+        "role": {"enum": ["plan", "elevation", "section", "site", "detail", "unknown"]},
+        "interior_status": {"enum": ["DISJOINT", "HELD_AMBIGUOUS"]},
+        "bbox": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "number"}}
+      },
+      "additionalProperties": true
+    },
+    "dimensionChain": {
+      "type": "object",
+      "required": ["id", "view_id", "axis", "members", "authority", "status"],
+      "properties": {
+        "axis": {"enum": ["horizontal", "vertical"]},
+        "authority": {"$ref": "#/$defs/authority"},
+        "status": {"enum": ["CLOSED", "SINGLETON", "HELD_AMBIGUOUS", "HELD_CONTEXT"]}
+      },
+      "additionalProperties": true
+    },
+    "mass": {
+      "type": "object",
+      "required": ["id", "view_id", "label", "dimensions", "closed_wall_loop", "cross_view_support", "status"],
+      "properties": {
+        "status": {"enum": ["SELECTED_PRIMARY", "CANDIDATE", "SECONDARY", "HELD_AMBIGUOUS"]}
+      },
+      "additionalProperties": true
+    },
+    "datum": {
+      "type": "object",
+      "required": ["id", "view_id", "type", "authority", "provenance"],
+      "properties": {
+        "type": {"enum": ["grade", "basement", "first_floor", "floor", "datum", "ceiling", "top_of_wall", "eave", "roof_edge", "ridge", "roof_peak"]},
+        "authority": {"$ref": "#/$defs/authority"}
+      },
+      "additionalProperties": true
+    },
+    "evidenceGraph": {
+      "type": "object",
+      "required": ["schema", "building_id", "views", "dimension_chains", "masses", "datums", "cross_view_registrations", "promotion"],
+      "properties": {
+        "schema": {"const": "architectural-evidence-graph/v1"},
+        "views": {"type": "array", "items": {"$ref": "#/$defs/view"}},
+        "dimension_chains": {"type": "array", "items": {"$ref": "#/$defs/dimensionChain"}},
+        "masses": {"type": "array", "items": {"$ref": "#/$defs/mass"}},
+        "datums": {"type": "array", "items": {"$ref": "#/$defs/datum"}}
+      },
+      "additionalProperties": true
+    },
+    "cssResidual": {
+      "type": "object",
+      "required": ["schema", "building_id", "graph_sha256", "status", "metric_checks", "shape_check", "upstream_attribution", "corrected_geometry"],
+      "properties": {
+        "schema": {"const": "architectural-css-residual/v1"},
+        "corrected_geometry": {"type": "null"},
+        "upstream_attribution": {
+          "type": "array",
+          "items": {"enum": ["panel_ownership", "dimension_chain", "mass_ambiguity", "datum_semantics", "cross_view_geometry"]}
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}
