@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://comfy.dev/schemas/grimoire-grammar-v1.json",
+  "title": "GrimoireGrammarV1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "title",
+    "templates"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "grimoire-grammar/v1"
+    },
+    "title": {
+      "type": "string"
+    },
+    "templates": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "semantic_id",
+          "prose_template",
+          "category"
+        ],
+        "properties": {
+          "semantic_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "prose_template": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "Combat",
+              "Harvest",
+              "Inventory",
+              "Homestead",
+              "Community",
+              "Spatial",
+              "Generic"
+            ]
+          },
+          "substitutions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

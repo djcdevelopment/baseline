@@ -192,15 +192,22 @@ def build_install_request(
     requested_by: str = "quest_studio",
 ) -> Dict[str, Any]:
     """
-    Build an InstallQuestPack/v1 request from a compiled questpack result.
+    Build an InstallQuestPack/v1 request from a compiled questpack result or AI proposal result.
     Correlates source_revision → compiled_quest_revision → request_id.
     """
+    source_rev = compiled.get("source_revision") or compiled.get("candidate_source_revision") or ("0" * 40)
+    if len(source_rev) != 40:
+        source_rev = hashlib.sha1(source_rev.encode("utf-8")).hexdigest()
+
+    compiled_rev = compiled.get("compiled_quest_revision", "")
+    payload_hash = compiled.get("questpack_payload_sha256") or compiled_rev.replace("sha256:", "")
+
     return {
         "schema_version": "InstallQuestPack/v1",
         "request_id": f"req_{uuid.uuid4().hex[:16]}",
-        "source_revision": compiled["source_revision"],
-        "compiled_quest_revision": compiled["compiled_quest_revision"],
-        "questpack_payload_sha256": compiled["questpack_payload_sha256"],
+        "source_revision": source_rev,
+        "compiled_quest_revision": compiled_rev,
+        "questpack_payload_sha256": payload_hash,
         "requested_by": requested_by,
     }
 

@@ -1,0 +1,48 @@
+{
+  "schema_version": "grimoire-grammar/v1",
+  "title": "Default Norse Lore Grimoire Grammar",
+  "templates": {
+    "Player.EnterZone": {
+      "semantic_id": "Player.EnterZone",
+      "description": "Triggered when a player enters a spatial anchor zone",
+      "prose_template": "When your steps cross into {anchor_id}...",
+      "category": "Spatial"
+    },
+    "Character.OnDeath": {
+      "semantic_id": "Character.OnDeath",
+      "description": "Triggered when a creature or target falls in combat",
+      "prose_template": "When a target falls to the earth at {anchor_id}...",
+      "category": "Combat"
+    },
+    "Player.PlacePiece": {
+      "semantic_id": "Player.PlacePiece",
+      "description": "Triggered when a piece or structure is placed upon the hearth",
+      "prose_template": "When you raise a structure upon the hearth at {anchor_id}...",
+      "category": "Homestead"
+    },
+    "Container.TakeAll": {
+      "semantic_id": "Container.TakeAll",
+      "description": "Triggered when chest or container contents are claimed",
+      "prose_template": "When you claim items from a wooden chest...",
+      "category": "Inventory"
+    },
+    "SpawnWave": {
+      "semantic_id": "SpawnWave",
+      "description": "Spawns an enemy wave or creature prefab",
+      "prose_template": "The mist stirs and forces emerge at {anchor_id}...",
+      "category": "Combat"
+    },
+    "ApplyStatus": {
+      "semantic_id": "ApplyStatus",
+      "description": "Applies status effect to spirits or players",
+      "prose_template": "The ancient runes bestow a blessing upon your spirit...",
+      "category": "Community"
+    },
+    "Announce": {
+      "semantic_id": "Announce",
+      "description": "Displays a hall announcement",
+      "prose_template": "A voice speaks to the hall...",
+      "category": "Community"
+    }
+  }
+}
