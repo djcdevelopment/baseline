@@ -212,9 +212,7 @@ class MetaCreatorDogfoodTests(unittest.TestCase):
             self.assertEqual(mode_b_proposal["compiled_quest_revision"], revised_compiled_rev)
 
             # 3. Request link
-            import hashlib
-            expected_source_sha1 = hashlib.sha1(revised_source_rev.encode("utf-8")).hexdigest()
-            self.assertEqual(install_req_2["source_revision"], expected_source_sha1)
+            self.assertEqual(install_req_2["source_revision"], revised_source_rev)
             self.assertEqual(install_req_2["compiled_quest_revision"], revised_compiled_rev)
 
             # 4. Receipt link
@@ -222,8 +220,7 @@ class MetaCreatorDogfoodTests(unittest.TestCase):
             self.assertEqual(receipt_2["active_runtime_revision"], revised_compiled_rev)
 
             # 5. Evidence correlation spine link
-            expected_orig_source_sha1 = hashlib.sha1(original_source_rev.encode("utf-8")).hexdigest()
-            self.assertEqual(spine["source_revision"], expected_orig_source_sha1)
+            self.assertEqual(spine["source_revision"], original_source_rev)
             self.assertEqual(spine["compiled_quest_revision"], original_compiled_rev)
             self.assertEqual(spine["install_request_id"], install_request_id_1)
             self.assertEqual(spine["active_runtime_revision"], active_runtime_rev_1)

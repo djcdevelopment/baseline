@@ -193,12 +193,9 @@ def build_install_request(
 ) -> Dict[str, Any]:
     """
     Build an InstallQuestPack/v1 request from a compiled questpack result or AI proposal result.
-    Correlates source_revision → compiled_quest_revision → request_id.
+    Correlates source_revision → compiled_quest_revision → request_id cleanly.
     """
     source_rev = compiled.get("source_revision") or compiled.get("candidate_source_revision") or ("0" * 40)
-    if len(source_rev) != 40:
-        source_rev = hashlib.sha1(source_rev.encode("utf-8")).hexdigest()
-
     compiled_rev = compiled.get("compiled_quest_revision", "")
     payload_hash = compiled.get("questpack_payload_sha256") or compiled_rev.replace("sha256:", "")
 

@@ -155,8 +155,8 @@ def validate_install_quest_pack(payload: Dict[str, Any]) -> None:
         if field not in payload:
             raise ContractValidationError(f"InstallQuestPack missing required field: '{field}'")
 
-    if not re.match(r"^[a-f0-9]{40}$", payload["source_revision"]):
-        raise ContractValidationError("source_revision must be a 40-character hex commit SHA.")
+    if not re.match(r"^(sha256:[a-f0-9]{64}|[a-f0-9]{40,64})$", payload["source_revision"]):
+        raise ContractValidationError("source_revision must be a 40-64 char hex string or sha256:<hex>.")
     if not re.match(r"^sha256:[a-f0-9]{64}$", payload["compiled_quest_revision"]):
         raise ContractValidationError("compiled_quest_revision must match format 'sha256:<64-hex>'.")
 
