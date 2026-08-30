@@ -154,6 +154,7 @@ class OpenAICompatibleModelAdapter(QuestModelAdapter):
         parent_source: Optional[Dict[str, Any]] = None,
         evidence_records: Optional[List[Dict[str, Any]]] = None,
         spatial_anchors: Optional[List[Dict[str, Any]]] = None,
+        **kwargs,
     ) -> Dict[str, Any]:
         proposal_id = f"prop_{uuid.uuid4().hex[:16]}"
         q_title = title or "AI Generated Quest"
@@ -221,7 +222,7 @@ class OpenAICompatibleModelAdapter(QuestModelAdapter):
         except ContractValidationError as cve:
             validation_errors.append(str(cve))
 
-        return {
+        proposal = {
             "proposal_id": proposal_id,
             "provider": self.provider_name,
             "model": self.model_name,
@@ -240,5 +241,9 @@ class OpenAICompatibleModelAdapter(QuestModelAdapter):
                 "why_changed": f"Model '{self.model_name}' processed prompt: '{prompt}'.",
                 "evidence_motivations": [],
             },
-            "raw_model_response": raw_response,
         }
+
+        if kwargs.get("include_raw_response", False):
+            proposal["raw_model_response"] = raw_response
+
+        return proposal
