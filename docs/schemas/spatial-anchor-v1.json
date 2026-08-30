@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://comfy.dev/schemas/spatial-anchor-v1.json",
+  "title": "SpatialAnchorV1",
+  "type": "object",
+  "required": [
+    "anchor_id",
+    "frame",
+    "local_bounds",
+    "world_binding"
+  ],
+  "properties": {
+    "anchor_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]+$"
+    },
+    "frame": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]+:[a-zA-Z0-9_-]+$"
+    },
+    "local_bounds": {
+      "type": "object",
+      "required": [
+        "center",
+        "radius_meters"
+      ],
+      "properties": {
+        "center": {
+          "type": "object",
+          "required": [
+            "x",
+            "y",
+            "z"
+          ],
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "z": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "radius_meters": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "world_binding": {
+      "type": "object",
+      "required": [
+        "mode",
+        "reference"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "resolved_at_install",
+            "fixed_piece_anchor"
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "pattern": "^piece:[a-zA-Z0-9_-]+$"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

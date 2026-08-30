@@ -1,0 +1,48 @@
+{
+  "schema_version": "comfy-quest-experience/v1",
+  "quest_id": "vertical_slice_quest",
+  "title": "Vertical Slice Acceptance Test",
+  "nodes": [
+    {
+      "node_id": "enter_zone",
+      "node_type": "event_trigger",
+      "exec_mode": "single_tick",
+      "anchor_id": "hearth_zone",
+      "next_nodes": [
+        "spawn_wave"
+      ]
+    },
+    {
+      "node_id": "spawn_wave",
+      "node_type": "action",
+      "exec_mode": "single_tick",
+      "next_nodes": []
+    }
+  ],
+  "spatial_anchors": [
+    {
+      "anchor_id": "hearth_zone",
+      "frame": "structure:village_01",
+      "local_bounds": {
+        "center": {
+          "x": 4.2,
+          "y": 0.0,
+          "z": -8.7
+        },
+        "radius_meters": 15.0
+      },
+      "world_binding": {
+        "mode": "resolved_at_install",
+        "reference": "piece:hearth_root"
+      }
+    }
+  ],
+  "required_capabilities": [
+    "spawn_prefabs",
+    "play_announcement"
+  ],
+  "action_references": [
+    "spawn_frost_jarl"
+  ],
+  "checksum_sha256": "8d3673453dd65be7f529b3642350d27cf71c5dc376d55976903d313ed74c030e"
+}

@@ -1,0 +1,8 @@
+{
+  "schema_version": "InstallQuestPack/v1",
+  "request_id": "req_9856c46b6156436d",
+  "source_revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "compiled_quest_revision": "sha256:8d3673453dd65be7f529b3642350d27cf71c5dc376d55976903d313ed74c030e",
+  "questpack_payload_sha256": "8d3673453dd65be7f529b3642350d27cf71c5dc376d55976903d313ed74c030e",
+  "requested_by": "fixture_gen"
+}
