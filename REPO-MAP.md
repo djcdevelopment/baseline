@@ -13,6 +13,7 @@ hash-verified release artifact.
 | Quest contracts | [`comfy-quest`](https://github.com/djcdevelopment/comfy-quest) | `network/mod/ComfyQuestContracts/` | `Comfy.Quest.Contracts` exact NuGet version | package payload + clean-restore gate |
 | Quest Lab and Runtime | `comfy-quest` | `network/mod/ComfyQuestLab/`, `network/mod/ComfyQuestRuntime/` | `quest-v*` DLL/zips and manifest | G1/G7 + exact test-count gates |
 | Quest Studio | `comfy-quest` | `src/Quest.Studio/` | `Comfy.Quest.Studio` exact NuGet version and `.questpack` files | package dependency + round-trip gates |
+| World snapshot analytics and spatial map authoring | [`ComfyStewardView`](https://github.com/djcdevelopment/ComfyStewardView) | `viewer/` | content-addressed spatial anchor/evidence JSON | shared hash fixtures + Steward contract tests |
 | Quest Lab tome and picker | `comfy-quest` | `docs/generated/questlab.html`, `tools/questlab-package/` | release assets with manifest/SHA-256 sums | render drift + release verifier |
 | Gateway, services, Companion | [`lumberjacks-platform`](https://github.com/djcdevelopment/lumberjacks-platform) | `Lumberjacks/src/` | versioned container images and HTTP identity contracts | solution tests + G3/G4 |
 | Transport contracts | `lumberjacks-platform` | `Lumberjacks/src/Comfy.Transport.Contracts/` | `Comfy.Transport.Contracts` exact NuGet version | package payload + clean-restore gate |

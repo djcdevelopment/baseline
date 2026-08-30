@@ -55,3 +55,4 @@ beats a taxonomy of ten empty ones.
 - [PD-8 — Isolated runtime and toolset repository architecture](pd-8-isolated-runtime-and-toolset-repository.md)
 - [PD-9 — Sovereign add-on repositories with Baseline as the hub](pd-9-repository-split.md)
 - [PD-10 — The Demo World is a versioned bridge to host Valheim](pd-10-demo-world-host-boundary.md)
+- [PD-11 — Spatial authoring round trips cross as content-addressed files](pd-11-spatial-authoring-round-trip.md)
