@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Creator Iteration Workbook — Quest OS</title>
+  <style>
+    :root {
+      --bg: #0e1118;
+      --surface: #141822;
+      --surface-2: #1c2230;
+      --border: #262d3d;
+      --text: #dfe4ec;
+      --bright: #f0f3f8;
+      --muted: #8b95a7;
+      --blue: #5fa8e0;
+      --blue-bg: #2a4d78;
+      --green: #5fae7f;
+      --amber: #d9a34a;
+      --red: #d9635f;
+      --purple: #a98fd4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    h1, h2, h3 { color: var(--bright); margin-top: 0; }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .principle-banner {
+      background: linear-gradient(90deg, #182232, #141822);
+      border: 1px solid var(--blue-bg);
+      border-left: 4px solid var(--blue);
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 24px;
+      font-weight: 500;
+    }
+    .grid-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .metric-label { font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; margin-bottom: 6px; }
+    .metric-val { font-size: 24px; font-weight: 700; font-family: monospace; color: var(--blue); }
+    .metric-input {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--bright);
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: monospace;
+      margin-top: 4px;
+    }
+    
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    th { background: var(--surface-2); color: var(--muted); font-size: 11px; text-transform: uppercase; }
+    tr:hover { background: rgba(255,255,255,0.02); }
+    
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-combat { background: rgba(217,99,95,0.2); color: var(--red); border: 1px solid rgba(217,99,95,0.4); }
+    .badge-const { background: rgba(217,163,74,0.2); color: var(--amber); border: 1px solid rgba(217,163,74,0.4); }
+    .badge-collect { background: rgba(95,174,127,0.2); color: var(--green); border: 1px solid rgba(95,174,127,0.4); }
+    .badge-spatial { background: rgba(169,143,212,0.2); color: var(--purple); border: 1px solid rgba(169,143,212,0.4); }
+    .badge-default { background: rgba(95,168,224,0.2); color: var(--blue); border: 1px solid rgba(95,168,224,0.4); }
+
+    .btn {
+      background: var(--blue-bg);
+      border: 1px solid var(--blue);
+      color: var(--bright);
+      padding: 8px 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .btn:hover { background: var(--blue); }
+    .btn-secondary { background: var(--surface-2); border-color: var(--border); color: var(--muted); }
+    .btn-secondary:hover { color: var(--bright); border-color: var(--muted); }
+
+    .step-list { list-style: none; padding: 0; margin: 12px 0; }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--border);
+    }
+    .step-checkbox { width: 16px; height: 16px; accent-color: var(--blue); cursor: pointer; }
+    
+    textarea, select, input[type="text"] {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 10px;
+      border-radius: 4px;
+      font-family: inherit;
+    }
+    textarea { width: 100%; height: 70px; resize: vertical; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div>
+      <h1>Creator Iteration Workbook</h1>
+      <div style="color: var(--muted)">Quest OS Dogfood & Human Creator Metric Tracker</div>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <button class="btn btn-secondary" onclick="exportData()">Export Workbook JSON</button>
+      <button class="btn btn-secondary" onclick="resetData()">Reset Data</button>
+    </div>
+  </div>
+
+  <div class="principle-banner">
+    Governing Goal: Reduce iteration cost & cognitive effort between <i>"I want this quest"</i> and <i>"the second version plays better than the first."</i>
+  </div>
+
+  <!-- Core Metric Counters -->
+  <div class="grid-metrics">
+    <div class="metric-card">
+      <div class="metric-label">Time to 1st Play (min)</div>
+      <input type="number" id="m_time_to_play" class="metric-input" value="0" onchange="saveData()"/>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Deploy Latency (sec)</div>
+      <input type="number" id="m_deploy_latency" class="metric-input" value="1.2" onchange="saveData()"/>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Manual Corrections</div>
+      <input type="number" id="m_corrections" class="metric-input" value="0" onchange="saveData()"/>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Rejected Proposals</div>
+      <input type="number" id="m_rejections" class="metric-input" value="0" onchange="saveData()"/>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Context Switches</div>
+      <input type="number" id="m_context_switches" class="metric-input" value="0" onchange="saveData()"/>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Evidence Usefulness (1-5)</div>
+      <input type="number" id="m_evidence_rating" class="metric-input" min="1" max="5" value="5" onchange="saveData()"/>
+    </div>
+  </div>
+
+  <!-- Quest Target Corpus Matrix -->
+  <div class="section-card">
+    <h2>1. Dogfood Quest Corpus Matrix (7 Target Types)</h2>
+    <div style="color: var(--muted); margin-bottom: 12px;">Track execution across 7 distinct quest types to expose friction between independently proven layers.</div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Quest Type</th>
+          <th>Quest Title / Scenario</th>
+          <th>Status</th>
+          <th>Primary Spatial Anchor</th>
+          <th>Revision Trigger</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-combat">Combat</span></td>
+          <td><b>Village Hearth Defense</b> (3 waves)</td>
+          <td><select onchange="saveData()"><option>Planned</option><option selected>In Progress</option><option>Completed</option></select></td>
+          <td><code>structure:village_hearth</code> (18m)</td>
+          <td>Arcane Sight boundary trigger distance</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-const">Construction</span></td>
+          <td><b>Raise Longhouse Barricades</b></td>
+          <td><select onchange="saveData()"><option selected>Planned</option><option>In Progress</option><option>Completed</option></select></td>
+          <td><code>structure:longhouse_perimeter</code></td>
+          <td>Piece placement density check</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-collect">Collection</span></td>
+          <td><b>Harvest Ancient Bark in Swamp Ruins</b></td>
+          <td><select onchange="saveData()"><option selected>Planned</option><option>In Progress</option><option>Completed</option></select></td>
+          <td><code>structure:swamp_ruin_01</code></td>
+          <td>Item count threshold evidence</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-default">Timed Sequence</span></td>
+          <td><b>Light Signal Beacons Before Dawn</b></td>
+          <td><select onchange="saveData()"><option selected>Planned</option><option>In Progress</option><option>Completed</option></select></td>
+          <td><code>structure:beacon_tower</code></td>
+          <td>Timer duration adjustment</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-spatial">Spatial Puzzle</span></td>
+          <td><b>Align Rune Pillars in Mountain Ruins</b></td>
+          <td><select onchange="saveData()"><option selected>Planned</option><option>In Progress</option><option>Completed</option></select></td>
+          <td><code>structure:mountain_altar</code></td>
+          <td>Interaction sequence feedback</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-combat">State Machine</span></td>
+          <td><b>3-Wave Incursion & Boss Retreat</b></td>
+          <td><select onchange="saveData()"><option selected>Planned</option><option>In Progress</option><option>Completed</option></select></td>
+          <td><code>structure:fort_courtyard</code></td>
+          <td>Phase transition health threshold</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-default">Vague Prompt</span></td>
+          <td><b>"Make something fun near the coast"</b></td>
+          <td><select onchange="saveData()"><option selected>Planned</option><option>In Progress</option><option>Completed</option></select></td>
+          <td><code>structure:coastal_dock</code></td>
+          <td>AI proposer intent disambiguation</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Human Loop Checklist -->
+  <div class="section-card">
+    <h2>2. Human Creator Loop Checklist</h2>
+    <ul class="step-list">
+      <li class="step-item">
+        <input type="checkbox" class="step-checkbox" id="step1" onchange="saveData()"/>
+        <label for="step1"><b>1. Define Creator Intent:</b> Draft high-level natural prompt or scenario goal.</label>
+      </li>
+      <li class="step-item">
+        <input type="checkbox" class="step-checkbox" id="step2" onchange="saveData()"/>
+        <label for="step2"><b>2. AI Model Proposal:</b> Generate candidate Quest Source AST (Mode A prompt proposal).</label>
+      </li>
+      <li class="step-item">
+        <input type="checkbox" class="step-checkbox" id="step3" onchange="saveData()"/>
+        <label for="step3"><b>3. Spatial Intake:</b> Draw/export spatial anchor from StewardView WebGL (<code>SpatialAnchor/v1</code>).</label>
+      </li>
+      <li class="step-item">
+        <input type="checkbox" class="step-checkbox" id="step4" onchange="saveData()"/>
+        <label for="step4"><b>4. Bind & Compile:</b> Attach anchor slot to <code>Player.EnterZone</code> event and run <code>compile_questpack()</code>.</label>
+      </li>
+      <li class="step-item">
+        <input type="checkbox" class="step-checkbox" id="step5" onchange="saveData()"/>
+        <label for="step5"><b>5. Atomic Mailbox Deploy:</b> Run <code>python tools/deploy_questpack.py</code> to deliver artifact to BepInEx inbox.</label>
+      </li>
+      <li class="step-item">
+        <input type="checkbox" class="step-checkbox" id="step6" onchange="saveData()"/>
+        <label for="step6"><b>6. Play & Observe:</b> Test in Valheim client; observe trigger telemetry via Arcane Sight (<code>ObservationEvidence/v1</code>).</label>
+      </li>
+      <li class="step-item">
+        <input type="checkbox" class="step-checkbox" id="step7" onchange="saveData()"/>
+        <label for="step7"><b>7. Evidence Revision:</b> Feed evidence receipt into <code>propose_revision()</code> to generate revised candidate source (Mode B).</label>
+      </li>
+      <li class="step-item">
+        <input type="checkbox" class="step-checkbox" id="step8" onchange="saveData()"/>
+        <label for="step8"><b>8. Recompile & Replay:</b> Deploy revised questpack to verify improved second run.</label>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Creator Friction Log -->
+  <div class="section-card">
+    <h2>3. Creator Friction Logger</h2>
+    <div style="color: var(--muted); margin-bottom: 12px;">Log any friction, cognitive overload, or manual step encountered during iteration.</div>
+
+    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px; margin-bottom: 12px;">
+      <input type="text" id="f_desc" placeholder="Describe creator friction or manual step..."/>
+      <select id="f_cat">
+        <option>EXPECTED POWER-USER DETAIL</option>
+        <option>UI/PRESENTATION PROBLEM</option>
+        <option>MISSING AUTHORING ABSTRACTION</option>
+        <option>CONTRACT DEFECT</option>
+        <option>RUNTIME DEFECT</option>
+        <option>TRANSPORT DEFECT</option>
+        <option>AI PROPOSER DEFECT</option>
+      </select>
+      <select id="f_impact">
+        <option>Low Impact</option>
+        <option selected>Medium Impact</option>
+        <option>High Impact</option>
+      </select>
+      <button class="btn" onclick="addFriction()">Log Friction</button>
+    </div>
+
+    <table id="friction_table">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Impact</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="friction_body">
+        <!-- Logged friction items will appear here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    let frictionLogs = [];
+
+    function saveData() {
+      const state = {
+        m_time_to_play: document.getElementById('m_time_to_play').value,
+        m_deploy_latency: document.getElementById('m_deploy_latency').value,
+        m_corrections: document.getElementById('m_corrections').value,
+        m_rejections: document.getElementById('m_rejections').value,
+        m_context_switches: document.getElementById('m_context_switches').value,
+        m_evidence_rating: document.getElementById('m_evidence_rating').value,
+        steps: {
+          step1: document.getElementById('step1').checked,
+          step2: document.getElementById('step2').checked,
+          step3: document.getElementById('step3').checked,
+          step4: document.getElementById('step4').checked,
+          step5: document.getElementById('step5').checked,
+          step6: document.getElementById('step6').checked,
+          step7: document.getElementById('step7').checked,
+          step8: document.getElementById('step8').checked,
+        },
+        frictionLogs: frictionLogs
+      };
+      localStorage.setItem('quest_os_workbook', JSON.stringify(state));
+    }
+
+    function loadData() {
+      const raw = localStorage.getItem('quest_os_workbook');
+      if (!raw) return;
+      try {
+        const state = JSON.parse(raw);
+        document.getElementById('m_time_to_play').value = state.m_time_to_play || 0;
+        document.getElementById('m_deploy_latency').value = state.m_deploy_latency || 1.2;
+        document.getElementById('m_corrections').value = state.m_corrections || 0;
+        document.getElementById('m_rejections').value = state.m_rejections || 0;
+        document.getElementById('m_context_switches').value = state.m_context_switches || 0;
+        document.getElementById('m_evidence_rating').value = state.m_evidence_rating || 5;
+
+        if (state.steps) {
+          for (let k in state.steps) {
+            const el = document.getElementById(k);
+            if (el) el.checked = state.steps[k];
+          }
+        }
+        if (state.frictionLogs) {
+          frictionLogs = state.frictionLogs;
+          renderFriction();
+        }
+      } catch (e) { console.error('Failed to load workbook state', e); }
+    }
+
+    function addFriction() {
+      const desc = document.getElementById('f_desc').value.trim();
+      const cat = document.getElementById('f_cat').value;
+      const impact = document.getElementById('f_impact').value;
+      if (!desc) return;
+      frictionLogs.push({ id: Date.now(), desc, cat, impact });
+      document.getElementById('f_desc').value = '';
+      renderFriction();
+      saveData();
+    }
+
+    function removeFriction(id) {
+      frictionLogs = frictionLogs.filter(f => f.id !== id);
+      renderFriction();
+      saveData();
+    }
+
+    function renderFriction() {
+      const body = document.getElementById('friction_body');
+      body.innerHTML = '';
+      frictionLogs.forEach(f => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${f.desc}</td>
+          <td><code>${f.cat}</code></td>
+          <td><span class="badge badge-default">${f.impact}</span></td>
+          <td><button class="btn btn-secondary" style="padding:2px 8px;" onclick="removeFriction(${f.id})">Remove</button></td>
+        `;
+        body.appendChild(tr);
+      });
+    }
+
+    function exportData() {
+      const raw = localStorage.getItem('quest_os_workbook') || '{}';
+      const blob = new Blob([raw], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'quest_os_creator_iteration_workbook.json';
+      a.click();
+    }
+
+    function resetData() {
+      if (confirm('Reset workbook data?')) {
+        localStorage.removeItem('quest_os_workbook');
+        location.reload();
+      }
+    }
+
+    window.onload = loadData;
+  </script>
+</body>
+</html>
