@@ -160,8 +160,37 @@ try {
         [IO.File]::WriteAllText($questRuntimeConfig, $quietQuestConfig,
                                 [Text.UTF8Encoding]::new($false))
     }
+    # Valheim needs the Steam client up for steam_api to initialise. '-applaunch' used to
+    # guarantee that as a side effect; launching the exe directly does not, so bring Steam
+    # up here if it is down. Starting the client is safe -- Steam updates a game when
+    # asked to launch it, not when it starts.
+    if (-not (Get-Process steam -ErrorAction SilentlyContinue)) {
+        if (-not (Test-Path -LiteralPath $SteamExe)) {
+            throw "Steam is not running and was not found at $SteamExe"
+        }
+        Write-Host '      starting Steam (Valheim needs the client running)'
+        Start-Process -FilePath $SteamExe -ArgumentList '-silent'
+        $steamDeadline = (Get-Date).AddMinutes(3)
+        while (-not (Get-Process steam -ErrorAction SilentlyContinue) -and (Get-Date) -lt $steamDeadline) {
+            Start-Sleep -Seconds 5
+        }
+        if (-not (Get-Process steam -ErrorAction SilentlyContinue)) { throw 'Steam did not start' }
+        Start-Sleep -Seconds 20
+    }
+
     $launchStartedAtUtc = [DateTime]::UtcNow
-    Start-Process -FilePath $SteamExe -ArgumentList '-applaunch', '892970', '-console', `
+    # Launch the executable, not 'steam -applaunch 892970'. Both load BepInEx on Windows
+    # (winhttp.dll sits beside the exe), but -applaunch asks Steam to start the game, and
+    # Steam updates a game it is asked to start. The historical era worlds only load on
+    # the client they were verified against -- buildid 21981559, frozen 2026-09-09 with
+    # AutoUpdateBehavior 1 -- so going through Steam here would silently take the capture
+    # host out to the newest build. AM4 already has to launch directly for its own reason
+    # (Unix doorstop skips plugins under Steam); this makes both hosts agree.
+    $valheimExe = Join-Path $ValheimRoot 'valheim.exe'
+    if (-not (Test-Path -LiteralPath $valheimExe)) {
+        throw "Valheim executable not found at $valheimExe"
+    }
+    Start-Process -FilePath $valheimExe -WorkingDirectory $ValheimRoot -ArgumentList '-console', `
         '-screen-fullscreen', '0', '-screen-width', "$CaptureWidth", '-screen-height', "$CaptureHeight", `
         '-monitor', "$monitorNumber"
     Write-Host "      requested display $DisplayIndex at ${CaptureWidth}x${CaptureHeight}"
