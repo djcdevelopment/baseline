@@ -24,8 +24,10 @@ lattice) and on zero keepers. It is a veto and a diagnostic, not a ranker:
 deep-but-unlit rooms score high here and fail on light, which the aesthetic
 score already catches. The two signals are complementary.
 
-Run with the omen-perception venv (torch + transformers):
+Run with a venv carrying torch + transformers. CPU is the default and is what the
+veto was validated on; --device xpu:0 runs the same model on an Arc card:
   C:\\work\\omen-perception\\venv\\Scripts\\python.exe depth_layers.py
+  C:\\work\\venvs\\perception-xpu\\Scripts\\python.exe depth_layers.py --device xpu:0
 
 Writes out/depth.json  { image_id: {metrics...} }
 """
@@ -50,6 +52,10 @@ def parse_args():
                    help="only image ids starting with this (e.g. a run id)")
     p.add_argument("--limit", type=int, default=0)
     p.add_argument("--force", action="store_true", help="redo images already measured")
+    p.add_argument("--device", default="cpu",
+                   help="torch device for the depth model: cpu (the default, and what the "
+                        "center_block > 0.45 veto was validated on) or an accelerator "
+                        "such as xpu:0")
     return p.parse_args()
 
 
@@ -137,7 +143,7 @@ def main():
     if not todo:
         return
 
-    pipe = pipeline("depth-estimation", model=MODEL, device=-1)
+    pipe = pipeline("depth-estimation", model=MODEL, device=args.device)
     t0 = time.time()
     for i, fname in enumerate(todo, 1):
         image_id = fname[:-5]
