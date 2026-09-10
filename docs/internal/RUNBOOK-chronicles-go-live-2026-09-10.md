@@ -19,7 +19,7 @@ Product code is in `ComfyStewardView` (`tools/chronicles/`, `tools/era-archive/w
 1. **Chronicles release 1** (fonts must be live first: `creators.css` and the viewer reference
    `/chronicles/img/fonts/*.woff2` root-absolute, `font-display: swap`).
 2. **Viewer push** to the root and every era dir. `push_viewer.py --verify` afterwards.
-3. **Creators**: re-project, run the data gate (`E:\wt\gate_creators.py --projection <dir>`
+3. **Creators**: re-project, run the data gate (`python tools/era-archive/gate_creators.py --projection <dir>` in ComfyStewardView;
    must PASS: every `threads/*.json` and `directory.json` identical to the live release apart
    from `generatedAt`), then `deploy_gallery.py --revision <HEAD> --receipt <path>`.
    The deploy gate needs `tools/era-archive` + `tools/selfie-stick` clean and committed.
