@@ -101,3 +101,9 @@ desktop-oauth-client.json
 oauth-token.json
 oauth-token.dpapi
 client_secret*.json
+
+# archify's `visual-check` contact sheet: PNGs at four viewports plus their JSON
+# sidecars, written beside whichever diagram was checked. Regenerable from the
+# committed .html in seconds, ~700 KB per run, and stale the moment the diagram
+# changes -- keep the diagram, not the screenshots of it.
+*.visual-check.*
