@@ -70,3 +70,24 @@ Product code is in `ComfyStewardView` (`tools/chronicles/`, `tools/era-archive/w
 Sweep (`ComfyStewardView/tools/chronicles/verify_sweep.ps1`): all clear after release 2.
 Still open: the illustrated "?" card (SVG sticker ships; generate on the B70s after the
 capture), and the 4K era-17 publish with `-ViewerHtml` followed by `push_viewer.py --verify`.
+
+## Iteration 2 — "more is less" (2026-09-10, ~17:40 UTC)
+
+Derek's read of iteration 1: the figures on the front page were noise for the visitor who lands
+from a bookmark and types their own name. Shipped:
+
+| Surface | Change | Release | Rollback to |
+|---|---|---|---|
+| `/chronicles/` | Front page is one question: the name box with a ranked dropdown (same matcher as the builders page, copied verbatim with a parity test; portrait tile per row; Enter on a prefix match opens the profile; `?q=` pre-fills) and one button "Browse the builds" → `/valheim/`. Stats and era row moved to the guide. | `20260910T173815Z-3f4a2b77fe0f` | `deploy.py --rollback 20260910T123011Z-848443b80113` (iteration 1) |
+| `/chronicles/portraits.json` + `img/portraits/` | 48 painted portraits (12 roles × young/elder × woman/man) rendered on the B70s via HEARTH `z-image-turbo`; per-builder slot = `parseInt(key[:8],16) % 48` (tile ids are 1-based, so index 46 is `p47`). | same | same |
+| Builder pages | Hero card (avatar, aliases, tier, first/latest era, counters, signature creations) above the Top 8; five path cards with the figures at the bottom. `creators.css?v=3`. | `.creator-releases/dbfbac58dbda-fc96ee6c235f` | `.creator-releases/ef064142a00a-1f889de7ad5f` (Derek's era-11 redeploy, carries iteration-1 skin) |
+
+Verification: `tools/chronicles/smoke_front.mjs` 15/15 live (Tug → Tugcow first with tile p47 →
+Enter → `/valheim/creators/5897d38e…/` → hero + eras + counters + five path cards; `?q=` deep link;
+no page exceptions), `browser-smoke.mjs` passed, `verify_sweep.ps1` all clear.
+
+Incident during the window: the omen-arc LLM rung could not reload after the art session because an
+NVIDIA installer had removed `C:\Windows\System32\vulkan-1.dll` at 04:48 local; llama-server (the
+llamacpp-knee build) imports `ggml-vulkan.dll` at start and died with `0xc0000135`. Fixed with an
+app-local copy of the Intel driver store's `vulkan-1-64.dll` beside the binary; ArcServe serviceable
+again at 10:24 local. Reinstalling the Intel driver restores the System32 copy properly.
