@@ -1,0 +1,301 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Valheim Era Archive: Capture to Gallery",
+    "output": "era-archive-pipeline.html",
+    "viewBox": [
+      1076,
+      560
+    ],
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "capture-path",
+        "label": "Capture",
+        "focus": [
+          "worlds",
+          "steam",
+          "capture"
+        ],
+        "note": "A frozen world plus one Steam session produce 4K masters on whichever host holds the account."
+      },
+      {
+        "id": "scoring-path",
+        "label": "Score and gate",
+        "focus": [
+          "derivatives",
+          "arc",
+          "gate"
+        ],
+        "note": "Derivatives are cheap, the Arc cards score them, and the gate decides what is publishable."
+      },
+      {
+        "id": "publish-path",
+        "label": "Publish",
+        "focus": [
+          "manifest",
+          "projection",
+          "eragallery",
+          "creators",
+          "worldview"
+        ],
+        "note": "One manifest feeds the era galleries and the creator directory; the world viewer is a separate lane on another host."
+      }
+    ]
+  },
+  "stages": [
+    {
+      "label": "Source"
+    },
+    {
+      "label": "Capture"
+    },
+    {
+      "label": "Derive and score"
+    },
+    {
+      "label": "Manifest"
+    },
+    {
+      "label": "Publish"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "worlds",
+      "type": "database",
+      "label": "Staged Worlds",
+      "stage": 0,
+      "row": 0,
+      "tag": "hash-pinned",
+      "width": 124
+    },
+    {
+      "id": "steam",
+      "type": "security",
+      "label": "Steam Account",
+      "stage": 0,
+      "row": 2,
+      "tag": "waryfool",
+      "width": 124
+    },
+    {
+      "id": "capture",
+      "type": "backend",
+      "label": "Capture Host",
+      "sublabel": "AM4 or OMEN",
+      "stage": 1,
+      "row": 1,
+      "tag": "4K orbits",
+      "width": 140
+    },
+    {
+      "id": "derivatives",
+      "type": "backend",
+      "label": "Derivatives",
+      "sublabel": "ffmpeg webp",
+      "stage": 2,
+      "row": 0,
+      "tag": "3% of master",
+      "width": 140
+    },
+    {
+      "id": "arc",
+      "type": "backend",
+      "label": "Arc B70 Scoring",
+      "sublabel": "CLIP + depth, xpu",
+      "stage": 2,
+      "row": 1,
+      "tag": "3x to 14x",
+      "width": 140
+    },
+    {
+      "id": "gate",
+      "type": "security",
+      "label": "Quality Gate",
+      "sublabel": "score_frames.py",
+      "stage": 2,
+      "row": 2,
+      "tag": "keep or reject",
+      "width": 140
+    },
+    {
+      "id": "projection",
+      "type": "database",
+      "label": "Community Projection",
+      "sublabel": "full rebuild",
+      "stage": 3,
+      "row": 0,
+      "tag": "all eras",
+      "width": 140
+    },
+    {
+      "id": "manifest",
+      "type": "database",
+      "label": "Capture Manifest",
+      "sublabel": "captures-<era>.json",
+      "stage": 3,
+      "row": 2,
+      "tag": "per era",
+      "width": 140
+    },
+    {
+      "id": "worldview",
+      "type": "external",
+      "label": "World Viewer",
+      "sublabel": "on AM4",
+      "stage": 4,
+      "row": 0,
+      "tag": "separate lane",
+      "width": 140
+    },
+    {
+      "id": "creators",
+      "type": "frontend",
+      "label": "Creator Directory",
+      "sublabel": "FX99 creators",
+      "stage": 4,
+      "row": 1,
+      "tag": "public",
+      "width": 140
+    },
+    {
+      "id": "eragallery",
+      "type": "frontend",
+      "label": "Era Galleries",
+      "sublabel": "FX99 era pages",
+      "stage": 4,
+      "row": 2,
+      "tag": "public",
+      "width": 140
+    }
+  ],
+  "flows": [
+    {
+      "id": "world-copy",
+      "from": "worlds",
+      "to": "capture",
+      "label": "frozen copy",
+      "classification": "sha256 verified",
+      "variant": "default"
+    },
+    {
+      "id": "session",
+      "from": "steam",
+      "to": "capture",
+      "label": "one session, either host",
+      "classification": "the other host is evicted",
+      "variant": "security"
+    },
+    {
+      "id": "masters",
+      "from": "capture",
+      "to": "derivatives",
+      "label": "4K PNG masters",
+      "classification": "stay on the host",
+      "variant": "emphasis"
+    },
+    {
+      "id": "webp",
+      "from": "derivatives",
+      "to": "arc",
+      "label": "1600px webp",
+      "classification": "large and thumb",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "straight",
+      "labelDy": 24
+    },
+    {
+      "id": "scores",
+      "from": "arc",
+      "to": "gate",
+      "label": "aesthetic and depth",
+      "classification": "per frame",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "straight",
+      "labelDy": 24
+    },
+    {
+      "id": "kept",
+      "from": "gate",
+      "to": "manifest",
+      "label": "kept frames, best first",
+      "classification": "rejects journalled",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelDy": 53
+    },
+    {
+      "id": "publish",
+      "from": "manifest",
+      "to": "eragallery",
+      "label": "webp and index.json",
+      "classification": "atomic replace",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelDy": 53
+    },
+    {
+      "id": "attach",
+      "from": "manifest",
+      "to": "projection",
+      "label": "attach photos to builds",
+      "classification": "every era, every run",
+      "variant": "default",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "route": "straight",
+      "labelDy": -70
+    },
+    {
+      "id": "threads",
+      "from": "projection",
+      "to": "creators",
+      "label": "directory and threads",
+      "classification": "symlink cutover",
+      "variant": "emphasis",
+      "labelDy": 106
+    },
+    {
+      "id": "spatial",
+      "from": "projection",
+      "to": "worldview",
+      "label": "spatial packages",
+      "classification": "deploys to AM4",
+      "variant": "dashed",
+      "labelDy": -40,
+      "route": "straight"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "The main path",
+      "items": [
+        "A frozen world produces 4K masters, which never leave the capture host",
+        "Only derivatives travel: webp is about 3% of a master, turning an 18 GB move into 300 MB"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Gates that actually stop things",
+      "items": [
+        "One Steam session per account: launching the game on either host silently evicts the other",
+        "The quality gate withholds frames but never deletes them, and records why"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Known failure modes",
+      "items": [
+        "An evicted host reports world never arrived, zero pieces, which reads like a data fault",
+        "Publishing ships images only, so an era needs its index.json separately or the page 404s"
+      ]
+    }
+  ]
+}
