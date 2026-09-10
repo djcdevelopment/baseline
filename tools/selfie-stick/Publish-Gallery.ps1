@@ -23,6 +23,16 @@
     .\Publish-Gallery.ps1                          # full replacement
     .\Publish-Gallery.ps1 -RenderPrefix 20260808-  # same-gallery delta
     .\Publish-Gallery.ps1 -GalleryPath .\out\era17\gallery -ArchiveCurrentAs era16
+    .\Publish-Gallery.ps1 -GalleryPath .\out\era17\gallery -EraSlug era17 `
+        -ViewerHtml C:\work\ComfyStewardView\tools\selfie-stick\gallery\index.html
+
+.NOTES
+    The viewer page (index.html) is owned by ComfyStewardView
+    (tools/selfie-stick/gallery/index.html). The copy beside this script is a
+    fallback that must be kept byte-identical; pass -ViewerHtml to ship the
+    owner's file directly. The staged page's SHA-256 is printed so the log shows
+    which viewer went out -- an era publish fans this one file into the root and
+    every archived era directory.
 #>
 [CmdletBinding()]
 param(
@@ -31,6 +41,7 @@ param(
     [string] $ArchiveCurrentAs = '',
     [string] $EraSlug = '',
     [switch] $SiblingErasOnly,
+    [string] $ViewerHtml = '',
     [string] $RoutePath = '/valheim/',
     [string] $RemoteDir = '/srv/sites/valheim',
     [string] $SshAlias = 'fx99',
@@ -52,7 +63,11 @@ Write-Host '[1/5] staging'
 if (Test-Path $stage) { Remove-Item -Recurse -Force $stage -Confirm:$false }
 New-Item -ItemType Directory -Path (Join-Path $stage 'thumb'), (Join-Path $stage 'large') -Force | Out-Null
 
-Copy-Item (Join-Path $here 'gallery\index.html') (Join-Path $stage 'index.html')
+$viewer = if ($ViewerHtml) { $ViewerHtml } else { Join-Path $here 'gallery\index.html' }
+if (!(Test-Path $viewer)) { throw "viewer page not found: $viewer" }
+Copy-Item $viewer (Join-Path $stage 'index.html')
+$viewerSha = (Get-FileHash $viewer -Algorithm SHA256).Hash.ToLowerInvariant()
+Write-Host ("      viewer: {0}  sha256 {1}" -f $viewer, $viewerSha.Substring(0, 12))
 foreach ($side in 'depth.json', 'judge.json') {
     $p = Join-Path $gallery $side
     if (Test-Path $p) { Copy-Item $p (Join-Path $stage $side) }
