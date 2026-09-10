@@ -91,3 +91,33 @@ NVIDIA installer had removed `C:\Windows\System32\vulkan-1.dll` at 04:48 local; 
 llamacpp-knee build) imports `ggml-vulkan.dll` at start and died with `0xc0000135`. Fixed with an
 app-local copy of the Intel driver store's `vulkan-1-64.dll` beside the binary; ArcServe serviceable
 again at 10:24 local. Reinstalling the Intel driver restores the System32 copy properly.
+
+## Iteration 3 — Kinship (2026-09-10, ~19:35 UTC)
+
+Derek's ask: majority owners of a build can tag the people they built beside, and who you have
+"camped" with over the eras is shown as a branching tree over time. Shipped on the creators lane
+only (no chronicles or viewer change):
+
+| Surface | Change | Release | Rollback to |
+|---|---|---|---|
+| `/valheim/creators/kinship/?builder=<key>` | New page (`web/kinship.html` + `web/kinship.js`, projected by `gallery.py` beside `stats/`). Anchor picker with the same matcher as the front door; Tree tab (era bands, trunk = anchor, one branch per co-builder, solid = shared pieces that era, dashed = legacy era with unknown shares, hairline = an era apart) and Ledger tab (50 rows a page); aside "Builds you hold" with per-build share bars and Tag controls; `#kin-tag-modal`. | `.creator-releases/af25c9fde1bd-abdc72125cf7` | `.creator-releases/dbfbac58dbda-fc96ee6c235f` (iteration 2) |
+| Builder pages | "Open the kinship tree" in the hero and on the Top 8 panel; coordinator-confirmed tags render as solid `.kin-chip` chips beside the credit line. Nav gains Kinship. `creators.css?v=4`. | same | same |
+| `creators.js` | Participation ledger hoisted into `StewardParticipation` (same storage key and schema, plus `kinshipTags`; "forget" clears it). `majorityOwner` (≥50 % share, else the largest known share ≥25 %; legacy owns nothing), `buildKinshipTree`, `kinshipTagRecord`, closed tag vocabulary (basemate / collab / helping-hand / visitor; mason / roof / fields / portal / defense / interior). Route guard: creators.js stands down on the kinship page. | same | same |
+| `participation.json` | `gallery.py sanitize_confirmed_tags()` publishes coordinator-confirmed tags stripped to buildKey / contributorKey / builderKey / tags / confirmedAt. The coordinator file (`analysis/participation.json`) does not exist yet, so the public file is still absent (404) — pages treat it as optional. | same | same |
+
+Rails: a tag is recorded on the device, exported in the copied payload beside the gating claim
+(`kindFilter: 'kinship'`), and only becomes public when a coordinator confirms it. Tagging is gated
+on "I built this" for that build; ungated buttons are `.inert` + `aria-disabled`, never `disabled`.
+Bed ownership is NOT joined to builds (phase 2, separate evidence type `bed-owner-in-footprint`, a
+pipeline change that fails the gate by design). Circle mode and photo-inspect tags are later phases.
+
+Verification: gate PASS (2,682 threads identical to live, only presentation differs);
+`browser-smoke.mjs` kinship leg on the live site — 12 branches, 72 strokes, 13 portraits, 50 ledger
+rows, tag gate held; `smoke_front.mjs` 15/15; `verify_sweep.ps1` all clear (kinship URLs, `?v=4`,
+banned words absent). Suites: era-archive 82 tests, chronicles 45, Node 48. The smoke's spatial leg
+(AM4 world viewer `?era=era7` raster) timed out during this window; that lane is not part of this
+release and every FX99 check passed.
+
+Known limits: no live thread reaches a legacy era with more than one contributor (every legacy
+import credits one builder), so dashed legacy segments only appear on fixtures; the tree draws the
+12 closest branches and the ledger lists the rest; node labels stagger and truncate at twelve lanes.
