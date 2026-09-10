@@ -31,7 +31,7 @@
 	# A gallery page pulls hundreds of small webps and the same visitor pulls
 	# them again on every scroll back. Renders are content-addressed by run id,
 	# so they never change under a given name and can be cached hard.
-	@renders path_regexp ^/[a-z0-9][a-z0-9._-]*/(thumb|large|img)/
+	@renders path_regexp ^/[a-z0-9][a-z0-9._-]*(/[a-z0-9][a-z0-9._-]*)?/(thumb|large|img)/
 	header @renders Cache-Control "public, max-age=604800, immutable"
 
 	# index.json changes on every publish, so it must not be.
