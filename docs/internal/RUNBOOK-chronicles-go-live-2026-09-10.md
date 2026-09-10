@@ -58,3 +58,15 @@ Product code is in `ComfyStewardView` (`tools/chronicles/`, `tools/era-archive/w
   working tree is mid-change (`dmos-app.caddy` untracked, `world.caddy.proposal` parked).
 - Start a HEARTH art session for the illustrated "?" card while the 4K capture holds the B70s;
   the SVG sticker ships, the illustration follows.
+
+## What went live (2026-09-10, ~12:30 UTC)
+
+| Lane | Release | Rollback to |
+|---|---|---|
+| `/chronicles/` | `20260910T123011Z-848443b80113` (release 2, with tutorial crops) | `20260910T122453Z-5833a76b6198` via `deploy.py --rollback` |
+| Era viewer | sha `31ef8c5f6c5c` in `/valheim/` + era7,8,9,10,11,12,14,16 | `push_viewer.py --rollback 824d662bcce1` (era16 was `5c17abbed13d`) |
+| Creators | `.creator-releases/9fd336221882-99ce9c69c3f6` | `.creator-releases/87b27edf5458-1f2d711b931f` |
+
+Sweep (`ComfyStewardView/tools/chronicles/verify_sweep.ps1`): all clear after release 2.
+Still open: the illustrated "?" card (SVG sticker ships; generate on the B70s after the
+capture), and the 4K era-17 publish with `-ViewerHtml` followed by `push_viewer.py --verify`.
