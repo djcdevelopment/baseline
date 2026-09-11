@@ -276,3 +276,16 @@ residents with no directory record render as "Recorded builder" (publishing thei
 the pair view's default active build ranks by album pieces; the participation summary's "already submitted"
 wording. AM4 is at 95 % disk (21 GB free) — clear it before any further 4K campaign there.
 
+## AM4 disk recovery (2026-09-11, 17:59–18:08 UTC, offloads continuing)
+
+AM4 went from 95 % (22 GB free) to 54 % (219 GB free) without moving a master: 62.7 GB of its NVMe was
+unallocated in the LVM volume group (extended online), 52.7 GB of GGUFs sat on a box with no inference engine
+(hashed into `models/REMOVED-20260911.json`, deleted), stale staging and caches went (27 GB), the world-save
+copies inside stopped attempts were pruned with the new `tools/era-archive/prune_run_worlds.py` (receipts before
+unlink; the quiet campaigns' copies had already been removed outside the plan at 17:59 UTC), and Docker lost 12
+redundant tags, 7 snapshot images and 3.6 GB of build cache. Two offloads (the pre-swap tarball and ComfyUI's
+outputs, 7.4 GB) are crossing the wifi to `E:\omenm4-offload\` unattended, verified by sha256 before the AM4
+copies go. The era 7/9/10 masters (39 GB) stay on AM4 by decision; the shuttle commands are in the plan. Full
+receipt: ComfyStewardView `docs/am4-disk-recovery-2026-09-11.md`; step logs in
+`E:\omen\steward-multi-eram4-space-20260911\`.
+
