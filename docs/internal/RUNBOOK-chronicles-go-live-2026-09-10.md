@@ -162,3 +162,28 @@ Still open (Release B, after the capture): the era-17 4K publish with `-ViewerHt
 on branch `bed-residency`, merged and deployed in the same window because both rewrite every thread and
 the gate must FAIL once, not twice. Derek's hands: the Intel Arc driver reinstall that restores System32
 `vulkan-1.dll` (`/checkmcp` reads `app-local` until then).
+
+### Release B is built and waiting (2026-09-11, ~04:50 UTC)
+
+Branch `bed-residency` (ComfyStewardView, pushed, `75b2374`, five commits on top of `7703540`) carries bed
+residency end to end: `community.py` sidecar (`BED_RECIPE_HASH 3735df02…`, fresh and cache-hit paths,
+`RECIPE_HASH` untouched), `build_resident` table + allowlist + `verify.py` reconciliation, `gallery.py`
+whitelist (`builderKey, beds, evidence` only), "slept here:" on credit lines as `a.resident` (never
+`a.credit`), bed counts on kinship build cards and in the tag dialog, `?v=6`, README rewritten from "phase 2"
+to shipped. Proof on a scratch copy of the analysis root (live root proven unchanged, 0 of 314 files touched):
+all seven `membership.parquet` byte-identical, every build key unchanged; 5,376 albums gain residents (7,906
+residencies, 2,248 resident builders, 8,322 beds; 91 % of residents have a public name, the rest render as
+"Recorded builder"); versus the live projection every thread difference is an added `residents` key and
+`directory.json` is unchanged. Spot-check albums: `7a60df07763e9b85…` era 10 (41 residents),
+`8126c1f821f00433…` era 12 (27), `2d70f42e0e69602f…` era 7 (18). Receipts and the diff script are kept at
+`E:\wt\bed-residency-scratch\` until the window.
+
+Window sequence (after the 4K capture is idle):
+1. Derek: `Publish-Gallery.ps1 -GalleryPath <era17 4K gallery> -EraSlug era17 -ViewerHtml C:\work\ComfyStewardView\tools\selfie-stick\gallery\index.html`, then `push_viewer.py --viewer <same file> --verify`.
+2. `git merge --no-ff bed-residency` into main (ComfyStewardView), suites, then the era-archive orchestration
+   (`Invoke-EraArchive.ps1` / `community.py`) over the live root: every era prints "residents re-derived …
+   build keys unchanged" and era 17 re-derives fresh.
+3. `gallery.py` → `gate_creators.py` (**FAIL expected**: changed = threads with residents and era-17 photos,
+   new/gone 0, directory identical or era-17 counts only) → `deploy_gallery.py --revision <HEAD>` →
+   `browser-smoke.mjs` (world URL), `smoke_front.mjs`, `verify_sweep.ps1` (now pins `?v=6`).
+4. Rollback: creators symlink → `previous` from the receipt; viewer `push_viewer.py --rollback <sha12>`.
