@@ -254,13 +254,31 @@ def mass_points(mass, points):
             and mass["minY"] - 0.5 <= p[1] <= mass["maxY"] + 0.5]
 
 
+# A build made mostly of prefabs the name dictionary cannot resolve ("hash:NNNN")
+# is made of mod prefabs the capture client does not have. It arrives as an empty
+# zone -- "world never arrived (0 pieces)" -- on every attempt, and costs a game
+# relaunch on the miss and another on the retry before the worker gives up. era11's
+# bad2c07d (289 pieces, five prefabs, all hash:) did exactly that on three separate
+# campaigns. Six such builds exist across every campaign; skip them at plan time.
+UNRESOLVABLE_SHARE = 0.5
+
+
 def read_points(root, era, build_keys):
     era_row, membership, zdo = artifacts(root, era)
-    points = {}
+    points, unresolvable = {}, set()
     with duckdb.connect(":memory:") as con:
         con.execute("SET threads=2; SET memory_limit='768MB'")
         con.execute("CREATE TABLE wanted(build_key VARCHAR PRIMARY KEY)")
         con.executemany("INSERT INTO wanted VALUES (?)", [(k,) for k in build_keys])
+        for key, n, u in con.execute(f"""
+            SELECT m.build_key, count(*),
+                   count(*) FILTER (WHERE z.prefab_name IS NULL
+                                       OR z.prefab_name LIKE 'hash:%')
+            FROM read_parquet('{membership}') m JOIN wanted USING(build_key)
+            JOIN read_parquet('{zdo}') z USING(snapshot_id, zdo_index)
+            WHERE m.snapshot_id = ? GROUP BY 1""", [era_row["snapshotId"]]).fetchall():
+            if u / float(n) > UNRESOLVABLE_SHARE:
+                unresolvable.add(key)
         cursor = con.execute(f"""
             SELECT m.build_key, z.x, z.y, z.z
             FROM read_parquet('{membership}') m JOIN wanted USING(build_key)
@@ -278,7 +296,7 @@ def read_points(root, era, build_keys):
         for key, group in itertools.groupby(rows(), key=lambda r: r[0]):
             points.setdefault(key, []).extend(
                 (float(r[1]), float(r[2]), float(r[3])) for r in group)
-    return points, era_row
+    return points, era_row, unresolvable
 
 
 def main():
@@ -294,13 +312,17 @@ def main():
 
     keys = [b["buildKey"] for b in builds]
     sys.stderr.write(f"reading points for {len(keys)} builds...\n")
-    points, era_row = read_points(args.root, args.era, keys)
+    points, era_row, unresolvable = read_points(args.root, args.era, keys)
+    if unresolvable:
+        names = ", ".join(k[:8] for k in sorted(unresolvable))
+        sys.stderr.write(f"skipping {len(unresolvable)} build(s) the client cannot "
+                         f"render (majority hash: prefabs): {names}\n")
 
     rows, plan, campaign_builds, skipped = [], {}, [], 0
     for build in builds:
         key = build["buildKey"]
         pts = points.get(key)
-        if not pts:
+        if not pts or key in unresolvable:
             continue
 
         # Which builds need this. With a forecast, ask what the orbits actually
@@ -409,7 +431,8 @@ def main():
         "elevationDeg": DETAIL_ELEVATION,
         "aimRule": args.aim_rule,
         "counts": {"builds": len(plan), "shots": len(rows),
-                   "skippedAlreadyLegible": skipped},
+                   "skippedAlreadyLegible": skipped,
+                   "skippedUnrenderable": sorted(k[:12] for k in unresolvable)},
         "builds": plan,
     }
     with open(args.out_json, "w", encoding="utf-8") as fh:
