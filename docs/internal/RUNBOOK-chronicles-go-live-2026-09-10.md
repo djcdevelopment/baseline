@@ -128,3 +128,37 @@ The Stitch canvas export the three iterations were built from is committed as te
 `docs/design/valheim-chronicles-stitch-2026-09/` (DESIGN.md, the 16 mocks as HTML, the
 aspirational architecture documents under `aspirational/`, and a mock-to-shipped index).
 Rendered screens stay outside git at `E:\omen\design-exports\valheim_creators_gallery\`.
+
+## Iteration 4 — closing the open questions (2026-09-11, ~04:10 UTC)
+
+Derek accepted fifteen recommendations after iteration 3 (the table lives in the plan record for
+this window). Release A shipped on the creators lane; Release B (bed residency + the era-17 4K
+re-projection) waits for the capture.
+
+| Surface | Change | Release | Rollback to |
+|---|---|---|---|
+| Builder pages + kinship | **"Not mine"** beside "I built this": a claim now carries `kind: built \| disavow`; a disavowal replaces a built claim for that build, grants no standing (no request or tag controls), and rides the same copied-payload rails. Never published per build (reconciliation policy still unwritten); only a `disavowals` count reaches `participation.json`. | `.creator-releases/770354007ad8-2780c68be0a9` | `.creator-releases/af25c9fde1bd-abdc72125cf7` (iteration 3) |
+| Kinship page | Placeholder-named co-builders carry an **unnamed** chip (ledger, cohabitants, tooltip; dimmed on tree labels) and the tag note invites a name for the coordinator — no rename is promised. Eight branches under 720 px, twelve above, re-laid on resize. `creators.css?v=5`. | same | same |
+| `participation.json` | Now published (was 404): the coordinator file exists. Zero counts, `confirmedTags: []`, `disavowals: 0`. | same | same |
+| `tools/era-archive/coordinate.py` | The coordinator's tool: `seed`, `ingest <payload>` (all three payload schemas, upsert by id), `confirm-tag` / `revoke-tag`, `forget <handle>` (the retention answer), `status` (prints the publish commands). Owns `E:\omen\steward-multi-era\analysis\participation.json`, which holds full records (handle, note, contact) and lives on Derek's disk only; the projection whitelists five keys per confirmed tag. | n/a (tool) | n/a |
+| `browser-smoke.mjs` | World leg is catalog-driven (`/api/eras`; waits for the context raster on terrain-bearing eras) and non-fatal by default (`spatial.status: failed`, receipt always written, exit 0); `--strict-world` or `SMOKE_STRICT_WORLD=1` restores the throw. | n/a | n/a |
+
+Also landed in this window: HEARTH doorcheck facet `arc_runtime` (commandcenter `bbdd097`) that checks
+the Vulkan loader and the llama-server binaries before anything launches; the Stitch design export
+committed as text under `docs/design/valheim-chronicles-stitch-2026-09/`; `tools/BetterPortals/`
+gitignored with provenance in START-HERE; the `claude/kind-torvalds-fdd7c6` branch and worktree
+retired (it was already squash-merged as PR #6).
+
+Resolved without code: the "AM4 raster outage" was the creators smoke waiting for a construction raster
+on an era that has had terrain since 13:31 UTC — a stale assertion, not a viewer regression.
+
+Verification: gate PASS (2,682 threads identical, presentation + `participation.json` differ);
+`browser-smoke.mjs` with the world URL passed (kinship 12/72/13/50, gate held; spatial era 7 context
+raster, switch to era 17); `smoke_front.mjs` 15/15; `verify_sweep.ps1` all clear at `?v=5`. Suites:
+era-archive 111, chronicles 45, Node 55, doorcheck 31.
+
+Still open (Release B, after the capture): the era-17 4K publish with `-ViewerHtml` + `push_viewer.py
+--verify`, then bed residency (`residents[]` per album as its own evidence type, no build-key change)
+on branch `bed-residency`, merged and deployed in the same window because both rewrite every thread and
+the gate must FAIL once, not twice. Derek's hands: the Intel Arc driver reinstall that restores System32
+`vulkan-1.dll` (`/checkmcp` reads `app-local` until then).
