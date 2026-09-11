@@ -34,6 +34,7 @@ than as a failure.
       --campaign .../campaign.json --out-tsv detail-era11.tsv --out-json detail-era11.json
 """
 import argparse
+import hashlib
 import itertools
 import json
 import math
@@ -73,6 +74,14 @@ def parse_args():
                    help="campaign.json naming the builds and their cluster ids")
     p.add_argument("--out-tsv", required=True)
     p.add_argument("--out-json", required=True)
+    p.add_argument("--out-campaign", default="",
+                   help="also write a steward-local-campaign/v1 campaign.json, so the "
+                        "detail tier runs through install_capture_worker.py and "
+                        "capture_worker.py like any other campaign instead of down a "
+                        "side channel. Write it into its own immutable directory "
+                        "beside the TSV")
+    p.add_argument("--batch-size", type=int, default=100)
+    p.add_argument("--min-free-bytes", type=int, default=20 * 1024 ** 3)
     p.add_argument("--target-px-per-m", type=float, default=40.0,
                    help="detail scale to solve for (default 40). Checked by eye "
                         "against era11: 38 px/m reads window mullions and roof "
@@ -175,7 +184,7 @@ def main():
     sys.stderr.write(f"reading points for {len(keys)} builds...\n")
     points, era_row = read_points(args.root, args.era, keys)
 
-    rows, plan, skipped = [], {}, 0
+    rows, plan, campaign_builds, skipped = [], {}, [], 0
     for build in builds:
         key = build["buildKey"]
         pts = points.get(key)
@@ -202,7 +211,7 @@ def main():
 
         masses = subclusters(pts)[:args.max_per_build]
         cid = build.get("localClusterId", 0)
-        entries = []
+        entries, campaign_shots = [], []
         for n, mass in enumerate(masses, 1):
             mpts = mass_points(mass, pts)
             if len(mpts) < 8:
@@ -217,10 +226,16 @@ def main():
                              target_distance, CLEARANCE, points=mpts)
             c, a = cam["camera"], cam["aim"]
             name = f"detail{n}"
-            rows.append("\t".join(map(str, [
+            tsv = "\t".join(map(str, [
                 cid, name, c["x"], c["y"], c["z"], cam["yaw_deg"], cam["pitch_deg"],
                 ENVIRONMENT, TIME_OF_DAY, a["x"], a["y"], a["z"],
-                f"Build {key[:8]}", "", 0, ""])))
+                f"Build {key[:8]}", "", 0, ""]))
+            rows.append(tsv)
+            campaign_shots.append({
+                "shotKey": hashlib.sha256(
+                    f"{era_row['sourceKey']}:{key}:{name}".encode()).hexdigest(),
+                "shot": name, "tsv": tsv,
+                "framesWholeBuild": cam["frames_whole_build"]})
             entries.append({
                 "shot": name,
                 "massPieces": mass["pieces"], "massShare": mass["share"],
@@ -232,6 +247,10 @@ def main():
         if entries:
             plan[key] = {"localClusterId": cid, "orbitWorstPxPerM": round(worst, 1),
                          "subMasses": len(masses), "shots": entries}
+            campaign_builds.append({
+                "buildKey": key, "localClusterId": cid,
+                "membershipSha256": build.get("membershipSha256"),
+                "pieces": len(pts), "shots": campaign_shots})
 
     os.makedirs(os.path.dirname(os.path.abspath(args.out_tsv)), exist_ok=True)
     with open(args.out_tsv, "w", encoding="utf-8", newline="") as fh:
@@ -255,6 +274,40 @@ def main():
     }
     with open(args.out_json, "w", encoding="utf-8") as fh:
         json.dump(doc, fh, indent=1, sort_keys=True)
+
+    if args.out_campaign:
+        # Same shape campaign.py writes, so install_capture_worker.py stamps it and
+        # capture_worker.py runs it with no special case. batchSize matters: a game
+        # launch costs ~233 s, and a detail pass is small enough to fit one launch.
+        import datetime
+        campaign_doc = {
+            "schema": "steward-local-campaign/v1",
+            "createdAt": datetime.datetime.now(datetime.timezone.utc)
+                                 .strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "era": args.era,
+            "sourceKey": era_row["sourceKey"],
+            "snapshotId": era_row["snapshotId"],
+            "world": era_row["worldId"],
+            "sourceFiles": {k: {p: era_row[k][p] for p in ("bytes", "sha256")}
+                            for k in ("db", "fwl")},
+            "runtimeMode": "current-client",
+            "width": campaign.get("width", 3840), "height": height,
+            "batchSize": args.batch_size,
+            "maxOutputBytes": 32 * 1024 ** 3,
+            "minFreeBytes": args.min_free_bytes,
+            "stallSeconds": 900, "maxAttempts": 2,
+            "excludedCompleted": [],
+            "builds": campaign_builds,
+        }
+        os.makedirs(os.path.dirname(os.path.abspath(args.out_campaign)), exist_ok=True)
+        with open(args.out_campaign, "w", encoding="utf-8") as fh:
+            json.dump(campaign_doc, fh, indent=2, sort_keys=True)
+        # capture_worker reads all-shots.tsv from the campaign directory by name.
+        beside = os.path.join(os.path.dirname(os.path.abspath(args.out_campaign)),
+                              "all-shots.tsv")
+        with open(beside, "w", encoding="utf-8", newline="") as fh:
+            fh.write(HEADER + "".join(r + "\n" for r in rows))
+        sys.stderr.write(f"wrote {args.out_campaign} and all-shots.tsv beside it\n")
 
     sys.stderr.write(
         f"wrote {args.out_tsv}: {len(rows)} detail shots over {len(plan)} builds "
