@@ -47,7 +47,9 @@ when Baseline is their declared archive or projection owner.
 Committed design exports (canvas mocks, token sheets) that a sovereign repository's
 implementation cites live under [`design/`](design/), one dated directory per export —
 currently [`design/valheim-chronicles-stitch-2026-09/`](design/valheim-chronicles-stitch-2026-09/README.md),
-the record behind the public Valheim Chronicles archive. Screens stay as text (HTML) and
+the record behind the public Valheim Chronicles archive, and
+[`design/valheim-kinship-viewport-stitch-2026-09/`](design/valheim-kinship-viewport-stitch-2026-09/README.md),
+the kinship pair view on the builder profile. Screens stay as text (HTML) and
 tokens; rendered PNGs are kept outside git.
 
 Technical netcode decisions stay with their system as ADRs under
