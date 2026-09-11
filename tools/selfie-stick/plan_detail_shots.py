@@ -52,20 +52,42 @@ from frame_forecast import project  # noqa: E402
 
 TAN_V = math.tan(math.radians(FOV_V_DEG / 2.0))
 
-# The aim rule. Measured on the first 77 detail frames shot against era11: every one
-# had ~2x the pixels per metre of its orbit, yet edge density ON the build rose in
-# only 44 of 77. The scale was right and the camera was pointed at the floor -- the
-# box centre of a flat platform is a point on the floor, and a stone floor at 40
-# px/m has less texture than a facade at 18.
+# The aim rule, settled by two re-shoots of the same 131 shots on AM4 (2026-09-11),
+# paired frame-for-frame through frame_geometry.
 #
-# So aim where the pieces are dense and rise. Piece density is the world-side proxy
-# for image edge energy: a floor is a few large tiles, a facade is many small pieces
-# with windows, beams and shingles. Cells are scored count * (0.5 + h_rel), so a
-# cell at the foundations weighs half and one at the ridge weighs one and a half;
-# the aim is the centroid of the pieces near the winning cell, which smooths a
-# single lucky cell into a real feature.
+# v1, box centre: 2x the px/m of the orbits, but subject edge density rose in only
+# 44 of 77 -- the box centre of a flat platform is a point on the floor.
+#
+# v2, "dense": aim at the densest, highest 4 m cell. It did NOT work. On the 53 shots
+# where the aim moved >= 5 m, subject edge density was 1.01x (26/53) and
+# structureFraction HALVED (0.53x). Banded by how far the aim lifted:
+#
+#     lift        n   edge   structure   sky
+#     down >5 m  14   1.18     1.09      0.76     <- centre was in empty air
+#     ~0         32   1.10     1.16      0.53     <- run-to-run noise, ~15%
+#     up 1-3     16   0.87     0.70      1.15
+#     up 6-12    18   0.84     0.37      0.40
+#     up >12     15   1.82     0.86      4.04     <- tower crowns against sky
+#
+# Any upward lift trades floor for sky, and there is no sweet spot. Moving DOWN
+# helps: those are the sky-chained and tall builds whose box centre sat in a void
+# between platforms (v1 structure 0.000, 0.004, 0.025 on three of them).
+#
+# So "grounded": the box centre, unless nothing is near it -- then drop to the
+# densest cell at or below that height. It is v1 everywhere v1 had a subject, and
+# the fix only where v1 aimed at nothing. Never lift. "dense" and "center" stay
+# available and all three are scored per shot as centralShare.
 AIM_CELL_M = 4.0
 AIM_RADIUS_M = 5.0
+# The trigger. A first cut used "fewer than 8 pieces within 5 m of the box centre"
+# and redirected 67 of 131 shots, several for the worse -- a courtyard's centre
+# trivially has few pieces near it. The honest signal is the one already computed
+# for every shot: if box-centre framing puts less than this share of the pieces in
+# the middle quarter of the frame, it aimed at nothing. Under that, the grounded
+# aim is tried and kept only if it clears the same bar -- a descent that finds
+# nothing either (a tall build whose mass is all above the centre) stays as v1,
+# because that case needs a different elevation, not a different aim.
+AIM_EMPTY_SHARE = 0.15
 # The central region of the frame used to score the rule: the middle half on each
 # axis, a quarter of the picture. A detail frame should have its subject there.
 CENTRAL_HALF = 0.5
@@ -90,6 +112,31 @@ def dense_aim(points):
     near = [p for p in points if math.dist(p, ctr) <= AIM_RADIUS_M] or [ctr]
     return (sum(p[0] for p in near) / len(near),
             sum(p[1] for p in near) / len(near),
+            sum(p[2] for p in near) / len(near))
+
+
+def grounded_aim(points, cluster):
+    """The densest mass at or below the box centre's height. Never lifts.
+
+    The candidate for a centre that aimed at nothing -- a void between chained
+    platforms, the hollow of a tall hall. Whether it is used is decided by the
+    caller from centralShare, so the common case stays byte-identical to v1.
+    """
+    cy = cluster["min_y"] + (cluster["max_y"] - cluster["min_y"]) * 0.5
+    cells = {}
+    for x, y, z in points:
+        if y > cy + AIM_CELL_M / 2.0:
+            continue                          # never lift
+        key = (math.floor(x / AIM_CELL_M), math.floor(y / AIM_CELL_M),
+               math.floor(z / AIM_CELL_M))
+        cells[key] = cells.get(key, 0) + 1
+    if not cells:
+        return None
+    best = max(cells, key=cells.get)
+    bctr = tuple((g + 0.5) * AIM_CELL_M for g in best)
+    near = [p for p in points if math.dist(p, bctr) <= AIM_RADIUS_M] or [bctr]
+    return (sum(p[0] for p in near) / len(near),
+            min(cy, sum(p[1] for p in near) / len(near)),
             sum(p[2] for p in near) / len(near))
 
 
@@ -152,12 +199,14 @@ def parse_args():
                         "from its own geometry instead of its shot record")
     p.add_argument("--max-per-build", type=int, default=4,
                    help="cap on detail frames per build, largest masses first")
-    p.add_argument("--aim-rule", choices=("dense", "center"), default="dense",
-                   help="dense (default): look at the densest, highest cell of the "
-                        "mass. center: the sub-mass box centre, which the first "
-                        "era11 detail run used and which points at the floor on flat "
-                        "platforms. Both are scored per shot as centralShare so the "
-                        "choice is measurable without a re-shoot")
+    p.add_argument("--aim-rule", choices=("grounded", "center", "dense"),
+                   default="grounded",
+                   help="grounded (default): box centre unless nothing is near it, "
+                        "then the densest mass at or below that height -- never "
+                        "lifts. center: the box centre always (the v1 era11 run). "
+                        "dense: the densest, highest cell (the v2 run; it halved "
+                        "structureFraction and is kept only for comparison). All "
+                        "three are scored per shot as centralShare")
     p.add_argument("--height", type=int, default=2160)
     p.add_argument("--limit", type=int, default=0)
     return p.parse_args()
@@ -288,17 +337,25 @@ def main():
             # Both rules are solved every time so the shot record carries the
             # comparison; only the chosen one is written to the TSV.
             solved = {}
-            for rule in ("center", "dense"):
-                aim = dense_aim(mpts) if rule == "dense" else None
+            for rule in ("center", "dense", "grounded"):
+                aim = {"center": None, "dense": dense_aim(mpts),
+                       "grounded": grounded_aim(mpts, cluster)}[rule]
                 solved[rule] = camera_for(cluster, azimuth, elevation, MARGIN,
                                           target_distance, CLEARANCE,
                                           points=mpts, aim=aim)
-            cam = solved[args.aim_rule]
-            c, a = cam["camera"], cam["aim"]
             shares = {rule: central_share(
                 mpts, (s["camera"]["x"], s["camera"]["y"], s["camera"]["z"]),
                 (s["aim"]["x"], s["aim"]["y"], s["aim"]["z"]))
                 for rule, s in solved.items()}
+            # grounded is box-centre unless box-centre aimed at nothing AND the
+            # descent actually helps; then and only then it moves.
+            if (args.aim_rule == "grounded"
+                    and not (shares["center"] < AIM_EMPTY_SHARE
+                             and shares["grounded"] >= AIM_EMPTY_SHARE)):
+                solved["grounded"] = solved["center"]
+                shares["grounded"] = shares["center"]
+            cam = solved[args.aim_rule]
+            c, a = cam["camera"], cam["aim"]
             name = f"detail{n}"
             tsv = "\t".join(map(str, [
                 cid, name, c["x"], c["y"], c["z"], cam["yaw_deg"], cam["pitch_deg"],
@@ -323,6 +380,8 @@ def main():
                 "centralShare": shares[args.aim_rule],
                 "centralShareCenter": shares["center"],
                 "centralShareDense": shares["dense"],
+                "centralShareGrounded": shares["grounded"],
+                "groundedMoved": solved["grounded"]["aim"] != solved["center"]["aim"],
             })
         if entries:
             plan[key] = {"localClusterId": cid, "orbitWorstPxPerM": round(worst, 1),
