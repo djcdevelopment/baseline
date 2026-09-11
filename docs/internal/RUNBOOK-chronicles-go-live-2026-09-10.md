@@ -121,3 +121,10 @@ release and every FX99 check passed.
 Known limits: no live thread reaches a legacy era with more than one contributor (every legacy
 import credits one builder), so dashed legacy segments only appear on fixtures; the tree draws the
 12 closest branches and the ledger lists the rest; node labels stagger and truncate at twelve lanes.
+
+## Design record
+
+The Stitch canvas export the three iterations were built from is committed as text at
+`docs/design/valheim-chronicles-stitch-2026-09/` (DESIGN.md, the 16 mocks as HTML, the
+aspirational architecture documents under `aspirational/`, and a mock-to-shipped index).
+Rendered screens stay outside git at `E:\omen\design-exports\valheim_creators_gallery\`.

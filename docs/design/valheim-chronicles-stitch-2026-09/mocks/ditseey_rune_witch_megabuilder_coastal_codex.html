@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-secondary-container":"#432100","on-background":"#dde3ee","on-tertiary-fixed":"#261a00","on-tertiary-container":"#584000","surface-container-low":"#161c24","primary-fixed-dim":"#ffb95f","surface-container-lowest":"#090f16","on-tertiary":"#402d00","on-secondary":"#4d2600","on-tertiary-fixed-variant":"#5c4300","on-secondary-fixed":"#2f1500","inverse-surface":"#dde3ee","on-error-container":"#ffdad6","on-primary-fixed":"#2a1700","outline":"#a08e7a","tertiary-fixed":"#ffdf9f","error-container":"#93000a","on-error":"#690005","surface":"#0e141c","surface-variant":"#2f353e","primary-fixed":"#ffddb8","inverse-primary":"#855300","surface-container":"#1a2028","secondary-fixed":"#ffdcc3","background":"#0e141c","on-surface":"#dde3ee","secondary-container":"#d97707","outline-variant":"#534434","surface-container-highest":"#2f353e","primary":"#ffc174","on-secondary-fixed-variant":"#6e3900","on-primary-fixed-variant":"#653e00","inverse-on-surface":"#2b3139","surface-bright":"#343a42","secondary":"#ffb77d","surface-container-high":"#242a33","on-surface-variant":"#d8c3ad","surface-tint":"#ffb95f","on-primary":"#472a00","on-primary-container":"#613b00","tertiary-fixed-dim":"#f9bd22","tertiary":"#ffc32d","primary-container":"#f59e0b","surface-dim":"#0e141c","secondary-fixed-dim":"#ffb77d","error":"#ffb4ab","tertiary-container":"#e0a800"},borderRadius:{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},spacing:{"space-lg":"1.5rem","space-sm":"0.75rem","space-4xl":"6rem","space-xl":"2rem","space-2xl":"3rem","margin-mobile":"1rem","margin-desktop":"3rem","space-2xs":"0.25rem","space-xs":"0.5rem","space-3xl":"4rem","gutter-desktop":"2rem","space-md":"1rem","gutter-mobile":"1rem"},fontFamily:{"label-mono-md":["JetBrains Mono"],"body-md":["Plus Jakarta Sans"],"title-md":["Plus Jakarta Sans"],"headline-lg-mobile":["Bodoni Moda"],"body-lg":["Plus Jakarta Sans"],"label-mono-sm":["JetBrains Mono"],"body-sm":["Plus Jakarta Sans"],"headline-sm":["Bodoni Moda"],"label-runic":["Bodoni Moda"],"headline-lg":["Bodoni Moda"],"display-hero":["Bodoni Moda"],"display-hero-mobile":["Bodoni Moda"],"headline-md":["Bodoni Moda"]},fontSize:{"label-mono-md":["13px",{"lineHeight":"18px","letterSpacing":"0.04em","fontWeight":"500"}],"body-md":["15px",{"lineHeight":"24px","fontWeight":"400"}],"title-md":["16px",{"lineHeight":"24px","fontWeight":"600"}],"headline-lg-mobile":["26px",{"lineHeight":"34px","letterSpacing":"0.01em","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"label-mono-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.06em","fontWeight":"500"}],"body-sm":["13px",{"lineHeight":"20px","fontWeight":"400"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"500"}],"label-runic":["13px",{"lineHeight":"16px","letterSpacing":"0.14em","fontWeight":"700"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"0.02em","fontWeight":"600"}],"display-hero":["56px",{"lineHeight":"64px","letterSpacing":"0.04em","fontWeight":"700"}],"display-hero-mobile":["36px",{"lineHeight":"44px","letterSpacing":"0.02em","fontWeight":"700"}],"headline-md":["24px",{"lineHeight":"32px","letterSpacing":"0.01em","fontWeight":"600"}]}}}};</script></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.6)]"><div class="h-20 w-full px-margin-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md shrink-0"><img alt="The Comfy Valheim Archive Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Xrq1RP8_Pnw7zQcGm2u-Qr7j2dLViwdknmJe22sNiDZ__osUIMPzCX326KOxet9mqFlnlaZex5dk-daMrgiedo1MfEOuA4mQZFQ5EtAO8S7oOA-vZ9QRqZ0NXnMmCY9j3sMaKDCvbAf54PJdT2aQESV-jjHUc0mMy9jftUnugjsFG3lmBCXxX2nUyXZuKuldnbBjJghm3YBMI2DCpBI97RRY0msFVJK6xxKpUJUei9OXAu4U4qUSpGYA"/><div class="flex flex-col"><span class="font-label-runic text-label-runic text-primary uppercase tracking-widest">The Comfy Community</span><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Valheim Chronicles</span></div></div><nav class="hidden xl:flex items-center gap-space-lg" data-active-classes="text-primary font-bold"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" data-path="gallery" href="#">Gallery</a><a aria-current="page" class="transition-colors uppercase tracking-wider text-primary font-bold" data-path="all-builders" href="#">All Builders</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" data-path="eras-timeline" href="#">Eras Timeline</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" data-path="world-claims" href="#">World Claims</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" data-path="photo-requests" href="#">Photo Requests</a></nav><div class="flex items-center gap-space-sm shrink-0"><button class="flex items-center justify-center w-10 h-10 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">search</span></button><div class="hidden sm:flex items-center gap-space-2xs px-space-sm py-space-2xs rounded bg-surface-container-low"><span class="material-symbols-outlined text-primary text-[14px]">token</span><span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">Payload: Active</span></div><button class="flex items-center gap-space-xs px-space-sm py-space-xs rounded bg-primary-container hover:bg-primary text-on-primary-container transition-all shadow-[0_0_16px_rgba(245,158,11,0.25)]" type="button"><span class="material-symbols-outlined text-[16px]">sync</span><span class="font-label-mono-sm text-label-mono-sm font-semibold uppercase tracking-wider">Sync Device</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-background"><div class="flex flex-col w-full">
+<!-- Subtle Ambient Glow Canvas Decor -->
+<div class="relative w-full overflow-hidden">
+<div class="absolute -top-32 left-1/4 w-96 h-96 bg-primary-container/10 blur-[120px] rounded-full pointer-events-none"></div>
+<div class="absolute top-96 right-10 w-80 h-80 bg-primary/10 blur-[140px] rounded-full pointer-events-none"></div>
+<!-- MAIN CONTAINER -->
+<div class="w-full max-w-[1560px] mx-auto px-margin-mobile md:px-margin-desktop py-space-xl flex flex-col gap-space-xl">
+<!-- 1. BREADCRUMB & REALM STATUS BAR -->
+<section class="flex flex-wrap items-center justify-between gap-space-md pb-space-md border-b-0">
+<div class="flex flex-wrap items-center gap-space-xs text-on-surface-variant font-label-mono-sm text-label-mono-sm">
+<a class="hover:text-primary transition-colors flex items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined text-[15px]">arrow_back</span>
+<span>VALHEIM ARCHIVE</span>
+</a>
+<span class="text-outline-variant">/</span>
+<a class="hover:text-primary transition-colors text-on-surface-variant" href="#">BUILDERS LEDGER</a>
+<span class="text-outline-variant">/</span>
+<span class="text-primary font-bold tracking-wide">DITSEEY (MEGABUILDER)</span>
+<span class="text-outline-variant">/</span>
+<span class="text-on-surface/60">ARCHIVAL STELE #004</span>
+</div>
+<div class="flex items-center gap-space-xs flex-wrap">
+<div class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-high text-primary shadow-sm">
+<span class="material-symbols-outlined text-[14px]">auto_awesome</span>
+<span class="font-label-runic text-label-runic tracking-wider uppercase text-[11px]">DITZY, DANGEROUS, DEFINITELY MAGICAL</span>
+</div>
+<div class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-low text-on-surface">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
+<span class="font-label-mono-sm text-label-mono-sm tracking-wider uppercase text-emerald-300">ACTIVE IN REALM</span>
+</div>
+</div>
+</section>
+<!-- 2. MEAD HALL MOOD & QUICK ACTION BANNER -->
+<section class="relative w-full rounded-xl bg-surface-container-low p-space-lg shadow-xl overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-r from-primary-container/10 via-transparent to-transparent pointer-events-none"></div>
+<div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg">
+<div class="flex items-start gap-space-md max-w-3xl">
+<div class="w-10 h-10 rounded bg-surface-container-high flex items-center justify-center shrink-0 text-primary shadow-inner">
+<span class="material-symbols-outlined text-[24px]">local_bar</span>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-space-xs font-label-mono-sm text-label-mono-sm text-primary uppercase tracking-wider">
+<span>Ditseey's Mead Hall Status</span>
+<span class="text-outline-variant">•</span>
+<span class="text-on-surface-variant font-normal">Inscribed 42m ago at Coastal Hearth</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-on-surface italic leading-snug">
+                “Building secret coastal hideaways where the sea mist hides the towers. If you hear teal sparks in the timber eaves, don't ask what runes I just carved.”
+              </p>
+</div>
+</div>
+<!-- Quick Action Buttons -->
+<div class="flex items-center gap-space-sm flex-wrap shrink-0">
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded bg-primary-container hover:bg-primary text-on-primary-container font-semibold transition-all shadow-[0_0_20px_rgba(245,158,11,0.25)] active:scale-95" id="meadBtn" type="button">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+<span class="font-label-mono-md text-label-mono-md uppercase">Offer Mead &amp; Spark</span>
+<span class="ml-1 px-1.5 py-0.5 rounded bg-on-primary-container/20 text-on-primary-container font-label-mono-sm text-label-mono-sm" id="meadCounter">88</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-mono-md text-label-mono-md transition-all shadow-md" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">shield</span>
+<span>+ Add to Shield-Wall</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-mono-md text-label-mono-md transition-all shadow-md" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">architecture</span>
+<span>Joint Blueprint</span>
+</button>
+</div>
+</div>
+</section>
+<!-- 3. MAIN 2-COLUMN PROFILE GRID -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-xl items-start">
+<!-- ================= LEFT COLUMN (~340px) ================= -->
+<aside class="xl:col-span-4 flex flex-col gap-space-lg w-full">
+<!-- HERO PORTRAIT BOX -->
+<div class="rounded-xl bg-surface-container-low p-space-md shadow-2xl flex flex-col gap-space-md relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-2xl pointer-events-none"></div>
+<!-- Frame Top Bar -->
+<div class="flex items-center justify-between pb-space-xs">
+<span class="font-label-runic text-label-runic text-primary uppercase tracking-widest text-[12px]">MEGABUILDER #004</span>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[16px]">stars</span>
+<span class="font-label-mono-sm text-label-mono-sm uppercase font-bold tracking-widest">RANK 4 // 112 ALBUMS</span>
+</div>
+</div>
+<!-- Portrait Frame -->
+<div class="relative w-full aspect-square rounded-lg overflow-hidden shadow-2xl bg-surface-container-highest group">
+<img alt="Ditseey, master rune-witch and megabuilder" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnxggvT81etp5w8a0OfB2o-gwH70fKABKVlwavatLMiRHRLn6LzDyHtz94TEcDr7UFvCqpbrz01NIM_fEDjLgW4mBlvvuaV2-fTkG0e_hcdwDwzmCkxR41r3xSDkg_BgQ7CFbQWVsXu9Fk0UDs-6mgyPtwZbKiiaC_Gzed03mzhfP4pU7F5F0-p5Y21sNwCP7w6uxG4-KudOC5cIzCis30byHPEWwRp9-gvY6u60Fk-4RcsGHWwZNY"/>
+<!-- Ambient Ember/Rune Spark Overlays -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent opacity-80 pointer-events-none"></div>
+<!-- Floating Pill in Image -->
+<div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface/90 backdrop-blur-md shadow-md text-primary font-label-mono-sm text-label-mono-sm uppercase">
+<span class="material-symbols-outlined text-[14px]">auto_fix_high</span>
+<span>LVL 92 MEGABUILDER</span>
+</div>
+<div class="flex items-center gap-1 px-2.5 py-1 rounded bg-surface/90 backdrop-blur-md shadow-md text-on-surface font-label-mono-sm text-label-mono-sm">
+<span class="text-primary font-bold">80,151</span> PCS
+                </div>
+</div>
+</div>
+<!-- Titles & Name -->
+<div class="flex flex-col gap-1 pt-space-2xs">
+<div class="flex items-baseline justify-between">
+<h1 class="font-display-hero text-display-hero-mobile md:text-[44px] text-on-surface tracking-tight leading-none">
+                  Ditseey
+                </h1>
+<span class="text-primary font-label-mono-sm text-label-mono-sm uppercase font-semibold">SKÅL!</span>
+</div>
+<span class="font-label-runic text-label-runic text-primary uppercase text-[12px] tracking-wider flex items-center gap-1">
+<span>✨ RUNE-WITCH &amp; SEASIDE ARCHITECT</span>
+</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant italic pt-1">
+                “Master of wave-battered cantilevers, beacon spires, and legendary longhouses across five server epochs.”
+              </p>
+</div>
+<!-- Profile Action Grid -->
+<div class="grid grid-cols-2 gap-space-xs pt-space-xs">
+<a class="flex items-center justify-center gap-1.5 px-space-sm py-space-xs rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-mono-sm text-label-mono-sm uppercase transition-colors text-center" href="#catalogs">
+<span class="material-symbols-outlined text-[16px] text-primary">photo_library</span>
+<span>All Photos (104)</span>
+</a>
+<button class="flex items-center justify-center gap-1.5 px-space-sm py-space-xs rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-mono-sm text-label-mono-sm uppercase transition-colors text-center" onclick="document.getElementById('steleInscribe').scrollIntoView({behavior:'smooth'});" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">history_edu</span>
+<span>Inscribe Stele</span>
+</button>
+<button class="flex items-center justify-center gap-1.5 px-space-sm py-space-xs rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-mono-sm text-label-mono-sm uppercase transition-colors text-center" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">flag</span>
+<span>Claim Build</span>
+</button>
+<button class="flex items-center justify-center gap-1.5 px-space-sm py-space-xs rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-mono-sm text-label-mono-sm uppercase transition-colors text-center" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">download</span>
+<span>Export JSON</span>
+</button>
+</div>
+</div>
+<!-- IDENTITY CODEX (MYSPACE EXTENDED BIO SPEC LIST) -->
+<div class="rounded-xl bg-surface-container-low p-space-md shadow-xl flex flex-col gap-space-sm">
+<div class="flex items-center justify-between pb-space-2xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">account_tree</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Identity Codex</span>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase">Rune Ledger</span>
+</div>
+<div class="flex flex-col gap-y-2 text-body-sm">
+<div class="flex justify-between items-start py-1.5 px-2 rounded bg-surface-container-lowest">
+<span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm">Archetype</span>
+<span class="text-on-surface font-medium text-right">Coastal Citadel &amp; Rune Architect</span>
+</div>
+<div class="flex justify-between items-start py-1.5 px-2 rounded bg-surface-container">
+<span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm">Server Standing</span>
+<span class="text-primary font-semibold text-right">Megabuilder (Ranger Rep)</span>
+</div>
+<div class="flex justify-between items-center py-1.5 px-2 rounded bg-surface-container-lowest">
+<span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm">Norse Sign</span>
+<span class="text-on-surface text-right font-medium">Raven &amp; Storm Compass 🧭</span>
+</div>
+<div class="flex justify-between items-center py-1.5 px-2 rounded bg-surface-container">
+<span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm">Active Eras</span>
+<span class="text-primary font-label-mono-sm text-label-mono-sm font-bold">11, 12, 14, 16, 17 (5 Eras)</span>
+</div>
+<div class="flex justify-between items-center py-1.5 px-2 rounded bg-surface-container-lowest">
+<span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm">Archival Pieces</span>
+<span class="text-on-surface font-label-mono-sm text-label-mono-sm font-bold">80,151 Placed</span>
+</div>
+<div class="flex flex-col py-2 px-2 rounded bg-surface-container gap-1">
+<span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm">Known Server Aliases</span>
+<span class="text-[12px] font-label-mono-sm text-primary break-all">✨ditseey✨... ditzy, dangerous, definitely magical</span>
+<span class="text-[12px] font-label-mono-sm text-on-surface break-all">💟Ditseey☠Đ₳₦₲ɆⱤ☠ʀᴀɴ₲Ɇʀʳᵉᵖ💟</span>
+</div>
+<div class="flex justify-between items-start py-1.5 px-2 rounded bg-surface-container-lowest">
+<span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm">Preferred Biome</span>
+<span class="text-on-surface text-right font-medium">Ocean, Mistlands &amp; Coastal Meadows</span>
+</div>
+</div>
+</div>
+<!-- HEARTH ANTHEM (MYSPACE AUDIO PLAYER) -->
+<div class="rounded-xl bg-surface-container-low p-space-md shadow-xl flex flex-col gap-space-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px] animate-pulse">music_note</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Hearth Anthem</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-primary-container/20 text-primary font-label-mono-sm text-label-mono-sm uppercase">AUTOPLAY • ON</span>
+</div>
+<!-- Player Chrome -->
+<div class="p-space-sm rounded-lg bg-surface-container-lowest flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex flex-col min-w-0 pr-2">
+<span class="font-title-md text-title-md text-on-surface truncate">Danheim &amp; Gealdyr – Yggdrasil</span>
+<span class="font-label-mono-sm text-label-mono-sm text-primary truncate">Runic Coastal Drone • Era 14 Hearth Mix</span>
+</div>
+<!-- Equalizer Visualizer Bars -->
+<div class="flex items-end gap-1 h-6 shrink-0">
+<span class="w-1 bg-primary h-3 rounded-full animate-pulse"></span>
+<span class="w-1 bg-primary h-6 rounded-full animate-pulse" style="animation-delay: 150ms;"></span>
+<span class="w-1 bg-primary h-4 rounded-full animate-pulse" style="animation-delay: 300ms;"></span>
+<span class="w-1 bg-primary h-5 rounded-full animate-pulse" style="animation-delay: 75ms;"></span>
+<span class="w-1 bg-primary h-2 rounded-full animate-pulse" style="animation-delay: 200ms;"></span>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="flex flex-col gap-1">
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden relative cursor-pointer">
+<div class="bg-primary h-full w-[56%] rounded-full shadow-[0_0_8px_rgba(245,158,11,0.8)]"></div>
+</div>
+<div class="flex justify-between font-label-mono-sm text-label-mono-sm text-on-surface-variant text-[10px]">
+<span>03:12</span>
+<span>05:40</span>
+</div>
+</div>
+<!-- Controls -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-space-xs">
+<button class="text-on-surface-variant hover:text-on-surface" type="button"><span class="material-symbols-outlined text-[20px]">skip_previous</span></button>
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center hover:bg-primary-fixed transition-colors" id="audioToggle" type="button">
+<span class="material-symbols-outlined text-[18px]">pause</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface" type="button"><span class="material-symbols-outlined text-[20px]">skip_next</span></button>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-label-mono-sm text-label-mono-sm">
+<span class="material-symbols-outlined text-[16px] text-primary">volume_up</span>
+<span>84%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- DITSEEY'S SHIELD-WALL (TOP 8 KINSHIP) -->
+<div class="rounded-xl bg-surface-container-low p-space-md shadow-xl flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">groups</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Ditseey's Shield-Wall</h3>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-primary">TOP 8 ALLIES</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Co-architects and structural kin spanning 112 joint monuments across five wiped eras.
+            </p>
+<div class="grid grid-cols-2 gap-space-sm pt-space-2xs">
+<!-- Kin 1 -->
+<div class="flex flex-col p-space-xs rounded bg-surface-container hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors text-sm">Head Case</span>
+<span class="text-[10px] text-primary font-label-mono-sm font-bold">14 BUILDS</span>
+</div>
+<span class="text-[11px] font-label-mono-sm text-on-surface-variant">Co-Architect • Era 12/11</span>
+</div>
+<!-- Kin 2 -->
+<div class="flex flex-col p-space-xs rounded bg-surface-container hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors text-sm">Qtip</span>
+<span class="text-[10px] text-primary font-label-mono-sm font-bold">ERA 11</span>
+</div>
+<span class="text-[11px] font-label-mono-sm text-on-surface-variant">Monolith Ally • cc73d139</span>
+</div>
+<!-- Kin 3 -->
+<div class="flex flex-col p-space-xs rounded bg-surface-container hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors text-sm">Revna Fey</span>
+<span class="text-[10px] text-primary font-label-mono-sm font-bold">ERA 14</span>
+</div>
+<span class="text-[11px] font-label-mono-sm text-on-surface-variant">Longhouse Kin • fa06785d</span>
+</div>
+<!-- Kin 4 -->
+<div class="flex flex-col p-space-xs rounded bg-surface-container hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors text-sm">Softstyles</span>
+<span class="text-[10px] text-primary font-label-mono-sm font-bold">COASTAL</span>
+</div>
+<span class="text-[11px] font-label-mono-sm text-on-surface-variant">Compounds Partner</span>
+</div>
+<!-- Kin 5 -->
+<div class="flex flex-col p-space-xs rounded bg-surface-container hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors text-sm">Argie</span>
+<span class="text-[10px] text-primary font-label-mono-sm font-bold">10K PCS</span>
+</div>
+<span class="text-[11px] font-label-mono-sm text-on-surface-variant">Citadel f6924293</span>
+</div>
+<!-- Kin 6 -->
+<div class="flex flex-col p-space-xs rounded bg-surface-container hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors text-sm">Bluecollar</span>
+<span class="text-[10px] text-primary font-label-mono-sm font-bold">MEGA-BASTION</span>
+</div>
+<span class="text-[11px] font-label-mono-sm text-on-surface-variant">15.8k Bastion bd1ac417</span>
+</div>
+<!-- Kin 7 -->
+<div class="flex flex-col p-space-xs rounded bg-surface-container hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors text-sm">Reina Borg</span>
+<span class="text-[10px] text-primary font-label-mono-sm font-bold">SHIELDMAIDEN</span>
+</div>
+<span class="text-[11px] font-label-mono-sm text-on-surface-variant">Co-Builder • b0bcd136</span>
+</div>
+<!-- Kin 8 -->
+<div class="flex flex-col p-space-xs rounded bg-surface-container hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors text-sm">Wootsie</span>
+<span class="text-[10px] text-primary font-label-mono-sm font-bold">MASONRY</span>
+</div>
+<span class="text-[11px] font-label-mono-sm text-on-surface-variant">Stone Ally • 130ed533</span>
+</div>
+</div>
+</div>
+<!-- PARTICIPATION VAULT LEDGER -->
+<div class="rounded-xl bg-surface-container-low p-space-md shadow-xl flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-runic text-label-runic text-primary uppercase text-[11px]">CRYPTOGRAPHIC SYNC VAULT</span>
+<span class="material-symbols-outlined text-primary text-[16px]">verified_user</span>
+</div>
+<div class="p-space-xs rounded bg-surface-container-lowest font-label-mono-sm text-label-mono-sm text-on-surface-variant flex items-center justify-between">
+<span class="truncate pr-2">COMFY-PARTICIPATION :: DITSEEY-SYNC-004-OK</span>
+<button class="text-primary hover:text-on-surface transition-colors shrink-0" onclick="navigator.clipboard.writeText('COMFY-PARTICIPATION::DITSEEY-004-80151PCS-OK'); alert('Hash copied to slate clipboard!');" type="button">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- ================= RIGHT COLUMN (MAIN CONTENT AREA) ================= -->
+<main class="xl:col-span-8 flex flex-col gap-space-xl w-full">
+<!-- DITSEEY'S BLURBS & ARCHIVAL LORE -->
+<section class="rounded-xl bg-surface-container-low p-space-lg shadow-xl flex flex-col gap-space-md">
+<div class="flex items-center justify-between border-b-0 pb-space-xs">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">
+                Ditseey's Archival Lore &amp; Blurbs
+              </h2>
+<span class="px-2.5 py-1 rounded bg-primary-container/15 text-primary font-label-mono-sm text-label-mono-sm uppercase tracking-wider">
+                ORIGINAL ARCHIVE REQUESTER
+              </span>
+</div>
+<!-- Stats Bar -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-sm p-space-md rounded-lg bg-surface-container-lowest">
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase">Total Albums</span>
+<span class="font-display-hero text-[32px] text-primary font-bold leading-tight">112</span>
+<span class="text-[11px] font-label-mono-sm text-on-surface/50">Across Realms</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase">Total Pieces</span>
+<span class="font-display-hero text-[32px] text-on-surface font-bold leading-tight">80,151</span>
+<span class="text-[11px] font-label-mono-sm text-primary">Rank #4 Overall</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase">Photographed</span>
+<span class="font-display-hero text-[32px] text-on-surface font-bold leading-tight">21 <span class="text-base text-on-surface-variant font-normal">/ 112</span></span>
+<span class="text-[11px] font-label-mono-sm text-amber-400">104 Captures</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase">Active Eras</span>
+<span class="font-display-hero text-[32px] text-primary font-bold leading-tight">5</span>
+<span class="text-[11px] font-label-mono-sm text-on-surface/50">Eras 11, 12, 14, 16, 17</span>
+</div>
+</div>
+<!-- About Me (Classic MySpace Blurb Style with Nordic Precision) -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<div class="flex items-center gap-space-xs text-primary">
+<span class="material-symbols-outlined text-[20px]">auto_stories</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">About Me:</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed pl-2 border-l-2 border-primary/40">
+                “I was the one who asked the Chroniclers to extend the gallery so every single wiped era would have its day in the sun! Known for soaring coastal hideaways, cantilevered sea towers, and playful runic traps that may or may not launch goblins into the stratosphere. I build big, laugh loud, and refuse to let world wipes erase what our kinship raised.”
+              </p>
+</div>
+<!-- Who I'd like to meet -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<div class="flex items-center gap-space-xs text-primary">
+<span class="material-symbols-outlined text-[20px]">explore</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Who I'd Like to Meet:</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed pl-2 border-l-2 border-primary/40">
+                “Explorers who appreciate wild cantilevers over deep ocean drop-offs, builders who like hiding secret mead cellars behind faux hearth walls, and scouts willing to snap aerial photographs in Era 11 mist storms!”
+              </p>
+</div>
+</section>
+<!-- SIGNATURE COASTAL & MONUMENTAL FEATS (FEATURED HIGHLIGHTS) -->
+<section class="flex flex-col gap-space-md">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-xs">
+<div>
+<span class="font-label-runic text-label-runic text-primary uppercase tracking-widest">SIGNATURE MONUMENTS</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Legendary Coastal Feats</h2>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">MUSEUM SPECIMEN EXHIBITS</span>
+</div>
+<!-- Feat Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+<!-- Feat 1 -->
+<div class="rounded-xl bg-surface-container-low overflow-hidden shadow-xl flex flex-col group transition-all duration-300 hover:-translate-y-1">
+<div class="relative w-full h-56 bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Expansive monolithic stone and dark wood fortress in Valheim perched high on coastal sea cliffs during stormy dusk. Soaring watchtowers connected by cantilevered timber walkways, amber lantern light reflecting on wet flagstones and crashing sea spray below, dark moody atmospheric lighting with rich golden fire accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7RuUuvCSNDW91pNOq__fQsGlOYL5IAL-XuQggo2WG4ep9CLKIIcB2M9i-Hxzif-WULc4U9oYceS7l6iwTxxsuJHPZsmf5PVNx6azNm7Ad2r6ghiA3rS8OFn8H0NSxIUVd2JJujCDy6OUT4Dog1gj-ieQRMST0CQw9RBRnFLF0Ty3rLazd22nr6xP8HgWPT0gt5O1MfLGn6evbDR74UWGS6H3D0ZZKks5IWclAfFQtcOIac-0kJ7bH"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent opacity-90"></div>
+<div class="absolute top-3 left-3 px-2 py-1 rounded bg-surface/90 backdrop-blur-sm text-primary font-label-mono-sm text-label-mono-sm uppercase font-bold">
+                    ERA 14 // MEGA-MONUMENT
+                  </div>
+<div class="absolute top-3 right-3 px-2 py-1 rounded bg-primary-container text-on-primary-container font-label-mono-sm text-label-mono-sm font-semibold">
+                    15,807 PIECES
+                  </div>
+<div class="absolute bottom-3 left-3 right-3">
+<span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">BUILD bd1ac417</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold">The Grand Bastion Complex</h4>
+</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-sm flex-1 justify-between">
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between text-body-sm text-on-surface-variant">
+<span>Kinship Masonry:</span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface">Ditseey 37.3% • Bluecollar 35.1% • Alashal 17%</span>
+</div>
+<!-- Distribution visual bar -->
+<div class="w-full h-2 rounded-full bg-surface-container-high flex overflow-hidden">
+<div class="bg-primary h-full w-[37.3%]" title="Ditseey 37.3%"></div>
+<div class="bg-secondary-container h-full w-[35.1%]" title="Bluecollar 35.1%"></div>
+<div class="bg-tertiary-container h-full w-[17%]" title="Alashal 17%"></div>
+<div class="bg-surface-variant h-full w-[10.6%]" title="Others"></div>
+</div>
+<p class="text-body-sm text-on-surface-variant line-clamp-2">
+                      A monumental joint bastion commanding the northern narrows. Reinforced corewood ribbing with granite foundation anchors sunk directly into seabed bedrock.
+                    </p>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-space-2xs">
+<button class="px-space-sm py-1.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-label-mono-sm font-label-mono-sm uppercase transition-colors" type="button">World View</button>
+<button class="px-space-sm py-1.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-label-mono-sm font-label-mono-sm uppercase transition-colors" type="button">I Built This</button>
+</div>
+<button class="p-1.5 rounded bg-surface-container hover:bg-surface-container-high text-primary" type="button"><span class="material-symbols-outlined text-[18px]">add_a_photo</span></button>
+</div>
+</div>
+</div>
+<!-- Feat 2 -->
+<div class="rounded-xl bg-surface-container-low overflow-hidden shadow-xl flex flex-col group transition-all duration-300 hover:-translate-y-1">
+<div class="relative w-full h-56 bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A slender tall Valheim stone spire and timber sea-haven rising directly from ocean waves at twilight. Misty teal waters swirling around granite sea-pillars, delicate wooden stairs spiraling up to a beacon cupola glowing with bright amber fire and rune runes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBCw1di_voF2nB1YDe6uTpY_EbjYchby5lAyV6esd3bHJwjC9tKreVMDSYT5KfxFcNqDPN4sUhvhT0yfsag94YHGbZ7R3UyO8DMHLMfI-CcEJxfsi9xwBpq_19cCxHxXv884FcqaMayd2V7Wkzpgfx1NMQBf5kXGP4qbRt2SC-6eGzdMPLoxpJuMOnaAjIrtZGX7lID6nodvBBx1rDZRkzL9RVRrzgv0366UXYtPZMxfhlGi-si2zu"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent opacity-90"></div>
+<div class="absolute top-3 left-3 px-2 py-1 rounded bg-surface/90 backdrop-blur-sm text-primary font-label-mono-sm text-label-mono-sm uppercase font-bold">
+                    ERA 17 // ASHLANDS ERA
+                  </div>
+<div class="absolute top-3 right-3 px-2 py-1 rounded bg-surface-container-high text-primary font-label-mono-sm text-label-mono-sm font-semibold">
+                    4,044 PIECES (100% DITSEEY)
+                  </div>
+<div class="absolute bottom-3 left-3 right-3">
+<span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">SOLO HAVEN</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold">Coastal Hideaway (Sea Spire)</h4>
+</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-sm flex-1 justify-between">
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between text-body-sm text-on-surface-variant">
+<span>Solo Masterwork:</span>
+<span class="font-label-mono-sm text-label-mono-sm text-primary">100% Solo Masonry</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
+<div class="bg-primary h-full w-full"></div>
+</div>
+<p class="text-body-sm text-on-surface-variant line-clamp-2">
+                      Isolated ocean sea-needle built in deep offshore waters. Features high-elevation beacon with runic shielding protecting an internal hearth and artisan mead workshop.
+                    </p>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-space-2xs">
+<button class="px-space-sm py-1.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-label-mono-sm font-label-mono-sm uppercase transition-colors" type="button">World View</button>
+<button class="px-space-sm py-1.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-label-mono-sm font-label-mono-sm uppercase transition-colors" type="button">I Built This</button>
+</div>
+<button class="p-1.5 rounded bg-surface-container hover:bg-surface-container-high text-primary" type="button"><span class="material-symbols-outlined text-[18px]">add_a_photo</span></button>
+</div>
+</div>
+</div>
+<!-- Feat 3 -->
+<div class="rounded-xl bg-surface-container-low overflow-hidden shadow-xl flex flex-col group transition-all duration-300 hover:-translate-y-1">
+<div class="relative w-full h-56 bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Valheim secluded wooden coastal sanctuary tucked inside sea-cliffs and pine trees. Intricate Viking roof gables, green moss-covered thatch, warm fire smoke rising into foggy skies, small wooden dock with a Karve boat moored at calm dawn waters." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgNpFGecR4zKYLywsUSOGkKFBQCPH_5uttJKbROmr4uUehubLsIziKHXBzJxIwEzj9YSy-dA-7XqWRv-UQugTGBk6AOi6Dunf9TAdTss4KqcYP2SqbGepw9Ph3_3n5VirVAu8Ygd5ZBI4i4bXy6NVFFz7NKh64WdX9nsh8MOxsUfNXO9dUqw2TXdNGERh7__FHIeUr-Lxfmazdpl3mVvG6K0JAR03IxBMYVD-sSKgm3uDHS8WIa3Gk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent opacity-90"></div>
+<div class="absolute top-3 left-3 px-2 py-1 rounded bg-surface/90 backdrop-blur-sm text-primary font-label-mono-sm text-label-mono-sm uppercase font-bold">
+                    ERA 16 // MEADOWS OCEAN
+                  </div>
+<div class="absolute top-3 right-3 px-2 py-1 rounded bg-surface-container-high text-primary font-label-mono-sm text-label-mono-sm font-semibold">
+                    2,902 PIECES (100% DITSEEY)
+                  </div>
+<div class="absolute bottom-3 left-3 right-3">
+<span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">SOLO SANCTUARY</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold">Island Hideaway</h4>
+</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-sm flex-1 justify-between">
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between text-body-sm text-on-surface-variant">
+<span>Solo Craft:</span>
+<span class="font-label-mono-sm text-label-mono-sm text-primary">100% Ditseey</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
+<div class="bg-primary h-full w-full"></div>
+</div>
+<p class="text-body-sm text-on-surface-variant line-clamp-2">
+                      Concealed tidal retreat designed with wave dampers and submerged corewood pilings. Houses an intact runic portal garden and private mead vault.
+                    </p>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-space-2xs">
+<button class="px-space-sm py-1.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-label-mono-sm font-label-mono-sm uppercase transition-colors" type="button">World View</button>
+<button class="px-space-sm py-1.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-label-mono-sm font-label-mono-sm uppercase transition-colors" type="button">I Built This</button>
+</div>
+<button class="p-1.5 rounded bg-surface-container hover:bg-surface-container-high text-primary" type="button"><span class="material-symbols-outlined text-[18px]">add_a_photo</span></button>
+</div>
+</div>
+</div>
+<!-- Feat 4 -->
+<div class="rounded-xl bg-surface-container-low overflow-hidden shadow-xl flex flex-col group transition-all duration-300 hover:-translate-y-1">
+<div class="relative w-full h-56 bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Magnificent Nordic mountain citadel in Valheim built with dark heavy stone blocks and towering high timber roofs. Surrounded by light mist and cold mountain crags, teal magical runes glowing on stone doorways and braziers casting warm amber light on carved wooden dragon heads." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnFd2RoF58mFSZ08S80p74zcn9kcdEHZ1SE9t3vNOdjU2iOBmHRpc8uOk-reS0QQC1ukfqCT1ewU08fOnYCbqzkG0G8znGGLP7NRellBcW0HnKqJ49ZDuuRbGXW5HQq6lf0AhA2kwOwYESlimODV6f0nLxR7VR12i23Jxx_qx61GhRIAYu6PivPiM0ppRkpjD_LOuidellFPqWsIbgr5JM4LXLndV_e-JC45Txe3Jqd1PQSQGZRqRQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent opacity-90"></div>
+<div class="absolute top-3 left-3 px-2 py-1 rounded bg-surface/90 backdrop-blur-sm text-primary font-label-mono-sm text-label-mono-sm uppercase font-bold">
+                    ERA 14 // MONUMENT
+                  </div>
+<div class="absolute top-3 right-3 px-2 py-1 rounded bg-primary-container text-on-primary-container font-label-mono-sm text-label-mono-sm font-semibold">
+                    5,871 PIECES
+                  </div>
+<div class="absolute bottom-3 left-3 right-3">
+<span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">BUILD fa06785d</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold">Citadel of the Runewitch</h4>
+</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-sm flex-1 justify-between">
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between text-body-sm text-on-surface-variant">
+<span>Contribution:</span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface">Ditseey 95.1% • Revna Fey 4.9%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden flex">
+<div class="bg-primary h-full w-[95.1%]"></div>
+<div class="bg-secondary h-full w-[4.9%]"></div>
+</div>
+<p class="text-body-sm text-on-surface-variant line-clamp-2">
+                      A high-comfort mountain fortress featuring Ditseey's trademark cantilevered balconies overlooking sea valleys, layered hearth chimneys, and defense ballistas.
+                    </p>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-space-2xs">
+<button class="px-space-sm py-1.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-label-mono-sm font-label-mono-sm uppercase transition-colors" type="button">World View</button>
+<button class="px-space-sm py-1.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-label-mono-sm font-label-mono-sm uppercase transition-colors" type="button">I Built This</button>
+</div>
+<button class="p-1.5 rounded bg-surface-container hover:bg-surface-container-high text-primary" type="button"><span class="material-symbols-outlined text-[18px]">add_a_photo</span></button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ARCHIVAL TELEMETRY: ERA LEDGER CATALOG -->
+<section class="rounded-xl bg-surface-container-low p-space-lg shadow-xl flex flex-col gap-space-md" id="catalogs">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-xs">
+<div>
+<span class="font-label-runic text-label-runic text-primary uppercase">CATALOGED STRUCTURES</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Era Ledger Catalog</h2>
+</div>
+<div class="flex items-center gap-space-2xs">
+<button class="px-space-sm py-1 rounded bg-surface-container-high text-primary font-label-mono-sm text-label-mono-sm uppercase font-semibold" type="button">ALL ERAS (112)</button>
+</div>
+</div>
+<!-- Era Filter Pills -->
+<div class="flex items-center gap-space-xs overflow-x-auto pb-space-xs">
+<button class="px-space-sm py-1 rounded bg-primary-container text-on-primary-container font-label-mono-sm text-label-mono-sm font-bold shrink-0">
+                ERA 14 (31 BUILDS)
+              </button>
+<button class="px-space-sm py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-mono-sm text-label-mono-sm shrink-0 transition-colors">
+                ERA 12 (42 BUILDS)
+              </button>
+<button class="px-space-sm py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-mono-sm text-label-mono-sm shrink-0 transition-colors">
+                ERA 11 (36 BUILDS)
+              </button>
+<button class="px-space-sm py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-mono-sm text-label-mono-sm shrink-0 transition-colors">
+                ERA 17 (2 BUILDS)
+              </button>
+<button class="px-space-sm py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-mono-sm text-label-mono-sm shrink-0 transition-colors">
+                ERA 16 (1 BUILD)
+              </button>
+</div>
+<!-- Museum Ledger Table -->
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-lowest text-on-surface-variant font-label-mono-sm text-label-mono-sm uppercase border-b-0">
+<th class="py-3 px-4">Build Hash &amp; Designation</th>
+<th class="py-3 px-4">Era</th>
+<th class="py-3 px-4">Pieces Placed</th>
+<th class="py-3 px-4">Architect Attribution</th>
+<th class="py-3 px-4">Status</th>
+<th class="py-3 px-4 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y-0 font-body-sm">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container/60 transition-colors bg-surface-container-low">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">castle</span>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-label-mono-sm font-bold text-on-surface">Build bd1ac417</span>
+<span class="text-[11px] text-on-surface-variant">The Grand Bastion</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 font-label-mono-sm text-label-mono-sm text-primary font-semibold">Era 14</td>
+<td class="py-3 px-4 font-label-mono-sm text-label-mono-sm text-on-surface font-bold">15,807</td>
+<td class="py-3 px-4 text-on-surface-variant text-[12px]">Ditseey 37.3%, Bluecollar 35.1%</td>
+<td class="py-3 px-4">
+<span class="px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 font-label-mono-sm text-[10px] uppercase">Photographed (28)</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-1 font-label-mono-sm text-label-mono-sm">
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-primary">Inspect</button>
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant">Claim</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container/60 transition-colors bg-surface-container-lowest">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">cottage</span>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-label-mono-sm font-bold text-on-surface">Coastal Hideaway 4044</span>
+<span class="text-[11px] text-on-surface-variant">Sea Spire Refuge</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 font-label-mono-sm text-label-mono-sm text-primary font-semibold">Era 17</td>
+<td class="py-3 px-4 font-label-mono-sm text-label-mono-sm text-on-surface font-bold">4,044</td>
+<td class="py-3 px-4 text-primary text-[12px] font-semibold">Ditseey 100% (Solo)</td>
+<td class="py-3 px-4">
+<span class="px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 font-label-mono-sm text-[10px] uppercase">Photographed (12)</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-1 font-label-mono-sm text-label-mono-sm">
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-primary">Inspect</button>
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant">Claim</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container/60 transition-colors bg-surface-container-low">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[18px]">fort</span>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-label-mono-sm font-bold text-on-surface">Build 32964d9d</span>
+<span class="text-[11px] text-on-surface-variant">Mountain Stele Great Hall</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 font-label-mono-sm text-label-mono-sm text-primary font-semibold">Era 12</td>
+<td class="py-3 px-4 font-label-mono-sm text-label-mono-sm text-on-surface font-bold">5,532</td>
+<td class="py-3 px-4 text-on-surface-variant text-[12px]">Ditseey 99.9%</td>
+<td class="py-3 px-4">
+<span class="px-2 py-0.5 rounded bg-amber-950/60 text-primary font-label-mono-sm text-[10px] uppercase">Pending Camera</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-1 font-label-mono-sm text-label-mono-sm">
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-primary">Inspect</button>
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant">Claim</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container/60 transition-colors bg-surface-container-lowest">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">temple_buddhist</span>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-label-mono-sm font-bold text-on-surface">Build fa06785d</span>
+<span class="text-[11px] text-on-surface-variant">Citadel of the Runewitch</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 font-label-mono-sm text-label-mono-sm text-primary font-semibold">Era 14</td>
+<td class="py-3 px-4 font-label-mono-sm text-label-mono-sm text-on-surface font-bold">5,871</td>
+<td class="py-3 px-4 text-on-surface-variant text-[12px]">Ditseey 95.1%, Revna Fey 4.9%</td>
+<td class="py-3 px-4">
+<span class="px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 font-label-mono-sm text-[10px] uppercase">Photographed (19)</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-1 font-label-mono-sm text-label-mono-sm">
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-primary">Inspect</button>
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant">Claim</button>
+</div>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-container/60 transition-colors bg-surface-container-low">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">home_work</span>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-label-mono-sm font-bold text-on-surface">Build b4859027</span>
+<span class="text-[11px] text-on-surface-variant">Mistlands Outpost</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 font-label-mono-sm text-label-mono-sm text-primary font-semibold">Era 14</td>
+<td class="py-3 px-4 font-label-mono-sm text-label-mono-sm text-on-surface font-bold">4,977</td>
+<td class="py-3 px-4 text-on-surface-variant text-[12px]">Ditseey 98.4%</td>
+<td class="py-3 px-4">
+<span class="px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 font-label-mono-sm text-[10px] uppercase">Photographed (14)</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-1 font-label-mono-sm text-label-mono-sm">
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-primary">Inspect</button>
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant">Claim</button>
+</div>
+</td>
+</tr>
+<!-- Row 6 -->
+<tr class="hover:bg-surface-container/60 transition-colors bg-surface-container-lowest">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">account_balance</span>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-label-mono-sm font-bold text-on-surface">Build 68530d6b</span>
+<span class="text-[11px] text-on-surface-variant">Swamp Causeway Spire</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 font-label-mono-sm text-label-mono-sm text-primary font-semibold">Era 12</td>
+<td class="py-3 px-4 font-label-mono-sm text-label-mono-sm text-on-surface font-bold">4,629</td>
+<td class="py-3 px-4 text-on-surface-variant text-[12px]">Ditseey 99.2%</td>
+<td class="py-3 px-4">
+<span class="px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 font-label-mono-sm text-[10px] uppercase">Photographed (11)</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-1 font-label-mono-sm text-label-mono-sm">
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-primary">Inspect</button>
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant">Claim</button>
+</div>
+</td>
+</tr>
+<!-- Row 7 -->
+<tr class="hover:bg-surface-container/60 transition-colors bg-surface-container-low">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[18px]">foundation</span>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-label-mono-sm font-bold text-on-surface">Build cc73d139</span>
+<span class="text-[11px] text-on-surface-variant">Deep Meadow Monolith</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 font-label-mono-sm text-label-mono-sm text-primary font-semibold">Era 11</td>
+<td class="py-3 px-4 font-label-mono-sm text-label-mono-sm text-on-surface font-bold">4,413</td>
+<td class="py-3 px-4 text-on-surface-variant text-[12px]">Ditseey 69.5%, Qtip 29.2%</td>
+<td class="py-3 px-4">
+<span class="px-2 py-0.5 rounded bg-amber-950/60 text-primary font-label-mono-sm text-[10px] uppercase">Pending Camera</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-1 font-label-mono-sm text-label-mono-sm">
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-primary">Inspect</button>
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant">Claim</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Ledger Footer -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-xs pt-space-xs text-on-surface-variant font-label-mono-sm text-label-mono-sm">
+<span>Showing 7 of 112 Masterwork Albums cataloged</span>
+<button class="text-primary hover:underline flex items-center gap-1" type="button">
+<span>View Complete Master Manifest (112 Builds)</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- RUNIC COMMENTS WALL (MYSPACE COMMENTS RUNESTONE) -->
+<section class="rounded-xl bg-surface-container-low p-space-lg shadow-xl flex flex-col gap-space-md" id="steleInscribe">
+<div class="flex items-center justify-between border-b-0 pb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[24px]">mode_comment</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Runic Comments Wall</h2>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">3 INSCRIBED RUNES</span>
+</div>
+<!-- Inscribe Form -->
+<div class="p-space-md rounded-lg bg-surface-container-lowest flex flex-col gap-space-sm">
+<label class="font-label-runic text-label-runic text-primary uppercase text-[12px]" for="runeText">Leave a rune or cheer for Ditseey</label>
+<div class="relative w-full">
+<textarea class="w-full bg-surface-container p-space-sm rounded text-on-surface placeholder:text-outline text-body-md focus:outline-none focus:ring-1 focus:ring-primary" id="runeText" placeholder="Carve words in stone for this Megabuilder... (e.g. Skål to the wave-carver!)" rows="3"></textarea>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-label-mono-sm text-on-surface-variant">Etched permanently on this stele. Authenticated via Player Key.</span>
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded bg-primary-container hover:bg-primary text-on-primary-container font-semibold transition-all" id="postRuneBtn" type="button">
+<span class="material-symbols-outlined text-[18px]">edit_note</span>
+<span class="font-label-mono-sm text-label-mono-sm uppercase">Inscribe Stone</span>
+</button>
+</div>
+</div>
+<!-- Comments Feed -->
+<div class="flex flex-col gap-space-sm pt-space-2xs" id="commentsFeed">
+<!-- Inscription 1 -->
+<div class="p-space-md rounded-lg bg-surface-container flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-7 h-7 rounded bg-primary text-on-primary font-bold text-xs flex items-center justify-center font-label-mono-sm">QT</span>
+<span class="font-title-md text-title-md text-on-surface">Qtip</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-label-mono-sm text-[10px] uppercase">Shield-Wall Kin</span>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">Era 11 Veteran • 2d ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface pl-9">
+                  “Still don't know how that Era 11 cantilever held together under swamp troll siege. 15k pieces and counting! ⚡ Skål!”
+                </p>
+</div>
+<!-- Inscription 2 -->
+<div class="p-space-md rounded-lg bg-surface-container flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-7 h-7 rounded bg-secondary-container text-on-secondary font-bold text-xs flex items-center justify-center font-label-mono-sm">RF</span>
+<span class="font-title-md text-title-md text-on-surface">Revna Fey</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-label-mono-sm text-[10px] uppercase">Citadel Ally</span>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">Era 14 Kin • 4d ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface pl-9">
+                  “Era 14 timber rafters wouldn't have stood without your rune-carved supports. Best coastal builder on the server! 🍻”
+                </p>
+</div>
+<!-- Inscription 3 -->
+<div class="p-space-md rounded-lg bg-surface-container flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-7 h-7 rounded bg-surface-variant text-on-surface font-bold text-xs flex items-center justify-center font-label-mono-sm">HC</span>
+<span class="font-title-md text-title-md text-on-surface">Head Case</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-label-mono-sm text-[10px] uppercase">14 Joint Builds</span>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">Archivist • 1w ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface pl-9">
+                  “Thanks for getting the archive expanded for all of us! 14 eras of history saved forever. You're a legend Ditseey!”
+                </p>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+    // Mead & Spark Counter Increment
+    const meadBtn = document.getElementById('meadBtn');
+    const meadCounter = document.getElementById('meadCounter');
+    let sparks = 88;
+    if (meadBtn && meadCounter) {
+      meadBtn.addEventListener('click', () => {
+        sparks++;
+        meadCounter.textContent = sparks;
+        meadBtn.classList.add('scale-105');
+        setTimeout(() => meadBtn.classList.remove('scale-105'), 200);
+      });
+    }
+
+    // Song Player Play/Pause Micro-interaction
+    const audioToggle = document.getElementById('audioToggle');
+    let isPlaying = true;
+    if (audioToggle) {
+      audioToggle.addEventListener('click', () => {
+        isPlaying = !isPlaying;
+        audioToggle.innerHTML = isPlaying 
+          ? '<span class="material-symbols-outlined text-[18px]">pause</span>' 
+          : '<span class="material-symbols-outlined text-[18px]">play_arrow</span>';
+      });
+    }
+
+    // Inscribe Rune Wall Comment
+    const postRuneBtn = document.getElementById('postRuneBtn');
+    const runeText = document.getElementById('runeText');
+    const commentsFeed = document.getElementById('commentsFeed');
+    if (postRuneBtn && runeText && commentsFeed) {
+      postRuneBtn.addEventListener('click', () => {
+        const text = runeText.value.trim();
+        if (!text) return;
+        
+        const newEntry = document.createElement('div');
+        newEntry.className = 'p-space-md rounded-lg bg-surface-container flex flex-col gap-space-xs animate-fadeIn';
+        newEntry.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-space-xs">
+              <span class="w-7 h-7 rounded bg-primary-container text-on-primary-container font-bold text-xs flex items-center justify-center font-label-mono-sm">YOU</span>
+              <span class="font-title-md text-title-md text-on-surface">Fellow Chronicler</span>
+              <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-label-mono-sm text-[10px] uppercase">Runic Traveler</span>
+            </div>
+            <span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">Just now</span>
+          </div>
+          <p class="font-body-md text-body-md text-on-surface pl-9">&ldquo;${text}&rdquo;</p>
+        `;
+        commentsFeed.prepend(newEntry);
+        runeText.value = '';
+      });
+    }
+  </script>
+</div></main><footer class="w-full bg-surface-container-lowest mt-space-4xl"><div class="w-full px-margin-desktop py-space-3xl flex flex-col md:flex-row items-center justify-between gap-space-lg"><div class="flex flex-col items-center md:items-start gap-space-2xs"><span class="font-label-runic text-label-runic text-primary uppercase">Valheim Architectural Ledger</span><p class="font-body-sm text-body-sm text-on-surface-variant">Chronicles of longhouses, monolithic stone steles, and legendary server realms.</p></div><div class="flex items-center gap-space-md"><span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">© The Comfy Community Archive. Preserved for Eternity.</span></div></div></footer></body></html>

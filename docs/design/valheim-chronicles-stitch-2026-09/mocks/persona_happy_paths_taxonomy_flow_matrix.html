@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-secondary-container":"#432100","on-background":"#dde3ee","on-tertiary-fixed":"#261a00","on-tertiary-container":"#584000","surface-container-low":"#161c24","primary-fixed-dim":"#ffb95f","surface-container-lowest":"#090f16","on-tertiary":"#402d00","on-secondary":"#4d2600","on-tertiary-fixed-variant":"#5c4300","on-secondary-fixed":"#2f1500","inverse-surface":"#dde3ee","on-error-container":"#ffdad6","on-primary-fixed":"#2a1700","outline":"#a08e7a","tertiary-fixed":"#ffdf9f","error-container":"#93000a","on-error":"#690005","surface":"#0e141c","surface-variant":"#2f353e","primary-fixed":"#ffddb8","inverse-primary":"#855300","surface-container":"#1a2028","secondary-fixed":"#ffdcc3","background":"#0e141c","on-surface":"#dde3ee","secondary-container":"#d97707","outline-variant":"#534434","surface-container-highest":"#2f353e","primary":"#ffc174","on-secondary-fixed-variant":"#6e3900","on-primary-fixed-variant":"#653e00","inverse-on-surface":"#2b3139","surface-bright":"#343a42","secondary":"#ffb77d","surface-container-high":"#242a33","on-surface-variant":"#d8c3ad","surface-tint":"#ffb95f","on-primary":"#472a00","on-primary-container":"#613b00","tertiary-fixed-dim":"#f9bd22","tertiary":"#ffc32d","primary-container":"#f59e0b","surface-dim":"#0e141c","secondary-fixed-dim":"#ffb77d","error":"#ffb4ab","tertiary-container":"#e0a800"},borderRadius:{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},spacing:{"space-lg":"1.5rem","space-sm":"0.75rem","space-4xl":"6rem","space-xl":"2rem","space-2xl":"3rem","margin-mobile":"1rem","margin-desktop":"3rem","space-2xs":"0.25rem","space-xs":"0.5rem","space-3xl":"4rem","gutter-desktop":"2rem","space-md":"1rem","gutter-mobile":"1rem"},fontFamily:{"label-mono-md":["JetBrains Mono"],"body-md":["Plus Jakarta Sans"],"title-md":["Plus Jakarta Sans"],"headline-lg-mobile":["Bodoni Moda"],"body-lg":["Plus Jakarta Sans"],"label-mono-sm":["JetBrains Mono"],"body-sm":["Plus Jakarta Sans"],"headline-sm":["Bodoni Moda"],"label-runic":["Bodoni Moda"],"headline-lg":["Bodoni Moda"],"display-hero":["Bodoni Moda"],"display-hero-mobile":["Bodoni Moda"],"headline-md":["Bodoni Moda"]},fontSize:{"label-mono-md":["13px",{"lineHeight":"18px","letterSpacing":"0.04em","fontWeight":"500"}],"body-md":["15px",{"lineHeight":"24px","fontWeight":"400"}],"title-md":["16px",{"lineHeight":"24px","fontWeight":"600"}],"headline-lg-mobile":["26px",{"lineHeight":"34px","letterSpacing":"0.01em","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"label-mono-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.06em","fontWeight":"500"}],"body-sm":["13px",{"lineHeight":"20px","fontWeight":"400"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"500"}],"label-runic":["13px",{"lineHeight":"16px","letterSpacing":"0.14em","fontWeight":"700"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"0.02em","fontWeight":"600"}],"display-hero":["56px",{"lineHeight":"64px","letterSpacing":"0.04em","fontWeight":"700"}],"display-hero-mobile":["36px",{"lineHeight":"44px","letterSpacing":"0.02em","fontWeight":"700"}],"headline-md":["24px",{"lineHeight":"32px","letterSpacing":"0.01em","fontWeight":"600"}]}}}};</script></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.6)]"><div class="h-20 w-full px-margin-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md shrink-0"><img alt="The Comfy Valheim Archive Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Xrq1RP8_Pnw7zQcGm2u-Qr7j2dLViwdknmJe22sNiDZ__osUIMPzCX326KOxet9mqFlnlaZex5dk-daMrgiedo1MfEOuA4mQZFQ5EtAO8S7oOA-vZ9QRqZ0NXnMmCY9j3sMaKDCvbAf54PJdT2aQESV-jjHUc0mMy9jftUnugjsFG3lmBCXxX2nUyXZuKuldnbBjJghm3YBMI2DCpBI97RRY0msFVJK6xxKpUJUei9OXAu4U4qUSpGYA"/><div class="flex flex-col"><span class="font-label-runic text-label-runic text-primary uppercase tracking-widest">The Comfy Community</span><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Valheim Chronicles</span></div></div><nav class="hidden xl:flex items-center gap-space-lg" data-active-classes="text-primary font-bold"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" data-path="gallery" href="#">Gallery</a><a aria-current="page" class="transition-colors uppercase tracking-wider text-primary font-bold" data-path="all-builders" href="#">All Builders</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" data-path="eras-timeline" href="#">Eras Timeline</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" data-path="world-claims" href="#">World Claims</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" data-path="photo-requests" href="#">Photo Requests</a></nav><div class="flex items-center gap-space-sm shrink-0"><button class="flex items-center justify-center w-10 h-10 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">search</span></button><div class="hidden sm:flex items-center gap-space-2xs px-space-sm py-space-2xs rounded bg-surface-container-low"><span class="material-symbols-outlined text-primary text-[14px]">token</span><span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">Payload: Active</span></div><button class="flex items-center gap-space-xs px-space-sm py-space-xs rounded bg-primary-container hover:bg-primary text-on-primary-container transition-all shadow-[0_0_16px_rgba(245,158,11,0.25)]" type="button"><span class="material-symbols-outlined text-[16px]">sync</span><span class="font-label-mono-sm text-label-mono-sm font-semibold uppercase tracking-wider">Sync Device</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-background"><div class="flex flex-col w-full text-on-surface">
+<!-- TOP HEADER / MONUMENTAL LEDGER INTRO -->
+<section class="relative w-full px-margin-mobile md:px-margin-desktop pt-space-xl pb-space-2xl bg-surface-container-lowest overflow-hidden">
+<!-- Ambient Ember Glow Backdrops -->
+<div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary-container/10 blur-[120px] pointer-events-none"></div>
+<div class="absolute top-1/2 right-0 w-[30rem] h-[30rem] rounded-full bg-secondary-container/5 blur-[140px] pointer-events-none"></div>
+<div class="relative max-w-7xl mx-auto flex flex-col gap-space-lg">
+<div class="flex flex-wrap items-center justify-between gap-space-md border-b-0 pb-2">
+<div class="flex items-center gap-space-sm">
+<span class="inline-flex items-center justify-center px-space-xs py-1 rounded bg-surface-container-high text-primary font-label-mono-sm uppercase tracking-widest shadow-sm">
+            UDM // Matrix V.4.8
+          </span>
+<span class="font-label-mono-sm text-on-surface-variant uppercase tracking-wider">
+            9 Historical Eras • 12,102 Monolithic Captures
+          </span>
+</div>
+<div class="flex items-center gap-space-sm">
+<div class="flex items-center gap-space-2xs px-space-sm py-1 rounded bg-surface-container text-on-surface-variant font-label-mono-sm">
+<span class="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+            Taxonomy Interlock Active
+          </div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-end">
+<div class="lg:col-span-8 flex flex-col gap-space-xs">
+<span class="font-label-runic text-label-runic text-primary uppercase tracking-[0.2em]">
+            Archival UX Blueprint &amp; Archetype Vectoring
+          </span>
+<h1 class="font-display-hero text-display-hero md:text-display-hero text-on-surface tracking-tight leading-tight">
+            Journey Architecture &amp; Flow Convergence
+          </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mt-space-xs">
+            A precise mapping of 5 archetypal journeys traversing the digital longhouses of Valheim. 
+            From the initial rune gate to deep piece inspection, witness where solitary pursuits converge into a collective, permanent monument.
+          </p>
+</div>
+<div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-space-sm bg-surface-container-low p-space-md rounded-xl shadow-lg">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-mono-sm text-on-surface-variant uppercase">Ecosystem Velocity</span>
+<div class="font-headline-md text-headline-md text-primary mt-0.5">5 Archetypes</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[28px]">hub</span>
+</div>
+<div class="grid grid-cols-3 gap-space-xs pt-space-xs text-center font-label-mono-sm text-on-surface-variant">
+<div class="p-2 rounded bg-surface-container">
+<span class="block text-on-surface font-semibold text-body-sm">4 Hubs</span>
+<span>Nexus</span>
+</div>
+<div class="p-2 rounded bg-surface-container">
+<span class="block text-on-surface font-semibold text-body-sm">20 Paths</span>
+<span>Step-Gates</span>
+</div>
+<div class="p-2 rounded bg-surface-container">
+<span class="block text-primary font-semibold text-body-sm">100%</span>
+<span>Synthesized</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 1: THE 5 SWIMLANES / USER JOURNEYS -->
+<section class="w-full px-margin-mobile md:px-margin-desktop py-space-3xl bg-background">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-2xl">
+<!-- Section Intro & Filter Toggles -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="flex flex-col gap-space-2xs">
+<span class="font-label-runic text-label-runic text-secondary uppercase tracking-widest">Swimlane Vector Codex</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">5 Happy Paths Through the Chronograph</h2>
+</div>
+<div class="flex items-center gap-space-2xs p-1 rounded-lg bg-surface-container-low overflow-x-auto text-on-surface-variant">
+<button class="px-space-sm py-1.5 rounded text-on-primary-container bg-primary-container font-label-mono-sm font-semibold transition-all">All Archetypes</button>
+<button class="px-space-sm py-1.5 rounded hover:text-on-surface hover:bg-surface-container font-label-mono-sm transition-all">Builders</button>
+<button class="px-space-sm py-1.5 rounded hover:text-on-surface hover:bg-surface-container font-label-mono-sm transition-all">Scholars &amp; Scouts</button>
+<button class="px-space-sm py-1.5 rounded hover:text-on-surface hover:bg-surface-container font-label-mono-sm transition-all">Mechanists</button>
+</div>
+</div>
+<!-- Swimlanes Container -->
+<div class="flex flex-col gap-space-xl">
+<!-- PERSONA 1: TORVALD THE ELDER -->
+<div class="group relative bg-surface-container-low rounded-xl p-space-lg md:p-space-xl transition-all duration-300 hover:bg-surface-container shadow-md">
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-center">
+<!-- Persona Profile Plate -->
+<div class="xl:col-span-3 flex flex-row xl:flex-col items-center xl:items-start gap-space-md">
+<div class="relative shrink-0 w-28 h-28 md:w-36 md:h-36 rounded-xl bg-surface-container-highest/60 flex items-center justify-center overflow-hidden p-2 shadow-inner">
+<img alt="Torvald the Elder" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida/AEtjO1WAqFPTpU_Wb_OStlaL8ZYjUcrsnA-SOeUY0djFzgLcwBmZJZFxKdAirAxWAY7nHeVdSGJcXp-Arpn0Jo11Nwwu8l5u7L1c6ontytrSmcidf3w6N1e_iwsbmpauDDUhmooYTxlWIltLQIOkzVx1HvDMb7LjBX9po65yIJbNcXN1-PdBQaqx_I6IQEFJgkRbuYii3fcgvaaLF6f7hiBKxhCqtYL7-2za3UZtqecU4gcKOLDF9Ait0SHwlgE"/>
+<span class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-surface-container-lowest font-label-mono-sm text-[10px] text-primary">LVL 99</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-2xs">
+<span class="px-space-2xs py-0.5 rounded bg-primary/10 text-primary font-label-mono-sm text-[10px] font-bold tracking-wider uppercase">Lead Mason</span>
+<span class="font-label-mono-sm text-on-surface-variant text-[11px]">ERA VII-XVII</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-1">Torvald the Elder</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  The Veteran Master Builder. Hungry for cryptographic legacy attribution across all crew members, alt aliases, and megalithic coordinates.
+                </p>
+</div>
+</div>
+<!-- 4 Flow Stages (Horizontal Timeline) -->
+<div class="xl:col-span-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md relative">
+<!-- Step 1 -->
+<div class="relative flex flex-col p-space-md rounded-lg bg-surface-container-highest/30 transition-all hover:bg-surface-container-highest/50">
+<div class="flex items-center justify-between font-label-mono-sm text-primary mb-space-xs">
+<span>01 // INGRESS</span>
+<span class="material-symbols-outlined text-[16px]">door_open</span>
+</div>
+<div class="font-title-md text-title-md text-on-surface">Global Runic Ledger</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Arrives via deep link or Master Catalog; filters immediately to <span class="text-primary font-mono">#Era-14-IronAge</span>.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-primary">touch_app</span> URL Hash Routed
+                </div>
+</div>
+<!-- Step 2 -->
+<div class="relative flex flex-col p-space-md rounded-lg bg-surface-container-highest/30 transition-all hover:bg-surface-container-highest/50">
+<div class="flex items-center justify-between font-label-mono-sm text-secondary mb-space-xs">
+<span>02 // QUERY</span>
+<span class="material-symbols-outlined text-[16px]">manage_search</span>
+</div>
+<div class="font-title-md text-title-md text-on-surface">Crew &amp; Clan Graph</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Searches alias "Hugin-Hammer". Graph reveals 3 alt builder tags and 22 co-authored keep foundations.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-secondary">share</span> Graph Traversal
+                </div>
+</div>
+<!-- Step 3 -->
+<div class="relative flex flex-col p-space-md rounded-lg bg-surface-container-highest/30 transition-all hover:bg-surface-container-highest/50">
+<div class="flex items-center justify-between font-label-mono-sm text-primary mb-space-xs">
+<span>03 // AUDIT</span>
+<span class="material-symbols-outlined text-[16px]">view_in_ar</span>
+</div>
+<div class="font-title-md text-title-md text-on-surface">Masonry Spec Breakdown</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Inspects 42,400-piece Megakeep: Stone-to-Iron wood ratios, stability nodes, and drone azimuths.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-primary">bar_chart</span> 42.4k Pieces Verified
+                </div>
+</div>
+<!-- Step 4 -->
+<div class="relative flex flex-col p-space-md rounded-lg bg-primary/10 transition-all shadow-sm">
+<div class="flex items-center justify-between font-label-mono-sm text-primary mb-space-xs">
+<span>04 // CLIMAX</span>
+<span class="material-symbols-outlined text-[16px]">verified</span>
+</div>
+<div class="font-title-md text-title-md text-primary">Cryptographic Claim</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Signs ECDSA public signature; copies Discord-verified claim badge: <span class="text-primary font-mono text-[11px]">#VAL-ERA14-88A</span>.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-primary font-semibold">
+<span class="material-symbols-outlined text-[13px]">key</span> World Claim Sealed
+                </div>
+</div>
+</div>
+</div>
+</div>
+<!-- PERSONA 2: ASTRID WOODWRIGHT -->
+<div class="group relative bg-surface-container-low rounded-xl p-space-lg md:p-space-xl transition-all duration-300 hover:bg-surface-container shadow-md">
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-center">
+<div class="xl:col-span-3 flex flex-row xl:flex-col items-center xl:items-start gap-space-md">
+<div class="relative shrink-0 w-28 h-28 md:w-36 md:h-36 rounded-xl bg-surface-container-highest/60 flex items-center justify-center overflow-hidden p-2 shadow-inner">
+<img alt="Astrid Woodwright" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida/AEtjO1WEvTRS5lDbStafivI4SkuuFw-qHoszBhEsj1STB2wckEFuCo5-ueZ-n20taCc8JH1b07XZICtnWzHkP-CWWcNgBIMD6tWYaEf6V5ieYsWfAR4eKFOqLLGd0Y4F5c2VqRLLgC6vccnL6B9nBiS6KIXECnN6sKB2StlsB3xN53YM9DVBMftTwhWMpjXLugG4__kmP4z5A6fWZypepfAiLVJuKoxkuYheKLzSgVoKHRRv5Lp43kpIK0_ylw"/>
+<span class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-surface-container-lowest font-label-mono-sm text-[10px] text-primary">ARCHITECT</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-2xs">
+<span class="px-space-2xs py-0.5 rounded bg-secondary-container/20 text-secondary font-label-mono-sm text-[10px] font-bold tracking-wider uppercase">Timber Savant</span>
+<span class="font-label-mono-sm text-on-surface-variant text-[11px]">ERA IX-XVII</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-1">Astrid Woodwright</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Master Stave Architect. Obsessed with interlocking 45° timber roof joints, maximum Comfort (17+), and load-bearing techniques.
+                </p>
+</div>
+</div>
+<div class="xl:col-span-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<div class="relative flex flex-col p-space-md rounded-lg bg-surface-container-highest/30 transition-all hover:bg-surface-container-highest/50">
+<div class="flex items-center justify-between font-label-mono-sm text-primary mb-space-xs">
+<span>01 // INGRESS</span>
+<span class="material-symbols-outlined text-[16px]">filter_alt</span>
+</div>
+<div class="font-title-md text-title-md text-on-surface">Taxonomy Filter Codex</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Applies facet filter: <span class="text-primary font-mono">[Structure: Stave Temple]</span> + <span class="text-primary font-mono">[Comfort &gt;= 16]</span>.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-primary">straighten</span> Facet Query
+                </div>
+</div>
+<div class="relative flex flex-col p-space-md rounded-lg bg-surface-container-highest/30 transition-all hover:bg-surface-container-highest/50">
+<div class="flex items-center justify-between font-label-mono-sm text-secondary mb-space-xs">
+<span>02 // QUERY</span>
+<span class="material-symbols-outlined text-[16px]">crop_free</span>
+</div>
+<div class="font-title-md text-title-md text-on-surface">Piece Inspection Hub</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Zooms into drone elevation macro plates. Scans wood-iron core beams anchoring double-pitch gables.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-secondary">zoom_in</span> 4K Macro Shutter
+                </div>
+</div>
+<div class="relative flex flex-col p-space-md rounded-lg bg-surface-container-highest/30 transition-all hover:bg-surface-container-highest/50">
+<div class="flex items-center justify-between font-label-mono-sm text-primary mb-space-xs">
+<span>03 // AUDIT</span>
+<span class="material-symbols-outlined text-[16px]">architecture</span>
+</div>
+<div class="font-title-md text-title-md text-on-surface">Structural Load Trace</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Cross-references timber stress color gradients (Green to Red) across 8 cantilevered ridge lines.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-primary">layers</span> Beam Integrity: 94%
+                </div>
+</div>
+<div class="relative flex flex-col p-space-md rounded-lg bg-primary/10 transition-all shadow-sm">
+<div class="flex items-center justify-between font-label-mono-sm text-primary mb-space-xs">
+<span>04 // CLIMAX</span>
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+</div>
+<div class="font-title-md text-title-md text-primary">Blueprint Schema Saved</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Saves blueprint technique to local browser cache; copies coordinate pin to in-game clipboard.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-primary font-semibold">
+<span class="material-symbols-outlined text-[13px]">download_done</span> Schema Synced Local
+                </div>
+</div>
+</div>
+</div>
+</div>
+<!-- PERSONA 3: EINAR THE SKALD -->
+<div class="group relative bg-surface-container-low rounded-xl p-space-lg md:p-space-xl transition-all duration-300 hover:bg-surface-container shadow-md">
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-center">
+<div class="xl:col-span-3 flex flex-row xl:flex-col items-center xl:items-start gap-space-md">
+<div class="relative shrink-0 w-28 h-28 md:w-36 md:h-36 rounded-xl bg-surface-container-highest/60 flex items-center justify-center overflow-hidden p-2 shadow-inner">
+<img alt="Einar the Skald" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida/AEtjO1X_sl9lnyaPMMae8uKnIXnk6bflI3FzJ34hUJ-QaSzhNQ3X050oQHfZNV1Gerq8-HryR-ybGZ1F-iYi-IEsdA7ky8H1VRZPYDwfgOhCxZZTmmUdlZOHwiIY166C8dwWnQu3xJcxV_o21gmS-JIQf6Nvph-Jqu3gZxEdnBddSiS9qJqOpaXvkn41UnGkZ2pBeR_OQk50OkQhkQbP3BuVqqnVo55a5ublGhz6z_-Wj0KpzT_X-qfKrwaqaic"/>
+<span class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-surface-container-lowest font-label-mono-sm text-[10px] text-primary">CHRONICLER</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-2xs">
+<span class="px-space-2xs py-0.5 rounded bg-tertiary-container/20 text-tertiary font-label-mono-sm text-[10px] font-bold tracking-wider uppercase">Living Lorekeeper</span>
+<span class="font-label-mono-sm text-on-surface-variant text-[11px]">ALL 9 ERAS</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-1">Einar the Skald</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  The Storyteller &amp; Spectator. Seeks visual grandeur, atmospheric lighting conditions, and legendary server sagas.
+                </p>
+</div>
+</div>
+<div class="xl:col-span-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<div class="relative flex flex-col p-space-md rounded-lg bg-surface-container-highest/30 transition-all hover:bg-surface-container-highest/50">
+<div class="flex items-center justify-between font-label-mono-sm text-primary mb-space-xs">
+<span>01 // INGRESS</span>
+<span class="material-symbols-outlined text-[16px]">history_edu</span>
+</div>
+<div class="font-title-md text-title-md text-on-surface">Living Eras Timeline</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Browses the non-linear timeline from Era 7 (Great Mead Hall) through Era 17 (Ashlands Spire).
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-primary">timeline</span> 9 Eras Traversed
+                </div>
+</div>
+<div class="relative flex flex-col p-space-md rounded-lg bg-surface-container-highest/30 transition-all hover:bg-surface-container-highest/50">
+<div class="flex items-center justify-between font-label-mono-sm text-secondary mb-space-xs">
+<span>02 // QUERY</span>
+<span class="material-symbols-outlined text-[16px]">auto_stories</span>
+</div>
+<div class="font-title-md text-title-md text-on-surface">Curated Curiosities</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Filters for "Legendary Sagas" with twilight mist and hearthfire atmosphere scores above 9.0.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-secondary">wb_twilight</span> Atmospheric Sort
+                </div>
+</div>
+<div class="relative flex flex-col p-space-md rounded-lg bg-surface-container-highest/30 transition-all hover:bg-surface-container-highest/50">
+<div class="flex items-center justify-between font-label-mono-sm text-primary mb-space-xs">
+<span>03 // AUDIT</span>
+<span class="material-symbols-outlined text-[16px]">fullscreen</span>
+</div>
+<div class="font-title-md text-title-md text-on-surface">Cinematic Fullscreen</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Enters museum ambient mode: ambient sound triggers, builder testimonials, and world lore snippets.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-primary">volume_up</span> Lore Audio Sync
+                </div>
+</div>
+<div class="relative flex flex-col p-space-md rounded-lg bg-primary/10 transition-all shadow-sm">
+<div class="flex items-center justify-between font-label-mono-sm text-primary mb-space-xs">
+<span>04 // CLIMAX</span>
+<span class="material-symbols-outlined text-[16px]">share</span>
+</div>
+<div class="font-title-md text-title-md text-primary">Tale Exported</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Generates an illuminated parchment card to share on community forums with embedded builder attribution.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-primary font-semibold">
+<span class="material-symbols-outlined text-[13px]">menu_book</span> Chronicle Dispatched
+                </div>
+</div>
+</div>
+</div>
+</div>
+<!-- PERSONA 4: SIGRID FALCON-EYE -->
+<div class="group relative bg-surface-container-low rounded-xl p-space-lg md:p-space-xl transition-all duration-300 hover:bg-surface-container shadow-md">
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-center">
+<div class="xl:col-span-3 flex flex-row xl:flex-col items-center xl:items-start gap-space-md">
+<div class="relative shrink-0 w-28 h-28 md:w-36 md:h-36 rounded-xl bg-surface-container-highest/60 flex items-center justify-center overflow-hidden p-2 shadow-inner">
+<img alt="Sigrid Falcon-Eye" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida/AEtjO1WrPyvigRBb-YLes4RI2PWJSh-aip3LDpRm08wD7DDbuaIPQDkr60aE8e8Xx4GIU_hzk1DI7eIASmwGZ2FVaFn06XEnlm_bjoqZke6p-VvhrQ8Fyak5aNb-NKkXTWbgVGSEdgtBqENBj007JALTjGp7Vd41-tGHdXOZcIGUBBgVG-SsjRDxx24uQagEqwdaQvBUaadpT7cSD2uZpy80LudCUED3IhHSG8DJBgmltKbtcHt7RZdZ7VM0tMo"/>
+<span class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-surface-container-lowest font-label-mono-sm text-[10px] text-primary">SCOUT</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-2xs">
+<span class="px-space-2xs py-0.5 rounded bg-primary-container/20 text-primary font-label-mono-sm text-[10px] font-bold tracking-wider uppercase">Raven Drone Pilot</span>
+<span class="font-label-mono-sm text-on-surface-variant text-[11px]">ACTIVE REALM</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-1">Sigrid Falcon-Eye</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  The Airborne Surveyor. Dispatches drone flights, logs coordinate sweeps, and satisfies community photography bounty requests.
+                </p>
+</div>
+</div>
+<div class="xl:col-span-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<div class="relative flex flex-col p-space-md rounded-lg bg-surface-container-highest/30 transition-all hover:bg-surface-container-highest/50">
+<div class="flex items-center justify-between font-label-mono-sm text-primary mb-space-xs">
+<span>01 // INGRESS</span>
+<span class="material-symbols-outlined text-[16px]">notification_important</span>
+</div>
+<div class="font-title-md text-title-md text-on-surface">Photo Request Board</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Inspects community-submitted coordinates requesting dusk fly-throughs of newly finished keeps.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-primary">queue</span> 14 Active Bounties
+                </div>
+</div>
+<div class="relative flex flex-col p-space-md rounded-lg bg-surface-container-highest/30 transition-all hover:bg-surface-container-highest/50">
+<div class="flex items-center justify-between font-label-mono-sm text-secondary mb-space-xs">
+<span>02 // QUERY</span>
+<span class="material-symbols-outlined text-[16px]">my_location</span>
+</div>
+<div class="font-title-md text-title-md text-on-surface">Flight Coordinate Lock</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Pulls precise vector <span class="text-secondary font-mono">[X: -2410, Z: 5120]</span>; checks fog &amp; sun angles for ideal altitude.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-secondary">flight_takeoff</span> Vector Locked
+                </div>
+</div>
+<div class="relative flex flex-col p-space-md rounded-lg bg-surface-container-highest/30 transition-all hover:bg-surface-container-highest/50">
+<div class="flex items-center justify-between font-label-mono-sm text-primary mb-space-xs">
+<span>03 // AUDIT</span>
+<span class="material-symbols-outlined text-[16px]">upload_file</span>
+</div>
+<div class="font-title-md text-title-md text-on-surface">Batch Flight Ingestion</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Uploads 12 RAW vantage captures; tags perspectives (Drone 90°, Drone 45°, Hearth level).
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-primary">camera_alt</span> 12 Photos Staged
+                </div>
+</div>
+<div class="relative flex flex-col p-space-md rounded-lg bg-primary/10 transition-all shadow-sm">
+<div class="flex items-center justify-between font-label-mono-sm text-primary mb-space-xs">
+<span>04 // CLIMAX</span>
+<span class="material-symbols-outlined text-[16px]">forum</span>
+</div>
+<div class="font-title-md text-title-md text-primary">Discord Dispatch</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Webhook fires into Discord forum thread. The builder receives notification that their work is immortalized.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-primary font-semibold">
+<span class="material-symbols-outlined text-[13px]">bolt</span> Webhook Fired #bounties
+                </div>
+</div>
+</div>
+</div>
+</div>
+<!-- PERSONA 5: BROKKR THE TINKERER -->
+<div class="group relative bg-surface-container-low rounded-xl p-space-lg md:p-space-xl transition-all duration-300 hover:bg-surface-container shadow-md">
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-center">
+<div class="xl:col-span-3 flex flex-row xl:flex-col items-center xl:items-start gap-space-md">
+<div class="relative shrink-0 w-28 h-28 md:w-36 md:h-36 rounded-xl bg-surface-container-highest/60 flex items-center justify-center overflow-hidden p-2 shadow-inner">
+<img alt="Brokkr the Tinkerer" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida/AEtjO1VZ0M_aKlsPoBngBAPUTR7dzJKdrc3h1fWQ9A2KcX_6K-zuSFmVGBj8hT_JC3gCjvnaVcNNMFogVRE2KVMsl3_LJm__aqGFzN_T6JtYAd27_ELxJHyDy2ydx7uoQJv_4UbxSwOErCxqcULvcNUkAY4YuRdtj-Y_rhqbBUVEgwS-D3MT43V6f_hLF0DYnc-7cDQP3vNEo96Zj1qYdc318aZXZ3Q9Qr4arFkUU4efsysZxw2bylghF0AUdkU"/>
+<span class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-surface-container-lowest font-label-mono-sm text-[10px] text-primary">ENGINEER</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-2xs">
+<span class="px-space-2xs py-0.5 rounded bg-surface-bright text-on-surface font-label-mono-sm text-[10px] font-bold tracking-wider uppercase">Mechanist &amp; SysAdmin</span>
+<span class="font-label-mono-sm text-on-surface-variant text-[11px]">JSON / REST</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-1">Brokkr the Tinkerer</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  The Systems &amp; Data Alchemist. Needs IndexedDB local caching, offline synchronisation, coordinate API vectoring, and headless bot webhooks.
+                </p>
+</div>
+</div>
+<div class="xl:col-span-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<div class="relative flex flex-col p-space-md rounded-lg bg-surface-container-highest/30 transition-all hover:bg-surface-container-highest/50">
+<div class="flex items-center justify-between font-label-mono-sm text-primary mb-space-xs">
+<span>01 // INGRESS</span>
+<span class="material-symbols-outlined text-[16px]">sync_alt</span>
+</div>
+<div class="font-title-md text-title-md text-on-surface">Offline Payload Handshake</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Clicks "Sync Device" button in App Shell to dump delta updates into local IndexedDB storage.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-primary">data_object</span> 4.2 MB Cached Local
+                </div>
+</div>
+<div class="relative flex flex-col p-space-md rounded-lg bg-surface-container-highest/30 transition-all hover:bg-surface-container-highest/50">
+<div class="flex items-center justify-between font-label-mono-sm text-secondary mb-space-xs">
+<span>02 // QUERY</span>
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+</div>
+<div class="font-title-md text-title-md text-on-surface">Spatial Coordinate Index</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Runs local geo-distance matrix query calculating cluster density across 18 fjord outposts.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-secondary">memory</span> 12ms Latency
+                </div>
+</div>
+<div class="relative flex flex-col p-space-md rounded-lg bg-surface-container-highest/30 transition-all hover:bg-surface-container-highest/50">
+<div class="flex items-center justify-between font-label-mono-sm text-primary mb-space-xs">
+<span>03 // AUDIT</span>
+<span class="material-symbols-outlined text-[16px]">schema</span>
+</div>
+<div class="font-title-md text-title-md text-on-surface">Integrity Verification</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Audits JSON schemas for metadata collisions between builder alt-tags and era milestone stamps.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-primary">check_circle</span> Zero Schema Mismatch
+                </div>
+</div>
+<div class="relative flex flex-col p-space-md rounded-lg bg-primary/10 transition-all shadow-sm">
+<div class="flex items-center justify-between font-label-mono-sm text-primary mb-space-xs">
+<span>04 // CLIMAX</span>
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+</div>
+<div class="font-title-md text-title-md text-primary">Automated Ledger Export</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Generates an automated JSON dump &amp; pushes to GitHub backup ledger repo via headless service worker.
+                </p>
+<div class="mt-space-md pt-space-xs flex items-center gap-1 text-[11px] font-label-mono-sm text-primary font-semibold">
+<span class="material-symbols-outlined text-[13px]">commit</span> Git Commit Signed
+                </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 2: CONVERGENCE & TAXONOMY OVERLAP MATRIX (THE "WHERE PATHS CROSS" NEXUS) -->
+<section class="w-full px-margin-mobile md:px-margin-desktop py-space-3xl bg-surface-container-lowest">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-2xl">
+<div class="flex flex-col gap-space-2xs max-w-3xl">
+<span class="font-label-runic text-label-runic text-primary uppercase tracking-widest">Synergistic Archival Loop</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">The Convergence Nexus: Where Paths Cross</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          No viking works in isolation. One persona's output directly fuels another's delight. 
+          Sigrid's aerial photo provides the blueprint for Astrid, the attribution for Torvald, the ballad for Einar, and the coordinate payload for Brokkr.
+        </p>
+</div>
+<!-- 4 Convergence Core Pillars Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-lg">
+<!-- Pillar A -->
+<div class="flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-md">
+<div class="flex flex-col gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]">collections_bookmark</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-primary uppercase tracking-wider">Hub Alpha</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mt-1">Master Photo Catalog</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              The immutable high-resolution vault of all 12,102 captures. Categorized with multi-angle perspectives and time-of-day tags.
+            </p>
+</div>
+<div class="mt-space-lg pt-space-md border-t-0 bg-surface-container-highest/30 -mx-space-lg -mb-space-lg p-space-md rounded-b-xl flex flex-col gap-space-xs">
+<span class="font-label-mono-sm text-[10px] text-on-surface-variant uppercase tracking-wider">Intersecting Archetypes:</span>
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="px-2 py-0.5 rounded bg-surface-container text-primary font-label-mono-sm text-[11px]">Torvald (Claim)</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary font-label-mono-sm text-[11px]">Astrid (Study)</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-tertiary font-label-mono-sm text-[11px]">Einar (Marvel)</span>
+</div>
+</div>
+</div>
+<!-- Pillar B -->
+<div class="flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-md">
+<div class="flex flex-col gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[24px]">square_foot</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-secondary uppercase tracking-wider">Hub Beta</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mt-1">Piece &amp; Stat Inspector</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Microscopic structural diagnostics: timber piece count, stone foundation depth, comfort item radii, and stability stress.
+            </p>
+</div>
+<div class="mt-space-lg pt-space-md border-t-0 bg-surface-container-highest/30 -mx-space-lg -mb-space-lg p-space-md rounded-b-xl flex flex-col gap-space-xs">
+<span class="font-label-mono-sm text-[10px] text-on-surface-variant uppercase tracking-wider">Intersecting Archetypes:</span>
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary font-label-mono-sm text-[11px]">Astrid (Blueprints)</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-primary font-label-mono-sm text-[11px]">Torvald (Integrity)</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-mono-sm text-[11px]">Brokkr (Data)</span>
+</div>
+</div>
+</div>
+<!-- Pillar C -->
+<div class="flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-md">
+<div class="flex flex-col gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]">mark_chat_read</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-primary uppercase tracking-wider">Hub Gamma</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mt-1">Discord Dispatch Forum</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Bidirectional webhook sync bridging website requests directly to in-game flyover squads and community photo ping channels.
+            </p>
+</div>
+<div class="mt-space-lg pt-space-md border-t-0 bg-surface-container-highest/30 -mx-space-lg -mb-space-lg p-space-md rounded-b-xl flex flex-col gap-space-xs">
+<span class="font-label-mono-sm text-[10px] text-on-surface-variant uppercase tracking-wider">Intersecting Archetypes:</span>
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="px-2 py-0.5 rounded bg-surface-container text-primary font-label-mono-sm text-[11px]">Sigrid (Fulfills)</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-mono-sm text-[11px]">Brokkr (Routes)</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary font-label-mono-sm text-[11px]">Torvald (Requests)</span>
+</div>
+</div>
+</div>
+<!-- Pillar D -->
+<div class="flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-md">
+<div class="flex flex-col gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-tertiary/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[24px]">auto_stories</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-tertiary uppercase tracking-wider">Hub Delta</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mt-1">The 9-Era Living Codex</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Chronological ledger tracking server resets, biome advancements, monumental construction dates, and golden age eras.
+            </p>
+</div>
+<div class="mt-space-lg pt-space-md border-t-0 bg-surface-container-highest/30 -mx-space-lg -mb-space-lg p-space-md rounded-b-xl flex flex-col gap-space-xs">
+<span class="font-label-mono-sm text-[10px] text-on-surface-variant uppercase tracking-wider">Intersecting Archetypes:</span>
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="px-2 py-0.5 rounded bg-surface-container text-tertiary font-label-mono-sm text-[11px]">Einar (Chronicle)</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-primary font-label-mono-sm text-[11px]">Torvald (Legacy)</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary font-label-mono-sm text-[11px]">Astrid (Era Style)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Overlap Matrix Table Visualization -->
+<div class="w-full bg-surface-container-low rounded-xl p-space-lg md:p-space-xl overflow-x-auto shadow-lg">
+<div class="flex items-center justify-between mb-space-md">
+<span class="font-headline-sm text-headline-sm text-on-surface">Archetype Feature Cross-Utilization Matrix</span>
+<span class="font-label-mono-sm text-primary uppercase">Read / Write Access Privileges</span>
+</div>
+<table class="w-full text-left font-body-sm">
+<thead>
+<tr class="bg-surface-container text-on-surface-variant font-label-mono-sm uppercase text-[11px]">
+<th class="p-space-sm rounded-l">Taxonomy Touchpoint</th>
+<th class="p-space-sm text-center">Torvald (Elder)</th>
+<th class="p-space-sm text-center">Astrid (Architect)</th>
+<th class="p-space-sm text-center">Einar (Skald)</th>
+<th class="p-space-sm text-center">Sigrid (Scout)</th>
+<th class="p-space-sm text-center rounded-r">Brokkr (Tinkerer)</th>
+</tr>
+</thead>
+<tbody class="divide-y-0">
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors">
+<td class="p-space-sm font-semibold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">photo_library</span> Master Photo Catalog
+              </td>
+<td class="p-space-sm text-center font-label-mono-sm text-primary">Claim Co-Author</td>
+<td class="p-space-sm text-center font-label-mono-sm text-on-surface">Inspect Joint 4K</td>
+<td class="p-space-sm text-center font-label-mono-sm text-tertiary">Ambient Tour</td>
+<td class="p-space-sm text-center font-label-mono-sm text-secondary">Upload Staging</td>
+<td class="p-space-sm text-center font-label-mono-sm text-on-surface-variant">Asset Cache Sync</td>
+</tr>
+<tr class="bg-surface-container-lowest/50 hover:bg-surface-container transition-colors">
+<td class="p-space-sm font-semibold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary">straighten</span> Piece Density &amp; Structural Tool
+              </td>
+<td class="p-space-sm text-center font-label-mono-sm text-primary">Volume Validation</td>
+<td class="p-space-sm text-center font-label-mono-sm text-secondary">Stress Heatmap</td>
+<td class="p-space-sm text-center font-label-mono-sm text-on-surface-variant">Read Megabuild Tag</td>
+<td class="p-space-sm text-center font-label-mono-sm text-on-surface-variant">-</td>
+<td class="p-space-sm text-center font-label-mono-sm text-on-surface">Vector Parser</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors">
+<td class="p-space-sm font-semibold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">dynamic_feed</span> Discord Dispatch &amp; Request FIFO
+              </td>
+<td class="p-space-sm text-center font-label-mono-sm text-primary">Dispatch Bounty</td>
+<td class="p-space-sm text-center font-label-mono-sm text-on-surface-variant">-</td>
+<td class="p-space-sm text-center font-label-mono-sm text-on-surface-variant">Community Upvote</td>
+<td class="p-space-sm text-center font-label-mono-sm text-secondary">Claim &amp; Fulfill</td>
+<td class="p-space-sm text-center font-label-mono-sm text-on-surface">Webhook Daemon</td>
+</tr>
+<tr class="bg-surface-container-lowest/50 hover:bg-surface-container transition-colors">
+<td class="p-space-sm font-semibold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-tertiary">hourglass_bottom</span> 9-Era Timeline Chronology
+              </td>
+<td class="p-space-sm text-center font-label-mono-sm text-primary">Vanguard Status</td>
+<td class="p-space-sm text-center font-label-mono-sm text-secondary">Era Style Evolution</td>
+<td class="p-space-sm text-center font-label-mono-sm text-tertiary">Lore Reading Mode</td>
+<td class="p-space-sm text-center font-label-mono-sm text-on-surface-variant">Realm Mapping</td>
+<td class="p-space-sm text-center font-label-mono-sm text-on-surface">DB Epoch Stamp</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors">
+<td class="p-space-sm font-semibold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">shield</span> World Claims &amp; Cryptographic Ledger
+              </td>
+<td class="p-space-sm text-center font-label-mono-sm text-primary">ECDSA Sign</td>
+<td class="p-space-sm text-center font-label-mono-sm text-on-surface-variant">Technique Credit</td>
+<td class="p-space-sm text-center font-label-mono-sm text-on-surface-variant">Verify Builder</td>
+<td class="p-space-sm text-center font-label-mono-sm text-on-surface-variant">Scout Metadata</td>
+<td class="p-space-sm text-center font-label-mono-sm text-on-surface">Signature Validator</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- SECTION 3: INFORMATION ARCHITECTURE & SITE MAP BLUEPRINT -->
+<section class="w-full px-margin-mobile md:px-margin-desktop py-space-3xl bg-background">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-2xl">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="flex flex-col gap-space-2xs">
+<span class="font-label-runic text-label-runic text-secondary uppercase tracking-widest">Sitemap &amp; Route Taxonomy</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Information Architecture &amp; Drawer Hierarchy</h2>
+</div>
+<div class="font-label-mono-sm text-on-surface-variant">
+          Root: <span class="text-primary font-mono">valheim.chronicles.comfy/*</span>
+</div>
+</div>
+<!-- Interactive IA Hierarchy Visualizer -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg">
+<!-- Pillar 1: Primary Tier Routes -->
+<div class="flex flex-col gap-space-md p-space-lg rounded-xl bg-surface-container-low shadow-md">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-sm text-primary uppercase tracking-wider">Level 1 // Primary Routes</span>
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-mono-sm text-[11px] text-on-surface-variant">Global Shell</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<div class="p-space-sm rounded bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-primary">view_carousel</span>
+<span class="font-title-md text-title-md text-on-surface">/gallery</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-on-surface-variant">Masonry Stream</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-primary">groups</span>
+<span class="font-title-md text-title-md text-on-surface">/all-builders</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-on-surface-variant">Crew Graph &amp; Index</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-primary">timeline</span>
+<span class="font-title-md text-title-md text-on-surface">/eras-timeline</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-on-surface-variant">9-Epoch Canvas</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-primary">verified_user</span>
+<span class="font-title-md text-title-md text-on-surface">/world-claims</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-on-surface-variant">Proof of Masonry</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-primary">add_a_photo</span>
+<span class="font-title-md text-title-md text-on-surface">/photo-requests</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-on-surface-variant">Drone FIFO Board</span>
+</div>
+</div>
+</div>
+<!-- Pillar 2: Secondary Context Drawers & Inspect Panels -->
+<div class="flex flex-col gap-space-md p-space-lg rounded-xl bg-surface-container-low shadow-md">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-sm text-secondary uppercase tracking-wider">Level 2 // Secondary Panels</span>
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-mono-sm text-[11px] text-on-surface-variant">Flyout Drawers</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<div class="p-space-sm rounded bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-secondary">tune</span>
+<span class="font-title-md text-title-md text-on-surface">Filter Codex Flyout</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-secondary font-semibold">Slide Right</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-secondary">explore</span>
+<span class="font-title-md text-title-md text-on-surface">Coordinate Stele Drawer</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-secondary font-semibold">Modal Overlay</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-secondary">construction</span>
+<span class="font-title-md text-title-md text-on-surface">Piece Inspector Tray</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-secondary font-semibold">Bottom Sheet</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-secondary">badge</span>
+<span class="font-title-md text-title-md text-on-surface">Builder Alt-Alias Graph</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-secondary font-semibold">Node View</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-secondary">flight_class</span>
+<span class="font-title-md text-title-md text-on-surface">Drone Flight Dispatcher</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-secondary font-semibold">Action Flow</span>
+</div>
+</div>
+</div>
+<!-- Pillar 3: Local Storage & Service Layer -->
+<div class="flex flex-col gap-space-md p-space-lg rounded-xl bg-surface-container-low shadow-md">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-sm text-tertiary uppercase tracking-wider">Level 3 // Local Device State</span>
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-mono-sm text-[11px] text-on-surface-variant">IndexedDB Hooks</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<div class="p-space-sm rounded bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-tertiary">bookmarks</span>
+<span class="font-title-md text-title-md text-on-surface">`comfy_bookmarks`</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-tertiary">JSON Schema</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-tertiary">speed</span>
+<span class="font-title-md text-title-md text-on-surface">`recent_vectors_coord`</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-tertiary">Spatial Cache</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-tertiary">sync</span>
+<span class="font-title-md text-title-md text-on-surface">`sync_delta_token`</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-tertiary">SHA-256 Hash</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-tertiary">vpn_key</span>
+<span class="font-title-md text-title-md text-on-surface">`claim_keypair_pub`</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-tertiary">WebCrypto API</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-tertiary">offline_pin</span>
+<span class="font-title-md text-title-md text-on-surface">`headless_cron_delta`</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-tertiary">Active Hook</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 4: DATA TAXONOMY & METADATA TAGGING CODEX -->
+<section class="w-full px-margin-mobile md:px-margin-desktop py-space-3xl bg-surface-container-lowest">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-2xl">
+<div class="flex flex-col gap-space-2xs max-w-3xl">
+<span class="font-label-runic text-label-runic text-primary uppercase tracking-widest">Metadata Standard &amp; Taxa</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Archival Tagging Matrix: 5 Facet Axes</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          Every photograph, build blueprint, and Discord bounty is classified across 5 strict axes to ensure millisecond queries across all 12,102 server artifacts.
+        </p>
+</div>
+<!-- 5 Axes Visual Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-space-md">
+<!-- Axis 1: Eras -->
+<div class="flex flex-col p-space-md rounded-xl bg-surface-container-low shadow-sm">
+<div class="flex items-center gap-2 mb-space-xs text-primary font-label-mono-sm">
+<span class="material-symbols-outlined text-[18px]">event_repeat</span>
+<span>AXIS 01 // ERA</span>
+</div>
+<div class="font-headline-sm text-headline-sm text-on-surface mb-space-sm">Chronology</div>
+<div class="flex flex-col gap-1.5 font-label-mono-sm text-[11px]">
+<span class="p-1.5 rounded bg-surface-container text-on-surface">ERA VII // Bronze Age</span>
+<span class="p-1.5 rounded bg-surface-container text-on-surface">ERA X // Iron Peaks</span>
+<span class="p-1.5 rounded bg-surface-container text-on-surface">ERA XIII // Plains Bastion</span>
+<span class="p-1.5 rounded bg-surface-container text-on-surface">ERA XV // Mistlands Fog</span>
+<span class="p-1.5 rounded bg-surface-container text-primary font-semibold">ERA XVII // Ashlands Fire</span>
+</div>
+</div>
+<!-- Axis 2: Perspectives -->
+<div class="flex flex-col p-space-md rounded-xl bg-surface-container-low shadow-sm">
+<div class="flex items-center gap-2 mb-space-xs text-secondary font-label-mono-sm">
+<span class="material-symbols-outlined text-[18px]">photo_camera</span>
+<span>AXIS 02 // VANTAGE</span>
+</div>
+<div class="font-headline-sm text-headline-sm text-on-surface mb-space-sm">Perspective</div>
+<div class="flex flex-col gap-1.5 font-label-mono-sm text-[11px]">
+<span class="p-1.5 rounded bg-surface-container text-on-surface">DRONE // Top-Down 90°</span>
+<span class="p-1.5 rounded bg-surface-container text-on-surface">DRONE // Isometric 45°</span>
+<span class="p-1.5 rounded bg-surface-container text-secondary font-semibold">EYE-LEVEL // Approach</span>
+<span class="p-1.5 rounded bg-surface-container text-on-surface">MACRO // Stave Joint</span>
+<span class="p-1.5 rounded bg-surface-container text-on-surface">SEATED // Hearth Comfort</span>
+</div>
+</div>
+<!-- Axis 3: Structure Type -->
+<div class="flex flex-col p-space-md rounded-xl bg-surface-container-low shadow-sm">
+<div class="flex items-center gap-2 mb-space-xs text-tertiary font-label-mono-sm">
+<span class="material-symbols-outlined text-[18px]">castle</span>
+<span>AXIS 03 // TYPOLOGY</span>
+</div>
+<div class="font-headline-sm text-headline-sm text-on-surface mb-space-sm">Structure</div>
+<div class="flex flex-col gap-1.5 font-label-mono-sm text-[11px]">
+<span class="p-1.5 rounded bg-surface-container text-tertiary font-semibold">MONOLITHIC // Keep</span>
+<span class="p-1.5 rounded bg-surface-container text-on-surface">SACRED // Stave Temple</span>
+<span class="p-1.5 rounded bg-surface-container text-on-surface">MARITIME // Harbor Pier</span>
+<span class="p-1.5 rounded bg-surface-container text-on-surface">DEFENSE // Perimeter Wall</span>
+<span class="p-1.5 rounded bg-surface-container text-on-surface">DOMESTIC // Mead Hall</span>
+</div>
+</div>
+<!-- Axis 4: Piece Density -->
+<div class="flex flex-col p-space-md rounded-xl bg-surface-container-low shadow-sm">
+<div class="flex items-center gap-2 mb-space-xs text-primary font-label-mono-sm">
+<span class="material-symbols-outlined text-[18px]">grain</span>
+<span>AXIS 04 // DENSITY</span>
+</div>
+<div class="font-headline-sm text-headline-sm text-on-surface mb-space-sm">Piece Count</div>
+<div class="flex flex-col gap-1.5 font-label-mono-sm text-[11px]">
+<span class="p-1.5 rounded bg-surface-container text-on-surface">MICRO // &lt; 2,500 pcs</span>
+<span class="p-1.5 rounded bg-surface-container text-on-surface">SETTLEMENT // 2.5k–10k</span>
+<span class="p-1.5 rounded bg-surface-container text-on-surface">CITADEL // 10k–30k</span>
+<span class="p-1.5 rounded bg-surface-container text-primary font-semibold">MEGABUILD // 30k–65k+</span>
+<span class="p-1.5 rounded bg-surface-container text-on-surface">SERVER CRASHER // 80k+</span>
+</div>
+</div>
+<!-- Axis 5: Comfort Level -->
+<div class="flex flex-col p-space-md rounded-xl bg-surface-container-low shadow-sm">
+<div class="flex items-center gap-2 mb-space-xs text-secondary font-label-mono-sm">
+<span class="material-symbols-outlined text-[18px]">fireplace</span>
+<span>AXIS 05 // REST</span>
+</div>
+<div class="font-headline-sm text-headline-sm text-on-surface mb-space-sm">Comfort Level</div>
+<div class="flex flex-col gap-1.5 font-label-mono-sm text-[11px]">
+<span class="p-1.5 rounded bg-surface-container text-on-surface">OUTPOST // Comfort 1–5</span>
+<span class="p-1.5 rounded bg-surface-container text-on-surface">HOMESTEAD // 6–10</span>
+<span class="p-1.5 rounded bg-surface-container text-on-surface">NOBLE HALL // 11–15</span>
+<span class="p-1.5 rounded bg-surface-container text-secondary font-semibold">SANCTUARY // 16–18</span>
+<span class="p-1.5 rounded bg-surface-container text-on-surface">MAX BUFF // 19+ Max</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 5: CALL TO ACTION & INTERACTIVE VERIFICATION -->
+<section class="w-full px-margin-mobile md:px-margin-desktop py-space-3xl bg-background">
+<div class="max-w-7xl mx-auto rounded-2xl bg-surface-container-low p-space-xl md:p-space-2xl relative overflow-hidden shadow-2xl">
+<div class="absolute -right-16 -bottom-16 w-80 h-80 rounded-full bg-primary-container/10 blur-[90px] pointer-events-none"></div>
+<div class="relative grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center">
+<div class="lg:col-span-8 flex flex-col gap-space-sm">
+<span class="font-label-runic text-label-runic text-primary uppercase tracking-widest">Ready For Ingress</span>
+<h2 class="font-display-hero text-headline-lg md:text-display-hero text-on-surface tracking-tight">
+            Step Into the Living Ledger
+          </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+            Pick your archetype path, activate offline storage sync, or dispatch a Raven drone crew to capture your crew's keep before the current era concludes.
+          </p>
+<div class="flex flex-wrap items-center gap-space-md pt-space-sm">
+<button class="flex items-center gap-space-xs px-space-lg py-space-sm rounded bg-primary-container hover:bg-primary text-on-primary-container font-label-mono-md font-semibold tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)]" type="button">
+<span class="material-symbols-outlined text-[18px]">explore</span>
+              Launch Master Gallery
+            </button>
+<button class="flex items-center gap-space-xs px-space-lg py-space-sm rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-mono-md uppercase tracking-wider transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+              Export UX Matrix (JSON)
+            </button>
+</div>
+</div>
+<div class="lg:col-span-4 flex flex-col gap-space-xs p-space-md rounded-xl bg-surface-container">
+<span class="font-label-mono-sm text-primary uppercase">Cryptographic Status</span>
+<div class="font-mono text-body-sm text-on-surface-variant bg-surface-container-lowest p-space-sm rounded overflow-x-auto">
+<div class="text-primary font-semibold">// ARCHIVE CHECKSUM</div>
+<div>STATUS: SYNCHRONIZED</div>
+<div>NODES: 5 VECTORS ACTIVE</div>
+<div>HASH: 9f82c...e14a</div>
+<div class="text-secondary mt-1">&gt; READY FOR DEPLOYMENT</div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-mono-sm text-[11px] pt-1">
+<span>Era XVII Active</span>
+<span class="text-primary font-semibold">99.98% Fidelity</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<script>
+  // Micro-interaction for Persona Quick Filter Tabs
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('button');
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Simple subtle UI highlight trigger for demonstration
+        btn.classList.add('scale-[0.98]');
+        setTimeout(() => btn.classList.remove('scale-[0.98]'), 150);
+      });
+    });
+  });
+</script></main><footer class="w-full bg-surface-container-lowest mt-space-4xl"><div class="w-full px-margin-desktop py-space-3xl flex flex-col md:flex-row items-center justify-between gap-space-lg"><div class="flex flex-col items-center md:items-start gap-space-2xs"><span class="font-label-runic text-label-runic text-primary uppercase">Valheim Architectural Ledger</span><p class="font-body-sm text-body-sm text-on-surface-variant">Chronicles of longhouses, monolithic stone steles, and legendary server realms.</p></div><div class="flex items-center gap-space-md"><span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">© The Comfy Community Archive. Preserved for Eternity.</span></div></div></footer></body></html>

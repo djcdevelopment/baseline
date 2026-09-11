@@ -1,0 +1,204 @@
+<!DOCTYPE html><html class="dark" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Valheim Chronicles — The Comfy Archive</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+  @layer base {
+    html, body { margin: 0; padding: 0; }
+    body { overscroll-behavior: none; }
+    main > :first-child { margin-top: 0 !important; }
+    main > :last-child { margin-bottom: 0 !important; }
+  }
+  ::-webkit-scrollbar { display: none; }
+</style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "inverse-surface": "#dde3ee",
+          "surface-variant": "#2f353e",
+          "surface-dim": "#0e141c",
+          "error": "#ffb4ab",
+          "on-error": "#690005",
+          "surface-container-lowest": "#090f16",
+          "secondary-container": "#d97707",
+          "on-error-container": "#ffdad6",
+          "secondary-fixed": "#ffdcc3",
+          "on-primary": "#472a00",
+          "on-primary-container": "#613b00",
+          "on-surface-variant": "#d8c3ad",
+          "surface-container-low": "#161c24",
+          "on-tertiary": "#402d00",
+          "primary-fixed-dim": "#ffb95f",
+          "tertiary": "#ffc32d",
+          "primary-fixed": "#ffddb8",
+          "on-background": "#dde3ee",
+          "outline": "#a08e7a",
+          "tertiary-container": "#e0a800",
+          "inverse-on-surface": "#2b3139",
+          "primary-container": "#f59e0b",
+          "surface": "#0e141c",
+          "inverse-primary": "#855300",
+          "on-secondary": "#4d2600",
+          "on-secondary-fixed": "#2f1500",
+          "on-secondary-container": "#432100",
+          "on-tertiary-container": "#584000",
+          "on-primary-fixed-variant": "#653e00",
+          "error-container": "#93000a",
+          "on-primary-fixed": "#2a1700",
+          "secondary-fixed-dim": "#ffb77d",
+          "tertiary-fixed": "#ffdf9f",
+          "surface-tint": "#ffb95f",
+          "surface-container-highest": "#2f353e",
+          "surface-bright": "#343a42",
+          "primary": "#ffc174",
+          "surface-container": "#1a2028",
+          "tertiary-fixed-dim": "#f9bd22",
+          "on-surface": "#dde3ee",
+          "surface-container-high": "#242a33",
+          "on-tertiary-fixed": "#261a00",
+          "outline-variant": "#534434",
+          "secondary": "#ffb77d",
+          "background": "#0e141c",
+          "on-secondary-fixed-variant": "#6e3900",
+          "on-tertiary-fixed-variant": "#5c4300"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.125rem",
+          "lg": "0.25rem",
+          "xl": "0.5rem",
+          "full": "0.75rem"
+        },
+        "spacing": {
+          "space-sm": "0.75rem",
+          "gutter-desktop": "2rem",
+          "margin-mobile": "1rem",
+          "gutter-mobile": "1rem",
+          "margin-desktop": "3rem",
+          "space-xl": "2rem",
+          "space-lg": "1.5rem",
+          "space-md": "1rem",
+          "space-3xl": "4rem",
+          "space-2xl": "3rem",
+          "space-xs": "0.5rem",
+          "space-2xs": "0.25rem",
+          "space-4xl": "6rem"
+        },
+        "fontFamily": {
+          "title-md": ["Plus Jakarta Sans"],
+          "label-runic": ["Bodoni Moda"],
+          "display-hero-mobile": ["Bodoni Moda"],
+          "body-lg": ["Plus Jakarta Sans"],
+          "label-mono-sm": ["JetBrains Mono"],
+          "headline-lg-mobile": ["Bodoni Moda"],
+          "display-hero": ["Bodoni Moda"],
+          "headline-sm": ["Bodoni Moda"],
+          "headline-lg": ["Bodoni Moda"],
+          "body-md": ["Plus Jakarta Sans"],
+          "label-mono-md": ["JetBrains Mono"],
+          "body-sm": ["Plus Jakarta Sans"],
+          "headline-md": ["Bodoni Moda"]
+        }
+      }
+    }
+  };
+</script>
+</head>
+<body class="bg-background font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- 1. GLOBAL HEADER -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_12px_rgba(0,0,0,0.6)]">
+<div class="h-20 w-full px-margin-desktop flex items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md shrink-0">
+<img alt="The Comfy Valheim Archive Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UtdUKuKSLNkNWleislCc9Mh2IpqfwHRKH4aqEdaPHXKA3MQcnvINxSWNFoJ0du1HylEz7o90fH9A14grer5rfUZGNuRTF6MenQ44DMbauv9x1RiX6Gh4yIietvalfC1bCs7cdmXNXe1rmycGm52FIWiacAuKQoebExctNwCKDk2ugqV-_cZiV48MN12gncEltTiPULcw6_NBeZoPsrcmuWqZyeDYFXAH77ddwZs6nhILn_TlmjeokUDw">
+<div class="flex flex-col">
+<span class="font-label-runic text-[11px] text-primary uppercase tracking-widest">The Comfy Community</span>
+<span class="font-headline-sm text-lg text-on-surface tracking-tight">Valheim Chronicles</span>
+</div>
+</div>
+<nav class="hidden xl:flex items-center gap-space-lg">
+<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" href="#gallery-overview">Gallery</a>
+<a aria-current="page" class="font-body-sm text-primary font-semibold uppercase tracking-wider" href="#archetypes">Explore</a>
+<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" href="#field-guide">Field Guide</a>
+</nav>
+<div class="flex items-center gap-space-sm shrink-0">
+<div class="hidden sm:flex items-center gap-space-2xs px-space-sm py-1 rounded bg-surface-container-low border border-outline-variant/40">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-mono-sm text-[11px] text-primary uppercase">Ledger Active</span>
+</div>
+<button class="flex items-center gap-space-xs px-space-sm py-1.5 rounded bg-primary-container hover:bg-primary text-on-primary-container transition-all shadow-[0_0_12px_rgba(245,158,11,0.25)]" type="button">
+<span class="material-symbols-outlined text-[15px]">sync</span>
+<span class="font-label-mono-sm text-[11px] font-semibold uppercase tracking-wider">Sync</span>
+</button>
+</div>
+</div>
+</header>
+<main class="w-full pt-28 bg-background">
+<!-- 2. HERO TITLE (MINIMAL & AIRY) -->
+<section class="w-full max-w-6xl mx-auto px-margin-desktop text-center py-space-md"><h1 class="font-display-hero text-3xl md:text-5xl text-on-surface tracking-tight font-bold">Choose Your Path</h1></section>
+<!-- 3. FIVE ARCHETYPE PORTRAIT CARDS -->
+<section class="w-full max-w-[1400px] mx-auto px-margin-desktop pb-space-2xl" id="archetypes">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-space-md">
+<!-- CARD 1: Torvald -->
+<a class="group flex flex-col items-center text-center p-space-md rounded-xl bg-surface-container-low/80 border border-outline-variant/30 hover:border-primary/60 hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-[0_12px_28px_rgba(0,0,0,0.5)]" href="#search-anchor"><div class="w-32 h-32 my-space-xs flex items-center justify-center"><img alt="The Mason" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AEtjO1WAqFPTpU_Wb_OStlaL8ZYjUcrsnA-SOeUY0djFzgLcwBmZJZFxKdAirAxWAY7nHeVdSGJcXp-Arpn0Jo11Nwwu8l5u7L1c6ontytrSmcidf3w6N1e_iwsbmpauDDUhmooYTxlWIltLQIOkzVx1HvDMb7LjBX9po65yIJbNcXN1-PdBQaqx_I6IQEFJgkRbuYii3fcgvaaLF6f7hiBKxhCqtYL7-2za3UZtqecU4gcKOLDF9Ait0SHwlgE"></div><h3 class="font-headline-sm text-base text-on-surface font-semibold group-hover:text-primary transition-colors">The Mason</h3></a>
+<!-- CARD 2: Astrid -->
+<a class="group flex flex-col items-center text-center p-space-md rounded-xl bg-surface-container-low/80 border border-outline-variant/30 hover:border-primary/60 hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-[0_12px_28px_rgba(0,0,0,0.5)]" href="#search-anchor"><div class="w-32 h-32 my-space-xs flex items-center justify-center"><img alt="The Architect" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AEtjO1WEvTRS5lDbStafivI4SkuuFw-qHoszBhEsj1STB2wckEFuCo5-ueZ-n20taCc8JH1b07XZICtnWzHkP-CWWcNgBIMD6tWYaEf6V5ieYsWfAR4eKFOqLLGd0Y4F5c2VqRLLgC6vccnL6B9nBiS6KIXECnN6sKB2StlsB3xN53YM9DVBMftTwhWMpjXLugG4__kmP4z5A6fWZypepfAiLVJuKoxkuYheKLzSgVoKHRRv5Lp43kpIK0_ylw"></div><h3 class="font-headline-sm text-base text-on-surface font-semibold group-hover:text-primary transition-colors">The Architect</h3></a>
+<!-- CARD 3: Einar -->
+<a class="group flex flex-col items-center text-center p-space-md rounded-xl bg-surface-container-low/80 border border-outline-variant/30 hover:border-primary/60 hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-[0_12px_28px_rgba(0,0,0,0.5)]" href="#search-anchor"><div class="w-32 h-32 my-space-xs flex items-center justify-center"><img alt="The Chronicler" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AEtjO1X_sl9lnyaPMMae8uKnIXnk6bflI3FzJ34hUJ-QaSzhNQ3X050oQHfZNV1Gerq8-HryR-ybGZ1F-iYi-IEsdA7ky8H1VRZPYDwfgOhCxZZTmmUdlZOHwiIY166C8dwWnQu3xJcxV_o21gmS-JIQf6Nvph-Jqu3gZxEdnBddSiS9qJqOpaXvkn41UnGkZ2BeR_OQk50OkQhkQbP3BuVqqnVo55a5ublGhz6z_-Wj0KpzT_X-qfKrwaqaic"></div><h3 class="font-headline-sm text-base text-on-surface font-semibold group-hover:text-primary transition-colors">The Chronicler</h3></a>
+<!-- CARD 4: Sigrid -->
+<a class="group flex flex-col items-center text-center p-space-md rounded-xl bg-surface-container-low/80 border border-outline-variant/30 hover:border-primary/60 hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-[0_12px_28px_rgba(0,0,0,0.5)]" href="#search-anchor"><div class="w-32 h-32 my-space-xs flex items-center justify-center"><img alt="The Scout" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AEtjO1WrPyvigRBb-YLes4RI2PWJSh-aip3LDpRm08wD7DDbuaIPQDkr60aE8e8Xx4GIU_hzk1DI7eIASmwGZ2FVaFn06XEnlm_bjoqZke6p-VvhrQ8Fyak5aNb-NKkXTWbgVGSEdgtBqENBj007JALTjGp7Vd41-tGHdXOZcIGUBBgVG-SsjRDxx24uQagEqwdaQvBUaadpT7cSD2uZpy80LudCUED3IhHSG8DJBgmltKbtcHt7RZdZ7VM0tMo"></div><h3 class="font-headline-sm text-base text-on-surface font-semibold group-hover:text-primary transition-colors">The Scout</h3></a>
+<!-- CARD 5: Brokkr -->
+<a class="group flex flex-col items-center text-center p-space-md rounded-xl bg-surface-container-low/80 border border-outline-variant/30 hover:border-primary/60 hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-[0_12px_28px_rgba(0,0,0,0.5)]" href="#search-anchor"><div class="w-32 h-32 my-space-xs flex items-center justify-center"><img alt="The Mechanist" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AEtjO1VZ0M_aKlsPoBngBAPUTR7dzJKdrc3h1fWQ9A2KcX_6K-zuSFmVGBj8hT_JC3gCjvnaVcNNMFogVRE2KVMsl3_LJm__aqGFzN_T6JtYAd27_ELxJHyDy2ydx7uoQJv_4UbxSwOErCxqcULvcNUkAY4YuRdtj-Y_rhqbBUVEgwS-D3MT43V6f_hLF0DYnc-7cDQP3vNEo96Zj1qYdc318aZXZ3Q9Qr4arFkUU4efsysZxw2bylghF0AUdkU"></div><h3 class="font-headline-sm text-base text-on-surface font-semibold group-hover:text-primary transition-colors">The Mechanist</h3></a>
+</div>
+</section>
+<!-- 4. SEARCH BAR & GALLERY BUTTON SECTION -->
+<section class="w-full max-w-3xl mx-auto px-margin-desktop flex flex-col items-center text-center pt-space-xs pb-space-2xl" id="search-anchor">
+<!-- Character Search Bar -->
+<div class="w-full relative group">
+<div class="relative flex items-center w-full rounded-xl bg-surface-container-low border border-outline-variant/50 group-focus-within:border-primary group-focus-within:shadow-[0_0_24px_rgba(245,158,11,0.25)] transition-all overflow-hidden">
+<span class="material-symbols-outlined text-outline ml-space-md text-[22px] group-focus-within:text-primary transition-colors">search</span>
+<input aria-label="Character search" class="w-full bg-transparent border-0 py-4 px-space-sm font-body-md text-on-surface placeholder:text-outline placeholder:font-normal focus:ring-0 focus:outline-none text-base" placeholder="search for your character" type="text">
+<button class="mr-space-sm px-space-sm py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-xs font-label-mono-sm text-on-surface-variant hover:text-primary transition-colors uppercase" type="button">
+          Find
+        </button>
+</div>
+<!-- Sub-label & claim hint -->
+<div class="flex flex-wrap items-center justify-between gap-space-xs mt-space-xs px-1 text-xs"><div class="w-full flex justify-end"><a class="font-body-sm text-primary hover:underline inline-flex items-center gap-0.5 font-medium transition-colors" href="#field-guide"><span class="">Claim build</span><span class="material-symbols-outlined text-[14px]">arrow_forward</span></a></div></div>
+</div>
+<!-- Hard Line Breaks / Generous Vertical Spacing -->
+<div class="my-space-2xl flex flex-col items-center"><a class="inline-flex items-center gap-space-sm px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 via-primary-container to-amber-600 hover:from-amber-400 hover:to-amber-500 text-on-primary-container font-headline-sm text-base md:text-lg font-bold uppercase tracking-wider shadow-[0_0_28px_rgba(245,158,11,0.45)] hover:shadow-[0_0_36px_rgba(245,158,11,0.65)] hover:scale-[1.02] active:scale-[0.99] transition-all" data-path="gallery" href="#field-guide"><span class="">Enter Gallery</span><span class="material-symbols-outlined text-[22px]">arrow_forward</span></a></div>
+</section>
+<!-- 5. BELOW THE FOLD: CONCISE VISUAL-FIRST QUICK OVERVIEW -->
+<section class="w-full bg-surface-container-lowest border-t border-outline-variant/30 py-space-3xl" id="field-guide">
+<div class="max-w-[1320px] mx-auto px-margin-desktop flex flex-col gap-space-2xl">
+<div class="text-center max-w-xl mx-auto"><h2 class="font-headline-lg text-xl md:text-2xl text-on-surface font-semibold tracking-tight">Archive at a Glance</h2></div>
+<!-- 3-Column Visual Guide -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg">
+<!-- CARD 1: Filters & Sort -->
+<div class="flex flex-col justify-between p-space-md rounded-xl bg-surface-container-low border border-outline-variant/30 shadow-sm"><div class="flex items-center gap-space-xs text-primary mb-space-xs"><span class="material-symbols-outlined text-[18px]">tune</span><span class="font-label-runic text-xs font-semibold uppercase tracking-wider text-on-surface">Filter &amp; Sort</span></div><div class="flex flex-wrap gap-1.5 mt-space-xs"><span class="px-2 py-0.5 rounded bg-primary/20 text-primary font-label-mono-sm text-[11px] border border-primary/30">Era</span><span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-mono-sm text-[11px]">Biome</span><span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-mono-sm text-[11px]">Mistlands</span><span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-mono-sm text-[11px]">Weather</span></div></div>
+<!-- CARD 2: Pagination & Page Size -->
+<div class="flex flex-col justify-between p-space-md rounded-xl bg-surface-container-low border border-outline-variant/30 shadow-sm"><div class="flex items-center gap-space-xs text-primary mb-space-xs"><span class="material-symbols-outlined text-[18px]">grid_view</span><span class="font-label-runic text-xs font-semibold uppercase tracking-wider text-on-surface">View Density</span></div><div class="flex items-center justify-between p-space-xs rounded bg-surface-container-high border border-outline-variant/30 mt-space-xs font-label-mono-sm text-[11px]"><span class="text-outline uppercase tracking-wider text-[10px]">Grid</span><div class="flex items-center gap-1"><span class="px-2 py-0.5 rounded text-on-surface-variant">24</span><span class="px-2 py-0.5 rounded text-on-surface-variant">48</span><span class="px-2 py-0.5 rounded bg-primary text-on-primary font-semibold shadow-sm">100</span></div></div></div>
+<!-- CARD 3: Breadcrumb Navigation -->
+<div class="flex flex-col justify-between p-space-md rounded-xl bg-surface-container-low border border-outline-variant/30 shadow-sm"><div class="flex items-center gap-space-xs text-primary mb-space-xs"><span class="material-symbols-outlined text-[18px]">account_tree</span><span class="font-label-runic text-xs font-semibold uppercase tracking-wider text-on-surface">Breadcrumb Trail</span></div><div class="p-space-xs rounded bg-surface-container-high border border-outline-variant/30 mt-space-xs flex items-center gap-1.5 font-label-mono-sm text-[11px] text-outline overflow-x-auto"><span class="text-primary font-medium shrink-0">World</span><span class="">›</span><span class="text-on-surface shrink-0">Settlement</span><span class="">›</span><span class="text-on-surface shrink-0">Builder</span><span class="">›</span><span class="text-secondary font-bold shrink-0">Plate</span></div></div>
+</div>
+</div>
+</section>
+</main>
+<!-- 6. FOOTER -->
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 py-space-lg">
+<div class="max-w-[1320px] mx-auto px-margin-desktop flex flex-col sm:flex-row items-center justify-between gap-space-sm text-xs text-on-surface-variant">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-runic text-primary uppercase tracking-wider font-semibold">Valheim Chronicles</span>
+<span class="">•</span>
+<span class="">The Comfy Community Archive</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-outline">Preserved for Eternity</span>
+</div>
+</footer>
+
+
+</body></html>

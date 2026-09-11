@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-secondary-container":"#432100","on-background":"#dde3ee","on-tertiary-fixed":"#261a00","on-tertiary-container":"#584000","surface-container-low":"#161c24","primary-fixed-dim":"#ffb95f","surface-container-lowest":"#090f16","on-tertiary":"#402d00","on-secondary":"#4d2600","on-tertiary-fixed-variant":"#5c4300","on-secondary-fixed":"#2f1500","inverse-surface":"#dde3ee","on-error-container":"#ffdad6","on-primary-fixed":"#2a1700","outline":"#a08e7a","tertiary-fixed":"#ffdf9f","error-container":"#93000a","on-error":"#690005","surface":"#0e141c","surface-variant":"#2f353e","primary-fixed":"#ffddb8","inverse-primary":"#855300","surface-container":"#1a2028","secondary-fixed":"#ffdcc3","background":"#0e141c","on-surface":"#dde3ee","secondary-container":"#d97707","outline-variant":"#534434","surface-container-highest":"#2f353e","primary":"#ffc174","on-secondary-fixed-variant":"#6e3900","on-primary-fixed-variant":"#653e00","inverse-on-surface":"#2b3139","surface-bright":"#343a42","secondary":"#ffb77d","surface-container-high":"#242a33","on-surface-variant":"#d8c3ad","surface-tint":"#ffb95f","on-primary":"#472a00","on-primary-container":"#613b00","tertiary-fixed-dim":"#f9bd22","tertiary":"#ffc32d","primary-container":"#f59e0b","surface-dim":"#0e141c","secondary-fixed-dim":"#ffb77d","error":"#ffb4ab","tertiary-container":"#e0a800"},borderRadius:{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},spacing:{"space-lg":"1.5rem","space-sm":"0.75rem","space-4xl":"6rem","space-xl":"2rem","space-2xl":"3rem","margin-mobile":"1rem","margin-desktop":"3rem","space-2xs":"0.25rem","space-xs":"0.5rem","space-3xl":"4rem","gutter-desktop":"2rem","space-md":"1rem","gutter-mobile":"1rem"},fontFamily:{"label-mono-md":["JetBrains Mono"],"body-md":["Plus Jakarta Sans"],"title-md":["Plus Jakarta Sans"],"headline-lg-mobile":["Bodoni Moda"],"body-lg":["Plus Jakarta Sans"],"label-mono-sm":["JetBrains Mono"],"body-sm":["Plus Jakarta Sans"],"headline-sm":["Bodoni Moda"],"label-runic":["Bodoni Moda"],"headline-lg":["Bodoni Moda"],"display-hero":["Bodoni Moda"],"display-hero-mobile":["Bodoni Moda"],"headline-md":["Bodoni Moda"]},fontSize:{"label-mono-md":["13px",{"lineHeight":"18px","letterSpacing":"0.04em","fontWeight":"500"}],"body-md":["15px",{"lineHeight":"24px","fontWeight":"400"}],"title-md":["16px",{"lineHeight":"24px","fontWeight":"600"}],"headline-lg-mobile":["26px",{"lineHeight":"34px","letterSpacing":"0.01em","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"label-mono-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.06em","fontWeight":"500"}],"body-sm":["13px",{"lineHeight":"20px","fontWeight":"400"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"500"}],"label-runic":["13px",{"lineHeight":"16px","letterSpacing":"0.14em","fontWeight":"700"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"0.02em","fontWeight":"600"}],"display-hero":["56px",{"lineHeight":"64px","letterSpacing":"0.04em","fontWeight":"700"}],"display-hero-mobile":["36px",{"lineHeight":"44px","letterSpacing":"0.02em","fontWeight":"700"}],"headline-md":["24px",{"lineHeight":"32px","letterSpacing":"0.01em","fontWeight":"600"}]}}}};</script></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.6)]"><div class="h-20 w-full px-margin-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md shrink-0"><img alt="The Comfy Valheim Archive Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Xrq1RP8_Pnw7zQcGm2u-Qr7j2dLViwdknmJe22sNiDZ__osUIMPzCX326KOxet9mqFlnlaZex5dk-daMrgiedo1MfEOuA4mQZFQ5EtAO8S7oOA-vZ9QRqZ0NXnMmCY9j3sMaKDCvbAf54PJdT2aQESV-jjHUc0mMy9jftUnugjsFG3lmBCXxX2nUyXZuKuldnbBjJghm3YBMI2DCpBI97RRY0msFVJK6xxKpUJUei9OXAu4U4qUSpGYA"/><div class="flex flex-col"><span class="font-label-runic text-label-runic text-primary uppercase tracking-widest">The Comfy Community</span><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Valheim Chronicles</span></div></div><nav class="hidden xl:flex items-center gap-space-lg" data-active-classes="text-primary font-bold"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" data-path="gallery" href="#">Gallery</a><a aria-current="page" class="transition-colors uppercase tracking-wider text-primary font-bold" data-path="all-builders" href="#">All Builders</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" data-path="eras-timeline" href="#">Eras Timeline</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" data-path="world-claims" href="#">World Claims</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" data-path="photo-requests" href="#">Photo Requests</a></nav><div class="flex items-center gap-space-sm shrink-0"><button class="flex items-center justify-center w-10 h-10 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">search</span></button><div class="hidden sm:flex items-center gap-space-2xs px-space-sm py-space-2xs rounded bg-surface-container-low"><span class="material-symbols-outlined text-primary text-[14px]">token</span><span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">Payload: Active</span></div><button class="flex items-center gap-space-xs px-space-sm py-space-xs rounded bg-primary-container hover:bg-primary text-on-primary-container transition-all shadow-[0_0_16px_rgba(245,158,11,0.25)]" type="button"><span class="material-symbols-outlined text-[16px]">sync</span><span class="font-label-mono-sm text-label-mono-sm font-semibold uppercase tracking-wider">Sync Device</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-background"><div class="flex flex-col w-full">
+<!-- Retro Norse Decorative Banner / Hero Background -->
+<div class="relative w-full h-72 sm:h-96 overflow-hidden bg-surface-container-lowest">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-surface/60 to-surface z-10"></div>
+<div class="absolute inset-0 opacity-40 mix-blend-luminosity bg-cover bg-center" data-alt="Epic monumental Valheim cliffside fortress built with black marble and carved timber, perched on snowy mountain crags overlooking misty fjords at crimson twilight, glowing braziers and longhouse hearth smoke, matte digital concept art, deep obsidian and amber embers." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDfdawTwwl5bLUaJxE931PfRKe9Bqf7PYdARlrDqrGA3HKpxAi92zKsMYsleRT_SfwFxcNP8IU6049W8E4BLm-Y3XaKppK5PqHrGjHvtxHEkxrwdoh4MrN-p_pdK2L61b8mJzit-0qXDV0zQsxZjywer3iBNB8aoWkILPicGIaueiEqxKGhXi7zztK5ZQIKHlheETnghWVPtd2bI0HXNReZxFVSyMaf8w4nAi_-VsrZi365FLhs_bEI')"></div>
+<!-- Runes & Sparks Ambient Overlay -->
+<div class="absolute inset-0 z-10 flex items-center justify-between px-margin-desktop pointer-events-none opacity-20">
+<span class="font-label-runic text-display-hero text-primary select-none">ᚦ ᚢ ᚱ ᛁ ᛋ ᚨ ᛉ</span>
+<span class="font-label-runic text-display-hero text-secondary select-none">ᛏ ᛁ ᚹ ᚨ ᛉ ᛊ ᛟ</span>
+</div>
+<div class="absolute bottom-6 left-0 right-0 z-20 px-margin-mobile sm:px-margin-desktop flex flex-wrap items-end justify-between gap-space-md max-w-7xl mx-auto">
+<div class="flex items-center gap-space-sm bg-surface-container-low/90 backdrop-blur-md px-space-md py-space-xs rounded shadow-xl">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface uppercase tracking-widest">Midgard Network // Realm 17 // Active</span>
+</div>
+<div class="flex items-center gap-space-xs font-label-mono-sm text-label-mono-sm text-on-surface-variant bg-surface-container-lowest/80 backdrop-blur-md px-space-sm py-space-2xs rounded">
+<span class="material-symbols-outlined text-primary text-[15px]">history_edu</span>
+<span>ARCHIVE SLAB: 0x9B41...E89</span>
+</div>
+</div>
+</div>
+<!-- Content Workspace: 12-Column Asymmetric Layout -->
+<div class="w-full max-w-7xl mx-auto px-margin-mobile sm:px-margin-desktop -mt-16 sm:-mt-24 z-30 pb-space-4xl flex flex-col gap-space-2xl">
+<!-- Top Row: Master Profile Slab & Audio Status Bar -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- Left Column: The Classic Viking MySpace Profile Column (4 cols) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Profile Monument Card -->
+<div class="bg-surface-container-low rounded p-space-md sm:p-space-lg shadow-xl relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+<!-- Avatar Frame with Runic Borders -->
+<div class="relative w-full aspect-square max-w-[280px] mx-auto rounded overflow-hidden shadow-2xl bg-surface-container-lowest">
+<img alt="Ibocain the Megabuilder" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOqY0eRcT-OOBn-aenZE6N_YvSi2JH5psGJ7TIpWjB9PW-Q8DpkCDiwcI4RMJiWlU7fn1bMFLjKndysXW7qGYKppahbE5UUghfpbIFkKfX-eEJ3lSJOwycIu3SWJc655BtKHPAHXpgmZI-fIds9VuzU8y13HUnJ9JHEELse1wkCfWd8oWYGKoEzWJKz9UaoXGWOGhf6TesYtrw0pp3L8QHDpnLIjv0AFUgeFIQ4JGZQ8aFCQma92D1"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent opacity-80"></div>
+<!-- Online status badge like 2000s web profiles -->
+<div class="absolute bottom-3 left-3 flex items-center gap-space-2xs px-space-xs py-space-2xs rounded bg-surface-container-high/90 backdrop-blur text-primary text-label-mono-sm font-label-mono-sm uppercase">
+<span class="material-symbols-outlined text-[14px]">local_fire_department</span>
+<span>Online Now</span>
+</div>
+<div class="absolute top-3 right-3 px-space-xs py-space-2xs rounded bg-primary-container text-on-primary-container font-label-mono-sm text-label-mono-sm font-bold shadow-md uppercase">
+              RANK #1
+            </div>
+</div>
+<!-- Name & Guild Badges -->
+<div class="mt-space-md flex flex-col items-center text-center">
+<div class="flex items-center gap-space-xs">
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-wide">Ibocain</h1>
+<span class="material-symbols-outlined text-tertiary text-[22px]" style="font-variation-settings: 'FILL' 1;" title="Verified Megabuilder">verified</span>
+</div>
+<span class="font-label-runic text-label-runic text-on-surface-variant uppercase tracking-widest mt-space-2xs">
+              ᚲ ᛟ ᛗ ᚠ ᛁ // ARCHITECT PRIMUS
+            </span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs italic">
+              "If the support beam turns red, add three more iron poles and pray to Thor."
+            </p>
+</div>
+<!-- The MySpace URL / Runic URL Bar -->
+<div class="mt-space-md p-space-xs bg-surface-container-lowest rounded flex items-center justify-between gap-space-xs">
+<span class="font-label-mono-sm text-label-mono-sm text-outline-variant truncate">valheim.space/ibocain_arch</span>
+<button class="text-primary hover:text-primary-fixed shrink-0 p-1 flex items-center" title="Copy profile URL" type="button">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+</button>
+</div>
+<!-- Mood / Current Action Box -->
+<div class="mt-space-md p-space-sm rounded bg-surface-container flex flex-col gap-space-2xs">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-sm text-label-mono-sm text-primary uppercase font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">psychology</span> Mood
+              </span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">2h ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+              🔨 Hammering Black Marble into the clouds (Era 17 Ashlands Expansion)
+            </p>
+</div>
+<!-- Quick Specs Table -->
+<div class="mt-space-md flex flex-col gap-space-2xs">
+<div class="flex justify-between py-space-2xs font-body-sm text-body-sm bg-surface-container-lowest/40 px-space-xs rounded">
+<span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm uppercase">Title</span>
+<span class="text-on-surface font-title-md text-body-sm text-right">Master High Mason</span>
+</div>
+<div class="flex justify-between py-space-2xs font-body-sm text-body-sm px-space-xs">
+<span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm uppercase">Active Server</span>
+<span class="text-primary font-label-mono-sm text-label-mono-sm">Comfy Valheim EU/US-01</span>
+</div>
+<div class="flex justify-between py-space-2xs font-body-sm text-body-sm bg-surface-container-lowest/40 px-space-xs rounded">
+<span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm uppercase">Preferred Tool</span>
+<span class="text-on-surface font-body-sm text-body-sm">Demolisher &amp; Bronze Hoe</span>
+</div>
+<div class="flex justify-between py-space-2xs font-body-sm text-body-sm px-space-xs">
+<span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm uppercase">Total Eras</span>
+<span class="text-tertiary font-label-mono-sm text-label-mono-sm">9 Recorded Epochs</span>
+</div>
+<div class="flex justify-between py-space-2xs font-body-sm text-body-sm bg-surface-container-lowest/40 px-space-xs rounded">
+<span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm uppercase">Comfort Level</span>
+<span class="text-secondary font-label-mono-sm text-label-mono-sm">Comfort 24 (Maxed)</span>
+</div>
+</div>
+<!-- Runic Badges & Honors -->
+<div class="mt-space-md">
+<span class="font-label-runic text-label-runic text-primary block uppercase mb-space-xs">Runic Honors &amp; Guild Medals</span>
+<div class="grid grid-cols-2 gap-space-xs">
+<div class="p-space-xs rounded bg-surface-container-high flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-primary text-[18px]">architecture</span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface truncate">Master Mason</span>
+</div>
+<div class="p-space-xs rounded bg-surface-container-high flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-tertiary text-[18px]">tsunami</span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface truncate">Ocean Architect</span>
+</div>
+<div class="p-space-xs rounded bg-surface-container-high flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-secondary text-[18px]">shield</span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface truncate">Vanguard VII</span>
+</div>
+<div class="p-space-xs rounded bg-surface-container-high flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[18px]">stairs</span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface truncate">Scaffolding King</span>
+</div>
+</div>
+</div>
+<!-- Primary Viking Actions (Friend/Message CTA style) -->
+<div class="mt-space-lg flex flex-col gap-space-xs">
+<button class="w-full py-space-xs px-space-md rounded bg-primary-container hover:bg-primary text-on-primary-container font-title-md text-title-md flex items-center justify-center gap-space-xs transition-all shadow-[0_0_16px_rgba(245,158,11,0.2)]" type="button">
+<span class="material-symbols-outlined text-[20px]">person_add</span>
+<span>Add Ibocain to Longhouse</span>
+</button>
+<div class="grid grid-cols-2 gap-space-xs">
+<button class="py-space-xs px-space-sm rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-body-sm text-body-sm flex items-center justify-center gap-space-2xs transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">mail</span>
+<span>Send Raven</span>
+</button>
+<button class="py-space-xs px-space-sm rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-body-sm text-body-sm flex items-center justify-center gap-space-2xs transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">download</span>
+<span>Get Manifest</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Local Ledger Participation Box -->
+<div class="bg-surface-container-lowest rounded p-space-md flex flex-col gap-space-sm shadow-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">fingerprint</span>
+<span class="font-label-runic text-label-runic text-primary uppercase">Browser Vault Ledger</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Your client holds 0 claimed builds and 0 active photo dispatches. Storage verified client-side.
+          </p>
+<div class="flex flex-col gap-space-2xs">
+<label class="font-label-mono-sm text-label-mono-sm text-outline uppercase">Volunteer Inscriber Handle</label>
+<input class="w-full bg-surface-container-low px-space-sm py-space-xs rounded text-on-surface font-label-mono-sm text-label-mono-sm focus:outline-none focus:ring-1 focus:ring-primary" type="text" value="Skald_Gunnar_#049"/>
+</div>
+<button class="w-full py-space-xs rounded bg-surface-container hover:bg-surface-container-high text-primary font-label-mono-sm text-label-mono-sm uppercase tracking-wider flex items-center justify-center gap-space-xs transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">key</span>
+<span>Copy Participation Payload</span>
+</button>
+</div>
+</div>
+<!-- Right Column: The Mega Stage, Audio Player, Top 8, and Masterworks (8 cols) -->
+<div class="lg:col-span-8 flex flex-col gap-space-xl">
+<!-- MySpace Audio Player Component -->
+<div class="bg-surface-container-low rounded p-space-md sm:p-space-lg flex flex-col gap-space-sm shadow-xl relative overflow-hidden">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs pb-space-2xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px] animate-spin" style="animation-duration: 6s;">album</span>
+<span class="font-label-runic text-label-runic text-primary uppercase tracking-wider">Profile Song // Longhouse Anthem</span>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span> Autoplay Enabled
+            </span>
+</div>
+<div class="bg-surface-container-lowest p-space-sm rounded flex flex-col md:flex-row items-center justify-between gap-space-md">
+<!-- Track Info & Cover Art -->
+<div class="flex items-center gap-space-sm w-full md:w-auto">
+<div class="w-12 h-12 rounded bg-surface-container-high flex items-center justify-center text-primary shrink-0 shadow-inner">
+<span class="material-symbols-outlined text-[28px]">graphic_eq</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-md text-title-md text-on-surface truncate">Wardruna – Kvitravn</span>
+<span class="font-body-sm text-body-sm text-primary truncate">Echoes from the Longhouse (Skaldic Ambient Mix)</span>
+</div>
+</div>
+<!-- Controls & Sound Wave Visualization -->
+<div class="flex items-center gap-space-md w-full md:w-auto justify-between md:justify-end">
+<!-- Inline Audio Equalizer Bars -->
+<div class="hidden sm:flex items-end gap-1 h-6 px-2">
+<span class="w-1 bg-primary h-3 animate-pulse"></span>
+<span class="w-1 bg-primary h-6 animate-pulse" style="animation-delay: 150ms;"></span>
+<span class="w-1 bg-primary h-4 animate-pulse" style="animation-delay: 300ms;"></span>
+<span class="w-1 bg-secondary h-5 animate-pulse" style="animation-delay: 75ms;"></span>
+<span class="w-1 bg-primary h-2 animate-pulse" style="animation-delay: 200ms;"></span>
+<span class="w-1 bg-primary h-6 animate-pulse" style="animation-delay: 400ms;"></span>
+<span class="w-1 bg-secondary h-3 animate-pulse" style="animation-delay: 250ms;"></span>
+</div>
+<!-- Time Counter & Buttons -->
+<div class="flex items-center gap-space-xs font-label-mono-sm text-label-mono-sm text-on-surface-variant">
+<span class="text-primary font-bold">02:44</span>
+<span>/</span>
+<span>05:18</span>
+</div>
+<div class="flex items-center gap-space-2xs">
+<button class="w-8 h-8 rounded bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface" type="button">
+<span class="material-symbols-outlined text-[18px]">skip_previous</span>
+</button>
+<button class="w-10 h-10 rounded bg-primary text-on-primary hover:bg-primary-fixed-dim flex items-center justify-center shadow-lg transition-transform active:scale-95" type="button">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">pause</span>
+</button>
+<button class="w-8 h-8 rounded bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface" type="button">
+<span class="material-symbols-outlined text-[18px]">skip_next</span>
+</button>
+<button class="w-8 h-8 rounded bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface ml-1" type="button">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Progress Bar Scrubber -->
+<div class="w-full bg-surface-container-high h-1.5 rounded overflow-hidden cursor-pointer relative">
+<div class="bg-gradient-to-r from-primary-container to-primary h-full w-[52%] relative">
+<div class="absolute right-0 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-on-primary rounded-full shadow"></div>
+</div>
+</div>
+</div>
+<!-- Metric Stele Highlights (Stat Bento Grid) -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-sm">
+<div class="p-space-md rounded bg-surface-container-low flex flex-col gap-space-2xs shadow-md">
+<span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">Total Construction</span>
+<span class="font-headline-lg text-headline-lg text-on-surface font-bold">184,203</span>
+<span class="font-label-mono-sm text-label-mono-sm text-secondary">Top 0.1% of Valheim</span>
+</div>
+<div class="p-space-md rounded bg-surface-container-low flex flex-col gap-space-2xs shadow-md">
+<span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">Saved Albums</span>
+<span class="font-headline-lg text-headline-lg text-on-surface font-bold">252</span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">23 Surveyed HD</span>
+</div>
+<div class="p-space-md rounded bg-surface-container-low flex flex-col gap-space-2xs shadow-md">
+<span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">Active Eras</span>
+<span class="font-headline-lg text-headline-lg text-on-surface font-bold">9 Eras</span>
+<span class="font-label-mono-sm text-label-mono-sm text-tertiary">Era 7 through 17</span>
+</div>
+<div class="p-space-md rounded bg-surface-container-low flex flex-col gap-space-2xs shadow-md">
+<span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">Master Photos</span>
+<span class="font-headline-lg text-headline-lg text-on-surface font-bold">168</span>
+<span class="font-label-mono-sm text-label-mono-sm text-primary">Inscribed Steles</span>
+</div>
+</div>
+<!-- "Ibocain's Top 8" (The Holy Viking Circle of Kinship) -->
+<div class="bg-surface-container-low rounded p-space-md sm:p-space-lg shadow-xl flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[24px]">diversity_3</span>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Ibocain's Kinship Circle</h2>
+<span class="font-label-runic text-label-runic text-primary uppercase tracking-widest">(The Valheim Top 8)</span>
+</div>
+</div>
+<a class="font-label-mono-sm text-label-mono-sm text-primary hover:text-primary-fixed uppercase tracking-wider flex items-center gap-1" href="#">
+<span>View All 312 Clanmates</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+<!-- Top 8 Grid -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-md">
+<!-- Friend 1: Wootsie -->
+<div class="p-space-sm bg-surface-container rounded hover:bg-surface-container-high transition-all flex flex-col items-center text-center gap-space-xs group cursor-pointer">
+<div class="relative w-16 h-16 rounded-full overflow-hidden bg-surface-container-lowest ring-2 ring-primary/40 group-hover:ring-primary transition-all">
+<div class="w-full h-full bg-cover bg-center" data-alt="Stylized Norse Viking female warrior architect with braids, horn hairpins, blue war paint, intricate leather and fur collar against frosty backdrop, portrait format." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBnqjeBgQTMz_W6Nv5pK17KlJn9L6JV7M_Pu1OU1py2oTi-0NLhGvJZjSRD1elPPHgNgyEOs0t29xJ1SGSE6N_p84YZ-M4-b9KNUFo3IAioxRJ212SmcMHnfxAFFnOaogWqdV0LqSSEO2tTg-bP7ieXkK5p25ZE73hDd7HEdgMYZVjK8IKZrA1nTSKSG5GXrZXLaTju9y6N4X0tqZ1FA_FRFiiX8kg3Axdwk7bpJPnmHJB6K7IvEDHb')"></div>
+</div>
+<span class="font-title-md text-title-md text-on-surface group-hover:text-primary truncate w-full">Wootsie</span>
+<span class="font-label-mono-sm text-label-mono-sm text-secondary line-clamp-1">Sky Museum Partner</span>
+<span class="font-label-mono-sm text-label-mono-sm text-outline-variant">42,100 pieces co-op</span>
+</div>
+<!-- Friend 2: Sazzle -->
+<div class="p-space-sm bg-surface-container rounded hover:bg-surface-container-high transition-all flex flex-col items-center text-center gap-space-xs group cursor-pointer">
+<div class="relative w-16 h-16 rounded-full overflow-hidden bg-surface-container-lowest ring-2 ring-tertiary/40 group-hover:ring-tertiary transition-all">
+<div class="w-full h-full bg-cover bg-center" data-alt="Norse druid craftsman with antler circlet, green rune tattoos, braided dark beard, holding carving chisel, soft mossy lighting, Viking character portrait." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAIsNxOmbp22yFabCqWcZIMio7wtAAMyRQ5vDz2IBnAsOZ14RdKg1PuLGFt3qGxji6GHJCirSUP48mp9nYAoie61m6giwF0CuxXeMQ0WTWUUl9XKZPolt_2b26Hui_zARSR0DxE4tvsv8dXUxA74cBuq3Hbqa7t690nB1jV4VGAoZuzBe0i0zwTFndWZvVnVhdBXyx-kSGP3L4zrLNu9_ETmQ6QXtLMqy0BwPtdKs8YbQ4ZarFFZYZF')"></div>
+</div>
+<span class="font-title-md text-title-md text-on-surface group-hover:text-tertiary truncate w-full">Sazzle</span>
+<span class="font-label-mono-sm text-label-mono-sm text-tertiary line-clamp-1">Black Forest Guild Liaison</span>
+<span class="font-label-mono-sm text-label-mono-sm text-outline-variant">28,950 pieces co-op</span>
+</div>
+<!-- Friend 3: Res -->
+<div class="p-space-sm bg-surface-container rounded hover:bg-surface-container-high transition-all flex flex-col items-center text-center gap-space-xs group cursor-pointer">
+<div class="relative w-16 h-16 rounded-full overflow-hidden bg-surface-container-lowest ring-2 ring-secondary/40 group-hover:ring-secondary transition-all">
+<div class="w-full h-full bg-cover bg-center" data-alt="Heavy armored Norse stonemason with scarred iron helmet, glowing orange forge reflections, stern bearded expression, square jaw, game art portrait." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD5X6-i_8okRelAoPRiFsOhIxyxV5Qj_7jJIzCPawa8AfcKGaW_xaEGBvuUatzIztRytToXrNL7w6vbDyzit5qf8MkaijuFaHK1H8ZlGzlF7U9hVxhC8K8h9ualr45TgxqUiOlyR-5ELO0awPl8BC4JcJvvQ2uLpx-O3Sf4J-rk9gnsxx9Cnm6us-Z-XfcapO9I22l7ignDzNZw0Pdh2r8VnfyMLLkqUqy4ONoa9HCLcFMjCGn1CN_m')"></div>
+</div>
+<span class="font-title-md text-title-md text-on-surface group-hover:text-secondary truncate w-full">Res</span>
+<span class="font-label-mono-sm text-label-mono-sm text-secondary line-clamp-1">Stone Foundation Maestro</span>
+<span class="font-label-mono-sm text-label-mono-sm text-outline-variant">19,410 pieces co-op</span>
+</div>
+<!-- Friend 4: Tanagor -->
+<div class="p-space-sm bg-surface-container rounded hover:bg-surface-container-high transition-all flex flex-col items-center text-center gap-space-xs group cursor-pointer">
+<div class="relative w-16 h-16 rounded-full overflow-hidden bg-surface-container-lowest ring-2 ring-primary/40 group-hover:ring-primary transition-all">
+<div class="w-full h-full bg-cover bg-center" data-alt="Nimble Viking roof builder with raven feather cape, goggles with bronze lenses, blonde braids, holding wooden measuring staff, bright mountain light." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDivb998-2JwEU4YNKqu6ZjOKnJjHwOdzMauho7aBJOD1L239_6Mmic4mtV7roRKWJkpLOH6B9Azmo7762EcuUb1T5X9eBHHyFce6h2DwYvTH5OS_cnQER09BjTrdwCCfcvR5Zzuk6bJTw_OVeIyRR_3QV8OwkRv9m-Xn_25OpVK0GPyzTLKUUWh4XqJeA6jiLJqqOJVwluK4I8wrzKnXn6kuDNgjOKZUpdfEF3iyK3JXkKWHp4sC02')"></div>
+</div>
+<span class="font-title-md text-title-md text-on-surface group-hover:text-primary truncate w-full">Tanagor</span>
+<span class="font-label-mono-sm text-label-mono-sm text-primary line-clamp-1">Tower Specialist</span>
+<span class="font-label-mono-sm text-label-mono-sm text-outline-variant">16,200 pieces co-op</span>
+</div>
+<!-- Friend 5: Skarthii -->
+<div class="p-space-sm bg-surface-container rounded hover:bg-surface-container-high transition-all flex flex-col items-center text-center gap-space-xs group cursor-pointer">
+<div class="relative w-16 h-16 rounded-full overflow-hidden bg-surface-container-lowest ring-2 ring-primary/30 group-hover:ring-primary transition-all">
+<div class="w-full h-full bg-cover bg-center" data-alt="Mystic Norse rune carver woman in deep charcoal cloak with glowing amber runic inscriptions on fingertips, warm fireplace lighting, portrait painting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBzCdLVyRvjirEkGQyY-JOH-cqQheFDjMdeG0EAhyZ0SI-gz9rUZEMm2uU7RiCy4Ua01vmxVeef9pJkbfRGRGQInETttrTgVXwSmouy2TGFfJx0TJYWl6onA7iKCzYtWphfXg9OaqeEueGVEgexGVFpX7suZGZ1cXZU8JMC13oxr513VCKg9me-yehx4wAmt7pRwdXXhsrcUNgBl0MDHV-kcV_1X0vCieqMHc2H__KT-eYS9mvsxoSF')"></div>
+</div>
+<span class="font-title-md text-title-md text-on-surface group-hover:text-primary truncate w-full">Skarthii</span>
+<span class="font-label-mono-sm text-label-mono-sm text-secondary line-clamp-1">Interior Runemaster</span>
+<span class="font-label-mono-sm text-label-mono-sm text-outline-variant">11,800 pieces co-op</span>
+</div>
+<!-- Friend 6: Miss Marple -->
+<div class="p-space-sm bg-surface-container rounded hover:bg-surface-container-high transition-all flex flex-col items-center text-center gap-space-xs group cursor-pointer">
+<div class="relative w-16 h-16 rounded-full overflow-hidden bg-surface-container-lowest ring-2 ring-tertiary/30 group-hover:ring-tertiary transition-all">
+<div class="w-full h-full bg-cover bg-center" data-alt="Wise elder Viking shieldmaiden tavern keeper, cozy knitted wool shawl, silver braided hair, smiling eyes, holding tankard of honey mead, warm tavern atmosphere." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCOg2CBtBs4PTEbtNH-qH-7AmUjYDfKVqCTuEUmg5RM7Jsvy0CFBmi7oEJJA6sKVemDDw_RNsdheGqQN0lgxZsbJgkcoY4dKYSsdkRUtxKdo7nxbDx9zQ41BGlblArvAScteALkw097GfMoKDDnDRxmt3ukEFstKPK22jlPuAykdH_vyl18VVo1l72RsgZgT9xfhbHFHy1E68b13UeZZoIgh2HOldopINa6_346qs27OSOIszb98SK8')"></div>
+</div>
+<span class="font-title-md text-title-md text-on-surface group-hover:text-tertiary truncate w-full">Miss Marple</span>
+<span class="font-label-mono-sm text-label-mono-sm text-tertiary line-clamp-1">Mead Hall Decorator</span>
+<span class="font-label-mono-sm text-label-mono-sm text-outline-variant">9,640 pieces co-op</span>
+</div>
+<!-- Friend 7: Talᵀʳᵒˡˡᵖᵘⁿᶜʰᵉʳ -->
+<div class="p-space-sm bg-surface-container rounded hover:bg-surface-container-high transition-all flex flex-col items-center text-center gap-space-xs group cursor-pointer">
+<div class="relative w-16 h-16 rounded-full overflow-hidden bg-surface-container-lowest ring-2 ring-secondary/30 group-hover:ring-secondary transition-all">
+<div class="w-full h-full bg-cover bg-center" data-alt="Fierce berserker Viking with troll hide mantle, spiked iron gauntlets, battle-worn face, wild red hair, glowing blue mist behind him, fantasy game portrait." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBR13vUOv3rqDcVCIg94ecLWhehgloyeIYsE2oYxeJqnqXTSqLhTo-fm57rbc-il0FtJWMCpX7-6rSZZS3zsPmhd000AdOGKSJowOlAwbv1xZePypG0U-UGxFSasXLmSqlZjWcDimAKTHgUBKtjle-n4w-pz4IDRA0VvESKQOjxL4Kn6F6x3xtYrVuaC-ub9VcL8Z2s19iqShR3xFgzVMAItVvzVkQCVICwYjlX2p4ZHht6RdprdS5z')"></div>
+</div>
+<span class="font-title-md text-title-md text-on-surface group-hover:text-secondary truncate w-full">Talᵀʳᵒˡˡᵖᵘⁿᶜʰᵉʳ</span>
+<span class="font-label-mono-sm text-label-mono-sm text-secondary line-clamp-1">Troll Defense General</span>
+<span class="font-label-mono-sm text-label-mono-sm text-outline-variant">54 Raids Repelled</span>
+</div>
+<!-- Friend 8: Tom / Odin -->
+<div class="p-space-sm bg-surface-container rounded hover:bg-surface-container-high transition-all flex flex-col items-center text-center gap-space-xs group cursor-pointer bg-surface-container-high/40">
+<div class="relative w-16 h-16 rounded-full overflow-hidden bg-surface-container-lowest ring-2 ring-primary group-hover:ring-primary-fixed transition-all">
+<div class="w-full h-full bg-cover bg-center" data-alt="Mysterious cloaked Allfather Odin traveler with wide-brimmed wanderer hat, single glowing sapphire eye, two ravens perched on shoulder, starry Scandinavian night sky." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDclZYJfA5gLjiBTtRGFk-_7Vp8qurXaM8AAnlgKmX5kGokhE99VdWwkkdHs3SehqLSAOIzz3ASXjV2eB27fg2MKeaMn4oNml7rea1eokabR342iZD0Dcy2k06tGw3hET6kiXeJc3dvcDabwYogzg3JqyBOPFhKYMWbWwlO3vucRyBB9_jBFzS2hsiNqPdT2JJ5bxzg1XpciydCN2cQVzZH4X69Rkrf0grz7mpZzQolItEHGH0nPkLx')"></div>
+</div>
+<span class="font-title-md text-title-md text-primary font-bold truncate w-full">Tom / Odin</span>
+<span class="font-label-mono-sm text-label-mono-sm text-primary line-clamp-1">Everyone's 1st Friend</span>
+<span class="font-label-mono-sm text-label-mono-sm text-outline">Creator of the 10th World</span>
+</div>
+</div>
+</div>
+<!-- Masterworks Showcase / Discography Section -->
+<div class="flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-space-xs">
+<div>
+<span class="font-label-runic text-label-runic text-primary uppercase">Architectural Legacy</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Signature Monuments &amp; Epochs</h2>
+</div>
+<!-- Era Filter Badges -->
+<div class="flex items-center gap-space-2xs overflow-x-auto pb-1 max-w-full">
+<span class="px-space-xs py-1 rounded bg-primary-container text-on-primary-container font-label-mono-sm text-label-mono-sm font-bold uppercase cursor-pointer">Era XVII</span>
+<span class="px-space-xs py-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface font-label-mono-sm text-label-mono-sm uppercase cursor-pointer">Era XVI</span>
+<span class="px-space-xs py-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface font-label-mono-sm text-label-mono-sm uppercase cursor-pointer">Era XI</span>
+<span class="px-space-xs py-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface font-label-mono-sm text-label-mono-sm uppercase cursor-pointer">Era IX</span>
+</div>
+</div>
+<!-- Masterworks Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Featured Masterwork: Ocean Temple (Hero Stone Slab) -->
+<div class="md:col-span-2 bg-surface-container-low rounded overflow-hidden shadow-xl flex flex-col lg:flex-row group">
+<div class="lg:w-7/12 relative aspect-video lg:aspect-auto min-h-[260px] overflow-hidden bg-surface-container-lowest">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Massive Valheim ocean temple megalith built in stormy open waters, colossal stone pillars rising from crashing waves, illuminated by glowing green swamp lanterns and orange torchfire, dramatic cinematic wide angle." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCpYxIHVdQxfSSpiQp6IS3jGTkmPx8WCp5U8Jw4Lwvodzc-0aFWfFAuaHivlgMzS8lj6YOvKbvgaB-Hh8pRDocWM71wXWX5Sf7unMMNWfswfvvL9EwceRS3z9CQytVqBNHfwFzYtzb_OO3ZzRvJsMaczzbDFf4av47obRQf7Yi2Rd3toOJPsOLf9Wvf6hIphrlRp0lmT3aMy0TOd268p_8i3dftduC38Yk1pP15IPpNtKBgTgrwyoD1')"></div>
+<div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-surface-container-low via-transparent to-transparent"></div>
+<div class="absolute top-4 left-4 flex gap-space-2xs">
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-lowest/90 backdrop-blur font-label-mono-sm text-label-mono-sm text-primary uppercase font-bold">ERA 17 // ASHLANDS</span>
+<span class="px-space-xs py-space-2xs rounded bg-secondary-container text-on-secondary-container font-label-mono-sm text-label-mono-sm font-bold uppercase">100% Ibocain</span>
+</div>
+</div>
+<div class="lg:w-5/12 p-space-lg flex flex-col justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-sm text-label-mono-sm text-tertiary uppercase">Record ID: MON-0198</span>
+<span class="font-label-mono-sm text-label-mono-sm text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">photo_camera</span> 12 Photos
+                    </span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Ocean Temple Megastructure</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Deep-sea offshore stronghold resting upon raised stone seabed steles. Survived seven leviathan tidal swells without foundation buckling.
+                  </p>
+<!-- Piece Ratio Bar -->
+<div class="mt-space-xs flex flex-col gap-space-2xs">
+<div class="flex justify-between font-label-mono-sm text-label-mono-sm">
+<span class="text-on-surface">6,679 Pieces</span>
+<span class="text-primary font-bold">100% Solo Masonry</span>
+</div>
+<div class="w-full h-2 rounded bg-surface-container-highest overflow-hidden">
+<div class="w-full h-full bg-primary"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-xs pt-space-xs">
+<button class="flex-1 py-space-xs px-space-sm rounded bg-primary text-on-primary font-title-md text-body-sm font-semibold flex items-center justify-center gap-space-2xs hover:bg-primary-fixed transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">travel_explore</span>
+<span>World Viewer</span>
+</button>
+<button class="p-space-xs rounded bg-surface-container hover:bg-surface-container-high text-on-surface" title="Request Drone Survey" type="button">
+<span class="material-symbols-outlined text-[18px]">camera</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2: Stone Tower -->
+<div class="bg-surface-container-low rounded overflow-hidden shadow-lg flex flex-col justify-between p-space-md gap-space-md group">
+<div class="relative aspect-video rounded overflow-hidden bg-surface-container-lowest">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="Imposing spiral stone tower in Valheim reaching into thunderclouds, reinforced with iron cage beams, warm light emitting from high observation deck, pine trees below at dusk." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAvujampJZAJV4XcQsJKeapmLeXYdSg3ovINdz2XsAjFEhi0FfCnIR4KuH8v9h5t4tDTqRD9-qgVbZcfVkXjoaSEE-prr4XnAwtANnqFETsm1gEQOZymw-mzja2iD95mhqxtgPWPuTpzsu-z3mHuxps5YPwNTFz6R8HPF5GYPv99IvGPYwJJcph7pEWHr-T_JuF0Sxt34oMaPBn7cJZsc58hD7VK9hP-64UNxSkBc4zw4ZgwzvYlKJ2')"></div>
+<div class="absolute top-2 left-2 px-space-xs py-space-2xs rounded bg-surface-container-lowest/90 font-label-mono-sm text-label-mono-sm text-primary uppercase">Era XVII</div>
+</div>
+<div class="flex flex-col gap-space-2xs">
+<h4 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary">Stone Tower (Apex Observation)</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                  Historic recorded lead. 3,366 pieces anchored on single high-altitude granite spire in the deep Mistlands.
+                </p>
+<div class="flex items-center justify-between font-label-mono-sm text-label-mono-sm mt-space-xs">
+<span class="text-on-surface-variant">Ibocain (98.4%)</span>
+<span class="text-primary font-bold">3,366 pieces</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-space-xs pt-space-xs">
+<button class="py-space-2xs px-space-sm rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-body-sm text-body-sm flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">visibility</span> Inspect
+                </button>
+<span class="font-label-mono-sm text-label-mono-sm text-outline">Pos: -2410, 890</span>
+</div>
+</div>
+<!-- Card 3: Floating Fortress -->
+<div class="bg-surface-container-low rounded overflow-hidden shadow-lg flex flex-col justify-between p-space-md gap-space-md group">
+<div class="relative aspect-video rounded overflow-hidden bg-surface-container-lowest">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="Cantilevered Valheim fortress extending over open abyss, dark marble foundation stones connected by glowing dvergr extract lights and hanging chain bridges." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB9-dCexkhV8loqJdyjwmx9nX9ghwcGt8_2AyR_uO4Prv4gVsXqr7sUqXYKwfQUQw0DeOpWTrno2Nx9XfY5nl58zquTe-dpWUaxwOOX4XHUgDbTBZwxy_5Ex91yJLr6QCKeo_G3Z3SRrC5q1MR9MwMTG6huDnQO1-eVgueE1ivg1187ClMLhAXNWXM4ePf75AScc_wzeda_UdEOA1ApGJ6dWCCkwoyTwvHxqe0pcLcrQmiWTxCWUcPL')"></div>
+<div class="absolute top-2 left-2 px-space-xs py-space-2xs rounded bg-surface-container-lowest/90 font-label-mono-sm text-label-mono-sm text-primary uppercase">Era XVII</div>
+</div>
+<div class="flex flex-col gap-space-2xs">
+<h4 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary">Floating Fortress Sanctuary</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                  Gravity-defying black marble cantilever overhang. Master engineered using interlocking iron-wood beams.
+                </p>
+<div class="flex items-center justify-between font-label-mono-sm text-label-mono-sm mt-space-xs">
+<span class="text-on-surface-variant">Ibocain (100%)</span>
+<span class="text-primary font-bold">2,526 pieces</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-space-xs pt-space-xs">
+<button class="py-space-2xs px-space-sm rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-body-sm text-body-sm flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">visibility</span> Inspect
+                </button>
+<span class="font-label-mono-sm text-label-mono-sm text-outline">Pos: 512, -4300</span>
+</div>
+</div>
+<!-- Card 4: Black Citadel 35cd20da -->
+<div class="bg-surface-container-low rounded overflow-hidden shadow-lg flex flex-col justify-between p-space-md gap-space-md group">
+<div class="relative aspect-video rounded overflow-hidden bg-surface-container-lowest">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="Gigantic black stone fortress citadel with multiple defensive rings, glowing amber torches in the night, mountain backdrop with aurora borealis in Valheim sky." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCTxGvnjHxZjv98jyH-Gwgg6yaIgHLX4aSZytLtURI3C43d3Mk8q_xC0QAR__R0dn1kM-CWwlAteGKXnv5X2Xos7zHO2kJ74UgzL5kaDXSO2wAg2fCkaT7YIl-VuTCjxWUurB2NAVZqHTSljwrlXoKtupv89f3Wp4xNBfbImNApdQ1AsoBBEwRLuPNkQijUeBc3b2g2_X2JGnNNmPjg9c_TEk1qP_OfyyDXD9N-Ft0XhYbat1M7abfO')"></div>
+<div class="absolute top-2 left-2 px-space-xs py-space-2xs rounded bg-surface-container-lowest/90 font-label-mono-sm text-label-mono-sm text-tertiary uppercase">Era XI Legendary</div>
+</div>
+<div class="flex flex-col gap-space-2xs">
+<div class="flex items-center justify-between">
+<h4 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary">Black Citadel 35cd20da</h4>
+<span class="font-label-mono-sm text-label-mono-sm text-tertiary font-bold">20,086 pcs</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                  Era 11's most defended bastion. Colossal curtain walls, 4 internal mead halls, and full smelting catacombs.
+                </p>
+<div class="flex items-center gap-space-xs mt-space-xs font-label-mono-sm text-label-mono-sm">
+<span class="px-space-2xs py-0.5 rounded bg-primary-container text-on-primary-container text-[10px]">Ibocain 99.6%</span>
+<span class="px-space-2xs py-0.5 rounded bg-surface-container text-on-surface-variant text-[10px]">Jeraeldo 0.4%</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-space-xs pt-space-xs">
+<button class="py-space-2xs px-space-sm rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-body-sm text-body-sm flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">visibility</span> Inspect
+                </button>
+<span class="font-label-mono-sm text-label-mono-sm text-outline">Pos: -8010, 120</span>
+</div>
+</div>
+<!-- Card 5: Grand Keep 0ab7528c -->
+<div class="bg-surface-container-low rounded overflow-hidden shadow-lg flex flex-col justify-between p-space-md gap-space-md group">
+<div class="relative aspect-video rounded overflow-hidden bg-surface-container-lowest">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="Traditional grand Nordic longhouse keep surrounded by fortified palisades and stone foundation bastions, sun rays cutting through misty forest morning." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCTy0VWbl1R12MwrtVPHQNQyIyXxvdh7id209xIRcsi1SMZ3Vkow5FWNrMghUnFplS4gA_5NG4fEqMIYNtBDyrfK4px14CutoKNeuOKMnQf31KFQDkRFRX2hlkX-nlKcaxtYsuSAl109NqKT9G8zlamsgBqj_0Sf0LQS8uHUxEGGg_nH2eK_uLbIWU2-4W7zAIl1sesuYvKcdt3MUFnPJxDJ19MjEoI9op4XPghb17P3OxNzZAbdzA0')"></div>
+<div class="absolute top-2 left-2 px-space-xs py-space-2xs rounded bg-surface-container-lowest/90 font-label-mono-sm text-label-mono-sm text-secondary uppercase">Era IX Ancient</div>
+</div>
+<div class="flex flex-col gap-space-2xs">
+<div class="flex items-center justify-between">
+<h4 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary">Grand Keep 0ab7528c</h4>
+<span class="font-label-mono-sm text-label-mono-sm text-secondary font-bold">12,735 pcs</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                  The foundational classic longhouse village that defined Era 9. Constructed during the early server founding seasons.
+                </p>
+<div class="flex items-center gap-space-xs mt-space-xs font-label-mono-sm text-label-mono-sm">
+<span class="px-space-2xs py-0.5 rounded bg-primary-container text-on-primary-container text-[10px]">Ibocain 95.1%</span>
+<span class="px-space-2xs py-0.5 rounded bg-surface-container text-on-surface-variant text-[10px]">Wootsie 4.9%</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-space-xs pt-space-xs">
+<button class="py-space-2xs px-space-sm rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-body-sm text-body-sm flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">visibility</span> Inspect
+                </button>
+<span class="font-label-mono-sm text-label-mono-sm text-outline">Pos: 140, 7880</span>
+</div>
+</div>
+</div>
+</div>
+<!-- The Great Hall Wall (Norse MySpace Guestbook & Testimonials) -->
+<div class="bg-surface-container-low rounded p-space-md sm:p-space-lg shadow-xl flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[24px]">forum</span>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">The Great Hall Wall</h2>
+<span class="font-label-runic text-label-runic text-primary uppercase tracking-wider">(Runic Guestbook &amp; Clan Comments)</span>
+</div>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">Displaying 24 of 892 Inscriptions</span>
+</div>
+<!-- Inscription Input Box -->
+<div class="bg-surface-container-lowest p-space-sm rounded flex flex-col gap-space-xs">
+<textarea class="w-full bg-transparent border-none text-on-surface font-body-sm text-body-sm placeholder:text-outline-variant focus:outline-none resize-none" placeholder="Carve your inscription onto Ibocain's longhouse runestone..." rows="2"></textarea>
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-space-xs text-on-surface-variant">
+<button class="hover:text-primary transition-colors" title="Attach Rune Glyph" type="button"><span class="material-symbols-outlined text-[18px]">token</span></button>
+<button class="hover:text-primary transition-colors" title="Attach Valheim Coordinates" type="button"><span class="material-symbols-outlined text-[18px]">pin_drop</span></button>
+<button class="hover:text-primary transition-colors" title="Add Honey Mead Mug" type="button"><span class="material-symbols-outlined text-[18px]">sports_bar</span></button>
+</div>
+<button class="px-space-md py-space-xs rounded bg-primary hover:bg-primary-fixed text-on-primary font-title-md text-body-sm font-semibold flex items-center gap-1 transition-all shadow-[0_0_12px_rgba(255,193,116,0.2)]" type="button">
+<span>Inscribe to Wall</span>
+<span class="material-symbols-outlined text-[16px]">edit_note</span>
+</button>
+</div>
+</div>
+<!-- Clan Comments List -->
+<div class="flex flex-col gap-space-sm divide-y-0">
+<!-- Comment 1: Wootsie -->
+<div class="p-space-sm rounded bg-surface-container flex gap-space-sm items-start">
+<div class="w-10 h-10 rounded-full overflow-hidden shrink-0 bg-surface-container-lowest">
+<div class="w-full h-full bg-cover bg-center" data-alt="Avatar portrait of female Viking warrior with braids and fur collar." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDGx7W0l4y2RSNJk8Z8NzqVB5LqIXDJH69YTdnvMgbmw97GeDH16ELaFicNbcSLsybS-i6sh7OpCvmrGGfOG-3yfN_yQN8t_X0xPGILRdetXIxV8SCJy57DZ6_mNyjkzD9gO66k_etYPP5g7G7pIwaDUiQCq8ETnAj0HpUkg6cxO2NrCy7gWHsiTqylRMzezAxpw2kBDk4I539IqJPh6nOXTo13H19IqUaBaNwMBTRjgiqs_iFyt8Ng')"></div>
+</div>
+<div class="flex flex-col flex-1 min-w-0 gap-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-2xs">
+<span class="font-title-md text-body-sm text-primary font-bold">Wootsie</span>
+<span class="px-1.5 py-0.5 rounded bg-primary-container/30 text-primary font-label-mono-sm text-[10px]">TOP 8 BESTIE</span>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-outline">Yesterday at 21:14</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+                  Bro that cantilever on Ocean Temple literally defied the laws of Odin. We stood on the roof during 3 swamp raids and the structural integrity stayed solid green! Still owe you 200 tar bundles for the roof tiles. 🛡️🔥
+                </p>
+</div>
+</div>
+<!-- Comment 2: Tanagor -->
+<div class="p-space-sm rounded bg-surface-container flex gap-space-sm items-start">
+<div class="w-10 h-10 rounded-full overflow-hidden shrink-0 bg-surface-container-lowest">
+<div class="w-full h-full bg-cover bg-center" data-alt="Avatar portrait of blonde Viking roof architect with raven cape." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuASzbnHOVKMjKrRX_JYsr3KY3i7NY8p61bBxONqN8rOA3UJPj0L6pgP_mQgjBsQL94QhTeDYDNIGg8pSGnPP2KjbBdwGxO2KpUr9GkouKqmBXLguoJvKM_ghQB9szlIAxLs9RZV4CgLALOzTCSaItTjJ5I6kf-Dx0XJbiN8yWdo4Yq6UXJZGgvKnthOjPrWeAyLFSLXzOhAkyrDD2ToAtz_3xdr03bYHn1hJtN2R4_4rVs6I7gcB2bn')"></div>
+</div>
+<div class="flex flex-col flex-1 min-w-0 gap-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-2xs">
+<span class="font-title-md text-body-sm text-secondary font-bold">Tanagor</span>
+<span class="font-label-mono-sm text-label-mono-sm text-outline-variant">#4 on Kinship</span>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-outline">3 days ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+                  Thanks for adding me to your Top 8 brother! I left 40 refined iron bars in the chest by your eastern harbor dock. Holler when you need the scaffolding raised for the Ashlands keep spire.
+                </p>
+</div>
+</div>
+<!-- Comment 3: Miss Marple -->
+<div class="p-space-sm rounded bg-surface-container flex gap-space-sm items-start">
+<div class="w-10 h-10 rounded-full overflow-hidden shrink-0 bg-surface-container-lowest">
+<div class="w-full h-full bg-cover bg-center" data-alt="Elderly female Viking innkeeper with wool shawl and warm smile." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBPOrPhVSguVdB-A8TfQrHeB7hvBjvkv3703ZD4fpPJ-cbmy4Uba9w42ZfdxtLewD29cGeOosoNcZ7K6Ug707OCq5JL1eYSP28pTSHoI_WfAdsnSI34xNRpAwqRenzsViNaGuQgLAOKOUw9F0mGJMJzHbqjeKyDdZA7MJeRZkJQDNM0HczVMZygco6GwnxerakG_r0jU_f378zkQG5F742fWTefmH_jF2IDnr7KKP-ekngt8Bnd7-zz')"></div>
+</div>
+<div class="flex flex-col flex-1 min-w-0 gap-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-2xs">
+<span class="font-title-md text-body-sm text-tertiary font-bold">Miss Marple</span>
+<span class="font-label-mono-sm text-label-mono-sm text-outline-variant">Mead Hall Keeper</span>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-outline">Era 17 Kickoff</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+                  Your kitchen layout in Grand Keep 0ab7528c remains the standard for the entire server. Comfort 24 buff achieved in under 3 seconds after stepping inside! Skål to your eternal masonry! 🍻
+                </p>
+</div>
+</div>
+</div>
+<!-- Bottom Pagination / Show More -->
+<button class="w-full py-space-xs rounded bg-surface-container hover:bg-surface-container-high text-primary font-label-mono-sm text-label-mono-sm uppercase tracking-wider text-center transition-colors" type="button">
+            Load Older Inscriptions (868 more...)
+          </button>
+</div>
+</div>
+</div>
+</div>
+</div></main><footer class="w-full bg-surface-container-lowest mt-space-4xl"><div class="w-full px-margin-desktop py-space-3xl flex flex-col md:flex-row items-center justify-between gap-space-lg"><div class="flex flex-col items-center md:items-start gap-space-2xs"><span class="font-label-runic text-label-runic text-primary uppercase">Valheim Architectural Ledger</span><p class="font-body-sm text-body-sm text-on-surface-variant">Chronicles of longhouses, monolithic stone steles, and legendary server realms.</p></div><div class="flex items-center gap-space-md"><span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">© The Comfy Community Archive. Preserved for Eternity.</span></div></div></footer></body></html>

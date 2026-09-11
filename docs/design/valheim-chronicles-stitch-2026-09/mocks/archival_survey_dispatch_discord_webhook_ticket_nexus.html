@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-secondary-container":"#432100","on-background":"#dde3ee","on-tertiary-fixed":"#261a00","on-tertiary-container":"#584000","surface-container-low":"#161c24","primary-fixed-dim":"#ffb95f","surface-container-lowest":"#090f16","on-tertiary":"#402d00","on-secondary":"#4d2600","on-tertiary-fixed-variant":"#5c4300","on-secondary-fixed":"#2f1500","inverse-surface":"#dde3ee","on-error-container":"#ffdad6","on-primary-fixed":"#2a1700","outline":"#a08e7a","tertiary-fixed":"#ffdf9f","error-container":"#93000a","on-error":"#690005","surface":"#0e141c","surface-variant":"#2f353e","primary-fixed":"#ffddb8","inverse-primary":"#855300","surface-container":"#1a2028","secondary-fixed":"#ffdcc3","background":"#0e141c","on-surface":"#dde3ee","secondary-container":"#d97707","outline-variant":"#534434","surface-container-highest":"#2f353e","primary":"#ffc174","on-secondary-fixed-variant":"#6e3900","on-primary-fixed-variant":"#653e00","inverse-on-surface":"#2b3139","surface-bright":"#343a42","secondary":"#ffb77d","surface-container-high":"#242a33","on-surface-variant":"#d8c3ad","surface-tint":"#ffb95f","on-primary":"#472a00","on-primary-container":"#613b00","tertiary-fixed-dim":"#f9bd22","tertiary":"#ffc32d","primary-container":"#f59e0b","surface-dim":"#0e141c","secondary-fixed-dim":"#ffb77d","error":"#ffb4ab","tertiary-container":"#e0a800"},borderRadius:{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},spacing:{"space-lg":"1.5rem","space-sm":"0.75rem","space-4xl":"6rem","space-xl":"2rem","space-2xl":"3rem","margin-mobile":"1rem","margin-desktop":"3rem","space-2xs":"0.25rem","space-xs":"0.5rem","space-3xl":"4rem","gutter-desktop":"2rem","space-md":"1rem","gutter-mobile":"1rem"},fontFamily:{"label-mono-md":["JetBrains Mono"],"body-md":["Plus Jakarta Sans"],"title-md":["Plus Jakarta Sans"],"headline-lg-mobile":["Bodoni Moda"],"body-lg":["Plus Jakarta Sans"],"label-mono-sm":["JetBrains Mono"],"body-sm":["Plus Jakarta Sans"],"headline-sm":["Bodoni Moda"],"label-runic":["Bodoni Moda"],"headline-lg":["Bodoni Moda"],"display-hero":["Bodoni Moda"],"display-hero-mobile":["Bodoni Moda"],"headline-md":["Bodoni Moda"]},fontSize:{"label-mono-md":["13px",{"lineHeight":"18px","letterSpacing":"0.04em","fontWeight":"500"}],"body-md":["15px",{"lineHeight":"24px","fontWeight":"400"}],"title-md":["16px",{"lineHeight":"24px","fontWeight":"600"}],"headline-lg-mobile":["26px",{"lineHeight":"34px","letterSpacing":"0.01em","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"label-mono-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.06em","fontWeight":"500"}],"body-sm":["13px",{"lineHeight":"20px","fontWeight":"400"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"500"}],"label-runic":["13px",{"lineHeight":"16px","letterSpacing":"0.14em","fontWeight":"700"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"0.02em","fontWeight":"600"}],"display-hero":["56px",{"lineHeight":"64px","letterSpacing":"0.04em","fontWeight":"700"}],"display-hero-mobile":["36px",{"lineHeight":"44px","letterSpacing":"0.02em","fontWeight":"700"}],"headline-md":["24px",{"lineHeight":"32px","letterSpacing":"0.01em","fontWeight":"600"}]}}}};</script></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.6)]"><div class="h-20 w-full px-margin-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md shrink-0"><img alt="The Comfy Valheim Archive Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Xrq1RP8_Pnw7zQcGm2u-Qr7j2dLViwdknmJe22sNiDZ__osUIMPzCX326KOxet9mqFlnlaZex5dk-daMrgiedo1MfEOuA4mQZFQ5EtAO8S7oOA-vZ9QRqZ0NXnMmCY9j3sMaKDCvbAf54PJdT2aQESV-jjHUc0mMy9jftUnugjsFG3lmBCXxX2nUyXZuKuldnbBjJghm3YBMI2DCpBI97RRY0msFVJK6xxKpUJUei9OXAu4U4qUSpGYA"/><div class="flex flex-col"><span class="font-label-runic text-label-runic text-primary uppercase tracking-widest">The Comfy Community</span><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Valheim Chronicles</span></div></div><nav class="hidden xl:flex items-center gap-space-lg" data-active-classes="text-primary font-bold"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" data-path="gallery" href="#">Gallery</a><a aria-current="page" class="transition-colors uppercase tracking-wider text-primary font-bold" data-path="all-builders" href="#">All Builders</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" data-path="eras-timeline" href="#">Eras Timeline</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" data-path="world-claims" href="#">World Claims</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" data-path="photo-requests" href="#">Photo Requests</a></nav><div class="flex items-center gap-space-sm shrink-0"><button class="flex items-center justify-center w-10 h-10 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">search</span></button><div class="hidden sm:flex items-center gap-space-2xs px-space-sm py-space-2xs rounded bg-surface-container-low"><span class="material-symbols-outlined text-primary text-[14px]">token</span><span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">Payload: Active</span></div><button class="flex items-center gap-space-xs px-space-sm py-space-xs rounded bg-primary-container hover:bg-primary text-on-primary-container transition-all shadow-[0_0_16px_rgba(245,158,11,0.25)]" type="button"><span class="material-symbols-outlined text-[16px]">sync</span><span class="font-label-mono-sm text-label-mono-sm font-semibold uppercase tracking-wider">Sync Device</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-background"><div class="flex flex-col w-full px-margin-mobile md:px-margin-desktop py-space-xl max-w-[1600px] mx-auto gap-space-2xl">
+<!-- Subsystem Telemetry Header Bar -->
+<section class="flex flex-col gap-space-md">
+<div class="flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-low px-space-md py-space-xs rounded shadow-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">terminal</span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase tracking-wider">
+          CHRONICLE DISPATCH // DISCORD WEBHOOK INTEGRATION // FIFO TICKET QUEUE
+        </span>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="flex items-center gap-space-2xs px-space-sm py-space-2xs rounded bg-surface-container-high">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">WEBHOOK: CONNECTED (#archive-private-tickets)</span>
+</div>
+<div class="flex items-center gap-space-2xs px-space-sm py-space-2xs rounded bg-surface-container-high">
+<span class="material-symbols-outlined text-secondary text-[14px]">low_priority</span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface uppercase">DISCIPLINE: STRICT FIFO (QUEUE #1046 - #1049)</span>
+</div>
+</div>
+</div>
+<!-- Title & Context Area -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-lg">
+<div class="flex flex-col gap-space-2xs max-w-3xl">
+<span class="font-label-runic text-label-runic text-primary uppercase tracking-widest">Autonomous Archival Intake</span>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Archival Survey Dispatch &amp; Ticket Nexus</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          Commission monumental architectural drone sweeps, atmospheric weather studies, and builder attribution claims. Every dispatch generates a cryptographic JSON payload piped directly into private staff worker threads with strict first-in, first-out queue governance.
+        </p>
+</div>
+<!-- Quick Metrics Pill Strip -->
+<div class="flex items-center gap-space-xs bg-surface-container px-space-md py-space-sm rounded shrink-0 shadow-md">
+<div class="flex flex-col pr-space-md">
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase">Active Queue</span>
+<span class="font-headline-sm text-headline-sm text-primary">04 <span class="font-body-sm text-body-sm text-on-surface-variant">Jobs</span></span>
+</div>
+<div class="w-px h-8 bg-surface-container-highest"></div>
+<div class="flex flex-col pl-space-md">
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase">Mean Ingestion</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">2.4 <span class="font-body-sm text-body-sm text-on-surface-variant">tkts/hr</span></span>
+</div>
+</div>
+</div>
+</section>
+<!-- Main 12-Column Architectural Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-xl items-start">
+<!-- LEFT COLUMN: The Dispatcher Form (7 cols) -->
+<div class="xl:col-span-7 flex flex-col gap-space-lg">
+<!-- Form Card Container -->
+<div class="bg-surface-container-low rounded p-space-lg md:p-space-xl flex flex-col gap-space-lg shadow-xl relative overflow-hidden">
+<div class="absolute -right-16 -top-16 w-56 h-56 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
+<!-- Card Title -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">add_task</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">New Archival Dispatch Commission</span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">Target Endpoint: Discord Private Channel Thread</span>
+</div>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-primary px-space-xs py-space-2xs bg-primary-container/20 rounded uppercase">Ticket Draft #1049</span>
+</div>
+<!-- Request Type Selector -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase tracking-wider">Commission Classification</label>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-xs" id="type-selector-group">
+<button class="type-pill active flex flex-col p-space-xs rounded bg-surface-container text-left transition-all text-primary shadow-[0_0_12px_rgba(245,158,11,0.2)]" type="button">
+<span class="material-symbols-outlined text-[18px]">photo_camera</span>
+<span class="font-body-sm text-body-sm font-semibold mt-space-2xs leading-tight">Photographic Survey</span>
+<span class="font-label-mono-sm text-[10px] text-on-surface-variant">Drone Orbit &amp; Passes</span>
+</button>
+<button class="type-pill flex flex-col p-space-xs rounded bg-surface-container-high text-left transition-all text-on-surface-variant hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+<span class="font-body-sm text-body-sm font-semibold mt-space-2xs leading-tight">Attribution Claim</span>
+<span class="font-label-mono-sm text-[10px] text-on-surface-variant">Mason Proof Seal</span>
+</button>
+<button class="type-pill flex flex-col p-space-xs rounded bg-surface-container-high text-left transition-all text-on-surface-variant hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[18px]">wb_twilight</span>
+<span class="font-body-sm text-body-sm font-semibold mt-space-2xs leading-tight">Weather Re-Run</span>
+<span class="font-label-mono-sm text-[10px] text-on-surface-variant">Aurora / Mist Stride</span>
+</button>
+<button class="type-pill flex flex-col p-space-xs rounded bg-surface-container-high text-left transition-all text-on-surface-variant hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[18px]">quick_reference</span>
+<span class="font-body-sm text-body-sm font-semibold mt-space-2xs leading-tight">Metadata Audit</span>
+<span class="font-label-mono-sm text-[10px] text-on-surface-variant">Piece Integrity Scan</span>
+</button>
+</div>
+</div>
+<!-- Form Elements Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Builder Discord Handle -->
+<div class="flex flex-col gap-space-2xs">
+<div class="flex items-center justify-between">
+<label class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase">Volunteer / Requester Handle</label>
+<span class="font-label-mono-sm text-[10px] text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">check_circle</span> Verified Mason
+              </span>
+</div>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[18px]">tag</span>
+<input class="w-full bg-surface-container-lowest text-on-surface pl-10 pr-4 py-2.5 rounded font-label-mono-md text-label-mono-md focus:outline-none focus:ring-1 focus:ring-primary shadow-inner" id="input-handle" placeholder="discord_handle#0000" type="text" value="Thorgaar#4012"/>
+</div>
+</div>
+<!-- Target Biome & Realm Epoch -->
+<div class="flex flex-col gap-space-2xs">
+<label class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase">Realm Epoch &amp; Biome</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[18px]">landscape</span>
+<select class="w-full bg-surface-container-lowest text-on-surface pl-10 pr-8 py-2.5 rounded font-label-mono-md text-label-mono-md focus:outline-none focus:ring-1 focus:ring-primary appearance-none shadow-inner" id="input-epoch">
+<option selected="">Era XVII — Ashlands / Deep North</option>
+<option>Era XVI — Mistlands Monoliths</option>
+<option>Era XV — Plains / Black Forest Staves</option>
+<option>Era XIV — Mountain Keeps &amp; Spire Halls</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 text-on-surface-variant text-[18px] pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Coordinates Inputs & Quick Auto-Fill -->
+<div class="flex flex-col gap-space-2xs">
+<div class="flex items-center justify-between">
+<label class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase">Target World Coordinates (X / Y Alt / Z)</label>
+<button class="font-label-mono-sm text-[11px] text-primary hover:text-primary-fixed underline decoration-dotted flex items-center gap-1" id="btn-load-monument" type="button">
+<span class="material-symbols-outlined text-[13px]">my_location</span> Load: Fortress of Mountain King
+            </button>
+</div>
+<div class="grid grid-cols-3 gap-space-xs">
+<div class="flex items-center bg-surface-container-lowest rounded px-3 py-2">
+<span class="font-label-mono-sm text-primary mr-2 font-bold">X</span>
+<input class="bg-transparent text-on-surface w-full font-label-mono-md text-label-mono-md focus:outline-none" id="coord-x" type="text" value="-4218"/>
+</div>
+<div class="flex items-center bg-surface-container-lowest rounded px-3 py-2">
+<span class="font-label-mono-sm text-primary mr-2 font-bold">Y</span>
+<input class="bg-transparent text-on-surface w-full font-label-mono-md text-label-mono-md focus:outline-none" id="coord-y" type="text" value="420m"/>
+</div>
+<div class="flex items-center bg-surface-container-lowest rounded px-3 py-2">
+<span class="font-label-mono-sm text-primary mr-2 font-bold">Z</span>
+<input class="bg-transparent text-on-surface w-full font-label-mono-md text-label-mono-md focus:outline-none" id="coord-z" type="text" value="1892"/>
+</div>
+</div>
+</div>
+<!-- Photography Pass Presets (Multi-Select Pills) -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<label class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase">Requested Drone Angles &amp; Lighting Passes</label>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant" id="selected-pass-count">3 Passes Selected</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-space-xs" id="passes-container">
+<label class="flex items-center gap-space-xs p-space-xs rounded bg-surface-container cursor-pointer select-none hover:bg-surface-container-high transition-colors">
+<input checked="" class="accent-primary w-4 h-4 rounded" data-label="360° Orbit Overview" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface">360° Orbit Overview</span>
+</label>
+<label class="flex items-center gap-space-xs p-space-xs rounded bg-surface-container cursor-pointer select-none hover:bg-surface-container-high transition-colors">
+<input checked="" class="accent-primary w-4 h-4 rounded" data-label="Interior Signature Hearth" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface">Interior Signature Hearth</span>
+</label>
+<label class="flex items-center gap-space-xs p-space-xs rounded bg-surface-container cursor-pointer select-none hover:bg-surface-container-high transition-colors">
+<input checked="" class="accent-primary w-4 h-4 rounded" data-label="Evening Twilight Study" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface">Evening Twilight Study</span>
+</label>
+<label class="flex items-center gap-space-xs p-space-xs rounded bg-surface-container cursor-pointer select-none hover:bg-surface-container-high transition-colors">
+<input class="accent-primary w-4 h-4 rounded" data-label="Entry-Level Detail Pass" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface">Entry Detail Pass</span>
+</label>
+<label class="flex items-center gap-space-xs p-space-xs rounded bg-surface-container cursor-pointer select-none hover:bg-surface-container-high transition-colors">
+<input class="accent-primary w-4 h-4 rounded" data-label="Steep Vertical 90° Nadir" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface">Steep 90° Nadir Ortho</span>
+</label>
+<label class="flex items-center gap-space-xs p-space-xs rounded bg-surface-container cursor-pointer select-none hover:bg-surface-container-high transition-colors">
+<input class="accent-primary w-4 h-4 rounded" data-label="Mist &amp; Aurora Pass" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface">Mist &amp; Aurora Pass</span>
+</label>
+</div>
+</div>
+<!-- Special Operational Notes Textarea -->
+<div class="flex flex-col gap-space-2xs">
+<label class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase">Operator Briefing Notes &amp; Lighting Constraints</label>
+<textarea class="w-full bg-surface-container-lowest text-on-surface p-3 rounded font-body-sm text-body-sm focus:outline-none focus:ring-1 focus:ring-primary shadow-inner resize-none" id="input-notes" placeholder="Provide lighting or structural cues for the drone surveyor..." rows="3">Please conduct the sortie during a northern blizzard clearing or twilight; keep the hearth braziers stoked so warm flame spills through the stave wood gables onto the snowy battlements.</textarea>
+</div>
+<!-- Discord Webhook Channel Target & Thread Automation Options -->
+<div class="bg-surface-container p-space-md rounded flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded bg-[#5865F2]/20 flex items-center justify-center text-[#5865F2] shrink-0">
+<span class="material-symbols-outlined text-[24px]">forum</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-2xs">
+<span class="font-label-mono-md text-label-mono-md text-on-surface font-semibold">#private-claims-intake</span>
+<span class="font-label-mono-sm text-[10px] px-1.5 py-0.5 bg-surface-container-high text-primary rounded">PRIVATE</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Automated worker thread: <span class="font-label-mono-sm text-primary">#ticket-1049-thorgaar-mountain-king</span></span>
+</div>
+</div>
+<div class="flex items-center gap-space-2xs bg-surface-container-high px-space-sm py-space-2xs rounded">
+<span class="material-symbols-outlined text-primary text-[16px]">lock</span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface">FIFO Auto-Sort Enabled</span>
+</div>
+</div>
+<!-- Dispatch Actions -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-md pt-space-xs">
+<button class="w-full sm:w-auto font-label-mono-sm text-label-mono-sm text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center gap-space-2xs py-space-xs px-space-sm rounded bg-surface-container-high" id="btn-toggle-json" type="button">
+<span class="material-symbols-outlined text-[16px]">code</span> Inspect Discord Payload (.JSON)
+          </button>
+<button class="w-full sm:w-auto flex items-center justify-center gap-space-sm px-space-xl py-space-sm rounded bg-primary-container hover:bg-primary text-on-primary-container font-body-md font-semibold transition-all shadow-[0_0_24px_rgba(245,158,11,0.35)] active:scale-[0.98]" id="btn-dispatch" type="button">
+<span class="material-symbols-outlined text-[20px]">send</span>
+<span>Dispatch to Discord Webhook</span>
+</button>
+</div>
+<!-- Hidden / Expandable JSON Payload Viewer -->
+<div class="hidden flex-col gap-space-xs bg-surface-container-lowest p-space-md rounded" id="json-viewer-container">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-sm text-label-mono-sm text-primary">LIVE CRYPTOGRAPHIC DISCORD WEBHOOK PAYLOAD</span>
+<button class="font-label-mono-sm text-[11px] text-on-surface-variant hover:text-on-surface flex items-center gap-1" id="btn-copy-json" type="button">
+<span class="material-symbols-outlined text-[14px]">content_copy</span> Copy Raw
+            </button>
+</div>
+<pre class="font-label-mono-sm text-[12px] text-on-surface-variant overflow-x-auto p-space-2xs leading-relaxed max-h-48" id="json-preview"></pre>
+</div>
+</div>
+<!-- Quick Feature Showcase Banner Image -->
+<div class="relative rounded overflow-hidden shadow-lg h-44 bg-surface-container">
+<div class="w-full h-full bg-cover bg-center" data-alt="A grand cinematic photographic survey shot of a high mountain Viking fortress in Valheim with snowy parapets, burning hearths, and soaring dragon staves under an orange and purple evening twilight sky." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC09LDwQo6CLKE49pu4Cw1qwrCgjKfQv8aTt5qGz8HR3jTTdjjJV-PZ4GeFHce9_rOxLKrhKZgRKnOhIemEu4zQLtDXb7N-39WQGnYEudl7Ej5cRsgoasVu7wD0hkXb6xlW3DH1nNq5FvcC-QbmuIGRovsB4w2qHFDUImqOMEATHqpnNKpsAS1wRVQlxoz6kH-Y_u5GX1ipIPUJ4eZMqecvLiu0ewiauxSOd659d6rIC9Iecqo5A-Kt')"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/80 to-transparent p-space-lg flex flex-col justify-center max-w-md">
+<span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">Current Target Build Under Archival Survey</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Fortress of the Mountain King</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-1">High-altitude stone fortress commissioned by Thorgaar. 420m elevation above Mistline.</span>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Discord Embed Preview & FIFO Queue Manager (5 cols) -->
+<div class="xl:col-span-5 flex flex-col gap-space-lg">
+<!-- CARD 1: Discord Thread Ingestion Preview Mockup -->
+<div class="bg-surface-container-low rounded p-space-lg flex flex-col gap-space-md shadow-xl">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[#5865F2] text-[20px]">mark_chat_read</span>
+<span class="font-title-md text-title-md text-on-surface">Discord Thread Ingestion Preview</span>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">Worker Thread #1049</span>
+</div>
+<!-- Simulated Discord Message Bubble -->
+<div class="bg-[#2B2D31] rounded p-space-md flex flex-col gap-space-sm shadow-md">
+<!-- Bot Avatar & Header -->
+<div class="flex items-start gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-sm shrink-0">
+<span class="material-symbols-outlined text-[20px]">castle</span>
+</div>
+<div class="flex flex-col w-full">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-body-md font-bold text-[#F2F3F5]">The Comfy Chronicler</span>
+<span class="bg-[#5865F2] text-white text-[10px] font-bold px-1 rounded uppercase tracking-wider">BOT</span>
+<span class="font-label-mono-sm text-[11px] text-[#949BA4]">Today at 18:42</span>
+</div>
+<p class="font-body-sm text-[#DBDEE1] mt-1">
+                New survey dispatch received via web commission payload. Spawning private ticket thread for assigned surveyors.
+              </p>
+</div>
+</div>
+<!-- Discord Rich Embed Card -->
+<div class="ml-0 sm:ml-12 pl-space-sm bg-[#1E1F22] rounded-l-none rounded-r p-space-md flex flex-col gap-space-xs shadow-inner" style="box-shadow: inset 4px 0 0 0 #F59E0B;">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-sm text-[11px] text-[#949BA4] uppercase">Valheim Archival Survey Dispatch</span>
+<span class="font-label-mono-sm text-[11px] text-[#F59E0B] font-semibold">FIFO POSITION: #4 (NEXT UP)</span>
+</div>
+<div class="font-title-md text-title-md text-white font-bold hover:underline cursor-pointer flex items-center gap-1.5">
+<span>🎫 Ticket #1049 — Photographic Survey Commission</span>
+</div>
+<p class="font-body-sm text-[#DBDEE1] italic text-[13px]" id="discord-preview-notes">
+              "Please conduct the sortie during a northern blizzard clearing or twilight; keep the hearth braziers stoked..."
+            </p>
+<!-- Discord Embed Fields 2x2 Grid -->
+<div class="grid grid-cols-2 gap-space-xs mt-space-xs pt-space-xs">
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-[10px] text-[#949BA4] uppercase font-bold">Requester Handle</span>
+<span class="font-label-mono-sm text-[12px] text-[#F2F3F5]" id="discord-preview-handle">Thorgaar#4012</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-[10px] text-[#949BA4] uppercase font-bold">Target Coordinates</span>
+<span class="font-label-mono-sm text-[12px] text-[#F59E0B]" id="discord-preview-coords">-4218, 420m, 1892</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-[10px] text-[#949BA4] uppercase font-bold">Realm Epoch</span>
+<span class="font-label-mono-sm text-[12px] text-[#F2F3F5]" id="discord-preview-epoch">Era XVII — Ashlands</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono-sm text-[10px] text-[#949BA4] uppercase font-bold">Priority SLA</span>
+<span class="font-label-mono-sm text-[12px] text-[#57F287]">Standard FIFO (18h SLA)</span>
+</div>
+</div>
+<!-- Pass Badges inside Embed -->
+<div class="flex flex-col gap-1 mt-space-xs">
+<span class="font-label-mono-sm text-[10px] text-[#949BA4] uppercase font-bold">Requested Passes</span>
+<div class="flex flex-wrap gap-1" id="discord-preview-passes">
+<span class="px-2 py-0.5 rounded bg-[#2B2D31] text-[11px] font-label-mono-sm text-[#F59E0B]">Orbit 360°</span>
+<span class="px-2 py-0.5 rounded bg-[#2B2D31] text-[11px] font-label-mono-sm text-[#F59E0B]">Interior Hearth</span>
+<span class="px-2 py-0.5 rounded bg-[#2B2D31] text-[11px] font-label-mono-sm text-[#F59E0B]">Twilight Tone</span>
+</div>
+</div>
+<!-- Thread Attribution Footer -->
+<div class="flex items-center justify-between text-[#949BA4] pt-space-xs mt-space-xs font-label-mono-sm text-[11px]">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">forum</span> Thread: #ticket-1049-thorgaar</span>
+<span>Comfy Webhook v3.4</span>
+</div>
+</div>
+<!-- Thread Quick Reply Simulation -->
+<div class="ml-0 sm:ml-12 flex items-center justify-between p-space-xs bg-[#1E1F22]/70 rounded text-[12px] text-[#949BA4]">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">subdirectory_arrow_right</span>
+<span>1 Reply from @Archivist-On-Duty</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-primary hover:underline cursor-pointer">Open Private Thread</span>
+</div>
+</div>
+</div>
+<!-- CARD 2: Active FIFO Ledger Queue (First-In, First-Out) -->
+<div class="bg-surface-container-low rounded p-space-lg flex flex-col gap-space-md shadow-xl">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">queue</span>
+<span class="font-title-md text-title-md text-on-surface">Active FIFO Worker Queue</span>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">Order: Strict Chrono</span>
+</div>
+<!-- Queue Item List -->
+<div class="flex flex-col gap-space-xs" id="fifo-queue-list">
+<!-- Item 1 (Processing) -->
+<div class="flex items-center justify-between p-space-sm bg-surface-container rounded transition-all hover:bg-surface-container-high">
+<div class="flex items-center gap-space-sm">
+<span class="font-label-mono-md text-label-mono-md font-bold text-primary w-6 text-center">01</span>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-body-sm font-semibold text-on-surface">#1046 — Aegir's Toll Marina</span>
+<span class="px-1.5 py-0.5 bg-primary/20 text-primary text-[10px] font-label-mono-sm rounded uppercase">In Sortie</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-on-surface-variant">Claimed by @Sigurd_Ops • Elapsed: 42m</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px] animate-spin">progress_activity</span>
+</div>
+<!-- Item 2 (Assigned) -->
+<div class="flex items-center justify-between p-space-sm bg-surface-container rounded transition-all hover:bg-surface-container-high">
+<div class="flex items-center gap-space-sm">
+<span class="font-label-mono-md text-label-mono-md font-bold text-on-surface-variant w-6 text-center">02</span>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-body-sm font-semibold text-on-surface">#1047 — Obsidian Rotunda Ashlands Pass</span>
+<span class="px-1.5 py-0.5 bg-secondary/20 text-secondary text-[10px] font-label-mono-sm rounded uppercase">Assigned</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-on-surface-variant">Surveyor @Vane_Camera • Elapsed: 1h 15m</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary text-[20px]">assignment_ind</span>
+</div>
+<!-- Item 3 (Queued FIFO) -->
+<div class="flex items-center justify-between p-space-sm bg-surface-container rounded transition-all hover:bg-surface-container-high">
+<div class="flex items-center gap-space-sm">
+<span class="font-label-mono-md text-label-mono-md font-bold text-on-surface-variant w-6 text-center">03</span>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-body-sm font-semibold text-on-surface">#1048 — Draugr Bay Stave Hall Drone Sweep</span>
+<span class="px-1.5 py-0.5 bg-surface-container-high text-on-surface-variant text-[10px] font-label-mono-sm rounded uppercase">Queued</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-on-surface-variant">Pending Drone Sortie • Elapsed: 2h 04m</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">hourglass_top</span>
+</div>
+<!-- Item 4 (This Dispatch In Pipeline) -->
+<div class="flex items-center justify-between p-space-sm bg-surface-container-high rounded ring-1 ring-primary/40 shadow-sm" id="queue-item-this">
+<div class="flex items-center gap-space-sm">
+<span class="font-label-mono-md text-label-mono-md font-bold text-primary w-6 text-center">04</span>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-body-sm font-semibold text-on-surface">#1049 — Fortress of the Mountain King</span>
+<span class="px-1.5 py-0.5 bg-primary text-on-primary text-[10px] font-label-mono-sm rounded font-bold uppercase">This Dispatch</span>
+</div>
+<span class="font-label-mono-sm text-[11px] text-primary" id="queue-status-text">Draft Ready // Ready to Push Webhook</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px]">pending_actions</span>
+</div>
+</div>
+<!-- FIFO Policy Statement -->
+<div class="p-space-xs bg-surface-container rounded flex items-center justify-between text-on-surface-variant">
+<span class="font-label-mono-sm text-[11px]">Strict FIFO Rule: Surveyor sorties execute in timestamp order.</span>
+<span class="font-label-mono-sm text-[11px] text-primary">Backlog: 4 Tasks</span>
+</div>
+</div>
+<!-- CARD 3: Webhook Security & Dispatch Protocol Specs -->
+<div class="bg-surface-container-low rounded p-space-md flex flex-col gap-space-xs shadow-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-primary text-[16px]">key</span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface uppercase">Endpoint Configuration</span>
+</div>
+<span class="font-label-mono-sm text-[10px] text-primary bg-surface-container px-2 py-0.5 rounded">Rate Limit: 30 / min</span>
+</div>
+<div class="flex items-center justify-between bg-surface-container-lowest p-space-xs rounded">
+<span class="font-label-mono-sm text-[11px] text-on-surface-variant truncate mr-2">https://discord.com/api/webhooks/11849204.../eyJhbGciOiJIUzI1...</span>
+<span class="font-label-mono-sm text-[10px] text-primary shrink-0 uppercase font-semibold">Masked</span>
+</div>
+<div class="flex items-center justify-between text-[11px] font-label-mono-sm text-on-surface-variant pt-1">
+<span>Worker Thread Auto-Create: <strong class="text-on-surface">Active</strong></span>
+<span>Retry Strategy: <strong class="text-on-surface">Exponential Backoff</strong></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Toast for Dispatch -->
+<div class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none bg-surface-container-high text-on-surface p-space-md rounded shadow-2xl flex items-center gap-space-md ring-1 ring-primary/50" id="dispatch-toast">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[18px]">done_all</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Commission Dispatched!</span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">Private thread #ticket-1049 spawned in Discord.</span>
+</div>
+</div>
+</div>
+<script>
+  // DOM Elements
+  const handleInput = document.getElementById('input-handle');
+  const epochSelect = document.getElementById('input-epoch');
+  const coordX = document.getElementById('coord-x');
+  const coordY = document.getElementById('coord-y');
+  const coordZ = document.getElementById('coord-z');
+  const notesInput = document.getElementById('input-notes');
+  const passesContainer = document.getElementById('passes-container');
+  const passCheckboxes = passesContainer.querySelectorAll('input[type="checkbox"]');
+  const passCountBadge = document.getElementById('selected-pass-count');
+  
+  // Discord Preview Elements
+  const discordNotes = document.getElementById('discord-preview-notes');
+  const discordHandle = document.getElementById('discord-preview-handle');
+  const discordCoords = document.getElementById('discord-preview-coords');
+  const discordEpoch = document.getElementById('discord-preview-epoch');
+  const discordPasses = document.getElementById('discord-preview-passes');
+  
+  // JSON Viewer
+  const btnToggleJson = document.getElementById('btn-toggle-json');
+  const jsonViewer = document.getElementById('json-viewer-container');
+  const jsonPreview = document.getElementById('json-preview');
+  const btnCopyJson = document.getElementById('btn-copy-json');
+  
+  // Buttons
+  const btnDispatch = document.getElementById('btn-dispatch');
+  const btnLoadMonument = document.getElementById('btn-load-monument');
+  const dispatchToast = document.getElementById('dispatch-toast');
+  const queueStatusText = document.getElementById('queue-status-text');
+
+  // Request Type Pills
+  const typePills = document.querySelectorAll('.type-pill');
+  typePills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      typePills.forEach(p => {
+        p.classList.remove('bg-surface-container', 'text-primary', 'shadow-[0_0_12px_rgba(245,158,11,0.2)]');
+        p.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+      });
+      pill.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+      pill.classList.add('bg-surface-container', 'text-primary', 'shadow-[0_0_12px_rgba(245,158,11,0.2)]');
+      updateDiscordPreview();
+    });
+  });
+
+  // Update Discord Preview & JSON representation
+  function updateDiscordPreview() {
+    if (discordHandle) discordHandle.textContent = handleInput.value || 'Anonymous#0000';
+    if (discordCoords) discordCoords.textContent = `${coordX.value}, ${coordY.value}, ${coordZ.value}`;
+    if (discordEpoch) discordEpoch.textContent = epochSelect.value.split('—')[0].trim();
+    if (discordNotes) discordNotes.textContent = `"${notesInput.value || 'No specific lighting instructions provided.'}"`;
+
+    // Checked passes
+    const selectedPasses = [];
+    passCheckboxes.forEach(cb => {
+      if (cb.checked) {
+        selectedPasses.push(cb.getAttribute('data-label'));
+      }
+    });
+
+    if (passCountBadge) passCountBadge.textContent = `${selectedPasses.length} Passes Selected`;
+
+    if (discordPasses) {
+      discordPasses.innerHTML = '';
+      selectedPasses.forEach(pass => {
+        const badge = document.createElement('span');
+        badge.className = 'px-2 py-0.5 rounded bg-[#2B2D31] text-[11px] font-label-mono-sm text-[#F59E0B]';
+        badge.textContent = pass;
+        discordPasses.appendChild(badge);
+      });
+    }
+
+    // Build Payload Object
+    const payload = {
+      username: "The Comfy Chronicler",
+      avatar_url: "https://thecomfyarchive.io/assets/chronicler-emblem.png",
+      thread_name: `ticket-1049-${handleInput.value.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}`,
+      content: `🎫 **Ticket #1049 Commission Dispatched** by \`${handleInput.value}\` into FIFO queue position #4.`,
+      embeds: [
+        {
+          title: "Archival Photographic Survey Commission",
+          color: 16104971, // #F59E0B amber gold
+          description: notesInput.value,
+          fields: [
+            { name: "Requester", value: handleInput.value, inline: true },
+            { name: "Coordinates", value: `X:${coordX.value} Y:${coordY.value} Z:${coordZ.value}`, inline: true },
+            { name: "Realm Epoch", value: epochSelect.value, inline: true },
+            { name: "Passes", value: selectedPasses.join(", ") || "Standard Sweep", inline: false },
+            { name: "FIFO Queue Order", value: "Position #4 (Preceded by #1046, #1047, #1048)", inline: true },
+            { name: "Status", value: "Pending Drone Sortie & Archivist Assignment", inline: true }
+          ],
+          footer: { text: "Valheim Chronicles Archival Ledger // Webhook Direct" },
+          timestamp: new Date().toISOString()
+        }
+      ]
+    };
+
+    if (jsonPreview) {
+      jsonPreview.textContent = JSON.stringify(payload, null, 2);
+    }
+  }
+
+  // Event Listeners for Dynamic Preview
+  [handleInput, epochSelect, coordX, coordY, coordZ, notesInput].forEach(elem => {
+    if (elem) elem.addEventListener('input', updateDiscordPreview);
+  });
+
+  passCheckboxes.forEach(cb => {
+    cb.addEventListener('change', updateDiscordPreview);
+  });
+
+  // Toggle JSON Viewer
+  if (btnToggleJson && jsonViewer) {
+    btnToggleJson.addEventListener('click', () => {
+      jsonViewer.classList.toggle('hidden');
+      jsonViewer.classList.toggle('flex');
+    });
+  }
+
+  // Copy JSON Raw
+  if (btnCopyJson && jsonPreview) {
+    btnCopyJson.addEventListener('click', () => {
+      navigator.clipboard.writeText(jsonPreview.textContent);
+      btnCopyJson.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span> Copied!';
+      setTimeout(() => {
+        btnCopyJson.innerHTML = '<span class="material-symbols-outlined text-[14px]">content_copy</span> Copy Raw';
+      }, 2000);
+    });
+  }
+
+  // Load Preset Coordinates
+  if (btnLoadMonument) {
+    btnLoadMonument.addEventListener('click', () => {
+      coordX.value = "-4218";
+      coordY.value = "420m";
+      coordZ.value = "1892";
+      epochSelect.value = "Era XVII — Ashlands / Deep North";
+      updateDiscordPreview();
+    });
+  }
+
+  // Dispatch Action Simulation
+  if (btnDispatch) {
+    btnDispatch.addEventListener('click', () => {
+      btnDispatch.disabled = true;
+      btnDispatch.innerHTML = '<span class="material-symbols-outlined text-[20px] animate-spin">sync</span><span>Transmitting Webhook...</span>';
+
+      setTimeout(() => {
+        btnDispatch.disabled = false;
+        btnDispatch.innerHTML = '<span class="material-symbols-outlined text-[20px]">done</span><span>Dispatched to #private-claims-intake</span>';
+        
+        if (queueStatusText) {
+          queueStatusText.textContent = "Thread Created: #ticket-1049 // Position #4 Locked";
+        }
+
+        // Show toast
+        if (dispatchToast) {
+          dispatchToast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+          setTimeout(() => {
+            dispatchToast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+          }, 3500);
+        }
+
+        setTimeout(() => {
+          btnDispatch.innerHTML = '<span class="material-symbols-outlined text-[20px]">send</span><span>Dispatch Another Commission</span>';
+        }, 3000);
+      }, 1000);
+    });
+  }
+
+  // Initial call to sync JSON preview on load
+  updateDiscordPreview();
+</script></main><footer class="w-full bg-surface-container-lowest mt-space-4xl"><div class="w-full px-margin-desktop py-space-3xl flex flex-col md:flex-row items-center justify-between gap-space-lg"><div class="flex flex-col items-center md:items-start gap-space-2xs"><span class="font-label-runic text-label-runic text-primary uppercase">Valheim Architectural Ledger</span><p class="font-body-sm text-body-sm text-on-surface-variant">Chronicles of longhouses, monolithic stone steles, and legendary server realms.</p></div><div class="flex items-center gap-space-md"><span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">© The Comfy Community Archive. Preserved for Eternity.</span></div></div></footer></body></html>

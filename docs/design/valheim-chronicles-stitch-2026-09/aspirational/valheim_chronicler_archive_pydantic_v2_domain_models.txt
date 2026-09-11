@@ -1,0 +1,263 @@
+"""
+The Comfy Community — Valheim Chronicler Archive
+Complete Pydantic V2 Domain Schemas & CQRS Models
+Architecture: FastAPI CQRS Backend + Next.js BFF Bridge
+"""
+
+from __future__ import annotations
+from datetime import datetime
+from enum import Enum
+from typing import Dict, List, Optional, Union
+from pydantic import BaseModel, Field, HttpUrl, ConfigDict, field_validator
+
+
+# =====================================================================
+# 1. Enums & Core Domain Classifiers
+# =====================================================================
+
+class BuilderStanding(str, Enum):
+    MEGABUILDER = "Megabuilder"
+    MAJOR_ARCHITECT = "Major Architect"
+    HOMESTEAD_ARTISAN = "Homestead Artisan"
+    COASTAL_RANGER = "Coastal Ranger"
+    EXPEDITION_SCOUT = "Expedition Scout"
+    RUNIC_CHRONICLER = "Runic Chronicler"
+
+
+class IntentArchetype(str, Enum):
+    MASON = "Mason"
+    ARCHITECT = "Architect"
+    CHRONICLER = "Chronicler"
+    SCOUT = "Scout"
+    MECHANIST = "Mechanist"
+
+
+class PhotoStyle(str, Enum):
+    WIDE_OVERVIEW = "wide_overview"
+    INTERIOR_SIGNATURE = "interior_signature"
+    HEIGHT_VARIATION = "height_variation"
+    TWILIGHT_TONE = "twilight_tone"
+    ENTRY_DETAIL = "entry_detail"
+    AERIAL_ORBIT = "aerial_orbit"
+
+
+class PhotoStatus(str, Enum):
+    PHOTOGRAPHED = "PHOTOGRAPHED"
+    PENDING_CAMERA = "PENDING_CAMERA"
+    UNPHOTOGRAPHED = "UNPHOTOGRAPHED"
+
+
+class ClaimType(str, Enum):
+    SOLE_CREATOR = "SOLE_CREATOR"
+    CO_ARCHITECT = "CO_ARCHITECT"
+    FOUNDATION_MASON = "FOUNDATION_MASON"
+    TIMBER_CARPENTER = "TIMBER_CARPENTER"
+    DECORATIVE_ARTISAN = "DECORATIVE_ARTISAN"
+
+
+class ContactPreference(str, Enum):
+    DISCORD_DM = "discord_dm"
+    FORUM_THREAD = "forum_thread"
+    COMMUNITY_MEAD_HALL = "community_mead_hall"
+    ANONYMOUS = "anonymous"
+
+
+# =====================================================================
+# 2. Shared Data Sub-Structures
+# =====================================================================
+
+class ContributorShare(BaseModel):
+    """Represents a contributor's mathematically derived percentage of a build."""
+    model_config = ConfigDict(frozen=True)
+    builder_id: Optional[str] = Field(None, description="Standardized builder identifier, or None if raw unregistered")
+    name: str = Field(..., description="Display name or alias at time of world save capture")
+    percentage: float = Field(..., ge=0.0, le=100.0, description="Attribution share percentage")
+
+
+class SpatialCoordinates(BaseModel):
+    model_config = ConfigDict(frozen=True)
+    x: float
+    y: float
+    z: float
+
+
+class BuilderMetrics(BaseModel):
+    total_albums: int = Field(..., ge=0, description="Total albums where builder has placed >= 1 piece")
+    total_pieces: int = Field(..., ge=0, description="Total construction pieces attributed to builder")
+    photographed_albums: int = Field(..., ge=0, description="Albums with photographic passes completed")
+    active_eras: List[int] = Field(default_factory=list, description="Eras in which builder was recorded")
+    server_rank: Optional[int] = Field(None, ge=1, description="Global ranking by total pieces placed")
+    percentile: Optional[float] = Field(None, ge=0.0, le=100.0, description="Server standing percentile")
+
+
+class BuilderFlair(BaseModel):
+    status_mood: str = Field(..., max_length=280, description="Custom mead hall status blurb")
+    beacon_state: str = Field(..., description="Short uppercase activity beacon e.g. 'RESTING AT HEARTH'")
+    anthem_title: str = Field(..., description="Selected Nordic hearth anthem title")
+    anthem_audio_url: str = Field(..., description="URL to ambient hearth audio stream or file")
+    norse_sign: Optional[str] = Field(None, description="Sign/sigil designation e.g. 'Raven & Storm Compass'")
+    preferred_biomes: List[str] = Field(default_factory=list, description="Favored building environments")
+    about_me: str = Field(..., max_length=2000, description="Extended bio/lore statement")
+    who_id_like_to_meet: str = Field(..., max_length=1000, description="Collab and community blurb")
+
+
+class KinshipCollaborator(BaseModel):
+    """A member of a builder's dynamic Shield-Wall Top 8 calculated via attribution overlap."""
+    collaborator_id: str
+    collaborator_name: str
+    role_tag: str = Field(..., description="Computed or selected role e.g. 'Forge Lead', 'Homestead Partner'")
+    shared_builds_count: int = Field(..., ge=0)
+    shared_pieces_count: int = Field(..., ge=0)
+    kinship_score: float = Field(..., ge=0.0, description="Kinship overlap score derived from shared builds matrix")
+    key_shared_build_id: str = Field(..., description="Build ID of highest collaborative impact")
+
+
+class SignatureMonumentExhibit(BaseModel):
+    build_id: str
+    title: str
+    era: int
+    piece_count: int
+    builder_attribution_percent: float = Field(..., ge=0.0, le=100.0)
+    co_architects: List[ContributorShare] = Field(default_factory=list)
+    image_url: Optional[str] = None
+    is_claimable: bool = True
+
+
+class EraBuildRecord(BaseModel):
+    build_id: str
+    era: int
+    total_pieces: int
+    builder_share: float = Field(..., ge=0.0, le=100.0)
+    photo_status: PhotoStatus
+    photo_count: int = 0
+    contributors: List[ContributorShare] = Field(default_factory=list)
+    world_coordinates: Optional[SpatialCoordinates] = None
+
+
+class RunicInscription(BaseModel):
+    inscription_id: str
+    author_name: str
+    author_id: Optional[str] = None
+    author_standing: Optional[str] = None
+    era_context: Optional[str] = None
+    message: str = Field(..., max_length=1000)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+# =====================================================================
+# 3. Read Projections (Query Side)
+# =====================================================================
+
+class GatewayStatsView(BaseModel):
+    """Ultra-low latency edge projection for the lean landing gateway (<256 chars cognitive lift)."""
+    eras_count: int = 9
+    eras_active: List[int] = Field(default_factory=lambda: [7, 8, 9, 10, 11, 12, 14, 16, 17])
+    total_builders: int = 2585
+    total_captures: int = 12102
+    total_pieces: int = 4892100
+    current_photographed_eras: str = "7–9, 12, 14, 16–17"
+    pending_photography_eras: str = "10–11"
+
+
+class ArchetypeDescriptor(BaseModel):
+    archetype: IntentArchetype
+    title: str
+    tagline: str
+    description: str
+    exemplar_builders: List[str]
+    suggested_eras: List[int]
+
+
+class BuilderDirectoryItem(BaseModel):
+    builder_id: str
+    name: str
+    aliases: List[str] = Field(default_factory=list)
+    standing: BuilderStanding
+    server_rank: Optional[int] = None
+    total_albums: int
+    total_pieces: int
+    photographed_albums: int
+    active_eras: List[int]
+    signature_creations: List[str] = Field(default_factory=list)
+
+
+class BuilderDirectoryResponse(BaseModel):
+    items: List[BuilderDirectoryItem]
+    total_count: int
+    next_cursor: Optional[str] = None
+
+
+class BuilderProfileView(BaseModel):
+    """Full Viking 'MySpace' archival projection backing Ditseey, Reina Borg, Tugcow, etc."""
+    builder_id: str
+    primary_name: str
+    aliases: List[str] = Field(default_factory=list)
+    standing: BuilderStanding
+    avatar_url: str
+    metrics: BuilderMetrics
+    flair: BuilderFlair
+    shield_wall_top_8: List[KinshipCollaborator]
+    signature_monuments: List[SignatureMonumentExhibit] = Field(default_factory=list)
+    era_telemetry: Dict[int, List[EraBuildRecord]] = Field(default_factory=dict)
+    runic_wall: List[RunicInscription] = Field(default_factory=list)
+
+
+# =====================================================================
+# 4. Command Payloads (Write Side & Client Actions)
+# =====================================================================
+
+class ClaimBuildCommand(BaseModel):
+    """Social assertion of participation (does not alter historical piece logs)."""
+    build_id: str = Field(..., min_length=4, max_length=64)
+    era: int = Field(..., ge=1)
+    claimant_handle: str = Field(..., min_length=2, max_length=64, description="Volunteer handle / Discord tag")
+    claim_type: ClaimType = Field(default=ClaimType.CO_ARCHITECT)
+    claimed_percentage: float = Field(..., ge=0.0, le=100.0)
+    notes: Optional[str] = Field(None, max_length=500)
+    client_signature: str = Field(..., description="Cryptographic browser payload hash (sha256)")
+
+
+class PhotoRequestCommand(BaseModel):
+    """Photography ticket dispatched to Discord FIFO queue."""
+    build_id: str
+    era: int
+    builder_attribution: str = Field(..., description="Formatted string of primary contributors")
+    styles: List[PhotoStyle] = Field(..., min_length=1)
+    instructions: str = Field(..., min_length=5, max_length=1000)
+    is_urgent: bool = False
+    contact_preference: ContactPreference = ContactPreference.DISCORD_DM
+    volunteer_handle: str
+    client_payload_hash: Optional[str] = None
+
+
+class InscribeSteleCommand(BaseModel):
+    """Append public runic comment to builder's guestbook."""
+    target_builder_id: str
+    author_name: str = Field(..., min_length=1, max_length=64)
+    author_id: Optional[str] = None
+    message: str = Field(..., min_length=2, max_length=1000)
+
+
+class CustomizeProfileCommand(BaseModel):
+    """Personalize Viking MySpace profile flair."""
+    builder_id: str
+    status_mood: Optional[str] = Field(None, max_length=280)
+    beacon_state: Optional[str] = Field(None, max_length=60)
+    anthem_title: Optional[str] = None
+    anthem_audio_url: Optional[str] = None
+    about_me: Optional[str] = Field(None, max_length=2000)
+    who_id_like_to_meet: Optional[str] = Field(None, max_length=1000)
+    pinned_monument_ids: Optional[List[str]] = Field(None, max_length=6)
+
+
+class DiscordTicketResponse(BaseModel):
+    ticket_id: str
+    status: str = "QUEUED_FIFO"
+    discord_thread_url: Optional[str] = None
+    received_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+class ClientPayloadReceipt(BaseModel):
+    payload_jwt: str
+    sha256_hash: str
+    generated_at: datetime = Field(default_factory=datetime.utcnow)

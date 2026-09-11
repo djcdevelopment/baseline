@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-secondary-container": "#432100",
+            "on-background": "#dde3ee",
+            "on-tertiary-fixed": "#261a00",
+            "on-tertiary-container": "#584000",
+            "surface-container-low": "#161c24",
+            "primary-fixed-dim": "#ffb95f",
+            "surface-container-lowest": "#090f16",
+            "on-tertiary": "#402d00",
+            "on-secondary": "#4d2600",
+            "on-tertiary-fixed-variant": "#5c4300",
+            "on-secondary-fixed": "#2f1500",
+            "inverse-surface": "#dde3ee",
+            "on-error-container": "#ffdad6",
+            "on-primary-fixed": "#2a1700",
+            "outline": "#a08e7a",
+            "tertiary-fixed": "#ffdf9f",
+            "error-container": "#93000a",
+            "on-error": "#690005",
+            "surface": "#0e141c",
+            "surface-variant": "#2f353e",
+            "primary-fixed": "#ffddb8",
+            "inverse-primary": "#855300",
+            "surface-container": "#1a2028",
+            "secondary-fixed": "#ffdcc3",
+            "background": "#0e141c",
+            "on-surface": "#dde3ee",
+            "secondary-container": "#d97707",
+            "outline-variant": "#534434",
+            "surface-container-highest": "#2f353e",
+            "primary": "#ffc174",
+            "on-secondary-fixed-variant": "#6e3900",
+            "on-primary-fixed-variant": "#653e00",
+            "inverse-on-surface": "#2b3139",
+            "surface-bright": "#343a42",
+            "secondary": "#ffb77d",
+            "surface-container-high": "#242a33",
+            "on-surface-variant": "#d8c3ad",
+            "surface-tint": "#ffb95f",
+            "on-primary": "#472a00",
+            "on-primary-container": "#613b00",
+            "tertiary-fixed-dim": "#f9bd22",
+            "tertiary": "#ffc32d",
+            "primary-container": "#f59e0b",
+            "surface-dim": "#0e141c",
+            "secondary-fixed-dim": "#ffb77d",
+            "error": "#ffb4ab",
+            "tertiary-container": "#e0a800"
+          },
+          borderRadius: {
+            DEFAULT: "0.125rem",
+            lg: "0.25rem",
+            xl: "0.5rem",
+            full: "0.75rem"
+          },
+          spacing: {
+            "space-lg": "1.5rem",
+            "space-sm": "0.75rem",
+            "space-4xl": "6rem",
+            "space-xl": "2rem",
+            "space-2xl": "3rem",
+            "margin-mobile": "1rem",
+            "margin-desktop": "3rem",
+            "space-2xs": "0.25rem",
+            "space-xs": "0.5rem",
+            "space-3xl": "4rem",
+            "gutter-desktop": "2rem",
+            "space-md": "1rem",
+            "gutter-mobile": "1rem"
+          },
+          fontFamily: {
+            "label-mono-md": ["JetBrains Mono"],
+            "body-md": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Bodoni Moda"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-mono-sm": ["JetBrains Mono"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-sm": ["Bodoni Moda"],
+            "label-runic": ["Bodoni Moda"],
+            "headline-lg": ["Bodoni Moda"],
+            "display-hero": ["Bodoni Moda"],
+            "display-hero-mobile": ["Bodoni Moda"],
+            "headline-md": ["Bodoni Moda"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-background font-body-md text-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container">
+
+  <!-- Persistent Header Navigation Shell -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.6)]">
+    <div class="h-20 w-full px-margin-desktop flex items-center justify-between gap-space-md">
+      <div class="flex items-center gap-space-md shrink-0">
+        <div class="w-8 h-8 rounded bg-primary-container/20 border border-primary/40 flex items-center justify-center text-primary">
+          <span class="material-symbols-outlined text-[20px]">shield</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-label-runic text-[11px] text-primary uppercase tracking-widest font-bold">The Comfy Community</span>
+          <span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Valheim Chronicles</span>
+        </div>
+      </div>
+      <nav class="hidden xl:flex items-center gap-space-lg">
+        <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" href="#">Gallery</a>
+        <a aria-current="page" class="transition-colors uppercase tracking-wider text-primary font-bold" href="#">All Builders</a>
+        <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" href="#">Eras Timeline</a>
+        <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" href="#">World Claims</a>
+        <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" href="#">Photo Requests</a>
+      </nav>
+      <div class="flex items-center gap-space-sm shrink-0">
+        <button class="flex items-center justify-center w-10 h-10 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" type="button">
+          <span class="material-symbols-outlined text-[20px]">search</span>
+        </button>
+        <div class="hidden sm:flex items-center gap-space-2xs px-space-sm py-space-2xs rounded bg-surface-container-low border border-outline-variant/30">
+          <span class="material-symbols-outlined text-primary text-[14px]">token</span>
+          <span class="font-label-mono-sm text-[11px] text-primary uppercase">Payload: Ready</span>
+        </div>
+        <button class="flex items-center gap-space-xs px-space-sm py-space-xs rounded bg-primary-container hover:bg-primary text-on-primary-container transition-all shadow-[0_0_16px_rgba(245,158,11,0.25)]" type="button">
+          <span class="material-symbols-outlined text-[16px]">sync</span>
+          <span class="font-label-mono-sm text-label-mono-sm font-semibold uppercase tracking-wider">Sync Device</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="w-full pt-20 bg-background">
+    <div class="relative w-full max-w-[1540px] mx-auto px-margin-mobile md:px-margin-desktop py-space-lg flex flex-col gap-space-lg">
+
+      <!-- Breadcrumb & Status Pill -->
+      <div class="flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-lowest p-space-sm rounded border border-outline-variant/30 shadow-sm">
+        <div class="flex items-center gap-space-xs font-label-mono-sm text-label-mono-sm text-on-surface-variant flex-wrap">
+          <a class="text-primary hover:underline flex items-center gap-1" href="#">
+            <span class="material-symbols-outlined text-[14px]">arrow_back</span> Valheim Gallery
+          </a>
+          <span>/</span>
+          <a class="hover:text-on-surface transition-colors" href="#">All Builders</a>
+          <span>/</span>
+          <span class="text-primary font-semibold">Reina Borg (Megabuilder)</span>
+          <span>/</span>
+          <span class="text-on-surface-variant/70">Crossfunctional Guild Lead</span>
+        </div>
+        <div class="flex items-center gap-space-md">
+          <div class="flex items-center gap-space-2xs bg-surface-container-high px-space-sm py-1 rounded">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span class="font-label-mono-sm text-label-mono-sm text-on-surface uppercase">Surveying Guild Spans (Era 14)</span>
+          </div>
+          <div class="hidden lg:flex items-center gap-1 font-label-mono-sm text-label-mono-sm text-primary">
+            <span class="material-symbols-outlined text-[15px]">verified_user</span>
+            <span>MULTI-ROLE ARCHITECT</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MySpace Header Mood / Guild Dispatch Banner -->
+      <div class="relative overflow-hidden rounded bg-surface-container-low border border-outline-variant/40 p-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-md shadow-md">
+        <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="flex items-center gap-space-md z-10">
+          <div class="w-12 h-12 rounded bg-surface-container-highest flex items-center justify-center text-primary shadow-inner border border-primary/20">
+            <span class="material-symbols-outlined text-[28px]">architecture</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-space-xs">
+              <span class="font-label-runic text-label-runic text-primary uppercase tracking-widest font-bold">Guild Master's Status</span>
+              <span class="text-on-surface-variant font-label-mono-sm text-[10px]">• 8m ago</span>
+            </div>
+            <p class="font-headline-sm text-headline-sm text-on-surface tracking-tight">
+              “Reina Borg is coordinating joint scaffolding with Hammerstein and Norselokk on Build 06a9eca2 (Era 14)”
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-space-xs shrink-0 z-10">
+          <button class="px-space-sm py-space-xs bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-mono-sm text-label-mono-sm rounded flex items-center gap-1 transition-all border border-outline-variant/30" type="button">
+            <span class="material-symbols-outlined text-[15px] text-primary">handshake</span>
+            <span>Joint Blueprint</span>
+          </button>
+          <button class="px-space-sm py-space-xs bg-primary-container hover:bg-primary text-on-primary-container font-label-mono-sm text-label-mono-sm font-semibold rounded flex items-center gap-1 transition-all shadow-[0_0_12px_rgba(245,158,11,0.2)]" type="button">
+            <span class="material-symbols-outlined text-[15px]">group_add</span>
+            <span>Add to Kinship</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2-Column Norse MySpace Layout -->
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-start">
+
+        <!-- ================= LEFT COLUMN: AVATAR, VITAL STATS, TOP 8 KINSHIP, AUDIO PLAYER ================= -->
+        <div class="xl:col-span-4 flex flex-col gap-space-lg">
+
+          <!-- Profile Frame Card -->
+          <div class="bg-surface-container-low rounded border border-outline-variant/40 p-space-md flex flex-col gap-space-md shadow-md">
+            <div class="border-b border-outline-variant/30 pb-space-xs flex justify-between items-baseline">
+              <h1 class="font-headline-lg text-headline-lg text-primary tracking-wide">Reina Borg</h1>
+              <span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">LVL 95 GUILD ARCHITECT</span>
+            </div>
+
+            <!-- Avatar Frame with Runic Trim -->
+            <div class="relative group mx-auto w-full aspect-square rounded overflow-hidden border-2 border-primary/40 shadow-xl bg-surface-container-lowest">
+              <img alt="Reina Borg, Master Shieldmaiden Architect" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD90BCxa8WMi1MhzYdnDzf-HWX42oQENG6Me9cWP74YtW2VQRUfOJyAH0gf9ScC-UjOgMyZFyFNRz6cRgxzMtrqMkaha5m5TUdo2XbZEhWvXXeCoO7dtxnPxYuL_29HjJvB9BAGMlLjXC6s6bx_164K2txrEaWE6t7ncFvACj7UgQKxDdOFxIoEbGfShYIOv_qE3vcr6xNCcPUwYd0yfGTEG0gc6bPa1YJ4n_p0dE1Pgzmv3mSPdmpm"/>
+              <div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent opacity-60"></div>
+              
+              <!-- Inset Norse Runes Corner Accents -->
+              <div class="absolute top-2 left-2 text-primary/80 font-label-runic text-label-runic select-none drop-shadow">ᚨ</div>
+              <div class="absolute top-2 right-2 text-primary/80 font-label-runic text-label-runic select-none drop-shadow">ᛗ</div>
+              <div class="absolute bottom-2 left-2 text-primary/80 font-label-runic text-label-runic select-none drop-shadow">ᛋ</div>
+              <div class="absolute bottom-2 right-2 text-primary/80 font-label-runic text-label-runic select-none drop-shadow">ᛚ</div>
+
+              <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+                <span class="bg-surface-container-lowest/80 backdrop-blur-sm px-2 py-1 rounded font-label-mono-sm text-label-mono-sm text-primary border border-primary/20">
+                  95 Relics Logged
+                </span>
+                <span class="bg-primary/90 text-on-primary font-label-mono-sm text-label-mono-sm px-2 py-0.5 rounded font-bold uppercase tracking-wider">
+                  Crossfunctional Lead
+                </span>
+              </div>
+            </div>
+
+            <!-- Quick Action Hub -->
+            <div class="grid grid-cols-2 gap-space-2xs font-label-mono-sm text-label-mono-sm">
+              <button class="p-2 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-primary flex items-center gap-2 transition-colors border border-outline-variant/20" type="button">
+                <span class="material-symbols-outlined text-[16px] text-primary">photo_camera</span>
+                <span>Photographs (95)</span>
+              </button>
+              <button class="p-2 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-primary flex items-center gap-2 transition-colors border border-outline-variant/20" type="button">
+                <span class="material-symbols-outlined text-[16px] text-primary">edit_note</span>
+                <span>Inscribe Stele</span>
+              </button>
+              <button class="p-2 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-primary flex items-center gap-2 transition-colors border border-outline-variant/20" type="button">
+                <span class="material-symbols-outlined text-[16px] text-primary">verified</span>
+                <span>Claim Build</span>
+              </button>
+              <button class="p-2 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-primary flex items-center gap-2 transition-colors border border-outline-variant/20" type="button">
+                <span class="material-symbols-outlined text-[16px] text-primary">share</span>
+                <span>Export Manifest</span>
+              </button>
+            </div>
+
+            <!-- Vital Telemetry Runes (Bio Table) -->
+            <div class="bg-surface-container-lowest rounded p-space-sm border border-outline-variant/20 flex flex-col gap-2 font-body-sm text-body-sm">
+              <div class="flex justify-between border-b border-outline-variant/20 pb-1">
+                <span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm uppercase">Role Archetype:</span>
+                <span class="text-on-surface font-semibold">Shieldmaiden &amp; Master Coordinator</span>
+              </div>
+              <div class="flex justify-between border-b border-outline-variant/20 pb-1">
+                <span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm uppercase">Guild Standing:</span>
+                <span class="text-primary font-semibold">Collaborative Megabuilder</span>
+              </div>
+              <div class="flex justify-between border-b border-outline-variant/20 pb-1">
+                <span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm uppercase">Norse Sign:</span>
+                <span class="text-on-surface">Raven &amp; Astrolabe 🧭</span>
+              </div>
+              <div class="flex justify-between border-b border-outline-variant/20 pb-1">
+                <span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm uppercase">Server Eras:</span>
+                <span class="text-primary font-mono text-xs">7, 8, 9, 10, 11, 12, 14, 17</span>
+              </div>
+              <div class="flex justify-between pt-1">
+                <span class="text-on-surface-variant font-label-mono-sm text-label-mono-sm uppercase">Telemetry Pieces:</span>
+                <span class="text-primary font-label-mono-sm text-label-mono-sm font-bold">99,745 pieces</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- MySpace Style Audio Chant Box -->
+          <div class="bg-surface-container-low rounded border border-primary/30 p-space-md flex flex-col gap-space-sm shadow-md relative overflow-hidden">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-[18px]">audiotrack</span>
+                <span class="font-label-runic text-label-runic text-primary uppercase font-bold">Mead Hall Song</span>
+              </div>
+              <span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">REINA'S SONG</span>
+            </div>
+            <div class="bg-surface-container-lowest p-space-sm rounded border border-outline-variant/30 flex flex-col gap-2">
+              <div class="flex items-center justify-between text-on-surface">
+                <div class="flex flex-col">
+                  <span class="font-title-md text-title-md font-bold text-primary">Wardruna - Voluspá</span>
+                  <span class="font-body-sm text-body-sm text-on-surface-variant">Shieldmaiden Archival Chant</span>
+                </div>
+                <button class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-[0_0_12px_rgba(245,158,11,0.3)] hover:scale-105 transition-transform" id="audio-toggle" type="button">
+                  <span class="material-symbols-outlined text-[20px]">pause</span>
+                </button>
+              </div>
+              <div class="flex items-end justify-between h-8 gap-1 px-1 py-0.5 bg-surface-container/50 rounded">
+                <div class="w-full bg-primary/80 rounded-t h-4 animate-pulse"></div>
+                <div class="w-full bg-primary/90 rounded-t h-7 animate-pulse delay-100"></div>
+                <div class="w-full bg-primary/70 rounded-t h-5 animate-pulse delay-150"></div>
+                <div class="w-full bg-primary/80 rounded-t h-8 animate-pulse delay-75"></div>
+                <div class="w-full bg-primary/60 rounded-t h-3 animate-pulse"></div>
+                <div class="w-full bg-primary/90 rounded-t h-6 animate-pulse delay-200"></div>
+                <div class="w-full bg-primary/75 rounded-t h-7 animate-pulse"></div>
+                <div class="w-full bg-primary/85 rounded-t h-4 animate-pulse delay-100"></div>
+              </div>
+              <div class="flex items-center justify-between font-label-mono-sm text-[10px] text-on-surface-variant">
+                <span>01:52</span>
+                <div class="h-1 flex-1 mx-2 bg-surface-container-high rounded overflow-hidden">
+                  <div class="h-full bg-primary w-[48%]"></div>
+                </div>
+                <span>03:48</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top 8 Guild Collaborators (Classic MySpace Top 8) -->
+          <div class="bg-surface-container-low rounded border border-outline-variant/40 p-space-md flex flex-col gap-space-sm shadow-md">
+            <div class="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+              <div class="flex items-center gap-2">
+                <span class="font-headline-sm text-headline-sm text-on-surface">Reina's Top 8 Shield-Wall</span>
+                <span class="bg-primary-container/20 text-primary px-1.5 py-0.5 rounded font-label-mono-sm text-[11px] font-bold">Top 8</span>
+              </div>
+              <a class="font-label-mono-sm text-label-mono-sm text-primary hover:underline" href="#">View All (38)</a>
+            </div>
+            <p class="font-body-sm text-body-sm text-on-surface-variant">The frequent co-architects sharing piece attribution and vault keystones:</p>
+            
+            <div class="grid grid-cols-4 gap-2 pt-1">
+              <!-- Collaborator 1: Hammerstein -->
+              <div class="flex flex-col items-center text-center group cursor-pointer">
+                <div class="w-14 h-14 rounded bg-surface-container-high border border-outline-variant/40 overflow-hidden flex items-center justify-center group-hover:border-primary transition-all">
+                  <span class="material-symbols-outlined text-primary text-[28px]">hardware</span>
+                </div>
+                <span class="mt-1 font-body-sm text-body-sm font-semibold text-on-surface truncate w-full group-hover:text-primary">Hammerstein</span>
+                <span class="font-label-mono-sm text-[9px] text-on-surface-variant uppercase">Forge Lead</span>
+              </div>
+              <!-- Collaborator 2: Norselokk -->
+              <div class="flex flex-col items-center text-center group cursor-pointer">
+                <div class="w-14 h-14 rounded bg-surface-container-high border border-outline-variant/40 overflow-hidden flex items-center justify-center group-hover:border-primary transition-all">
+                  <span class="material-symbols-outlined text-primary text-[28px]">shield</span>
+                </div>
+                <span class="mt-1 font-body-sm text-body-sm font-semibold text-on-surface truncate w-full group-hover:text-primary">Norselokk</span>
+                <span class="font-label-mono-sm text-[9px] text-on-surface-variant uppercase">Rampart Eng</span>
+              </div>
+              <!-- Collaborator 3: Ibocain -->
+              <div class="flex flex-col items-center text-center group cursor-pointer">
+                <div class="w-14 h-14 rounded bg-surface-container-high border border-outline-variant/40 overflow-hidden flex items-center justify-center group-hover:border-primary transition-all">
+                  <span class="material-symbols-outlined text-primary text-[28px]">fort</span>
+                </div>
+                <span class="mt-1 font-body-sm text-body-sm font-semibold text-on-surface truncate w-full group-hover:text-primary">Ibocain</span>
+                <span class="font-label-mono-sm text-[9px] text-on-surface-variant uppercase">Master Mason</span>
+              </div>
+              <!-- Collaborator 4: Lodbrok -->
+              <div class="flex flex-col items-center text-center group cursor-pointer">
+                <div class="w-14 h-14 rounded bg-surface-container-high border border-outline-variant/40 overflow-hidden flex items-center justify-center group-hover:border-primary transition-all">
+                  <span class="material-symbols-outlined text-primary text-[28px]">explore</span>
+                </div>
+                <span class="mt-1 font-body-sm text-body-sm font-semibold text-on-surface truncate w-full group-hover:text-primary">Lodbrok</span>
+                <span class="font-label-mono-sm text-[9px] text-on-surface-variant uppercase">Explorer GM</span>
+              </div>
+              <!-- Collaborator 5: Greymyst -->
+              <div class="flex flex-col items-center text-center group cursor-pointer">
+                <div class="w-14 h-14 rounded bg-surface-container-high border border-outline-variant/40 overflow-hidden flex items-center justify-center group-hover:border-primary transition-all">
+                  <span class="material-symbols-outlined text-primary text-[28px]">foggy</span>
+                </div>
+                <span class="mt-1 font-body-sm text-body-sm font-semibold text-on-surface truncate w-full group-hover:text-primary">Greymyst</span>
+                <span class="font-label-mono-sm text-[9px] text-on-surface-variant uppercase">Mist Scout</span>
+              </div>
+              <!-- Collaborator 6: Bruce -->
+              <div class="flex flex-col items-center text-center group cursor-pointer">
+                <div class="w-14 h-14 rounded bg-surface-container-high border border-outline-variant/40 overflow-hidden flex items-center justify-center group-hover:border-primary transition-all">
+                  <span class="material-symbols-outlined text-primary text-[28px]">handyman</span>
+                </div>
+                <span class="mt-1 font-body-sm text-body-sm font-semibold text-on-surface truncate w-full group-hover:text-primary">Bruce</span>
+                <span class="font-label-mono-sm text-[9px] text-on-surface-variant uppercase">Carpenter</span>
+              </div>
+              <!-- Collaborator 7: Verd -->
+              <div class="flex flex-col items-center text-center group cursor-pointer">
+                <div class="w-14 h-14 rounded bg-surface-container-high border border-outline-variant/40 overflow-hidden flex items-center justify-center group-hover:border-primary transition-all">
+                  <span class="material-symbols-outlined text-primary text-[28px]">landscape</span>
+                </div>
+                <span class="mt-1 font-body-sm text-body-sm font-semibold text-on-surface truncate w-full group-hover:text-primary">Verd</span>
+                <span class="font-label-mono-sm text-[9px] text-on-surface-variant uppercase">Biome Lead</span>
+              </div>
+              <!-- Collaborator 8: Keiper -->
+              <div class="flex flex-col items-center text-center group cursor-pointer">
+                <div class="w-14 h-14 rounded bg-surface-container-high border border-outline-variant/40 overflow-hidden flex items-center justify-center group-hover:border-primary transition-all">
+                  <span class="material-symbols-outlined text-primary text-[28px]">shield_person</span>
+                </div>
+                <span class="mt-1 font-body-sm text-body-sm font-semibold text-on-surface truncate w-full group-hover:text-primary">Keiper</span>
+                <span class="font-label-mono-sm text-[9px] text-on-surface-variant uppercase">Duke Rep</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Local Participation / Device Payload -->
+          <div class="bg-surface-container-lowest rounded border border-outline-variant/30 p-space-md flex flex-col gap-space-xs">
+            <div class="flex items-center gap-2 text-primary">
+              <span class="material-symbols-outlined text-[18px]">terminal</span>
+              <span class="font-label-mono-sm text-label-mono-sm uppercase font-bold">Local Device Ledger</span>
+            </div>
+            <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              0 claimed builds · 0 photo requests · 0 already submitted on this device. Claims and endorsements stay in this browser session.
+            </p>
+            <div class="mt-2 flex items-center gap-2">
+              <input class="bg-surface-container-high text-primary font-label-mono-sm text-[11px] px-2 py-1.5 rounded flex-1 border border-outline-variant/20 focus:outline-none select-all" readonly="" type="text" value="COMFY-REINA-BORG::PARTICIPATION-HASH"/>
+              <button class="bg-surface-container hover:bg-surface-bright text-on-surface px-space-sm py-1.5 rounded font-label-mono-sm text-label-mono-sm border border-outline-variant/30 transition-colors" type="button">
+                Copy
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ================= RIGHT COLUMN: BLURBS, SIGNATURE JOINT CREATIONS, ERA TELEMETRY ACCORDION ================= -->
+        <div class="xl:col-span-8 flex flex-col gap-space-lg">
+
+          <!-- Classic About Me Blurbs / Mead Hall Notes -->
+          <div class="bg-surface-container-low rounded border border-outline-variant/40 p-space-lg flex flex-col gap-space-md shadow-md">
+            <div class="border-b border-outline-variant/30 pb-space-xs flex items-center justify-between">
+              <h2 class="font-headline-md text-headline-md text-primary tracking-tight">Reina Borg's Blurbs &amp; Archival Lore</h2>
+              <span class="font-label-runic text-label-runic text-on-surface-variant uppercase">COLLABORATIVE ARCHIVE</span>
+            </div>
+            <div class="flex flex-col gap-space-sm">
+              <div class="bg-surface-container-high/40 p-space-sm rounded border border-outline-variant/20">
+                <span class="font-title-md text-title-md text-primary block mb-1 font-bold">About Me:</span>
+                <p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                  Cross-functional master architect and shield-wall coordinator across 8 server eras. Specializing in monumental shared builds, communal harbor breakwaters, and multi-guild settlement infrastructures. Where others build solitary towers, I bridge clan territories—connecting stone ramparts with timber rooflines alongside my kin Hammerstein, Norselokk, Bruce, and Ibocain.
+                </p>
+              </div>
+              <div class="bg-surface-container-high/40 p-space-sm rounded border border-outline-variant/20">
+                <span class="font-title-md text-title-md text-secondary block mb-1 font-bold">Who I'd Like to Meet:</span>
+                <p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                  Artisans who cherish multi-builder attribution! If you've laid even a single beam or hearth stone on our collaborative works, inscribe the wall or claim your build payload below. Also looking for scout photographers to document our Era 10 &amp; 11 mountain complexes.
+                </p>
+              </div>
+            </div>
+
+            <!-- Quick Metrics Bar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-space-sm pt-2">
+              <div class="bg-surface-container-lowest p-space-sm rounded border border-outline-variant/20 text-center">
+                <span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant block uppercase">Total Albums</span>
+                <span class="font-headline-sm text-headline-sm text-primary font-bold">216</span>
+              </div>
+              <div class="bg-surface-container-lowest p-space-sm rounded border border-outline-variant/20 text-center">
+                <span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant block uppercase">Piece Count</span>
+                <span class="font-headline-sm text-headline-sm text-primary font-bold">99,745</span>
+              </div>
+              <div class="bg-surface-container-lowest p-space-sm rounded border border-outline-variant/20 text-center">
+                <span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant block uppercase">Photographed</span>
+                <span class="font-headline-sm text-headline-sm text-primary font-bold">24 of 216</span>
+              </div>
+              <div class="bg-surface-container-lowest p-space-sm rounded border border-outline-variant/20 text-center">
+                <span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant block uppercase">Active Eras</span>
+                <span class="font-headline-sm text-headline-sm text-primary font-bold">8 Eras</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Signature Collaborative Creations Showcase -->
+          <div class="bg-surface-container-low rounded border border-outline-variant/40 p-space-lg flex flex-col gap-space-md shadow-md">
+            <div class="flex items-center justify-between border-b border-outline-variant/30 pb-space-xs">
+              <div class="flex items-center gap-space-xs">
+                <span class="material-symbols-outlined text-primary text-[22px]">hub</span>
+                <h2 class="font-headline-md text-headline-md text-on-surface">Signature Multi-Guild Feats</h2>
+              </div>
+              <span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">ERA XIV &amp; XII HIGHLIGHTS</span>
+            </div>
+
+            <!-- Joint Builds Visual Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+
+              <!-- Joint Build 1 -->
+              <div class="group bg-surface-container rounded border border-outline-variant/30 hover:border-primary/50 transition-all overflow-hidden flex flex-col shadow-lg">
+                <div class="relative h-48 w-full overflow-hidden bg-surface-container-lowest">
+                  <div class="bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-500" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAHdYmGGXxn9XK2Rwj9_4NcGx3iE67HT75EhEBkhWbnWaRgiMQBuH4N5X-S2Rm8aiaQvG88SrVRYB6vKcwrlRuXn-Nn_K2lq4m7uxdD5fvuraP5BxaBkz1KtLS9cuq8GLGuv_XSxWKUj_cGIMsPzHU0CpYri9MAHqK-MJ6eWGGJu1y2FyU18IyaRz0PvuhiOXiUA8DHT1ljqlMgG8EgpnXjYPhRa2jyaD_PX7dMOykki4nqMc-Irs9h')"></div>
+                  <div class="absolute inset-0 bg-gradient-to-t from-surface-container via-transparent to-black/30"></div>
+                  <div class="absolute top-3 left-3 bg-surface-container-lowest/80 backdrop-blur-sm px-2 py-0.5 rounded font-label-mono-sm text-[11px] text-primary border border-primary/20">
+                    ERA XIV • #06a9eca2
+                  </div>
+                  <div class="absolute bottom-2 left-3 right-3 flex items-center justify-between">
+                    <span class="font-headline-sm text-headline-sm text-white font-bold drop-shadow">The Raven Bastion</span>
+                    <span class="font-label-mono-sm text-[11px] text-primary font-bold bg-surface-container-lowest/90 px-2 py-0.5 rounded">1,153 pcs</span>
+                  </div>
+                </div>
+                <div class="p-space-sm flex flex-col gap-2 flex-1 justify-between">
+                  <div class="flex flex-col gap-1">
+                    <div class="flex items-center justify-between font-label-mono-sm text-label-mono-sm text-on-surface-variant">
+                      <span>Attribution:</span>
+                      <span class="text-primary font-bold">Reina Borg (74.5%) · Hammerstein (24.7%)</span>
+                    </div>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                      Twin-level stronghold erected on a coastal crag. Timber rafters laid by Reina Borg with defensive iron sconces by Hammerstein.
+                    </p>
+                  </div>
+                  <div class="flex items-center gap-space-xs pt-2 border-t border-outline-variant/20">
+                    <button class="flex-1 py-1.5 bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-mono-sm text-[11px] rounded transition-colors text-center" type="button">
+                      World View
+                    </button>
+                    <button class="flex-1 py-1.5 bg-primary-container/20 hover:bg-primary text-primary hover:text-on-primary font-label-mono-sm text-[11px] rounded transition-colors text-center font-bold" type="button">
+                      I Built This
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Joint Build 2 -->
+              <div class="group bg-surface-container rounded border border-outline-variant/30 hover:border-primary/50 transition-all overflow-hidden flex flex-col shadow-lg">
+                <div class="relative h-48 w-full overflow-hidden bg-surface-container-lowest">
+                  <div class="bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-500" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBVI1GzPucWNbjun9G092Btz8fHCK_9eeq7fI2iuX1i6q34zoLmXN1K3vqKbMLjCdYL2ipVwbIxoxuPNUDP6r33SWwLHcbjhZvQxh6Cx1A27AugG0tnHuF4vsy_PXFX3qGe4VEzXvF09ucRDIos0pWWuWpOFQEZyXClSMUbB3RKlIHttcioNseu2yKfkmhz2xypkRQmrJbqYtstqFHmqthJ907HFI7DeJS2xJSliKOv2C9hpuf9k0Wu')"></div>
+                  <div class="absolute inset-0 bg-gradient-to-t from-surface-container via-transparent to-black/30"></div>
+                  <div class="absolute top-3 left-3 bg-surface-container-lowest/80 backdrop-blur-sm px-2 py-0.5 rounded font-label-mono-sm text-[11px] text-primary border border-primary/20">
+                    ERA XII • #9f5b6817
+                  </div>
+                  <div class="absolute bottom-2 left-3 right-3 flex items-center justify-between">
+                    <span class="font-headline-sm text-headline-sm text-white font-bold drop-shadow">Archival Meadow Spire</span>
+                    <span class="font-label-mono-sm text-[11px] text-primary font-bold bg-surface-container-lowest/90 px-2 py-0.5 rounded">4,400 pcs</span>
+                  </div>
+                </div>
+                <div class="p-space-sm flex flex-col gap-2 flex-1 justify-between">
+                  <div class="flex flex-col gap-1">
+                    <div class="flex items-center justify-between font-label-mono-sm text-label-mono-sm text-on-surface-variant">
+                      <span>Attribution:</span>
+                      <span class="text-primary font-bold">Reina Borg (24.0%) · Hammerstein (12.8%) · Builder 9258</span>
+                    </div>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                      Sprawling community gathering hall featuring cross-cantilevered darkwood gables and collaborative rune-engraved hearths.
+                    </p>
+                  </div>
+                  <div class="flex items-center gap-space-xs pt-2 border-t border-outline-variant/20">
+                    <button class="flex-1 py-1.5 bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-mono-sm text-[11px] rounded transition-colors text-center" type="button">
+                      World View
+                    </button>
+                    <button class="flex-1 py-1.5 bg-primary-container/20 hover:bg-primary text-primary hover:text-on-primary font-label-mono-sm text-[11px] rounded transition-colors text-center font-bold" type="button">
+                      I Built This
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Era Build Ledger Telemetry -->
+          <div class="bg-surface-container-low rounded border border-outline-variant/40 p-space-lg flex flex-col gap-space-md shadow-md">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-outline-variant/30 pb-space-xs">
+              <div>
+                <h2 class="font-headline-md text-headline-md text-on-surface">Era Ledger Telemetry</h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">216 build albums recorded across 8 wiped epochs</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="font-label-mono-sm text-label-mono-sm text-primary font-semibold">24 Photographed</span>
+              </div>
+            </div>
+
+            <!-- Era Selector Chips -->
+            <div class="flex flex-wrap items-center gap-1.5 font-label-mono-sm text-label-mono-sm">
+              <button class="px-2.5 py-1 rounded bg-primary text-on-primary font-bold border border-primary shadow-sm" type="button">
+                Era 17 (1)
+              </button>
+              <button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant/20 transition-colors" type="button">
+                Era 14 (29)
+              </button>
+              <button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant/20 transition-colors" type="button">
+                Era 12 (29)
+              </button>
+              <button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant/20 transition-colors" type="button">
+                Era 11 (35)
+              </button>
+              <button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant/20 transition-colors" type="button">
+                Era 10 (34)
+              </button>
+              <button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant/20 transition-colors" type="button">
+                Era 9 (34)
+              </button>
+              <button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant/20 transition-colors" type="button">
+                Era 8 (26)
+              </button>
+              <button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant/20 transition-colors" type="button">
+                Era 7 (28)
+              </button>
+            </div>
+
+            <!-- Archival Table Ledger -->
+            <div class="overflow-x-auto rounded border border-outline-variant/20 bg-surface-container-lowest">
+              <table class="w-full text-left font-body-sm text-body-sm">
+                <thead class="bg-surface-container text-on-surface-variant font-label-mono-sm text-label-mono-sm border-b border-outline-variant/30">
+                  <tr>
+                    <th class="py-2.5 px-3">Build ID / Album</th>
+                    <th class="py-2.5 px-3">Pieces</th>
+                    <th class="py-2.5 px-3">Collaborative Attribution Breakdown</th>
+                    <th class="py-2.5 px-3">Photo Status</th>
+                    <th class="py-2.5 px-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant/10 font-label-mono-sm text-label-mono-sm">
+                  <!-- Row 1: Era 17 build 646 -->
+                  <tr class="hover:bg-surface-container/30 transition-colors">
+                    <td class="py-2.5 px-3 font-semibold text-on-surface flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-primary text-[16px]">domain</span>
+                      Build · 646 (Era 17)
+                    </td>
+                    <td class="py-2.5 px-3 text-primary">646</td>
+                    <td class="py-2.5 px-3 text-on-surface-variant">
+                      <span class="text-primary font-bold">Reina Borg 100.0%</span>
+                    </td>
+                    <td class="py-2.5 px-3 text-emerald-400 font-semibold">1 Photographed</td>
+                    <td class="py-2.5 px-3 text-right">
+                      <button class="text-primary hover:underline font-semibold" type="button">Claim Build</button>
+                    </td>
+                  </tr>
+
+                  <!-- Row 2: Era 14 Build 06a9eca2 -->
+                  <tr class="hover:bg-surface-container/30 transition-colors">
+                    <td class="py-2.5 px-3 font-semibold text-on-surface flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-primary text-[16px]">fort</span>
+                      Build 06a9eca2 (Era 14)
+                    </td>
+                    <td class="py-2.5 px-3 text-primary">1,153</td>
+                    <td class="py-2.5 px-3 text-on-surface-variant">
+                      <span class="text-primary font-bold">Reina Borg 74.5%</span>, Hammerstein 24.7%
+                    </td>
+                    <td class="py-2.5 px-3 text-emerald-400 font-semibold">Photographed</td>
+                    <td class="py-2.5 px-3 text-right">
+                      <button class="text-primary hover:underline font-semibold" type="button">Inspect</button>
+                    </td>
+                  </tr>
+
+                  <!-- Row 3: Era 14 Build fa548b72 -->
+                  <tr class="hover:bg-surface-container/30 transition-colors">
+                    <td class="py-2.5 px-3 font-semibold text-on-surface flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-primary text-[16px]">account_balance</span>
+                      Build fa548b72 (Era 14)
+                    </td>
+                    <td class="py-2.5 px-3 text-primary">1,446</td>
+                    <td class="py-2.5 px-3 text-on-surface-variant">
+                      <span class="text-primary font-bold">Reina Borg 72.5%</span>, Hammerstein 27.4%
+                    </td>
+                    <td class="py-2.5 px-3 text-on-surface-variant">Pending Camera</td>
+                    <td class="py-2.5 px-3 text-right">
+                      <button class="text-primary hover:underline font-semibold" type="button">Request Photo</button>
+                    </td>
+                  </tr>
+
+                  <!-- Row 4: Era 12 Build ff6e831d -->
+                  <tr class="hover:bg-surface-container/30 transition-colors">
+                    <td class="py-2.5 px-3 font-semibold text-on-surface flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-primary text-[16px]">home_work</span>
+                      Build ff6e831d (Era 12)
+                    </td>
+                    <td class="py-2.5 px-3 text-primary">2,985</td>
+                    <td class="py-2.5 px-3 text-on-surface-variant">
+                      <span class="text-primary font-bold">Reina Borg 98.2%</span>, Bruce 0.5%
+                    </td>
+                    <td class="py-2.5 px-3 text-on-surface-variant">Pending Camera</td>
+                    <td class="py-2.5 px-3 text-right">
+                      <button class="text-primary hover:underline font-semibold" type="button">Request Photo</button>
+                    </td>
+                  </tr>
+
+                  <!-- Row 5: Era 11 Build 40aaf4a9 (Joint with Ibocain & Bruce) -->
+                  <tr class="hover:bg-surface-container/30 transition-colors">
+                    <td class="py-2.5 px-3 font-semibold text-on-surface flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-primary text-[16px]">castle</span>
+                      Build 40aaf4a9 (Era 11)
+                    </td>
+                    <td class="py-2.5 px-3 text-primary">5,982</td>
+                    <td class="py-2.5 px-3 text-on-surface-variant">
+                      Itzlegitschenk 61.7%, Ibocain 8.0%, <span class="text-primary font-bold">Reina Borg 0.5%</span>
+                    </td>
+                    <td class="py-2.5 px-3 text-on-surface-variant">Historical Tag</td>
+                    <td class="py-2.5 px-3 text-right">
+                      <button class="text-primary hover:underline font-semibold" type="button">Inspect</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Runestone Inscriptions Wall (MySpace Comments Wall) -->
+          <div class="bg-surface-container-low rounded border border-outline-variant/40 p-space-lg flex flex-col gap-space-md shadow-md">
+            <div class="flex items-center justify-between border-b border-outline-variant/30 pb-space-xs">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-[22px]">history_edu</span>
+                <h2 class="font-headline-md text-headline-md text-on-surface">Reina's Inscription Stele</h2>
+              </div>
+              <span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">Displaying 3 of 1,482 Endorsements</span>
+            </div>
+
+            <!-- Comment Input Box -->
+            <div class="bg-surface-container-lowest p-space-sm rounded border border-outline-variant/30 flex flex-col gap-2">
+              <label class="font-label-mono-sm text-label-mono-sm text-primary uppercase font-bold flex items-center gap-1" for="rune-input">
+                <span>Inscribe a Message for Reina Borg:</span>
+              </label>
+              <textarea class="w-full bg-surface-container text-on-surface p-2 rounded text-body-sm font-body-sm border border-outline-variant/30 focus:border-primary focus:outline-none transition-colors placeholder:text-on-surface-variant/50 resize-none" id="rune-input" placeholder="Leave a runestone mark on Reina Borg's guild profile..." rows="2"></textarea>
+              <div class="flex justify-between items-center">
+                <span class="font-label-mono-sm text-[10px] text-on-surface-variant">HTML rune tags enabled [b, i, rune]</span>
+                <button class="px-space-md py-1 bg-primary hover:bg-primary-container text-on-primary font-label-mono-sm text-label-mono-sm font-bold rounded transition-colors shadow-sm" type="button">
+                  Post Inscription
+                </button>
+              </div>
+            </div>
+
+            <!-- Inscription Comments Feed -->
+            <div class="flex flex-col gap-space-sm pt-1">
+              <!-- Comment 1: Hammerstein -->
+              <div class="bg-surface-container p-space-sm rounded border border-outline-variant/20 flex flex-col md:flex-row gap-space-sm items-start">
+                <div class="flex flex-col items-center shrink-0 w-24 text-center">
+                  <div class="w-12 h-12 rounded bg-surface-container-highest border border-primary/40 flex items-center justify-center text-primary mb-1">
+                    <span class="material-symbols-outlined text-[24px]">hardware</span>
+                  </div>
+                  <span class="font-body-sm text-body-sm font-bold text-primary truncate w-full">Hammerstein</span>
+                  <span class="font-label-mono-sm text-[9px] text-on-surface-variant">Top 8 Clan</span>
+                </div>
+                <div class="flex-1 flex flex-col gap-1">
+                  <div class="flex items-center justify-between text-on-surface-variant font-label-mono-sm text-[10px]">
+                    <span>Today at 2:15 PM</span>
+                    <span class="text-primary">ᚱᚢᚾᛖ #1482</span>
+                  </div>
+                  <p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                    Reina! Build 06a9eca2 passed structural inspection with zero load cracks. The joint iron sconces hold the ridge perfectly against sea squalls. Thanks for keeping me at #1 on your Top 8! 🛡️⚡
+                  </p>
+                  <div class="flex items-center gap-2 pt-1 font-label-mono-sm text-[11px] text-primary">
+                    <button class="hover:underline" type="button">Reply</button>
+                    <span>•</span>
+                    <button class="hover:underline" type="button">Inscribe Back</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Comment 2: Norselokk -->
+              <div class="bg-surface-container p-space-sm rounded border border-outline-variant/20 flex flex-col md:flex-row gap-space-sm items-start">
+                <div class="flex flex-col items-center shrink-0 w-24 text-center">
+                  <div class="w-12 h-12 rounded bg-surface-container-highest border border-primary/40 flex items-center justify-center text-primary mb-1">
+                    <span class="material-symbols-outlined text-[24px]">shield</span>
+                  </div>
+                  <span class="font-body-sm text-body-sm font-bold text-primary truncate w-full">Norselokk</span>
+                  <span class="font-label-mono-sm text-[9px] text-on-surface-variant">Era 14 Shield</span>
+                </div>
+                <div class="flex-1 flex flex-col gap-1">
+                  <div class="flex items-center justify-between text-on-surface-variant font-label-mono-sm text-[10px]">
+                    <span>Yesterday at 7:34 PM</span>
+                    <span class="text-primary">ᚱᚢᚾᛖ #1481</span>
+                  </div>
+                  <p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                    Logged 1,680 pieces on e79717ae together! When you get a chance, submit the photograph ticket to the Discord webhook nexus so we get full high-res renders of the upper battlement.
+                  </p>
+                  <div class="flex items-center gap-2 pt-1 font-label-mono-sm text-[11px] text-primary">
+                    <button class="hover:underline" type="button">Reply</button>
+                    <span>•</span>
+                    <button class="hover:underline" type="button">Inscribe Back</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Comment 3: Ibocain -->
+              <div class="bg-surface-container p-space-sm rounded border border-outline-variant/20 flex flex-col md:flex-row gap-space-sm items-start">
+                <div class="flex flex-col items-center shrink-0 w-24 text-center">
+                  <div class="w-12 h-12 rounded bg-surface-container-highest border border-primary/40 flex items-center justify-center text-primary mb-1">
+                    <span class="material-symbols-outlined text-[24px]">fort</span>
+                  </div>
+                  <span class="font-body-sm text-body-sm font-bold text-primary truncate w-full">Ibocain</span>
+                  <span class="font-label-mono-sm text-[9px] text-on-surface-variant">Master Mason</span>
+                </div>
+                <div class="flex-1 flex flex-col gap-1">
+                  <div class="flex items-center justify-between text-on-surface-variant font-label-mono-sm text-[10px]">
+                    <span>2 days ago</span>
+                    <span class="text-primary">ᚱᚢᚾᛖ #1480</span>
+                  </div>
+                  <p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                    Remember that Era 11 joint mega-spire (Build 40aaf4a9)? 5,982 pieces with the whole crew. Glad to see your profile up in the Comfy Archive! Skål to the shieldmaiden who coordinates us all! 🍻
+                  </p>
+                  <div class="flex items-center gap-2 pt-1 font-label-mono-sm text-[11px] text-primary">
+                    <button class="hover:underline" type="button">Reply</button>
+                    <span>•</span>
+                    <button class="hover:underline" type="button">Inscribe Back</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- View All Inscriptions -->
+            <div class="text-center pt-2">
+              <button class="font-label-mono-sm text-label-mono-sm text-primary hover:underline flex items-center justify-center gap-1 mx-auto" type="button">
+                <span>View All Inscriptions &amp; Runestone Marks (1,482)</span>
+                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Persistent Archival Footer -->
+  <footer class="w-full bg-surface-container-lowest mt-space-4xl border-t border-outline-variant/20">
+    <div class="w-full px-margin-desktop py-space-3xl flex flex-col md:flex-row items-center justify-between gap-space-lg">
+      <div class="flex flex-col items-center md:items-start gap-space-2xs">
+        <span class="font-label-runic text-label-runic text-primary uppercase font-bold">Valheim Architectural Ledger</span>
+        <p class="font-body-sm text-body-sm text-on-surface-variant">Chronicles of longhouses, monolithic stone steles, and collaborative guild kingdoms.</p>
+      </div>
+      <div class="flex items-center gap-space-md">
+        <span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">© The Comfy Community Archive. Preserved for Eternity.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      const audioBtn = document.getElementById('audio-toggle');
+      if (audioBtn) {
+        let isPlaying = true;
+        audioBtn.addEventListener('click', function() {
+          isPlaying = !isPlaying;
+          const icon = audioBtn.querySelector('.material-symbols-outlined');
+          if (icon) {
+            icon.textContent = isPlaying ? 'pause' : 'play_arrow';
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,346 @@
+/**
+ * The Comfy Community — Valheim Chronicler Archive
+ * Complete TypeScript SDK & API Client Layer
+ * 
+ * Works seamlessly across Next.js App Router (Client Components & Route Handlers),
+ * Node.js, and Browser (IndexedDB / LocalStorage Zero-Trust sync).
+ */
+
+// ============================================================================
+// 1. Domain Types & Enums
+// ============================================================================
+
+export type BuilderStanding =
+  | 'Megabuilder'
+  | 'Major Architect'
+  | 'Homestead Artisan'
+  | 'Coastal Ranger'
+  | 'Expedition Scout'
+  | 'Runic Chronicler';
+
+export type IntentArchetype = 'Mason' | 'Architect' | 'Chronicler' | 'Scout' | 'Mechanist';
+
+export type PhotoStyle =
+  | 'wide_overview'
+  | 'interior_signature'
+  | 'height_variation'
+  | 'twilight_tone'
+  | 'entry_detail'
+  | 'aerial_orbit';
+
+export type PhotoStatus = 'PHOTOGRAPHED' | 'PENDING_CAMERA' | 'UNPHOTOGRAPHED';
+
+export type ClaimType =
+  | 'SOLE_CREATOR'
+  | 'CO_ARCHITECT'
+  | 'FOUNDATION_MASON'
+  | 'TIMBER_CARPENTER'
+  | 'DECORATIVE_ARTISAN';
+
+export type ContactPreference = 'discord_dm' | 'forum_thread' | 'community_mead_hall' | 'anonymous';
+
+export interface ContributorShare {
+  builderId?: string | null;
+  name: string;
+  percentage: number;
+}
+
+export interface SpatialCoordinates {
+  x: number;
+  y: number;
+  z: number;
+}
+
+export interface BuilderMetrics {
+  totalAlbums: number;
+  totalPieces: number;
+  photographedAlbums: number;
+  activeEras: number[];
+  serverRank?: number | null;
+  percentile?: number | null;
+}
+
+export interface BuilderFlair {
+  statusMood: string;
+  beaconState: string;
+  anthemTitle: string;
+  anthemAudioUrl: string;
+  norseSign?: string | null;
+  preferredBiomes: string[];
+  aboutMe: string;
+  whoIdLikeToMeet: string;
+}
+
+export interface KinshipCollaborator {
+  collaboratorId: string;
+  collaboratorName: string;
+  roleTag: string;
+  sharedBuildsCount: number;
+  sharedPiecesCount: number;
+  kinshipScore: number;
+  keySharedBuildId: string;
+}
+
+export interface SignatureMonumentExhibit {
+  buildId: string;
+  title: string;
+  era: number;
+  pieceCount: number;
+  builderAttributionPercent: number;
+  coArchitects: ContributorShare[];
+  imageUrl?: string | null;
+  isClaimable: boolean;
+}
+
+export interface EraBuildRecord {
+  buildId: string;
+  era: number;
+  totalPieces: number;
+  builderShare: number;
+  photoStatus: PhotoStatus;
+  photoCount: number;
+  contributors: ContributorShare[];
+  worldCoordinates?: SpatialCoordinates | null;
+}
+
+export interface RunicInscription {
+  inscriptionId: string;
+  authorName: string;
+  authorId?: string | null;
+  authorStanding?: string | null;
+  eraContext?: string | null;
+  message: string;
+  createdAt: string;
+}
+
+export interface GatewayStatsView {
+  erasCount: number;
+  erasActive: number[];
+  totalBuilders: number;
+  totalCaptures: number;
+  totalPieces: number;
+  currentPhotographedEras: string;
+  pendingPhotographyEras: string;
+}
+
+export interface ArchetypeDescriptor {
+  archetype: IntentArchetype;
+  title: string;
+  tagline: string;
+  description: string;
+  exemplarBuilders: string[];
+  suggestedEras: number[];
+}
+
+export interface BuilderDirectoryItem {
+  builderId: string;
+  name: string;
+  aliases: string[];
+  standing: BuilderStanding;
+  serverRank?: number | null;
+  totalAlbums: number;
+  totalPieces: number;
+  photographedAlbums: number;
+  activeEras: number[];
+  signatureCreations: string[];
+}
+
+export interface BuilderDirectoryParams {
+  q?: string;
+  era?: number;
+  withAlbums?: boolean;
+  sort?: 'pieces_desc' | 'albums_desc' | 'name_asc' | 'photos_desc';
+  cursor?: string;
+  limit?: number;
+}
+
+export interface BuilderDirectoryResponse {
+  items: BuilderDirectoryItem[];
+  totalCount: number;
+  nextCursor?: string | null;
+}
+
+export interface BuilderProfileView {
+  builderId: string;
+  primaryName: string;
+  aliases: string[];
+  standing: BuilderStanding;
+  avatarUrl: string;
+  metrics: BuilderMetrics;
+  flair: BuilderFlair;
+  shieldWallTop8: KinshipCollaborator[];
+  signatureMonuments: SignatureMonumentExhibit[];
+  eraTelemetry: Record<number, EraBuildRecord[]>;
+  runicWall: RunicInscription[];
+}
+
+// ============================================================================
+// 2. Command Requests & Responses
+// ============================================================================
+
+export interface ClaimBuildRequest {
+  buildId: string;
+  era: number;
+  claimantHandle: string;
+  claimType?: ClaimType;
+  claimedPercentage: number;
+  notes?: string;
+  clientSignature: string;
+}
+
+export interface PhotoDispatchRequest {
+  buildId: string;
+  era: number;
+  builderAttribution: string;
+  styles: PhotoStyle[];
+  instructions: string;
+  isUrgent?: boolean;
+  contactPreference?: ContactPreference;
+  volunteerHandle: string;
+  clientPayloadHash?: string;
+}
+
+export interface InscribeSteleRequest {
+  targetBuilderId: string;
+  authorName: string;
+  authorId?: string;
+  message: string;
+}
+
+export interface CustomizeProfileRequest {
+  builderId: string;
+  statusMood?: string;
+  beaconState?: string;
+  anthemTitle?: string;
+  anthemAudioUrl?: string;
+  aboutMe?: string;
+  whoIdLikeToMeet?: string;
+  pinnedMonumentIds?: string[];
+}
+
+export interface DiscordTicketResponse {
+  ticketId: string;
+  status: 'QUEUED_FIFO' | 'PROCESSING' | 'ASSIGNED';
+  discordThreadUrl?: string;
+  receivedAt: string;
+}
+
+export interface ClientPayloadReceipt {
+  payloadJwt: string;
+  sha256Hash: string;
+  generatedAt: string;
+}
+
+// ============================================================================
+// 3. Valheim Archive SDK Client
+// ============================================================================
+
+export interface ValheimArchiveClientConfig {
+  baseUrl?: string;
+  headers?: Record<string, string>;
+  fetchFn?: typeof fetch;
+}
+
+export class ValheimArchiveClient {
+  private baseUrl: string;
+  private headers: Record<string, string>;
+  private fetchFn: typeof fetch;
+
+  constructor(config: ValheimArchiveClientConfig = {}) {
+    this.baseUrl = (config.baseUrl || '').replace(/\/+$/, '');
+    this.headers = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      ...(config.headers || {}),
+    };
+    this.fetchFn = config.fetchFn || (typeof window !== 'undefined' ? window.fetch.bind(window) : fetch);
+  }
+
+  private async request<T>(path: string, options: RequestInit = {}): Promise<T> {
+    const url = `${this.baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
+    const res = await this.fetchFn(url, {
+      ...options,
+      headers: {
+        ...this.headers,
+        ...(options.headers || {}),
+      },
+    });
+
+    if (!res.ok) {
+      let errBody: unknown;
+      try {
+        errBody = await res.json();
+      } catch {
+        errBody = await res.text();
+      }
+      throw new Error(`ValheimArchiveClient Error [${res.status} ${res.statusText}] at ${path}: ${JSON.stringify(errBody)}`);
+    }
+
+    return (await res.json()) as T;
+  }
+
+  // --- Gateway & Archetypes ---
+  public async getGatewayStats(): Promise<GatewayStatsView> {
+    return this.request<GatewayStatsView>('/api/gateway/stats');
+  }
+
+  public async getArchetypes(): Promise<ArchetypeDescriptor[]> {
+    return this.request<ArchetypeDescriptor[]>('/api/gateway/archetypes');
+  }
+
+  // --- Builders Directory ---
+  public async listBuilders(params: BuilderDirectoryParams = {}): Promise<BuilderDirectoryResponse> {
+    const search = new URLSearchParams();
+    if (params.q) search.set('q', params.q);
+    if (params.era !== undefined) search.set('era', String(params.era));
+    if (params.withAlbums !== undefined) search.set('with_albums', String(params.withAlbums));
+    if (params.sort) search.set('sort', params.sort);
+    if (params.cursor) search.set('cursor', params.cursor);
+    if (params.limit) search.set('limit', String(params.limit));
+
+    const qs = search.toString();
+    return this.request<BuilderDirectoryResponse>(`/api/creators${qs ? `?${qs}` : ''}`);
+  }
+
+  // --- Viking "MySpace" Profiles ---
+  public async getBuilderProfile(builderId: string): Promise<BuilderProfileView> {
+    return this.request<BuilderProfileView>(`/api/creators/${encodeURIComponent(builderId)}`);
+  }
+
+  public async getBuilderEraLedger(builderId: string, era?: number): Promise<EraBuildRecord[]> {
+    const qs = era !== undefined ? `?era=${era}` : '';
+    return this.request<EraBuildRecord[]>(`/api/creators/${encodeURIComponent(builderId)}/ledger${qs}`);
+  }
+
+  // --- Commands & Dispatch ---
+  public async dispatchDiscordPhotoTicket(request: PhotoDispatchRequest): Promise<DiscordTicketResponse> {
+    return this.request<DiscordTicketResponse>('/api/dispatch/discord-ticket', {
+      method: 'POST',
+      body: JSON.stringify(request),
+    });
+  }
+
+  public async generateClientClaimPayload(claim: ClaimBuildRequest): Promise<ClientPayloadReceipt> {
+    return this.request<ClientPayloadReceipt>('/api/claims/generate-payload', {
+      method: 'POST',
+      body: JSON.stringify(claim),
+    });
+  }
+
+  public async inscribeStele(command: InscribeSteleRequest): Promise<RunicInscription> {
+    return this.request<RunicInscription>('/api/v1/commands/stele/inscribe', {
+      method: 'POST',
+      body: JSON.stringify(command),
+    });
+  }
+
+  public async customizeProfile(command: CustomizeProfileRequest): Promise<{ success: boolean; builderId: string }> {
+    return this.request<{ success: boolean; builderId: string }>('/api/v1/commands/profile/customize', {
+      method: 'POST',
+      body: JSON.stringify(command),
+    });
+  }
+}
+
+// Export singleton instance for direct Next.js / frontend use
+export const valheimArchive = new ValheimArchiveClient();

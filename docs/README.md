@@ -17,6 +17,10 @@ Start with:
   [`retrospectives/2026-08-09-quest-lab-expansion-retrospective.md`](retrospectives/2026-08-09-quest-lab-expansion-retrospective.md),
   recording the r24 event archive, parser/Sheets handoff, Gallery v2 rebuild, live evidence,
   visual acceptance, and remaining optional evidence gaps.
+- **Quest ↔ Steward spatial round-trip retrospective:**
+  [`retrospectives/2026-09-02-comfy-quest-steward-spatial-round-trip-retrospective.md`](retrospectives/2026-09-02-comfy-quest-steward-spatial-round-trip-retrospective.md),
+  recording the cross-runtime seams found during hardening, the landed evidence, package
+  provenance race, and the still-unverified live operator lap.
 - **Quest Studio → Runtime plan:**
   [`quest-studio-runtime-plan.md`](quest-studio-runtime-plan.md), with the product boundary,
   shared contract, milestones, diagrams, current implementation state, and native host/peer evidence.
@@ -39,6 +43,12 @@ governance/product/posture decisions live in [`decisions/`](decisions/README.md)
 Runnable product code and operator commands belong in the owning sovereign
 repository. Raw historical evidence and generated discovery data may remain here
 when Baseline is their declared archive or projection owner.
+
+Committed design exports (canvas mocks, token sheets) that a sovereign repository's
+implementation cites live under [`design/`](design/), one dated directory per export —
+currently [`design/valheim-chronicles-stitch-2026-09/`](design/valheim-chronicles-stitch-2026-09/README.md),
+the record behind the public Valheim Chronicles archive. Screens stay as text (HTML) and
+tokens; rendered PNGs are kept outside git.
 
 Technical netcode decisions stay with their system as ADRs under
 [`lumberjacks-platform/fieldlab/docs/adr/`](https://github.com/djcdevelopment/lumberjacks-platform/tree/main/fieldlab/docs/adr).
