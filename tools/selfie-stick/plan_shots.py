@@ -329,19 +329,29 @@ def elevation_for(cluster, default_deg):
 
 
 def camera_for(cluster, azimuth_deg, elevation_deg, margin, max_distance, clearance,
-               aim_height=0.5, points=None):
-    """Where to stand, and where to look, to frame this structure from one bearing."""
-    cx, cz = cluster["center_x"], cluster["center_z"]
-    # Aim at the middle of the box vertically, not the median piece height: a tower's
-    # mass sits above its median, and aiming low tips the whole build out of frame.
-    #
-    # aim_height moves that point through the build's height, 0 = the foundations
-    # and 1 = the ridge. The default 0.5 is right for a camera coming in from the
-    # side, and wrong for one looking down: the mid-height of the box is INSIDE the
-    # structure, so a steep sight line hits the roof before it arrives and the
-    # occlusion probe reports blocked every single time. Era 17's sky platforms
-    # came back 76% occluded at 22 degrees and 100% at 65 for exactly that reason.
-    cy = cluster["min_y"] + (cluster["max_y"] - cluster["min_y"]) * aim_height
+               aim_height=0.5, points=None, aim=None):
+    """Where to stand, and where to look, to frame this structure from one bearing.
+
+    aim, when given, is an explicit (x, y, z) to look at and overrides the box-centre
+    rule below. The orbit planner never passes it; the detail tier does, because a
+    box centre on a flat platform is a point on the floor.
+    """
+    if aim is not None:
+        cx, cy, cz = aim
+    else:
+        cx, cz = cluster["center_x"], cluster["center_z"]
+        # Aim at the middle of the box vertically, not the median piece height: a
+        # tower's mass sits above its median, and aiming low tips the whole build out
+        # of frame.
+        #
+        # aim_height moves that point through the build's height, 0 = the
+        # foundations and 1 = the ridge. The default 0.5 is right for a camera coming
+        # in from the side, and wrong for one looking down: the mid-height of the box
+        # is INSIDE the structure, so a steep sight line hits the roof before it
+        # arrives and the occlusion probe reports blocked every single time. Era 17's
+        # sky platforms came back 76% occluded at 22 degrees and 100% at 65 for
+        # exactly that reason.
+        cy = cluster["min_y"] + (cluster["max_y"] - cluster["min_y"]) * aim_height
 
     # The point path solves the field-of-view inequalities against every ZDO, including
     # each point's camera-axis depth. The fallback retains the measured compact-extent

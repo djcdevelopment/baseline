@@ -48,8 +48,65 @@ sys.path.insert(0, HERE)
 from plan_shots import (FOV_V_DEG, camera_for, elevation_for,  # noqa: E402
                         orbit_azimuths, validate_tsv)
 from scan_build_features import subclusters  # noqa: E402
+from frame_forecast import project  # noqa: E402
 
 TAN_V = math.tan(math.radians(FOV_V_DEG / 2.0))
+
+# The aim rule. Measured on the first 77 detail frames shot against era11: every one
+# had ~2x the pixels per metre of its orbit, yet edge density ON the build rose in
+# only 44 of 77. The scale was right and the camera was pointed at the floor -- the
+# box centre of a flat platform is a point on the floor, and a stone floor at 40
+# px/m has less texture than a facade at 18.
+#
+# So aim where the pieces are dense and rise. Piece density is the world-side proxy
+# for image edge energy: a floor is a few large tiles, a facade is many small pieces
+# with windows, beams and shingles. Cells are scored count * (0.5 + h_rel), so a
+# cell at the foundations weighs half and one at the ridge weighs one and a half;
+# the aim is the centroid of the pieces near the winning cell, which smooths a
+# single lucky cell into a real feature.
+AIM_CELL_M = 4.0
+AIM_RADIUS_M = 5.0
+# The central region of the frame used to score the rule: the middle half on each
+# axis, a quarter of the picture. A detail frame should have its subject there.
+CENTRAL_HALF = 0.5
+
+
+def dense_aim(points):
+    """Where to look: the densest, highest cell of the mass, not its box centre."""
+    ys = [p[1] for p in points]
+    min_y, span_y = min(ys), max(max(ys) - min(ys), 1.0)
+    cells = {}
+    for x, y, z in points:
+        key = (math.floor(x / AIM_CELL_M), math.floor(y / AIM_CELL_M),
+               math.floor(z / AIM_CELL_M))
+        cells[key] = cells.get(key, 0) + 1
+    best, best_score = None, -1.0
+    for (gx, gy, gz), n in cells.items():
+        h_rel = ((gy + 0.5) * AIM_CELL_M - min_y) / span_y
+        score = n * (0.5 + max(0.0, min(1.0, h_rel)))
+        if score > best_score:
+            best, best_score = (gx, gy, gz), score
+    ctr = tuple((g + 0.5) * AIM_CELL_M for g in best)
+    near = [p for p in points if math.dist(p, ctr) <= AIM_RADIUS_M] or [ctr]
+    return (sum(p[0] for p in near) / len(near),
+            sum(p[1] for p in near) / len(near),
+            sum(p[2] for p in near) / len(near))
+
+
+def central_share(points, cam, aim):
+    """Share of the in-frame pieces that land in the middle quarter of the picture.
+
+    The geometry-side score for the aim rule: the same projection frame_forecast
+    uses, asked a narrower question. Reported per shot so the two rules can be
+    compared on every build without re-shooting.
+    """
+    proj = [(sx, sy) for sx, sy, _ in project(points, cam, aim)
+            if abs(sx) <= 1.0 and abs(sy) <= 1.0]
+    if not proj:
+        return 0.0
+    inner = sum(1 for sx, sy in proj
+                if abs(sx) <= CENTRAL_HALF and abs(sy) <= CENTRAL_HALF)
+    return round(inner / float(len(proj)), 4)
 
 HEADER = ("# cluster_id\tshot\tcam_x\tcam_y\tcam_z\tyaw\tpitch\tenv\ttime"
           "\taim_x\taim_y\taim_z\tlabel\tmode\tfires\tflash\n")
@@ -95,6 +152,12 @@ def parse_args():
                         "from its own geometry instead of its shot record")
     p.add_argument("--max-per-build", type=int, default=4,
                    help="cap on detail frames per build, largest masses first")
+    p.add_argument("--aim-rule", choices=("dense", "center"), default="dense",
+                   help="dense (default): look at the densest, highest cell of the "
+                        "mass. center: the sub-mass box centre, which the first "
+                        "era11 detail run used and which points at the floor on flat "
+                        "platforms. Both are scored per shot as centralShare so the "
+                        "choice is measurable without a re-shoot")
     p.add_argument("--height", type=int, default=2160)
     p.add_argument("--limit", type=int, default=0)
     return p.parse_args()
@@ -222,9 +285,20 @@ def main():
             # max_distance=target_distance is the whole trick: camera_for returns
             # min(ideal, max_distance), so a small mass is framed whole and a large
             # one is framed at the target scale.
-            cam = camera_for(cluster, azimuth, elevation, MARGIN,
-                             target_distance, CLEARANCE, points=mpts)
+            # Both rules are solved every time so the shot record carries the
+            # comparison; only the chosen one is written to the TSV.
+            solved = {}
+            for rule in ("center", "dense"):
+                aim = dense_aim(mpts) if rule == "dense" else None
+                solved[rule] = camera_for(cluster, azimuth, elevation, MARGIN,
+                                          target_distance, CLEARANCE,
+                                          points=mpts, aim=aim)
+            cam = solved[args.aim_rule]
             c, a = cam["camera"], cam["aim"]
+            shares = {rule: central_share(
+                mpts, (s["camera"]["x"], s["camera"]["y"], s["camera"]["z"]),
+                (s["aim"]["x"], s["aim"]["y"], s["aim"]["z"]))
+                for rule, s in solved.items()}
             name = f"detail{n}"
             tsv = "\t".join(map(str, [
                 cid, name, c["x"], c["y"], c["z"], cam["yaw_deg"], cam["pitch_deg"],
@@ -243,6 +317,12 @@ def main():
                 "distanceM": cam["distance_m"],
                 "pxPerM": round(height / (2.0 * cam["distance_m"] * TAN_V), 1),
                 "framesWholeMass": cam["frames_whole_build"],
+                "aimRule": args.aim_rule,
+                "aimLiftM": round(solved["dense"]["aim"]["y"]
+                                  - solved["center"]["aim"]["y"], 1),
+                "centralShare": shares[args.aim_rule],
+                "centralShareCenter": shares["center"],
+                "centralShareDense": shares["dense"],
             })
         if entries:
             plan[key] = {"localClusterId": cid, "orbitWorstPxPerM": round(worst, 1),
@@ -268,6 +348,7 @@ def main():
         "targetDistanceM": round(target_distance, 1),
         "belowPxPerM": args.below_px_per_m,
         "elevationDeg": DETAIL_ELEVATION,
+        "aimRule": args.aim_rule,
         "counts": {"builds": len(plan), "shots": len(rows),
                    "skippedAlreadyLegible": skipped},
         "builds": plan,
