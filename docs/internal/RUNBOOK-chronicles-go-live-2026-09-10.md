@@ -238,3 +238,41 @@ the pair view's default active build is the largest shared build by album pieces
 the pair placed a few dozen pieces each reads oddly — ranking by pair-shared pieces is a small change if wanted;
 the participation summary line still says "already submitted" (pre-existing copy, outside the new-copy lint);
 legacy photo labels keep the double-encoded middle dot until the Release B window.
+
+## Release B — bed residency (2026-09-11, 2026-09-11 08:59 UTC)
+
+Creators release `66f3ab072b8e-4e118cdf4a07` (rollback `228b28225aae-9f2db5f685d4`; ComfyStewardView main
+`66f3ab0`, the merge of `bed-residency` onto iteration 5, pushed). Every public album now carries
+`residents[{builderKey, beds, evidence: "bed-owner-in-footprint"}]` where a bed owner slept inside the
+build's footprint (4 m XZ / 3 m Y margin, smallest footprint wins a bed inside nested boxes). Thread pages say
+"slept here" beside the credits as `a.resident`, the pair view's Shared hearth card reads it, and the kinship
+tag dialog names the beds. Residents never enter `contributors`, Top 8, the tree, majority ownership or the
+pair ranking. Pins moved to `?v=7`.
+
+The window ran without a capture. The era-17 4K masters were never missing: 5,425 PNGs at 3840×2160 (33.3 GB,
+shot 22–27 August) sit on OMEN in the parked BepInEx tree
+`C:\work\comfy-quest\captures\install-cleanup\omen-era17-20260827T102804Z\BepInEx\config\comfy-orbit-captures\`,
+and the live `/valheim/` gallery has been their 1600 px derivatives since 28 August. Nothing for era 17 was ever
+staged or shot on AM4. `master_detail.py` was run over those masters on OMEN this morning
+(`analysis/framing/master-era17.json`, 3,917 frames measured; median derivative-loss share 0.21), so era 17 now
+has the same master-native detail numbers as eras 7–14.
+
+Sequence as run: merged `main` into `bed-residency` in a worktree (three conflicts: the credit-hydration
+selector now covers credits, residents and Top 8 chip names; the sweep's thread probe keeps `../pair.js`; the
+projection comment names both) → 117 Python / 45 chronicles / 82 Node green → backed up `analysis/` (1.57 GB) →
+`community.py` over the live root with the eight capture manifests the previous run recorded (matched by SHA:
+eras 7, 8, 9, 10, 11, era 12 at 1080p and 4K, era 14) plus `legacy-galleries.json`: every era printed "residents
+re-derived (bed recipe 3735df02d00a), build keys unchanged" → `community_store.py` (`build_resident` 7,906) →
+`verify.py` (0 residents without a builder) → projection → gate **FAIL as designed** (2,220 threads changed,
+462 identical, 0 new, 0 gone, directory identical) → `diff_projection.py` VERIFIED every difference is an added
+`residents` key (12,587 thread-album instances; 1–41 residents per album) → merge to main → deploy from the
+detached worktree → smoke `passed` (pair, kinship, world era 7 + era-17 switch) → front 15/15 → sweep all clear
+at `?v=7` → push. Live check: thread `0047956c7bf5…` renders 41 `a.resident` anchors and the pair view's hearth
+reads "slept here (1 bed)".
+
+Retired follow-up: the "double-encoded middle dot" in legacy labels was never in the data (neither legacy index
+nor any projected thread contains it); it was a cp1252 read in an earlier session. Still open: bed-only
+residents with no directory record render as "Recorded builder" (publishing their name is a separate decision);
+the pair view's default active build ranks by album pieces; the participation summary's "already submitted"
+wording. AM4 is at 95 % disk (21 GB free) — clear it before any further 4K campaign there.
+
