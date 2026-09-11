@@ -129,6 +129,9 @@ The Stitch canvas export the three iterations were built from is committed as te
 aspirational architecture documents under `aspirational/`, and a mock-to-shipped index).
 Rendered screens stay outside git at `E:\omen\design-exports\valheim_creators_gallery\`.
 
+The second export, the Kinship Viewport mock and its API-shaped spec, is committed beside it as
+`docs/design/valheim-kinship-viewport-stitch-2026-09/` with a mock-region → shipped table (iteration 5).
+
 ## Iteration 4 — closing the open questions (2026-09-11, ~04:10 UTC)
 
 Derek accepted fifteen recommendations after iteration 3 (the table lives in the plan record for
@@ -185,5 +188,53 @@ Window sequence (after the 4K capture is idle):
    build keys unchanged" and era 17 re-derives fresh.
 3. `gallery.py` → `gate_creators.py` (**FAIL expected**: changed = threads with residents and era-17 photos,
    new/gone 0, directory identical or era-17 counts only) → `deploy_gallery.py --revision <HEAD>` →
-   `browser-smoke.mjs` (world URL), `smoke_front.mjs`, `verify_sweep.ps1` (now pins `?v=6`).
+   `browser-smoke.mjs` (world URL), `smoke_front.mjs`, `verify_sweep.ps1`. **Rebase first:** iteration 5
+   took `?v=6`, so `bed-residency` moves its ten pins to `?v=7`; expect conflicts on `hydrateCredits`'s
+   selector (keep both additions), the `.top8`/`.pair-*` stylesheet block, and `cohabRow` (the beds span and
+   the pair link both go in `side`).
 4. Rollback: creators symlink → `previous` from the receipt; viewer `push_viewer.py --rollback <sha12>`.
+
+## Iteration 5 — Kinship on the builder profile (2026-09-11, ~08:27 UTC)
+
+Creators release `228b28225aae-9f2db5f685d4` (rollback `770354007ad8-2780c68be0a9`; ComfyStewardView main
+`228b282`, pushed). The Top 8 panel is now a ribbon of chips, "Top 8 · Shield-wall fellows": portrait tile,
+name, and a rank tier — Tier I is ranks 1–2, II is 3–5, III is 6–8, each carrying `title="Rank N of this
+builder's Top 8"` so the MySpace wink is labelled as rank and nothing more. Pressing a chip opens the pair view
+(`section#pair-view`, new `web/pair.js`, `globalThis.StewardPair`): the anchor and one co-builder, the builds
+they share (ledger, You/Them split, Photographed/Recorded status, JSON download as
+`steward-kinship-pair/v1`), the active build's photographs or a "Not photographed yet" slab, laurels
+(coordinator-confirmed tags; the visitor's pending ones dashed), the piece allotment bar, build facts, the
+co-builder card with shared pieces/builds/photographed/confirmed counts and the kinship affinity
+`Σ min(shareA, shareB) · log10(pieces)` — the affinity is shown, never used to rank the ribbon. Standing reads
+"Confirmed kin" when a confirmed tag links the pair on a shared build, else "Recorded kin". World viewer mode
+is a deep link into AM4 with the build selected (the viewer sends `frame-ancestors 'none'`, so no framing).
+Deep link `?kin=<key>&build=<key>&view=photos|viewer`; the kinship tree's co-builder nodes and the ledger's
+"Pair view" links land on it; a `?kin=` outside the Top 8 gets a ninth, dashed chip. Everything is derived in
+the browser from the thread JSON, `directory.json` and `participation.json` — no new data file, gate PASS.
+
+Two Opus builders on disjoint files (`pair.js` + stylesheet + Node test + README; creators.js + shells +
+kinship links + gallery.py + Python pins + sweep + smoke), both cut off once by the session rate limit and
+resumed with their commits intact. At merge the orchestrator added two stylesheet commits: the ribbon's emblem
+fallback sits one level deeper than the tile rule expected, and the tier label auto-placed into the 36 px
+portrait column and broke "Tier III" in two on every profile.
+
+Verification: gate PASS (2,682 threads identical, presentation only); suites era-archive 115, chronicles 45,
+Node 78; local render over a scratch serve of the projection (8 chips one pressed, pair view open, 25 ledger
+rows on Helina, allotment widths sum to 100, `?kin=` presses the named chip, `?view=viewer` selects the tab,
+sidebar stacks at 390 px with a 390 px scroll width); live `browser-smoke.mjs` `passed` with the new pair leg,
+the kinship leg and the world leg (era 7 context raster, switch to era 17); `smoke_front.mjs` 15/15;
+`verify_sweep.ps1` all clear at `?v=6` with `/valheim/creators/pair.js` served and threads carrying
+`../pair.js`. Design record: `docs/design/valheim-kinship-viewport-stitch-2026-09/`.
+
+Operator notes from this pass: `deploy_gallery.py` resolves the repository from its own path, so when the main
+checkout carries someone else's uncommitted `tools/era-archive` files, run projection, gate and deploy from a
+clean detached worktree at HEAD. PowerShell 5.1 splits a `git commit -m` message at embedded double quotes and
+`-- path -m` puts `-m` into the pathspec — commit from Bash with `-F <file> -- <path>`. Headless Chrome clamps
+`--window-size` below roughly 500 px, so a 390 px screenshot looks overflowed while the layout is fine;
+measure narrow layouts with the in-app browser's viewport emulation against localhost.
+
+Still open: Release B (bed residency) now rebases onto this release (`?v=7`, see the window sequence above);
+the pair view's default active build is the largest shared build by album pieces, which on a mega-build where
+the pair placed a few dozen pieces each reads oddly — ranking by pair-shared pieces is a small change if wanted;
+the participation summary line still says "already submitted" (pre-existing copy, outside the new-copy lint);
+legacy photo labels keep the double-encoded middle dot until the Release B window.
