@@ -402,3 +402,26 @@ deferred. This supersedes FR-10's "slate48 remains the default" and the non-goal
   Deployed; the variable is **not yet set**, so the route answers 404 and the page falls back to the copied payload.
 - **Not built**: coordinator tooling for opt-outs (the receipt is the process for now), the suppress list every
   process reads, a Discord-id ↔ builder allowlist, own-image upload, S5.
+
+## Implementation notes — the launch shape (2026-09-12 ~12:40 UTC, ComfyStewardView `ed9c738`)
+
+Derek, for release the same day: no relay, no sign-in; **anyone may try a portrait on any builder's page**; a choice
+must go through a query string so the front door logs it and obvious abuse can be watched; an opt-out simply
+generates a message the builder pastes to him on Discord (**@Tugcow**). The relay route and the Discord OAuth
+section from the previous notes are gone (the Caddy file was removed and FX99 redeployed).
+
+- **The beacon** (`profile.js` → `GET portrait-beacon.txt?action=choose|revert|optout&builder=<key>[&tile=&take=]
+  [&level=]&receipt=r-<yyyymmdd>-<8 hex>`): the front door's access log is the record — archive tokens only, never
+  the note or a name. `tools/era-archive/read_portrait_beacons.py` reads it back (`ssh fx99 'python3 -' <
+  read_portrait_beacons.py`): counts, the two abuse shapes (one address dressing three or more builders; one builder
+  dressed from two or more addresses — the caller is `X-Forwarded-For` behind `tailscale serve`, and a tailnet user
+  is named by `Tailscale-User-Login`), the last N notes; `--payload` prints the latest choice per builder in the
+  export shape `coordinate.py ingest --portraits` reads, so publishing a choice is: read → ingest → `confirm-portrait`
+  → project. The address bar also carries `?portrait=&take=` after a choice (a reload keeps the face; not a log line).
+- **The message** (`requestMessage`): `@Tugcow — a request from the Valheim Chronicles archive` / `Receipt:` /
+  `Builder: <name> (<key>)` / `Request: <level>` / `Note:` / `Page:`, in a read-only box with **Copy message**; the
+  request stays on the device ledger (`state.optOuts`, `exportPayload.optOuts[]`) and its level is noted by beacon.
+- Verified live: `PICKER=1 browser-smoke` (a stranger opens the picker; both beacons show in resource timing and in
+  FX99's log; the message names the coordinator, the receipt and the key), sweep all clear, `read_portrait_beacons.py`
+  on FX99 lists the smoke's own three notes with the tailnet login. Creators release `ed9c738e0015-c30f0f2bf2e1`
+  (rollback `71e7e54af0f6-b06d9263a80c`); chronicles unchanged (`20260912T120657Z-939eb83063b7`).

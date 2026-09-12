@@ -440,22 +440,20 @@ E:\omen\steward-multi-era\portraits\viking96-20260912 --default-library viking96
 `gallery.py … --portrait-library E:\omen\steward-multi-era\portraits\viking96-20260912\manifest.json` (a projection
 without it strips every face back to the slot rule and the gate will show 2,682 portrait-only diffs).
 
-**The relay (one-time, on FX99).** `infra/fx99/sites-enabled/creators-relay.caddy` is deployed. To arm it: create a
-webhook on a **private** Discord channel (channel → Integrations → Webhooks → copy URL; the part after
-`/api/webhooks/` is `<id>/<token>`), then on FX99:
-```
-sudo systemctl edit caddy      # add:  [Service]  Environment=CREATORS_RELAY_WEBHOOK=<id>/<token>
-sudo systemctl daemon-reload && sudo systemctl restart caddy
-```
-(`deploy.ps1` reloads; an environment change needs the restart.) Until then the route answers 404 from Discord and the
-page falls back to the copied payload, quoting the same receipt id. A receipt in the channel is one embed — builder,
-request, Discord identity or "unsigned", receipt id — with `payload.json` attached; a portrait choice is ingested from
-that file (`coordinate.py ingest payload.json --portraits <live portraits.json>` → `confirm-portrait`); an opt-out is,
-for now, a conversation with the builder and then a hand edit — no tooling applies it yet. Abuse: rotate the webhook;
-close the route by deleting the `.caddy` file and running `infra/fx99/deploy.ps1`.
+**Superseded the same day (~12:40 UTC) — the launch shape, creators `ed9c738e0015-c30f0f2bf2e1`** (rollback
+`71e7e54af0f6-b06d9263a80c`; ComfyStewardView `ed9c738`). No relay (the Caddy route was removed and FX99 redeployed), no
+Discord sign-in. Anyone may try a portrait on any builder's page; the choice is worn on that device and **noted by a
+beacon the front door logs** (`portrait-beacon.txt?action=…&builder=…&tile=…&take=…&receipt=…`). An opt-out level
+writes the message the builder pastes to **@Tugcow** on Discord (receipt · builder · request · note · page).
 
-**Discord sign-in (one-time).** Register an application at discord.com/developers → OAuth2 → add the redirect
-`https://fx99.tail8e749c.ts.net/valheim/creators/profile/` (exactly, no query; add the public origin too if there is
-one) → put the **client id** in `web/profile.html` `<meta name="discord-client-id">` and re-project. The page uses
-the implicit grant with the `identify` scope only; a sign-in puts the Discord user on the request — it does not prove
-which builder they are; that stays the coordinator's call on Discord.
+**Reading the log (coordinator).**
+```
+ssh fx99 'python3 -' < tools/era-archive/read_portrait_beacons.py             # counts, abuse shapes, the last 25
+ssh fx99 'python3 - --payload' < tools/era-archive/read_portrait_beacons.py > choices.json
+python tools/era-archive/coordinate.py --output-root E:\omen\steward-multi-era ingest choices.json --portraits E:\omen\steward-multi-era\portraits\viking96-20260912\manifest.json
+python tools/era-archive/coordinate.py --output-root E:\omen\steward-multi-era confirm-portrait <builderKey>
+```
+then the ordinary creators publish (`gallery.py --portrait-library …` → gate → deploy). Behind `tailscale serve` the caller
+is `X-Forwarded-For` and a tailnet user is named by `Tailscale-User-Login`; the reader prints the login when it has one.
+"Addresses dressing three or more builders" is the line to look at first. An opt-out message on Discord is matched to
+its beacon line by the receipt; applying it is still a hand edit — no tooling applies an opt-out yet.
