@@ -520,3 +520,56 @@ build), not the leading builder (the 0 % build). ComfyStewardView `cdf1eaf`, pin
 - The smoke drives both paths (claim → tag → one payload with claim + basemate; claim → cancel tag → claim payload)
   and asserts an inert control always carries its note. Live smoke passed, `smoke_front` 15/15, sweep all clear;
   the three builds render as intended live. Rollback `5b57f5aa003c-ea6bcc227816`.
+
+## The statistics page is computed, not typed (2026-09-12 ~14:11 UTC) — creators `4410a842193d-ab989afb5b53`
+
+Derek: "it's unlikely these stats are up to date, can we get the most recent version live?" (`/valheim/creators/stats/`).
+What the page was: hand-authored HTML with the numbers typed in — a one-off DuckDB census over the 2026-09-08 community
+tables, written by a Gemini session on 09-09 and copied verbatim into every projection since (the census SQL was never
+committed; it survives in that session's scratch dir under `~/.gemini/antigravity/brain/32fd9d1b…/scratch/`). The
+construction figures were **not** stale — the 09-08 and 09-11 Parquet snapshots and the live document all give
+318,319 clusters / 283,476 credits / 2,747 builders / 16,893,112 pieces (no era ingested since; 16–17 are legacy
+gallery imports) — but the page could not say so, four of its cells were never produced by any query, and it described
+a population (318k clusters, 2,747 builders) the directory beside it does not publish (27,336 albums, 2,682 builders).
+
+Now (ComfyStewardView `4410a84`, merged as `cf605ad`): `tools/era-archive/stats.py` recomputes every figure from the
+community document inside `gallery.project()`, under the same `is_qualifying_album` rule the directory uses, and renders
+`web/stats.html` — **now a template of `{{tokens}}`** — into `stats/index.html` and the root `stats.html`. Pure Python,
+no new dependency, ~2 s per projection. Percentiles are R type 7 (numpy/pandas linear), bins and rules the census's own,
+so the page reproduces the original cell for cell wherever it was right; a live-gated test (`STEWARD_STATS_LIVE=1`)
+pins the census constants against the document on E:.
+
+What changed on the page:
+- A data stamp under the intro (`id="data-stamp"`: document date, clusters, credits, eras, the directory rule) and in
+  the footer. The page is as of the document's `generatedAt` — **2026-09-11 08:56Z until the next `community.py` run**.
+- Table 6 ends with **"As shipped in the directory (Recommended)"** — 48,130 credits, 27,336 distinct albums, 2,682
+  builders — the receipt's figures by construction (the projection test asserts the equality). The "(Recommended)" tag
+  left the ≥20 row, which never shipped.
+- **Section 7, Photographs & Residency**: photographs per era (the directory's `photography` block restated: 13,931
+  photos on 2,786 albums, 2,623 builders) and bed residency (2,248 builders, 8,322 beds in 5,376 clusters).
+- Corrected cells: Table 3 inflation 10th percentile **3.7x** (typed 3.0x); Table 6 pieces kept **98.1 %** for placed ≥5
+  (typed 98.6), **97.3 %** for ≥10 (typed 97.4 — a rounding of a rounding), **96.7 %** for "Substantial" (typed 97.0);
+  Table 5 "Avg Builders" was never computed (2.4 / 3.7 / 5.5 where 2.3 / 3.4 / 5.4 were typed). Semantic fix, flagged:
+  Table 5's "Moderate" band was `BETWEEN 0.50 AND 0.80` against "Dominated ≥ 0.80", so 786 builds with a lead share of
+  exactly 0.80 were counted twice and the 2–5-piece row summed to 106.8 % — now `[0.50, 0.80)`; that column reads
+  90.0 / 46.9 / 29.0 / 45.5 / 28.2 / 33.5 / 37.9.
+- The 535 legacy gallery credits (eras 16–17, `pieces: null`, no share) fell into the ELSE bins of Tables 1–2 and put an
+  impossible "26" in the ">500 pieces placed" column of 101–500-piece builds. They now sit outside the piece and share
+  arithmetic (Tables 1–2 total 282,941), still count as clusters, credits and albums (Table 3, Rule 0), and the page says so.
+
+Sequence as run: worktree `E:\wt\stats-live` off `27cd140` → implement → 174 Python green + the live census test →
+one-off `stats.py --output-root … --out` render diffed against HEAD's page (only the intended cells, prose, stamp and
+section 7 differed) → commit with explicit paths → rebased onto `cdf1eaf` (the tag-click release, which moved pins to
+`?v=15`) → project → gate (**data identical; presentation diffs = `stats.html` + `stats/index.html` only**) → deploy
+14:11Z → live page sha equals the projection's → browser-smoke passed, `smoke_front` 15/15, sweep all clear →
+`--no-ff` merge to main (main had moved again to a lab commit; a rebase would have orphaned the deployed sha) → push.
+Rollback `cdf1eaffc7a4-872bcd9066ba`.
+
+Two operator notes. (1) A **fresh worktree checks out CRLF** (`core.autocrlf=true`) while the main checkout holds most
+`web/*.js|css` as LF (and `kin-tree.js`/`pair.js` as CRLF, which is what live serves) — `project()` copies those eight
+assets byte for byte, so the first gate listed six of them as presentation diffs. Mirror the main checkout's on-disk
+endings (`sed -i 's/\r$//'`, and `s/$/\r/` for the two CRLF files), `git add` the touched files to refresh the stat cache
+(nothing to commit), re-project. (2) **Standing rule: `web/stats.html` is a template — never type a figure in it.** To
+review a render without projecting: `python tools/era-archive/stats.py --output-root E:\omen\steward-multi-era --out <file>
+[--json <figures>]`. To refresh the numbers, refresh the document (`community.py` → `community_store.py`) and project;
+the 09-12 `captures/era11/captures-era11-refine.json` batch is still unimported, so section 7's photo counts predate it.
