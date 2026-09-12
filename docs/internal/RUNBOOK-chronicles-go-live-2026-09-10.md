@@ -349,3 +349,9 @@ browser-smoke's photo check no longer counts a zero-width (hidden) image as in-v
 worktree `E:\wt\builder-page-v2` because the main checkout carried another session's live edits — and that
 session's `tests/test_archive.py` was briefly swept into a commit by a `tests/` pathspec and taken back out before
 push: **commit with explicit file paths when a checkout is shared.**
+
+**Iteration 6a — tooltips on the feedback marks (2026-09-12 ~07:25 UTC), creators `0c4935002bf8-77dba722f997`**
+(rollback `60d9a8b1eb50-c78bbfb23c85`; ComfyStewardView `0c49350`; pins **`?v=9`**). Derek: "we need tool tips for the
+icons." Each mark carries `data-tip` drawn above it on `:hover` and `:focus-visible` (right-aligned so the last one
+stays inside the row); the native `title` is gone. browser-smoke passed live, `smoke_front` 15/15, sweep all clear.
+
