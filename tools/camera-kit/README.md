@@ -64,3 +64,17 @@ world viewer's "Request this shot" produces rows in exactly this format.
 
 No world files (they are on the Discord), no gallery pipeline (derivatives, indexes, the
 site), no scoring. This is the photograph and its receipt, on your machine.
+
+## Releasing the kit (operator step)
+
+`python make_bundle.py --out <dir>` builds `camera-kit-<date>.zip` and its manifest (package
+SHA-256, plugin hashes, the game builds it was proven on). Publishing is deliberately not
+automated — it is the operator's call, in two releases:
+
+```powershell
+gh release create camera-proof-v0.2.5 ComfyCameraProof.dll release-manifest.json SHA256SUMS -R djcdevelopment/comfy --title "Comfy Camera Proof 0.2.5" --notes-file NOTES.md
+```
+
+```powershell
+gh release create camera-kit-20260912 camera-kit-20260912.zip camera-kit-20260912.json -R djcdevelopment/baseline --title "Camera kit 2026-09-12" --notes "Shoot the era archive's frames on your own machine. Extract and run camera-kit/Invoke-EraCapture.ps1; see README.md inside. SHA-256 in the adjacent manifest."
+```
