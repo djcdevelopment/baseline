@@ -573,3 +573,38 @@ endings (`sed -i 's/\r$//'`, and `s/$/\r/` for the two CRLF files), `git add` th
 review a render without projecting: `python tools/era-archive/stats.py --output-root E:\omen\steward-multi-era --out <file>
 [--json <figures>]`. To refresh the numbers, refresh the document (`community.py` → `community_store.py`) and project;
 the 09-12 `captures/era11/captures-era11-refine.json` batch is still unimported, so section 7's photo counts predate it.
+
+## The era-11 refine batch is in the archive (2026-09-12 ~14:45 UTC) — creators `a2069a00c70c-7f66de351cfa`
+
+Derek: "import the era-11 refine batch." The refine loop (AM4, camera-proof 0.2.5) had already produced its manifest
+`captures/era11/captures-era11-refine.json` (09-12 02:45Z: 83 builds, 83 judged winners, 1 build with every frame
+withheld) and the shot-request round trip its own, `captures-era11-requests.json` (1 build, 2 frames); all derivatives
+were live under `/valheim/era11/thumb|large` (sampled 16/16 → 200). What was pending was the community import.
+
+Sequence as run (ComfyStewardView main `a2069a0`, clean; deploy from the main checkout because the commits since
+`cf605ad` were lab + the world-terrain lane, nothing the creators projection reads):
+- Matched the eight manifests the previous run recorded (`captureImports` at the tail of `community-private.json`, by
+  SHA) to their files — all present; no `--links` had ever been applied (no builder carries two character ids, no links
+  file exists), so the invocation is `--legacy-galleries` + the eight in recorded order + the two new ones.
+- Backed up `analysis/` (1.7 GB, 16 s) to `E:\omen\steward-multi-era\analysis-backup-20260912T1420Z-pre-era11-refine`
+  (delete once the next run has proved itself).
+- `community.py` with ten `--captures`: "Attached 9,372 captured photographs from 10 manifest(s); 0 unresolved
+  build(s)" (8-manifest run: 9,287 → +85), "532 replaced / 471 withheld / 53 albums kept none". Per-era analyses were
+  cache hits. `community_store.py`: `build_photo` 14,016 (was 13,931), build 318,319 / contributor 283,476 / resident
+  7,906 unchanged. `verify.py`: 0 residents without a builder.
+- Projection `20260912-era11-refine`: **2,685 threads / 27,337 albums** (+3 / +1). Gate **FAIL as designed** (2,333
+  identical, 349 changed, 3 new, 0 gone). `diff_projection.py` (now committed, `6bd12e2`) VERIFIED every difference:
+  82 albums gained 579 thread-album photographs (85 distinct frames; 0 removed); 16 era-11 albums newly on 33 thread
+  records because a photographed album always qualifies (`albums` +1 and `pieces` up by exactly the builder's credited
+  pieces on it); 3 new threads (`8d854e2c0a07`, `a0a4159c7981`, `d5dc13c08ecf`, one photographed album each);
+  `photoStatus: rejected` on `d2b69966038d`; directory photography era 11 → 3,710 albums / 184 photographed / 689 photos
+  (was 3,709 / 154 / 604), totals 14,016 photos / 2,816 albums / 2,632 builders.
+- Deploy 14:43Z: 5,387 files verified; rollback `4410a842193d-ab989afb5b53`. Live: stats page stamped **"Generated
+  2026-09-12"** with the new era-11 row and cards (the generated page earned its keep on its first refresh); new thread
+  200; refine frames on their threads; browser-smoke passed; `smoke_front` 15/15; sweep all clear.
+
+**Standing rule, updated:** any future `community.py` run passes **ten** capture manifests (the eight above +
+`captures-era11-refine.json` + `captures-era11-requests.json`) plus `legacy-galleries.json` — match the recorded
+`captureImports` SHAs first; a missing manifest silently drops that era's photographs. After a photograph import the
+gate fails by design; `tools/era-archive/diff_projection.py <live projection> <new projection>` is the proof that
+must print VERIFIED before `deploy_gallery.py`.
