@@ -292,3 +292,20 @@ routes outrank the wired port's; runtime IPv6 metric change, reverted after) - t
 receipt: ComfyStewardView `docs/am4-disk-recovery-2026-09-11.md`; step logs in
 `E:\omen\steward-multi-eram4-space-20260911\`.
 
+
+## Era viewer pass 3 — the filter drawer (2026-09-11, live ~21:50 UTC)
+
+Viewer sha **`796b8a2041df`** in all nine `/valheim/` directories (rollback `31ef8c5f6c5c`, the Chronicler-skin
+page; `push_viewer.py --rollback 31ef8c5f6c5c` puts it back; receipts in ComfyStewardView
+`tools/selfie-stick/receipts/viewer-20260911-menu-v3*.json`; ComfyStewardView main `f5814da`). The chip wall
+became a left drawer over a scrim: search box, chip groups, Areas and Builds as eight-row lists with "Show all N",
+a fog toggle, `Clear all` + `Show N builds|photographs`. The header carries one removable chip per active filter,
+a sort dropdown, an era dropdown of links (Builders across eras last) and the CHRONICLES · BUILDERS nav; page size
+is a per-page select in the pager. Counts are live-narrowing and now exclude fog-hidden frames unless the toggle is
+on (era 17: drone 2,626 → 2,552), which is why the figures differ from the old static chips. Design record:
+`docs/design/Gallery navigation simplification/` (v2 canvas export + v3 artboards, README with the v2→v3 table).
+Verified: local CDP run at 1440 and 390 (counts, search/scroll persistence, hash deep link visible on open, Esc
+chain, per-page), era7 canary, `--verify` 9/9, `shoot.mjs` study-filters / study-lightbox / walk-eras captured,
+`verify_sweep.ps1` all clear. `shoot.mjs` still skips find-search / find-thread / request-dialog (creators name
+search timed out — unrelated to the viewer, was not re-checked). Baseline fallback
+`tools/selfie-stick/gallery/index.html` re-synced byte-identical.

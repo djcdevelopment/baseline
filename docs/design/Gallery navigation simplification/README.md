@@ -7,6 +7,7 @@ live at `https://fx99.tail8e749c.ts.net/valheim/`). Two passes so far:
 |---|---|---|
 | **v2** — Derek's Claude Design canvas: drawer, active-chip strip, era dropdown, sort dropdown, places as a list | `Gallery Menu v2.dc.html` (export of https://claude.ai/design/p/1352762e-4175-4d64-8101-df14c35c5d6f); reference screenshots in `uploads/` | 2026-09-11 |
 | **v3** — this pass: v2's structure on the Chronicler tokens, with the departures below | `v3/` (five artboards + `canvas.json`, generated from `v3/src/menu.dc.template.html` by `v3/src/build.mjs`); canvas https://claude.ai/code/artifact/28787bb5-10fa-4731-ada1-11f4a2a2e55e | 2026-09-11 |
+| **Shipped** — v3 implemented in the viewer | ComfyStewardView `f5814da`, live sha `796b8a2041df` in all nine era directories (rollback `31ef8c5f6c5c`); see the runbook entry "Era viewer pass 3" in `docs/internal/RUNBOOK-chronicles-go-live-2026-09-10.md` | 2026-09-11 |
 
 The menu had no design record before v2: the Sept 10 Chronicler skin (`8605f94`) restyled the chip wall
 without redrawing it, and the Stitch canvas under `../valheim-chronicles-stitch-2026-09/` never covered the viewer.
