@@ -1,0 +1,25 @@
+# The creators lane's relay: a builder's profile page (/valheim/creators/profile/) POSTs a
+# portrait choice or an opt-out request here, and it lands in a private Discord channel as
+# the receipt. The Discord webhook never reaches the browser -- its id/token live in the
+# caddy unit's environment on this box (systemctl edit caddy -> Environment=
+# CREATORS_RELAY_WEBHOOK=<id>/<token>, then daemon-reload + restart), never in git.
+#
+# Guards, and their limits: same-origin fetches only (a drive-by cross-site POST is
+# refused; curl is not), a capped body, and Discord's own 30/min per webhook. The page
+# sends `allowed_mentions: {parse: []}`. If the channel is abused, rotate the webhook; to
+# close the route, delete this file and run infra/fx99/deploy.ps1.
+@relay {
+	method POST
+	path /valheim/creators/relay
+	header Sec-Fetch-Site same-origin
+}
+handle @relay {
+	request_body {
+		max_size 256KB
+	}
+	rewrite * /api/webhooks/{env.CREATORS_RELAY_WEBHOOK}
+	reverse_proxy https://discord.com {
+		header_up Host discord.com
+		header_up -Cookie
+	}
+}

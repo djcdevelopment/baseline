@@ -421,3 +421,41 @@ A revert arrives as a line with `tile: null`; `confirm-portrait` on it takes the
 library is re-cut with `tools/chronicles/portraits/build_manifest.py` (never `--dev` for a publish) and shipped with
 `build.py --library`; `--portraits` at ingest must be the manifest that is live, so a line is checked against what the
 archive can draw.
+
+## Painted defaults + the builder's own page (2026-09-12 ~12:10 UTC) — chronicles `20260912T120657Z-939eb83063b7`, creators `71e7e54af0f6-b06d9263a80c`
+
+Rollbacks: chronicles `20260912T110102Z-1ec52bb01f01`, creators `059f5cdd4daf-c03976efc2a6`. ComfyStewardView `577baec`
+(the pass), `71e7e54` (gate CRLF proof), `f123c46` (receipt + sweep); pins `?v=12`. Every builder now wears a painted
+face by the archive's pick (`portrait_assign.py`, tier pools + era leaning, seeded); slate is retired (`portraits.json`
+`count: 0`, 96 tiles, viking96 default; the front door shrank from 20.7 KB to 8.2 KB). The avatar on a builder page
+opens `/valheim/creators/profile/?builder=<key>`: Discord sign-in (off), the picker, the archive's pick, the opt-out
+levels with **Send request**. Verified live: `smoke_front` 15/15 (the first row's face is the resolver's for that
+record), `PICKER=1 browser-smoke` (door → profile page as a stranger: four sections, sign-in off, picker gated, Send
+armed by a level; with a seeded claim: 96 → Carpenter 4 → +red 1, 24 trades, choose dresses the profile and the
+builder page, the archive's pick undresses), sweep all clear (profile page + profile.js linted; every record carries a
+portrait; no `slate48`).
+
+**Standing rules from now on.** Every chronicles build: `build.py --no-slate --library
+E:\omen\steward-multi-era\portraits\viking96-20260912 --default-library viking96`. Every creators projection:
+`gallery.py … --portrait-library E:\omen\steward-multi-era\portraits\viking96-20260912\manifest.json` (a projection
+without it strips every face back to the slot rule and the gate will show 2,682 portrait-only diffs).
+
+**The relay (one-time, on FX99).** `infra/fx99/sites-enabled/creators-relay.caddy` is deployed. To arm it: create a
+webhook on a **private** Discord channel (channel → Integrations → Webhooks → copy URL; the part after
+`/api/webhooks/` is `<id>/<token>`), then on FX99:
+```
+sudo systemctl edit caddy      # add:  [Service]  Environment=CREATORS_RELAY_WEBHOOK=<id>/<token>
+sudo systemctl daemon-reload && sudo systemctl restart caddy
+```
+(`deploy.ps1` reloads; an environment change needs the restart.) Until then the route answers 404 from Discord and the
+page falls back to the copied payload, quoting the same receipt id. A receipt in the channel is one embed — builder,
+request, Discord identity or "unsigned", receipt id — with `payload.json` attached; a portrait choice is ingested from
+that file (`coordinate.py ingest payload.json --portraits <live portraits.json>` → `confirm-portrait`); an opt-out is,
+for now, a conversation with the builder and then a hand edit — no tooling applies it yet. Abuse: rotate the webhook;
+close the route by deleting the `.caddy` file and running `infra/fx99/deploy.ps1`.
+
+**Discord sign-in (one-time).** Register an application at discord.com/developers → OAuth2 → add the redirect
+`https://fx99.tail8e749c.ts.net/valheim/creators/profile/` (exactly, no query; add the public origin too if there is
+one) → put the **client id** in `web/profile.html` `<meta name="discord-client-id">` and re-project. The page uses
+the implicit grant with the `identify` scope only; a sign-in puts the Discord user on the request — it does not prove
+which builder they are; that stays the coordinator's call on Discord.

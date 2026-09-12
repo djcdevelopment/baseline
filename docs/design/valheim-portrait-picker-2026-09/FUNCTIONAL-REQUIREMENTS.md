@@ -366,3 +366,39 @@ libraries, one painted take's three cuts (immutable), and the two scripts (linte
 first `portrait` field on a public record (the PD-3 check is recorded in the go-live runbook).
 
 **S5 (not built):** "worn by N" and the `exclusive` flag.
+
+## Implementation notes — painted defaults, the profile page, opt-out receipts (2026-09-12, ComfyStewardView `577baec`…`f123c46`)
+
+Derek's review of the first live pass: the slate faces "are really not great". Decisions the same day: **slate48 is
+retired**; **viking96 is the only library and the default**, assigned per builder from what the archive knows;
+the avatar opens the **builder's own page**; opt-outs are **a request with a receipt** for now; own-image upload
+deferred. This supersedes FR-10's "slate48 remains the default" and the non-goal "changing the hash default".
+
+- **The archive's pick** (`tools/era-archive/portrait_assign.py`, `gallery.py --portrait-library`): a pure function of
+  the builder key and the library, salt `portrait-v1`. Tier pools — Megabuilder: jarl, architect, fortifier, harbor,
+  stonemason · Major Architect: architect, carpenter, stonemason, shipwright, fortifier, harbor · Established Builder:
+  carpenter, blacksmith, miner, smelter, jeweler, shipwright, stonemason · Homesteader: brewer, furrier, hunter,
+  carpenter, skald, frost, whaler · Explorer: hunter, reaver, frost, varangian, skald, shaman, seer, shieldmaiden,
+  berserker. Four eras or a first era ≤ 8 leans senior (`master`, `chieftain`, `highbuilder`, `dockmaster`,
+  `veteran`… or an elder face); one era ≥ 14 leans young; presentation is a seeded coin; the take a seeded pick.
+  Written onto every record as `portrait: {tile, take, by: "archive"}`; a confirmed choice is `by: "builder"`.
+  directory.json grew from 965 KB to 1.31 MB pretty-printed (Caddy gzips); accepted for an auditable, flicker-free
+  default. `gate_creators.py` proves a portrait-only thread from the live receipt (CRLF-aware) — 2,682 proved, 0 fetched.
+- **Slate retired**: `build.py --no-slate --default-library viking96`; `portraits.json` now `count: 0`, 96 tiles,
+  `libraries: {viking96: {default: true}}` (135 KB); the gateway inlines nothing and fetches the document on the same
+  idle tick as the directory. The slate tree stays in the repo, unshipped.
+- **Your profile** (`/valheim/creators/profile/?builder=<key>`; `web/profile.html` + `profile.js`; `noindex`): the
+  face and the wide frame, Discord sign-in (implicit grant, `identify`; off until `<meta name="discord-client-id">`
+  is set; the key rides in `state`; the token is used once for `users/@me`), the picker (enabled with a Discord
+  identity or a built claim on the builder), "Use the archive's pick" (a revert now steps aside for the published
+  face rather than the slot), **Send my choice**, and the opt-out levels *Keep the pictures, drop my name* / *Erase
+  every reference to me and don't use my builds in any process* with a note and **Send request**. The thread page's
+  avatar is the door; the hero keeps the disclosure line and a "Your profile" link; the picker left the thread page.
+- **The relay** (`POST /valheim/creators/relay?wait=true`, `baseline/infra/fx99/sites-enabled/creators-relay.caddy`):
+  one Discord embed (builder, request, Discord identity or "unsigned", receipt `r-<yyyymmdd>-<8 hex>`), no mentions,
+  `payload.json` attached (the export payload `ingest --portraits` reads). The webhook lives in the caddy unit's
+  environment on FX99 (`CREATORS_RELAY_WEBHOOK=<id>/<token>`), never in git. Guards: same-origin fetches only, a
+  256 KB body cap, Discord's own rate limit, a private channel, rotate on abuse, delete the file to close the route.
+  Deployed; the variable is **not yet set**, so the route answers 404 and the page falls back to the copied payload.
+- **Not built**: coordinator tooling for opt-outs (the receipt is the process for now), the suppress list every
+  process reads, a Discord-id ↔ builder allowlist, own-image upload, S5.
