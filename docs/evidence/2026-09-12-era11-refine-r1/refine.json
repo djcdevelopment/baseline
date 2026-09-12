@@ -1,0 +1,435 @@
+{
+  "schema": "steward-refine/v1",
+  "sourceKey": "eed99a5bfe31ce37544dab5a4ddc4d5294524f61392da298727da6b72cc4e28f",
+  "era": "era11",
+  "builds": {
+    "d78cf0dcead4ac98e23558705a460dd7c55d703f35b2b48cb85bd9bba57fdce3": {
+      "localClusterId": 128,
+      "shot": "detail3",
+      "incumbent": "detail3",
+      "winner": "detail3~lo12",
+      "rounds": 2,
+      "path": [
+        "detail3",
+        "detail3~lo12"
+      ],
+      "winnerFile": "images/20260912-052708/0128_detail3~lo12.png",
+      "winnerShotKey": "326b4fc841292982c609c330804529481e965f3c2a24e3a583144acfd86d04cc",
+      "pose": {
+        "lens": {
+          "x": 204.349,
+          "y": 61.586,
+          "z": -6189.552
+        },
+        "placed": {
+          "x": 204.7,
+          "y": 59.832,
+          "z": -6189.2
+        },
+        "aim": {
+          "x": 186.4,
+          "y": 47,
+          "z": -6207.5
+        },
+        "yaw": 225,
+        "pitch": 6.16,
+        "clearance": "planned"
+      },
+      "metrics": {
+        "detail3": {
+          "score": null,
+          "vetoes": [
+            "no-structure"
+          ],
+          "structureFraction": 0.0,
+          "subjectEdgeDensity": 0.0,
+          "subjectBBoxFill": 0.0,
+          "skyFraction": 0.7237,
+          "liveTileShare": 0.0
+        },
+        "detail3~lo12": {
+          "score": 0.003186,
+          "vetoes": [],
+          "structureFraction": 0.07623,
+          "subjectEdgeDensity": 0.01154,
+          "subjectBBoxFill": 0.13482,
+          "skyFraction": 0.92377,
+          "liveTileShare": 0.0
+        }
+      }
+    },
+    "a3e3c1fa631e00ce9d3f51ed1e82bc5f1fc0b7cf500429ff25862fa90084ce96": {
+      "localClusterId": 295,
+      "shot": "detail2",
+      "incumbent": "detail2",
+      "winner": "detail2~lo12",
+      "rounds": 2,
+      "path": [
+        "detail2",
+        "detail2~lo12"
+      ],
+      "winnerFile": "images/20260912-052817/0295_detail2~lo12.png",
+      "winnerShotKey": "98a88baffeb377961953e0cff1ac424ab7c4b7e28b621dd0c0d0103eca925a08",
+      "pose": {
+        "lens": {
+          "x": -14735.55,
+          "y": 166.552,
+          "z": 8900.952
+        },
+        "placed": {
+          "x": -14735.3,
+          "y": 165.1,
+          "z": 8901.2
+        },
+        "aim": {
+          "x": -14771.2,
+          "y": 113.5,
+          "z": 8865.3
+        },
+        "yaw": 225,
+        "pitch": 45.464,
+        "clearance": "lifted+8m"
+      },
+      "metrics": {
+        "detail2": {
+          "score": 0.000648,
+          "vetoes": [],
+          "structureFraction": 0.88296,
+          "subjectEdgeDensity": 0.00069,
+          "subjectBBoxFill": 1.0,
+          "skyFraction": 0.0,
+          "liveTileShare": 0.0
+        },
+        "detail2~lo12": {
+          "score": 0.001007,
+          "vetoes": [],
+          "structureFraction": 0.85304,
+          "subjectEdgeDensity": 0.00109,
+          "subjectBBoxFill": 1.0,
+          "skyFraction": 0.0,
+          "liveTileShare": 0.0
+        }
+      }
+    },
+    "63ffb7cddb3f26a296b859d5ba0ab66ac5d36c4d004ab0ca4d88876f0b2596b4": {
+      "localClusterId": 42,
+      "shot": "detail2",
+      "incumbent": "detail2",
+      "winner": "detail2",
+      "rounds": 1,
+      "path": [
+        "detail2"
+      ],
+      "winnerFile": "images/20260912-052916/0042_detail2.png",
+      "winnerShotKey": "db261a539445a9212ed8f0b246e46adb9781682f13191f53e7d15d2717d9e8a7",
+      "pose": {
+        "lens": {
+          "x": -1182.936,
+          "y": 506.154,
+          "z": 6100.736
+        },
+        "placed": {
+          "x": -1182.6,
+          "y": 504.5,
+          "z": 6100.4
+        },
+        "aim": {
+          "x": -1211.1,
+          "y": 491.4,
+          "z": 6128.9
+        },
+        "yaw": 315,
+        "pitch": 18,
+        "clearance": "planned"
+      },
+      "metrics": {
+        "detail2": {
+          "score": null,
+          "vetoes": [
+            "no-structure"
+          ],
+          "structureFraction": 0.01461,
+          "subjectEdgeDensity": 0.03098,
+          "subjectBBoxFill": 0.01725,
+          "skyFraction": 0.98238,
+          "liveTileShare": 0.0278
+        }
+      }
+    },
+    "ce24e31bc10e0aef40690a5832973f02d7efc5def782a3ada15f60123ad3d8b3": {
+      "localClusterId": 292,
+      "shot": "detail1",
+      "incumbent": "detail1",
+      "winner": "detail1~o45~lo12",
+      "rounds": 2,
+      "path": [
+        "detail1",
+        "detail1~o45",
+        "detail1~o45~lo12"
+      ],
+      "winnerFile": "images/20260912-053038/0292_detail1~o45~lo12.png",
+      "winnerShotKey": "ea2ad5e48a0cc69cde39702011ef2c13012f77b6d0578fd3fae8f8e00df01162",
+      "pose": {
+        "lens": {
+          "x": -81.903,
+          "y": 120.299,
+          "z": 12339.35
+        },
+        "placed": {
+          "x": -81.9,
+          "y": 118.7,
+          "z": 12338.9
+        },
+        "aim": {
+          "x": -82.2,
+          "y": 98.4,
+          "z": 12382.9
+        },
+        "yaw": 359.609,
+        "pitch": 24.766,
+        "clearance": "lifted+8m"
+      },
+      "metrics": {
+        "detail1": {
+          "score": 0.010267,
+          "vetoes": [],
+          "structureFraction": 0.86325,
+          "subjectEdgeDensity": 0.01105,
+          "subjectBBoxFill": 1.0,
+          "skyFraction": 0.11371,
+          "liveTileShare": 0.0972
+        },
+        "detail1~o45": {
+          "score": 0.020808,
+          "vetoes": [],
+          "structureFraction": 0.77543,
+          "subjectEdgeDensity": 0.02363,
+          "subjectBBoxFill": 1.0,
+          "skyFraction": 0.15011,
+          "liveTileShare": 0.6389
+        },
+        "detail1~o45~lo12": {
+          "score": 0.028747,
+          "vetoes": [],
+          "structureFraction": 0.72548,
+          "subjectEdgeDensity": 0.03375,
+          "subjectBBoxFill": 0.9875,
+          "skyFraction": 0.24861,
+          "liveTileShare": 0.6389
+        }
+      }
+    },
+    "d2b69966038d188f5103506bfc43f5d0307917e27471c3540670d6fc77fb9db9": {
+      "localClusterId": 117,
+      "shot": "detail1",
+      "incumbent": "detail1",
+      "winner": "detail1",
+      "rounds": 1,
+      "path": [
+        "detail1"
+      ],
+      "winnerFile": "images/20260912-053104/0117_detail1.png",
+      "winnerShotKey": "1b34a6d80e1474c3898bc0457bb39b89c13def6492644fd3ac0c5c3952261768",
+      "pose": {
+        "lens": {
+          "x": 7119.764,
+          "y": 95.353,
+          "z": 5894.563
+        },
+        "placed": {
+          "x": 7120.1,
+          "y": 93.7,
+          "z": 5894.9
+        },
+        "aim": {
+          "x": 7091.6,
+          "y": 80.6,
+          "z": 5866.4
+        },
+        "yaw": 225,
+        "pitch": 18,
+        "clearance": "planned"
+      },
+      "metrics": {
+        "detail1": {
+          "score": 0.002491,
+          "vetoes": [],
+          "structureFraction": 0.43875,
+          "subjectEdgeDensity": 0.00376,
+          "subjectBBoxFill": 0.92473,
+          "skyFraction": 0.04602,
+          "liveTileShare": 0.2847
+        }
+      }
+    },
+    "4db9cf55d57d9546816625ba6a3f3458b80fa53765fc6468ea73ce1055df6651": {
+      "localClusterId": 129,
+      "shot": "detail1",
+      "incumbent": "detail1",
+      "winner": "detail1~c75~c75",
+      "rounds": 2,
+      "path": [
+        "detail1",
+        "detail1~c75",
+        "detail1~c75~c75"
+      ],
+      "winnerFile": "images/20260912-053226/0129_detail1~c75~c75.png",
+      "winnerShotKey": "91376ab11f6c0a3e0f70c6649d658b7c203cad98b2ff054eb2e343b1333befde",
+      "pose": {
+        "lens": {
+          "x": 7680.76,
+          "y": 85.169,
+          "z": -4603.54
+        },
+        "placed": {
+          "x": 7681.1,
+          "y": 83.5,
+          "z": -4603.2
+        },
+        "aim": {
+          "x": 7664.9,
+          "y": 76.9,
+          "z": -4619.4
+        },
+        "yaw": 225,
+        "pitch": 16.14,
+        "clearance": "planned"
+      },
+      "metrics": {
+        "detail1": {
+          "score": 0.006253,
+          "vetoes": [],
+          "structureFraction": 0.30733,
+          "subjectEdgeDensity": 0.01128,
+          "subjectBBoxFill": 0.62813,
+          "skyFraction": 0.16556,
+          "liveTileShare": 0.1528
+        },
+        "detail1~c75": {
+          "score": 0.009579,
+          "vetoes": [],
+          "structureFraction": 0.54718,
+          "subjectEdgeDensity": 0.01295,
+          "subjectBBoxFill": 0.75438,
+          "skyFraction": 0.09607,
+          "liveTileShare": 0.1319
+        },
+        "detail1~c75~c75": {
+          "score": 0.011112,
+          "vetoes": [],
+          "structureFraction": 0.84757,
+          "subjectEdgeDensity": 0.01207,
+          "subjectBBoxFill": 0.93188,
+          "skyFraction": 0.07274,
+          "liveTileShare": 0.125
+        }
+      }
+    },
+    "13f588938a8c6ad8cb0fc7b993286290cd2d6fecb16b3bdfa32b1970388e27b0": {
+      "localClusterId": 20,
+      "shot": "detail2",
+      "incumbent": "detail2",
+      "winner": "detail2",
+      "rounds": 1,
+      "path": [
+        "detail2"
+      ],
+      "winnerFile": "images/20260912-053251/0020_detail2.png",
+      "winnerShotKey": "62a7bfe7365567b7c09a1019431272b14dc7ecddd60a003a2ec101fe0c035d2e",
+      "pose": {
+        "lens": {
+          "x": 1774.964,
+          "y": 734.954,
+          "z": 3653.064
+        },
+        "placed": {
+          "x": 1775.3,
+          "y": 733.3,
+          "z": 3653.4
+        },
+        "aim": {
+          "x": 1746.8,
+          "y": 720.2,
+          "z": 3624.9
+        },
+        "yaw": 225,
+        "pitch": 18,
+        "clearance": "planned"
+      },
+      "metrics": {
+        "detail2": {
+          "score": 0.004448,
+          "vetoes": [],
+          "structureFraction": 0.05052,
+          "subjectEdgeDensity": 0.01979,
+          "subjectBBoxFill": 0.47768,
+          "skyFraction": 0.8349,
+          "liveTileShare": 0.0764
+        }
+      }
+    },
+    "602940dd28241df5e66606bc0e347434218898e7c18eb8989dd119380cf74c44": {
+      "localClusterId": 116,
+      "shot": "detail1",
+      "incumbent": "detail1",
+      "winner": "detail1~lo12~lo12",
+      "rounds": 2,
+      "path": [
+        "detail1",
+        "detail1~lo12",
+        "detail1~lo12~lo12"
+      ],
+      "winnerFile": "images/20260912-053416/0116_detail1~lo12~lo12.png",
+      "winnerShotKey": "8498f00570816b00795d77b935093cc0b4676aa2e330d81b16ba223605bad678",
+      "pose": {
+        "lens": {
+          "x": 8087.847,
+          "y": 99.603,
+          "z": 13352.05
+        },
+        "placed": {
+          "x": 8088.2,
+          "y": 97.8,
+          "z": 13351.7
+        },
+        "aim": {
+          "x": 8057.8,
+          "y": 97.3,
+          "z": 13382.1
+        },
+        "yaw": 315,
+        "pitch": 0.63,
+        "clearance": "planned"
+      },
+      "metrics": {
+        "detail1": {
+          "score": 0.011531,
+          "vetoes": [],
+          "structureFraction": 0.78315,
+          "subjectEdgeDensity": 0.01303,
+          "subjectBBoxFill": 1.0,
+          "skyFraction": 0.10074,
+          "liveTileShare": 0.3681
+        },
+        "detail1~lo12": {
+          "score": 0.015221,
+          "vetoes": [],
+          "structureFraction": 0.75394,
+          "subjectEdgeDensity": 0.01753,
+          "subjectBBoxFill": 1.0,
+          "skyFraction": 0.20055,
+          "liveTileShare": 0.375
+        },
+        "detail1~lo12~lo12": {
+          "score": 0.01818,
+          "vetoes": [],
+          "structureFraction": 0.60364,
+          "subjectEdgeDensity": 0.0234,
+          "subjectBBoxFill": 1.0,
+          "skyFraction": 0.37017,
+          "liveTileShare": 0.3681
+        }
+      }
+    }
+  }
+}
