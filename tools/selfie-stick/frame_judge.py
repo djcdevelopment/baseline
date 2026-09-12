@@ -3,23 +3,27 @@
 
 The publication pipeline measures frames days later on another machine: derivatives,
 shuttle, frame_geometry on a B70, a paired table by hand. That is fine for a corpus and
-useless for a loop. This module is the same two measurements -- master_detail's tile
-math on the native 4K luma and frame_geometry's SegFormer mask metrics on the 1600 px
-plane -- packaged so a worker can call them on AM4 about a second after the shutter
-and decide whether to move the camera.
+useless for a loop. This module packages the measurements so a worker can call them on
+AM4 about a second after the shutter and decide whether to move the camera.
 
-What it is good for, measured (see selfie-stick-scoring-bench and gallery-detail-scale-
-not-fill): the mask metrics failed as an absolute ranker (domain gap, corr +0.077 with
-px/m) but were decisive as a PAIRED judge of the same build (13.9x structure, orbit vs
-detail). A refine loop only ever compares candidates of one build from one session, so
-it lives entirely in the regime that works. Everything measured is journalled; the
-decision rule is a first cut in one dict, meant to be re-litigated from the receipts.
+v2 (2026-09-12, after reading all 47 frames of era11-refine-r1 against the journal):
+the decision is CLASS-FREE. SegFormer's ADE20K "structure" mask is wrong on this world
+about as often as it is right -- 0 % on a dark twisted tower, 3.7 % on a stone tower,
+8.7 % on snow-covered ice shrines, 88 % on the inside of a roof, 58 % "foliage" on
+gold-veined marble -- and as a veto/guard it killed three of the best frames of the run
+and protected the worst. It is kept for sky and water fractions only. What separated
+good from bad, in the numbers already journalled: live-tile share (master_detail's tile
+math on the native luma), mean luma, luma contrast, sky fraction, and the receipt's
+pieces_near_aim (61 for a beam whose aim sat over open water; >= 515 for every other
+build). The 47 eye labels live beside the journal (eye-labels.json) and --replay tests
+any threshold change against them without a reshoot.
 
 CPU only, deliberately: the GPU is rendering the next frame, the sample is tiny, and
-b0 on eight threads is ~0.4 s per frame. Weights come from the local HF cache
+b0 on eight threads is ~0.5 s per frame. Weights come from the local HF cache
 (HF_HUB_OFFLINE); nothing is downloaded on the capture host.
 
     ~/venvs/torch-xpu/bin/python frame_judge.py --images <root>/images --limit 3
+    python frame_judge.py --replay <root>/refine-journal.jsonl --labels eye-labels.json
 """
 import argparse
 import json
@@ -38,25 +42,27 @@ for key, value in (("HF_HUB_OFFLINE", "1"), ("TRANSFORMERS_OFFLINE", "1"),
 import frame_geometry   # noqa: E402  (no torch at import time)
 import master_detail    # noqa: E402  (numpy/PIL only, inside functions)
 
-# The whole decision rule. Change here, never inline.
+# The whole decision rule. Change here, never inline; then run --replay.
 THRESHOLDS = {
-    "lumaDead": 0.05,        # mean luma below this: black frame (inside a wall, night)
-    "lumaWhite": 0.95,       # mean luma above this: whiteout (fog, sky-only)
-    "structureMin": 0.05,    # less structure than this in the mask: no subject in frame
-    "structureGuard": 0.8,   # a candidate may not drop structureFraction below this x incumbent
-    "wallStructure": 0.8,    # structure above this AND edge below wallEdge = camera inside/against geometry;
-    "wallEdge": 0.003,       # measured 2026-09-12: four wall frames 0.0007-0.0015, every real frame >= 0.0048
+    "piecesMin": 200,        # receipt pieces_near_aim below this: the aim is off the build's mass
+    "flatStd": 0.08,         # luma contrast below this: mist, whiteout, or the inside of a roof
+    "lumaDark": 0.15,        # mean luma below this: shaded close-up, texels, black frame
+    "skyMax": 0.75,          # sky fraction above this: aiming at air (linear builds, sky-chained mass)
+    "liveMin": 0.10,         # live-tile share below this: nothing textured in frame
     "deadPx": 0.02,          # per-pixel floors, reported only
     "whitePx": 0.98,
 }
 GEOMETRY_WIDTH = 1600        # the corpus plane frame_geometry measures on (make_derivatives' large/)
+# The aim is always at frame centre (the camera looks at it), so the middle window is the subject's.
+CENTRAL_COLS = range(master_detail.GRID_X // 4, 3 * master_detail.GRID_X // 4)     # 4..11 of 16
+CENTRAL_ROWS = range(master_detail.GRID_Y // 4, master_detail.GRID_Y - master_detail.GRID_Y // 4)  # 2..6 of 9
 
 
 def score(metrics):
-    """Higher is better, within one build only. Edge density inside the mask, tempered by how
-    much of the frame the mask covers, so a sliver of sharp wall does not beat a full facade."""
-    g = metrics["geometry"]
-    return round(float(g["subjectEdgeDensity"]) * math.sqrt(max(0.0, float(g["structureFraction"]))), 6)
+    """Higher is better, within one build only: how much of the frame is textured, times how
+    strongly. Class-free on purpose -- see the module docstring."""
+    m = metrics["master"]
+    return round(float(m["liveTileShare"]) * float(m["gradMean"]), 7)
 
 
 def veto(receipt, metrics):
@@ -70,24 +76,23 @@ def veto(receipt, metrics):
         reasons.append("occluded")
     if receipt.get("clearance") == "still_blocked":
         reasons.append("still-blocked")
-    if receipt.get("pieces_near_aim") is not None and receipt["pieces_near_aim"] <= 0:
-        reasons.append("no-pieces")
+    pieces = receipt.get("pieces_near_aim")
+    if pieces is not None and pieces < THRESHOLDS["piecesMin"]:
+        reasons.append("aim-off-mass")
     if metrics is None:
         if not reasons:
             reasons.append("no-image")
         return reasons
     m = metrics["master"]
-    if m["lumaMean"] < THRESHOLDS["lumaDead"]:
-        reasons.append("dead-frame")
-    if m["lumaMean"] > THRESHOLDS["lumaWhite"]:
-        reasons.append("whiteout")
-    g = metrics["geometry"]
-    if g["structureFraction"] < THRESHOLDS["structureMin"]:
-        reasons.append("no-structure")
-    # A camera inside a roof reads as ~90% "structure" with no edges at all. Without this veto
-    # the structure guard protects exactly the worst frame in the set (era11 a3e3c1fa, 09-12).
-    if g["structureFraction"] > THRESHOLDS["wallStructure"] and g["subjectEdgeDensity"] < THRESHOLDS["wallEdge"]:
-        reasons.append("wall")
+    g = metrics.get("geometry") or {}
+    if m["lumaStd"] < THRESHOLDS["flatStd"]:
+        reasons.append("flat")
+    if m["lumaMean"] < THRESHOLDS["lumaDark"]:
+        reasons.append("dark")
+    if g.get("skyFraction") is not None and g["skyFraction"] > THRESHOLDS["skyMax"]:
+        reasons.append("sky")
+    if m["liveTileShare"] < THRESHOLDS["liveMin"]:
+        reasons.append("no-texture")
     return reasons
 
 
@@ -95,21 +100,16 @@ def compare(incumbent, candidates):
     """incumbent/candidates: dicts with name, metrics (or None), vetoes (list), score (or None).
     Returns {"winner": name, "reason": str, "rows": [...]} -- the rows are the journal."""
     inc_ok = not incumbent["vetoes"] and incumbent["metrics"] is not None
-    inc_struct = (incumbent["metrics"]["geometry"]["structureFraction"] if inc_ok else 0.0)
     inc_score = incumbent["score"] if inc_ok else None
-    rows = []
-    best = None
+    rows, best = [], None
     for c in candidates:
-        row = {"name": c["name"], "score": c["score"], "vetoes": list(c["vetoes"]),
-               "delta": None, "guard_ok": None, "eligible": False}
-        if c["vetoes"] or c["metrics"] is None:
+        row = {"name": c["name"], "score": c["score"], "vetoes": list(c["vetoes"]), "delta": None, "eligible": False}
+        if c["vetoes"] or c["metrics"] is None or c["score"] is None:
             rows.append(row)
             continue
-        row["guard_ok"] = (not inc_ok) or (
-            c["metrics"]["geometry"]["structureFraction"] >= THRESHOLDS["structureGuard"] * inc_struct)
-        row["delta"] = None if inc_score is None else round(c["score"] - inc_score, 6)
-        row["eligible"] = bool(row["guard_ok"])
-        if row["eligible"] and (best is None or c["score"] > best["score"]):
+        row["delta"] = None if inc_score is None else round(c["score"] - inc_score, 7)
+        row["eligible"] = True
+        if best is None or c["score"] > best["score"]:
             best = c
         rows.append(row)
     if best is None:
@@ -119,9 +119,38 @@ def compare(incumbent, candidates):
     if not inc_ok:
         return {"winner": best["name"], "reason": "incumbent vetoed; best eligible candidate", "rows": rows}
     if best["score"] > inc_score:
-        return {"winner": best["name"],
-                "reason": f"score {best['score']:.5f} > incumbent {inc_score:.5f}", "rows": rows}
+        return {"winner": best["name"], "reason": f"score {best['score']:.6f} > incumbent {inc_score:.6f}", "rows": rows}
     return {"winner": incumbent["name"], "reason": "no candidate beat the incumbent (ties keep it)", "rows": rows}
+
+
+def tile_metrics(grad, np):
+    """master_detail's 16x9 tile pass plus the central window and the live-tile centroid."""
+    H, W = grad.shape
+    GX, GY = master_detail.GRID_X, master_detail.GRID_Y
+    tiles = []
+    for j in range(GY):
+        row = []
+        for i in range(GX):
+            row.append(float(grad[j * H // GY:(j + 1) * H // GY, i * W // GX:(i + 1) * W // GX].mean()))
+        tiles.append(row)
+    flat = [t for row in tiles for t in row]
+    tiles_sorted = sorted(flat, reverse=True)
+    top = max(1, len(flat) // 10)
+    total = sum(flat) or 1e-9
+    live = [(i, j, tiles[j][i]) for j in range(GY) for i in range(GX) if tiles[j][i] >= master_detail.LIVE_FLOOR]
+    central = [tiles[j][i] for j in CENTRAL_ROWS for i in CENTRAL_COLS]
+    out = {
+        "detailTop10": round(sum(tiles_sorted[:top]) / total, 4),
+        "liveTileShare": round(len(live) / float(len(flat)), 4),
+        "centralLiveShare": round(sum(1 for t in central if t >= master_detail.LIVE_FLOOR) / float(len(central)), 4),
+        "centralGradMean": round(sum(central) / float(len(central)), 5),
+        "liveCentroidX": None, "liveCentroidY": None,
+    }
+    if live:
+        w = sum(t for _, _, t in live) or 1e-9
+        out["liveCentroidX"] = round(sum((i + 0.5) / GX * t for i, _, t in live) / w, 4)
+        out["liveCentroidY"] = round(sum((j + 0.5) / GY * t for _, j, t in live) / w, 4)
+    return out
 
 
 class Judge:
@@ -137,7 +166,7 @@ class Judge:
         try:
             torch.set_num_interop_threads(1)
         except RuntimeError:
-            pass    # already started parallel work in this process; keep its setting
+            pass
         self.device, self.threads, self.model_name = device, threads, model
         self.processor = AutoImageProcessor.from_pretrained(model)
         self.model = SegformerForSemanticSegmentation.from_pretrained(model).to(device).eval()
@@ -145,13 +174,11 @@ class Judge:
         self.load_s = round(time.time() - t0, 2)
 
     def segment(self, img):
-        """PIL RGB -> HxW ADE20K class ids at the image's own size."""
         torch = self.torch
         inputs = self.processor(images=img, return_tensors="pt").to(self.device)
         with torch.no_grad():
             logits = self.model(**inputs).logits
-        up = torch.nn.functional.interpolate(
-            logits, size=(img.size[1], img.size[0]), mode="bilinear", align_corners=False)
+        up = torch.nn.functional.interpolate(logits, size=(img.size[1], img.size[0]), mode="bilinear", align_corners=False)
         return up.argmax(dim=1)[0].to("cpu").numpy()
 
     def measure(self, png_path):
@@ -162,36 +189,21 @@ class Judge:
         w, h = rgb.size
         decode_ms = round((time.time() - t0) * 1000)
 
-        # Master plane: master_detail's tile math on the native luma, HUD cropped.
+        # Master plane: master_detail's tile math on the native luma, HUD cropped. This is the judge.
         t1 = time.time()
         l, t, r, b = master_detail.CROP_FRAC
         grey_img = rgb.convert("L").crop((int(l * w), int(t * h), int(r * w), int(b * h)))
         full = np.asarray(grey_img, dtype="float32") / 255.0
         gy, gx = np.gradient(full)
         grad = np.hypot(gx, gy)
-        H, W = grad.shape
-        tiles = []
-        for j in range(master_detail.GRID_Y):
-            for i in range(master_detail.GRID_X):
-                tile = grad[j * H // master_detail.GRID_Y:(j + 1) * H // master_detail.GRID_Y,
-                            i * W // master_detail.GRID_X:(i + 1) * W // master_detail.GRID_X]
-                tiles.append(float(tile.mean()))
-        tiles_sorted = sorted(tiles, reverse=True)
-        top = max(1, len(tiles) // 10)
-        total = sum(tiles) or 1e-9
-        master = {
-            "width": w, "height": h,
-            "gradMean": round(float(grad.mean()), 5),
-            "detailTop10": round(sum(tiles_sorted[:top]) / total, 4),
-            "liveTileShare": round(sum(1 for x in tiles if x >= master_detail.LIVE_FLOOR) / float(len(tiles)), 4),
-            "lumaMean": round(float(full.mean()), 4),
-            "lumaStd": round(float(full.std()), 4),
-            "deadFrac": round(float((full < THRESHOLDS["deadPx"]).mean()), 4),
-            "whiteFrac": round(float((full > THRESHOLDS["whitePx"]).mean()), 4),
-        }
+        master = {"width": w, "height": h, "gradMean": round(float(grad.mean()), 5),
+                  "lumaMean": round(float(full.mean()), 4), "lumaStd": round(float(full.std()), 4),
+                  "deadFrac": round(float((full < THRESHOLDS["deadPx"]).mean()), 4),
+                  "whiteFrac": round(float((full > THRESHOLDS["whitePx"]).mean()), 4)}
+        master.update(tile_metrics(grad, np))
         master_ms = round((time.time() - t1) * 1000)
 
-        # Geometry plane: the 1600 px derivative the corpus was measured on, made the same way.
+        # Geometry plane: SegFormer on the corpus' 1600 px plane. Kept for sky/water; the rest is logged.
         t2 = time.time()
         dw = GEOMETRY_WIDTH
         dh = int(round(h * dw / float(w)))
@@ -208,13 +220,72 @@ class Judge:
                             "total_ms": round((time.time() - t0) * 1000)}}
 
 
+# ---- offline replay against a journal and the eye labels
+def replay(journal_path, labels_path=None):
+    labels = json.load(open(labels_path, encoding="utf-8"))["labels"] if labels_path else {}
+    build, judged, decisions = None, {}, []
+    for line in open(journal_path, encoding="utf-8"):
+        try:
+            d = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if d["event"] == "plan_fed":
+            build = d["name"].split("-")[1]
+        elif d["event"] == "judged":
+            m = {"master": d["master"], "geometry": d["geometry"]} if d.get("master") else None
+            if m and "lumaStd" not in m["master"]:
+                continue
+            v = veto(d["receipt"], m)
+            stem = os.path.basename(d["file"])[:-4] if d.get("file") else d["name"]
+            judged[(build, d["name"])] = {"name": d["name"], "stem": stem, "metrics": m, "vetoes": v,
+                                          "score": score(m) if m and not v else None, "old": d.get("vetoes")}
+        elif d["event"] == "decision" and d.get("candidates"):
+            decisions.append((build, d))
+    by_class = {}
+    for e in judged.values():
+        lab = labels.get(e["stem"], "unlabelled")
+        by_class.setdefault(lab, []).append(e)
+    print("vetoes by eye label:")
+    for lab in sorted(by_class):
+        es = by_class[lab]
+        vetoed = [e for e in es if e["vetoes"]]
+        reasons = {}
+        for e in vetoed:
+            for r in e["vetoes"]:
+                reasons[r] = reasons.get(r, 0) + 1
+        flag = "  <-- GOOD frames vetoed" if lab == "GOOD" and vetoed else ""
+        print(f"  {lab:16} {len(vetoed):2}/{len(es):<2} vetoed  {reasons}{flag}")
+        for e in es:
+            if (lab == "GOOD" and e["vetoes"]) or (lab.startswith("BAD") and not e["vetoes"]):
+                print(f"      {e['stem']:<26} vetoes={e['vetoes']} score={e['score']}")
+    print("\nround-1 decisions under the current rule:")
+    for b, d in decisions:
+        if d["round"] != 1:
+            continue
+        inc = judged.get((b, d["incumbent"]))
+        cands = [judged[(b, c["name"])] for c in d["candidates"] if (b, c["name"]) in judged]
+        if inc is None:
+            continue
+        v = compare(inc, cands)
+        wl = labels.get(next((e["stem"] for e in [inc] + cands if e["name"] == v["winner"]), ""), "?")
+        flag = "" if v["winner"] == d["winner"] else "  (was " + d["winner"] + ")"
+        print(f"  {b} inc={d['incumbent']:<8} -> {v['winner']:<18} [{wl}] {v['reason']}{flag}")
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--images", required=True, help="directory (recursed) of PNG masters")
+    p.add_argument("--images", help="directory (recursed) of PNG masters to measure")
     p.add_argument("--limit", type=int, default=0)
     p.add_argument("--threads", type=int, default=8)
     p.add_argument("--out", default="")
+    p.add_argument("--replay", help="refine-journal.jsonl to re-decide offline under the current THRESHOLDS")
+    p.add_argument("--labels", help="eye-labels.json to grade the replay against")
     args = p.parse_args()
+    if args.replay:
+        replay(args.replay, args.labels)
+        return
+    if not args.images:
+        p.error("--images or --replay")
     files = sorted(os.path.join(d, f) for d, _, fs in os.walk(args.images) for f in fs if f.lower().endswith(".png"))
     if args.limit:
         files = files[:args.limit]
@@ -224,15 +295,15 @@ def main():
     for path in files:
         m = judge.measure(path)
         m["score"] = score(m)
+        m["vetoes"] = veto({}, m)
         out[os.path.basename(path)] = m
-        g, t = m["geometry"], m["timings"]
-        print(f"{os.path.basename(path)}: score {m['score']:.5f} struct {g['structureFraction']:.3f} "
-              f"edge {g['subjectEdgeDensity']:.4f} bbox {g['subjectBBoxFill']:.3f} sky {g['skyFraction']:.3f} "
-              f"live {m['master']['liveTileShare']:.3f} luma {m['master']['lumaMean']:.3f} | "
-              f"decode {t['decode_ms']} master {t['master_ms']} model {t['model_ms']} total {t['total_ms']} ms")
+        mm, g, t = m["master"], m["geometry"], m["timings"]
+        print(f"{os.path.basename(path)}: score {m['score']:.6f} live {mm['liveTileShare']:.2f} central {mm['centralLiveShare']:.2f} "
+              f"grad {mm['gradMean']:.4f} luma {mm['lumaMean']:.2f} std {mm['lumaStd']:.3f} sky {g['skyFraction']:.2f} "
+              f"cx {mm['liveCentroidX']} vetoes {m['vetoes']} | total {t['total_ms']} ms")
     if args.out:
         with open(args.out, "w", encoding="utf-8") as fh:
-            json.dump({"schema": "steward-frame-judge/v1", "thresholds": THRESHOLDS, "frames": out}, fh, indent=1)
+            json.dump({"schema": "steward-frame-judge/v2", "thresholds": THRESHOLDS, "frames": out}, fh, indent=1)
 
 
 if __name__ == "__main__":

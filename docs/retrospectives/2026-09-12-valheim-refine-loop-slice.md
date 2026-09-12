@@ -99,3 +99,68 @@ from receipts without a reshoot.
 - The r2 fan only looks around the r1 winner; a candidate that lost r1 to the guard is never revisited.
 - `status.completedShots` counts candidates (47 against `targetShots` 8) — cosmetic.
 - Steward's 1.0 epoch: nothing here is comparable with the v1/v2 numbers except the sample choice.
+
+## Addendum, later the same day: all 47 frames read, and the rule rewritten
+
+The first pass looked at four pairs. Reading every frame of `era11-refine-r1` against the journal (23 by
+eye, the rest by numbers that turned out to sort the same way; labels in
+[`eye-labels.json`](../evidence/2026-09-12-era11-refine-r1/eye-labels.json)) changed the judge.
+
+**SegFormer's "structure" mask is wrong on this world about as often as it is right.** It called the dark
+twisted tower 0 % structure in two top-down frames that are among the best of the run
+(`0116_detail1~o45`, `~lo12~o45`), a stone-brick tower at 42 m 3.7 % (`0129_detail1~lo12`), the snow-
+covered ice shrines 8.7 % (`0295_detail2~c75`), the inside of a roof 88 % (`0295_detail2`), and gold-veined
+marble 58 % foliage. As the v1 veto/guard/score it killed three of the best frames and protected the
+worst. Its sky and water fractions are fine; nothing else about it now decides anything.
+
+**The class-free numbers already journalled separate good from bad cleanly.** GOOD frames: `liveTileShare`
+0.12–0.64, `lumaMean` 0.48–0.69, `lumaStd` 0.16–0.29. Roof interiors: live 0.00, `gradMean ≤ 0.0007`.
+Mistlands mist: `lumaStd` 0.02–0.05. Sky ladders: `sky ≥ 0.80`, luma ≥ 0.73. Dark close-ups: luma ≤ 0.13.
+The one overlap — ice and sun glare at live 0.28, the frame Derek caught live — is separated by the
+receipt alone: `pieces_near_aim = 61` against ≥ 515 for every other build.
+
+**Three of the eight "worst" builds are linear** (a beam with a hut at one end, a ladder to a sky bucket, a
+rope-ladder diagonal): the box centre is the midpoint of a line — air or water. No camera move finds
+structure there; the planner has to aim at an end. A fourth sits in Mistlands mist, which a forced `Clear`
+does not touch (the mist is a scene object). The worst-by-`liveTileShare` sample over-selects exactly
+these; in the full tier they are a minority, but the loop has to spend nothing on them.
+
+**Moves.** `c75` twice reaches the marble's texels (blocky veins at 24–32 m) — and texel edges are high-
+gradient, so the metric *rewards* pixelation. `lo12` twice found the two best whole-tower frames at 3–8°;
+28° is too high for tall builds. The occlusion ladder's `lifted+26/40m` accidentally produced the two best
+top-downs, so `up20` is now a deliberate move.
+
+### v2 (`frame_judge.py`, `refine_worker.py`, same day)
+
+Class-free judge: vetoes `aim-off-mass` (`pieces_near_aim < 200`), `flat` (`lumaStd < 0.08`), `dark`
+(`lumaMean < 0.15`), `sky` (`> 0.75`), `no-texture` (`liveTileShare < 0.10`), plus the receipt's
+`skipped`/`occluded`/`still_blocked`; score `liveTileShare · gradMean`; no guard. `--replay` re-decides a
+journal against the labels without a reshoot: on r1, **0 of 13 GOOD frames vetoed, all 27 BAD frames
+vetoed for the expected reason**, and the four fixable builds pick a GOOD frame in round 1. The worker gates
+the fan on the first frame (`needs-aim`, `needs-demist`, sky → one `re-aim` only), offers `up20`, offers
+`c75` once and only while under-filled, adds `re-aim` toward the live-tile centroid, and journals
+requested vs placed poses.
+
+### `era11-refine-r2` (same 8 builds, v2): 668 s, one launch, 30 shots, exit 0
+
+| build | needs | shots | winner | eye |
+|---|---|---|---|---|
+| d78cf0dc (mist) | demist | 1 | — | correctly abandoned |
+| a3e3c1fa (roof) | — | 8 | `detail2~c75` (out of the roof, the ice shrines) | GOOD, round 1 |
+| 63ffb7cd (sky ladder) | sky | 2 | — (one `re-aim`, still sky) | correctly abandoned |
+| ce24e31b | — | 8 | `detail1~o45~o45` (lit marble alcove) | ok — r1's `~o45~lo12` corner was the better photo; the score prefers texture density |
+| d2b69966 (beam over water) | aim | 1 | — | correctly abandoned, 6 shots saved |
+| 4db9cf55 (sea tower) | — | 9 | `detail1~o45~o45` | GOOD |
+| 13f58893 (rope ladder) | sky | 2 | `detail2~aim` — the re-aim swung onto the stone platform | better; haze remains |
+| 602940dd (twisted tower) | — | 7 | `detail1~up20~up20` — the top-down of the crown | GOOD |
+
+30 shots against r1's 47 for the same eight builds, no junk winner, and the two unfixable builds now come
+back as a worklist for the planner instead of as photographs.
+
+### What this is for
+
+Derek, on reading the review: "we accept that we're not going to get everything great. but if we're not
+wasting 30–40 % useless cuts that go through the pipeline that's still a huge gain in overall throughput."
+That is the bar. The veto is the product; the winner is the bonus. The number to read from the full
+84-build run is round-0 incumbents vetoed ÷ 84 — the junk rate the pipeline was carrying — and every one of
+those is now fixed in-session or handed back as `needs-*` instead of shipped.
