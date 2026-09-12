@@ -309,3 +309,13 @@ chain, per-page), era7 canary, `--verify` 9/9, `shoot.mjs` study-filters / study
 `verify_sweep.ps1` all clear. `shoot.mjs` still skips find-search / find-thread / request-dialog (creators name
 search timed out — unrelated to the viewer, was not re-checked). Baseline fallback
 `tools/selfie-stick/gallery/index.html` re-synced byte-identical.
+
+## Front door fits one screen (2026-09-12 05:00 UTC), chronicles `20260912T050004Z-282f720d8c76`
+
+Derek: the footer hid below the fold and needed a scroll. It did — by design: `.door` was sized to
+`100svh − header − main padding` so the footer began "exactly at the fold". Now `body` is a flex column at
+`min-height:100svh`, the front page's `main.front` takes what the header and footer leave and the door centres in it
+(only the front page opts in; the guide's margins keep collapsing). Measured live: no overflow at 1440×900,
+1920×1080, 390×844, footer flush to the bottom; a 375×667 phone still scrolls 53 px, the content's own height.
+ComfyStewardView `7cf17cd` (fix) + receipt commit; rollback `deploy.py --rollback 20260910T173815Z-3f4a2b77fe0f`.
+`smoke_front.mjs` 15/15, `verify_sweep.ps1` chronicles leg all clear.
