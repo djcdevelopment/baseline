@@ -1,0 +1,27 @@
+{
+  "schema": "steward-frame-rejects/v1",
+  "era": "era11",
+  "gated": true,
+  "rejected": 1,
+  "emptiedAlbums": 1,
+  "reshoot": [
+    "d2b69966038d188f5103506bfc43f5d0307917e27471c3540670d6fc77fb9db9"
+  ],
+  "needs": {
+    "d2b69966038d188f5103506bfc43f5d0307917e27471c3540670d6fc77fb9db9": "aim"
+  },
+  "builds": [
+    {
+      "buildKey": "d2b69966038d188f5103506bfc43f5d0307917e27471c3540670d6fc77fb9db9",
+      "kept": 0,
+      "frames": [
+        {
+          "id": "era11-d2b69966038d-detail1",
+          "stage": "refine",
+          "reason": "refine: needs-aim",
+          "verdict": "refine"
+        }
+      ]
+    }
+  ]
+}
