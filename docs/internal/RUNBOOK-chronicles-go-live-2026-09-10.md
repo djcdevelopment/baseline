@@ -370,3 +370,22 @@ only — gate PASS; 130 Python / 85 Node; browser-smoke local + live (new leg: n
 who rows, pick turns the carousel with the view held in place); `smoke_front` 15/15; sweep all clear. Tried and
 reverted on the way: `white-space: nowrap` on the two halves of the Split cell — it made the row shorter on a phone
 but pushed Status off the screen.
+
+## Portrait picker — S1 + S2 built and proven locally, review pass done (2026-09-12, not deployed)
+
+The generative lane's 96 painted portraits (1,375 takes, `E:\omen\DMos\artifacts\corpus-viking-profiles-20260910`) are
+cut into a library (`ComfyStewardView/tools/chronicles/portraits/build_manifest.py` → `E:\omen\steward-multi-era\portraits\
+viking96-20260912`, 382 takes, 1,146 webp, 29.7 MiB), shipped by `build.py --library` into a schema-2 `portraits.json`
+(the 48 slate rows first, byte-compatible with every v1 reader), and resolved on the creators lane by one module,
+`web/portraits.js`. The profile grows a "Choose a portrait" drawer (`web/portrait-picker.js`, the era viewer's live-count
+mechanic) for a visitor with a built claim on the profile; the choice is recorded on this device and repaints the hero,
+ribbon, tree and pair card. Derek walked all 96 contact sheets on `baseline/tools/portrait-corpus/review.py` (3 strips
+changed, 93 accepted); `concepts.json` is all `manual`, so the library builds without `--dev`. Verified: 97 Node + 131
+Python (era-archive), 52 Python + 12 Node (chronicles), 9 (portrait-corpus); `PICKER=1 browser-smoke.mjs` against the
+dev host (`http://127.0.0.1:8773/`, root `E:\omen\steward-multi-era\devsite`): 144 portraits → Carpenter 8 → +red hair 5,
+30 trades kept with 5 dimmed, choose dresses the hero and the tree's anchor, focus returns, the archive's pick undresses.
+**Nothing deployed**; pins moved to `?v=11` in the shells and tests, the sweep stays at `?v=10` until the deploy commit.
+Next: S3 (`portrait` claim on the payload, `coordinate.py` ingest, `gate_creators.py` admits the field), S4 (`gateway.js`
+switch, disclosure line, PD-3 entry, first publish of the library through the chronicles release chain, evidence-page
+digests refreshed for FR-9), S5 ("worn by N", `exclusive`). Design record and deviations:
+`docs/design/valheim-portrait-picker-2026-09/FUNCTIONAL-REQUIREMENTS.md` → "Implementation notes".

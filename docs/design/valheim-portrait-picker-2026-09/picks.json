@@ -1,0 +1,1263 @@
+{
+  "schema": "portrait-corpus-picks/1",
+  "note": "Human contact-sheet verdicts. pick = takes a builder may choose, in strip order; reject = takes never served, with the reason. Concepts absent here keep their auto ranking (concepts.json takes.source = auto) until reviewed.",
+  "reviewed_by": "Derek, 2026-09-12: every contact sheet walked on review.py; the auto strips accepted as they stood except where an entry says otherwise (wolfskin, architect_m_master, fortifier_m_trenchmaker)",
+  "viking_berserker_m_wolfskin": {
+    "pick": [
+      "viking_berserker_m_wolfskin_s15",
+      "viking_berserker_m_wolfskin_s7",
+      "viking_berserker_m_wolfskin_s11",
+      "viking_berserker_m_wolfskin_s13"
+    ],
+    "reject": [
+      "viking_berserker_m_wolfskin_s1",
+      "viking_berserker_m_wolfskin_s2",
+      "viking_berserker_m_wolfskin_s3",
+      "viking_berserker_m_wolfskin_s4",
+      "viking_berserker_m_wolfskin_s5",
+      "viking_berserker_m_wolfskin_s6",
+      "viking_berserker_m_wolfskin_s9",
+      "viking_berserker_m_wolfskin_s10"
+    ],
+    "why": "wolf pelt painted as a wolf's head; no human face"
+  },
+  "viking_architect_m_master": {
+    "pick": [
+      "viking_architect_m_master_s14",
+      "viking_architect_m_master_s10",
+      "viking_architect_m_master_s12",
+      "viking_architect_m_master_s6"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:10:19Z"
+  },
+  "viking_fortifier_m_trenchmaker": {
+    "pick": [
+      "viking_fortifier_m_trenchmaker_s5",
+      "viking_fortifier_m_trenchmaker_s9"
+    ],
+    "reject": [
+      "viking_fortifier_m_trenchmaker_s1",
+      "viking_fortifier_m_trenchmaker_s7",
+      "viking_fortifier_m_trenchmaker_s14"
+    ],
+    "why": "no human face",
+    "reasons": {
+      "viking_fortifier_m_trenchmaker_s1": "no human face",
+      "viking_fortifier_m_trenchmaker_s7": "no human face",
+      "viking_fortifier_m_trenchmaker_s14": "no human face"
+    },
+    "reviewed_at": "2026-09-12T10:12:01Z"
+  },
+  "viking_architect_m_visionary": {
+    "pick": [
+      "viking_architect_m_visionary_s8",
+      "viking_architect_m_visionary_s6",
+      "viking_architect_m_visionary_s14",
+      "viking_architect_m_visionary_s10"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_architect_f_planner": {
+    "pick": [
+      "viking_architect_f_planner_s4",
+      "viking_architect_f_planner_s2",
+      "viking_architect_f_planner_s5",
+      "viking_architect_f_planner_s14"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_architect_f_surveyor": {
+    "pick": [
+      "viking_architect_f_surveyor_s7",
+      "viking_architect_f_surveyor_s4",
+      "viking_architect_f_surveyor_s9",
+      "viking_architect_f_surveyor_s12"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_blacksmith_m_toolmaker": {
+    "pick": [
+      "viking_blacksmith_m_toolmaker_s9",
+      "viking_blacksmith_m_toolmaker_s4",
+      "viking_blacksmith_m_toolmaker_s8",
+      "viking_blacksmith_m_toolmaker_s10"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_blacksmith_m_veteran": {
+    "pick": [
+      "viking_blacksmith_m_veteran_s9",
+      "viking_blacksmith_m_veteran_s11",
+      "viking_blacksmith_m_veteran_s8",
+      "viking_blacksmith_m_veteran_s12"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_blacksmith_f_armorer": {
+    "pick": [
+      "viking_blacksmith_f_armorer_s5",
+      "viking_blacksmith_f_armorer_s8",
+      "viking_blacksmith_f_armorer_s6",
+      "viking_blacksmith_f_armorer_s12"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_blacksmith_f_runic": {
+    "pick": [
+      "viking_blacksmith_f_runic_s14",
+      "viking_blacksmith_f_runic_s4",
+      "viking_blacksmith_f_runic_s12",
+      "viking_blacksmith_f_runic_s9"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_carpenter_m_apprentice": {
+    "pick": [
+      "viking_carpenter_m_apprentice_s8",
+      "viking_carpenter_m_apprentice_s12",
+      "viking_carpenter_m_apprentice_s11",
+      "viking_carpenter_m_apprentice_s7"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_carpenter_m_veteran": {
+    "pick": [
+      "viking_carpenter_m_veteran_s5",
+      "viking_carpenter_m_veteran_s11",
+      "viking_carpenter_m_veteran_s7",
+      "viking_carpenter_m_veteran_s13"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_carpenter_f_artisan": {
+    "pick": [
+      "viking_carpenter_f_artisan_s4",
+      "viking_carpenter_f_artisan_s1",
+      "viking_carpenter_f_artisan_s5",
+      "viking_carpenter_f_artisan_s10"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_carpenter_f_master": {
+    "pick": [
+      "viking_carpenter_f_master_s5",
+      "viking_carpenter_f_master_s12",
+      "viking_carpenter_f_master_s6",
+      "viking_carpenter_f_master_s2"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_fortifier_m_shieldbuilder": {
+    "pick": [
+      "viking_fortifier_m_shieldbuilder_s13",
+      "viking_fortifier_m_shieldbuilder_s12",
+      "viking_fortifier_m_shieldbuilder_s3",
+      "viking_fortifier_m_shieldbuilder_s7"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_fortifier_f_gatekeeper": {
+    "pick": [
+      "viking_fortifier_f_gatekeeper_s4",
+      "viking_fortifier_f_gatekeeper_s9",
+      "viking_fortifier_f_gatekeeper_s7",
+      "viking_fortifier_f_gatekeeper_s1"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_fortifier_f_towerwright": {
+    "pick": [
+      "viking_fortifier_f_towerwright_s2",
+      "viking_fortifier_f_towerwright_s1",
+      "viking_fortifier_f_towerwright_s9",
+      "viking_fortifier_f_towerwright_s11"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_harbor_m_cranebuilder": {
+    "pick": [
+      "viking_harbor_m_cranebuilder_s14",
+      "viking_harbor_m_cranebuilder_s10",
+      "viking_harbor_m_cranebuilder_s6",
+      "viking_harbor_m_cranebuilder_s4"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_harbor_m_dockmaster": {
+    "pick": [
+      "viking_harbor_m_dockmaster_s14",
+      "viking_harbor_m_dockmaster_s6",
+      "viking_harbor_m_dockmaster_s12",
+      "viking_harbor_m_dockmaster_s13"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_harbor_f_quaywright": {
+    "pick": [
+      "viking_harbor_f_quaywright_s8",
+      "viking_harbor_f_quaywright_s10",
+      "viking_harbor_f_quaywright_s14",
+      "viking_harbor_f_quaywright_s1"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_harbor_f_seawall": {
+    "pick": [
+      "viking_harbor_f_seawall_s13",
+      "viking_harbor_f_seawall_s2",
+      "viking_harbor_f_seawall_s11",
+      "viking_harbor_f_seawall_s12"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_jarl_m_chieftain": {
+    "pick": [
+      "viking_jarl_m_chieftain_s14",
+      "viking_jarl_m_chieftain_s3",
+      "viking_jarl_m_chieftain_s8",
+      "viking_jarl_m_chieftain_s10"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_jarl_m_highbuilder": {
+    "pick": [
+      "viking_jarl_m_highbuilder_s1",
+      "viking_jarl_m_highbuilder_s10",
+      "viking_jarl_m_highbuilder_s9",
+      "viking_jarl_m_highbuilder_s12"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_jarl_f_matriarch": {
+    "pick": [
+      "viking_jarl_f_matriarch_s7",
+      "viking_jarl_f_matriarch_s1",
+      "viking_jarl_f_matriarch_s12",
+      "viking_jarl_f_matriarch_s14"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_jarl_f_seerjarl": {
+    "pick": [
+      "viking_jarl_f_seerjarl_s8",
+      "viking_jarl_f_seerjarl_s1",
+      "viking_jarl_f_seerjarl_s9",
+      "viking_jarl_f_seerjarl_s14"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_jeweler_m_horncarver": {
+    "pick": [
+      "viking_jeweler_m_horncarver_s6",
+      "viking_jeweler_m_horncarver_s1",
+      "viking_jeweler_m_horncarver_s5",
+      "viking_jeweler_m_horncarver_s14"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_jeweler_m_inlayer": {
+    "pick": [
+      "viking_jeweler_m_inlayer_s7",
+      "viking_jeweler_m_inlayer_s4",
+      "viking_jeweler_m_inlayer_s10",
+      "viking_jeweler_m_inlayer_s6"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_jeweler_f_bronzecaster": {
+    "pick": [
+      "viking_jeweler_f_bronzecaster_s8",
+      "viking_jeweler_f_bronzecaster_s14",
+      "viking_jeweler_f_bronzecaster_s12",
+      "viking_jeweler_f_bronzecaster_s9"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_jeweler_f_filigree": {
+    "pick": [
+      "viking_jeweler_f_filigree_s8",
+      "viking_jeweler_f_filigree_s5",
+      "viking_jeweler_f_filigree_s11",
+      "viking_jeweler_f_filigree_s12"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_miner_m_blaster": {
+    "pick": [
+      "viking_miner_m_blaster_s8",
+      "viking_miner_m_blaster_s7",
+      "viking_miner_m_blaster_s14",
+      "viking_miner_m_blaster_s12"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_miner_m_prospector": {
+    "pick": [
+      "viking_miner_m_prospector_s11",
+      "viking_miner_m_prospector_s6",
+      "viking_miner_m_prospector_s14",
+      "viking_miner_m_prospector_s13"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_miner_f_excavator": {
+    "pick": [
+      "viking_miner_f_excavator_s13",
+      "viking_miner_f_excavator_s4",
+      "viking_miner_f_excavator_s8",
+      "viking_miner_f_excavator_s3"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_miner_f_geologist": {
+    "pick": [
+      "viking_miner_f_geologist_s9",
+      "viking_miner_f_geologist_s6",
+      "viking_miner_f_geologist_s10",
+      "viking_miner_f_geologist_s13"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_seer_m_alchemist": {
+    "pick": [
+      "viking_seer_m_alchemist_s14",
+      "viking_seer_m_alchemist_s13",
+      "viking_seer_m_alchemist_s8",
+      "viking_seer_m_alchemist_s10"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_seer_m_astrologer": {
+    "pick": [
+      "viking_seer_m_astrologer_s1",
+      "viking_seer_m_astrologer_s3",
+      "viking_seer_m_astrologer_s8",
+      "viking_seer_m_astrologer_s2"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_seer_f_herbalist": {
+    "pick": [
+      "viking_seer_f_herbalist_s4",
+      "viking_seer_f_herbalist_s8",
+      "viking_seer_f_herbalist_s13",
+      "viking_seer_f_herbalist_s14"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_seer_f_runecaster": {
+    "pick": [
+      "viking_seer_f_runecaster_s1",
+      "viking_seer_f_runecaster_s12",
+      "viking_seer_f_runecaster_s14",
+      "viking_seer_f_runecaster_s13"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_shipwright_m_caulker": {
+    "pick": [
+      "viking_shipwright_m_caulker_s4",
+      "viking_shipwright_m_caulker_s7",
+      "viking_shipwright_m_caulker_s12",
+      "viking_shipwright_m_caulker_s6"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_shipwright_m_master": {
+    "pick": [
+      "viking_shipwright_m_master_s7",
+      "viking_shipwright_m_master_s4",
+      "viking_shipwright_m_master_s13",
+      "viking_shipwright_m_master_s14"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_shipwright_f_designer": {
+    "pick": [
+      "viking_shipwright_f_designer_s10",
+      "viking_shipwright_f_designer_s11",
+      "viking_shipwright_f_designer_s4",
+      "viking_shipwright_f_designer_s3"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_shipwright_f_sailweaver": {
+    "pick": [
+      "viking_shipwright_f_sailweaver_s14",
+      "viking_shipwright_f_sailweaver_s7",
+      "viking_shipwright_f_sailweaver_s9",
+      "viking_shipwright_f_sailweaver_s12"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_smelter_m_charcoalmaster": {
+    "pick": [
+      "viking_smelter_m_charcoalmaster_s10",
+      "viking_smelter_m_charcoalmaster_s7",
+      "viking_smelter_m_charcoalmaster_s3",
+      "viking_smelter_m_charcoalmaster_s12"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_smelter_m_furnacemaster": {
+    "pick": [
+      "viking_smelter_m_furnacemaster_s8",
+      "viking_smelter_m_furnacemaster_s5",
+      "viking_smelter_m_furnacemaster_s6",
+      "viking_smelter_m_furnacemaster_s3"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_smelter_f_bogiron": {
+    "pick": [
+      "viking_smelter_f_bogiron_s6",
+      "viking_smelter_f_bogiron_s8",
+      "viking_smelter_f_bogiron_s14",
+      "viking_smelter_f_bogiron_s9"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_smelter_f_crucible": {
+    "pick": [
+      "viking_smelter_f_crucible_s8",
+      "viking_smelter_f_crucible_s5",
+      "viking_smelter_f_crucible_s11",
+      "viking_smelter_f_crucible_s4"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_stonemason_m_master": {
+    "pick": [
+      "viking_stonemason_m_master_s4",
+      "viking_stonemason_m_master_s5",
+      "viking_stonemason_m_master_s9",
+      "viking_stonemason_m_master_s14"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_stonemason_m_wallbuilder": {
+    "pick": [
+      "viking_stonemason_m_wallbuilder_s13",
+      "viking_stonemason_m_wallbuilder_s7",
+      "viking_stonemason_m_wallbuilder_s6",
+      "viking_stonemason_m_wallbuilder_s9"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_stonemason_f_runecarver": {
+    "pick": [
+      "viking_stonemason_f_runecarver_s10",
+      "viking_stonemason_f_runecarver_s5",
+      "viking_stonemason_f_runecarver_s12",
+      "viking_stonemason_f_runecarver_s13"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_stonemason_f_sculptor": {
+    "pick": [
+      "viking_stonemason_f_sculptor_s9",
+      "viking_stonemason_f_sculptor_s12",
+      "viking_stonemason_f_sculptor_s3",
+      "viking_stonemason_f_sculptor_s11"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_hunter_m_bowman": {
+    "pick": [
+      "viking_hunter_m_bowman_s10",
+      "viking_hunter_m_bowman_s1",
+      "viking_hunter_m_bowman_s5",
+      "viking_hunter_m_bowman_s8"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_hunter_m_trapper": {
+    "pick": [
+      "viking_hunter_m_trapper_s13",
+      "viking_hunter_m_trapper_s3",
+      "viking_hunter_m_trapper_s8",
+      "viking_hunter_m_trapper_s12"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_hunter_f_falconer": {
+    "pick": [
+      "viking_hunter_f_falconer_s9",
+      "viking_hunter_f_falconer_s14",
+      "viking_hunter_f_falconer_s3",
+      "viking_hunter_f_falconer_s1"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_hunter_f_spearhuntress": {
+    "pick": [
+      "viking_hunter_f_spearhuntress_s2",
+      "viking_hunter_f_spearhuntress_s3",
+      "viking_hunter_f_spearhuntress_s7",
+      "viking_hunter_f_spearhuntress_s8"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_reaver_m_captain": {
+    "pick": [
+      "viking_reaver_m_captain_s1",
+      "viking_reaver_m_captain_s6",
+      "viking_reaver_m_captain_s9",
+      "viking_reaver_m_captain_s12"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_reaver_m_navigator": {
+    "pick": [
+      "viking_reaver_m_navigator_s10",
+      "viking_reaver_m_navigator_s11",
+      "viking_reaver_m_navigator_s2",
+      "viking_reaver_m_navigator_s8"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_reaver_f_boarder": {
+    "pick": [
+      "viking_reaver_f_boarder_s4",
+      "viking_reaver_f_boarder_s6",
+      "viking_reaver_f_boarder_s5",
+      "viking_reaver_f_boarder_s3"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_reaver_f_corsair": {
+    "pick": [
+      "viking_reaver_f_corsair_s10",
+      "viking_reaver_f_corsair_s7",
+      "viking_reaver_f_corsair_s9",
+      "viking_reaver_f_corsair_s11"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_brewer_m_cooper": {
+    "pick": [
+      "viking_brewer_m_cooper_s2",
+      "viking_brewer_m_cooper_s13",
+      "viking_brewer_m_cooper_s9",
+      "viking_brewer_m_cooper_s7"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_brewer_m_feastmaster": {
+    "pick": [
+      "viking_brewer_m_feastmaster_s7",
+      "viking_brewer_m_feastmaster_s13",
+      "viking_brewer_m_feastmaster_s3",
+      "viking_brewer_m_feastmaster_s5"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_brewer_f_aleheifer": {
+    "pick": [
+      "viking_brewer_f_aleheifer_s14",
+      "viking_brewer_f_aleheifer_s9",
+      "viking_brewer_f_aleheifer_s8",
+      "viking_brewer_f_aleheifer_s12"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_brewer_f_skaldhostess": {
+    "pick": [
+      "viking_brewer_f_skaldhostess_s4",
+      "viking_brewer_f_skaldhostess_s14",
+      "viking_brewer_f_skaldhostess_s10",
+      "viking_brewer_f_skaldhostess_s12"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_skald_m_elderlore": {
+    "pick": [
+      "viking_skald_m_elderlore_s6",
+      "viking_skald_m_elderlore_s11",
+      "viking_skald_m_elderlore_s5",
+      "viking_skald_m_elderlore_s14"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_skald_m_lyreplayer": {
+    "pick": [
+      "viking_skald_m_lyreplayer_s10",
+      "viking_skald_m_lyreplayer_s8",
+      "viking_skald_m_lyreplayer_s5",
+      "viking_skald_m_lyreplayer_s6"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_skald_f_chronicler": {
+    "pick": [
+      "viking_skald_f_chronicler_s6",
+      "viking_skald_f_chronicler_s4",
+      "viking_skald_f_chronicler_s13",
+      "viking_skald_f_chronicler_s11"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_skald_f_harpist": {
+    "pick": [
+      "viking_skald_f_harpist_s7",
+      "viking_skald_f_harpist_s5",
+      "viking_skald_f_harpist_s6",
+      "viking_skald_f_harpist_s15"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_frost_m_avalanchewarden": {
+    "pick": [
+      "viking_frost_m_avalanchewarden_s2",
+      "viking_frost_m_avalanchewarden_s9",
+      "viking_frost_m_avalanchewarden_s7",
+      "viking_frost_m_avalanchewarden_s4"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_frost_m_glaciertracker": {
+    "pick": [
+      "viking_frost_m_glaciertracker_s9",
+      "viking_frost_m_glaciertracker_s3",
+      "viking_frost_m_glaciertracker_s7",
+      "viking_frost_m_glaciertracker_s11"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_frost_f_icerunner": {
+    "pick": [
+      "viking_frost_f_icerunner_s10",
+      "viking_frost_f_icerunner_s5",
+      "viking_frost_f_icerunner_s7",
+      "viking_frost_f_icerunner_s12"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_frost_f_sledmusher": {
+    "pick": [
+      "viking_frost_f_sledmusher_s11",
+      "viking_frost_f_sledmusher_s10",
+      "viking_frost_f_sledmusher_s12",
+      "viking_frost_f_sledmusher_s9"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_furrier_m_master": {
+    "pick": [
+      "viking_furrier_m_master_s1",
+      "viking_furrier_m_master_s5",
+      "viking_furrier_m_master_s14",
+      "viking_furrier_m_master_s9"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_furrier_m_tanner": {
+    "pick": [
+      "viking_furrier_m_tanner_s3",
+      "viking_furrier_m_tanner_s7",
+      "viking_furrier_m_tanner_s6",
+      "viking_furrier_m_tanner_s14"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_furrier_f_cordwainer": {
+    "pick": [
+      "viking_furrier_f_cordwainer_s1",
+      "viking_furrier_f_cordwainer_s3",
+      "viking_furrier_f_cordwainer_s4",
+      "viking_furrier_f_cordwainer_s7"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_furrier_f_seamstress": {
+    "pick": [
+      "viking_furrier_f_seamstress_s15",
+      "viking_furrier_f_seamstress_s14",
+      "viking_furrier_f_seamstress_s8",
+      "viking_furrier_f_seamstress_s5"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_lawspeaker_m_chiefjudge": {
+    "pick": [
+      "viking_lawspeaker_m_chiefjudge_s6",
+      "viking_lawspeaker_m_chiefjudge_s13",
+      "viking_lawspeaker_m_chiefjudge_s8",
+      "viking_lawspeaker_m_chiefjudge_s4"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_lawspeaker_m_herald": {
+    "pick": [
+      "viking_lawspeaker_m_herald_s11",
+      "viking_lawspeaker_m_herald_s4",
+      "viking_lawspeaker_m_herald_s15",
+      "viking_lawspeaker_m_herald_s8"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_lawspeaker_f_advocate": {
+    "pick": [
+      "viking_lawspeaker_f_advocate_s7",
+      "viking_lawspeaker_f_advocate_s11",
+      "viking_lawspeaker_f_advocate_s3",
+      "viking_lawspeaker_f_advocate_s13"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_lawspeaker_f_judge": {
+    "pick": [
+      "viking_lawspeaker_f_judge_s9",
+      "viking_lawspeaker_f_judge_s4",
+      "viking_lawspeaker_f_judge_s1",
+      "viking_lawspeaker_f_judge_s8"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_varangian_m_guard": {
+    "pick": [
+      "viking_varangian_m_guard_s6",
+      "viking_varangian_m_guard_s12",
+      "viking_varangian_m_guard_s13",
+      "viking_varangian_m_guard_s8"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_varangian_m_swordsman": {
+    "pick": [
+      "viking_varangian_m_swordsman_s10",
+      "viking_varangian_m_swordsman_s2",
+      "viking_varangian_m_swordsman_s13",
+      "viking_varangian_m_swordsman_s1"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_varangian_f_caravanmaster": {
+    "pick": [
+      "viking_varangian_f_caravanmaster_s6",
+      "viking_varangian_f_caravanmaster_s7",
+      "viking_varangian_f_caravanmaster_s1",
+      "viking_varangian_f_caravanmaster_s14"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_varangian_f_silktrader": {
+    "pick": [
+      "viking_varangian_f_silktrader_s14",
+      "viking_varangian_f_silktrader_s2",
+      "viking_varangian_f_silktrader_s9",
+      "viking_varangian_f_silktrader_s8"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_whaler_m_blubberrender": {
+    "pick": [
+      "viking_whaler_m_blubberrender_s15",
+      "viking_whaler_m_blubberrender_s9",
+      "viking_whaler_m_blubberrender_s4",
+      "viking_whaler_m_blubberrender_s7"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_whaler_m_harpooner": {
+    "pick": [
+      "viking_whaler_m_harpooner_s13",
+      "viking_whaler_m_harpooner_s7",
+      "viking_whaler_m_harpooner_s12",
+      "viking_whaler_m_harpooner_s8"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_whaler_f_helmswoman": {
+    "pick": [
+      "viking_whaler_f_helmswoman_s2",
+      "viking_whaler_f_helmswoman_s6",
+      "viking_whaler_f_helmswoman_s12",
+      "viking_whaler_f_helmswoman_s4"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_whaler_f_ivorycarver": {
+    "pick": [
+      "viking_whaler_f_ivorycarver_s14",
+      "viking_whaler_f_ivorycarver_s2",
+      "viking_whaler_f_ivorycarver_s9",
+      "viking_whaler_f_ivorycarver_s8"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_berserker_m_veteran": {
+    "pick": [
+      "viking_berserker_m_veteran_s5",
+      "viking_berserker_m_veteran_s11",
+      "viking_berserker_m_veteran_s8",
+      "viking_berserker_m_veteran_s15"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_berserker_f_bearfury": {
+    "pick": [
+      "viking_berserker_f_bearfury_s10",
+      "viking_berserker_f_bearfury_s5",
+      "viking_berserker_f_bearfury_s3",
+      "viking_berserker_f_bearfury_s12"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_berserker_f_bloodfury": {
+    "pick": [
+      "viking_berserker_f_bloodfury_s7",
+      "viking_berserker_f_bloodfury_s5",
+      "viking_berserker_f_bloodfury_s6",
+      "viking_berserker_f_bloodfury_s10"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_shaman_m_runedancer": {
+    "pick": [
+      "viking_shaman_m_runedancer_s1",
+      "viking_shaman_m_runedancer_s3",
+      "viking_shaman_m_runedancer_s4",
+      "viking_shaman_m_runedancer_s7"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_shaman_m_spiritwalker": {
+    "pick": [
+      "viking_shaman_m_spiritwalker_s5",
+      "viking_shaman_m_spiritwalker_s1",
+      "viking_shaman_m_spiritwalker_s9",
+      "viking_shaman_m_spiritwalker_s15"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_shaman_f_bonereader": {
+    "pick": [
+      "viking_shaman_f_bonereader_s10",
+      "viking_shaman_f_bonereader_s2",
+      "viking_shaman_f_bonereader_s9",
+      "viking_shaman_f_bonereader_s3"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_shaman_f_volva": {
+    "pick": [
+      "viking_shaman_f_volva_s10",
+      "viking_shaman_f_volva_s3",
+      "viking_shaman_f_volva_s5",
+      "viking_shaman_f_volva_s12"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_shieldmaiden_m_defender": {
+    "pick": [
+      "viking_shieldmaiden_m_defender_s7",
+      "viking_shieldmaiden_m_defender_s10",
+      "viking_shieldmaiden_m_defender_s4",
+      "viking_shieldmaiden_m_defender_s8"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_shieldmaiden_m_sentinel": {
+    "pick": [
+      "viking_shieldmaiden_m_sentinel_s4",
+      "viking_shieldmaiden_m_sentinel_s12",
+      "viking_shieldmaiden_m_sentinel_s14",
+      "viking_shieldmaiden_m_sentinel_s8"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_shieldmaiden_f_commander": {
+    "pick": [
+      "viking_shieldmaiden_f_commander_s7",
+      "viking_shieldmaiden_f_commander_s11",
+      "viking_shieldmaiden_f_commander_s6",
+      "viking_shieldmaiden_f_commander_s9"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  },
+  "viking_shieldmaiden_f_valkyrie": {
+    "pick": [
+      "viking_shieldmaiden_f_valkyrie_s10",
+      "viking_shieldmaiden_f_valkyrie_s14",
+      "viking_shieldmaiden_f_valkyrie_s4",
+      "viking_shieldmaiden_f_valkyrie_s8"
+    ],
+    "reject": [],
+    "why": "",
+    "reasons": {},
+    "reviewed_at": "2026-09-12T10:25:34Z",
+    "verdict": "auto ranking accepted by eye on the contact sheet"
+  }
+}

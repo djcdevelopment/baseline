@@ -1,0 +1,63 @@
+{
+  "schema": "portrait-corpus-vocab/1",
+  "note": "Closed vocabularies for the Viking portrait catalog. Tags are what the picker filters on; labels are what it shows. Never surface 'character', 'archetype', 'concept' or 'seed' in UI text.",
+  "role": {
+    "architect":    {"label": "Architect",      "receipt_label": "Architect"},
+    "berserker":    {"label": "Berserker",      "receipt_label": "Berserker"},
+    "blacksmith":   {"label": "Blacksmith",     "receipt_label": "Blacksmith",      "slate48": "blacksmith"},
+    "brewer":       {"label": "Brewer",         "receipt_label": "Mead Brewer",     "slate48": "brewer"},
+    "carpenter":    {"label": "Carpenter",      "receipt_label": "Carpenter",       "slate48": "joiner"},
+    "fortifier":    {"label": "Fortifier",      "receipt_label": "Fortifier"},
+    "frost":        {"label": "Frost-runner",   "receipt_label": "Frost-Runner"},
+    "furrier":      {"label": "Furrier",        "receipt_label": "Furrier"},
+    "harbor":       {"label": "Harbour-wright", "receipt_label": "Harbor Engineer"},
+    "hunter":       {"label": "Hunter",         "receipt_label": "Hunter",          "slate48": "hunter"},
+    "jarl":         {"label": "Jarl",           "receipt_label": "Guild Master"},
+    "jeweler":      {"label": "Jeweller",       "receipt_label": "Artisan"},
+    "lawspeaker":   {"label": "Law-speaker",    "receipt_label": "Law-Speaker"},
+    "miner":        {"label": "Miner",          "receipt_label": "Miner"},
+    "reaver":       {"label": "Sea-reaver",     "receipt_label": "Sea-Reaver"},
+    "seer":         {"label": "Runecaster",     "receipt_label": "Runecaster"},
+    "shaman":       {"label": "Shaman",         "receipt_label": "Shaman"},
+    "shieldmaiden": {"label": "Shield-bearer",  "receipt_label": "Shieldmaiden"},
+    "shipwright":   {"label": "Shipwright",     "receipt_label": "Shipwright",      "slate48": "shipwright"},
+    "skald":        {"label": "Skald",          "receipt_label": "Skald"},
+    "smelter":      {"label": "Smelter",        "receipt_label": "Smelter"},
+    "stonemason":   {"label": "Stonemason",     "receipt_label": "Stonemason",      "slate48": "stonemason"},
+    "varangian":    {"label": "Varangian",      "receipt_label": "Varangian Guard"},
+    "whaler":       {"label": "Whaler",         "receipt_label": "Whaler"}
+  },
+  "theme": {
+    "builders":        {"label": "Builders",            "receipt_batch": "Viking Builder Profiles"},
+    "trades":          {"label": "Northern trades",     "receipt_batch": "Viking Northern Trades"},
+    "warriors-mystics":{"label": "Warriors & mystics",  "receipt_batch": "Viking Warriors & Mystics"},
+    "lore-hearth":     {"label": "Lore & hearth",       "receipt_batch": "Viking Lore & Hearth"},
+    "hunters-reavers": {"label": "Hunters & reavers",   "receipt_batch": "Viking Hunters & Reavers"}
+  },
+  "presentation": ["woman", "man"],
+  "age":           ["young", "adult", "elder"],
+  "hair":          ["blonde", "red", "brown", "dark", "grey", "hidden"],
+  "hair_style":    ["braided", "loose", "tied", "cropped", "shaved-sides", "hooded", "helmeted"],
+  "beard":         ["none", "short", "full", "braided"],
+  "mood":          ["warm", "calm", "proud", "stern", "fierce"],
+  "setting":       ["hall", "workshop", "forge", "harbour", "ship", "coast", "snow", "forest", "mountain", "mine", "camp", "fortress", "sacred", "market"],
+  "palette":       ["ember", "golden", "daylight", "cool", "storm", "aurora", "night"],
+  "kit":           ["civilian", "armoured", "robed"],
+  "companion":     ["none", "falcon", "dog", "wolf", "raven", "ermine", "horse", "other"],
+  "headwear":      ["none", "hood", "helmet", "circlet", "fur-hat", "headband", "other"],
+  "flags":         ["magic", "face_paint"],
+  "facets": {
+    "note": "Picker facets in display order. 'kind' says which control the FR specifies.",
+    "order": [
+      {"tag": "role",         "label": "Trade",        "kind": "dropdown"},
+      {"tag": "presentation", "label": "Presentation", "kind": "segmented"},
+      {"tag": "age",          "label": "Age",          "kind": "segmented"},
+      {"tag": "mood",         "label": "Mood",         "kind": "segmented"},
+      {"tag": "hair",         "label": "Hair",         "kind": "dropdown"},
+      {"tag": "setting",      "label": "Setting",      "kind": "dropdown"},
+      {"tag": "palette",      "label": "Palette",      "kind": "dropdown"},
+      {"tag": "kit",          "label": "Kit",          "kind": "segmented"},
+      {"tag": "theme",        "label": "Theme",        "kind": "dropdown"}
+    ]
+  }
+}

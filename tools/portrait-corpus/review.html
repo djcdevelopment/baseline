@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portrait review</title>
+<style>
+  :root {
+    --surface: #0e141c; --low: #090f16; --container-low: #161c24; --container: #1a2028; --high: #242a33;
+    --flame: #f59e0b; --primary: #ffc174; --bronze: #d97707; --tertiary: #ffc32d;
+    --on: #dde3ee; --parchment: #d8c3ad; --outline: #a08e7a; --outline-variant: #534434;
+    --ember: rgba(245,158,11,.25); --chisel: rgba(255,255,255,.08); --red: #e5533d;
+    --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+    --sans: "Plus Jakarta Sans", system-ui, Segoe UI, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--surface); color: var(--on); font: 14px/1.45 var(--sans); }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  .app { display: grid; grid-template-columns: 300px minmax(0, 1fr); grid-template-rows: 56px minmax(0, 1fr); height: 100%; }
+  header { grid-column: 1 / -1; display: flex; align-items: center; gap: 18px; padding: 0 18px;
+           border-bottom: 1px solid var(--outline-variant); background: var(--container-low); }
+  header h1 { margin: 0; font-size: 1rem; font-weight: 600; letter-spacing: .02em; }
+  .eyebrow { font-family: var(--mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--outline); }
+  .progress { font-family: var(--mono); font-size: .8rem; font-variant-numeric: tabular-nums; color: var(--parchment); }
+  .progress b { color: var(--tertiary); font-weight: 600; }
+  .bar { width: 220px; height: 6px; background: var(--low); border: 1px solid var(--outline-variant); border-radius: 3px; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--flame); width: 0; transition: width .2s; }
+  .saved { margin-left: auto; font-family: var(--mono); font-size: .72rem; color: var(--outline); }
+  .saved.err { color: var(--red); }
+  nav { overflow: auto; border-right: 1px solid var(--outline-variant); background: var(--container-low); }
+  nav .theme { position: sticky; top: 0; padding: 10px 14px 6px; background: var(--container-low); }
+  nav button.c { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 8px; align-items: center; width: 100%;
+                 padding: 7px 14px; border: 0; border-left: 3px solid transparent; background: none; text-align: left; }
+  nav button.c:hover { background: var(--container); }
+  nav button.c.on { border-left-color: var(--flame); background: var(--container); }
+  nav button.c .tick { font-family: var(--mono); color: var(--outline); }
+  nav button.c.done .tick { color: var(--flame); }
+  nav button.c .lab { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  nav button.c .n { font-family: var(--mono); font-size: .7rem; color: var(--outline); }
+  main { overflow: auto; padding: 18px 22px 40px; }
+  .head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; margin: 0 0 6px; }
+  .head h2 { margin: 0; font-size: 1.35rem; font-weight: 600; }
+  .head .slug { font-family: var(--mono); font-size: .78rem; color: var(--outline); }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 14px; }
+  .chip { font-family: var(--mono); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--parchment);
+          border: 1px solid var(--outline-variant); border-radius: 4px; padding: 3px 8px; background: var(--container); }
+  .chip.d { border-style: dashed; color: var(--outline); }
+  .hint { color: var(--parchment); font-size: .82rem; margin: 0 0 14px; }
+  .hint kbd { font-family: var(--mono); font-size: .72rem; border: 1px solid var(--outline-variant); border-radius: 3px; padding: 0 5px; background: var(--low); }
+  .takes { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 14px; }
+  .take { display: grid; grid-template-columns: 128px 256px; grid-template-rows: auto auto; gap: 8px 12px;
+          padding: 12px; border: 1px solid var(--outline-variant); border-radius: 6px; background: var(--container-low);
+          box-shadow: inset 0 1px 0 var(--chisel); outline: 2px solid transparent; }
+  .take:focus { outline-color: var(--primary); }
+  .take.picked { border-color: var(--flame); background: rgba(245,158,11,.08); }
+  .take.rejected { border-color: rgba(229,83,61,.6); }
+  .take.hard { opacity: .45; }
+  .take .cut { background-repeat: no-repeat; background-color: var(--low); border: 1px solid var(--ember); border-radius: 4px; cursor: zoom-in; }
+  .take .cut128 { width: 128px; height: 128px; align-self: end; }
+  .take .cut256 { width: 256px; height: 256px; }
+  .take .meta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .take .id { font-family: var(--mono); font-size: .78rem; color: var(--primary); margin-right: auto; }
+  .take .order { font-family: var(--mono); font-size: .72rem; font-weight: 700; color: var(--low); background: var(--flame);
+                 border-radius: 4px; padding: 2px 7px; }
+  .take .adv { border-color: rgba(229,83,61,.6); color: #f1a196; }
+  .take .why { color: #f1a196; font-size: .78rem; }
+  .take .acts { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .take .acts button { padding: 7px 12px; border: 1px solid var(--outline-variant); border-radius: 4px; background: var(--container);
+                       font-family: var(--mono); font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; }
+  .take .acts button[aria-pressed="true"] { background: var(--ember); border-color: var(--flame); color: var(--primary); }
+  .take .acts button.rej[aria-pressed="true"] { background: rgba(229,83,61,.18); border-color: var(--red); color: #f1a196; }
+  .take .acts select, .take .acts input { font: inherit; font-size: .8rem; color: var(--on); background: var(--low);
+                                          border: 1px solid var(--outline-variant); border-radius: 4px; padding: 6px 8px; }
+  .foot { position: sticky; bottom: 0; margin-top: 18px; padding: 12px 0 0; display: flex; gap: 10px; align-items: center;
+          background: linear-gradient(to top, var(--surface) 70%, transparent); }
+  .foot button { padding: 10px 16px; border-radius: 4px; border: 1px solid rgba(217,119,6,.5); background: var(--container);
+                 box-shadow: inset 0 1px 0 var(--chisel); }
+  .foot button.pri { background: var(--flame); border-color: var(--flame); color: var(--low); font-weight: 700; }
+  .foot button.pri:hover { background: var(--tertiary); }
+  .foot .st { font-family: var(--mono); font-size: .76rem; color: var(--parchment); margin-left: 6px; }
+  .light { position: fixed; inset: 0; display: none; place-items: center; background: rgba(9,15,22,.92); z-index: 9; cursor: zoom-out; }
+  .light.open { display: grid; }
+  .light img { max-width: min(96vw, 1024px); max-height: 96vh; border: 1px solid var(--outline-variant); border-radius: 6px; }
+  .toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); padding: 10px 14px; border-radius: 4px;
+           background: var(--high); border: 1px solid var(--outline-variant); color: var(--on); opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+  .toast.err { border-color: var(--red); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>Portrait review</h1>
+    <span class="progress"><b id="done">0</b> / <span id="total">0</span> reviewed</span>
+    <span class="bar"><i id="barfill"></i></span>
+    <span class="saved" id="saved">nothing saved yet</span>
+  </header>
+  <nav id="rail" aria-label="Portraits"></nav>
+  <main id="main">
+    <p class="hint">Loading the catalog…</p>
+  </main>
+</div>
+<div class="light" id="light" role="dialog" aria-modal="true" aria-label="Full frame"><img id="lightimg" alt=""></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+'use strict';
+const $ = (id) => document.getElementById(id);
+const REASONS = ['no human face', 'face too small', 'off model', 'near-duplicate', 'other'];
+const HARD = new Set(['corrupt', 'bg_dropped']);
+const DEFAULT_CROP = [192, 0, 640];
+const FACET_ORDER = ['role', 'presentation', 'theme', 'age', 'hair', 'mood', 'setting', 'palette', 'kit'];
+
+let concepts = [], rows = new Map(), picks = {}, current = 0;
+// Per concept, the working verdict: {pick: [], reject: [], reasons: {}}. Seeded from picks.json when
+// reviewed, else from the auto ranking, so accepting a concept as it stands is one key.
+const work = new Map();
+
+async function load() {
+  const [c, cat, p] = await Promise.all([
+    fetch('/concepts.json').then((r) => r.json()),
+    fetch('/catalog.json').then((r) => r.json()),
+    fetch('/picks.json').then((r) => r.json()),
+  ]);
+  concepts = c.concepts;
+  for (const row of cat.assets) {
+    if (!rows.has(row.concept_id)) rows.set(row.concept_id, []);
+    rows.get(row.concept_id).push(row);
+  }
+  for (const list of rows.values()) list.sort((a, b) => (a.seed_idx || 0) - (b.seed_idx || 0));
+  picks = p;
+  for (const k of concepts) work.set(k.concept_id, seedVerdict(k));
+  const first = concepts.findIndex((k) => !isReviewed(k.concept_id));
+  current = first < 0 ? 0 : first;
+  drawRail();
+  drawConcept();
+}
+
+function isReviewed(id) { return !!(picks[id] && Array.isArray(picks[id].pick) && picks[id].pick.length); }
+
+function seedVerdict(k) {
+  const saved = picks[k.concept_id];
+  if (saved && Array.isArray(saved.pick)) {
+    return {pick: [...saved.pick], reject: [...(saved.reject || [])], reasons: {...(saved.reasons || {})}};
+  }
+  const v = {pick: [...(k.takes.auto || [])], reject: [], reasons: {}};
+  // A previous by-eye reject in the catalog is carried as a suggestion, not a fact.
+  for (const r of k.takes.rejected || []) {
+    if ((r.why || []).includes('rejected_by_eye') && !(r.why || []).some((w) => HARD.has(w))) {
+      v.reject.push(r.asset_id);
+      v.reasons[r.asset_id] = saved && saved.why ? saved.why : 'no human face';
+    }
+  }
+  return v;
+}
+
+function label(k) { return `${k.role_label} · ${k.presentation} · ${k.variant}`; }
+
+function drawRail() {
+  const rail = $('rail');
+  rail.replaceChildren();
+  let theme = null;
+  concepts.forEach((k, i) => {
+    if (k.theme !== theme) {
+      theme = k.theme;
+      const h = document.createElement('div');
+      h.className = 'theme eyebrow';
+      h.textContent = theme.replace(/-/g, ' & ');
+      rail.append(h);
+    }
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'c' + (i === current ? ' on' : '') + (isReviewed(k.concept_id) ? ' done' : '');
+    b.dataset.i = i;
+    const tick = document.createElement('span'); tick.className = 'tick'; tick.textContent = isReviewed(k.concept_id) ? '✓' : '·';
+    const lab = document.createElement('span'); lab.className = 'lab'; lab.textContent = label(k);
+    const n = document.createElement('span'); n.className = 'n'; n.textContent = `${k.n_usable}/${k.n_takes}`;
+    b.append(tick, lab, n);
+    b.onclick = () => { current = i; drawRail(); drawConcept(); };
+    rail.append(b);
+  });
+  const done = concepts.filter((k) => isReviewed(k.concept_id)).length;
+  $('done').textContent = done;
+  $('total').textContent = concepts.length;
+  $('barfill').style.width = `${concepts.length ? (100 * done / concepts.length) : 0}%`;
+  const on = rail.querySelector('.c.on');
+  if (on) on.scrollIntoView({block: 'nearest'});
+}
+
+function cropStyle(el, file, crop, px) {
+  const [x, y, side] = crop && crop.length === 3 ? crop : DEFAULT_CROP;
+  const scale = px / side;
+  el.style.backgroundImage = `url(/assets/${file})`;
+  el.style.backgroundSize = `${1024 * scale}px ${1024 * scale}px`;
+  el.style.backgroundPosition = `${-x * scale}px ${-y * scale}px`;
+}
+
+function drawConcept() {
+  const k = concepts[current];
+  const list = rows.get(k.concept_id) || [];
+  const v = work.get(k.concept_id);
+  const main = $('main');
+  main.replaceChildren();
+
+  const head = document.createElement('div'); head.className = 'head';
+  const h2 = document.createElement('h2'); h2.textContent = label(k);
+  const slug = document.createElement('span'); slug.className = 'slug'; slug.textContent = k.concept_id;
+  head.append(h2, slug);
+  main.append(head);
+
+  const tags = document.createElement('div'); tags.className = 'tags';
+  const attrs = k.attributes || {};
+  for (const f of FACET_ORDER) {
+    const val = f === 'role' ? k.role : f === 'presentation' ? k.presentation : f === 'theme' ? k.theme : attrs[f];
+    if (!val) continue;
+    const c = document.createElement('span');
+    c.className = 'chip' + ((attrs.defaulted || []).includes(f) ? ' d' : '');
+    c.textContent = `${f} ${val}`;
+    tags.append(c);
+  }
+  main.append(tags);
+
+  const hint = document.createElement('p'); hint.className = 'hint';
+  hint.innerHTML = 'The small square is the 128-px bust the archive serves; the large one is the 256. Click either for the full frame. ' +
+    '<kbd>1</kbd>–<kbd>9</kbd>, <kbd>0</kbd> toggle a take · <kbd>R</kbd> rejects the focused take · <kbd>Enter</kbd> or <kbd>→</kbd> accepts and moves on · <kbd>←</kbd> back';
+  main.append(hint);
+
+  const grid = document.createElement('div'); grid.className = 'takes';
+  list.forEach((row, n) => grid.append(takeCard(k, row, n, v)));
+  main.append(grid);
+
+  const foot = document.createElement('div'); foot.className = 'foot';
+  const accept = document.createElement('button'); accept.type = 'button'; accept.className = 'pri';
+  accept.textContent = isReviewed(k.concept_id) ? 'Save and next' : 'Accept and next';
+  accept.onclick = () => acceptAndNext();
+  const clear = document.createElement('button'); clear.type = 'button'; clear.textContent = 'Unreview';
+  clear.title = 'Drop this concept from picks.json; it goes back to the auto ranking';
+  clear.hidden = !isReviewed(k.concept_id);
+  clear.onclick = () => post({concept_id: k.concept_id, clear: true}).then(() => { work.set(k.concept_id, seedVerdict(k)); drawRail(); drawConcept(); });
+  const st = document.createElement('span'); st.className = 'st'; st.id = 'st';
+  foot.append(accept, clear, st);
+  main.append(foot);
+  paintStatus();
+  main.scrollTop = 0;
+}
+
+function takeCard(k, row, n, v) {
+  const card = document.createElement('article');
+  card.className = 'take';
+  card.tabIndex = 0;
+  card.dataset.aid = row.asset_id;
+  const hard = (row.reject || []).filter((w) => HARD.has(w));
+  if (hard.length) card.classList.add('hard');
+  const crop = (row.face && row.face.bust_crop) || DEFAULT_CROP;
+  const c128 = document.createElement('div'); c128.className = 'cut cut128'; cropStyle(c128, row.file, crop, 128);
+  const c256 = document.createElement('div'); c256.className = 'cut cut256'; cropStyle(c256, row.file, crop, 256);
+  c128.onclick = c256.onclick = () => openLight(row.file);
+  const meta = document.createElement('div'); meta.className = 'meta';
+  const id = document.createElement('span'); id.className = 'id'; id.textContent = `s${row.seed_idx}  ·  ${n + 1 === 10 ? '0' : n + 1 <= 9 ? n + 1 : '—'}`;
+  meta.append(id);
+  const order = document.createElement('span'); order.className = 'order'; order.hidden = true; meta.append(order);
+  for (const adv of row.advisory || []) {
+    const c = document.createElement('span'); c.className = 'chip adv'; c.textContent = adv.replace(/_/g, ' '); meta.append(c);
+  }
+  if (row.face && row.face.facing) { const c = document.createElement('span'); c.className = 'chip'; c.textContent = `faces ${row.face.facing}`; meta.append(c); }
+  if (hard.length) { const w = document.createElement('span'); w.className = 'why'; w.textContent = `catalog: ${hard.join(', ')}`; meta.append(w); }
+
+  const acts = document.createElement('div'); acts.className = 'acts';
+  const pick = document.createElement('button'); pick.type = 'button'; pick.textContent = 'Pick'; pick.className = 'pick';
+  const rej = document.createElement('button'); rej.type = 'button'; rej.textContent = 'Reject'; rej.className = 'rej';
+  const sel = document.createElement('select');
+  for (const r of REASONS) { const o = document.createElement('option'); o.value = r; o.textContent = r; sel.append(o); }
+  const other = document.createElement('input'); other.type = 'text'; other.placeholder = 'why'; other.maxLength = 80;
+  sel.hidden = other.hidden = true;
+  if (hard.length) { pick.disabled = rej.disabled = true; }
+  pick.onclick = () => { togglePick(k, row.asset_id); };
+  rej.onclick = () => { toggleReject(k, row.asset_id); };
+  sel.onchange = () => { setReason(k, row.asset_id, sel.value === 'other' ? (other.value || 'other') : sel.value); other.hidden = sel.value !== 'other'; if (sel.value === 'other') other.focus(); };
+  other.onchange = () => setReason(k, row.asset_id, other.value.trim() || 'other');
+  acts.append(pick, rej, sel, other);
+  card.append(c128, c256, meta, acts);
+  card._paint = () => {
+    const pi = v.pick.indexOf(row.asset_id);
+    const rj = v.reject.includes(row.asset_id);
+    card.classList.toggle('picked', pi >= 0);
+    card.classList.toggle('rejected', rj);
+    pick.setAttribute('aria-pressed', String(pi >= 0));
+    rej.setAttribute('aria-pressed', String(rj));
+    order.hidden = pi < 0; order.textContent = pi >= 0 ? `strip ${pi + 1}` : '';
+    sel.hidden = !rj;
+    const why = v.reasons[row.asset_id] || '';
+    if (rj) { sel.value = REASONS.includes(why) ? why : 'other'; other.hidden = sel.value !== 'other'; if (sel.value === 'other') other.value = why; }
+    else other.hidden = true;
+  };
+  card._paint();
+  return card;
+}
+
+function repaint() { document.querySelectorAll('.take').forEach((c) => c._paint && c._paint()); paintStatus(); }
+
+function paintStatus() {
+  const k = concepts[current]; const v = work.get(k.concept_id);
+  const st = $('st'); if (!st) return;
+  st.textContent = `${v.pick.length} picked · ${v.reject.length} rejected` + (v.pick.length ? '' : ' — pick at least one');
+}
+
+function togglePick(k, aid) {
+  const v = work.get(k.concept_id);
+  const i = v.pick.indexOf(aid);
+  if (i >= 0) v.pick.splice(i, 1);
+  else { v.pick.push(aid); const j = v.reject.indexOf(aid); if (j >= 0) { v.reject.splice(j, 1); delete v.reasons[aid]; } }
+  repaint(); save(k);
+}
+
+function toggleReject(k, aid) {
+  const v = work.get(k.concept_id);
+  const j = v.reject.indexOf(aid);
+  if (j >= 0) { v.reject.splice(j, 1); delete v.reasons[aid]; }
+  else { v.reject.push(aid); if (!v.reasons[aid]) v.reasons[aid] = 'no human face'; const i = v.pick.indexOf(aid); if (i >= 0) v.pick.splice(i, 1); }
+  repaint(); save(k);
+}
+
+function setReason(k, aid, why) { work.get(k.concept_id).reasons[aid] = why; save(k); }
+
+// Every change is a verdict and lands at once; a concept with no pick is not written (the
+// server refuses it) and the status line says why.
+let saving = null;
+function save(k) {
+  const v = work.get(k.concept_id);
+  if (!v.pick.length) { paintStatus(); return Promise.resolve(false); }
+  return post({concept_id: k.concept_id, pick: v.pick, reject: v.reject, reasons: v.reasons});
+}
+
+async function post(body) {
+  const r = await fetch('/picks', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
+  const doc = await r.json().catch(() => ({ok: false, error: `HTTP ${r.status}`}));
+  const saved = $('saved');
+  if (!r.ok || !doc.ok) {
+    saved.textContent = doc.error || `HTTP ${r.status}`; saved.classList.add('err');
+    toast(doc.error || `HTTP ${r.status}`, true);
+    return false;
+  }
+  if (doc.cleared) delete picks[body.concept_id]; else picks[body.concept_id] = doc.verdict;
+  saved.textContent = `saved ${new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'})}`;
+  saved.classList.remove('err');
+  drawRail();
+  return true;
+}
+
+async function acceptAndNext() {
+  const k = concepts[current];
+  const ok = await save(k);
+  if (!ok) return;
+  const next = concepts.findIndex((c, i) => i > current && !isReviewed(c.concept_id));
+  const wrap = next < 0 ? concepts.findIndex((c) => !isReviewed(c.concept_id)) : next;
+  if (wrap < 0) { toast('Every portrait is reviewed. Re-catalog with build_catalog.py --picks.'); return; }
+  current = wrap; drawRail(); drawConcept();
+}
+
+function openLight(file) { $('lightimg').src = `/assets/${file}`; $('light').classList.add('open'); }
+function closeLight() { $('light').classList.remove('open'); $('lightimg').removeAttribute('src'); }
+$('light').onclick = closeLight;
+
+let toastTimer = null;
+function toast(msg, err) {
+  const t = $('toast'); t.textContent = msg; t.classList.toggle('err', !!err); t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.target.matches('input, select, textarea')) return;
+  if (e.key === 'Escape') { closeLight(); return; }
+  if ($('light').classList.contains('open')) return;
+  const k = concepts[current]; if (!k) return;
+  const list = rows.get(k.concept_id) || [];
+  if (e.key === 'Enter' || e.key === 'ArrowRight') { e.preventDefault(); acceptAndNext(); return; }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); if (current > 0) { current -= 1; drawRail(); drawConcept(); } return; }
+  if (/^[0-9]$/.test(e.key)) {
+    const n = e.key === '0' ? 9 : Number(e.key) - 1;
+    const row = list[n];
+    if (row && !(row.reject || []).some((w) => HARD.has(w))) togglePick(k, row.asset_id);
+    return;
+  }
+  if (e.key === 'r' || e.key === 'R') {
+    const card = document.activeElement && document.activeElement.closest ? document.activeElement.closest('.take') : null;
+    if (card && !card.classList.contains('hard')) toggleReject(k, card.dataset.aid);
+  }
+});
+
+load().catch((err) => { $('main').textContent = `Could not load: ${err}`; });
+</script>
+</body>
+</html>
