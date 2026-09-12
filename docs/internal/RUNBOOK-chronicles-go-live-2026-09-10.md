@@ -319,3 +319,33 @@ Derek: the footer hid below the fold and needed a scroll. It did — by design: 
 1920×1080, 390×844, footer flush to the bottom; a 375×667 phone still scrolls 53 px, the content's own height.
 ComfyStewardView `7cf17cd` (fix) + receipt commit; rollback `deploy.py --rollback 20260910T173815Z-3f4a2b77fe0f`.
 `smoke_front.mjs` 15/15, `verify_sweep.ps1` chronicles leg all clear.
+
+## Iteration 6 — Builder page v2 (2026-09-12 ~06:55 UTC), creators `60d9a8b1eb50-c78bbfb23c85`
+
+Rollback `66f3ab072b8e-4e118cdf4a07` (Release B; re-point the `creators` symlink). ComfyStewardView main
+`0ae225c` (first cut) + `60d9a8b` (second cut); pins `?v=8`. Design record `docs/design/Builder page v2/`
+(canvas https://claude.ai/code/artifact/e0e33680-53a5-4f44-b1a2-1ff9c88702da).
+
+The profile re-told as one story. **Hero**: name and one unlabelled line (`Major Architect · eras 7–12 · 39
+build albums · 7,386 construction pieces · 28 photographs`; the counters stay, the TIER/FIRST ERA/LATEST ERA row
+goes). **The work**: a carousel of the photographed builds — big viewport, thick banner across its top (era ·
+name · pieces · `44 % yours` · photographs · photo stepper), details plainly underneath (credits, world viewer,
+`I built this · Not mine · Request… · Copy payload`), a rail of the photographed builds as the selector; leads
+with the builds most the builder's own. **Who they built beside**: the kinship tree drawn on the page (new shared
+`web/kin-tree.js`; `kinship.js` keeps its page and tooltip), the Top 8 as its caption, branch ↔ chip ↔ pair in
+lockstep. **The pair**: photo + status + shared-builds ledger; laurels, hearth, affinity, facts, tiles, allotment
+under a native `Details`. **The rest**: a table of the un-photographed builds — Era · Build · `link` (world-viewer
+deep link) · Details (freeform: pieces per builder against the total, unattributed, slept-here; the claim controls
+live in it) · Feedback (star / square / X, hollow → filled, one per row). Feedback = photo priorities on the
+participation rails: `state.priorities`, exported in the payload beside claims and requests, cleared by forget,
+never tallied by the archive. **Notes** strip (status lines + manifest) above the five figures.
+
+The first cut (rows per era with expand toggles) was reviewed and rejected in the same session ("we avoid all this
+collapsing thing"); it was never deployed. Presentation only — gate PASS (2,682 threads identical). Verified:
+129 Python / 85 Node; browser-smoke local + live (new pins: carousel + details primary, single attribution, three
+marks per rest row, folded drop-downs, tree beside the ribbon, pair detail folded); `smoke_front` 15/15; sweep
+creators leg all clear. Also fixed on the way: the participation summary's "already submitted" → "already sent";
+browser-smoke's photo check no longer counts a zero-width (hidden) image as in-view. Release ran from a detached
+worktree `E:\wt\builder-page-v2` because the main checkout carried another session's live edits — and that
+session's `tests/test_archive.py` was briefly swept into a commit by a `tests/` pathspec and taken back out before
+push: **commit with explicit file paths when a checkout is shared.**

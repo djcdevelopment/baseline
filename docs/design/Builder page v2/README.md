@@ -13,6 +13,16 @@ restraint took many iterations; this page needs the same discipline.
 **Decisions (2026-09-12):** embed the tree on the profile; fold pair-view extras, the per-album disclaimer and
 contributor line, the status lines and the claim buttons; canvas first, then implement.
 
+## Shipped (2026-09-12)
+
+ComfyStewardView `0ae225c` + `60d9a8b`; creators release `60d9a8b1eb50-c78bbfb23c85` (rollback
+`66f3ab072b8e-4e118cdf4a07`). The second cut departs from the canvas in one place, on Derek's review of the first
+cut: **sections 2 and 5 merged** — the mosaic became a carousel (viewport, thick banner of era + facts, the details
+plainly under it, a rail of the photographed builds as the selector) and the album rows became a plain table of the
+un-photographed builds (Era · Build · world-viewer `link` · a Details drop-down of freeform text with the claim
+controls · a Feedback column of hollow star / square / X marks that fill on selection and ride the participation
+payload as photo priorities). Nothing on the page collapses except those two drop-downs and the pair's Details.
+
 ## The one story
 
 *This is Tugcow. Here is what they built. Here is who they built beside. Everything else is there if you go looking.*
