@@ -267,7 +267,26 @@ the sides since the FOV is vertical, as in Unity). Two viewer bugs fell out on t
 repeated the moves once per round, and every era-archive card said "NaN m tall" because those indexes
 carry no height — both fixed in the viewer (`82ce74c`).
 
-What Leg B still lacks: the request frames are shot and judged but not published, and the gallery has
-no "requested by" line yet. The kit's Windows proof (Leg C) and everything past `pose`/`runclips` in
-Leg D remain open.
+## Closing the open legs (11:00–11:20 UTC)
+
+- **Leg B, complete.** A requests root's campaign already carries the ledger entry on each shot;
+  `import_captures` now publishes `{id, at, requestedBy, note}` with the frame, the index passes it
+  through under a `request` chip, and the lightbox reads "requested by Anonymous: second smoke after the
+  compact-ledger release" on `ce24e31b`'s album (ComfyStewardView `1f3ac0f`; FX99 era11 = 689 photos).
+  The live ledger was rewritten as one compact line per request (the container still writes to it).
+- **Leg C, proven on a Windows PC.** The i5 was offline, so the proof ran on OMEN against the Steam client
+  — build **25253764 (1.0.12)**, the community's own — with the kit's copy of the era11 world and three rows
+  of `shots-era11.tsv` at 1920×1080: 3/3 frames in five minutes, plugins and config restored, and every
+  receipt's lens, yaw and pitch **equal to AM4's to the centimetre** (`docs/evidence/2026-09-12-camera-kit-omen/`).
+  Two kit changes on the way: it plays a *copy* of the character (`<name>-kit.fch`, found in
+  `characters_local` or Steam's on-disk cloud folder, deleted afterwards) — the same cloud-shadow trap
+  as above, and the one that would have bitten every community user with a cloud character — and
+  `make_bundle.py` builds the release zip + manifest. The bundle (`camera-kit-20260912.zip`, 63 KB) and the
+  mod release files (`camera-proof-v0.2.5`: DLL, manifest, SHA256SUMS, notes) are staged at
+  `E:\omen\camera-kit-release\`; publishing them is the operator's call, commands in the kit README.
+- **The climb, in numbers.** Winners' pitch: median 38°, 25 under 30°, 24 at 30–45°, 26 at 45–60°,
+  8 at 60° or more (max 81°). Eight frames are near-top-downs; whether that is wrong is an eye
+  question, so no rule changed. `refine_worker`'s status now counts builds decided (it read "601 of 84").
+- Still open: Leg D past `pose`/`runclips` (multi-waypoint clips, in-game path preview, the `/world/` path
+  editor, the record script) and Leg E.
 
