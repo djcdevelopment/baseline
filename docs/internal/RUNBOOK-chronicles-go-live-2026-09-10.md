@@ -500,3 +500,23 @@ payload carries the one basemate tag, chip appears, ledger holds one tag). Pins 
 smoke passed, `smoke_front` 15/15, sweep all clear. Rollback `abb9f78def66-266ff053f4ae`. Dev site
 (`E:\omen\steward-multi-era\devsite/valheim\creators`) is a **junction** to the current projection — MSYS `ln -s`
 copies the tree instead; use `New-Item -ItemType Junction`.
+
+## "Tag another basemate" is never a dead click (2026-09-12 ~14:40 UTC) — creators `cdf1eaffc7a4-872bcd9066ba`
+
+Derek, on his own page: "that button is doing nothing in production" (three builds: 338abcbb 44 %, d8d45647 34 %,
+14b4e3ce 0 %, 2372a2c7 77.8 % solo). Not a data fault — the shares were intact and `majorityOwner` read them right
+(largest / largest / null / majority). Every click was refused by a gate and every refusal was a 2.4 s toast at the
+foot of the window: no built claim in his browser (the 44 % and 34 % builds), nobody else credited (the solo
+build), not the leading builder (the 0 % build). ComfyStewardView `cdf1eaf`, pins `?v=15`:
+- **No claim yet, leading builder** → the click opens the claim dialog (its build line says "the claim comes first;
+  tagging opens the moment it is recorded"), and the tag dialog opens as soon as the claim is recorded. The claim
+  skips its own payload hand-over: the kinship payload the tag hands over carries the standing claim (one payload,
+  `claims: [built]` + the tag); a cancelled tag after a chained claim hands the claim over itself.
+- **Not this builder's to tag** → the control is visibly inert (dashed, dimmed, `cursor: not-allowed`) and a muted
+  line under the row says why before any click: `leadingBuilderNote` — "Tags come from a build's leading builder —
+  here that's Laughingman (42.6%)." / "…and no one holds a quarter of this one." / "…and this one has no single
+  leader." / "…and this build's shares were never recorded."; or "Nobody else is recorded on this build." The note
+  is `width: 0; min-width: 100%` so it never widens the actions column (a first cut squeezed the credits to a strip).
+- The smoke drives both paths (claim → tag → one payload with claim + basemate; claim → cancel tag → claim payload)
+  and asserts an inert control always carries its note. Live smoke passed, `smoke_front` 15/15, sweep all clear;
+  the three builds render as intended live. Rollback `5b57f5aa003c-ea6bcc227816`.
