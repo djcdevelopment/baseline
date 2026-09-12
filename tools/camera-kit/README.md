@@ -14,9 +14,11 @@ with Valheim and one of the end-of-era worlds can run it.
    Discord — download the `.db` and `.fwl` pair for the era you want and either copy them into
    `%USERPROFILE%\AppData\LocalLow\IronGate\Valheim\worlds_local\` or pass them with `-WorldDb`
    / `-WorldFwl` (the kit copies them in and refuses to overwrite a different file of the same name).
-3. **A character** that exists in `characters_local` (any character; it will be made invulnerable
-   and hidden for the shots and is never saved back over — the kit runs the game against your
-   normal save folder, so use a throwaway character if you prefer).
+3. **A character** — any of yours, by name. The kit finds it in `characters_local` or in the
+   Steam Cloud folder Steam keeps on disk, or takes `-CharacterFile`, and plays a **copy** named
+   `<name>-kit` (the game would otherwise pick the cloud copy of a same-named character and save
+   the last camera back into it). The copy is deleted after the run; your character is never
+   written to. It is made invulnerable and hidden for the shots.
 4. **The two plugins** in `mods\`: `ComfyCameraProof.dll` (MIT, source in
    `github.com/djcdevelopment/comfy` under `handoffs/valheim-camera-proof`) and
    `BetterServerPortals.dll` 1.9.0 (GPL-3, built from `redseiko/ComfyMods` commit `a2b4680`
@@ -37,7 +39,10 @@ build, plugin hashes, every frame's SHA-256 and its capture receipt). Your own p
 three control files are parked before the run and put back afterwards, even if the run fails.
 
 At 3840×2160 the frame is the window size; on a smaller display use `-Width 1920 -Height 1080`
-— the receipts record what you shot at.
+— the receipts record what you shot at. Proof of the round trip: run on a Windows PC with the
+Steam client build 25253764 (1.0.12), three rows of `shots-era11.tsv` came back with the lens,
+yaw and pitch equal to the archive's own receipts to the centimetre (`receipt.json` in
+`docs/evidence/2026-09-12-camera-kit-omen/`).
 
 ## Shot lists
 

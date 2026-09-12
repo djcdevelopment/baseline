@@ -106,6 +106,26 @@ def read_receipts(path, wanted):
     return found
 
 
+def find_character(name, characters):
+    """The character's own file: characters_local first, then the Steam Cloud folder Steam keeps
+    on disk (userdata/<id>/892970/remote/characters). Read only; the run plays a copy."""
+    local = characters / f"{name}.fch"
+    if local.exists():
+        return local
+    roots = []
+    if platform.system() == "Windows":
+        for env in ("ProgramFiles(x86)", "ProgramFiles"):
+            base = os.environ.get(env)
+            if base:
+                roots.append(Path(base) / "Steam" / "userdata")
+    else:
+        roots += [Path.home() / ".steam" / "steam" / "userdata", Path.home() / ".local" / "share" / "Steam" / "userdata"]
+    for root in roots:
+        for candidate in sorted(root.glob(f"*/892970/remote/characters/{name}.fch")) if root.exists() else []:
+            return candidate
+    return None
+
+
 def place_file(source, target, what):
     """Copy a world/character file in, refusing to replace a different file of the same name."""
     if target.exists():
@@ -161,8 +181,21 @@ def main():
     for ext in (".db", ".fwl"):
         if not (worlds / f"{args.world}{ext}").exists():
             raise SystemExit(f"world file missing: {worlds / (args.world + ext)} (pass --world-db/--world-fwl or copy it there)")
-    if args.character_file:
-        placed["character"] = place_file(args.character_file, characters / args.character_file.name, "character")
+    # The game plays a throwaway copy of the character, never the original. Valheim lists
+    # Steam Cloud and local characters together and, when both hold the same file name, plays
+    # the cloud one -- and saves it back, with the last camera as the logout point. A distinct
+    # file stem (<name>-kit) keeps the run on a local copy the plugin picks by that stem, and the
+    # copy is removed afterwards, so nothing of yours is written to.
+    seed = f"{args.character}-kit"
+    seed_file = characters / f"{seed}.fch"
+    source = args.character_file or find_character(args.character, characters)
+    if source is None:
+        raise SystemExit(f"no character named {args.character!r} in {characters} or the Steam Cloud folder; pass --character-file")
+    if seed_file.exists():
+        seed_file.unlink()
+    characters.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, seed_file)
+    placed["character"] = {"from": str(source), "sha256": sha256(source), "playedAs": seed}
 
     cfg = game / "BepInEx" / "config"
     plugins = game / "BepInEx" / "plugins"
@@ -186,7 +219,7 @@ def main():
                 backups[name] = src.read_bytes()
         (cfg / "shotplan.tsv").write_text(HEADER + "".join("\t".join(r) + "\n" for r in rows), encoding="utf-8")
         (cfg / "shotplan-receipts.jsonl").write_text("", encoding="utf-8")
-        (cfg / "orbit-request.json").write_text(json.dumps({"world": args.world, "character": args.character,
+        (cfg / "orbit-request.json").write_text(json.dumps({"world": args.world, "character": seed,
                                                             "quit_when_done": True}, indent=2), encoding="utf-8")
         captures = cfg / "comfy-orbit-captures"
         before = {p.name for p in captures.iterdir()} if captures.exists() else set()
@@ -259,6 +292,8 @@ def main():
         for name in CONTROL:
             if name not in backups and (cfg / name).exists():
                 (cfg / name).unlink()
+        for leftover in seed_file.parent.glob(seed_file.name + "*"):   # the copy and the .old the game writes beside it
+            leftover.unlink()
         if parked.exists():
             if plugins.exists():
                 shutil.rmtree(plugins)

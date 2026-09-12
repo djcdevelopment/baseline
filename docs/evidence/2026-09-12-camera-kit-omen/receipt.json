@@ -1,0 +1,226 @@
+{
+  "schema": "camera-kit-run/v1",
+  "startedAt": "2026-09-12T10:10:19Z",
+  "endedAt": "2026-09-12T10:15:14Z",
+  "gameRoot": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Valheim",
+  "gameBuild": "25253764",
+  "world": "ComfyEra11",
+  "character": "questyfour",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "placed": {
+    "db": "copied",
+    "fwl": "copied",
+    "character": {
+      "from": "C:\\Users\\derek\\AppData\\Local\\Temp\\claude\\C--work-baseline\\2c234036-9d6a-4e1f-8bb3-4f2c3762e6a5\\scratchpad\\questyfour.fch",
+      "sha256": "a3996c1428b82578a7ba5c20bb3388bd216f23d3447f39d1b644914a4c755ac2",
+      "playedAs": "questyfour-kit"
+    }
+  },
+  "plugins": {
+    "ComfyCameraProof.dll": {
+      "bytes": 100352,
+      "sha256": "bd31cd75a204911f2ae8587e1b45ef5e2318fa800399dbfb0519422288a46b42"
+    },
+    "BetterServerPortals.dll": {
+      "bytes": 17408,
+      "sha256": "d2e7c468620fbf94d77204dc09c5d3ac2b37a47569b5d11664c47cf818814a8e"
+    }
+  },
+  "shots": 3,
+  "frames": 3,
+  "exitCode": 0,
+  "results": [
+    {
+      "cluster_id": 1,
+      "shot": "detail1~aim~up20",
+      "file": "20260912-031313/0001_detail1~aim~up20.png",
+      "bytes": 2878589,
+      "sha256": "cd1419ef75093d35c9168fcdd736bd0209ef8b41d0255ba68f13149084e9ab36",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "receipt": {
+        "run": "20260912-031313",
+        "plan": "shotplan.tsv",
+        "index": 0,
+        "cluster_id": 1,
+        "shot": "detail1~aim~up20",
+        "mode": "",
+        "label": "Build 55acdcac",
+        "file": "0001_detail1~aim~up20.png",
+        "planned": {
+          "x": -7711.6,
+          "y": 79,
+          "z": -3173.9
+        },
+        "placed": {
+          "x": -7711.6,
+          "y": 79,
+          "z": -3173.9
+        },
+        "lens": {
+          "x": -7711.822,
+          "y": 80.429,
+          "z": -3174.138
+        },
+        "lens_offset_m": 1.466,
+        "aim": {
+          "x": -7730.1,
+          "y": 47.5,
+          "z": -3193.7
+        },
+        "yaw": 223.02,
+        "pitch": 49.31,
+        "clearance": "planned",
+        "fov": 65,
+        "environment": "Clear",
+        "time_of_day": 0.64,
+        "fires": false,
+        "fires_found": 171,
+        "fires_found_at_sweep": 11,
+        "fires_in_view": 120,
+        "fires_burning": 11,
+        "fires_wet": 0,
+        "fires_lit": 0,
+        "fires_unowned": 0,
+        "light_lods": 150,
+        "flash": "off",
+        "flash_bearing_deg": null,
+        "flash_hold_s": null,
+        "pieces_near_aim": 3242,
+        "occluded": false,
+        "at": "2026-09-12T03:13:38.7253737-07:00"
+      }
+    },
+    {
+      "cluster_id": 3,
+      "shot": "detail1~up20~up20",
+      "file": "20260912-031313/0003_detail1~up20~up20.png",
+      "bytes": 2883480,
+      "sha256": "7aead9ce5070b81b0d3a50edfa900bf4b79ab0c79adacfbcec468f051f4592f2",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "receipt": {
+        "run": "20260912-031313",
+        "plan": "shotplan.tsv",
+        "index": 1,
+        "cluster_id": 3,
+        "shot": "detail1~up20~up20",
+        "mode": "",
+        "label": "Build 920590f4",
+        "file": "0003_detail1~up20~up20.png",
+        "planned": {
+          "x": 340.8,
+          "y": 93.3,
+          "z": 4745.2
+        },
+        "placed": {
+          "x": 340.8,
+          "y": 93.3,
+          "z": 4745.2
+        },
+        "lens": {
+          "x": 340.658,
+          "y": 94.65,
+          "z": 4745.058
+        },
+        "lens_offset_m": 1.365,
+        "aim": {
+          "x": 327.5,
+          "y": 50.5,
+          "z": 4731.9
+        },
+        "yaw": 225,
+        "pitch": 66.28,
+        "clearance": "planned",
+        "fov": 65,
+        "environment": "Clear",
+        "time_of_day": 0.64,
+        "fires": false,
+        "fires_found": 19,
+        "fires_found_at_sweep": 5,
+        "fires_in_view": 17,
+        "fires_burning": 3,
+        "fires_wet": 0,
+        "fires_lit": 0,
+        "fires_unowned": 0,
+        "light_lods": 172,
+        "flash": "off",
+        "flash_bearing_deg": null,
+        "flash_hold_s": null,
+        "pieces_near_aim": 8523,
+        "occluded": false,
+        "at": "2026-09-12T03:14:07.5262619-07:00"
+      }
+    },
+    {
+      "cluster_id": 5,
+      "shot": "detail1~up20~o45",
+      "file": "20260912-031313/0005_detail1~up20~o45.png",
+      "bytes": 2360034,
+      "sha256": "3ab511a500c9416abdac1c6b085087deeb2a08163e2279a7b3356cc611a4d314",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "receipt": {
+        "run": "20260912-031313",
+        "plan": "shotplan.tsv",
+        "index": 2,
+        "cluster_id": 5,
+        "shot": "detail1~up20~o45",
+        "mode": "",
+        "label": "Build 6f00e332",
+        "file": "0005_detail1~up20~o45.png",
+        "planned": {
+          "x": -7044,
+          "y": 82.1,
+          "z": 13407.9
+        },
+        "placed": {
+          "x": -7044,
+          "y": 82.1,
+          "z": 13407.9
+        },
+        "lens": {
+          "x": -7044.003,
+          "y": 83.583,
+          "z": 13408.28
+        },
+        "lens_offset_m": 1.531,
+        "aim": {
+          "x": -7044.3,
+          "y": 55,
+          "z": 13439.6
+        },
+        "yaw": 359.51,
+        "pitch": 40.52,
+        "clearance": "planned",
+        "fov": 65,
+        "environment": "Clear",
+        "time_of_day": 0.64,
+        "fires": false,
+        "fires_found": 0,
+        "fires_found_at_sweep": 0,
+        "fires_in_view": 0,
+        "fires_burning": 0,
+        "fires_wet": 0,
+        "fires_lit": 0,
+        "fires_unowned": 0,
+        "light_lods": 10,
+        "flash": "off",
+        "flash_bearing_deg": null,
+        "flash_hold_s": null,
+        "pieces_near_aim": 1040,
+        "occluded": false,
+        "at": "2026-09-12T03:14:34.4222453-07:00"
+      }
+    }
+  ]
+}

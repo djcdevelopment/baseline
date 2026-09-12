@@ -1,0 +1,4 @@
+# cluster_id	shot	cam_x	cam_y	cam_z	yaw	pitch	env	time	aim_x	aim_y	aim_z	label	mode	fires	flash
+1	detail1~aim~up20	-7711.6	79	-3173.9	223.02	49.31	Clear	0.64	-7730.1	47.5	-3193.7	Build 55acdcac		0	
+3	detail1~up20~up20	340.8	93.3	4745.2	225	66.28	Clear	0.64	327.5	50.5	4731.9	Build 920590f4		0	
+5	detail1~up20~o45	-7044	82.1	13407.9	359.51	40.52	Clear	0.64	-7044.3	55	13439.6	Build 6f00e332		0	
