@@ -498,5 +498,5 @@ shows beside the credit as a dashed "recorded" chip (`renderTagChips`, confirmed
 The smoke now claims a build through the dialog and tags from the card end to end (dialog lists `credits − 1`,
 payload carries the one basemate tag, chip appears, ledger holds one tag). Pins `?v=14`. Gate: data identical; live
 smoke passed, `smoke_front` 15/15, sweep all clear. Rollback `abb9f78def66-266ff053f4ae`. Dev site
-(`E:\omen\steward-multi-era\devsitealheim\creators`) is a **junction** to the current projection — MSYS `ln -s`
+(`E:\omen\steward-multi-era\devsite/valheim\creators`) is a **junction** to the current projection — MSYS `ln -s`
 copies the tree instead; use `New-Item -ItemType Junction`.
