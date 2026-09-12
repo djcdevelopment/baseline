@@ -250,3 +250,24 @@ the profile in play, and its saves land in the disposable scratch tree.
 requested poses shot and judged (no vetoes), and the receipt's lens **0.44 m** from the requested lens,
 aim 0.06 m, yaw and pitch exact — the Leg B round trip (viewer camera → ledger → shot → receipt) is
 proven. Evidence: [`docs/evidence/2026-09-12-era11-requests-r5/`](../evidence/2026-09-12-era11-requests-r5/).
+
+## Leg A checked in a browser (10:45 UTC)
+
+The 83 refined winners are published: derivatives made on AM4 (83 masters → webp in 0.1 min),
+`publish_captures` shipped 166 files / 20 MB to FX99 (`/srv/sites/valheim/era11/`, now 687 thumbs),
+`build_era_index --world-url` rebuilt `index.json` from both manifests (687 photographs, 184 albums, 83 with
+a pose; a refined frame sits under its planned shot's chip, so the variant row is `detail1` + `orbit1–4`,
+not fourteen fan paths), and the viewer went to every era directory. Opening
+`/valheim/era11/#build=002c20e689ef`, the refined frame's lightbox reads
+`camera 42 m · 60° above · bearing 45° · refined: planned → up20 → up20` and its
+"open the 3D scene at this camera" link lands `/world/scene.html` in fly mode, frame `gallery-exact`,
+pitch −59.9°, with the big thatched house in the foreground, the long hall behind it and the small stone
+structure on the left exactly where the photograph has them (at a 16:9 canvas; a narrower canvas crops
+the sides since the FOV is vertical, as in Unity). Two viewer bugs fell out on the way: the refine caption
+repeated the moves once per round, and every era-archive card said "NaN m tall" because those indexes
+carry no height — both fixed in the viewer (`82ce74c`).
+
+What Leg B still lacks: the request frames are shot and judged but not published, and the gallery has
+no "requested by" line yet. The kit's Windows proof (Leg C) and everything past `pose`/`runclips` in
+Leg D remain open.
+
