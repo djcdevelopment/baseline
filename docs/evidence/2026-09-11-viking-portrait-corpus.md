@@ -64,3 +64,22 @@ chain corpus → catalog → concepts is checkable from the repo alone.
   concepts. Discarded; the prompt classification with the beard-colour rule is the source.
 - A "mojibake repair" for `Groa the Seið-Kona`: the receipt already holds U+00F0; the console
   was at fault. Removed.
+
+## Refresh after the contact-sheet pass and the first publish (2026-09-12)
+
+Derek walked all 96 sheets on `tools/portrait-corpus/review.py` (3 strips changed, 93 accepted); the catalog was
+rebuilt with `--face-qa --attributes --picks`, and the library was cut and published. Digests as of the publish
+(VERIFIED with sha256 over the files):
+
+| file | sha256 | bytes | note |
+|---|---|---|---|
+| `catalog.json` (corpus) | `7e11fc49996e69151ae2d9ac651209c6f28e2c03dc333d1570ed0006a50a3ecd` | 1,416,975 | 1,355 usable; `rejected_by_eye` 11 |
+| `docs/design/valheim-portrait-picker-2026-09/concepts.json` | `548ece35ba20745c211bf6516ef40d74e5786eeff26b5a63fac7b1427041ec0a` | 207,220 | every `takes.source: manual`; 382 picked |
+| `docs/design/valheim-portrait-picker-2026-09/picks.json` | `73dc4d78e6c7998c83ee2b561fa36f3e7f2e0d04312a6b85bf155cfb32b1588c` | 37,322 | 96 verdicts |
+| `receipts.ndjson` | unchanged: `163320de32bb…` | 2,063,320 | |
+
+The library tree `E:\omen\steward-multi-era\portraits\viking96-20260912` (382 takes, 1,146 webp, 29.7 MiB; built
+without `--dev`) records `provenance.sourceReceipts.sha256 = 163320de32bb…`, `sourceConcepts = 548ece35ba20…`,
+`sourceCatalog = 7e11fc49996e…`, and every take's `sha` is its source PNG's receipt sha (FR-9). First publish:
+chronicles release `20260912T110102Z-1ec52bb01f01` (ComfyStewardView `059f5cd`, 1,279 files verified on FX99),
+`/chronicles/portraits.json` schema 2, 144 tiles; creators release `059f5cdd4daf-c03976efc2a6`, pins `?v=11`.

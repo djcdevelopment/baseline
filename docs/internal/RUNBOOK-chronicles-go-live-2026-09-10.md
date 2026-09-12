@@ -389,3 +389,35 @@ Next: S3 (`portrait` claim on the payload, `coordinate.py` ingest, `gate_creator
 switch, disclosure line, PD-3 entry, first publish of the library through the chronicles release chain, evidence-page
 digests refreshed for FR-9), S5 ("worn by N", `exclusive`). Design record and deviations:
 `docs/design/valheim-portrait-picker-2026-09/FUNCTIONAL-REQUIREMENTS.md` → "Implementation notes".
+
+## Portrait picker live (2026-09-12 ~11:05 UTC) — chronicles `20260912T110102Z-1ec52bb01f01`, creators `059f5cdd4daf-c03976efc2a6`
+
+Rollbacks: chronicles `20260912T050004Z-282f720d8c76` (`deploy.py --rollback`), creators `05c29f4f4ad7-81bdd0da1a31`.
+ComfyStewardView `94acd06` (S3+S4) + `059f5cd` (deploy hold); pins `?v=11` everywhere including the sweep. Verified live:
+`smoke_front` 15/15, `PICKER=1 browser-smoke` (144 → Carpenter 8 → +red 5, 30 trades with 5 dimmed, choose dresses the
+hero and the tree anchor, focus returns, revert undresses), sweep all clear (1,279 chronicles files; the three cuts of
+one painted take immutable; portraits.js + portrait-picker.js linted). `/chronicles/portraits.json` is schema 2
+(156 KB pretty-printed; the gateway page inlines the 48-row slate slice; the creators pages fetch the file).
+
+**PD-3 exposure check (FR-8), recorded here as the handle and the kinship tags were.** The portraits themselves add
+no personal data: synthetic paintings, no likeness, no builder named in a tag or a file name; the naming note keeps
+character names out of every UI string. The one new public field is the builder's *choice* — `portrait: {tile, take}`
+on their record in `directory.json` and `threads/<key>.json`, written by `gallery.py` only from
+`confirmedPortraits` in the coordinator's private file. It reveals a preference and nothing else; it is volunteered
+through the same copied payload as a claim (a built claim on the profile is the standing it needs, and the line rides
+`exportPayload` next to the claims); it is revocable by the builder (a revert line the coordinator confirms) and
+vetoable by the coordinator (`revoke-portrait --reason`); `forget <handle>` removes it with everything else the handle
+sent. The public `participation.json` says nothing about portraits. The sha, the handle, the timestamps and the record
+id stay in `analysis/participation.json`. Verdict: within PD-3's existing consent for self-reported participation.
+
+**Coordinator's steps for a portrait payload** (the picker writes nothing anywhere; the builder copies their payload):
+```
+python tools/era-archive/coordinate.py --output-root E:\omen\steward-multi-era ingest <payload.json> --portraits E:\omen\steward-multi-era\chronicles-releases\20260912-portraits\portraits.json
+python tools/era-archive/coordinate.py --output-root E:\omen\steward-multi-era status            # pending portrait <builderKey> · <tile>#<take>
+python tools/era-archive/coordinate.py --output-root E:\omen\steward-multi-era confirm-portrait <builderKey>
+```
+then the ordinary creators publish (`gallery.py` → `gate_creators.py`, which now admits `portrait` → `deploy_gallery.py`).
+A revert arrives as a line with `tile: null`; `confirm-portrait` on it takes the published field down. The picker's
+library is re-cut with `tools/chronicles/portraits/build_manifest.py` (never `--dev` for a publish) and shipped with
+`build.py --library`; `--portraits` at ingest must be the manifest that is live, so a line is checked against what the
+archive can draw.

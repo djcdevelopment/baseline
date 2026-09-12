@@ -342,3 +342,27 @@ validation, the data gate admitting `portrait`). Gates: `portraits.logic.test.js
 a dev host at `E:\omen\steward-multi-era\devsite` serves the projection + a local chronicles build with it.
 The evidence page's digests for `catalog.json` and `concepts.json` predate the re-catalogue and need
 refreshing before the first release receipt quotes them (FR-9).
+
+## Implementation notes — S3 + S4 live (2026-09-12, ComfyStewardView `94acd06` + `059f5cd`)
+
+**S3.** `exportPayload` carries `portraits[]` and the build payload `portrait`; the hero's note grows
+"Copy your payload". `coordinate.py ingest --portraits <portraits.json>` (required when the payload carries a
+choice) checks every line against the manifest — tile present, take in the strip, sha the take's — and reports the
+refused ones by id without filing them; `confirm-portrait <builderKey>` publishes the latest choice or confirms a
+revert; `revoke-portrait --reason` is the veto (FR-7); `forget` takes a handle's choices; `status` lists what is
+pending. `gallery.py` writes **`portrait: {tile, take}`** onto the builder's record (directory.json + thread) — not
+`{tile, take, v}` as FR-4 wrote: `v` is the manifest's, so a re-cut never leaves a stale buster in a record.
+`gate_creators.py` admits `portrait` beside `generatedAt`. The resolver gained a published table
+(`StewardPortraits.setPublished`) filled from the thread and directory.json; order is device → published → slot.
+
+**S4.** The front door's rows ask the same resolver: `build.py` ships `web/portraits.js` hashed beside `gateway.js`
+(the resolver is one file in the repo, used by both lanes) and `gateway.js` fetches the full `portraits.json` once,
+only when directory.json shows somebody has chosen (the page still inlines the slate slice). The disclosure line
+(FR-8) sits under the avatar for every visitor; the picker control shows only with standing. The sweep checks the
+libraries, one painted take's three cuts (immutable), and the two scripts (linted). Published: chronicles
+`20260912T110102Z-1ec52bb01f01` (rollback `20260912T050004Z-282f720d8c76`), creators `059f5cdd4daf-c03976efc2a6`
+(rollback `05c29f4f4ad7-81bdd0da1a31`), `?v=11`. `PICKER=1 browser-smoke.mjs` passes against FX99; `smoke_front`
+15/15; sweep all clear. No portrait has been confirmed yet — the coordinator's first `confirm-portrait` will be the
+first `portrait` field on a public record (the PD-3 check is recorded in the go-live runbook).
+
+**S5 (not built):** "worn by N" and the `exclusive` flag.
