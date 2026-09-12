@@ -467,3 +467,18 @@ unexpanded (`viking96/<id>.{take}.128.webp` → 404); the take strip and the pre
 smoke now waits for the first twelve grid tiles to complete and fails on any with `naturalWidth` 0, and keeps a
 `picker-grid` screenshot. Gate: the only presentation file differing from live was `portrait-picker.js`; live smoke
 passed (`gridBroken: []`), `smoke_front` 15/15, sweep all clear. Chronicles unchanged.
+
+## The builder hero is as tall as its words (2026-09-12 ~13:20 UTC) — creators `abb9f78def66-266ff053f4ae`
+
+Derek, on his own page: "this top banner is taking up far too much vertical space". Measured at 1440×1000: header 82 px,
+the hero card 328 px, the first content (`#content`) at 478 px — the text column was 94 px (name + one line of
+facts) while the avatar column ran 160 px of portrait + 24 px gap + 98 px of "Your profile" and the four-line
+disclosure stacked under it. Now (ComfyStewardView `abb9f78`): the portrait is 120 px, the profile line is the last
+line of the text column (`renderHeroDoor` appends `#hero-portrait-actions` into `.hero-text` after the facts, called
+after the name/facts are moved in), card padding 18 px, margins 12/20. Tugcow's card is 158 px and the work starts at
+296 px; a builder with aliases and a wrapping facts line (17a1605b) is 222 px for 184 px of words — the smoke pins
+`card − text ≤ 40` and that the line sits in the text column, not an absolute height. Pins moved to `?v=13` (also
+freshens the picker hotfix under a new query). Gate: data identical, presentation diffs = the pin on every page +
+creators.css/js; `PICKER=1` live smoke passed, `smoke_front` 15/15, sweep all clear. Rollback `ef65508ad37a-c6eb41e7626d`.
+Creators deploy receipts live at `E:/omen/steward-multi-era/projections/deploy-<name>.json` (outside the repo — a
+receipt under `tools/era-archive/` makes the tree dirty and the deploy refuses).
