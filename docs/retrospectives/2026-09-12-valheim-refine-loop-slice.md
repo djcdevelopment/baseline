@@ -222,5 +222,31 @@ The 601 receipts were the corpus the plan was waiting for. In order:
   console. Live on AM4 (99,328 B, `fd7129be…`), proof re-stamped. Multi-waypoint clips, the in-game path
   preview, and the `/world/` path editor are still to do.
 
-The first requests session (`era11-requests-r1`, two ledger rows, one build) launched at 08:35 UTC
-against the same world; its receipts will say whether a viewer-picked camera lands within the metre.
+## The first requests session, and the character the game was actually playing
+
+`era11-requests-r1` (08:35 UTC, the two ledger rows, one build) never spawned: `Loading: Done` at 171 s
+as always, then `Terrain compiler could not find hmap` and `Missing location:675942648` every frame,
+no `Spawned after`, the mod's `player never spawned` at 600 s. Same db, fwl and fch hashes as the run that
+had just finished. The Player.log lines were the ones the full run logged at 07:54 — the game was trying
+to spawn at the 84th build's last camera, `16791.4, 81.7, 2687.5`, and that position sits, byte for
+byte, in `userdata/…/892970/remote/characters/questyfour.fch` — the **Steam Cloud** copy of the capture
+character, which the game autosaves every 30 minutes (`Cloud Save: 52468 bytes. /characters/questyfour.fch.new`).
+
+The decompiled 1.0.7 `SaveWithBackups` explains it: saves are grouped by file stem and the Cloud copy is
+made the group's primary, so the seeded `characters_local/questyfour.fch` — the file `runtime.json` pins
+and verifies — was never in the character list at all. Every AM4 session since 09-09 spawned wherever the
+previous one quit; it worked until that spot was a zone whose location prefab the 1.0 client no longer
+has, which `ZoneSystem` refuses to spawn, so `IsAreaReady` never came true. Steam's per-app cloud toggle
+in `localconfig.vdf` did not stop the sync (Steam re-downloaded the files at the next launch), and
+moving them out of `remote/` is undone the same way.
+
+The fix is structural: the workers seed `<character>-seed.fch` (`capture_worker.seed_character()`,
+ComfyStewardView `17dabef`) and ComfyCameraProof **0.2.5** (`655ede1`, `bd31cd75…`) matches
+`orbit-request.character` by file stem as well as in-file name and prefers `m_fileSource == Local`,
+logging `character 'Questyfour' (index 0, source Local, file questyfour-seed)`. The pinned file is now
+the profile in play, and its saves land in the disposable scratch tree.
+
+`era11-requests-r5` (09:36 UTC) then ran the two rows end to end in 286 s: world ready at 209 s, both
+requested poses shot and judged (no vetoes), and the receipt's lens **0.44 m** from the requested lens,
+aim 0.06 m, yaw and pitch exact — the Leg B round trip (viewer camera → ledger → shot → receipt) is
+proven. Evidence: [`docs/evidence/2026-09-12-era11-requests-r5/`](../evidence/2026-09-12-era11-requests-r5/).

@@ -1,0 +1,11 @@
+[Info   :Comfy Camera Proof] Orbit auto-boot: world='ComfyEra11' character='questyfour-seed'
+[Info   :Comfy Camera Proof] Orbit auto-boot: character 'Questyfour' (index 0, source Local, file questyfour-seed).
+[Info   :Comfy Camera Proof] Orbit auto-boot: loading 'ComfyEra11' single-player.
+[Info   :Comfy Camera Proof] Orbit auto-boot: player is in-world; settling before capture.
+[Info   :Comfy Camera Proof] Feed: watching /home/derek/valheim/BepInEx/config/shotplan-feed (idle 600s)
+[Info   :Comfy Camera Proof] Feed: plan 0001-ce24e31b-rq.tsv 1 rows
+[Info   :Comfy Camera Proof] Feed: plan 0001-ce24e31b-rq.tsv done
+[Info   :Comfy Camera Proof] Feed: plan 0002-ce24e31b-rq.tsv 1 rows
+[Info   :Comfy Camera Proof] Feed: plan 0002-ce24e31b-rq.tsv done
+[Info   :Comfy Camera Proof] Feed: STOP
+[Info   :Comfy Camera Proof] Orbit auto-boot: plan complete, quitting.
