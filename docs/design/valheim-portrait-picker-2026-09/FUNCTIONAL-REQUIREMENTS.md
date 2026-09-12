@@ -425,3 +425,10 @@ section from the previous notes are gone (the Caddy file was removed and FX99 re
   FX99's log; the message names the coordinator, the receipt and the key), sweep all clear, `read_portrait_beacons.py`
   on FX99 lists the smoke's own three notes with the tailnet login. Creators release `ed9c738e0015-c30f0f2bf2e1`
   (rollback `71e7e54af0f6-b06d9263a80c`); chronicles unchanged (`20260912T120657Z-939eb83063b7`).
+
+## Implementation notes — hotfix: the grid's faces (2026-09-12 ~12:55 UTC, ComfyStewardView `ef65508`)
+
+The first live drawer showed 96 broken tiles: the grid built each face with `cutsOf(tile, null)`, which since schema 2
+returns the tile's `{take}` cut pattern unexpanded when no take is named. The grid now shows each portrait by its first
+picked take (`takeOf(tile, null)`), the same rule `portraitFor` uses for a page face. The smoke pins it (twelve decoded
+grid images, and a screenshot). Creators `ef65508ad37a-c6eb41e7626d`, rollback `ed9c738e0015-c30f0f2bf2e1`.

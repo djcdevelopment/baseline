@@ -457,3 +457,13 @@ then the ordinary creators publish (`gallery.py --portrait-library …` → gate
 is `X-Forwarded-For` and a tailnet user is named by `Tailscale-User-Login`; the reader prints the login when it has one.
 "Addresses dressing three or more builders" is the line to look at first. An opt-out message on Discord is matched to
 its beacon line by the receipt; applying it is still a hand edit — no tooling applies an opt-out yet.
+
+**Hotfix (~12:55 UTC) — the picker grid showed broken tiles, creators `ef65508ad37a-c6eb41e7626d`** (rollback
+`ed9c738e0015-c30f0f2bf2e1`; ComfyStewardView `ef65508`). Derek's screenshot of the live drawer: every grid tile a
+broken-image icon with its alt text, the facet panel and counts fine. Cause: since portraits.json schema 2 a tile's
+cuts are one `{take}` pattern, and the grid asked the resolver for a face with no take, which returned the pattern
+unexpanded (`viking96/<id>.{take}.128.webp` → 404); the take strip and the preview named a take and loaded. Fix in
+`portrait-picker.js`: `faceOf` asks `takeOf`, which answers the first picked take when none is named. The `PICKER=1`
+smoke now waits for the first twelve grid tiles to complete and fails on any with `naturalWidth` 0, and keeps a
+`picker-grid` screenshot. Gate: the only presentation file differing from live was `portrait-picker.js`; live smoke
+passed (`gridBroken: []`), `smoke_front` 15/15, sweep all clear. Chronicles unchanged.
