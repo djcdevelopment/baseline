@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Archivo:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#12161d;color:#e7e4dc;font-family:'Archivo',sans-serif;}
+a{color:#e8a33d;text-decoration:none}a:hover{color:#f2bc66;text-decoration:underline}
+button{font-family:inherit}
+@keyframes drawerIn{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#12161d;">
+  <header style="position:sticky;top:0;z-index:40;background:rgba(18,22,29,0.94);backdrop-filter:blur(8px);border-bottom:1px solid #232b38;">
+    <div style="display:flex;align-items:center;gap:14px;padding:10px 20px;flex-wrap:wrap;">
+      <button onClick="{{ toggleDrawer }}" style="display:flex;align-items:center;gap:8px;background:none;border:1px solid #3a4557;color:#e7e4dc;border-radius:8px;padding:8px 14px;font-size:14px;font-weight:600;cursor:pointer;" style-hover="border-color:#e8a33d;color:#f2bc66;">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 2.5h12M3.5 7h7M5.5 11.5h3"></path></svg>
+        <span>Filters</span>
+        <sc-if value="{{ hasChips }}" hint-placeholder-val="{{ false }}">
+          <span style="background:#e8a33d;color:#12161d;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;border-radius:10px;padding:1px 7px;">{{ chipCount }}</span>
+        </sc-if>
+      </button>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:1;min-width:120px;">
+        <sc-for list="{{ activeChips }}" as="chip" hint-placeholder-count="0">
+          <button onClick="{{ chip.remove }}" style="display:flex;align-items:center;gap:6px;background:rgba(232,163,61,0.1);border:1px solid #a4772f;color:#f0c37e;border-radius:6px;padding:4px 10px;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;" style-hover="border-color:#e8a33d;background:rgba(232,163,61,0.18);">
+            <span>{{ chip.label }}</span><span style="opacity:0.7;">×</span>
+          </button>
+        </sc-for>
+        <sc-if value="{{ hasChips }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ clearAll }}" style="background:none;border:none;color:#8b94a3;font-size:12px;cursor:pointer;padding:4px 6px;" style-hover="color:#e7e4dc;">clear all</button>
+        </sc-if>
+      </div>
+      <div style="position:relative;">
+        <button onClick="{{ toggleEraMenu }}" style="display:flex;align-items:baseline;gap:8px;background:none;border:1px solid #3a4557;border-radius:8px;padding:6px 14px;cursor:pointer;color:#e7e4dc;" style-hover="border-color:#e8a33d;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:#8b94a3;">ERA</span>
+          <span style="font-family:'Playfair Display',serif;font-size:17px;font-weight:600;">{{ era }}</span>
+          <span style="font-size:10px;color:#8b94a3;">▾</span>
+        </button>
+        <sc-if value="{{ eraMenu }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;right:0;top:calc(100% + 6px);background:#1a202b;border:1px solid #3a4557;border-radius:10px;padding:6px;min-width:180px;box-shadow:0 12px 32px rgba(0,0,0,0.5);animation:fadeIn 0.15s;z-index:50;">
+            <sc-for list="{{ eraItems }}" as="e" hint-placeholder-count="3">
+              <button onClick="{{ e.pick }}" style="display:flex;justify-content:space-between;align-items:center;width:100%;background: {{ e.bg }};border:none;border-radius:6px;padding:8px 12px;color: {{ e.color }};font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;text-align:left;" style-hover="background:#232b38;">
+                <span>{{ e.name }}</span>
+                <sc-if value="{{ e.active }}" hint-placeholder-val="{{ false }}"><span style="color:#e8a33d;">✦</span></sc-if>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <a href="#" style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.5px;">Chronicles</a>
+    </div>
+  </header>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 20px 6px;flex-wrap:wrap;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8b94a3;">{{ countText }}</div>
+    <div style="position:relative;">
+      <div style="display:flex;align-items:stretch;border:1px solid #3a4557;border-radius:8px;overflow:hidden;">
+        <div style="display:flex;align-items:center;gap:8px;padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#e7e4dc;white-space:nowrap;">
+          <span style="color:#8b94a3;">sort</span>
+          <span style="color:#f0c37e;white-space:nowrap;">{{ sort }}</span>
+        </div>
+        <button onClick="{{ toggleSortMenu }}" style="background:#1a202b;border:none;border-left:1px solid #3a4557;color:#8b94a3;padding:0 10px;cursor:pointer;font-size:10px;" style-hover="color:#e8a33d;">▾</button>
+      </div>
+      <sc-if value="{{ sortMenu }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;right:0;top:calc(100% + 6px);background:#1a202b;border:1px solid #3a4557;border-radius:10px;padding:6px;min-width:190px;box-shadow:0 12px 32px rgba(0,0,0,0.5);animation:fadeIn 0.15s;z-index:50;">
+          <sc-for list="{{ sortItems }}" as="s" hint-placeholder-count="3">
+            <button onClick="{{ s.pick }}" style="display:flex;justify-content:space-between;align-items:center;width:100%;background: {{ s.bg }};border:none;border-radius:6px;padding:8px 12px;color: {{ s.color }};font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;text-align:left;" style-hover="background:#232b38;">
+              <span>{{ s.name }}</span>
+              <sc-if value="{{ s.active }}" hint-placeholder-val="{{ false }}"><span style="color:#e8a33d;">✦</span></sc-if>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;padding:10px 20px 40px;">
+    <sc-for list="{{ tiles }}" as="t" hint-placeholder-count="8">
+      <div style="position:relative;aspect-ratio:4/3;border-radius:8px;overflow:hidden;background: {{ t.bg }};border:1px solid #232b38;">
+        <span style="position:absolute;top:8px;left:8px;background:rgba(18,22,29,0.75);color:#aeb8ff;font-family:'JetBrains Mono',monospace;font-size:11px;padding:2px 8px;border-radius:4px;">{{ t.weather }}</span>
+        <sc-if value="{{ showScores }}" hint-placeholder-val="{{ true }}">
+          <span style="position:absolute;top:8px;right:8px;background:rgba(18,22,29,0.75);color:#e7e4dc;font-family:'JetBrains Mono',monospace;font-size:11px;padding:2px 8px;border-radius:4px;">{{ t.score }}</span>
+        </sc-if>
+        <span style="position:absolute;bottom:8px;left:8px;max-width:calc(100% - 40px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:rgba(231,228,220,0.85);font-family:'JetBrains Mono',monospace;font-size:11px;text-shadow:0 1px 3px rgba(0,0,0,0.8);">{{ t.place }}</span>
+        <span style="position:absolute;bottom:6px;right:10px;color:rgba(231,228,220,0.7);font-size:14px;">✦</span>
+      </div>
+    </sc-for>
+  </div>
+  <sc-if value="{{ open }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:60;">
+      <div onClick="{{ closeDrawer }}" style="position:absolute;inset:0;background:rgba(6,8,12,0.6);animation:fadeIn 0.2s;"></div>
+      <div style="position:absolute;left:0;top:0;bottom:0;width:min(400px,92vw);background:#171c26;border-right:1px solid #2a3341;animation:drawerIn 0.22s ease-out;display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #232b38;">
+          <span style="font-family:'Playfair Display',serif;font-size:20px;font-weight:600;">Filters</span>
+          <button onClick="{{ closeDrawer }}" style="background:none;border:none;color:#8b94a3;font-size:20px;cursor:pointer;line-height:1;" style-hover="color:#e7e4dc;">×</button>
+        </div>
+        <div style="flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 20px;display:flex;flex-direction:column;gap:20px;">
+          <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Search places, weather, anything…" style="width:100%;box-sizing:border-box;background:#12161d;border:1px solid #3a4557;border-radius:8px;padding:10px 14px;color:#e7e4dc;font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;" style-focus="border-color:#e8a33d;">
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;color:#c9a06a;margin-bottom:8px;">ERA</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              <sc-for list="{{ eraItems }}" as="e" hint-placeholder-count="4">
+                <button onClick="{{ e.pick }}" style="background: {{ e.chipBg }};border:1px solid {{ e.chipBorder }};color: {{ e.chipColor }};border-radius:6px;padding:5px 10px;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;white-space:nowrap;" style-hover="border-color:#e8a33d;">{{ e.name }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+            <div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;color:#c9a06a;margin-bottom:8px;">{{ g.label }}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                <sc-for list="{{ g.opts }}" as="o" hint-placeholder-count="3">
+                  <button onClick="{{ o.toggle }}" style="display:flex;align-items:center;gap:6px;background: {{ o.bg }};border:1px solid {{ o.border }};color: {{ o.color }};border-radius:6px;padding:5px 10px;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;white-space:nowrap;" style-hover="border-color:#e8a33d;">
+                    <span>{{ o.name }}</span><span style="color:#69738a;font-size:11px;">{{ o.count }}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;color:#c9a06a;">PLACE</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#69738a;">{{ placeMeta }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <sc-for list="{{ placeOpts }}" as="p" hint-placeholder-count="6">
+                <button onClick="{{ p.toggle }}" style="display:flex;justify-content:space-between;align-items:center;width:100%;background: {{ p.bg }};border:1px solid {{ p.border }};color: {{ p.color }};border-radius:6px;padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;text-align:left;" style-hover="border-color:#e8a33d;">
+                  <span>{{ p.name }}</span><span style="color:#69738a;font-size:11px;">{{ p.count }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;padding:14px 20px;border-top:1px solid #232b38;background:#171c26;">
+          <button onClick="{{ clearAll }}" style="flex:0 0 auto;background:none;border:1px solid #3a4557;color:#8b94a3;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;" style-hover="color:#e7e4dc;border-color:#69738a;">Clear all</button>
+          <button onClick="{{ closeDrawer }}" style="flex:1;background:#e8a33d;border:none;color:#12161d;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer;" style-hover="background:#f2bc66;">{{ showLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showScores&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Gallery&quot;},&quot;placesShown&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:12,&quot;min&quot;:6,&quot;max&quot;:24,&quot;step&quot;:2,&quot;unit&quot;:&quot;rows&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Filters&quot;}}">
+class Component extends DCLogic {
+  state = { open: false, era: 'ComfyEra17', sort: 'every build', filters: {}, q: '', eraMenu: false, sortMenu: false };
+  eras = ['ComfyEra7','ComfyEra8','ComfyEra9','ComfyEra10','ComfyEra11','ComfyEra12','ComfyEra14','era16','ComfyEra17'];
+  sorts = ['every build','auto scored','raw score','newest','by rank','biggest build','tallest','starred first','by time of day'];
+  facets = [
+    ['region','REGION',[['in-world',3281],['outland',60]]],
+    ['perspective','PERSPECTIVE',[['drone',2626],['eye level',484],['seated',128],['rooftop',101],['detail',2]]],
+    ['kind','KIND OF PLACE',[['build',1972],['hub',502],['major hub',328],['museum',243],['tower',92],['shared build',92],['sky build',64],['tall hall',27],['settlement',11],['sky museum',10]]],
+    ['weather','WEATHER',[['Clear',2860],['ThunderStorm',259],['Twilight_Clear',120],['Misty',102]]],
+    ['hidden','HIDDEN',[['fog',74]]]
+  ];
+  places = [['Snowy Staircase',152],['Island Hideaway',148],['Pirate Hideout',130],['Tree Island',122],['Forest Retreat',114],['Lighthouse Isle',108],['Forest Overlook',95],['Sea Fort',91],['Lantern Haven',82],['Luminous Haven',78],['Skyward Watchtower',78],['Mystic Lagoon',77],['Skyward Hideout',75],['Skyward Bridge',73],['Sky Harbor',65],['Skyward Retreat',62],['Black Tower',62],['Flying Ship',59],['Mystic Shrine',53],['Glass Dome Retreat',52],['Ocean Temple',51],['Tree Fort',50],['Island Retreat',50],['Snowy Outpost',47],['Floating Fortress',46],['Forest Hideout',45],['Treehouse Haven',45],['Foggy Dock',43],['Ghost Ship',41],['Sky Island',41],['Cliffside Lookout',37],['Viking Village',37],['Snowy Fort',25],['Sky Temple',22],['Ocean Temple East',21]];
+  constructor(p){
+    super(p);
+    const grads = [
+      'linear-gradient(160deg,#3a4f72,#141a26)','linear-gradient(160deg,#20304a,#0b0f18)','linear-gradient(200deg,#0e1630,#05070d)',
+      'linear-gradient(160deg,#5a4a3a,#1a1410)','linear-gradient(160deg,#2b4a5e,#0d1620)','linear-gradient(140deg,#3f5a44,#101a12)',
+      'linear-gradient(160deg,#4a5a72,#161c26)','linear-gradient(180deg,#6b7fa0,#232c3c)','linear-gradient(160deg,#345a6a,#0f1a20)',
+      'linear-gradient(160deg,#503f5e,#151020)','linear-gradient(140deg,#2a3f2f,#0c120d)','linear-gradient(160deg,#5e6b8a,#1c2230)'
+    ];
+    const ws=['Clear','Clear','Clear','ThunderStorm','Twilight_Clear','Misty'];
+    const ps=['drone','drone','eye level','seated','rooftop'];
+    const ks=['build','hub','major hub','museum','tower','sky build'];
+    const rs=['in-world','in-world','in-world','outland'];
+    this.tiles=[];
+    for(let i=0;i<18;i++){
+      this.tiles.push({
+        id:i, bg:grads[i%grads.length],
+        weather:ws[(i*5)%ws.length], perspective:ps[(i*3)%ps.length],
+        kind:ks[(i*7)%ks.length], region:rs[(i*5)%rs.length],
+        place:this.places[(i*3)%this.places.length][0],
+        hidden:(i%9===0)?'fog':null,
+        score:(6.3-i*0.06).toFixed(2)
+      });
+    }
+  }
+  tog(key,name){
+    this.setState(s=>{
+      const f={...s.filters}; const cur=(f[key]||[]).slice();
+      const ix=cur.indexOf(name);
+      if(ix>=0)cur.splice(ix,1);else cur.push(name);
+      if(cur.length)f[key]=cur;else delete f[key];
+      return {filters:f};
+    });
+  }
+  renderVals(){
+    const s=this.state, f=s.filters;
+    const q=s.q.trim().toLowerCase();
+    const mq=n=>!q||n.toLowerCase().includes(q);
+    const fmt=n=>n.toLocaleString('en-US');
+    const optRow=(key,[name,count])=>{
+      const active=(f[key]||[]).includes(name);
+      return {name,count:fmt(count),active,toggle:()=>this.tog(key,name),
+        bg:active?'rgba(232,163,61,0.12)':'transparent',
+        border:active?'#a4772f':'#2a3341',
+        color:active?'#f0c37e':'#c6ccd8'};
+    };
+    const groups=this.facets
+      .map(([key,label,opts])=>({key,label,opts:opts.filter(o=>mq(o[0])).map(o=>optRow(key,o))}))
+      .filter(g=>g.opts.length);
+    const shown=this.props.placesShown??12;
+    const matchedPlaces=this.places.filter(p=>mq(p[0])||((f.place||[]).includes(p[0])));
+    const placeOpts=matchedPlaces.slice(0,shown).map(p=>optRow('place',p));
+    const chips=[];
+    Object.entries(f).forEach(([key,vals])=>vals.forEach(v=>chips.push({label:v,remove:()=>this.tog(key,v)})));
+    const tiles=this.tiles.filter(t=>Object.entries(f).every(([key,vals])=>vals.includes(t[key])));
+    const filtered=chips.length>0;
+    return {
+      open:s.open, era:s.era, sort:s.sort, eraMenu:s.eraMenu, sortMenu:s.sortMenu,
+      q:s.q, onQ:e=>this.setState({q:e.target.value}),
+      toggleDrawer:()=>this.setState(st=>({open:!st.open,eraMenu:false,sortMenu:false})),
+      closeDrawer:()=>this.setState({open:false}),
+      toggleEraMenu:()=>this.setState(st=>({eraMenu:!st.eraMenu,sortMenu:false})),
+      toggleSortMenu:()=>this.setState(st=>({sortMenu:!st.sortMenu,eraMenu:false})),
+      clearAll:()=>this.setState({filters:{},q:''}),
+      hasChips:filtered, chipCount:chips.length, activeChips:chips,
+      eraItems:this.eras.map(name=>{const a=name===s.era;return{name,active:a,
+        pick:()=>this.setState({era:name,eraMenu:false}),
+        bg:a?'rgba(232,163,61,0.12)':'transparent', color:a?'#f0c37e':'#c6ccd8',
+        chipBg:a?'rgba(232,163,61,0.12)':'transparent', chipBorder:a?'#a4772f':'#2a3341', chipColor:a?'#f0c37e':'#c6ccd8'};}),
+      sortItems:this.sorts.map(name=>{const a=name===s.sort;return{name,active:a,
+        pick:()=>this.setState({sort:name,sortMenu:false}),
+        bg:a?'rgba(232,163,61,0.12)':'transparent', color:a?'#f0c37e':'#c6ccd8'};}),
+      groups, placeOpts,
+      placeMeta:matchedPlaces.length+' of '+this.places.length+' places',
+      countText:filtered?tiles.length+' of '+this.tiles.length+' photographs in this preview':'378 builds · 3,341 photographs',
+      showLabel:filtered?'Show '+tiles.length+' photographs':'Show all photographs',
+      tiles, showScores:this.props.showScores??true
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0e141c;color:#dde3ee;font-family:'Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+a{color:#dde3ee;text-decoration:none}a:hover{color:#ffc174}
+button{font-family:inherit;cursor:pointer}
+input::placeholder{color:#8a8f99}
+.navlink:hover{color:#ffc174!important;background:rgba(255,255,255,.04)}
+.filt:hover{border-color:#d97707!important}
+.ck:hover{border-color:#f59e0b!important}
+.row:hover{background:rgba(255,255,255,.04)!important}
+.mi:hover{background:rgba(255,255,255,.06)!important}
+.x:hover{opacity:1!important}
+.cell:hover{outline:1px solid #d97707;outline-offset:-1px}
+@keyframes drawerIn{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@media (max-width:640px){
+  .topline{padding:8px 10px!important;gap:6px!important}
+  .filt{padding:8px 10px!important}
+  .chips,.sortk,.sortv,.sortarr,.erak,.builders,.chronlbl,.perpage{display:none!important}
+  .subline{padding:6px 10px 0!important}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+</style>
+</helmet>
+<div style="position:relative;width:100%;height:100vh;overflow:hidden;background:#0e141c;display:flex;flex-direction:column;">
+
+  <header style="position:relative;z-index:20;flex:none;background:rgba(14,20,28,.92);border-bottom:1px solid #2f353e;">
+    <div class="topline" style="display:flex;align-items:center;gap:10px;padding:9px 12px;">
+
+      <button class="filt" onClick="{{ toggleDrawer }}" aria-label="Filters" style="flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;background: {{ filtBg }};border:1px solid {{ filtBorder }};color: {{ filtColor }};border-radius:6px;font-size:13px;font-weight:600;padding:8px 13px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M1.5 3h13l-5 6v4l-3 1.4V9z"></path></svg>
+        <span>Filters</span>
+        <sc-if value="{{ hasChips }}" hint-placeholder-val="{{ false }}">
+          <span style="display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:4px;background: {{ badgeBg }};color: {{ badgeColor }};font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;line-height:1;">{{ chipCount }}</span>
+        </sc-if>
+      </button>
+
+      <div class="chips" style="flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:6px;overflow:hidden;">
+        <sc-for list="{{ activeChips }}" as="chip" hint-placeholder-count="0">
+          <span style="flex:0 0 auto;display:inline-flex;align-items:center;gap:4px;padding:4px 4px 4px 9px;border:1px solid #f59e0b;border-radius:4px;background:rgba(245,158,11,.14);color:#ffc174;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;white-space:nowrap;">
+            <sc-if value="{{ chip.hasPrefix }}" hint-placeholder-val="{{ false }}"><span style="opacity:.6;">{{ chip.prefix }}</span></sc-if>
+            <span>{{ chip.label }}</span>
+            <button class="x" onClick="{{ chip.remove }}" aria-label="Remove filter" style="background:none;border:0;color:inherit;font-size:14px;line-height:1;padding:0 4px;opacity:.7;">×</button>
+          </span>
+        </sc-for>
+        <sc-if value="{{ hasChips }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ clearAll }}" style="flex:0 0 auto;background:none;border:0;color:#d8c3ad;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;text-decoration:underline dotted;padding:4px 6px;">clear all</button>
+        </sc-if>
+      </div>
+
+      <div style="position:relative;flex:0 0 auto;margin-left:auto;">
+        <button class="filt" onClick="{{ toggleSortMenu }}" aria-label="Sort" style="display:inline-flex;align-items:center;gap:7px;background:#1a2028;border:1px solid {{ sortBorder }};color:#dde3ee;border-radius:6px;font-size:13px;font-weight:600;padding:8px 13px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 4h12M4 8h8M6 12h4"></path></svg>
+          <span class="sortk" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#d8c3ad;font-weight:400;">sort ·</span>
+          <span class="sortv" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;color:#ffc174;">{{ sort }}</span>
+          <span class="sortarr" style="opacity:.65;font-weight:400;font-size:11px;">▾</span>
+        </button>
+        <sc-if value="{{ sortMenu }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;left:0;top:calc(100% + 6px);min-width:210px;background:#1a2028;border:1px solid #534434;border-radius:6px;box-shadow:0 12px 32px rgba(0,0,0,.5);padding:4px;z-index:50;animation:fadeIn .15s;">
+            <sc-for list="{{ sortItems }}" as="s" hint-placeholder-count="3">
+              <button class="mi" onClick="{{ s.pick }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;text-align:left;background:none;border:0;border-radius:4px;color: {{ s.color }};font-size:13px;font-weight: {{ s.weight }};padding:8px 10px;">
+                <span>{{ s.name }}</span>
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#ffc174" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="visibility: {{ s.check }};"><path d="M3 8.5l3 3 7-7"></path></svg>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="position:relative;flex:0 0 auto;">
+        <button class="filt" onClick="{{ toggleEraMenu }}" aria-label="Era" style="display:inline-flex;align-items:center;gap:8px;background:#1a2028;border:1px solid {{ eraBorder }};color:#dde3ee;border-radius:6px;padding:6px 13px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);">
+          <span class="erak" style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#d8c3ad;">era</span>
+          <span style="font-family:'Bodoni Moda',Georgia,serif;font-size:16px;font-weight:600;letter-spacing:.02em;white-space:nowrap;">{{ era }}</span>
+          <span style="opacity:.65;font-size:11px;">▾</span>
+        </button>
+        <sc-if value="{{ eraMenu }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;right:0;top:calc(100% + 6px);min-width:210px;background:#1a2028;border:1px solid #534434;border-radius:6px;box-shadow:0 12px 32px rgba(0,0,0,.5);padding:4px;z-index:50;animation:fadeIn .15s;">
+            <sc-for list="{{ eraItems }}" as="e" hint-placeholder-count="3">
+              <a class="mi" href="#" onClick="{{ e.pick }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;box-sizing:border-box;border-radius:4px;color: {{ e.color }};font-family:'JetBrains Mono',monospace;font-size:13px;font-weight: {{ e.weight }};padding:8px 10px;">
+                <span>{{ e.name }}</span>
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#ffc174" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="visibility: {{ e.check }};"><path d="M3 8.5l3 3 7-7"></path></svg>
+              </a>
+            </sc-for>
+            <a class="mi" href="#" style="display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;box-sizing:border-box;margin-top:4px;border-top:1px solid #2f353e;border-radius:0 0 4px 4px;color:#d8c3ad;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:10px 10px 8px;">
+              <span>Builders across eras</span><span>›</span>
+            </a>
+          </div>
+        </sc-if>
+      </div>
+
+      <nav style="display:flex;gap:4px;flex:0 0 auto;">
+        <a class="navlink" href="#" style="display:inline-flex;align-items:center;gap:6px;padding:8px 9px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#d8c3ad;">
+          <svg width="14" height="14" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"><path d="M32 10L48 24V40L32 54L16 40V24L32 10Z"></path><circle cx="32" cy="32" r="5" fill="currentColor" stroke="none"></circle></svg>
+          <span class="chronlbl">Chronicles</span>
+        </a>
+        <a class="navlink builders" href="#" style="display:inline-flex;align-items:center;padding:8px 9px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#d8c3ad;">Builders</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="subline" style="flex:none;padding:6px 12px 0;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;color:#d8c3ad;">{{ countText }}</div>
+
+  <main style="flex:1;min-height:0;overflow:hidden;padding:8px;">
+    <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;">
+      <sc-for list="{{ tiles }}" as="t" hint-placeholder-count="9">
+        <div class="cell" style="position:relative;aspect-ratio:1;border-radius:6px;overflow:hidden;background: {{ t.bg }};cursor:pointer;">
+          <span style="position:absolute;left:5px;top:5px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.04em;padding:1px 6px;border-radius:4px;color:#2a1700;background: {{ t.wcol }};">{{ t.weather }}</span>
+          <span style="position:absolute;right:5px;top:5px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.04em;background:rgba(0,0,0,.6);padding:1px 5px;border-radius:4px;color:#d8c3ad;">{{ t.score }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </main>
+
+  <div style="flex:none;display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 10px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;color:#d8c3ad;border-top:1px solid #161c24;">
+    <button style="background:#1a2028;border:1px solid #2f353e;color:#dde3ee;border-radius:4px;padding:7px 15px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;opacity:.4;cursor:default;">‹ prev</button>
+    <span>1 / 4</span>
+    <button style="background:#1a2028;border:1px solid #2f353e;color:#dde3ee;border-radius:4px;padding:7px 15px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;">next ›</button>
+    <span class="perpage" style="display:inline-flex;align-items:center;gap:6px;margin-left:12px;">per page
+      <span style="display:inline-flex;border:1px solid #2f353e;border-radius:4px;overflow:hidden;">
+        <sc-for list="{{ perItems }}" as="n" hint-placeholder-count="3">
+          <button onClick="{{ n.pick }}" style="background: {{ n.bg }};border:0;color: {{ n.color }};padding:6px 9px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight: {{ n.weight }};">{{ n.name }}</button>
+        </sc-for>
+      </span>
+    </span>
+  </div>
+
+  <sc-if value="{{ open }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:absolute;inset:0;z-index:30;background:rgba(6,10,15,.6);animation:fadeIn .2s;"></div>
+    <aside role="dialog" aria-modal="true" aria-label="Filters" style="position:absolute;left:0;top:0;bottom:0;width:min(400px,92vw);z-index:31;display:flex;flex-direction:column;background:#0e141c;border-right:1px solid #534434;box-shadow:8px 0 32px rgba(0,0,0,.5);animation:drawerIn .22s ease-out;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 10px 8px 14px;border-bottom:1px solid #2f353e;">
+        <span style="font-family:'Bodoni Moda',Georgia,serif;font-size:16px;font-weight:600;letter-spacing:.02em;">Filters</span>
+        <button onClick="{{ closeDrawer }}" aria-label="Close filters" style="background:none;border:0;color:#d8c3ad;font-size:18px;padding:6px 10px;line-height:1;">×</button>
+      </div>
+      <div style="padding:10px 14px 4px;">
+        <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Search filters…" style="width:100%;box-sizing:border-box;background:#090f16;border:1px solid {{ qBorder }};color:#dde3ee;border-radius:4px;padding:8px 10px;font-family:inherit;font-size:13px;outline:none;">
+      </div>
+      <div style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:2px 14px 14px;">
+        <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+          <div>
+            <div style="margin:10px 0 6px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#d8c3ad;">{{ g.label }}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              <sc-for list="{{ g.opts }}" as="o" hint-placeholder-count="3">
+                <button class="ck" onClick="{{ o.toggle }}" aria-pressed="{{ o.active }}" style="display:inline-flex;align-items:center;gap:6px;background: {{ o.bg }};border:1px solid {{ o.border }};color: {{ o.color }};border-radius:4px;padding:5px 11px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;font-weight: {{ o.weight }};box-shadow:inset 0 1px 0 rgba(255,255,255,.1);opacity: {{ o.opacity }};">
+                  <span>{{ o.name }}</span><span style="opacity:.55;font-variant-numeric:tabular-nums;">{{ o.count }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+        <sc-for list="{{ lists }}" as="l" hint-placeholder-count="2">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 4px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#d8c3ad;">{{ l.label }}</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#d8c3ad;opacity:.6;">{{ l.meta }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <sc-for list="{{ l.rows }}" as="p" hint-placeholder-count="6">
+                <button class="row" onClick="{{ p.toggle }}" aria-pressed="{{ p.active }}" style="display:flex;align-items:center;gap:8px;width:100%;text-align:left;background: {{ p.bg }};border:1px solid {{ p.border }};color: {{ p.color }};border-radius:4px;padding:7px 10px;font-family:inherit;font-size:13px;font-weight: {{ p.weight }};">
+                  <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ p.name }}</span>
+                  <sc-if value="{{ p.hasMeta }}" hint-placeholder-val="{{ false }}"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;opacity:.5;white-space:nowrap;">{{ p.meta }}</span></sc-if>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:11px;opacity:.55;font-variant-numeric:tabular-nums;min-width:28px;text-align:right;">{{ p.count }}</span>
+                </button>
+              </sc-for>
+            </div>
+            <sc-if value="{{ l.hasMore }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ l.expand }}" style="margin-top:6px;background:none;border:0;color:#ffc174;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;padding:4px 0;">{{ l.moreLabel }}</button>
+            </sc-if>
+          </div>
+        </sc-for>
+        <button onClick="{{ toggleFog }}" aria-pressed="{{ fog }}" style="margin-top:16px;display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:1px solid #2f353e;color:#dde3ee;border-radius:4px;padding:8px 10px;font-family:inherit;font-size:13px;">
+          <span style="flex:0 0 auto;position:relative;width:28px;height:16px;border-radius:8px;background: {{ fogTrack }};"><span style="position:absolute;top:2px;left: {{ fogKnob }};width:12px;height:12px;border-radius:6px;background:#dde3ee;"></span></span>
+          <span style="flex:1;">Include fog-hidden frames</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;opacity:.55;">74</span>
+        </button>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;padding:10px 14px;border-top:1px solid #2f353e;background:#1a2028;">
+        <button onClick="{{ clearAll }}" style="flex:0 0 auto;background:none;border:1px solid #2f353e;color:#d8c3ad;border-radius:4px;padding:9px 12px;font-size:12px;">Clear all</button>
+        <button onClick="{{ closeDrawer }}" style="flex:1;background:#f59e0b;border:1px solid #f59e0b;color:#2a1700;border-radius:6px;padding:10px 13px;font-size:13px;font-weight:700;">{{ showLabel }}</button>
+      </div>
+    </aside>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"drawerOpen":{"editor":"boolean","default":true,"tsType":"boolean","section":"State"},"eraMenu":{"editor":"boolean","default":false,"tsType":"boolean","section":"State"},"sortMenu":{"editor":"boolean","default":false,"tsType":"boolean","section":"State"},"seedChips":{"editor":"boolean","default":true,"tsType":"boolean","section":"State"},"placesShown":{"editor":"range","default":8,"min":4,"max":16,"step":2,"unit":"rows","tsType":"number","section":"Filters"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  state = { open: null, eraMenu: null, sortMenu: null, filters: null, q: '', sort: 'every build', era: 'ComfyEra17', fog: false, more: {}, per: 100 };
+  eras = ['ComfyEra7','ComfyEra8','ComfyEra9','ComfyEra10','ComfyEra11','ComfyEra12','ComfyEra14','era16','ComfyEra17'];
+  sorts = ['every build','auto scored','raw score','newest','by rank','biggest build','tallest','starred first','by time of day'];
+  facets = [
+    ['region','Region',[['in-world',3281],['outland',60]]],
+    ['perspective','Perspective',[['drone',2626],['eye level',484],['seated',128],['rooftop',101],['detail',2]]],
+    ['kind','Kind of place',[['build',1972],['hub',502],['major hub',328],['museum',243],['tower',92],['shared build',92],['sky build',64],['tall hall',27],['settlement',11],['sky museum',10]]],
+    ['environment','Weather',[['Clear',2860],['ThunderStorm',259],['Twilight_Clear',120],['Misty',102]]]
+  ];
+  areas = [['near Snowy Staircase','',152],['near Island Hideaway','· 4,390',148],['near Pirate Hideout','· 4,443',130],['near Tree Island','',122],['near Forest Retreat','· 4,724',114],['near Lighthouse Isle','· 4,290',108],['near Forest Overlook','',95],['near Sea Fort','',91],['near Lantern Haven','',82],['near Luminous Haven','',78],['near Skyward Watchtower','',78],['near Mystic Lagoon','',77],['near Skyward Hideout','· 5,299',75],['near Skyward Bridge','',73],['near Sky Harbor','',65],['near Skyward Retreat','',62],['near Black Tower','',62],['near Flying Ship','',59],['near Mystic Shrine','',53],['near Glass Dome Retreat','· 2,692',52],['near Ocean Temple','',51],['near Tree Fort','· 4,390',50],['near Island Retreat','· 5,010',50],['near Snowy Outpost','',47]];
+  builds = [['Skyward Bridge','',61],['Snowy Outpost','',47],['Skyward Harbor','· 5,149',42],['Foggy Dock','',38],['Enchanted Glade','· 4,501',37],['Sky Harbor','',35],['Forest Retreat','· 4,724',32],['Skyward Retreat','',32],['Sky Island','· 8,026',31],['Lantern Haven','',30],['Skyward Watchtower','',28],['Sky Island','· 1,708',28],['Lighthouse Isle','· 1,676',28],['Luminous Haven','',26],['Black Tower','',26],['Floating Fortress','· 3,807',26],['Lush Lookout','',26],['Island Hideaway','· 2,762',26],['Skyward Fort','· 4,215',26],['Floating Fort','· 4,979',26],['Hidden Grove Hideout','',26],['Tree Fort','· 1,969',26],['Tree Fort','· 3,626',26],['Snowy Fort','· 4,770',25]];
+  areaTotal = 82;
+  buildTotal = 378;
+  constructor(p){
+    super(p);
+    const grads = ['linear-gradient(160deg,#3a4f72,#141a26)','linear-gradient(160deg,#20304a,#0b0f18)','linear-gradient(200deg,#0e1630,#05070d)','linear-gradient(160deg,#5a4a3a,#1a1410)','linear-gradient(160deg,#2b4a5e,#0d1620)','linear-gradient(140deg,#3f5a44,#101a12)','linear-gradient(160deg,#4a5a72,#161c26)','linear-gradient(180deg,#6b7fa0,#232c3c)','linear-gradient(160deg,#345a6a,#0f1a20)','linear-gradient(160deg,#503f5e,#151020)','linear-gradient(140deg,#2a3f2f,#0c120d)','linear-gradient(160deg,#5e6b8a,#1c2230)'];
+    const ws = [['Clear','#7aa2ff'],['Clear','#7aa2ff'],['Clear','#7aa2ff'],['ThunderStorm','#b79ae0'],['Clear','#7aa2ff'],['Misty','#9ad5c8'],['Clear','#7aa2ff']];
+    this.tiles = [];
+    for (let i = 0; i < 54; i++) {
+      const w = ws[(i * 5) % ws.length];
+      this.tiles.push({ bg: grads[(i * 7) % grads.length], weather: w[0], wcol: w[1], score: (6.26 - i * 0.03).toFixed(2) });
+    }
+  }
+  cur(){
+    const s = this.state;
+    if (s.filters) return s.filters;
+    return (this.props.seedChips ?? false) ? { perspective: ['drone'], environment: ['Clear'] } : {};
+  }
+  tog(key, name){
+    const f = {}; const c = this.cur();
+    for (const k in c) f[k] = c[k].slice();
+    const arr = f[key] || [];
+    const ix = arr.indexOf(name);
+    if (ix >= 0) arr.splice(ix, 1); else arr.push(name);
+    if (arr.length) f[key] = arr; else delete f[key];
+    this.setState({ filters: f });
+  }
+  renderVals(){
+    const s = this.state, P = this.props;
+    const open = s.open === null ? !!(P.drawerOpen ?? false) : s.open;
+    const eraMenu = s.eraMenu === null ? !!(P.eraMenu ?? false) : s.eraMenu;
+    const sortMenu = s.sortMenu === null ? !!(P.sortMenu ?? false) : s.sortMenu;
+    const f = this.cur();
+    const q = s.q.trim().toLowerCase();
+    const mq = n => !q || n.toLowerCase().includes(q);
+    const fmt = n => n.toLocaleString('en-US');
+    const shown = P.placesShown ?? 8;
+    const opt = (key, name, count) => {
+      const active = (f[key] || []).includes(name);
+      return { name, count: fmt(count), active, toggle: () => this.tog(key, name),
+        bg: active ? 'rgba(245,158,11,.18)' : '#1a2028', border: active ? '#f59e0b' : 'rgba(245,158,11,.25)',
+        color: active ? '#ffc174' : '#dde3ee', weight: active ? 600 : 400, opacity: 1 };
+    };
+    const groups = this.facets
+      .map(([key, label, opts]) => ({ key, label, opts: opts.filter(o => mq(o[0]) || (f[key] || []).includes(o[0])).map(o => opt(key, o[0], o[1])) }))
+      .filter(g => g.opts.length);
+    const list = (key, label, src, total) => {
+      const matched = src.filter(p => mq(p[0]) || (f[key] || []).includes(p[0] + p[1]));
+      const all = !!q || !!s.more[key];
+      const rows = (all ? matched : matched.filter((p, i) => i < shown || (f[key] || []).includes(p[0] + p[1]))).map(p => {
+        const id = p[0] + p[1], active = (f[key] || []).includes(id);
+        return { name: p[0], meta: p[1], hasMeta: !!p[1], count: fmt(p[2]), active, toggle: () => this.tog(key, id),
+          bg: active ? 'rgba(245,158,11,.14)' : 'transparent', border: active ? '#f59e0b' : 'transparent',
+          color: active ? '#ffc174' : '#dde3ee', weight: active ? 600 : 400 };
+      });
+      return { label, rows, meta: q ? matched.length + ' of ' + total : total + ' ' + label.toLowerCase(),
+        hasMore: !all && matched.length > shown, moreLabel: 'Show all ' + total,
+        expand: () => this.setState(st => ({ more: Object.assign({}, st.more, { [key]: true }) })) };
+    };
+    const lists = [list('area', 'Areas', this.areas, this.areaTotal), list('structure', 'Builds', this.builds, this.buildTotal)].filter(l => l.rows.length || !q);
+    const chips = [];
+    for (const [key, , opts] of this.facets) for (const v of (f[key] || [])) {
+      const pre = key === 'environment' ? 'weather ·' : key === 'kind' ? 'kind ·' : '';
+      chips.push({ label: v, prefix: pre, hasPrefix: !!pre, remove: () => this.tog(key, v) });
+    }
+    for (const [key, src] of [['area', this.areas], ['structure', this.builds]]) for (const id of (f[key] || [])) {
+      const p = src.find(x => x[0] + x[1] === id);
+      chips.push({ label: p ? p[0] : id, prefix: '', hasPrefix: false, remove: () => this.tog(key, id) });
+    }
+    const filtered = chips.length > 0;
+    const showcase = s.sort === 'every build';
+    const builds = filtered ? 41 : 378, photos = filtered ? 312 : 3341;
+    return {
+      open, eraMenu, sortMenu, q, sort: s.sort, era: s.era, fog: s.fog,
+      filtBg: open ? '#f59e0b' : '#1a2028', filtBorder: open ? '#f59e0b' : 'rgba(217,119,6,.5)', filtColor: open ? '#2a1700' : '#dde3ee',
+      badgeBg: open ? '#2a1700' : '#ffc174', badgeColor: open ? '#ffc174' : '#2a1700',
+      sortBorder: sortMenu ? '#f59e0b' : 'rgba(217,119,6,.5)', eraBorder: eraMenu ? '#f59e0b' : 'rgba(217,119,6,.5)',
+      qBorder: q ? '#f59e0b' : '#2f353e',
+      onQ: e => this.setState({ q: e.target.value }),
+      toggleDrawer: () => this.setState({ open: !open, eraMenu: false, sortMenu: false }),
+      closeDrawer: () => this.setState({ open: false }),
+      toggleEraMenu: () => this.setState({ eraMenu: !eraMenu, sortMenu: false }),
+      toggleSortMenu: () => this.setState({ sortMenu: !sortMenu, eraMenu: false }),
+      clearAll: () => this.setState({ filters: {}, q: '', sort: 'every build' }),
+      toggleFog: () => this.setState({ fog: !s.fog }),
+      fogTrack: s.fog ? '#f59e0b' : '#2f353e', fogKnob: s.fog ? '14px' : '2px',
+      hasChips: filtered, chipCount: chips.length, activeChips: chips,
+      eraItems: this.eras.map(name => { const a = name === s.era; return { name, pick: () => this.setState({ era: name, eraMenu: false }),
+        color: a ? '#ffc174' : '#dde3ee', weight: a ? 600 : 400, check: a ? 'visible' : 'hidden' }; }),
+      sortItems: this.sorts.map(name => { const a = name === s.sort; return { name, pick: () => this.setState({ sort: name, sortMenu: false }),
+        color: a ? '#ffc174' : '#dde3ee', weight: a ? 600 : 400, check: a ? 'visible' : 'hidden' }; }),
+      perItems: [50, 100, 200].map(n => { const a = n === s.per; return { name: String(n), pick: () => this.setState({ per: n }),
+        bg: a ? 'rgba(245,158,11,.18)' : '#1a2028', color: a ? '#ffc174' : '#d8c3ad', weight: a ? 700 : 400 }; }),
+      groups, lists,
+      countText: showcase ? fmt(builds) + ' builds · 3,341 photographs' : fmt(photos) + ' of 3,341 photographs · 412 setups',
+      showLabel: showcase ? 'Show ' + fmt(builds) + ' builds' : 'Show ' + fmt(photos) + ' photographs',
+      tiles: this.tiles
+    };
+  }
+}
+</script>
+</body>
+</html>

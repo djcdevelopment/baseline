@@ -1,0 +1,82 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "title": "Desktop · 1440 · two filters on",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "is_interactive": true
+    },
+    {
+      "file": "Drawer.dc.html",
+      "title": "Desktop · drawer open",
+      "x": 1560,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "is_interactive": true
+    },
+    {
+      "file": "Menus.dc.html",
+      "title": "Desktop · era + sort menus",
+      "x": 0,
+      "y": 1040,
+      "w": 1440,
+      "h": 520,
+      "is_interactive": true
+    },
+    {
+      "file": "Mobile.dc.html",
+      "title": "Mobile · 390",
+      "x": 1560,
+      "y": 1040,
+      "w": 390,
+      "h": 844,
+      "is_interactive": true
+    },
+    {
+      "file": "MobileDrawer.dc.html",
+      "title": "Mobile · drawer open",
+      "x": 2050,
+      "y": 1040,
+      "w": 390,
+      "h": 844,
+      "is_interactive": true
+    }
+  ],
+  "annotations": [
+    {
+      "id": "v3-what-changed",
+      "x": 0,
+      "y": -330,
+      "w": 640,
+      "text": "GALLERY MENU v3 — what changed from v2\n1. Re-tokened onto the Chronicler system the live viewer already ships (Bodoni Moda / Plus Jakarta Sans / JetBrains Mono; #0e141c surface, #ffc174 primary, #f59e0b flame; 4 px chips, 6 px buttons). v2's Playfair/Archivo and #e8a33d were placeholder drift.\n2. Era is navigation, not a filter: header dropdown only (real links to the sibling era folders, current marked, \"Builders across eras\" last). The ERA chip row leaves the drawer.\n3. Header nav keeps CHRONICLES · BUILDERS in the front door's mono uppercase — Builders is the photo → creators path.\n4. Sort lives in the sticky header row; the subline carries only the count.\n5. Places are two lists — Areas and Builds — not one; see the note beside the drawer.\n6. Fog is a toggle (\"Include fog-hidden frames\"), not a facet chip: it widens the set.\n7. Page size moves into the bottom pager (50 · 100 · 200).\nTiles are unchanged from the live page and are placeholders here."
+    },
+    {
+      "id": "v3-places",
+      "x": 1560,
+      "y": -200,
+      "w": 440,
+      "text": "AREAS + BUILDS\nTwo things in the data: an area is a 2 km neighbourhood (\"near X\", deep link #area=), a build is one structure (#build=). Build names collide without their piece count (two Sky Islands, two Tree Forts), so the count stays as small right-hand meta instead of being stripped. 8 rows each + \"Show all N\"; the search box narrows both; a selected row is always visible."
+    },
+    {
+      "id": "v3-live",
+      "x": 0,
+      "y": 1680,
+      "w": 640,
+      "text": "WHAT THE MOCK CANNOT SHOW (implementation spec)\n• Counts are live-narrowing: each option counts the rows that match the OTHER facets; zero-count options dim (40 %) and never disappear.\n• Header chips: weather · and kind · carry a light prefix because \"Clear\" and \"build\" are ambiguous alone; places show the name.\n• Footer button follows the sort: \"Show N builds\" under every build (one frame per build), \"Show N photographs\" otherwise. Clear all = today's goHome(): back to the front door, showcase sort.\n• Keyboard: focus lands in search on open (× on mobile) and returns to Filters on close; Esc order = lightbox › open menu › non-empty search (clears) › drawer; menus close on outside click or pick.\n• Sample figures in the mock (41 builds / 312 photographs / 412 setups) are illustrative."
+    },
+    {
+      "id": "v3-mobile",
+      "x": 2500,
+      "y": 1040,
+      "w": 360,
+      "text": "MOBILE ≤ 640 px\nChip strip hidden — the Filters badge carries the count. Sort is icon-only, ERA shows the name only, BUILDERS hides (it stays in the era menu), CHRONICLES is the emblem alone. Drawer is min(400 px, 92 vw); the grid drops to two columns. Real media queries, so resize the frame to test."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
