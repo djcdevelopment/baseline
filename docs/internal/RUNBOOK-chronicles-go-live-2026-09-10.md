@@ -285,7 +285,10 @@ copies inside stopped attempts were pruned with the new `tools/era-archive/prune
 unlink; the quiet campaigns' copies had already been removed outside the plan at 17:59 UTC), and Docker lost 12
 redundant tags, 7 snapshot images and 3.6 GB of build cache. Two offloads (the pre-swap tarball and ComfyUI's
 outputs, 7.4 GB) are crossing the wifi to `E:\omenm4-offload\` unattended, verified by sha256 before the AM4
-copies go. The era 7/9/10 masters (39 GB) stay on AM4 by decision; the shuttle commands are in the plan. Full
+copies go. The era 7/9/10 masters (3,706 frames, 38.4 GB) followed the same night once Derek moved FX99's Ethernet
+cable to AM4: `shuttle_masters.py` went from 225 kB/s to 45-58 MB/s mid-run and finished all three eras in eight
+minutes (00:06 UTC 09-12); AM4 ended at 44 % (247 GB free). The wire needed AM4's replies steered onto it (its wifi
+routes outrank the wired port's; runtime IPv6 metric change, reverted after) - the recipe is in the recovery doc. Full
 receipt: ComfyStewardView `docs/am4-disk-recovery-2026-09-11.md`; step logs in
 `E:\omen\steward-multi-eram4-space-20260911\`.
 
