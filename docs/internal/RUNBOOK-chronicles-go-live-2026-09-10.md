@@ -482,3 +482,21 @@ freshens the picker hotfix under a new query). Gate: data identical, presentatio
 creators.css/js; `PICKER=1` live smoke passed, `smoke_front` 15/15, sweep all clear. Rollback `ef65508ad37a-c6eb41e7626d`.
 Creators deploy receipts live at `E:/omen/steward-multi-era/projections/deploy-<name>.json` (outside the repo — a
 receipt under `tools/era-archive/` makes the tree dirty and the deploy refuses).
+
+## "Tag another basemate" on the build card (2026-09-12 ~14:05 UTC) — creators `5b57f5aa003c-ea6bcc227816`
+
+Derek: change "Copy this build payload" to "tag another basemate". Decisions: the people you can tag are **this
+build's other contributors**; the per-build payload copy is **dropped** (every action hands its payload over on
+confirm; the directory keeps the whole-ledger copy). ComfyStewardView `5b57f5a`: the card's fourth control opens the
+kinship tag dialog on the builder's page — `#kin-tag-modal` on the thread shell, the build fixed, the person picked
+from the card's credits (`tagCandidates(album, builderKey)`: other credited builders in credit order, share, "slept
+here"), `basemate` ticked to start. Same gate as the kinship page (leading builder + a built claim in this browser),
+inert otherwise with the reason in a toast ("Nobody else is recorded on this build." / "Tags come from a build's
+leading builder." / "Claim this build before tagging basemates."). Same record, store and export payload, so
+`coordinate.py ingest` reads a tag made here exactly as one made on the kinship page. A tag recorded on this device
+shows beside the credit as a dashed "recorded" chip (`renderTagChips`, confirmed + pending via `mergeKinshipTags`).
+The smoke now claims a build through the dialog and tags from the card end to end (dialog lists `credits − 1`,
+payload carries the one basemate tag, chip appears, ledger holds one tag). Pins `?v=14`. Gate: data identical; live
+smoke passed, `smoke_front` 15/15, sweep all clear. Rollback `abb9f78def66-266ff053f4ae`. Dev site
+(`E:\omen\steward-multi-era\devsitealheim\creators`) is a **junction** to the current projection — MSYS `ln -s`
+copies the tree instead; use `New-Item -ItemType Junction`.
