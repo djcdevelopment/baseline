@@ -283,7 +283,12 @@ carry no height — both fixed in the viewer (`82ce74c`).
   as above, and the one that would have bitten every community user with a cloud character — and
   `make_bundle.py` builds the release zip + manifest. The bundle (`camera-kit-20260912.zip`, 63 KB) and the
   mod release files (`camera-proof-v0.2.5`: DLL, manifest, SHA256SUMS, notes) are staged at
-  `E:\omen\camera-kit-release\`; publishing them is the operator's call, commands in the kit README.
+  `E:\omen\camera-kit-release\`. Derek: "land it" — **published 11:25 UTC**:
+  [`camera-proof-v0.2.5`](https://github.com/djcdevelopment/comfy/releases/tag/camera-proof-v0.2.5) on
+  `djcdevelopment/comfy` (DLL `bd31cd75…`, manifest, SHA256SUMS; target `655ede1`) and
+  [`camera-kit-20260912`](https://github.com/djcdevelopment/baseline/releases/tag/camera-kit-20260912) on
+  `djcdevelopment/baseline` (zip `0b59390e…`, 63,376 B, + manifest). Both downloaded back and hash-checked
+  against their manifests. The first GitHub releases of the archive's own tooling.
 - **The climb, in numbers.** Winners' pitch: median 38°, 25 under 30°, 24 at 30–45°, 26 at 45–60°,
   8 at 60° or more (max 81°). Eight frames are near-top-downs; whether that is wrong is an eye
   question, so no rule changed. `refine_worker`'s status now counts builds decided (it read "601 of 84").

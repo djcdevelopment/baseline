@@ -19,7 +19,9 @@ with Valheim and one of the end-of-era worlds can run it.
    `<name>-kit` (the game would otherwise pick the cloud copy of a same-named character and save
    the last camera back into it). The copy is deleted after the run; your character is never
    written to. It is made invulnerable and hidden for the shots.
-4. **The two plugins** in `mods\`: `ComfyCameraProof.dll` (MIT, source in
+4. **The two plugins** in `mods\` (both inside the release bundle at
+   `github.com/djcdevelopment/baseline/releases/tag/camera-kit-20260912`; the capture plugin alone at
+   `github.com/djcdevelopment/comfy/releases/tag/camera-proof-v0.2.5`): `ComfyCameraProof.dll` (MIT, source in
    `github.com/djcdevelopment/comfy` under `handoffs/valheim-camera-proof`) and
    `BetterServerPortals.dll` 1.9.0 (GPL-3, built from `redseiko/ComfyMods` commit `a2b4680`
    against the 1.0 client; see `mods/NOTICE.md` for the pin and the build recipe). Check them
