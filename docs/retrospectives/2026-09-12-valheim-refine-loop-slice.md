@@ -164,3 +164,63 @@ wasting 30–40 % useless cuts that go through the pipeline that's still a huge 
 That is the bar. The veto is the product; the winner is the bonus. The number to read from the full
 84-build run is round-0 incumbents vetoed ÷ 84 — the junk rate the pipeline was carrying — and every one of
 those is now fixed in-session or handed back as `needs-*` instead of shipped.
+
+## The full run (`era11-refine-full`, 06:22–08:11 UTC): 84 builds, 601 shots, one game session
+
+Evidence: [`docs/evidence/2026-09-12-era11-refine-full/`](../evidence/2026-09-12-era11-refine-full/)
+(journal of 1,415 events, `refine.json`, summary, rejects, `cameras-era11.json`).
+
+- **1 h 48 m wall** (6,515 s), one launch, world ready at 210 s, then 244 plans fed through the mod's feed
+  dir without a relaunch; 601 frames judged on the CPU (SegFormer-b0, 8 threads, ~0.7 s each); the game's
+  quit took longer than the 90 s the worker waited, so `finish()` now reads the exit code after `stop_game()`.
+- **The planned pose was junk for 2 of 84** (`d2b69966` aim-off-mass → `needs-aim`, no fan spent;
+  `d78cf0dc` dark → the fan found `up20~lo12` at 0.014). So the pipeline was carrying a ~2 % junk rate on
+  this era's detail frames, not the 30–40 % the eight-build slice suggested — that slice was chosen for its
+  hard cases. On ordinary builds the loop is an improver: **77 of 84 moved (92 %)**, all in two rounds,
+  6 kept the planned pose after a full fan, 1 handed back.
+- **The fan's habits:** `up20` won 89 of the 147 move tokens, `o45` 40, `aim` 9, `lo12` 6, `c75` 3.
+  `up20~up20` is the single most common winner path — the loop climbs, because a steeper look-down fills
+  more tiles with roof and wall texture and `liveTileShare · gradMean` rewards exactly that. Those frames
+  are legible photographs, not top-downs (pitch ends around 45–66°), but the score has no composition
+  term, so a frontal elevation never beats a three-quarter from above. That is the next calibration item,
+  not a bug in this run.
+- **Candidate vetoes** (frames the fan proposed and the judge threw out): no-texture 11, dark 5, flat 3,
+  occluded 2, still-blocked 2 — 23 of 517 fan shots, each one a frame that would otherwise have been
+  compared on score alone.
+
+## What landed on the back of it (Legs A–C of the plan, same day)
+
+The 601 receipts were the corpus the plan was waiting for. In order:
+
+- **Poses are public artifacts (Leg A).** `import_captures.py --refine` takes each build's winner as its
+  detail frame and carries `camera` (distance, elevation, bearing, fov — from the receipt's `lens`/`aim`)
+  and `pose` (the absolute lens/aim/yaw/pitch) into the archive; `build_era_index.py --world-url` writes
+  them to the public index; the gallery lightbox shows "camera 42 m · 20° above · bearing 225°", the
+  `refined:` path, and **"open the 3D scene at this camera"** —
+  `/world/scene.html?era=&build=&cameraLens=&cameraAim=&cameraFov=`. The scene resolves the build's
+  bounds itself (`/api/eras` + `/api/build`), asks the package for `camera=true`, and `setExactCamera`
+  places the WebGPU camera on the receipt's lens. Derek's ruling on the secrecy question the plan had
+  raised: "these are end of era, public released data" — absolute coordinates are fine.
+- **Pick a camera in `/world/`, get a photo back (Leg B).** "Request this shot" in the scene posts the
+  fly camera to `POST /api/shot-request`; `ShotRequestLedger` converts scene-local (X-mirrored) to
+  absolute, validates against the build's bounds (≤150 m outside, 4–250 m range), derives feet/yaw/pitch/
+  aim in the receipts' conventions, and appends a compact `steward-shot-request/v1` line to
+  `/requests/shot-requests.jsonl` (host `~/steward-world/shot-requests/`, uid 10001) plus a Discord embed.
+  `refine_worker.py --prepare --requests <ledger>` turns the ledger into plans (`--rounds 0`: judge only,
+  a requested pose is the photographer's choice). Live at lab release `02a3c14683be-43314ee45035`;
+  the r2 winner's camera came back through the endpoint within centimetres. Two deploy lessons: the
+  container's `steward` user could not write a derek-owned bind mount (500 until `chown 10001:10001`,
+  now done by `deploy_world.py`), and the shared Jackson mapper pretty-prints, so the first request went
+  out as 19 lines — the writer is now compact and the reader tolerant.
+- **The kit (Leg C).** `tools/camera-kit/` in baseline: `Invoke-EraCapture.ps1` + `capture_kit.py`
+  (stdlib, clean-room, BUSL), `make_shots.py` (winners' receipts → rows), `shots/shots-era11.tsv`
+  (83 rows), `mods/NOTICE.md` + `SHA256SUMS` (DLLs not in git). The worlds are the community's own Discord
+  downloads, so the kit is script + mods + shot list + links. The mod release cut and the bundle wait for
+  Derek's go; the Windows proof (the i5) is not yet run.
+- **Mod 0.2.4 (Leg D, first step).** `pose [name] [aimDistance]` writes the camera you are looking through
+  as a TSV row + JSON line (`comfy-camera-proof-poses.jsonl`); `runclips` flies `clipplan.tsv` from the
+  console. Live on AM4 (99,328 B, `fd7129be…`), proof re-stamped. Multi-waypoint clips, the in-game path
+  preview, and the `/world/` path editor are still to do.
+
+The first requests session (`era11-requests-r1`, two ledger rows, one build) launched at 08:35 UTC
+against the same world; its receipts will say whether a viewer-picked camera lands within the metre.
