@@ -355,3 +355,18 @@ push: **commit with explicit file paths when a checkout is shared.**
 icons." Each mark carries `data-tip` drawn above it on `:hover` and `:focus-visible` (right-aligned so the last one
 stays inside the row); the native `title` is gone. browser-smoke passed live, `smoke_front` 15/15, sweep all clear.
 
+**Iteration 6b — the pair view keeps to the pairing (2026-09-12 ~08:05 UTC), creators `05c29f4f4ad7-81bdd0da1a31`**
+(rollback `0c4935002bf8-77dba722f997`; ComfyStewardView `05c29f4`; pins **`?v=10`**). Derek: "this feels redundant
+now that we have the other image carousels; world view mode doesn't need its own tab anymore, it's integrated." The
+PHOTOGRAPHS / WORLD VIEWER tabs, the pair's hero photograph, the "Switch to World viewer" button and the two-column
+layout are gone, with `pairState.view`, `?view=` and the tab keyboard roving. Shape now: title · status line +
+standing chip on one row (the live region) · ally + "See this pair from their side" on one row · the shared-builds
+ledger full width · download · `Details` (pills, laurels, hearth, affinity, facts, tiles, allotment). A ledger pick
+on a photographed build turns the work carousel to it without moving the visitor (`revealAlbum(buildKey, {scroll:
+false})`; the browser's scroll anchoring holds the pair view still while the stage above changes height — the smoke
+measures the pair view's viewport top, not `scrollY`). The facts gain `On this page · Show on the carousel / Show in
+the rest`. Ledger status is `Photographed` / `Recorded`; the tinted row is the one Details describe. Presentation
+only — gate PASS; 130 Python / 85 Node; browser-smoke local + live (new leg: no `#pair-modes`/`#pair-photos`, head +
+who rows, pick turns the carousel with the view held in place); `smoke_front` 15/15; sweep all clear. Tried and
+reverted on the way: `white-space: nowrap` on the two halves of the Split cell — it made the row shorter on a phone
+but pushed Status off the screen.

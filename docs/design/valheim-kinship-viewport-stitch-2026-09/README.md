@@ -21,9 +21,9 @@ publishes (`tools/era-archive/web/pair.js` in ComfyStewardView).
 | Mock region | Shipped as | Data |
 |---|---|---|
 | "Shield-Wall Fellows (8 Bonds)" ribbon | The Top 8 restyled as a ribbon of chips; rank tiers I/II/III labelled as rank (a MySpace-style wink) | `computeTopEight`, unchanged ranking |
-| Photographic Chronicle | Photographs mode: the active shared build's photograph, laurels (coordinator-confirmed tags), shared hearth (bed residency, once Release B lands), kinship affinity, build facts | album photos, confirmed tags, residents, shares |
-| Architectural Blueprint & Codex | World viewer mode: a deep link into AM4's viewer with the build selected (the viewer refuses framing), plus the piece allotment bar | `worldUrl`, contributors |
-| Allied Master Builder dossier | Co-builder card: portrait, name, tier, affinity, metrics, reverse pair link | directory record |
+| Photographic Chronicle | Photographs mode: the active shared build's photograph, laurels (coordinator-confirmed tags), shared hearth (bed residency, once Release B lands), kinship affinity, build facts. **Retired in iteration 6b (2026-09-12):** the profile's work carousel shows the photographs now; laurels, hearth, affinity and the facts live under the pair's `Details` | album photos, confirmed tags, residents, shares |
+| Architectural Blueprint & Codex | World viewer mode: a deep link into AM4's viewer with the build selected (the viewer refuses framing), plus the piece allotment bar. **Retired in iteration 6b:** every build on the page carries its own world-viewer link; the allotment bar stays under `Details` | `worldUrl`, contributors |
+| Allied Master Builder dossier | Co-builder row: portrait, name, tier, reverse pair link (affinity and the metric tiles under `Details` since iteration 6) | directory record |
 | Joint Monument Ledger | Shared builds ledger with the You/Them split and a JSON download | shared albums |
 | "Alliance: Verified" | "Confirmed kin" when a confirmed tag links the pair, else "Recorded kin" | `participation.json` |
 | Skaldic verse, comfort rating, integrity score, achievements, ward keys, crypto badge, presence dot, "Sync Device", material census, CAD pins | Not built — no data behind any of them | — |
