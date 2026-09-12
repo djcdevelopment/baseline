@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0e141c;color:#dde3ee;font:16px/1.6 'Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+a{color:#ffc174;text-decoration:none}a:hover{color:#f59e0b}
+button{font-family:inherit;cursor:pointer}
+.nav a{color:#d8c3ad}.nav a:hover{color:#ffc174}
+.chip8:hover{border-color:rgba(245,158,11,.5)!important}
+.row:hover{background:#1a2028!important}
+.tile:hover{border-color:#d97707!important}
+.node:hover .por{border-color:#f59e0b!important}
+.path:hover{border-color:#d97707!important}
+@media (max-width:640px){
+  .hero{grid-template-columns:96px minmax(0,1fr)!important;gap:16px!important;padding:16px!important}
+  .hero h1{font-size:2rem!important}
+  .mosaic{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .chips{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  .chipname{display:none!important}
+  .pairgrid{grid-template-columns:minmax(0,1fr)!important}
+  .ledgerhead{display:none!important}
+  .row{grid-template-columns:minmax(0,1fr) 20px!important}
+  .rowmeta{grid-column:1 / -1!important;display:flex!important;gap:14px!important}
+  .strip{grid-column:1 / -1!important}
+  .strip img,.strip span{width:calc(25% - 3px)!important}
+  .paths{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .nav{gap:12px!important;flex-wrap:wrap!important}
+  .treescroll{overflow-x:auto!important}
+  .treecanvas{min-width:600px!important}
+  .header{flex-wrap:wrap!important;gap:10px!important}
+}
+</style>
+</helmet>
+<div style="background:#0e141c;min-height:100%;">
+  <div style="max-width:1160px;margin:0 auto;padding:0 24px 40px;box-sizing:border-box;">
+
+    <div class="header" style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px 0 18px;border-bottom:1px solid #534434;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <svg width="28" height="28" viewBox="0 0 64 64" fill="none" stroke="#f59e0b" stroke-width="4" stroke-linejoin="round"><path d="M32 8L50 22V42L32 56L14 42V22L32 8Z"></path><circle cx="32" cy="32" r="5" fill="#f59e0b" stroke="none"></circle></svg>
+        <div style="display:flex;flex-direction:column;line-height:1.2;">
+          <span style="font:500 11px 'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#a08e7a;">The Comfy Community</span>
+          <span style="font:600 19px 'Bodoni Moda',Georgia,serif;letter-spacing:.02em;">Valheim Chronicles</span>
+        </div>
+      </div>
+      <nav class="nav" style="display:flex;gap:22px;font:500 12px 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;">
+        <a href="#">Gallery</a><a href="#">All builders</a><a href="#">Statistics</a><a href="#">Kinship</a><a href="#">Your participation</a><a href="#">Guide</a>
+      </nav>
+    </div>
+
+    <section class="hero" style="display:grid;grid-template-columns:160px minmax(0,1fr);gap:24px;align-items:start;margin:22px 0 28px;padding:22px;border:1px solid #534434;border-radius:6px;background:#161c24;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);">
+      <div style="width:100%;aspect-ratio:1;border:1px solid rgba(245,158,11,.25);border-radius:6px;background:linear-gradient(160deg,#3a3126,#141a26);display:flex;align-items:center;justify-content:center;">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="rgba(255,193,116,.55)" stroke-width="3" stroke-linejoin="round"><path d="M32 8L50 22V42L32 56L14 42V22L32 8Z"></path><circle cx="32" cy="32" r="5" fill="rgba(255,193,116,.55)" stroke="none"></circle></svg>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;min-width:0;">
+        <h1 style="margin:0;font:700 clamp(2rem,5vw,3.2rem)/1.1 'Bodoni Moda',Georgia,serif;letter-spacing:.02em;">Tugcow</h1>
+        <p style="margin:0;color:#d8c3ad;font-size:.98rem;line-height:2;">Major Architect · eras 7–12 · <span style="font:700 .94em 'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;letter-spacing:.12em;background:#090f16;border:1px solid #534434;box-shadow:inset 0 2px 4px #000;padding:1px 6px;border-radius:4px;color:#ffc32d;">39</span> build albums · <span style="font:700 .94em 'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;letter-spacing:.12em;background:#090f16;border:1px solid #534434;box-shadow:inset 0 2px 4px #000;padding:1px 6px;border-radius:4px;color:#ffc32d;">7,386</span> construction pieces · <span style="font:700 .94em 'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;letter-spacing:.12em;background:#090f16;border:1px solid #534434;box-shadow:inset 0 2px 4px #000;padding:1px 6px;border-radius:4px;color:#ffc32d;">28</span> photographs</p>
+      </div>
+    </section>
+
+    <section style="margin:0 0 32px;">
+      <h2 style="margin:0 0 12px;font:600 1.5rem 'Bodoni Moda',Georgia,serif;letter-spacing:.01em;">The work</h2>
+      <div class="mosaic" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;">
+        <sc-for list="{{ tiles }}" as="t" hint-placeholder-count="7">
+          <button class="tile" style="position:relative;margin:0;padding:0;border:1px solid #534434;border-radius:4px;background: {{ t.bg }};aspect-ratio:16/9;overflow:hidden;box-shadow:none;">
+            <span style="position:absolute;left:8px;bottom:8px;font:600 10px 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#dde3ee;background:rgba(9,15,22,.8);border:1px solid #534434;border-radius:4px;padding:2px 7px;">{{ t.era }}</span>
+          </button>
+        </sc-for>
+      </div>
+      <p style="margin:10px 0 0;font:400 .82rem 'JetBrains Mono',monospace;letter-spacing:.04em;color:#a08e7a;">28 photographs across 7 albums · <a href="#">see them all in the gallery</a></p>
+    </section>
+
+    <section style="margin:0 0 32px;padding:18px 20px 16px;border:1px solid #534434;border-radius:6px;background:#161c24;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);">
+      <h2 style="margin:0 0 4px;font:600 1.5rem 'Bodoni Moda',Georgia,serif;letter-spacing:.01em;">Who they built beside</h2>
+      <p style="margin:0 0 10px;font-size:.9rem;color:#d8c3ad;">34 builders placed pieces on the same builds, across 5 eras. Pick one to see the pair.</p>
+      <div class="treescroll" style="overflow:hidden;">
+        <div class="treecanvas" style="position:relative;width:100%;">
+          <svg viewBox="0 0 960 428" style="display:block;width:100%;height:auto;" role="img" aria-label="Kinship tree"><defs><linearGradient id="kin-ember" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="428"><stop offset="0" stop-color="#f59e0b"></stop><stop offset="1" stop-color="#d97707"></stop></linearGradient></defs><line x1="24" x2="936" y1="64" y2="64" stroke="#2f353e" stroke-width="1"></line><text x="26" y="56" fill="#a08e7a" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.2">ERA 12</text><line x1="24" x2="936" y1="136" y2="136" stroke="#2f353e" stroke-width="1"></line><text x="26" y="128" fill="#a08e7a" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.2">ERA 11</text><line x1="24" x2="936" y1="208" y2="208" stroke="#2f353e" stroke-width="1"></line><text x="26" y="200" fill="#a08e7a" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.2">ERA 10</text><line x1="24" x2="936" y1="280" y2="280" stroke="#2f353e" stroke-width="1"></line><text x="26" y="272" fill="#a08e7a" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.2">ERA 8</text><line x1="24" x2="936" y1="352" y2="352" stroke="#2f353e" stroke-width="1"></line><text x="26" y="344" fill="#a08e7a" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.2">ERA 7</text><line x1="480" x2="480" y1="64" y2="352" stroke="url(#kin-ember)" stroke-width="8" stroke-linecap="round"></line><path d="M480,308 C480,348 550,312 550,352" fill="none" stroke="url(#kin-ember)" stroke-width="5.5" stroke-linecap="round" opacity="1"></path><path d="M480,308 C480,348 410,312 410,352" fill="none" stroke="url(#kin-ember)" stroke-width="4.6" stroke-linecap="round" opacity="0.72"></path><path d="M480,164 C480,204 620,168 620,208" fill="none" stroke="url(#kin-ember)" stroke-width="4.4" stroke-linecap="round" opacity="0.72"></path><path d="M480,308 C480,348 340,312 340,352" fill="none" stroke="url(#kin-ember)" stroke-width="4.3" stroke-linecap="round" opacity="0.72"></path><path d="M480,164 C480,204 690,168 690,208" fill="none" stroke="url(#kin-ember)" stroke-width="3.8" stroke-linecap="round" opacity="0.72"></path><path d="M480,164 C480,204 270,168 270,208" fill="none" stroke="url(#kin-ember)" stroke-width="3.4" stroke-linecap="round" opacity="0.72"></path><line x1="270" x2="270" y1="208" y2="352" stroke="url(#kin-ember)" stroke-width="3.4" stroke-linecap="round" opacity="0.72"></line><path d="M480,20 C480,60 760,24 760,64" fill="none" stroke="url(#kin-ember)" stroke-width="3.4" stroke-linecap="round" opacity="0.72"></path><line x1="760" x2="760" y1="64" y2="352" stroke="url(#kin-ember)" stroke-width="3.4" stroke-linecap="round" opacity="0.72"></line><path d="M480,236 C480,276 200,240 200,280" fill="none" stroke="url(#kin-ember)" stroke-width="3.2" stroke-linecap="round" opacity="0.72"></path><path d="M480,164 C480,204 830,168 830,208" fill="none" stroke="url(#kin-ember)" stroke-width="3.2" stroke-linecap="round" opacity="0.72"></path><path d="M480,20 C480,60 130,24 130,64" fill="none" stroke="url(#kin-ember)" stroke-width="2.3" stroke-linecap="round" opacity="0.72"></path><path d="M480,164 C480,204 900,168 900,208" fill="none" stroke="url(#kin-ember)" stroke-width="2.3" stroke-linecap="round" opacity="0.72"></path><line x1="900" x2="900" y1="208" y2="280" stroke="url(#kin-ember)" stroke-width="2.3" stroke-linecap="round" opacity="0.72"></line><path d="M480,164 C480,204 60,168 60,208" fill="none" stroke="url(#kin-ember)" stroke-width="2.3" stroke-linecap="round" opacity="0.72"></path></svg>
+          <div style="position:absolute;inset:0;pointer-events:none;">
+            <div style="position:absolute;left:50%;top:0;transform:translate(-50%,-6%);display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <span style="width:48px;height:48px;border:1px solid #f59e0b;border-radius:6px;background:linear-gradient(160deg,#3a3126,#141a26);display:block;"></span>
+              <span style="font:600 14px 'Bodoni Moda',Georgia,serif;color:#dde3ee;">Tugcow</span>
+              <span style="font:400 10px 'JetBrains Mono',monospace;color:#a08e7a;letter-spacing:.04em;">34 co-builders</span>
+            </div>
+            <sc-for list="{{ branches }}" as="n" hint-placeholder-count="12">
+              <div class="node" style="position:absolute;left: {{ n.lx }};top: {{ n.ty }};transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px;width:96px;pointer-events:auto;cursor:pointer;background:rgba(22,28,36,.72);border-radius:4px;">
+                <span class="por" style="width:32px;height:32px;border:1px solid {{ n.border }};border-radius:6px;background: {{ n.bg }};display:block;box-shadow: {{ n.glow }};"></span>
+                <span style="display:block;height: {{ n.alt }};"></span>
+                <span style="font:600 12px 'Bodoni Moda',Georgia,serif;color: {{ n.color }};white-space:nowrap;max-width:96px;overflow:hidden;text-overflow:ellipsis;">{{ n.name }}</span>
+                <span style="font:400 9px 'JetBrains Mono',monospace;color:#a08e7a;white-space:nowrap;">{{ n.meta }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <div class="chips" style="display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;margin-top:14px;">
+        <sc-for list="{{ chips }}" as="c" hint-placeholder-count="8">
+          <button class="chip8" style="display:grid;grid-template-columns:36px minmax(0,1fr);gap:8px;align-items:center;margin:0;padding:6px 8px;text-align:left;border:1px solid {{ c.border }};border-radius:4px;background:#1a2028;box-shadow:inset 0 1px 0 rgba(255,255,255,.06);">
+            <span style="width:36px;height:36px;border:1px solid rgba(245,158,11,.25);border-radius:4px;background: {{ c.bg }};display:block;"></span>
+            <span class="chipname" style="display:flex;flex-direction:column;min-width:0;">
+              <span style="font:600 .92rem 'Bodoni Moda',Georgia,serif;color:#dde3ee;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ c.name }}</span>
+              <span style="font:500 10px 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color: {{ c.tierColor }};">{{ c.tier }}</span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+      <p style="margin:10px 0 0;font:400 .78rem 'JetBrains Mono',monospace;letter-spacing:.04em;color:#a08e7a;">Top 8 of 34 co-builders · <a href="#">Open the kinship tree</a> for the ledger and tagging</p>
+    </section>
+
+    <section style="margin:0 0 34px;padding:18px 20px 18px;border:1px solid #534434;border-radius:6px;background:#161c24;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);">
+      <h3 style="margin:0 0 2px;font:600 1.5rem 'Bodoni Moda',Georgia,serif;letter-spacing:.01em;">Kinship with Loanati</h3>
+      <p style="margin:0 0 14px;font:400 .78rem 'JetBrains Mono',monospace;letter-spacing:.04em;color:#a08e7a;">4 shared builds · 564 shared pieces · era 7 · Recorded kin · <a href="#">Photographs</a> · <a href="#" style="color:#d8c3ad;">World viewer</a></p>
+      <div class="pairgrid" style="display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start;">
+        <div>
+          <div style="position:relative;aspect-ratio:16/9;border:1px solid #534434;border-radius:4px;overflow:hidden;background:linear-gradient(160deg,#3a4f72,#141a26);">
+            <span style="position:absolute;left:10px;top:10px;display:flex;gap:6px;">
+              <span style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#dde3ee;background:rgba(9,15,22,.8);border:1px solid #534434;border-radius:4px;padding:2px 7px;">Era 7</span>
+              <span style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#dde3ee;background:rgba(9,15,22,.8);border:1px solid #534434;border-radius:4px;padding:2px 7px;">4 photographs</span>
+            </span>
+            <span style="position:absolute;left:0;right:0;bottom:0;padding:48px 16px 12px;background:linear-gradient(transparent,rgba(9,15,22,.92));display:flex;flex-direction:column;">
+              <span style="font:600 1.5rem 'Bodoni Moda',Georgia,serif;color:#dde3ee;">Build 338abcbb</span>
+              <span style="font:400 .78rem 'JetBrains Mono',monospace;letter-spacing:.04em;color:#d8c3ad;">1,908 construction pieces</span>
+            </span>
+          </div>
+        </div>
+        <aside style="display:grid;gap:14px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="width:36px;height:36px;border:1px solid rgba(245,158,11,.25);border-radius:4px;background:linear-gradient(160deg,#2b4a5e,#0d1620);display:block;"></span>
+            <div style="display:flex;flex-direction:column;">
+              <a href="#" style="font:600 1.05rem 'Bodoni Moda',Georgia,serif;color:#dde3ee;">Loanati</a>
+              <span style="font:500 10px 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#a08e7a;">Established Builder · <a href="#">see this pair from their side</a></span>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 64px minmax(0,1.3fr);font:400 .78rem 'JetBrains Mono',monospace;letter-spacing:.02em;">
+            <span style="padding:6px 8px;border-bottom:1px solid #534434;color:#a08e7a;text-transform:uppercase;font-size:.66rem;letter-spacing:.1em;">Build</span><span style="padding:6px 8px;border-bottom:1px solid #534434;color:#a08e7a;text-transform:uppercase;font-size:.66rem;letter-spacing:.1em;text-align:right;">Pieces</span><span style="padding:6px 8px;border-bottom:1px solid #534434;color:#a08e7a;text-transform:uppercase;font-size:.66rem;letter-spacing:.1em;">Split</span>
+            <sc-for list="{{ ledger }}" as="l" hint-placeholder-count="4">
+              <span style="display:contents;"><span style="padding:7px 8px;border-bottom:1px solid #2f353e;background: {{ l.bg }};color: {{ l.color }};">{{ l.build }}</span><span style="padding:7px 8px;border-bottom:1px solid #2f353e;background: {{ l.bg }};color: {{ l.color }};text-align:right;">{{ l.pieces }}</span><span style="padding:7px 8px;border-bottom:1px solid #2f353e;background: {{ l.bg }};color: {{ l.color }};">{{ l.split }}</span></span>
+            </sc-for>
+          </div>
+          <a href="#" style="font-size:.82rem;">Download pair ledger (JSON)</a>
+        </aside>
+      </div>
+      <div style="margin-top:14px;padding-top:8px;border-top:1px dashed #534434;">
+        <button onClick="{{ togglePair }}" style="margin:0;padding:4px 0;border:0;background:none;box-shadow:none;font:500 .72rem 'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#a08e7a;display:flex;align-items:center;gap:8px;"><span style="display:inline-block;transition:transform .15s;transform: {{ pairCaret }};">▸</span> Details</button>
+        <sc-if value="{{ pairOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;gap:18px;margin-top:10px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <span style="font:600 11px 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border:1px solid #f59e0b;border-radius:4px;color:#ffc174;background:rgba(245,158,11,.14);">Build 338abcbb · Era 7</span>
+              <span style="font:600 11px 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border:1px solid rgba(245,158,11,.25);border-radius:4px;color:#d8c3ad;">Build c4cc43f7 · Era 7</span>
+              <span style="font:600 11px 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border:1px solid rgba(245,158,11,.25);border-radius:4px;color:#d8c3ad;">Build 6de5b876 · Era 7</span>
+            </div>
+            <div class="pairgrid" style="display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;">
+              <div style="display:grid;gap:14px;">
+                <div><h4 style="margin:0 0 4px;font:600 1rem 'Bodoni Moda',Georgia,serif;">Laurels</h4><p style="margin:0;font-size:.9rem;color:#d8c3ad;">No tags confirmed yet. <a href="#">Tag co-builders on the kinship page</a></p></div>
+                <div><h4 style="margin:0 0 4px;font:600 1rem 'Bodoni Moda',Georgia,serif;">Shared hearth</h4><p style="margin:0;font-size:.9rem;color:#d8c3ad;">Loanati slept here (1 bed) · Tugcow slept here (1 bed)</p></div>
+                <div style="display:flex;align-items:center;gap:12px;"><span style="font:700 1.4rem 'JetBrains Mono',monospace;letter-spacing:.12em;background:#090f16;border:1px solid #534434;box-shadow:inset 0 2px 4px #000;padding:2px 10px;border-radius:4px;color:#ffc32d;">1.59</span><span style="font:400 .78rem 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:#a08e7a;">Kinship affinity · <span style="color:#ffc174;">Tier I (rank 1 of this builder's Top 8)</span></span></div>
+                <div style="display:grid;grid-template-columns:150px minmax(0,1fr);gap:0 12px;font-size:.9rem;">
+                  <sc-for list="{{ facts }}" as="f" hint-placeholder-count="6">
+                    <span style="display:contents;"><span style="font:500 .7rem 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#a08e7a;padding:7px 0;border-bottom:1px solid #2f353e;">{{ f.k }}</span><span style="padding:7px 0;border-bottom:1px solid #2f353e;color:#dde3ee;">{{ f.v }}</span></span>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:grid;gap:12px;align-content:start;">
+                <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;">
+                  <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="4">
+                    <div style="padding:10px;border:1px solid #534434;border-radius:4px;background:#1a2028;display:flex;flex-direction:column;gap:6px;"><span style="font:500 .66rem 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#a08e7a;">{{ m.k }}</span><span style="align-self:flex-start;font:700 1rem 'JetBrains Mono',monospace;letter-spacing:.12em;background:#090f16;border:1px solid #534434;box-shadow:inset 0 2px 4px #000;padding:2px 8px;border-radius:4px;color:#ffc32d;">{{ m.v }}</span></div>
+                  </sc-for>
+                </div>
+                <div><h4 style="margin:0 0 6px;font:600 1rem 'Bodoni Moda',Georgia,serif;">Piece allotment</h4><div style="display:flex;height:10px;border-radius:4px;overflow:hidden;border:1px solid #534434;"><span style="width:44%;background:#f59e0b;"></span><span style="width:25%;background:#d97707;"></span><span style="width:12%;background:#534434;"></span><span style="flex:1;background:#1a2028;"></span></div><p style="margin:6px 0 0;font:400 .7rem 'JetBrains Mono',monospace;color:#a08e7a;letter-spacing:.04em;">Tugcow 44 % · Loanati 25 % · others 12 % · unattributed 19 %</p></div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </section>
+
+    <section style="margin:0 0 34px;">
+      <h2 style="margin:0 0 4px;font:600 1.5rem 'Bodoni Moda',Georgia,serif;letter-spacing:.01em;">Albums by era</h2>
+      <p style="margin:0 0 14px;font-size:.88rem;color:#d8c3ad;">Every saved construction contributor is credited; nearby ownership is not inferred.</p>
+
+      <div style="margin:0 0 10px;">
+        <div style="display:flex;align-items:baseline;gap:10px;font:600 1.3rem 'Bodoni Moda',Georgia,serif;margin:0 0 8px;"><span style="font-size:.8em;color:#a08e7a;">▾</span> Era 12 · 6 albums · 1 photographed</div>
+        <div class="ledgerhead" style="display:grid;grid-template-columns:minmax(0,1fr) 88px 64px 20px 228px;gap:12px;padding:0 14px 4px;font:500 .66rem 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#a08e7a;"><span>Build</span><span style="text-align:right;">Pieces</span><span style="text-align:right;">Share</span><span></span><span>Photos</span></div>
+        <div style="display:grid;gap:6px;">
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+            <article style="border:1px solid #534434;border-radius:6px;background:#161c24;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);padding:10px 14px;">
+              <div class="row" style="display:grid;grid-template-columns:minmax(0,1fr) 88px 64px 20px 228px;gap:12px;align-items:center;border-radius:4px;">
+                <button onClick="{{ r.toggle }}" style="margin:0;padding:0;border:0;background:none;box-shadow:none;text-align:left;font:600 1rem 'Bodoni Moda',Georgia,serif;color:#dde3ee;display:flex;align-items:center;gap:10px;"><span style="display:inline-block;font-size:.7em;color:#a08e7a;transform: {{ r.caret }};">▸</span>{{ r.name }}</button>
+                <span class="rowmeta" style="display:contents;">
+                  <span style="text-align:right;font:400 .82rem 'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;color:#d8c3ad;">{{ r.pieces }}</span>
+                  <span style="text-align:right;font:400 .82rem 'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;color:#d8c3ad;">{{ r.share }}</span>
+                </span>
+                <span style="text-align:center;color: {{ r.dot }};font-size:12px;" title="Photographed">●</span>
+                <span class="strip" style="display:flex;gap:4px;min-height:29px;">
+                  <sc-for list="{{ r.thumbs }}" as="th" hint-placeholder-count="0">
+                    <span style="width:52px;aspect-ratio:16/9;border:1px solid #534434;border-radius:3px;background: {{ th.bg }};display:block;"></span>
+                  </sc-for>
+                </span>
+              </div>
+              <sc-if value="{{ r.open }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:10px;padding-top:10px;border-top:1px dashed #534434;display:grid;gap:10px;">
+                  <p style="margin:0;font-size:.88rem;color:#d8c3ad;">Contributors: <a href="#">Builder 36adbf62</a> (0.7%) · <a href="#">Tugcow</a> (33.8%) · <a href="#">Eli</a> (0.7%) · <a href="#">Vivicat</a> (9.4%)</p>
+                  <p style="margin:0;font-size:.88rem;"><a href="#">Open in world viewer</a></p>
+                  <div style="display:flex;flex-wrap:wrap;gap:10px;">
+                    <button style="margin:0;padding:10px 16px;border:1px solid #f59e0b;border-radius:4px;background:#f59e0b;color:#090f16;font-weight:700;font-size:.9rem;box-shadow:none;">I built this</button>
+                    <button style="margin:0;padding:10px 16px;border:1px solid rgba(255,255,255,.08);border-radius:4px;background:#1a2028;color:#d8c3ad;font-size:.9rem;box-shadow:none;">Not mine</button>
+                    <button style="margin:0;padding:10px 16px;border:1px dashed #534434;border-radius:4px;background:#1a2028;color:#d8c3ad;font-size:.9rem;box-shadow:none;opacity:.62;" title="Claim this build before requesting photographs">Request additional photographs</button>
+                    <button style="margin:0;padding:10px 16px;border:1px solid #d97707;border-radius:4px;background:#1a2028;color:#dde3ee;font-size:.9rem;box-shadow:none;">Copy this build payload</button>
+                  </div>
+                </div>
+              </sc-if>
+            </article>
+          </sc-for>
+        </div>
+      </div>
+
+      <sc-for list="{{ olderEras }}" as="e" hint-placeholder-count="4">
+        <div style="display:flex;align-items:baseline;gap:10px;font:600 1.3rem 'Bodoni Moda',Georgia,serif;margin:14px 0 0;color:#dde3ee;"><span style="font-size:.8em;color:#a08e7a;">▸</span> {{ e.label }}</div>
+      </sc-for>
+    </section>
+
+    <section style="margin:0 0 40px;padding:14px 16px;border:1px solid #534434;border-radius:6px;background:#161c24;display:grid;gap:6px;font-size:.88rem;color:#d8c3ad;">
+      <p style="margin:0;">No unresolved name conflicts for this builder.</p>
+      <p style="margin:0;">You have 0 claimed builds and 0 requests on this page.</p>
+      <p style="margin:0;">7 of 39 albums photographed so far. Era 11 is still being photographed.</p>
+      <p style="margin:6px 0 0;"><a href="#" style="display:inline-block;padding:8px 14px;border:1px solid #534434;border-radius:4px;font-size:.88rem;">Download builder manifest (JSON)</a></p>
+    </section>
+
+    <nav style="margin:0 0 40px;">
+      <h2 style="margin:0 0 14px;font:600 1.5rem 'Bodoni Moda',Georgia,serif;letter-spacing:.01em;">Where to go next</h2>
+      <div class="paths" style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;">
+        <sc-for list="{{ paths }}" as="p" hint-placeholder-count="5">
+          <a class="path" href="#" style="display:flex;flex-direction:column;gap:10px;padding:14px;border:1px solid rgba(255,255,255,.08);border-radius:6px;background:#161c24;color:#dde3ee;">
+            <span style="aspect-ratio:1;border-radius:4px;background: {{ p.bg }};display:block;"></span>
+            <span style="font:600 13px 'Plus Jakarta Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;">{{ p.label }}</span>
+          </a>
+        </sc-for>
+      </div>
+    </nav>
+
+    <footer style="padding:18px 0 0;border-top:1px solid #534434;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.82rem;color:#a08e7a;">
+      <span><span style="font:600 .9rem 'Bodoni Moda',Georgia,serif;color:#ffc174;letter-spacing:.06em;text-transform:uppercase;">Valheim Chronicles</span> · The Comfy Community archive</span>
+      <span>Preserved for eternity.</span>
+    </footer>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"pairDetails":{"editor":"boolean","default":true,"tsType":"boolean","section":"State"},"expandRow":{"editor":"boolean","default":true,"tsType":"boolean","section":"State"},"$preview":{"width":1160,"height":4200}}'>
+class Component extends DCLogic {
+  state = { pairOpen: null, openRow: null };
+  grads = ['linear-gradient(160deg,#3a4f72,#141a26)','linear-gradient(160deg,#5a4a3a,#1a1410)','linear-gradient(160deg,#2b4a5e,#0d1620)','linear-gradient(140deg,#3f5a44,#101a12)','linear-gradient(160deg,#4a5a72,#161c26)','linear-gradient(180deg,#6b7fa0,#232c3c)','linear-gradient(160deg,#345a6a,#0f1a20)','linear-gradient(160deg,#503f5e,#151020)'];
+  renderVals(){
+    const P = this.props, s = this.state;
+    const pairOpen = s.pairOpen === null ? !!(P.pairDetails ?? false) : s.pairOpen;
+    const openRow = s.openRow === null ? ((P.expandRow ?? false) ? 0 : -1) : s.openRow;
+    const g = i => this.grads[i % this.grads.length];
+    const tiles = [[10,0],[7,1],[10,2],[8,3],[7,4],[12,5],[10,6]].map(([era,i]) => ({ era: 'Era ' + era, bg: g(i) }));
+    const bandY = { 12: 64, 11: 136, 10: 208, 8: 280, 7: 352 };
+    const bands = [12, 11, 10, 8, 7].map(e => ({ y: bandY[e], ly: bandY[e] - 8, label: 'ERA ' + e }));
+    const raw = [
+      ['Loanati', 564, 7, 7, 550], ['Builder e103f2a3', 201, 7, 7, 410], ['Toinin', 157, 10, 10, 620], ['Atlas', 144, 7, 7, 340],
+      ['Yoni', 79, 10, 10, 690], ['Ibocain', 49, 10, 7, 270], ['Bernie', 48, 12, 7, 760], ['Heimlich', 41, 8, 8, 200],
+      ['Tanagor', 38, 10, 10, 830], ['Vivicat', 13, 12, 12, 130], ['Vigor', 13, 10, 8, 900], ['Builder 17a1605b', 13, 10, 10, 60]
+    ];
+    const active = 'Loanati';
+    const branches = raw.map(([name, pieces, first, last, x], i) => {
+      const y = bandY[first], y2 = bandY[last];
+      const w = Math.max(2, Math.min(8, 2 * Math.log10(pieces + 1))).toFixed(1);
+      const isActive = name === active;
+      return { name, x, y, y2, hasSpan: y2 !== y, w, op: isActive ? '1' : '0.72',
+        d: `M480,${y - 44} C480,${y - 4} ${x},${y - 40} ${x},${y}`,
+        lx: (x / 960 * 100).toFixed(2) + '%', ty: (y / 428 * 100).toFixed(2) + '%',
+        meta: pieces.toLocaleString('en-US') + ' shared pieces', bg: g(i), alt: (Math.round((x - 60) / 70) % 2 === 1) ? '20px' : '0px',
+        border: isActive ? '#f59e0b' : 'rgba(245,158,11,.35)', glow: isActive ? '0 0 0 2px rgba(245,158,11,.25)' : 'none', color: isActive ? '#ffc174' : '#dde3ee' };
+    });
+    const tiers = ['Tier I','Tier I','Tier II','Tier II','Tier II','Tier III','Tier III','Tier III'];
+    const chips = raw.slice(0, 8).map(([name], i) => ({ name, tier: tiers[i], bg: g(i), border: name === active ? 'rgba(245,158,11,.5)' : '#534434', tierColor: name === active ? '#ffc174' : '#a08e7a' }));
+    const ledger = [['Build 338abcbb','1,908','You 44 % · Loanati 25 %'],['Build c4cc43f7','819','You 90 % · Loanati 9.6 %'],['Build 6de5b876','400','You 100 % · Loanati 0.3 %'],['Build 1a43194b','52','You 71 % · Loanati 29 %']]
+      .map(([build, pieces, split], i) => ({ build, pieces, split, bg: i === 0 ? 'rgba(245,158,11,.12)' : 'transparent', color: i === 0 ? '#ffc174' : '#d8c3ad' }));
+    const facts = [['Pieces','1,908'],['Era','7'],['Contributors','4'],['Photographs','4'],['Terrain','Its saved world is recorded and the terrain pass is still to run.'],['Leading contributor','Tugcow (largest share)']].map(([k, v]) => ({ k, v }));
+    const metrics = [['Shared pieces','564'],['Shared builds','4'],['Photographed','1'],['Confirmed tags','0']].map(([k, v]) => ({ k, v }));
+    const rowsRaw = [['Build d8d45647','139','34 %',4],['Build 4055dbf5','673','55 %',0],['Build cba4a1c0','280','9 %',0],['Build 721ecdf6','141','43 %',0],['Build 63174849','27','100 %',0],['Build c5612513','21','29 %',0]];
+    const rows = rowsRaw.map(([name, pieces, share, photos], i) => ({ name, pieces, share, open: openRow === i,
+      caret: openRow === i ? 'rotate(90deg)' : 'none', dot: photos ? '#f59e0b' : '#2f353e',
+      thumbs: Array.from({ length: photos }, (_, j) => ({ bg: g(j + 5) })),
+      toggle: () => this.setState({ openRow: openRow === i ? -1 : i }) }));
+    const olderEras = [['Era 11 · 2 albums · 0 photographed'],['Era 10 · 7 albums · 3 photographed'],['Era 8 · 2 albums · 1 photographed'],['Era 7 · 22 albums · 2 photographed']].map(([label]) => ({ label }));
+    const paths = ['Find your builds','Study the builds','Walk the eras','Ask for photographs','Read the data'].map((label, i) => ({ label, bg: g(i + 2) }));
+    return { tiles, bands, branches, chips, ledger, facts, metrics, rows, olderEras, paths,
+      pairOpen, pairCaret: pairOpen ? 'rotate(90deg)' : 'none',
+      togglePair: () => this.setState({ pairOpen: !pairOpen }) };
+  }
+}
+</script>
+</body>
+</html>

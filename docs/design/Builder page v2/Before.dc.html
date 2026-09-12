@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#0e141c;color:#a08e7a;font:13px/1.5 system-ui,sans-serif;}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px 40px;box-sizing:border-box;}
+.box{border:1px dashed #534434;border-radius:6px;background:#161c24;padding:14px 16px;margin:0 0 14px;}
+.lab{font:600 11px ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:#a08e7a;margin:0 0 6px;}
+.txt{color:#d8c3ad;margin:0;}
+.sub{border:1px dashed #2f353e;border-radius:4px;padding:10px 12px;margin:8px 0 0;background:#0e141c;}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;}
+.btn{border:1px dashed #534434;border-radius:4px;padding:8px 12px;color:#d8c3ad;}
+.pri{border-color:#f59e0b;color:#f59e0b;}
+.ph{border:1px dashed #534434;border-radius:4px;background:#1a2028;aspect-ratio:16/9;}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:8px;}
+.grid8{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;margin-top:8px;}
+.chip{border:1px dashed #534434;border-radius:4px;padding:10px 8px;height:34px;}
+h2{margin:18px 0 8px;font:600 22px Georgia,serif;color:#dde3ee;}
+.hero{display:grid;grid-template-columns:160px minmax(0,1fr);gap:24px;}
+.avatar{aspect-ratio:1;border:1px dashed #534434;border-radius:6px;background:#1a2028;}
+</style>
+</helmet>
+<div class="wrap">
+  <div class="box" style="display:flex;justify-content:space-between;margin-top:22px;"><p class="lab" style="margin:0;">Brand lockup</p><p class="lab" style="margin:0;">Gallery · All builders · Statistics · Kinship · Your participation · Guide</p></div>
+
+  <div class="box hero">
+    <div class="avatar"></div>
+    <div>
+      <p class="lab">The Comfy Community</p>
+      <p class="txt" style="font:700 44px Georgia,serif;color:#dde3ee;line-height:1.1;margin:0 0 6px;">Tugcow</p>
+      <p class="lab">TIER Major Architect · FIRST ERA Era 7 · LATEST ERA Era 12</p>
+      <p class="txt">[39] build albums · [7,386] construction pieces · Major Architect · [28] photographs</p>
+      <p class="txt">Open the kinship tree</p>
+      <div class="row"><span class="btn">Download builder manifest (JSON)</span></div>
+    </div>
+  </div>
+
+  <p class="txt">No unresolved name conflicts for this builder.</p>
+  <p class="txt">You have 0 claimed builds and 0 requests on this page.</p>
+  <p class="txt" style="margin-bottom:14px;">7 of 39 albums photographed so far. Era 11 is still being photographed.</p>
+
+  <div class="box">
+    <h2 style="margin-top:0;">Top 8 · Shield-wall fellows</h2>
+    <p class="txt">Open the kinship tree</p>
+    <p class="txt">The builders this builder placed the most pieces beside</p>
+    <div class="grid8"><span class="chip"></span><span class="chip"></span><span class="chip"></span><span class="chip"></span><span class="chip"></span><span class="chip"></span><span class="chip"></span><span class="chip"></span></div>
+  </div>
+
+  <div class="box">
+    <h2 style="margin-top:0;">Kinship with Loanati</h2>
+    <p class="lab">4 shared builds · 564 shared pieces · era 7 · Recorded kin</p>
+    <p class="lab">PHOTOGRAPHS · WORLD VIEWER · RECORDED KIN</p>
+    <div class="row"><span class="btn">Build 338abcbb · Era 7</span><span class="btn">Build c4cc43f7 · Era 7</span><span class="btn">Build 6de5b876 · Era 7</span></div>
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;margin-top:10px;">
+      <div>
+        <div class="ph" style="aspect-ratio:16/8;"></div>
+        <div class="sub"><p class="lab">Laurels</p><p class="txt">No tags confirmed yet. Tag co-builders on the kinship page</p></div>
+        <div class="sub"><p class="lab">Shared hearth</p><p class="txt">Loanati slept here (1 bed) · Tugcow slept here (1 bed)</p></div>
+        <div class="sub"><p class="lab">1.59 · Kinship affinity · Tier I (rank 1 of this builder's Top 8)</p></div>
+        <div class="sub"><p class="lab">PIECES 1,908 · ERA 7 · CONTRIBUTORS 4 · PHOTOGRAPHS 4 · TERRAIN … · LEADING CONTRIBUTOR Tugcow · WORLD VIEWER Open in the world viewer</p></div>
+      </div>
+      <div>
+        <div class="sub"><p class="lab">Loanati · TIER ESTABLISHED BUILDER</p><p class="lab">SHARED PIECES 564 · SHARED BUILDS 4 · PHOTOGRAPHED 1 · CONFIRMED TAGS 0 · KINSHIP AFFINITY 1.59</p></div>
+        <p class="txt">See this pair from their side</p>
+        <div class="row"><span class="btn">Switch to World viewer</span></div>
+        <div class="sub"><p class="lab">SHARED BUILDS · BUILD ERA PIECES SPLIT STATUS</p><p class="txt">Build 338abcbb · 7 · 1,908 · You 44 % · Loanati 25 % · Viewing now</p><p class="txt">Build c4cc43f7 · 7 · 819 · You 90 % · Loanati 9.6 % · Recorded</p><p class="txt">Build 6de5b876 · 7 · 400 · You 100 % · Loanati 0.3 % · Recorded</p><p class="txt">Build 1a43194b · 7 · 52 · You 71 % · Loanati 29 % · Recorded</p></div>
+        <p class="txt">Download pair ledger (JSON)</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>▾ Era 12 · 6 albums · 1 photographed</h2>
+  <div class="box"><p class="txt" style="font:600 18px system-ui;color:#dde3ee;">Build d8d45647</p><p class="txt">139 construction pieces</p><p class="txt">Every saved construction contributor is credited; nearby ownership is not inferred.</p><p class="txt">Contributors: Builder 36adbf62 (0.7%) · Tugcow (33.8%) · Eli (0.7%) · Vivicat (9.4%)</p><p class="txt">Open in world viewer</p><div class="grid4"><span class="ph"></span><span class="ph"></span><span class="ph"></span><span class="ph"></span></div><div class="row"><span class="btn pri">I built this</span><span class="btn">Not mine</span><span class="btn">Request additional photographs</span><span class="btn">Copy this build payload</span></div></div>
+  <div class="box"><p class="txt" style="font:600 18px system-ui;color:#dde3ee;">Build 4055dbf5</p><p class="txt">673 construction pieces</p><p class="txt">Every saved construction contributor is credited; nearby ownership is not inferred.</p><p class="txt">Contributors: Tugcow (55.0%) · Bernie (4.6%) · Builder b6fc6040 (0.1%)</p><p class="txt">Open in world viewer</p><div class="row"><span class="btn pri">I built this</span><span class="btn">Not mine</span><span class="btn">Request photographs</span><span class="btn">Copy this build payload</span></div></div>
+  <div class="box"><p class="txt" style="font:600 18px system-ui;color:#dde3ee;">Build cba4a1c0</p><p class="txt">280 construction pieces</p><p class="txt">Every saved construction contributor is credited; nearby ownership is not inferred.</p><p class="txt">Contributors: Tugcow (8.9%) · Bernie (2.9%)</p><p class="txt">Open in world viewer</p><div class="row"><span class="btn pri">I built this</span><span class="btn">Not mine</span><span class="btn">Request photographs</span><span class="btn">Copy this build payload</span></div></div>
+  <div class="box"><p class="txt" style="font:600 18px system-ui;color:#dde3ee;">Build 721ecdf6</p><p class="txt">141 construction pieces</p><p class="txt">Every saved construction contributor is credited; nearby ownership is not inferred.</p><p class="txt">Contributors: Tugcow (43.3%) · … · slept here: Tugcow</p><p class="txt">Open in world viewer</p><div class="row"><span class="btn pri">I built this</span><span class="btn">Not mine</span><span class="btn">Request photographs</span><span class="btn">Copy this build payload</span></div></div>
+  <div class="box"><p class="txt" style="font:600 18px system-ui;color:#dde3ee;">Build 63174849</p><p class="txt">27 construction pieces</p><p class="txt">Every saved construction contributor is credited; nearby ownership is not inferred.</p><p class="txt">Contributors: Tugcow (100.0%)</p><p class="txt">Open in world viewer</p><div class="row"><span class="btn pri">I built this</span><span class="btn">Not mine</span><span class="btn">Request photographs</span><span class="btn">Copy this build payload</span></div></div>
+  <div class="box"><p class="txt" style="font:600 18px system-ui;color:#dde3ee;">Build c5612513</p><p class="txt">21 construction pieces</p><p class="txt">Every saved construction contributor is credited; nearby ownership is not inferred.</p><p class="txt">Contributors: Tugcow (28.6%)</p><p class="txt">Open in world viewer</p><div class="row"><span class="btn pri">I built this</span><span class="btn">Not mine</span><span class="btn">Request photographs</span><span class="btn">Copy this build payload</span></div></div>
+
+  <h2>▾ Era 11 · 2 albums · 0 photographed</h2>
+  <div class="box"><p class="txt" style="font:600 18px system-ui;color:#dde3ee;">Build 56a5ff7a</p><p class="txt">200 construction pieces · disclaimer · Contributors: Tugcow (17.0%) · slept here: Tugcow · Open in world viewer</p><div class="row"><span class="btn pri">I built this</span><span class="btn">Not mine</span><span class="btn">Request photographs</span><span class="btn">Copy this build payload</span></div></div>
+  <div class="box"><p class="txt" style="font:600 18px system-ui;color:#dde3ee;">Build 451eef95</p><p class="txt">48 construction pieces · disclaimer · Contributors: Huz (2.1%) · Tugcow (97.9%) · slept here: Tugcow · Open in world viewer</p><div class="row"><span class="btn pri">I built this</span><span class="btn">Not mine</span><span class="btn">Request photographs</span><span class="btn">Copy this build payload</span></div></div>
+
+  <h2>▾ Era 10 · 7 albums · 3 photographed</h2>
+  <div class="box" style="padding:24px 16px;"><p class="lab">seven more cards, three with a photo row (≈ 1,700 px)</p></div>
+  <h2>▾ Era 8 · 2 albums · 1 photographed</h2>
+  <div class="box" style="padding:24px 16px;"><p class="lab">two cards (≈ 500 px)</p></div>
+  <h2>▾ Era 7 · 22 albums · 2 photographed</h2>
+  <div class="box" style="padding:24px 16px;"><p class="lab">twenty-two cards (≈ 4,600 px)</p></div>
+
+  <h2>Where to go next</h2>
+  <div class="box"><div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;"><span class="ph" style="aspect-ratio:1;"></span><span class="ph" style="aspect-ratio:1;"></span><span class="ph" style="aspect-ratio:1;"></span><span class="ph" style="aspect-ratio:1;"></span><span class="ph" style="aspect-ratio:1;"></span></div></div>
+  <div class="box"><p class="lab">Your participation (details, open on builder pages)</p></div>
+  <div class="box"><p class="lab">Footer · three codex columns</p></div>
+</div>
+</x-dc>
+</body>
+</html>
