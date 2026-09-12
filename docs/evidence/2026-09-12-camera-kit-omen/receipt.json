@@ -14,7 +14,7 @@
     "db": "copied",
     "fwl": "copied",
     "character": {
-      "from": "C:\\Users\\derek\\AppData\\Local\\Temp\\claude\\C--work-baseline\\2c234036-9d6a-4e1f-8bb3-4f2c3762e6a5\\scratchpad\\questyfour.fch",
+      "from": "<scratch>/questyfour.fch",
       "sha256": "a3996c1428b82578a7ba5c20bb3388bd216f23d3447f39d1b644914a4c755ac2",
       "playedAs": "questyfour-kit"
     }
