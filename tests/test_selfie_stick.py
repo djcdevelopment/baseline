@@ -1113,3 +1113,177 @@ class ExactGeometryContractTests(unittest.TestCase):
             with self.assertRaisesRegex(SystemExit, "belongs to"):
                 PLAN.load_cluster_points(str(points), clusters,
                                          {"snapshot_id": 107, "world_id": "OTHER"})
+
+
+class BetweenPoseRuleTests(unittest.TestCase):
+    """The 77 blind pairs of 2026-09-12 are the instrument. A between-pose rule is scored on
+    the 43 the eye could decide; keeping the planned pose is the bar to beat (25), and the
+    loop's own score rule is the recorded regression (18). Nothing that ranks poses ships
+    without beating 25 here."""
+
+    def setUp(self):
+        spec = importlib.util.spec_from_file_location("frame_judge", ROOT / "tools" / "selfie-stick" / "frame_judge.py")
+        self.judge = importlib.util.module_from_spec(spec); spec.loader.exec_module(self.judge)
+        evidence = ROOT / "docs" / "evidence" / "2026-09-12-refine-loop-calibration" / "pair-verdicts.json"
+        self.verdicts = json.load(open(evidence, encoding="utf-8"))["verdicts"]
+
+    def test_keeping_the_planned_pose_beats_the_fan_on_the_decided_pairs(self):
+        kept = self.judge.replay_pairs(self.verdicts, self.judge.keep_planned)
+        climbed = self.judge.replay_pairs(self.verdicts, self.judge.higher_score)
+        self.assertEqual((25, 43), (kept["hits"], kept["decided"]))
+        self.assertEqual((18, 43), (climbed["hits"], climbed["decided"]))
+        self.assertEqual(77, len(self.verdicts))
+
+    def test_undecided_pairs_do_not_count_either_way(self):
+        undecided = [v for v in self.verdicts if v["chose"] in ("neither", "both")]
+        self.assertEqual(34, len(undecided))
+        self.assertEqual(0, self.judge.replay_pairs(undecided, self.judge.keep_planned)["decided"])
+
+
+class SubjectGateTests(unittest.TestCase):
+    """The gate asks, before any shutter, whether the pieces make a subject at all. Its rules
+    are the two failure modes the judge named, with limits in metres and pieces -- a single
+    storey house (4-6 m) must pass, a bare floor and a scatter of debris must not."""
+
+    def setUp(self):
+        spec = importlib.util.spec_from_file_location("subject_gate", ROOT / "tools" / "selfie-stick" / "subject_gate.py")
+        self.gate = importlib.util.module_from_spec(spec); spec.loader.exec_module(self.gate)
+
+    @staticmethod
+    def house(n_side=10, storeys=1):
+        rows = []
+        for i in range(n_side):
+            for j in range(n_side):
+                rows.append((i * 2.0, 0.0, j * 2.0, "wood_floor"))
+                for k in range(1, 2 * storeys + 1):
+                    rows.append((i * 2.0, k * 2.0, j * 2.0, "wood_wall"))
+            rows.append((i * 2.0, 2.0 * (2 * storeys + 1), 0.0, "wood_roof_45"))
+        return rows
+
+    def test_a_single_storey_house_passes_and_a_bare_floor_and_debris_do_not(self):
+        hut = self.gate.features(self.house(4, storeys=1))
+        house = self.gate.features(self.house())
+        floor = self.gate.features([(i * 2.0, 0.0, j * 2.0, "wood_floor") for i in range(10) for j in range(10)])
+        debris = self.gate.features([(i * 40.0, 0.0, (i * 7) % 5 * 40.0, "wood_wall") for i in range(30)])
+        self.assertLess(hut["height"], 6.5); self.assertGreaterEqual(hut["height"], 3.0)
+        self.assertEqual([], self.gate.verdict(hut)); self.assertEqual([], self.gate.verdict(house))
+        self.assertTrue(self.gate.verdict(floor)[0].startswith("bare-floor"))
+        self.assertTrue(self.gate.verdict(debris)[0].startswith("debris"))
+        self.assertEqual(["no pieces resolved"], self.gate.verdict(None))
+        self.assertIsNone(self.gate.features([]))
+
+    def test_calibration_reports_rule_behaviour_instead_of_fitting_to_the_sample(self):
+        labelled = {"h1": (self.gate.features(self.house()), True), "h2": (self.gate.features(self.house(8)), True),
+                    "hut": (self.gate.features(self.house(4)), True),
+                    "f1": (self.gate.features([(i * 2.0, 0.0, j * 2.0, "stone_floor") for i in range(6) for j in range(6)]), False),
+                    "d1": (self.gate.features([(i * 40.0, 0.0, i * 30.0, "wood_wall") for i in range(25)]), False)}
+        result = self.gate.calibrate(labelled)
+        self.assertEqual([], result["keptRejected"]); self.assertEqual(["d1", "f1"], result["caught"])
+        self.assertEqual({"bare-floor": {"neitherCaught": 1, "keptRejected": 0}, "debris": {"neitherCaught": 1, "keptRejected": 0}}, result["perRule"])
+        self.assertIn("height", result["distributions"])
+        # A thresholds file may override a limit; the rule shape stays.
+        strict = {"rules": {"bare-floor": [["height", "max", 7.0], ["floorShare", "min", 0.1]]}}
+        self.assertTrue(self.gate.verdict(labelled["hut"][0], strict))
+
+
+class PoseForecastTests(unittest.TestCase):
+    """Geometry's opinion of a pose before any shutter: the axis a longhouse faces, what
+    kind of thing a mass is, and one bounded rank that prefers a full frame with some sky."""
+
+    def setUp(self):
+        spec = importlib.util.spec_from_file_location("pose_forecast", ROOT / "tools" / "selfie-stick" / "pose_forecast.py")
+        self.pf = importlib.util.module_from_spec(spec); spec.loader.exec_module(self.pf)
+
+    @staticmethod
+    def longhouse(angle_deg, length=40.0, width=8.0, height=6.0):
+        a = math.radians(angle_deg); pts = []
+        for i in range(21):
+            for j in range(5):
+                for k in range(4):
+                    u, v = (i / 20.0 - 0.5) * length, (j / 4.0 - 0.5) * width
+                    pts.append((100.0 + u * math.sin(a) + v * math.cos(a), 30.0 + k * height / 3.0, 200.0 + u * math.cos(a) - v * math.sin(a)))
+        return pts
+
+    def test_pca_finds_the_long_axis_in_the_receipt_convention(self):
+        for angle in (0.0, 30.0, 117.0):
+            o = self.pf.pca_orientation(self.longhouse(angle))
+            found = o["principalAngleDeg"] % 180.0
+            self.assertLess(min(abs(found - angle), abs(found - angle - 180.0), abs(found - angle + 180.0)), 1.0, angle)
+            self.assertAlmostEqual(40.0, o["obbLength"], delta=0.5); self.assertAlmostEqual(8.0, o["obbWidth"], delta=0.5)
+            self.assertGreater(o["eccentricity"], 4.0)
+        # Facade corners first, then extras that are not within 10 degrees of one already there.
+        self.assertEqual([135.0, 45.0, 0.0], self.pf.bearings(self.pf.pca_orientation(self.longhouse(0.0)), extra=[0.0, 44.0, 135.0]))
+
+    def test_typology_matches_the_classifier_it_was_harvested_from(self):
+        self.assertEqual("SkyPlatform", self.pf.typology(30, 5, 30, 800, min_y=450))
+        self.assertEqual("SpireOrTower", self.pf.typology(10, 45, 10, 500))
+        self.assertEqual("SprawlingCompound", self.pf.typology(120, 10, 90, 3000))
+        self.assertEqual("LonghouseHall", self.pf.typology(40, 8, 12, 600))
+        self.assertEqual("HomesteadVilla", self.pf.typology(20, 8, 20, 1500))
+        self.assertEqual("CompactOutpost", self.pf.typology(12, 6, 12, 300))
+        self.assertEqual(set(self.pf.PROFILES), {"SpireOrTower", "LonghouseHall", "SprawlingCompound", "SkyPlatform", "HomesteadVilla", "CompactOutpost"})
+
+    def test_closer_ranks_higher_while_the_mass_stays_in_frame_and_air_ranks_nothing(self):
+        pts = self.longhouse(0.0)
+        aim = (100.0, 33.0, 200.0)
+        bearing, elevation = math.radians(45.0), math.radians(30.0)
+        ranks = []
+        for distance in (120.0, 80.0, 50.0, 35.0):
+            cam = (aim[0] + distance * math.cos(elevation) * math.sin(bearing), aim[1] + distance * math.sin(elevation),
+                   aim[2] + distance * math.cos(elevation) * math.cos(bearing))
+            f = self.pf.forecast(pts, cam, aim)
+            self.assertGreater(f["inFrameFraction"], 0.95, distance)
+            self.assertTrue(0.0 <= f["rank"] <= 1.0); ranks.append(f["rank"])
+        self.assertEqual(ranks, sorted(ranks))                       # closer fills more: higher rank
+        air = self.pf.forecast(pts, (100.0, 60.0, 260.0), (100.0, 140.0, 200.0))
+        self.assertEqual(0.0, air["rank"]); self.assertEqual(0.0, air["inFrameFraction"])
+        cropped = self.pf.forecast(pts, (100.0, 36.0, 212.0), aim)
+        self.assertLess(cropped["inFrameFraction"], 0.8)             # too close: pieces leave the frame
+
+
+class LightTableTests(unittest.TestCase):
+    """The committed instrument: pairs from a rank receipt, a reshoot against an earlier
+    file, and a harvest that reproduces the eye's verdicts exactly."""
+
+    def setUp(self):
+        spec = importlib.util.spec_from_file_location("light_table", ROOT / "tools" / "selfie-stick" / "light_table.py")
+        self.lt = importlib.util.module_from_spec(spec); spec.loader.exec_module(self.lt)
+        self.evidence = ROOT / "docs" / "evidence" / "2026-09-12-refine-loop-calibration"
+
+    @staticmethod
+    def kept(name, rank):
+        return {"name": name, "file": f"images/r/{name}.png", "shotKey": "k" + name, "order": 1,
+                "metrics": {"score": 0.01, "skyFraction": 0.2, "lumaMean": 0.5, "liveTileShare": 0.6}, "forecast": {"rank": rank}}
+
+    def test_pairs_singles_and_skips_from_a_rank_receipt(self):
+        rank = {"schema": "steward-frame-rank/v1", "era": "era1", "sourceKey": "s", "builds": {
+            "a" * 64: {"kept": [self.kept("detail1-135-32", 0.8), self.kept("detail2-045-32", 0.6)]},
+            "b" * 64: {"kept": [self.kept("detail1-090-28", 0.5)]},
+            "c" * 64: {"kept": []}}}
+        doc = self.lt.pairs_from_rank(rank)
+        self.assertEqual({"pairs": 1, "singles": 1, "skipped": 1}, doc["counts"])
+        pair, single = doc["pairs"]
+        self.assertEqual(("pair", "era1-aaaaaaaaaaaa-detail1-135-32"), (pair["mode"], pair["a"]["id"]))
+        self.assertEqual(("single", "b" * 8), (single["mode"], single["build"]))
+        self.assertIn(pair["left"], ("a", "b")); self.assertEqual(pair["left"], self.lt.side_for("a" * 64))
+
+    def test_a_reshoot_pairs_the_new_frame_against_the_earlier_planned_one(self):
+        earlier = json.load(open(self.evidence / "ab-pairs.json", encoding="utf-8"))
+        key = earlier["pairs"][0]["buildKey"]
+        rank = {"schema": "steward-frame-rank/v1", "era": "era11", "sourceKey": earlier["sourceKey"],
+                "builds": {key: {"kept": [self.kept("detail1-135-32", 0.7)]}, "z" * 64: {"kept": [self.kept("x", 0.1)]}}}
+        doc = self.lt.pairs_from_rank(rank, earlier)
+        self.assertEqual({"pairs": 1, "singles": 0, "skipped": 1}, doc["counts"])
+        pair = doc["pairs"][0]
+        self.assertEqual(earlier["pairs"][0]["incumbent"]["name"], pair["a"]["name"])
+        self.assertEqual("detail1-135-32", pair["b"]["name"])
+        self.assertEqual("the earlier planned frame", doc["roles"]["a"])
+
+    def test_harvest_reproduces_the_committed_verdicts(self):
+        pairs = self.lt.load_pairs(self.evidence / "ab-pairs.json")
+        committed = json.load(open(self.evidence / "pair-verdicts.json", encoding="utf-8"))["verdicts"]
+        docs = [{"build": v["build"], "pick": v["pick"], "at": "t"} for v in committed]
+        receipt = self.lt.harvest(pairs, docs)
+        self.assertEqual({v["build"]: v["chose"] for v in committed}, {v["build"]: v["chose"] for v in receipt["verdicts"]})
+        self.assertEqual({"incumbent": 25, "winner": 18, "neither": 33, "both": 1}, receipt["counts"])
+        self.assertTrue(all("incMetrics" in v and "fanMetrics" in v for v in receipt["verdicts"]))

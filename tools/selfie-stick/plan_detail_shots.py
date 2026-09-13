@@ -49,6 +49,7 @@ from plan_shots import (FOV_V_DEG, camera_for, elevation_for,  # noqa: E402
                         orbit_azimuths, validate_tsv)
 from scan_build_features import subclusters  # noqa: E402
 from frame_forecast import project  # noqa: E402
+import pose_forecast  # noqa: E402
 
 TAN_V = math.tan(math.radians(FOV_V_DEG / 2.0))
 
@@ -167,6 +168,7 @@ TIME_OF_DAY = 0.64
 # Detail shots sit closer, so the steep look-down that keeps a whole compound in
 # frame becomes a roof survey. Coming down to 28 degrees puts walls in the picture.
 DETAIL_ELEVATION = 28.0
+RANK_FLOOR_RATIO = 0.1      # a candidate below this share of the build's best forecast is not worth a frame
 
 
 def parse_args():
@@ -198,7 +200,11 @@ def parse_args():
                    help="forecast-<era>.json. Without it every build is measured "
                         "from its own geometry instead of its shot record")
     p.add_argument("--max-per-build", type=int, default=4,
-                   help="cap on detail frames per build, largest masses first")
+                   help="cap on masses considered per build, largest first")
+    p.add_argument("--frames-per-build", type=int, default=5,
+                   help="candidate poses kept per build after the pre-shutter forecast, "
+                        "round-robin across masses so every mass gets its best pose first "
+                        "(2026-09-12: 33 of 77 builds lost both frames to aim, not angle)")
     p.add_argument("--aim-rule", choices=("grounded", "center", "dense"),
                    default="grounded",
                    help="grounded (default): box centre unless nothing is near it, "
@@ -345,40 +351,75 @@ def main():
 
         masses = subclusters(pts)[:args.max_per_build]
         cid = build.get("localClusterId", 0)
-        entries, campaign_shots = [], []
+        per_mass = []
         for n, mass in enumerate(masses, 1):
             mpts = mass_points(mass, pts)
             if len(mpts) < 8:
                 continue
             cluster = cluster_from_mass(mass, mpts)
-            azimuth = orbit_azimuths(cluster["size_x"], cluster["size_z"])[0][0]
-            elevation = elevation_for(cluster, DETAIL_ELEVATION)
-            # max_distance=target_distance is the whole trick: camera_for returns
-            # min(ideal, max_distance), so a small mass is framed whole and a large
-            # one is framed at the target scale.
-            # Both rules are solved every time so the shot record carries the
-            # comparison; only the chosen one is written to the TSV.
-            solved = {}
-            for rule in ("center", "dense", "grounded"):
-                aim = {"center": None, "dense": dense_aim(mpts),
-                       "grounded": grounded_aim(mpts, cluster)}[rule]
-                solved[rule] = camera_for(cluster, azimuth, elevation, MARGIN,
-                                          target_distance, CLEARANCE,
-                                          points=mpts, aim=aim)
-            shares = {rule: central_share(
-                mpts, (s["camera"]["x"], s["camera"]["y"], s["camera"]["z"]),
-                (s["aim"]["x"], s["aim"]["y"], s["aim"]["z"]))
-                for rule, s in solved.items()}
-            # grounded is box-centre unless box-centre aimed at nothing AND the
-            # descent actually helps; then and only then it moves.
-            if (args.aim_rule == "grounded"
-                    and not (shares["center"] < AIM_EMPTY_SHARE
-                             and shares["grounded"] >= AIM_EMPTY_SHARE)):
-                solved["grounded"] = solved["center"]
-                shares["grounded"] = shares["center"]
-            cam = solved[args.aim_rule]
+            # Where the mass actually faces, and what kind of thing it is: the prior the
+            # 33 lost builds were missing. A longhouse is shot from its facade corners,
+            # not from the axis-aligned bearing the orbit planner defaults to; a tower
+            # from low, a compound from high.
+            orientation = pose_forecast.pca_orientation(mpts)
+            kind = pose_forecast.typology(cluster["size_x"], cluster["size_y"], cluster["size_z"],
+                                          mass["pieces"], cluster["min_y"])
+            profile = pose_forecast.PROFILES[kind]
+            azimuths = pose_forecast.bearings(orientation,
+                                              extra=[orbit_azimuths(cluster["size_x"], cluster["size_z"])[0][0]])
+            elevations = sorted({round(elevation_for(cluster, DETAIL_ELEVATION), 1),
+                                 round(elevation_for(cluster, profile["elevationDeg"]), 1)})
+            candidates = []
+            for azimuth in azimuths:
+                for elevation in elevations:
+                    # max_distance=target_distance is the whole trick: camera_for returns
+                    # min(ideal, max_distance), so a small mass is framed whole and a large
+                    # one is framed at the target scale. Every aim rule is solved so the
+                    # record carries the comparison; the chosen one is what gets forecast.
+                    solved = {}
+                    for rule in ("center", "dense", "grounded"):
+                        aim = {"center": None, "dense": dense_aim(mpts),
+                               "grounded": grounded_aim(mpts, cluster)}[rule]
+                        solved[rule] = camera_for(cluster, azimuth, elevation, MARGIN,
+                                                  target_distance, CLEARANCE,
+                                                  points=mpts, aim=aim)
+                    shares = {rule: central_share(
+                        mpts, (s["camera"]["x"], s["camera"]["y"], s["camera"]["z"]),
+                        (s["aim"]["x"], s["aim"]["y"], s["aim"]["z"]))
+                        for rule, s in solved.items()}
+                    # grounded is box-centre unless box-centre aimed at nothing AND the
+                    # descent actually helps; then and only then it moves.
+                    if (args.aim_rule == "grounded"
+                            and not (shares["center"] < AIM_EMPTY_SHARE
+                                     and shares["grounded"] >= AIM_EMPTY_SHARE)):
+                        solved["grounded"] = solved["center"]
+                        shares["grounded"] = shares["center"]
+                    cam = solved[args.aim_rule]
+                    c, a = cam["camera"], cam["aim"]
+                    fc = pose_forecast.forecast(mpts, (c["x"], c["y"], c["z"]), (a["x"], a["y"], a["z"]))
+                    candidates.append({
+                        "name": f"detail{n}-{int(round(azimuth)) % 360:03d}-{int(round(elevation)):02d}",
+                        "cam": cam, "forecast": fc, "shares": shares, "solved": solved,
+                        "azimuthDeg": round(azimuth, 1), "elevationDeg": elevation})
+            candidates.sort(key=lambda cand: -cand["forecast"]["rank"])
+            per_mass.append((n, mass, orientation, kind, candidates))
+        # Every mass gets its best pose before any mass gets a second: the first pass is
+        # the survey, the rest are variants for the light table to choose between. A
+        # candidate the forecast ranks below a tenth of the build's best is not a variant
+        # worth a frame -- typically a mass the target scale cannot frame at all.
+        best = max((c[4][0]["forecast"]["rank"] for c in per_mass if c[4]), default=0.0)
+        per_mass = [(n, mass, orientation, kind,
+                     [cand for cand in candidates if cand["forecast"]["rank"] >= RANK_FLOOR_RATIO * best])
+                    for n, mass, orientation, kind, candidates in per_mass]
+        chosen = []
+        for depth in range(max((len(c[4]) for c in per_mass), default=0)):
+            for n, mass, orientation, kind, candidates in per_mass:
+                if depth < len(candidates) and len(chosen) < args.frames_per_build:
+                    chosen.append((n, mass, orientation, kind, candidates[depth]))
+        entries, campaign_shots = [], []
+        for n, mass, orientation, kind, cand in chosen:
+            cam, shares, solved, name = cand["cam"], cand["shares"], cand["solved"], cand["name"]
             c, a = cam["camera"], cam["aim"]
-            name = f"detail{n}"
             tsv = "\t".join(map(str, [
                 cid, name, c["x"], c["y"], c["z"], cam["yaw_deg"], cam["pitch_deg"],
                 ENVIRONMENT, TIME_OF_DAY, a["x"], a["y"], a["z"],
@@ -388,9 +429,12 @@ def main():
                 "shotKey": hashlib.sha256(
                     f"{era_row['sourceKey']}:{key}:{name}".encode()).hexdigest(),
                 "shot": name, "tsv": tsv,
-                "framesWholeBuild": cam["frames_whole_build"]})
+                "framesWholeBuild": cam["frames_whole_build"],
+                "mass": n, "typology": kind, "forecast": cand["forecast"]})
             entries.append({
-                "shot": name,
+                "shot": name, "mass": n, "typology": kind,
+                "azimuthDeg": cand["azimuthDeg"], "elevationDeg": cand["elevationDeg"],
+                "principalAngleDeg": orientation["principalAngleDeg"],
                 "massPieces": mass["pieces"], "massShare": mass["share"],
                 "massRadiusM": mass["radiusM"],
                 "distanceM": cam["distance_m"],
@@ -404,6 +448,7 @@ def main():
                 "centralShareDense": shares["dense"],
                 "centralShareGrounded": shares["grounded"],
                 "groundedMoved": solved["grounded"]["aim"] != solved["center"]["aim"],
+                "forecast": cand["forecast"],
             })
         if entries:
             plan[key] = {"localClusterId": cid, "orbitWorstPxPerM": round(worst, 1),
@@ -430,6 +475,7 @@ def main():
         "belowPxPerM": args.below_px_per_m,
         "elevationDeg": DETAIL_ELEVATION,
         "aimRule": args.aim_rule,
+        "framesPerBuild": args.frames_per_build,
         "counts": {"builds": len(plan), "shots": len(rows),
                    "skippedAlreadyLegible": skipped,
                    "skippedUnrenderable": sorted(k[:12] for k in unresolvable)},

@@ -1,0 +1,906 @@
+{
+ "schema": "steward-subject-gate-calibration/v2",
+ "era": "era11",
+ "verdicts": "C:/work/baseline/docs/evidence/2026-09-12-refine-loop-calibration/pair-verdicts.json",
+ "labelled": 77,
+ "rules": {
+  "bare-floor": [
+   [
+    "height",
+    "max",
+    3.0
+   ],
+   [
+    "floorShare",
+    "min",
+    0.5
+   ]
+  ],
+  "debris": [
+   [
+    "density",
+    "max",
+    0.02
+   ],
+   [
+    "largestMassShare",
+    "max",
+    0.35
+   ]
+  ]
+ },
+ "neither": 33,
+ "kept": 44,
+ "neitherCaught": 0,
+ "rate": 0.0,
+ "keptRejected": [],
+ "caught": [],
+ "perRule": {
+  "bare-floor": {
+   "neitherCaught": 0,
+   "keptRejected": 0
+  },
+  "debris": {
+   "neitherCaught": 0,
+   "keptRejected": 0
+  }
+ },
+ "distributions": {
+  "pieces": {
+   "kept": {
+    "min": 529,
+    "median": 3327,
+    "max": 10347
+   },
+   "neither": {
+    "min": 534,
+    "median": 2889,
+    "max": 10151
+   }
+  },
+  "largestMassShare": {
+   "kept": {
+    "min": 0.5308,
+    "median": 0.9847,
+    "max": 1.0
+   },
+   "neither": {
+    "min": 0.5151,
+    "median": 0.998,
+    "max": 1.0
+   }
+  },
+  "masses": {
+   "kept": {
+    "min": 1,
+    "median": 1,
+    "max": 5
+   },
+   "neither": {
+    "min": 1,
+    "median": 1,
+    "max": 3
+   }
+  },
+  "height": {
+   "kept": {
+    "min": 6.2,
+    "median": 21.97,
+    "max": 718.09
+   },
+   "neither": {
+    "min": 4.54,
+    "median": 18.32,
+    "max": 131.4
+   }
+  },
+  "density": {
+   "kept": {
+    "min": 0.0129,
+    "median": 0.3125,
+    "max": 2.0579
+   },
+   "neither": {
+    "min": 0.0052,
+    "median": 0.1649,
+    "max": 0.8191
+   }
+  },
+  "floorShare": {
+   "kept": {
+    "min": 0.0578,
+    "median": 0.1623,
+    "max": 0.6805
+   },
+   "neither": {
+    "min": 0.0024,
+    "median": 0.2267,
+    "max": 0.4045
+   }
+  },
+  "sprawl": {
+   "kept": {
+    "min": 1.083,
+    "median": 1.572,
+    "max": 5.776
+   },
+   "neither": {
+    "min": 1.117,
+    "median": 1.438,
+    "max": 5.995
+   }
+  }
+ },
+ "features": {
+  "002c20e6": {
+   "pieces": 1884,
+   "largestMassShare": 0.9384,
+   "masses": 3,
+   "height": 14.34,
+   "density": 0.1465,
+   "floorShare": 0.2633,
+   "sprawl": 2.382,
+   "kept": true
+  },
+  "032b5a3c": {
+   "pieces": 1392,
+   "largestMassShare": 0.8348,
+   "masses": 2,
+   "height": 18.77,
+   "density": 0.1689,
+   "floorShare": 0.2557,
+   "sprawl": 1.36,
+   "kept": true
+  },
+  "03e1a319": {
+   "pieces": 1845,
+   "largestMassShare": 0.955,
+   "masses": 2,
+   "height": 18.41,
+   "density": 0.1595,
+   "floorShare": 0.1756,
+   "sprawl": 1.807,
+   "kept": true
+  },
+  "041fbe6f": {
+   "pieces": 773,
+   "largestMassShare": 0.7969,
+   "masses": 3,
+   "height": 10.75,
+   "density": 0.079,
+   "floorShare": 0.1358,
+   "sprawl": 1.937,
+   "kept": true
+  },
+  "0cfc358c": {
+   "pieces": 1312,
+   "largestMassShare": 0.7134,
+   "masses": 2,
+   "height": 25.42,
+   "density": 0.1212,
+   "floorShare": 0.3148,
+   "sprawl": 1.135,
+   "kept": true
+  },
+  "100f5a66": {
+   "pieces": 3244,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 18.78,
+   "density": 0.471,
+   "floorShare": 0.3416,
+   "sprawl": 1.302,
+   "kept": false
+  },
+  "13f58893": {
+   "pieces": 4865,
+   "largestMassShare": 0.7544,
+   "masses": 2,
+   "height": 718.09,
+   "density": 0.0129,
+   "floorShare": 0.2802,
+   "sprawl": 1.083,
+   "kept": true
+  },
+  "14b1e589": {
+   "pieces": 3075,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 12.69,
+   "density": 0.1485,
+   "floorShare": 0.0764,
+   "sprawl": 1.41,
+   "kept": false
+  },
+  "17e1a93b": {
+   "pieces": 8404,
+   "largestMassShare": 0.9995,
+   "masses": 1,
+   "height": 33.9,
+   "density": 0.6247,
+   "floorShare": 0.0602,
+   "sprawl": 1.231,
+   "kept": true
+  },
+  "185cd57a": {
+   "pieces": 8022,
+   "largestMassShare": 0.9806,
+   "masses": 1,
+   "height": 21.78,
+   "density": 0.3925,
+   "floorShare": 0.1518,
+   "sprawl": 3.07,
+   "kept": true
+  },
+  "21102436": {
+   "pieces": 1758,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 15.4,
+   "density": 0.0417,
+   "floorShare": 0.335,
+   "sprawl": 1.73,
+   "kept": false
+  },
+  "267984d5": {
+   "pieces": 1999,
+   "largestMassShare": 0.989,
+   "masses": 1,
+   "height": 8.88,
+   "density": 0.2522,
+   "floorShare": 0.1726,
+   "sprawl": 1.667,
+   "kept": false
+  },
+  "2adf8ac1": {
+   "pieces": 694,
+   "largestMassShare": 0.8602,
+   "masses": 2,
+   "height": 10.75,
+   "density": 0.0474,
+   "floorShare": 0.1686,
+   "sprawl": 1.572,
+   "kept": true
+  },
+  "35f436df": {
+   "pieces": 3356,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 17.1,
+   "density": 0.4349,
+   "floorShare": 0.1305,
+   "sprawl": 1.611,
+   "kept": true
+  },
+  "3a1ffe50": {
+   "pieces": 3820,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 24.5,
+   "density": 0.339,
+   "floorShare": 0.2026,
+   "sprawl": 1.323,
+   "kept": true
+  },
+  "3c91f0f4": {
+   "pieces": 8499,
+   "largestMassShare": 0.998,
+   "masses": 1,
+   "height": 17.82,
+   "density": 0.5619,
+   "floorShare": 0.1907,
+   "sprawl": 1.375,
+   "kept": false
+  },
+  "3d20e62e": {
+   "pieces": 3105,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 29.33,
+   "density": 0.2321,
+   "floorShare": 0.066,
+   "sprawl": 1.383,
+   "kept": true
+  },
+  "3f0788fe": {
+   "pieces": 2629,
+   "largestMassShare": 0.728,
+   "masses": 2,
+   "height": 19.74,
+   "density": 0.0973,
+   "floorShare": 0.237,
+   "sprawl": 1.643,
+   "kept": false
+  },
+  "3f338fc1": {
+   "pieces": 10347,
+   "largestMassShare": 0.9994,
+   "masses": 1,
+   "height": 28.0,
+   "density": 2.0579,
+   "floorShare": 0.1433,
+   "sprawl": 1.612,
+   "kept": true
+  },
+  "4db9cf55": {
+   "pieces": 3939,
+   "largestMassShare": 0.9216,
+   "masses": 2,
+   "height": 91.26,
+   "density": 0.1271,
+   "floorShare": 0.3328,
+   "sprawl": 5.995,
+   "kept": false
+  },
+  "539ddd8e": {
+   "pieces": 5344,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 39.46,
+   "density": 0.2808,
+   "floorShare": 0.3656,
+   "sprawl": 2.396,
+   "kept": false
+  },
+  "55acdcac": {
+   "pieces": 2824,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 39.8,
+   "density": 0.2158,
+   "floorShare": 0.1445,
+   "sprawl": 1.343,
+   "kept": false
+  },
+  "5a5dd985": {
+   "pieces": 2281,
+   "largestMassShare": 0.9877,
+   "masses": 1,
+   "height": 16.0,
+   "density": 0.2304,
+   "floorShare": 0.3069,
+   "sprawl": 1.742,
+   "kept": false
+  },
+  "5a74ee4d": {
+   "pieces": 3798,
+   "largestMassShare": 0.9989,
+   "masses": 1,
+   "height": 25.79,
+   "density": 0.4601,
+   "floorShare": 0.1572,
+   "sprawl": 1.544,
+   "kept": true
+  },
+  "5bbbea9e": {
+   "pieces": 1404,
+   "largestMassShare": 0.8241,
+   "masses": 4,
+   "height": 8.66,
+   "density": 0.0696,
+   "floorShare": 0.193,
+   "sprawl": 1.481,
+   "kept": true
+  },
+  "602940dd": {
+   "pieces": 3031,
+   "largestMassShare": 0.9921,
+   "masses": 1,
+   "height": 57.8,
+   "density": 0.3177,
+   "floorShare": 0.2712,
+   "sprawl": 5.776,
+   "kept": true
+  },
+  "63ffb7cd": {
+   "pieces": 9966,
+   "largestMassShare": 0.9637,
+   "masses": 2,
+   "height": 157.56,
+   "density": 0.181,
+   "floorShare": 0.3166,
+   "sprawl": 2.157,
+   "kept": true
+  },
+  "66599252": {
+   "pieces": 1295,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 31.5,
+   "density": 0.3769,
+   "floorShare": 0.1019,
+   "sprawl": 1.168,
+   "kept": true
+  },
+  "684743a2": {
+   "pieces": 1708,
+   "largestMassShare": 0.9877,
+   "masses": 1,
+   "height": 60.14,
+   "density": 0.1649,
+   "floorShare": 0.0451,
+   "sprawl": 1.725,
+   "kept": false
+  },
+  "6c63ea1b": {
+   "pieces": 3167,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 40.32,
+   "density": 0.2535,
+   "floorShare": 0.0578,
+   "sprawl": 1.666,
+   "kept": true
+  },
+  "6e3aac10": {
+   "pieces": 1075,
+   "largestMassShare": 0.6195,
+   "masses": 2,
+   "height": 18.46,
+   "density": 0.0802,
+   "floorShare": 0.1851,
+   "sprawl": 1.351,
+   "kept": false
+  },
+  "6f00e332": {
+   "pieces": 1270,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 10.67,
+   "density": 0.1365,
+   "floorShare": 0.385,
+   "sprawl": 1.277,
+   "kept": false
+  },
+  "728872c6": {
+   "pieces": 1303,
+   "largestMassShare": 0.9294,
+   "masses": 3,
+   "height": 6.2,
+   "density": 0.1029,
+   "floorShare": 0.3638,
+   "sprawl": 2.123,
+   "kept": true
+  },
+  "74073b73": {
+   "pieces": 3513,
+   "largestMassShare": 0.9545,
+   "masses": 2,
+   "height": 18.32,
+   "density": 0.0841,
+   "floorShare": 0.2155,
+   "sprawl": 1.373,
+   "kept": false
+  },
+  "76c98f1a": {
+   "pieces": 4402,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 27.32,
+   "density": 0.5844,
+   "floorShare": 0.3467,
+   "sprawl": 2.895,
+   "kept": false
+  },
+  "77729b7c": {
+   "pieces": 6013,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 18.03,
+   "density": 0.9904,
+   "floorShare": 0.0649,
+   "sprawl": 1.456,
+   "kept": true
+  },
+  "7a2c1a34": {
+   "pieces": 1500,
+   "largestMassShare": 0.8267,
+   "masses": 2,
+   "height": 4.99,
+   "density": 0.099,
+   "floorShare": 0.0247,
+   "sprawl": 1.438,
+   "kept": false
+  },
+  "84106697": {
+   "pieces": 3326,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 14.63,
+   "density": 0.433,
+   "floorShare": 0.1137,
+   "sprawl": 1.168,
+   "kept": true
+  },
+  "88895272": {
+   "pieces": 5871,
+   "largestMassShare": 0.9377,
+   "masses": 2,
+   "height": 12.81,
+   "density": 0.5624,
+   "floorShare": 0.1404,
+   "sprawl": 1.53,
+   "kept": true
+  },
+  "88bd3d6c": {
+   "pieces": 1366,
+   "largestMassShare": 0.9912,
+   "masses": 1,
+   "height": 14.5,
+   "density": 0.071,
+   "floorShare": 0.1852,
+   "sprawl": 1.23,
+   "kept": false
+  },
+  "8ec4ce54": {
+   "pieces": 1026,
+   "largestMassShare": 0.9961,
+   "masses": 1,
+   "height": 17.14,
+   "density": 0.0485,
+   "floorShare": 0.2973,
+   "sprawl": 1.433,
+   "kept": true
+  },
+  "8eca5f0e": {
+   "pieces": 1595,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 60.88,
+   "density": 0.1202,
+   "floorShare": 0.2639,
+   "sprawl": 3.068,
+   "kept": true
+  },
+  "920590f4": {
+   "pieces": 7464,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 29.21,
+   "density": 0.9415,
+   "floorShare": 0.2905,
+   "sprawl": 2.47,
+   "kept": true
+  },
+  "9331bd62": {
+   "pieces": 2340,
+   "largestMassShare": 0.5308,
+   "masses": 5,
+   "height": 46.75,
+   "density": 0.0654,
+   "floorShare": 0.1184,
+   "sprawl": 1.216,
+   "kept": true
+  },
+  "9471cd1f": {
+   "pieces": 534,
+   "largestMassShare": 0.5431,
+   "masses": 2,
+   "height": 79.41,
+   "density": 0.0052,
+   "floorShare": 0.4045,
+   "sprawl": 1.34,
+   "kept": false
+  },
+  "954a0a68": {
+   "pieces": 1810,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 17.0,
+   "density": 0.3125,
+   "floorShare": 0.216,
+   "sprawl": 1.534,
+   "kept": true
+  },
+  "977b9b11": {
+   "pieces": 4220,
+   "largestMassShare": 0.972,
+   "masses": 2,
+   "height": 12.5,
+   "density": 0.6971,
+   "floorShare": 0.1536,
+   "sprawl": 2.649,
+   "kept": true
+  },
+  "a4bc221e": {
+   "pieces": 3341,
+   "largestMassShare": 0.9832,
+   "masses": 1,
+   "height": 16.62,
+   "density": 0.0886,
+   "floorShare": 0.1646,
+   "sprawl": 1.647,
+   "kept": false
+  },
+  "a800f3b9": {
+   "pieces": 2889,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 17.87,
+   "density": 0.306,
+   "floorShare": 0.2267,
+   "sprawl": 1.117,
+   "kept": false
+  },
+  "a9f03498": {
+   "pieces": 5365,
+   "largestMassShare": 0.9486,
+   "masses": 2,
+   "height": 26.19,
+   "density": 0.3164,
+   "floorShare": 0.2334,
+   "sprawl": 1.598,
+   "kept": true
+  },
+  "abf3db6c": {
+   "pieces": 3835,
+   "largestMassShare": 0.9927,
+   "masses": 1,
+   "height": 21.97,
+   "density": 0.4311,
+   "floorShare": 0.0944,
+   "sprawl": 1.32,
+   "kept": true
+  },
+  "af332a15": {
+   "pieces": 3689,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 18.2,
+   "density": 0.4561,
+   "floorShare": 0.2025,
+   "sprawl": 1.415,
+   "kept": true
+  },
+  "b1ba777f": {
+   "pieces": 3395,
+   "largestMassShare": 0.9982,
+   "masses": 1,
+   "height": 15.76,
+   "density": 0.3402,
+   "floorShare": 0.1623,
+   "sprawl": 1.366,
+   "kept": true
+  },
+  "b2077dff": {
+   "pieces": 3383,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 39.81,
+   "density": 0.2423,
+   "floorShare": 0.2628,
+   "sprawl": 1.79,
+   "kept": true
+  },
+  "b2b56518": {
+   "pieces": 4574,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 4.54,
+   "density": 0.3801,
+   "floorShare": 0.0024,
+   "sprawl": 1.429,
+   "kept": false
+  },
+  "b54900c2": {
+   "pieces": 529,
+   "largestMassShare": 0.9527,
+   "masses": 2,
+   "height": 25.64,
+   "density": 0.0518,
+   "floorShare": 0.6805,
+   "sprawl": 1.455,
+   "kept": true
+  },
+  "b87d9c97": {
+   "pieces": 2431,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 8.94,
+   "density": 0.8191,
+   "floorShare": 0.2118,
+   "sprawl": 1.472,
+   "kept": false
+  },
+  "c231e10f": {
+   "pieces": 1413,
+   "largestMassShare": 0.9788,
+   "masses": 2,
+   "height": 13.08,
+   "density": 0.1067,
+   "floorShare": 0.1472,
+   "sprawl": 1.788,
+   "kept": true
+  },
+  "c6a0d5c4": {
+   "pieces": 1135,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 13.29,
+   "density": 0.0127,
+   "floorShare": 0.1057,
+   "sprawl": 1.243,
+   "kept": false
+  },
+  "ce24e31b": {
+   "pieces": 3169,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 56.9,
+   "density": 0.773,
+   "floorShare": 0.1855,
+   "sprawl": 1.588,
+   "kept": false
+  },
+  "cf2c2b4a": {
+   "pieces": 3734,
+   "largestMassShare": 0.5878,
+   "masses": 3,
+   "height": 38.01,
+   "density": 0.1359,
+   "floorShare": 0.143,
+   "sprawl": 1.838,
+   "kept": true
+  },
+  "d14f55bc": {
+   "pieces": 2477,
+   "largestMassShare": 0.7037,
+   "masses": 2,
+   "height": 26.06,
+   "density": 0.2224,
+   "floorShare": 0.1062,
+   "sprawl": 1.328,
+   "kept": true
+  },
+  "d78cf0dc": {
+   "pieces": 4107,
+   "largestMassShare": 0.7706,
+   "masses": 3,
+   "height": 21.38,
+   "density": 0.1663,
+   "floorShare": 0.2627,
+   "sprawl": 2.409,
+   "kept": false
+  },
+  "d9e4a425": {
+   "pieces": 8173,
+   "largestMassShare": 0.9995,
+   "masses": 1,
+   "height": 25.21,
+   "density": 0.4352,
+   "floorShare": 0.222,
+   "sprawl": 1.879,
+   "kept": false
+  },
+  "da67241a": {
+   "pieces": 4305,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 47.97,
+   "density": 0.4906,
+   "floorShare": 0.1508,
+   "sprawl": 1.764,
+   "kept": true
+  },
+  "dea1d8d2": {
+   "pieces": 1671,
+   "largestMassShare": 0.8719,
+   "masses": 2,
+   "height": 19.42,
+   "density": 0.0673,
+   "floorShare": 0.1364,
+   "sprawl": 1.493,
+   "kept": true
+  },
+  "e0d7e01d": {
+   "pieces": 910,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 15.27,
+   "density": 0.0878,
+   "floorShare": 0.2923,
+   "sprawl": 1.477,
+   "kept": false
+  },
+  "e25280c0": {
+   "pieces": 585,
+   "largestMassShare": 0.8547,
+   "masses": 2,
+   "height": 11.0,
+   "density": 0.0641,
+   "floorShare": 0.294,
+   "sprawl": 1.165,
+   "kept": false
+  },
+  "e4b1d3f4": {
+   "pieces": 5607,
+   "largestMassShare": 0.99,
+   "masses": 1,
+   "height": 11.81,
+   "density": 0.1697,
+   "floorShare": 0.237,
+   "sprawl": 1.408,
+   "kept": false
+  },
+  "e738e96f": {
+   "pieces": 3536,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 37.2,
+   "density": 0.4659,
+   "floorShare": 0.3654,
+   "sprawl": 1.802,
+   "kept": false
+  },
+  "ea41e496": {
+   "pieces": 5520,
+   "largestMassShare": 0.9728,
+   "masses": 2,
+   "height": 19.92,
+   "density": 0.3905,
+   "floorShare": 0.1938,
+   "sprawl": 2.651,
+   "kept": true
+  },
+  "f2e077d2": {
+   "pieces": 3327,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 63.5,
+   "density": 0.2865,
+   "floorShare": 0.128,
+   "sprawl": 4.498,
+   "kept": true
+  },
+  "f4f75ee1": {
+   "pieces": 8342,
+   "largestMassShare": 0.5151,
+   "masses": 3,
+   "height": 131.4,
+   "density": 0.3896,
+   "floorShare": 0.3914,
+   "sprawl": 1.39,
+   "kept": false
+  },
+  "f6924293": {
+   "pieces": 10151,
+   "largestMassShare": 1.0,
+   "masses": 1,
+   "height": 30.01,
+   "density": 0.1102,
+   "floorShare": 0.1845,
+   "sprawl": 1.287,
+   "kept": false
+  },
+  "f8e26360": {
+   "pieces": 2557,
+   "largestMassShare": 0.9847,
+   "masses": 1,
+   "height": 12.65,
+   "density": 0.3663,
+   "floorShare": 0.1388,
+   "sprawl": 3.152,
+   "kept": true
+  },
+  "fb1c3e2f": {
+   "pieces": 3829,
+   "largestMassShare": 0.5887,
+   "masses": 3,
+   "height": 13.68,
+   "density": 0.3877,
+   "floorShare": 0.3839,
+   "sprawl": 1.176,
+   "kept": true
+  },
+  "fc5eaf01": {
+   "pieces": 1339,
+   "largestMassShare": 0.991,
+   "masses": 1,
+   "height": 39.79,
+   "density": 0.0591,
+   "floorShare": 0.2382,
+   "sprawl": 1.894,
+   "kept": false
+  }
+ }
+}

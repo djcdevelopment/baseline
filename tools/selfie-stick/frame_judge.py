@@ -60,7 +60,13 @@ CENTRAL_ROWS = range(master_detail.GRID_Y // 4, master_detail.GRID_Y - master_de
 
 def score(metrics):
     """Higher is better, within one build only: how much of the frame is textured, times how
-    strongly. Class-free on purpose -- see the module docstring."""
+    strongly. Class-free on purpose -- see the module docstring.
+
+    NOT a between-pose ranker. On the 77 blind pairs of 2026-09-12 the pose with the higher
+    score was the one the eye kept 18 times against 25 (42 %); the eye rewards sky and light,
+    this rewards texture fill, and they oppose. It remains the tie-break inside a gated pose's
+    forced fan, nothing more. Any rule offered as a ranker must beat replay_pairs' 25.
+    See docs/evidence/2026-09-12-refine-loop-calibration/."""
     m = metrics["master"]
     return round(float(m["liveTileShare"]) * float(m["gradMean"]), 7)
 
@@ -272,8 +278,43 @@ def replay(journal_path, labels_path=None):
         print(f"  {b} inc={d['incumbent']:<8} -> {v['winner']:<18} [{wl}] {v['reason']}{flag}")
 
 
+# ---- offline replay of a between-pose rule against the eye's pair verdicts
+def keep_planned(incumbent, fan):
+    """The rule that won: never move off a pose that passed."""
+    return "incumbent"
+
+
+def higher_score(incumbent, fan):
+    """The loop's rule: liveTileShare x gradMean, higher wins (the measured regression)."""
+    a, b = (incumbent or {}).get("score"), (fan or {}).get("score")
+    if a is None and b is None:
+        return "incumbent"
+    if b is None:
+        return "incumbent"
+    if a is None:
+        return "winner"
+    return "winner" if b > a else "incumbent"
+
+
+RULES = {"keep-planned": keep_planned, "higher-score": higher_score}
+
+
+def replay_pairs(verdicts, rule=keep_planned):
+    """Score a between-pose rule against the pair verdicts (steward-pair-verdicts/v1).
+
+    Only decided pairs count -- the ones where the eye chose the incumbent or the fan's pick;
+    `neither` and `both` say nothing about which pose was better. Returns hits, decided, and
+    the per-build calls so a new rule can be inspected, not just scored."""
+    decided = [v for v in verdicts if v.get("chose") in ("incumbent", "winner")]
+    calls = [(v["build"], rule(v.get("incMetrics"), v.get("fanMetrics")), v["chose"]) for v in decided]
+    hits = sum(1 for _, call, chose in calls if call == chose)
+    return {"rule": getattr(rule, "__name__", str(rule)), "hits": hits, "decided": len(decided),
+            "rate": round(hits / len(decided), 3) if decided else None, "calls": calls}
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument("--pairs", help="pair-verdicts.json to score the built-in rules against (the 25-vs-18 bar)")
     p.add_argument("--images", help="directory (recursed) of PNG masters to measure")
     p.add_argument("--limit", type=int, default=0)
     p.add_argument("--threads", type=int, default=8)
@@ -281,11 +322,17 @@ def main():
     p.add_argument("--replay", help="refine-journal.jsonl to re-decide offline under the current THRESHOLDS")
     p.add_argument("--labels", help="eye-labels.json to grade the replay against")
     args = p.parse_args()
+    if args.pairs:
+        verdicts = json.load(open(args.pairs, encoding="utf-8"))["verdicts"]
+        for name, rule in RULES.items():
+            r = replay_pairs(verdicts, rule)
+            print(f"{name:14} {r['hits']:2}/{r['decided']} decided pairs ({r['rate']:.0%})")
+        return
     if args.replay:
         replay(args.replay, args.labels)
         return
     if not args.images:
-        p.error("--images or --replay")
+        p.error("--images, --replay or --pairs")
     files = sorted(os.path.join(d, f) for d, _, fs in os.walk(args.images) for f in fs if f.lower().endswith(".png"))
     if args.limit:
         files = files[:args.limit]
