@@ -1,0 +1,955 @@
+{
+ "schema": "steward-oracle-labels/v1",
+ "backend": "gcp-gemini-pro",
+ "rubric": "v2",
+ "prompt": "Look at this frame and answer in three steps. Do not name a class until step 3.\n\nSTEP 1 -- say what is actually in the frame, in one plain sentence. Name the subject and where the camera is relative to it.\n\nSTEP 2 -- answer these strictly from what you can see. Each is true or false:\n  inside:      the camera is inside a structure -- a roof cavity, between walls, under a floor. Signs: large flat planes filling the frame, beams seen from underneath, no ground and no horizon, light with no visible source.\n  fogged:      a fog or mist volume is washing the frame out; distant geometry dissolves into flat grey or white.\n  aimSky:      the centre of the frame is empty sky, and the built structure is a thin line or absent.\n  aimWater:    the centre of the frame is open water or ice, and the built structure is at the edge or absent.\n  edgeSubject: the building is not what the frame is centred on -- it sits at an edge or corner.\n  texels:      the camera is close enough that individual texture pixels are visible on surfaces.\n  underlit:    the subject is in shadow or underexposed; detail is lost to darkness.\n\nSTEP 3 -- classify into exactly one of these, consistent with the flags you just gave:\n\nGOOD: a gallery-worthy detail frame of the build\nok: usable, not the best pose of its build\nok-texel: usable but texels visible (camera too close, texture resolution showing)\nok-cropped: usable; the subject's top is cut off\ndull: shaded flat wall; nothing to look at\ndark: underexposed close-up\nBAD-roof: camera inside a roof or wall; flat planes\nBAD-mist: fog volume; the frame is fogged out\nBAD-skyladder: linear build (ladder to a sky bucket); aim is empty sky\nBAD-ladder: linear build (rope-ladder diagonal) in haze; aim is empty air\nBAD-aim-water: aim is open water; the build is at the frame edge or absent\nBAD-dark-texel: shaded close-up with texels visible\n\nGOOD is the top tier and should be rare: reserve it for a frame you would put on the front page of the gallery. If any flag in step 2 is true, the class is the matching BAD-* or ok-* class, never GOOD.\n\nTier rollup: \"GOOD\" only for the GOOD class, \"ok\" for ok/ok-texel/ok-cropped/dull/dark, \"BAD\" for any BAD-* class.\n\nRespond with exactly this JSON and nothing else:\n{\"saw\": \"<step 1, one sentence>\", \"flags\": {\"inside\": <bool>, \"fogged\": <bool>, \"aimSky\": <bool>, \"aimWater\": <bool>, \"edgeSubject\": <bool>, \"texels\": <bool>, \"underlit\": <bool>}, \"tier\": \"<GOOD|ok|BAD>\", \"class\": \"<one class name>\", \"reason\": \"<one short sentence>\"}",
+ "system": "You are a picture editor culling an automated architectural shoot in the game Valheim. An unattended camera placed these frames from solved coordinates, and most automated frames are failures: the lens ends up inside a roof or wall, inside a fog volume, aimed at empty sky, aimed at open water, or pressed so close that the texture resolution shows. Your job is to find those. Generosity is a failure of the job -- a frame you pass that should have been cut costs more than one you cut wrongly. A partial view of a large building is intended and is not a fault by itself. Answer only with the requested JSON.",
+ "frames": {
+  "0020_detail2": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 8734,
+   "tokensIn": 13064,
+   "tokensOut": 109,
+   "tier": "ok",
+   "class": "ok",
+   "reason": "The frame captures interesting architectural details clearly, though the lighting and composition are somewhat flat.",
+   "saw": "The camera is looking closely at an exterior section of a complex wooden building featuring steeply angled walls and intersecting beams.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0020_detail2~c75": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 10141,
+   "tokensIn": 10756,
+   "tokensOut": 120,
+   "tier": "ok",
+   "class": "ok",
+   "reason": "The frame captures the building well, though the angle and heavy atmospheric fog make it less than ideal for a showcase.",
+   "saw": "The camera is looking up at a raised wooden structure supported by poles, set against a dark, foggy background illuminated by a bright light.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0020_detail2~lo12": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 7906,
+   "tokensIn": 11993,
+   "tokensOut": 121,
+   "tier": "ok",
+   "class": "ok-cropped",
+   "reason": "The view is usable but the top of the structure is cut off by the framing.",
+   "saw": "The camera looks down from an elevated angle at a wooden floor and framework built beside the water, with the vertical beams extending out of the top of the frame.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0020_detail2~o45": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 7750,
+   "tokensIn": 15192,
+   "tokensOut": 110,
+   "tier": "ok",
+   "class": "ok",
+   "reason": "A usable detail shot of the timber framing, though the composition is slightly messy.",
+   "saw": "The camera looks up from below at a complex intersection of wooden beams and logs forming an open framework against a bright sky.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0042_detail2": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 8188,
+   "tokensIn": 14643,
+   "tokensOut": 117,
+   "tier": "ok",
+   "class": "ok-texel",
+   "reason": "The frame captures a usable architectural detail but the camera is close enough that texture pixels are visible on the wood.",
+   "saw": "The camera is positioned close to a wooden wall and staircase, looking slightly downward at the structure's details.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": true,
+    "underlit": false
+   }
+  },
+  "0042_detail2~c75": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 5968,
+   "tokensIn": 14479,
+   "tokensOut": 116,
+   "tier": "ok",
+   "class": "ok",
+   "reason": "Usable view of the exterior stairs and lighting, though not a defining shot of the whole structure.",
+   "saw": "The camera is looking down at a corner of a wooden building built over water, featuring an exterior staircase leading to a lower platform.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0042_detail2~lo12": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 6203,
+   "tokensIn": 13384,
+   "tokensOut": 143,
+   "tier": "ok",
+   "class": "ok",
+   "reason": "A perfectly usable architectural detail shot, though perhaps not a standout gallery cover.",
+   "saw": "The camera is looking up at the multi-tiered roof and cross finials of a wooden stave church-style building against a mostly clear sky.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0042_detail2~o45": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 5000,
+   "tokensIn": 21432,
+   "tokensOut": 104,
+   "tier": "ok",
+   "class": "ok-texel",
+   "reason": "the structure is visible but the camera is close enough that texture pixels are noticeable",
+   "saw": "The camera is pointed closely at an exterior section of overlapping wooden beams and shingles.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": true,
+    "underlit": false
+   }
+  },
+  "0116_detail1": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 8750,
+   "tokensIn": 50261,
+   "tokensOut": 114,
+   "tier": "BAD",
+   "class": "BAD-mist",
+   "reason": "A thick fog volume washes out the frame and hides the building's details.",
+   "saw": "The camera is positioned low over water, looking up at a wooden structure with green lights, but thick fog severely obscures the view.",
+   "flags": {
+    "inside": false,
+    "fogged": true,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": true
+   }
+  },
+  "0116_detail1~c75": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 6750,
+   "tokensIn": 50238,
+   "tokensOut": 108,
+   "tier": "ok",
+   "class": "ok-texel",
+   "reason": "The camera is close enough to the wooden features that texture pixels are clearly visible.",
+   "saw": "The camera is angled up at the intricate wooden roof structure and decorative dragon heads of a building.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": true,
+    "underlit": false
+   }
+  },
+  "0116_detail1~lo12": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 7500,
+   "tokensIn": 48422,
+   "tokensOut": 105,
+   "tier": "BAD",
+   "class": "BAD-roof",
+   "reason": "The camera is inside a roof cavity looking up at beams from underneath.",
+   "saw": "The camera is positioned underneath a roof, pointing upwards at the intersecting wooden beams and thatch with sky visible through the gaps.",
+   "flags": {
+    "inside": true,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0116_detail1~lo12~c75": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 9328,
+   "tokensIn": 50809,
+   "tokensOut": 138,
+   "tier": "BAD",
+   "class": "BAD-dark-texel",
+   "reason": "The frame is heavily underexposed and the camera is close enough that texture pixels are visible.",
+   "saw": "The camera is pressed so close to a very dark surface that only faint blocky textures are visible.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": true,
+    "underlit": true
+   }
+  },
+  "0116_detail1~lo12~lo12": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 11000,
+   "tokensIn": 50597,
+   "tokensOut": 109,
+   "tier": "ok",
+   "class": "ok-cropped",
+   "reason": "The building is atmospheric and well-lit, but its top extends out of the frame.",
+   "saw": "The camera looks up at a large wooden building with brightly lit windows during a nighttime snowstorm.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0116_detail1~lo12~o45": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 6109,
+   "tokensIn": 42326,
+   "tokensOut": 144,
+   "tier": "ok",
+   "class": "ok-texel",
+   "reason": "The camera is close enough to the stone wall that individual texture pixels are clearly visible.",
+   "saw": "A low-angle view looking up at a stone wall and wooden roof structure, with the camera positioned very close to the stonework on the right.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": true,
+    "underlit": false
+   }
+  },
+  "0116_detail1~o45": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 8453,
+   "tokensIn": 38544,
+   "tokensOut": 105,
+   "tier": "BAD",
+   "class": "BAD-mist",
+   "reason": "A heavy fog volume washes out the frame and dissolves the distant geometry.",
+   "saw": "The camera is outside, aiming at a large stone and wood building that is heavily obscured by mist.",
+   "flags": {
+    "inside": false,
+    "fogged": true,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0117_detail1": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 6422,
+   "tokensIn": 34287,
+   "tokensOut": 144,
+   "tier": "ok",
+   "class": "ok-texel",
+   "reason": "The camera is pressed too close to the wooden stakes, making the texture resolution visible.",
+   "saw": "The camera is close to a wooden palisade wall, looking along its length with a building and sky in the background.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": true,
+    "underlit": false
+   }
+  },
+  "0117_detail1~c75": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 5031,
+   "tokensIn": 26998,
+   "tokensOut": 109,
+   "tier": "ok",
+   "class": "ok-texel",
+   "reason": "the camera is close enough to the stone surface that texture pixels are clearly visible",
+   "saw": "The camera is very close to a large stone block and an iron grate, looking slightly up at them.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": true,
+    "underlit": false
+   }
+  },
+  "0117_detail1~lo12": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 4766,
+   "tokensIn": 23739,
+   "tokensOut": 96,
+   "tier": "ok",
+   "class": "dark",
+   "reason": "The subject is in heavy shadow and detail is lost to darkness.",
+   "saw": "A wooden building with dragon head ornaments viewed from below at night.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": true
+   }
+  },
+  "0117_detail1~o45": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 11219,
+   "tokensIn": 27003,
+   "tokensOut": 150,
+   "tier": "BAD",
+   "class": "BAD-aim-water",
+   "reason": "The camera is aimed away from the main building out over open water, leaving the structure as a dark silhouette at the edges of the frame.",
+   "saw": "The camera is positioned on a shadowed porch, aiming outward across open water toward a distant shore.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": true,
+    "edgeSubject": true,
+    "texels": false,
+    "underlit": true
+   }
+  },
+  "0128_detail3": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 8594,
+   "tokensIn": 4731,
+   "tokensOut": 100,
+   "tier": "ok",
+   "class": "ok",
+   "reason": "Valid interior perspective showing architectural arches, but lighting is slightly dim.",
+   "saw": "The camera looks down an interior wooden hallway lined with arches toward a glowing purple portal.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0128_detail3~c75": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 6297,
+   "tokensIn": 5954,
+   "tokensOut": 113,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "Well-lit and nicely framed detail shot of the carved wooden features and entryway.",
+   "saw": "A detailed view of a wooden structure featuring a carved dragon head and a small entryway, captured from a slightly elevated close-up perspective.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0128_detail3~lo12": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 5157,
+   "tokensIn": 9601,
+   "tokensOut": 99,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and brightly lit detail shot of complex architectural framing.",
+   "saw": "A detailed low-angle view of an intricate wooden staircase and timber framing against a clear blue sky.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0128_detail3~lo12~c75": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 6813,
+   "tokensIn": 5546,
+   "tokensOut": 121,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and brightly lit detail shot that highlights the complex timber work while providing context with the boat in the background.",
+   "saw": "The camera looks slightly down at the intricately carved wooden eaves of a dock structure, with a longship moored in the water below.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0128_detail3~lo12~lo12": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 4954,
+   "tokensIn": 13165,
+   "tokensOut": 114,
+   "tier": "BAD",
+   "class": "BAD-dark-texel",
+   "reason": "The camera is pressed too close to the dark subject, making texture pixels obvious in the shadows.",
+   "saw": "A close-up view of the base of a carved wooden pillar on a stone foundation, heavily shadowed.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": true,
+    "underlit": true
+   }
+  },
+  "0128_detail3~lo12~o45": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 6125,
+   "tokensIn": 6520,
+   "tokensOut": 109,
+   "tier": "ok",
+   "class": "dark",
+   "reason": "The nighttime lighting leaves much of the subject in deep shadow, making it underexposed.",
+   "saw": "A detailed view of intersecting wooden beams and a stone column in a nighttime setting, illuminated slightly from below.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": true
+   }
+  },
+  "0128_detail3~o45": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 7172,
+   "tokensIn": 5971,
+   "tokensOut": 98,
+   "tier": "ok",
+   "class": "ok",
+   "reason": "A usable but somewhat chaotic detail shot of the roof construction.",
+   "saw": "The camera is looking up at a complex junction of wooden beams and thatch roofing on a building's exterior.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0129_detail1": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 5875,
+   "tokensIn": 29383,
+   "tokensOut": 100,
+   "tier": "BAD",
+   "class": "BAD-mist",
+   "reason": "A fog volume is washing out the frame and dissolving distant geometry.",
+   "saw": "The camera is looking at a wooden and stone building enveloped in heavy fog.",
+   "flags": {
+    "inside": false,
+    "fogged": true,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0129_detail1~c75": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 42328,
+   "tokensIn": 32768,
+   "tokensOut": 107,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and clear detail shot of an intricate wooden build.",
+   "saw": "The camera is pointed upwards at a large, intricate wooden structure with multiple levels and beam details against a clear sky.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0129_detail1~c75~c75": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 6390,
+   "tokensIn": 40332,
+   "tokensOut": 112,
+   "tier": "ok",
+   "class": "ok",
+   "reason": "A decent detail shot of the roof structure, but a bit chaotic to be a top-tier image.",
+   "saw": "The camera is looking closely at a complex intersection of wooden roof beams and thatched roof pieces from the outside.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0129_detail1~c75~lo12": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 4422,
+   "tokensIn": 31334,
+   "tokensOut": 107,
+   "tier": "BAD",
+   "class": "BAD-mist",
+   "reason": "heavy fog volume washes out the frame and obscures the subject",
+   "saw": "A close-up view of a stone archway decorated with a circular wooden shield, but heavily washed out by fog.",
+   "flags": {
+    "inside": false,
+    "fogged": true,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0129_detail1~c75~o45": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 11797,
+   "tokensIn": 40968,
+   "tokensOut": 107,
+   "tier": "ok",
+   "class": "dark",
+   "reason": "The subject is heavily shadowed and much of its detail is lost to darkness.",
+   "saw": "The camera is pointed at the lower and middle sections of a tall wooden tower structure built near water during twilight.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": true
+   }
+  },
+  "0129_detail1~lo12": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 4953,
+   "tokensIn": 25347,
+   "tokensOut": 101,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-framed and nicely lit exterior shot of a complex building.",
+   "saw": "A detailed wooden stave-style building seen from a high angle showing its intricate tiered roof and dragon head ornaments.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0129_detail1~o45": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 7625,
+   "tokensIn": 34123,
+   "tokensOut": 103,
+   "tier": "BAD",
+   "class": "BAD-mist",
+   "reason": "The frame is heavily washed out by a fog or mist volume",
+   "saw": "The camera is outside, looking at a wooden building in a snowy landscape heavily obscured by fog.",
+   "flags": {
+    "inside": false,
+    "fogged": true,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0292_detail1": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 10375,
+   "tokensIn": 42111,
+   "tokensOut": 133,
+   "tier": "ok",
+   "class": "ok-texel",
+   "reason": "The camera is close enough to the building materials that texture pixels are clearly visible.",
+   "saw": "The camera is close to the wooden framework and red patterned roof of a building, looking slightly downwards.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": true,
+    "underlit": false
+   }
+  },
+  "0292_detail1~c75": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 9859,
+   "tokensIn": 25430,
+   "tokensOut": 117,
+   "tier": "ok",
+   "class": "ok-cropped",
+   "reason": "Good view of the detailed architecture, but the highest roof peak is cut off by the top edge of the frame.",
+   "saw": "The camera looks up at the detailed walls and multi-tiered roofs of a wooden stave church-style building.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0292_detail1~lo12": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 12032,
+   "tokensIn": 48120,
+   "tokensOut": 104,
+   "tier": "BAD",
+   "class": "BAD-mist",
+   "reason": "a thick fog volume washes out the frame and obscures the subject",
+   "saw": "The camera is looking into a dimly lit stone and wood structure that is heavily obscured by thick fog.",
+   "flags": {
+    "inside": false,
+    "fogged": true,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": true
+   }
+  },
+  "0292_detail1~o45": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 7609,
+   "tokensIn": 68586,
+   "tokensOut": 130,
+   "tier": "BAD",
+   "class": "BAD-mist",
+   "reason": "A fog volume is washing out the frame, obscuring the structure and background.",
+   "saw": "A wooden structure with a complex roof is partially visible through a thick volume of white fog.",
+   "flags": {
+    "inside": false,
+    "fogged": true,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0292_detail1~o45~c75": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 3875,
+   "tokensIn": 45646,
+   "tokensOut": 104,
+   "tier": "BAD",
+   "class": "BAD-mist",
+   "reason": "A heavy fog volume washes out the frame and obscures the subject.",
+   "saw": "A wooden building with a roof viewed from below, partially obscured by a very heavy grey fog.",
+   "flags": {
+    "inside": false,
+    "fogged": true,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0292_detail1~o45~lo12": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 9359,
+   "tokensIn": 78984,
+   "tokensOut": 100,
+   "tier": "BAD",
+   "class": "BAD-mist",
+   "reason": "A heavy fog volume washes out the frame, obscuring the distant geometry.",
+   "saw": "A tall wooden scaffolding or ladder structure reaching into a dense fog.",
+   "flags": {
+    "inside": false,
+    "fogged": true,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0292_detail1~o45~o45": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 4297,
+   "tokensIn": 96768,
+   "tokensOut": 97,
+   "tier": "BAD",
+   "class": "BAD-mist",
+   "reason": "The scene is completely washed out by a heavy fog volume.",
+   "saw": "The camera looks up at a tiered wooden structure that is heavily obscured by thick white fog.",
+   "flags": {
+    "inside": false,
+    "fogged": true,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0295_detail2": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 4125,
+   "tokensIn": 5528,
+   "tokensOut": 107,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-framed, nicely lit detail shot of the roof's architectural ornaments.",
+   "saw": "A detailed exterior view of a wooden roof corner adorned with carved dragon head ornaments, lit by warm sunlight against a twilight sky.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0295_detail2~c75": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 9797,
+   "tokensIn": 54042,
+   "tokensOut": 104,
+   "tier": "BAD",
+   "class": "BAD-mist",
+   "reason": "A fog volume is washing out the frame and obscuring the subject.",
+   "saw": "The camera is pointed up at a wooden structure that is heavily obscured by thick white fog.",
+   "flags": {
+    "inside": false,
+    "fogged": true,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0295_detail2~lo12": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 6766,
+   "tokensIn": 6400,
+   "tokensOut": 121,
+   "tier": "ok",
+   "class": "ok",
+   "reason": "A clear and properly framed detail shot of a building corner, but lacks the striking composition for the top tier.",
+   "saw": "The camera is looking up at the exterior corner of a building, capturing the intersection of a stone wall and wooden roof supports against an overcast sky.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0295_detail2~lo12~c75": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 15110,
+   "tokensIn": 52476,
+   "tokensOut": 119,
+   "tier": "BAD",
+   "class": "BAD-dark-texel",
+   "reason": "The camera is positioned too close to the surface in deep shadow, revealing the texture pixels in a dark frame.",
+   "saw": "The camera is pressed very close to a shaded wooden beam and wall, making the low-resolution texture pixels prominent.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": true,
+    "underlit": true
+   }
+  },
+  "0295_detail2~lo12~lo12": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 12156,
+   "tokensIn": 48888,
+   "tokensOut": 123,
+   "tier": "BAD",
+   "class": "BAD-dark-texel",
+   "reason": "The camera is pressed too close to the structure, showing low-resolution texels in shadow.",
+   "saw": "The camera is positioned very close to a dark wooden wall featuring carved arches and a small central opening, filling the frame with pixelated wood textures.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": true,
+    "underlit": true
+   }
+  },
+  "0295_detail2~lo12~o45": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 5547,
+   "tokensIn": 7579,
+   "tokensOut": 103,
+   "tier": "BAD",
+   "class": "BAD-mist",
+   "reason": "A thick fog volume washes out the frame and obscures the subject.",
+   "saw": "The camera is looking out at a stone and wood structure through a dense volume of fog.",
+   "flags": {
+    "inside": false,
+    "fogged": true,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": false,
+    "underlit": false
+   }
+  },
+  "0295_detail2~o45": {
+   "ok": true,
+   "model": "gemini-3.1-pro-preview",
+   "duration_ms": 4188,
+   "tokensIn": 5130,
+   "tokensOut": 113,
+   "tier": "ok",
+   "class": "ok-texel",
+   "reason": "The camera is too close, making the texture pixels clearly visible on the wood surfaces.",
+   "saw": "A close-up view of intersecting wooden poles and beams forming part of a larger structure, seen in bright daylight.",
+   "flags": {
+    "inside": false,
+    "fogged": false,
+    "aimSky": false,
+    "aimWater": false,
+    "edgeSubject": false,
+    "texels": true,
+    "underlit": false
+   }
+  }
+ },
+ "model": "gemini-3.1-pro-preview",
+ "generatedAt": "2026-09-12T21:16:26Z",
+ "counts": {
+  "frames": 47,
+  "failed": 0
+ }
+}

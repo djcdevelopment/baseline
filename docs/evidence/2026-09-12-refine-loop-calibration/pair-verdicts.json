@@ -1,0 +1,2332 @@
+{
+ "schema": "steward-pair-verdicts/v1",
+ "run": "era11-refine-full",
+ "judgedBy": "Derek Ciula, 2026-09-12, blind A/B at 1000 px, sides randomised by build key",
+ "question": "which of these two is the better photograph of this build?",
+ "classes": {
+  "incumbent": "the planned pose",
+  "winner": "the pose the refine loop moved to",
+  "both": "both worth publishing",
+  "neither": "neither worth publishing"
+ },
+ "counts": {
+  "incumbent": 25,
+  "winner": 18,
+  "neither": 33,
+  "both": 1
+ },
+ "verdicts": [
+  {
+   "build": "002c20e6",
+   "chose": "incumbent",
+   "pick": "left",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0104049,
+    "vetoes": [],
+    "liveTileShare": 0.7083,
+    "centralLiveShare": 0.975,
+    "gradMean": 0.01469,
+    "lumaMean": 0.4753,
+    "lumaStd": 0.2357,
+    "skyFraction": 0.05222
+   },
+   "fanMetrics": {
+    "score": 0.0137597,
+    "vetoes": [],
+    "liveTileShare": 0.7917,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.01738,
+    "lumaMean": 0.3809,
+    "lumaStd": 0.1824,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "032b5a3c",
+   "chose": "incumbent",
+   "pick": "left",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~up20",
+   "incMetrics": {
+    "score": 0.013509,
+    "vetoes": [],
+    "liveTileShare": 0.7014,
+    "centralLiveShare": 0.95,
+    "gradMean": 0.01926,
+    "lumaMean": 0.5092,
+    "lumaStd": 0.2389,
+    "skyFraction": 0.05893
+   },
+   "fanMetrics": {
+    "score": 0.0229668,
+    "vetoes": [],
+    "liveTileShare": 0.9514,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.02414,
+    "lumaMean": 0.4705,
+    "lumaStd": 0.2101,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "03e1a319",
+   "chose": "winner",
+   "pick": "right",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~o45",
+   "incMetrics": {
+    "score": 0.0130776,
+    "vetoes": [],
+    "liveTileShare": 0.8194,
+    "centralLiveShare": 0.875,
+    "gradMean": 0.01596,
+    "lumaMean": 0.3501,
+    "lumaStd": 0.2323,
+    "skyFraction": 0.11446
+   },
+   "fanMetrics": {
+    "score": 0.0160259,
+    "vetoes": [],
+    "liveTileShare": 0.8958,
+    "centralLiveShare": 0.975,
+    "gradMean": 0.01789,
+    "lumaMean": 0.29,
+    "lumaStd": 0.1415,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "041fbe6f",
+   "chose": "incumbent",
+   "pick": "right",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0085749,
+    "vetoes": [],
+    "liveTileShare": 0.6319,
+    "centralLiveShare": 0.8,
+    "gradMean": 0.01357,
+    "lumaMean": 0.5554,
+    "lumaStd": 0.205,
+    "skyFraction": 0.03544
+   },
+   "fanMetrics": {
+    "score": 0.0183656,
+    "vetoes": [],
+    "liveTileShare": 0.9375,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.01959,
+    "lumaMean": 0.5543,
+    "lumaStd": 0.209,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "0cfc358c",
+   "chose": "incumbent",
+   "pick": "left",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0052109,
+    "vetoes": [],
+    "liveTileShare": 0.5069,
+    "centralLiveShare": 0.675,
+    "gradMean": 0.01028,
+    "lumaMean": 0.6086,
+    "lumaStd": 0.2569,
+    "skyFraction": 0.28205
+   },
+   "fanMetrics": {
+    "score": 0.0164865,
+    "vetoes": [],
+    "liveTileShare": 0.8472,
+    "centralLiveShare": 0.975,
+    "gradMean": 0.01946,
+    "lumaMean": 0.5131,
+    "lumaStd": 0.2083,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "100f5a66",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0044837,
+    "vetoes": [],
+    "liveTileShare": 0.4167,
+    "centralLiveShare": 0.525,
+    "gradMean": 0.01076,
+    "lumaMean": 0.6172,
+    "lumaStd": 0.3226,
+    "skyFraction": 0.00198
+   },
+   "fanMetrics": {
+    "score": 0.0211875,
+    "vetoes": [],
+    "liveTileShare": 0.75,
+    "centralLiveShare": 0.975,
+    "gradMean": 0.02825,
+    "lumaMean": 0.4796,
+    "lumaStd": 0.2565,
+    "skyFraction": 0.18464
+   }
+  },
+  {
+   "build": "13f58893",
+   "chose": "winner",
+   "pick": "right",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~up20",
+   "incMetrics": {
+    "score": 0.0091138,
+    "vetoes": [],
+    "liveTileShare": 0.6667,
+    "centralLiveShare": 0.775,
+    "gradMean": 0.01367,
+    "lumaMean": 0.5126,
+    "lumaStd": 0.2861,
+    "skyFraction": 0.31166
+   },
+   "fanMetrics": {
+    "score": 0.0188899,
+    "vetoes": [],
+    "liveTileShare": 0.8403,
+    "centralLiveShare": 0.975,
+    "gradMean": 0.02248,
+    "lumaMean": 0.4724,
+    "lumaStd": 0.2006,
+    "skyFraction": 0.00133
+   }
+  },
+  {
+   "build": "14b1e589",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~up20",
+   "incMetrics": {
+    "score": 0.0021996,
+    "vetoes": [],
+    "liveTileShare": 0.3542,
+    "centralLiveShare": 0.225,
+    "gradMean": 0.00621,
+    "lumaMean": 0.6747,
+    "lumaStd": 0.2588,
+    "skyFraction": 0.28967
+   },
+   "fanMetrics": {
+    "score": 0.0078063,
+    "vetoes": [],
+    "liveTileShare": 0.6042,
+    "centralLiveShare": 0.925,
+    "gradMean": 0.01292,
+    "lumaMean": 0.6008,
+    "lumaStd": 0.248,
+    "skyFraction": 0.27291
+   }
+  },
+  {
+   "build": "17e1a93b",
+   "chose": "incumbent",
+   "pick": "right",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0014669,
+    "vetoes": [],
+    "liveTileShare": 0.2569,
+    "centralLiveShare": 0.4,
+    "gradMean": 0.00571,
+    "lumaMean": 0.5467,
+    "lumaStd": 0.282,
+    "skyFraction": 0.26639
+   },
+   "fanMetrics": {
+    "score": 0.0067372,
+    "vetoes": [],
+    "liveTileShare": 0.5139,
+    "centralLiveShare": 0.475,
+    "gradMean": 0.01311,
+    "lumaMean": 0.3672,
+    "lumaStd": 0.1546,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "185cd57a",
+   "chose": "winner",
+   "pick": "right",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~o45",
+   "incMetrics": {
+    "score": 0.0046635,
+    "vetoes": [],
+    "liveTileShare": 0.5069,
+    "centralLiveShare": 0.75,
+    "gradMean": 0.0092,
+    "lumaMean": 0.3818,
+    "lumaStd": 0.2526,
+    "skyFraction": 0.18487
+   },
+   "fanMetrics": {
+    "score": 0.0112623,
+    "vetoes": [],
+    "liveTileShare": 0.7361,
+    "centralLiveShare": 0.925,
+    "gradMean": 0.0153,
+    "lumaMean": 0.379,
+    "lumaStd": 0.174,
+    "skyFraction": 0.07334
+   }
+  },
+  {
+   "build": "21102436",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "incumbent",
+   "climb": false,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~lo12",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~lo12",
+   "incMetrics": {
+    "score": 0.0112929,
+    "vetoes": [],
+    "liveTileShare": 0.7569,
+    "centralLiveShare": 0.8,
+    "gradMean": 0.01492,
+    "lumaMean": 0.2547,
+    "lumaStd": 0.1612,
+    "skyFraction": 0.01444
+   },
+   "fanMetrics": {
+    "score": 0.0201399,
+    "vetoes": [],
+    "liveTileShare": 0.9167,
+    "centralLiveShare": 0.9,
+    "gradMean": 0.02197,
+    "lumaMean": 0.2631,
+    "lumaStd": 0.1769,
+    "skyFraction": 0.03067
+   }
+  },
+  {
+   "build": "267984d5",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "incumbent",
+   "climb": false,
+   "path": "detail1 -> detail1~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45",
+   "incMetrics": {
+    "score": 0.0085143,
+    "vetoes": [],
+    "liveTileShare": 0.6736,
+    "centralLiveShare": 0.9,
+    "gradMean": 0.01264,
+    "lumaMean": 0.3015,
+    "lumaStd": 0.2282,
+    "skyFraction": 0.07677
+   },
+   "fanMetrics": {
+    "score": 0.0126076,
+    "vetoes": [],
+    "liveTileShare": 0.8056,
+    "centralLiveShare": 0.95,
+    "gradMean": 0.01565,
+    "lumaMean": 0.28,
+    "lumaStd": 0.2192,
+    "skyFraction": 0.14044
+   }
+  },
+  {
+   "build": "2adf8ac1",
+   "chose": "incumbent",
+   "pick": "left",
+   "leftRole": "incumbent",
+   "climb": false,
+   "path": "detail1 -> detail1~aim -> detail1~aim~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~aim~o45",
+   "incMetrics": {
+    "score": 0.0056417,
+    "vetoes": [],
+    "liveTileShare": 0.4583,
+    "centralLiveShare": 0.6,
+    "gradMean": 0.01231,
+    "lumaMean": 0.5442,
+    "lumaStd": 0.1974,
+    "skyFraction": 0.16799
+   },
+   "fanMetrics": {
+    "score": 0.0169815,
+    "vetoes": [],
+    "liveTileShare": 0.8542,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.01988,
+    "lumaMean": 0.5313,
+    "lumaStd": 0.1873,
+    "skyFraction": 0.08933
+   }
+  },
+  {
+   "build": "35f436df",
+   "chose": "incumbent",
+   "pick": "right",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~o45",
+   "incMetrics": {
+    "score": 0.0045832,
+    "vetoes": [],
+    "liveTileShare": 0.4653,
+    "centralLiveShare": 0.725,
+    "gradMean": 0.00985,
+    "lumaMean": 0.5316,
+    "lumaStd": 0.2536,
+    "skyFraction": 0.10507
+   },
+   "fanMetrics": {
+    "score": 0.0063,
+    "vetoes": [],
+    "liveTileShare": 0.5,
+    "centralLiveShare": 0.775,
+    "gradMean": 0.0126,
+    "lumaMean": 0.448,
+    "lumaStd": 0.1802,
+    "skyFraction": 0.00749
+   }
+  },
+  {
+   "build": "3a1ffe50",
+   "chose": "both",
+   "pick": "both",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~aim -> detail1~aim~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~aim~up20",
+   "incMetrics": {
+    "score": 0.0051478,
+    "vetoes": [],
+    "liveTileShare": 0.4861,
+    "centralLiveShare": 0.575,
+    "gradMean": 0.01059,
+    "lumaMean": 0.5882,
+    "lumaStd": 0.2655,
+    "skyFraction": 0.03229
+   },
+   "fanMetrics": {
+    "score": 0.012487,
+    "vetoes": [],
+    "liveTileShare": 0.7708,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.0162,
+    "lumaMean": 0.4548,
+    "lumaStd": 0.2424,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "3c91f0f4",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0045134,
+    "vetoes": [],
+    "liveTileShare": 0.4653,
+    "centralLiveShare": 0.825,
+    "gradMean": 0.0097,
+    "lumaMean": 0.328,
+    "lumaStd": 0.2551,
+    "skyFraction": 0.13335
+   },
+   "fanMetrics": {
+    "score": 0.0216644,
+    "vetoes": [],
+    "liveTileShare": 0.9306,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.02328,
+    "lumaMean": 0.3457,
+    "lumaStd": 0.1812,
+    "skyFraction": 0.0021
+   }
+  },
+  {
+   "build": "3d20e62e",
+   "chose": "incumbent",
+   "pick": "right",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0021774,
+    "vetoes": [],
+    "liveTileShare": 0.3611,
+    "centralLiveShare": 0.6,
+    "gradMean": 0.00603,
+    "lumaMean": 0.5912,
+    "lumaStd": 0.2985,
+    "skyFraction": 0.42546
+   },
+   "fanMetrics": {
+    "score": 0.0037463,
+    "vetoes": [],
+    "liveTileShare": 0.4444,
+    "centralLiveShare": 0.475,
+    "gradMean": 0.00843,
+    "lumaMean": 0.4397,
+    "lumaStd": 0.2541,
+    "skyFraction": 0.24271
+   }
+  },
+  {
+   "build": "3f0788fe",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0010163,
+    "vetoes": [],
+    "liveTileShare": 0.1875,
+    "centralLiveShare": 0.475,
+    "gradMean": 0.00542,
+    "lumaMean": 0.5131,
+    "lumaStd": 0.3472,
+    "skyFraction": 0.30366
+   },
+   "fanMetrics": {
+    "score": 0.0139515,
+    "vetoes": [],
+    "liveTileShare": 0.7708,
+    "centralLiveShare": 0.925,
+    "gradMean": 0.0181,
+    "lumaMean": 0.5392,
+    "lumaStd": 0.1628,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "3f338fc1",
+   "chose": "incumbent",
+   "pick": "left",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~up20",
+   "incMetrics": {
+    "score": 0.0052424,
+    "vetoes": [],
+    "liveTileShare": 0.4792,
+    "centralLiveShare": 0.825,
+    "gradMean": 0.01094,
+    "lumaMean": 0.5961,
+    "lumaStd": 0.2679,
+    "skyFraction": 0.50176
+   },
+   "fanMetrics": {
+    "score": 0.0079451,
+    "vetoes": [],
+    "liveTileShare": 0.5556,
+    "centralLiveShare": 0.975,
+    "gradMean": 0.0143,
+    "lumaMean": 0.5929,
+    "lumaStd": 0.2183,
+    "skyFraction": 0.37154
+   }
+  },
+  {
+   "build": "4db9cf55",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": false,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~o45",
+   "incMetrics": {
+    "score": 0.0006313,
+    "vetoes": [],
+    "liveTileShare": 0.1458,
+    "centralLiveShare": 0.3,
+    "gradMean": 0.00433,
+    "lumaMean": 0.5189,
+    "lumaStd": 0.2778,
+    "skyFraction": 0.19211
+   },
+   "fanMetrics": {
+    "score": 0.0019469,
+    "vetoes": [],
+    "liveTileShare": 0.3125,
+    "centralLiveShare": 0.675,
+    "gradMean": 0.00623,
+    "lumaMean": 0.5024,
+    "lumaStd": 0.262,
+    "skyFraction": 0.19436
+   }
+  },
+  {
+   "build": "539ddd8e",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": false,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~lo12",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~lo12",
+   "incMetrics": {
+    "score": 0.0012471,
+    "vetoes": [],
+    "liveTileShare": 0.2431,
+    "centralLiveShare": 0.0,
+    "gradMean": 0.00513,
+    "lumaMean": 0.8273,
+    "lumaStd": 0.1975,
+    "skyFraction": 0.01448
+   },
+   "fanMetrics": {
+    "score": 0.0053865,
+    "vetoes": [],
+    "liveTileShare": 0.5694,
+    "centralLiveShare": 0.8,
+    "gradMean": 0.00946,
+    "lumaMean": 0.3324,
+    "lumaStd": 0.2849,
+    "skyFraction": 0.0057
+   }
+  },
+  {
+   "build": "55acdcac",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~aim -> detail1~aim~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~aim~up20",
+   "incMetrics": {
+    "score": 0.0027225,
+    "vetoes": [],
+    "liveTileShare": 0.375,
+    "centralLiveShare": 0.5,
+    "gradMean": 0.00726,
+    "lumaMean": 0.5492,
+    "lumaStd": 0.244,
+    "skyFraction": 4e-05
+   },
+   "fanMetrics": {
+    "score": 0.0147898,
+    "vetoes": [],
+    "liveTileShare": 0.7569,
+    "centralLiveShare": 0.9,
+    "gradMean": 0.01954,
+    "lumaMean": 0.3159,
+    "lumaStd": 0.1911,
+    "skyFraction": 0.0636
+   }
+  },
+  {
+   "build": "5a5dd985",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~lo12",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~lo12",
+   "incMetrics": {
+    "score": 0.0064408,
+    "vetoes": [],
+    "liveTileShare": 0.5417,
+    "centralLiveShare": 0.825,
+    "gradMean": 0.01189,
+    "lumaMean": 0.4425,
+    "lumaStd": 0.1653,
+    "skyFraction": 0.01691
+   },
+   "fanMetrics": {
+    "score": 0.0118882,
+    "vetoes": [],
+    "liveTileShare": 0.7847,
+    "centralLiveShare": 0.925,
+    "gradMean": 0.01515,
+    "lumaMean": 0.3619,
+    "lumaStd": 0.1798,
+    "skyFraction": 0.02712
+   }
+  },
+  {
+   "build": "5a74ee4d",
+   "chose": "incumbent",
+   "pick": "left",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0068633,
+    "vetoes": [],
+    "liveTileShare": 0.5417,
+    "centralLiveShare": 0.8,
+    "gradMean": 0.01267,
+    "lumaMean": 0.4267,
+    "lumaStd": 0.3092,
+    "skyFraction": 0.27389
+   },
+   "fanMetrics": {
+    "score": 0.0137731,
+    "vetoes": [],
+    "liveTileShare": 0.7639,
+    "centralLiveShare": 0.975,
+    "gradMean": 0.01803,
+    "lumaMean": 0.265,
+    "lumaStd": 0.1577,
+    "skyFraction": 0.0429
+   }
+  },
+  {
+   "build": "5bbbea9e",
+   "chose": "incumbent",
+   "pick": "right",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0095261,
+    "vetoes": [],
+    "liveTileShare": 0.6597,
+    "centralLiveShare": 0.8,
+    "gradMean": 0.01444,
+    "lumaMean": 0.5019,
+    "lumaStd": 0.2736,
+    "skyFraction": 0.18087
+   },
+   "fanMetrics": {
+    "score": 0.0140413,
+    "vetoes": [],
+    "liveTileShare": 0.7153,
+    "centralLiveShare": 0.9,
+    "gradMean": 0.01963,
+    "lumaMean": 0.44,
+    "lumaStd": 0.1731,
+    "skyFraction": 0.05577
+   }
+  },
+  {
+   "build": "602940dd",
+   "chose": "incumbent",
+   "pick": "left",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0028527,
+    "vetoes": [],
+    "liveTileShare": 0.3611,
+    "centralLiveShare": 0.5,
+    "gradMean": 0.0079,
+    "lumaMean": 0.6645,
+    "lumaStd": 0.243,
+    "skyFraction": 0.28363
+   },
+   "fanMetrics": {
+    "score": 0.0050198,
+    "vetoes": [],
+    "liveTileShare": 0.4931,
+    "centralLiveShare": 0.75,
+    "gradMean": 0.01018,
+    "lumaMean": 0.5589,
+    "lumaStd": 0.2208,
+    "skyFraction": 0.5295
+   }
+  },
+  {
+   "build": "63ffb7cd",
+   "chose": "winner",
+   "pick": "left",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~c75 -> detail1~c75~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~c75~up20",
+   "incMetrics": {
+    "score": 0.0021781,
+    "vetoes": [],
+    "liveTileShare": 0.3125,
+    "centralLiveShare": 0.5,
+    "gradMean": 0.00697,
+    "lumaMean": 0.6097,
+    "lumaStd": 0.2103,
+    "skyFraction": 0.37843
+   },
+   "fanMetrics": {
+    "score": 0.0036168,
+    "vetoes": [],
+    "liveTileShare": 0.3889,
+    "centralLiveShare": 0.725,
+    "gradMean": 0.0093,
+    "lumaMean": 0.4903,
+    "lumaStd": 0.1792,
+    "skyFraction": 0.01759
+   }
+  },
+  {
+   "build": "66599252",
+   "chose": "incumbent",
+   "pick": "left",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~c75 -> detail1~c75~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~c75~up20",
+   "incMetrics": {
+    "score": 0.0022492,
+    "vetoes": [],
+    "liveTileShare": 0.3056,
+    "centralLiveShare": 0.575,
+    "gradMean": 0.00736,
+    "lumaMean": 0.6353,
+    "lumaStd": 0.233,
+    "skyFraction": 0.30851
+   },
+   "fanMetrics": {
+    "score": 0.0044411,
+    "vetoes": [],
+    "liveTileShare": 0.4097,
+    "centralLiveShare": 0.8,
+    "gradMean": 0.01084,
+    "lumaMean": 0.4685,
+    "lumaStd": 0.228,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "684743a2",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~lo12",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~lo12",
+   "incMetrics": {
+    "score": 0.0092221,
+    "vetoes": [],
+    "liveTileShare": 0.6806,
+    "centralLiveShare": 0.725,
+    "gradMean": 0.01355,
+    "lumaMean": 0.3815,
+    "lumaStd": 0.2373,
+    "skyFraction": 0.00987
+   },
+   "fanMetrics": {
+    "score": 0.0099519,
+    "vetoes": [],
+    "liveTileShare": 0.7222,
+    "centralLiveShare": 0.6,
+    "gradMean": 0.01378,
+    "lumaMean": 0.3678,
+    "lumaStd": 0.2333,
+    "skyFraction": 0.01578
+   }
+  },
+  {
+   "build": "6c63ea1b",
+   "chose": "winner",
+   "pick": "left",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0173461,
+    "vetoes": [],
+    "liveTileShare": 0.7917,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.02191,
+    "lumaMean": 0.5502,
+    "lumaStd": 0.2419,
+    "skyFraction": 0.28042
+   },
+   "fanMetrics": {
+    "score": 0.0196466,
+    "vetoes": [],
+    "liveTileShare": 0.8542,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.023,
+    "lumaMean": 0.4937,
+    "lumaStd": 0.2079,
+    "skyFraction": 0.28577
+   }
+  },
+  {
+   "build": "6e3aac10",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~up20",
+   "incMetrics": {
+    "score": 0.01666,
+    "vetoes": [],
+    "liveTileShare": 0.875,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.01904,
+    "lumaMean": 0.4937,
+    "lumaStd": 0.2283,
+    "skyFraction": 0.12921
+   },
+   "fanMetrics": {
+    "score": 0.0247406,
+    "vetoes": [],
+    "liveTileShare": 0.9653,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.02563,
+    "lumaMean": 0.4627,
+    "lumaStd": 0.1953,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "6f00e332",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~o45",
+   "incMetrics": {
+    "score": 0.0017567,
+    "vetoes": [],
+    "liveTileShare": 0.3194,
+    "centralLiveShare": 0.375,
+    "gradMean": 0.0055,
+    "lumaMean": 0.7598,
+    "lumaStd": 0.1901,
+    "skyFraction": 0.42082
+   },
+   "fanMetrics": {
+    "score": 0.0058332,
+    "vetoes": [],
+    "liveTileShare": 0.5764,
+    "centralLiveShare": 0.725,
+    "gradMean": 0.01012,
+    "lumaMean": 0.7122,
+    "lumaStd": 0.1782,
+    "skyFraction": 0.24662
+   }
+  },
+  {
+   "build": "728872c6",
+   "chose": "incumbent",
+   "pick": "right",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0083863,
+    "vetoes": [],
+    "liveTileShare": 0.6736,
+    "centralLiveShare": 0.875,
+    "gradMean": 0.01245,
+    "lumaMean": 0.3426,
+    "lumaStd": 0.1615,
+    "skyFraction": 0.02591
+   },
+   "fanMetrics": {
+    "score": 0.0095134,
+    "vetoes": [],
+    "liveTileShare": 0.5972,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.01593,
+    "lumaMean": 0.2796,
+    "lumaStd": 0.1283,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "74073b73",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0097397,
+    "vetoes": [],
+    "liveTileShare": 0.6042,
+    "centralLiveShare": 0.75,
+    "gradMean": 0.01612,
+    "lumaMean": 0.4376,
+    "lumaStd": 0.2035,
+    "skyFraction": 0.05311
+   },
+   "fanMetrics": {
+    "score": 0.0209686,
+    "vetoes": [],
+    "liveTileShare": 0.9097,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.02305,
+    "lumaMean": 0.3361,
+    "lumaStd": 0.162,
+    "skyFraction": 0.00367
+   }
+  },
+  {
+   "build": "76c98f1a",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20",
+   "incMetrics": {
+    "score": 0.0024498,
+    "vetoes": [],
+    "liveTileShare": 0.3333,
+    "centralLiveShare": 0.5,
+    "gradMean": 0.00735,
+    "lumaMean": 0.3901,
+    "lumaStd": 0.3385,
+    "skyFraction": 0.03036
+   },
+   "fanMetrics": {
+    "score": 0.0116072,
+    "vetoes": [],
+    "liveTileShare": 0.6667,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.01741,
+    "lumaMean": 0.4544,
+    "lumaStd": 0.2325,
+    "skyFraction": 0.02055
+   }
+  },
+  {
+   "build": "77729b7c",
+   "chose": "incumbent",
+   "pick": "right",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0050386,
+    "vetoes": [],
+    "liveTileShare": 0.5069,
+    "centralLiveShare": 0.55,
+    "gradMean": 0.00994,
+    "lumaMean": 0.5367,
+    "lumaStd": 0.284,
+    "skyFraction": 0.3549
+   },
+   "fanMetrics": {
+    "score": 0.0100581,
+    "vetoes": [],
+    "liveTileShare": 0.6875,
+    "centralLiveShare": 0.875,
+    "gradMean": 0.01463,
+    "lumaMean": 0.3304,
+    "lumaStd": 0.1704,
+    "skyFraction": 0.00217
+   }
+  },
+  {
+   "build": "7a2c1a34",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0161246,
+    "vetoes": [],
+    "liveTileShare": 0.8889,
+    "centralLiveShare": 0.975,
+    "gradMean": 0.01814,
+    "lumaMean": 0.4197,
+    "lumaStd": 0.2382,
+    "skyFraction": 0.09525
+   },
+   "fanMetrics": {
+    "score": 0.0193134,
+    "vetoes": [],
+    "liveTileShare": 0.9514,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.0203,
+    "lumaMean": 0.3136,
+    "lumaStd": 0.156,
+    "skyFraction": 0.00115
+   }
+  },
+  {
+   "build": "84106697",
+   "chose": "winner",
+   "pick": "left",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~c75 -> detail1~c75~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~c75~up20",
+   "incMetrics": {
+    "score": 0.002386,
+    "vetoes": [],
+    "liveTileShare": 0.3264,
+    "centralLiveShare": 0.775,
+    "gradMean": 0.00731,
+    "lumaMean": 0.5559,
+    "lumaStd": 0.1896,
+    "skyFraction": 0.08149
+   },
+   "fanMetrics": {
+    "score": 0.0069582,
+    "vetoes": [],
+    "liveTileShare": 0.5139,
+    "centralLiveShare": 0.925,
+    "gradMean": 0.01354,
+    "lumaMean": 0.4873,
+    "lumaStd": 0.1858,
+    "skyFraction": 0.34064
+   }
+  },
+  {
+   "build": "88895272",
+   "chose": "winner",
+   "pick": "right",
+   "leftRole": "incumbent",
+   "climb": false,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~o45",
+   "incMetrics": {
+    "score": 0.0190733,
+    "vetoes": [],
+    "liveTileShare": 0.8264,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.02308,
+    "lumaMean": 0.432,
+    "lumaStd": 0.2547,
+    "skyFraction": 0.12298
+   },
+   "fanMetrics": {
+    "score": 0.02903,
+    "vetoes": [],
+    "liveTileShare": 1.0,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.02903,
+    "lumaMean": 0.4641,
+    "lumaStd": 0.2137,
+    "skyFraction": 0.01506
+   }
+  },
+  {
+   "build": "88bd3d6c",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~aim -> detail1~aim~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~aim~up20",
+   "incMetrics": {
+    "score": 0.0041519,
+    "vetoes": [],
+    "liveTileShare": 0.4931,
+    "centralLiveShare": 0.55,
+    "gradMean": 0.00842,
+    "lumaMean": 0.5157,
+    "lumaStd": 0.2108,
+    "skyFraction": 0.14042
+   },
+   "fanMetrics": {
+    "score": 0.006477,
+    "vetoes": [],
+    "liveTileShare": 0.6042,
+    "centralLiveShare": 0.875,
+    "gradMean": 0.01072,
+    "lumaMean": 0.4559,
+    "lumaStd": 0.1473,
+    "skyFraction": 0.02494
+   }
+  },
+  {
+   "build": "8ec4ce54",
+   "chose": "incumbent",
+   "pick": "right",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~o45",
+   "incMetrics": {
+    "score": 0.0104088,
+    "vetoes": [],
+    "liveTileShare": 0.6875,
+    "centralLiveShare": 0.95,
+    "gradMean": 0.01514,
+    "lumaMean": 0.5365,
+    "lumaStd": 0.2088,
+    "skyFraction": 0.17401
+   },
+   "fanMetrics": {
+    "score": 0.0147759,
+    "vetoes": [],
+    "liveTileShare": 0.7847,
+    "centralLiveShare": 0.95,
+    "gradMean": 0.01883,
+    "lumaMean": 0.4434,
+    "lumaStd": 0.171,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "8eca5f0e",
+   "chose": "incumbent",
+   "pick": "left",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0069821,
+    "vetoes": [],
+    "liveTileShare": 0.5833,
+    "centralLiveShare": 0.85,
+    "gradMean": 0.01197,
+    "lumaMean": 0.6703,
+    "lumaStd": 0.1937,
+    "skyFraction": 0.03712
+   },
+   "fanMetrics": {
+    "score": 0.0081535,
+    "vetoes": [],
+    "liveTileShare": 0.6528,
+    "centralLiveShare": 0.825,
+    "gradMean": 0.01249,
+    "lumaMean": 0.6818,
+    "lumaStd": 0.1995,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "920590f4",
+   "chose": "incumbent",
+   "pick": "left",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0033974,
+    "vetoes": [],
+    "liveTileShare": 0.4306,
+    "centralLiveShare": 0.8,
+    "gradMean": 0.00789,
+    "lumaMean": 0.4797,
+    "lumaStd": 0.2913,
+    "skyFraction": 0.05223
+   },
+   "fanMetrics": {
+    "score": 0.0146064,
+    "vetoes": [],
+    "liveTileShare": 0.7153,
+    "centralLiveShare": 0.95,
+    "gradMean": 0.02042,
+    "lumaMean": 0.3602,
+    "lumaStd": 0.1758,
+    "skyFraction": 0.08657
+   }
+  },
+  {
+   "build": "9331bd62",
+   "chose": "incumbent",
+   "pick": "left",
+   "leftRole": "incumbent",
+   "climb": false,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~o45",
+   "incMetrics": {
+    "score": 0.0169152,
+    "vetoes": [],
+    "liveTileShare": 0.8403,
+    "centralLiveShare": 0.95,
+    "gradMean": 0.02013,
+    "lumaMean": 0.4712,
+    "lumaStd": 0.2163,
+    "skyFraction": 0.00554
+   },
+   "fanMetrics": {
+    "score": 0.0246677,
+    "vetoes": [],
+    "liveTileShare": 0.9444,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.02612,
+    "lumaMean": 0.5128,
+    "lumaStd": 0.194,
+    "skyFraction": 0.02904
+   }
+  },
+  {
+   "build": "9471cd1f",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": false,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~o45",
+   "incMetrics": {
+    "score": 0.0006356,
+    "vetoes": [],
+    "liveTileShare": 0.1528,
+    "centralLiveShare": 0.35,
+    "gradMean": 0.00416,
+    "lumaMean": 0.8461,
+    "lumaStd": 0.1083,
+    "skyFraction": 0.38804
+   },
+   "fanMetrics": {
+    "score": 0.0018022,
+    "vetoes": [],
+    "liveTileShare": 0.2847,
+    "centralLiveShare": 0.475,
+    "gradMean": 0.00633,
+    "lumaMean": 0.8351,
+    "lumaStd": 0.114,
+    "skyFraction": 0.29577
+   }
+  },
+  {
+   "build": "954a0a68",
+   "chose": "incumbent",
+   "pick": "right",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0113801,
+    "vetoes": [],
+    "liveTileShare": 0.7361,
+    "centralLiveShare": 0.875,
+    "gradMean": 0.01546,
+    "lumaMean": 0.2937,
+    "lumaStd": 0.1285,
+    "skyFraction": 0.00141
+   },
+   "fanMetrics": {
+    "score": 0.0136841,
+    "vetoes": [],
+    "liveTileShare": 0.7361,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.01859,
+    "lumaMean": 0.2509,
+    "lumaStd": 0.1006,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "977b9b11",
+   "chose": "winner",
+   "pick": "right",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~up20",
+   "incMetrics": {
+    "score": 0.0071329,
+    "vetoes": [],
+    "liveTileShare": 0.5347,
+    "centralLiveShare": 0.8,
+    "gradMean": 0.01334,
+    "lumaMean": 0.4888,
+    "lumaStd": 0.2368,
+    "skyFraction": 0.12806
+   },
+   "fanMetrics": {
+    "score": 0.012183,
+    "vetoes": [],
+    "liveTileShare": 0.6319,
+    "centralLiveShare": 0.925,
+    "gradMean": 0.01928,
+    "lumaMean": 0.4546,
+    "lumaStd": 0.1828,
+    "skyFraction": 0.00025
+   }
+  },
+  {
+   "build": "a4bc221e",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20",
+   "incMetrics": {
+    "score": 0.0134328,
+    "vetoes": [],
+    "liveTileShare": 0.8333,
+    "centralLiveShare": 0.875,
+    "gradMean": 0.01612,
+    "lumaMean": 0.3299,
+    "lumaStd": 0.2182,
+    "skyFraction": 0.03515
+   },
+   "fanMetrics": {
+    "score": 0.020398,
+    "vetoes": [],
+    "liveTileShare": 0.9514,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.02144,
+    "lumaMean": 0.266,
+    "lumaStd": 0.1605,
+    "skyFraction": 0.01203
+   }
+  },
+  {
+   "build": "a800f3b9",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": false,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~o45",
+   "incMetrics": {
+    "score": 0.0100581,
+    "vetoes": [],
+    "liveTileShare": 0.6875,
+    "centralLiveShare": 0.825,
+    "gradMean": 0.01463,
+    "lumaMean": 0.4561,
+    "lumaStd": 0.2594,
+    "skyFraction": 0.22556
+   },
+   "fanMetrics": {
+    "score": 0.0194847,
+    "vetoes": [],
+    "liveTileShare": 0.8889,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.02192,
+    "lumaMean": 0.492,
+    "lumaStd": 0.2079,
+    "skyFraction": 0.10323
+   }
+  },
+  {
+   "build": "a9f03498",
+   "chose": "incumbent",
+   "pick": "right",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.011678,
+    "vetoes": [],
+    "liveTileShare": 0.7222,
+    "centralLiveShare": 0.9,
+    "gradMean": 0.01617,
+    "lumaMean": 0.3632,
+    "lumaStd": 0.1872,
+    "skyFraction": 0.01041
+   },
+   "fanMetrics": {
+    "score": 0.0142125,
+    "vetoes": [],
+    "liveTileShare": 0.75,
+    "centralLiveShare": 0.975,
+    "gradMean": 0.01895,
+    "lumaMean": 0.3587,
+    "lumaStd": 0.1756,
+    "skyFraction": 0.02074
+   }
+  },
+  {
+   "build": "abf3db6c",
+   "chose": "incumbent",
+   "pick": "right",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~aim -> detail1~aim~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~aim~up20",
+   "incMetrics": {
+    "score": 0.0028593,
+    "vetoes": [],
+    "liveTileShare": 0.4236,
+    "centralLiveShare": 0.575,
+    "gradMean": 0.00675,
+    "lumaMean": 0.6536,
+    "lumaStd": 0.2713,
+    "skyFraction": 0.33435
+   },
+   "fanMetrics": {
+    "score": 0.0133089,
+    "vetoes": [],
+    "liveTileShare": 0.7431,
+    "centralLiveShare": 0.975,
+    "gradMean": 0.01791,
+    "lumaMean": 0.4842,
+    "lumaStd": 0.2418,
+    "skyFraction": 0.28384
+   }
+  },
+  {
+   "build": "af332a15",
+   "chose": "winner",
+   "pick": "right",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~o45",
+   "incMetrics": {
+    "score": 0.0140131,
+    "vetoes": [],
+    "liveTileShare": 0.7917,
+    "centralLiveShare": 0.975,
+    "gradMean": 0.0177,
+    "lumaMean": 0.4628,
+    "lumaStd": 0.2715,
+    "skyFraction": 0.20602
+   },
+   "fanMetrics": {
+    "score": 0.0235166,
+    "vetoes": [],
+    "liveTileShare": 0.9931,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.02368,
+    "lumaMean": 0.4326,
+    "lumaStd": 0.1969,
+    "skyFraction": 7e-05
+   }
+  },
+  {
+   "build": "b1ba777f",
+   "chose": "winner",
+   "pick": "right",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0066409,
+    "vetoes": [],
+    "liveTileShare": 0.5903,
+    "centralLiveShare": 0.7,
+    "gradMean": 0.01125,
+    "lumaMean": 0.4135,
+    "lumaStd": 0.2793,
+    "skyFraction": 0.17546
+   },
+   "fanMetrics": {
+    "score": 0.0217125,
+    "vetoes": [],
+    "liveTileShare": 0.9375,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.02316,
+    "lumaMean": 0.343,
+    "lumaStd": 0.1719,
+    "skyFraction": 0.00051
+   }
+  },
+  {
+   "build": "b2077dff",
+   "chose": "winner",
+   "pick": "right",
+   "leftRole": "incumbent",
+   "climb": false,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~o45",
+   "incMetrics": {
+    "score": 0.0027237,
+    "vetoes": [],
+    "liveTileShare": 0.4236,
+    "centralLiveShare": 0.925,
+    "gradMean": 0.00643,
+    "lumaMean": 0.5852,
+    "lumaStd": 0.3039,
+    "skyFraction": 0.09583
+   },
+   "fanMetrics": {
+    "score": 0.00514,
+    "vetoes": [],
+    "liveTileShare": 0.5,
+    "centralLiveShare": 0.9,
+    "gradMean": 0.01028,
+    "lumaMean": 0.4933,
+    "lumaStd": 0.2957,
+    "skyFraction": 0.39769
+   }
+  },
+  {
+   "build": "b2b56518",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~up20",
+   "incMetrics": {
+    "score": 0.0151505,
+    "vetoes": [],
+    "liveTileShare": 0.7083,
+    "centralLiveShare": 0.95,
+    "gradMean": 0.02139,
+    "lumaMean": 0.4793,
+    "lumaStd": 0.2689,
+    "skyFraction": 0.29282
+   },
+   "fanMetrics": {
+    "score": 0.0220915,
+    "vetoes": [],
+    "liveTileShare": 0.8403,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.02629,
+    "lumaMean": 0.403,
+    "lumaStd": 0.1844,
+    "skyFraction": 0.00025
+   }
+  },
+  {
+   "build": "b54900c2",
+   "chose": "incumbent",
+   "pick": "left",
+   "leftRole": "incumbent",
+   "climb": false,
+   "path": "detail1 -> detail1~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45",
+   "incMetrics": {
+    "score": 0.0067812,
+    "vetoes": [],
+    "liveTileShare": 0.625,
+    "centralLiveShare": 0.775,
+    "gradMean": 0.01085,
+    "lumaMean": 0.2752,
+    "lumaStd": 0.137,
+    "skyFraction": 0.02038
+   },
+   "fanMetrics": {
+    "score": 0.01005,
+    "vetoes": [],
+    "liveTileShare": 0.75,
+    "centralLiveShare": 0.925,
+    "gradMean": 0.0134,
+    "lumaMean": 0.3105,
+    "lumaStd": 0.1537,
+    "skyFraction": 0.00747
+   }
+  },
+  {
+   "build": "b87d9c97",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.004931,
+    "vetoes": [],
+    "liveTileShare": 0.4792,
+    "centralLiveShare": 0.65,
+    "gradMean": 0.01029,
+    "lumaMean": 0.5874,
+    "lumaStd": 0.2934,
+    "skyFraction": 0.29704
+   },
+   "fanMetrics": {
+    "score": 0.0099005,
+    "vetoes": [],
+    "liveTileShare": 0.6667,
+    "centralLiveShare": 0.975,
+    "gradMean": 0.01485,
+    "lumaMean": 0.4498,
+    "lumaStd": 0.2352,
+    "skyFraction": 0.01364
+   }
+  },
+  {
+   "build": "c231e10f",
+   "chose": "incumbent",
+   "pick": "right",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0131085,
+    "vetoes": [],
+    "liveTileShare": 0.7639,
+    "centralLiveShare": 0.95,
+    "gradMean": 0.01716,
+    "lumaMean": 0.4782,
+    "lumaStd": 0.2741,
+    "skyFraction": 0.24596
+   },
+   "fanMetrics": {
+    "score": 0.022108,
+    "vetoes": [],
+    "liveTileShare": 0.9583,
+    "centralLiveShare": 0.975,
+    "gradMean": 0.02307,
+    "lumaMean": 0.3321,
+    "lumaStd": 0.1855,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "c6a0d5c4",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": false,
+   "path": "detail1 -> detail1~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45",
+   "incMetrics": {
+    "score": 0.0007986,
+    "vetoes": [],
+    "liveTileShare": 0.1736,
+    "centralLiveShare": 0.25,
+    "gradMean": 0.0046,
+    "lumaMean": 0.5429,
+    "lumaStd": 0.2659,
+    "skyFraction": 0.19907
+   },
+   "fanMetrics": {
+    "score": 0.0010271,
+    "vetoes": [],
+    "liveTileShare": 0.2014,
+    "centralLiveShare": 0.25,
+    "gradMean": 0.0051,
+    "lumaMean": 0.5355,
+    "lumaStd": 0.2613,
+    "skyFraction": 0.19251
+   }
+  },
+  {
+   "build": "ce24e31b",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": false,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~o45",
+   "incMetrics": {
+    "score": 0.0005822,
+    "vetoes": [],
+    "liveTileShare": 0.1111,
+    "centralLiveShare": 0.05,
+    "gradMean": 0.00524,
+    "lumaMean": 0.277,
+    "lumaStd": 0.2836,
+    "skyFraction": 0.05412
+   },
+   "fanMetrics": {
+    "score": 0.0132446,
+    "vetoes": [],
+    "liveTileShare": 0.8889,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.0149,
+    "lumaMean": 0.3254,
+    "lumaStd": 0.1927,
+    "skyFraction": 0.06865
+   }
+  },
+  {
+   "build": "cf2c2b4a",
+   "chose": "winner",
+   "pick": "right",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0084668,
+    "vetoes": [],
+    "liveTileShare": 0.6528,
+    "centralLiveShare": 0.9,
+    "gradMean": 0.01297,
+    "lumaMean": 0.4787,
+    "lumaStd": 0.2807,
+    "skyFraction": 0.2721
+   },
+   "fanMetrics": {
+    "score": 0.0144871,
+    "vetoes": [],
+    "liveTileShare": 0.8472,
+    "centralLiveShare": 0.925,
+    "gradMean": 0.0171,
+    "lumaMean": 0.3452,
+    "lumaStd": 0.1766,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "d14f55bc",
+   "chose": "winner",
+   "pick": "left",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~up20",
+   "incMetrics": {
+    "score": 0.0065035,
+    "vetoes": [],
+    "liveTileShare": 0.5972,
+    "centralLiveShare": 0.975,
+    "gradMean": 0.01089,
+    "lumaMean": 0.3149,
+    "lumaStd": 0.2339,
+    "skyFraction": 0.07065
+   },
+   "fanMetrics": {
+    "score": 0.0104731,
+    "vetoes": [],
+    "liveTileShare": 0.8125,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.01289,
+    "lumaMean": 0.2621,
+    "lumaStd": 0.1456,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "d78cf0dc",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~lo12",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~lo12",
+   "incMetrics": {
+    "score": null,
+    "vetoes": [
+     "dark"
+    ],
+    "liveTileShare": 0.1875,
+    "centralLiveShare": 0.275,
+    "gradMean": 0.00462,
+    "lumaMean": 0.148,
+    "lumaStd": 0.122,
+    "skyFraction": 0.0
+   },
+   "fanMetrics": {
+    "score": 0.0142108,
+    "vetoes": [],
+    "liveTileShare": 0.8056,
+    "centralLiveShare": 0.8,
+    "gradMean": 0.01764,
+    "lumaMean": 0.3087,
+    "lumaStd": 0.1814,
+    "skyFraction": 0.02919
+   }
+  },
+  {
+   "build": "d9e4a425",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": false,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~o45",
+   "incMetrics": {
+    "score": 0.0027828,
+    "vetoes": [],
+    "liveTileShare": 0.3681,
+    "centralLiveShare": 0.4,
+    "gradMean": 0.00756,
+    "lumaMean": 0.3267,
+    "lumaStd": 0.2994,
+    "skyFraction": 0.0
+   },
+   "fanMetrics": {
+    "score": 0.0117391,
+    "vetoes": [],
+    "liveTileShare": 0.7847,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.01496,
+    "lumaMean": 0.4155,
+    "lumaStd": 0.2861,
+    "skyFraction": 0.08972
+   }
+  },
+  {
+   "build": "da67241a",
+   "chose": "winner",
+   "pick": "right",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20",
+   "incMetrics": {
+    "score": 0.00515,
+    "vetoes": [],
+    "liveTileShare": 0.5,
+    "centralLiveShare": 0.85,
+    "gradMean": 0.0103,
+    "lumaMean": 0.2713,
+    "lumaStd": 0.2328,
+    "skyFraction": 0.09501
+   },
+   "fanMetrics": {
+    "score": 0.0164731,
+    "vetoes": [],
+    "liveTileShare": 0.9167,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.01797,
+    "lumaMean": 0.3897,
+    "lumaStd": 0.1984,
+    "skyFraction": 0.00884
+   }
+  },
+  {
+   "build": "dea1d8d2",
+   "chose": "winner",
+   "pick": "left",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~aim -> detail1~aim~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~aim~up20",
+   "incMetrics": {
+    "score": 0.0082145,
+    "vetoes": [],
+    "liveTileShare": 0.6181,
+    "centralLiveShare": 0.675,
+    "gradMean": 0.01329,
+    "lumaMean": 0.52,
+    "lumaStd": 0.2384,
+    "skyFraction": 0.14011
+   },
+   "fanMetrics": {
+    "score": 0.0134064,
+    "vetoes": [],
+    "liveTileShare": 0.7639,
+    "centralLiveShare": 0.725,
+    "gradMean": 0.01755,
+    "lumaMean": 0.3503,
+    "lumaStd": 0.1763,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "e0d7e01d",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": false,
+   "path": "detail1 -> detail1~aim -> detail1~aim~aim",
+   "incumbent": "detail1",
+   "fanPick": "detail1~aim~aim",
+   "incMetrics": {
+    "score": 0.0046666,
+    "vetoes": [],
+    "liveTileShare": 0.4861,
+    "centralLiveShare": 0.725,
+    "gradMean": 0.0096,
+    "lumaMean": 0.5286,
+    "lumaStd": 0.2289,
+    "skyFraction": 0.20918
+   },
+   "fanMetrics": {
+    "score": 0.0119923,
+    "vetoes": [],
+    "liveTileShare": 0.6944,
+    "centralLiveShare": 0.825,
+    "gradMean": 0.01727,
+    "lumaMean": 0.4858,
+    "lumaStd": 0.2184,
+    "skyFraction": 0.12684
+   }
+  },
+  {
+   "build": "e25280c0",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~aim -> detail1~aim~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~aim~up20",
+   "incMetrics": {
+    "score": 0.0037579,
+    "vetoes": [],
+    "liveTileShare": 0.3819,
+    "centralLiveShare": 0.625,
+    "gradMean": 0.00984,
+    "lumaMean": 0.5622,
+    "lumaStd": 0.2574,
+    "skyFraction": 0.16877
+   },
+   "fanMetrics": {
+    "score": 0.0105288,
+    "vetoes": [],
+    "liveTileShare": 0.6597,
+    "centralLiveShare": 0.85,
+    "gradMean": 0.01596,
+    "lumaMean": 0.4519,
+    "lumaStd": 0.208,
+    "skyFraction": 0.00417
+   }
+  },
+  {
+   "build": "e4b1d3f4",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0029868,
+    "vetoes": [],
+    "liveTileShare": 0.3889,
+    "centralLiveShare": 0.5,
+    "gradMean": 0.00768,
+    "lumaMean": 0.2486,
+    "lumaStd": 0.2425,
+    "skyFraction": 0.12601
+   },
+   "fanMetrics": {
+    "score": 0.0157724,
+    "vetoes": [],
+    "liveTileShare": 0.7986,
+    "centralLiveShare": 0.975,
+    "gradMean": 0.01975,
+    "lumaMean": 0.4349,
+    "lumaStd": 0.1765,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "e738e96f",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.000743,
+    "vetoes": [],
+    "liveTileShare": 0.1736,
+    "centralLiveShare": 0.05,
+    "gradMean": 0.00428,
+    "lumaMean": 0.1613,
+    "lumaStd": 0.2287,
+    "skyFraction": 0.00018
+   },
+   "fanMetrics": {
+    "score": 0.0120713,
+    "vetoes": [],
+    "liveTileShare": 0.8889,
+    "centralLiveShare": 0.9,
+    "gradMean": 0.01358,
+    "lumaMean": 0.2941,
+    "lumaStd": 0.2151,
+    "skyFraction": 0.02369
+   }
+  },
+  {
+   "build": "ea41e496",
+   "chose": "winner",
+   "pick": "right",
+   "leftRole": "incumbent",
+   "climb": false,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~o45",
+   "incMetrics": {
+    "score": 0.0009687,
+    "vetoes": [],
+    "liveTileShare": 0.2014,
+    "centralLiveShare": 0.25,
+    "gradMean": 0.00481,
+    "lumaMean": 0.175,
+    "lumaStd": 0.2378,
+    "skyFraction": 0.01
+   },
+   "fanMetrics": {
+    "score": 0.0105492,
+    "vetoes": [],
+    "liveTileShare": 0.6528,
+    "centralLiveShare": 0.775,
+    "gradMean": 0.01616,
+    "lumaMean": 0.4861,
+    "lumaStd": 0.2338,
+    "skyFraction": 0.15484
+   }
+  },
+  {
+   "build": "f2e077d2",
+   "chose": "winner",
+   "pick": "left",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0086538,
+    "vetoes": [],
+    "liveTileShare": 0.5903,
+    "centralLiveShare": 0.8,
+    "gradMean": 0.01466,
+    "lumaMean": 0.5927,
+    "lumaStd": 0.2277,
+    "skyFraction": 0.36734
+   },
+   "fanMetrics": {
+    "score": 0.0112062,
+    "vetoes": [],
+    "liveTileShare": 0.6875,
+    "centralLiveShare": 0.95,
+    "gradMean": 0.0163,
+    "lumaMean": 0.3896,
+    "lumaStd": 0.134,
+    "skyFraction": 0.02326
+   }
+  },
+  {
+   "build": "f4f75ee1",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0021031,
+    "vetoes": [],
+    "liveTileShare": 0.3403,
+    "centralLiveShare": 0.4,
+    "gradMean": 0.00618,
+    "lumaMean": 0.6888,
+    "lumaStd": 0.2083,
+    "skyFraction": 0.10391
+   },
+   "fanMetrics": {
+    "score": 0.0053896,
+    "vetoes": [],
+    "liveTileShare": 0.4931,
+    "centralLiveShare": 0.775,
+    "gradMean": 0.01093,
+    "lumaMean": 0.5779,
+    "lumaStd": 0.2145,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "f6924293",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "winner",
+   "climb": false,
+   "path": "detail1 -> detail1~lo12",
+   "incumbent": "detail1",
+   "fanPick": "detail1~lo12",
+   "incMetrics": {
+    "score": 0.0075107,
+    "vetoes": [],
+    "liveTileShare": 0.7153,
+    "centralLiveShare": 0.8,
+    "gradMean": 0.0105,
+    "lumaMean": 0.28,
+    "lumaStd": 0.192,
+    "skyFraction": 0.05336
+   },
+   "fanMetrics": {
+    "score": 0.0087314,
+    "vetoes": [],
+    "liveTileShare": 0.7431,
+    "centralLiveShare": 0.875,
+    "gradMean": 0.01175,
+    "lumaMean": 0.3139,
+    "lumaStd": 0.2021,
+    "skyFraction": 0.07396
+   }
+  },
+  {
+   "build": "f8e26360",
+   "chose": "winner",
+   "pick": "left",
+   "leftRole": "winner",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0052392,
+    "vetoes": [],
+    "liveTileShare": 0.5208,
+    "centralLiveShare": 0.85,
+    "gradMean": 0.01006,
+    "lumaMean": 0.4628,
+    "lumaStd": 0.315,
+    "skyFraction": 0.31217
+   },
+   "fanMetrics": {
+    "score": 0.0118954,
+    "vetoes": [],
+    "liveTileShare": 0.7361,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.01616,
+    "lumaMean": 0.3213,
+    "lumaStd": 0.1904,
+    "skyFraction": 0.01694
+   }
+  },
+  {
+   "build": "fb1c3e2f",
+   "chose": "incumbent",
+   "pick": "left",
+   "leftRole": "incumbent",
+   "climb": true,
+   "path": "detail1 -> detail1~up20 -> detail1~up20~up20",
+   "incumbent": "detail1",
+   "fanPick": "detail1~up20~up20",
+   "incMetrics": {
+    "score": 0.0099672,
+    "vetoes": [],
+    "liveTileShare": 0.6667,
+    "centralLiveShare": 0.725,
+    "gradMean": 0.01495,
+    "lumaMean": 0.5472,
+    "lumaStd": 0.2327,
+    "skyFraction": 0.02753
+   },
+   "fanMetrics": {
+    "score": 0.0160225,
+    "vetoes": [],
+    "liveTileShare": 0.8125,
+    "centralLiveShare": 0.975,
+    "gradMean": 0.01972,
+    "lumaMean": 0.4204,
+    "lumaStd": 0.1748,
+    "skyFraction": 0.0
+   }
+  },
+  {
+   "build": "fc5eaf01",
+   "chose": "neither",
+   "pick": "neither",
+   "leftRole": "incumbent",
+   "climb": false,
+   "path": "detail1 -> detail1~o45 -> detail1~o45~o45",
+   "incumbent": "detail1",
+   "fanPick": "detail1~o45~o45",
+   "incMetrics": {
+    "score": 0.019915,
+    "vetoes": [],
+    "liveTileShare": 0.875,
+    "centralLiveShare": 0.925,
+    "gradMean": 0.02276,
+    "lumaMean": 0.4145,
+    "lumaStd": 0.187,
+    "skyFraction": 0.0
+   },
+   "fanMetrics": {
+    "score": 0.0243012,
+    "vetoes": [],
+    "liveTileShare": 0.9931,
+    "centralLiveShare": 1.0,
+    "gradMean": 0.02447,
+    "lumaMean": 0.4831,
+    "lumaStd": 0.1942,
+    "skyFraction": 0.00577
+   }
+  }
+ ]
+}

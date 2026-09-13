@@ -1,0 +1,484 @@
+{
+ "schema": "steward-oracle-labels/v1",
+ "backend": "gcp-gemini",
+ "prompt": "Classify this frame into exactly one class from this list. These are the classes and their definitions, verbatim from the human labeller's rubric:\n\nGOOD: a gallery-worthy detail frame of the build\nok: usable, not the best pose of its build\nok-texel: usable but texels visible (camera too close, texture resolution showing)\nok-cropped: usable; the subject's top is cut off\ndull: shaded flat wall; nothing to look at\ndark: underexposed close-up\nBAD-roof: camera inside a roof or wall; flat planes\nBAD-mist: Mistlands mist volume; the frame is fogged out\nBAD-skyladder: linear build (ladder to a sky bucket); aim is empty sky\nBAD-ladder: linear build (rope-ladder diagonal) in haze; aim is empty air\nBAD-aim-water: aim is open water; the build is at the frame edge or absent\nBAD-dark-texel: shaded close-up with texels visible\n\nAlso give a tier rollup: \"GOOD\" only for the GOOD class, \"ok\" for ok/ok-texel/ok-cropped/dull/dark, \"BAD\" for any BAD-* class.\n\nRespond with exactly this JSON and nothing else:\n{\"tier\": \"<GOOD|ok|BAD>\", \"class\": \"<one class name from the list>\", \"reason\": \"<one short sentence>\"}",
+ "system": "You are judging automated architectural photographs of player-built structures in the game Valheim. Each frame is a \"detail\" shot: the camera was solved to put a target pixels-per-metre on part of a building, so a partial view of a large build is intended, not a fault. The frames go into a public gallery that celebrates what players built. You are judging photographs of architecture, not screenshots of gameplay. Answer only with the requested JSON.",
+ "frames": {
+  "0020_detail2": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 6000,
+   "tokensIn": 12668,
+   "tokensOut": 41,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot highlighting the intricate wooden roof structure and intersecting beams."
+  },
+  "0020_detail2~c75": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 3672,
+   "tokensIn": 10360,
+   "tokensOut": 43,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A clean and well-composed detail shot showcasing the geometric patterns of the wooden support structure against the sky."
+  },
+  "0020_detail2~lo12": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 4609,
+   "tokensIn": 11597,
+   "tokensOut": 42,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot of a stone and wood turret against a clear sky."
+  },
+  "0020_detail2~o45": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 4344,
+   "tokensIn": 14796,
+   "tokensOut": 37,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-framed and beautifully lit detail shot showcasing wooden Norse roof ornamentation."
+  },
+  "0042_detail2": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 3344,
+   "tokensIn": 14247,
+   "tokensOut": 40,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed detail shot showcasing intricate wooden beam layering and decorative banners with clear lighting."
+  },
+  "0042_detail2~c75": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 4344,
+   "tokensIn": 14083,
+   "tokensOut": 39,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot showcasing intricate wooden beam geometry over stone."
+  },
+  "0042_detail2~lo12": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 2937,
+   "tokensIn": 12988,
+   "tokensOut": 41,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A beautifully composed night shot of a wooden tower featuring an atmospheric green glow against a starry sky."
+  },
+  "0042_detail2~o45": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 3078,
+   "tokensIn": 21036,
+   "tokensOut": 40,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A highly detailed and well-lit shot of intricate wooden architecture featuring decorative shields and beam work."
+  },
+  "0116_detail1": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 3359,
+   "tokensIn": 49865,
+   "tokensOut": 45,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "An atmospheric and well-composed detail shot of an indoor harbor showing a docked boat under stone arches with vibrant lighting."
+  },
+  "0116_detail1~c75": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 7485,
+   "tokensIn": 49842,
+   "tokensOut": 40,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed detail shot showcasing the intricate wooden architectural elements and textures of the structure."
+  },
+  "0116_detail1~lo12": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 3953,
+   "tokensIn": 48026,
+   "tokensOut": 47,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and gallery-worthy detail shot showcasing the intricate wooden bracing and stone arch design from a dramatic low angle."
+  },
+  "0116_detail1~lo12~c75": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 6375,
+   "tokensIn": 50413,
+   "tokensOut": 44,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and gallery-worthy detail shot showcasing intricate wooden support structures and stone walls with good lighting."
+  },
+  "0116_detail1~lo12~lo12": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 4797,
+   "tokensIn": 50201,
+   "tokensOut": 41,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "An atmospheric detail shot with excellent contrast between the blue wisp light and the warm wood tones."
+  },
+  "0116_detail1~lo12~o45": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 6594,
+   "tokensIn": 41930,
+   "tokensOut": 49,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed detail shot that showcases the intricate timber framing and stone craftsmanship under favorable lighting."
+  },
+  "0116_detail1~o45": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 6454,
+   "tokensIn": 38148,
+   "tokensOut": 40,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot showing intricate wood carpentry with shields and banners."
+  },
+  "0117_detail1": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 7157,
+   "tokensIn": 33891,
+   "tokensOut": 40,
+   "tier": "ok",
+   "class": "ok",
+   "reason": "A decent detail shot of the stone arch structure, though the overcast lighting is somewhat flat."
+  },
+  "0117_detail1~c75": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 5531,
+   "tokensIn": 26602,
+   "tokensOut": 43,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-lit and nicely composed detail shot showcasing the intricate wooden beams and stone carvings of the build."
+  },
+  "0117_detail1~lo12": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 2594,
+   "tokensIn": 23343,
+   "tokensOut": 39,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot of the timber framing and roof structure."
+  },
+  "0117_detail1~o45": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 5031,
+   "tokensIn": 26607,
+   "tokensOut": 44,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "The frame captures a highly detailed and beautifully lit wooden beam design on a stone wall, showcasing advanced building techniques."
+  },
+  "0128_detail3": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 3735,
+   "tokensIn": 4335,
+   "tokensOut": 41,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and detailed shot of a wooden spiral staircase wrapping around a circular stone tower."
+  },
+  "0128_detail3~c75": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 5140,
+   "tokensIn": 5558,
+   "tokensOut": 40,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "An excellently composed and beautifully lit detail shot of a stone and timber facade during golden hour."
+  },
+  "0128_detail3~lo12": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 4516,
+   "tokensIn": 9205,
+   "tokensOut": 41,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed detail shot featuring banners, wooden supports, and stone walls with clean lighting."
+  },
+  "0128_detail3~lo12~c75": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 3891,
+   "tokensIn": 5150,
+   "tokensOut": 40,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and crisp detail shot of wooden roof ornamentation against a clear blue sky."
+  },
+  "0128_detail3~lo12~lo12": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 3187,
+   "tokensIn": 12769,
+   "tokensOut": 43,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and detailed architectural shot featuring complex woodwork, banners, and stone pillars with strong lighting."
+  },
+  "0128_detail3~lo12~o45": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 3985,
+   "tokensIn": 6124,
+   "tokensOut": 43,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot focusing on the intricate geometric patterns of the wooden support structures."
+  },
+  "0128_detail3~o45": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 4984,
+   "tokensIn": 5575,
+   "tokensOut": 39,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and brightly lit architectural detail showcasing intricate wooden beam work against the sky."
+  },
+  "0129_detail1": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 3265,
+   "tokensIn": 28987,
+   "tokensOut": 39,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed detail shot showing intricate wooden framing and stone pillars in bright daylight."
+  },
+  "0129_detail1~c75": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 5594,
+   "tokensIn": 32372,
+   "tokensOut": 39,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "The frame captures a well-composed and beautifully lit architectural detail of the wooden structure."
+  },
+  "0129_detail1~c75~c75": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 4281,
+   "tokensIn": 39936,
+   "tokensOut": 43,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed architectural detail shot highlighting the intricate wooden beam and stair construction with warm, atmospheric lighting."
+  },
+  "0129_detail1~c75~lo12": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 4782,
+   "tokensIn": 30938,
+   "tokensOut": 44,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and cleanly lit detail shot showing geometric Tudor-style wood framing against stone with ivy accents."
+  },
+  "0129_detail1~c75~o45": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 6016,
+   "tokensIn": 40572,
+   "tokensOut": 45,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot showcasing the intricate wooden and stone elements of the player's build."
+  },
+  "0129_detail1~lo12": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 6500,
+   "tokensIn": 24951,
+   "tokensOut": 41,
+   "tier": "ok",
+   "class": "dark",
+   "reason": "The close-up shot of the wooden carvings and structural supports is underexposed and dark."
+  },
+  "0129_detail1~o45": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 5860,
+   "tokensIn": 33727,
+   "tokensOut": 37,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-lit and geometrically interesting detail shot of intricate wooden roof supports."
+  },
+  "0292_detail1": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 3344,
+   "tokensIn": 41715,
+   "tokensOut": 40,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and moody detail shot of a stone structure with arches and a staircase."
+  },
+  "0292_detail1~c75": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 4687,
+   "tokensIn": 25034,
+   "tokensOut": 41,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and beautifully lit architectural detail showing the intersection of stone arches and wooden supports."
+  },
+  "0292_detail1~lo12": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 5016,
+   "tokensIn": 47724,
+   "tokensOut": 41,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot showcasing intricate wooden beam ornamentation and structured stonework."
+  },
+  "0292_detail1~o45": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 7266,
+   "tokensIn": 68190,
+   "tokensOut": 43,
+   "tier": "ok",
+   "class": "ok-texel",
+   "reason": "The close-up perspective on the carved stone and wooden column shows visible texture pixelation."
+  },
+  "0292_detail1~o45~c75": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 6141,
+   "tokensIn": 45250,
+   "tokensOut": 44,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-lit, dynamically composed detail shot showcasing intricate wooden support structures and roof details against a clear sky."
+  },
+  "0292_detail1~o45~lo12": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 4906,
+   "tokensIn": 78588,
+   "tokensOut": 37,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "An intricate, well-lit architectural detail showcasing complex woodwork and texture patterns."
+  },
+  "0292_detail1~o45~o45": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 4672,
+   "tokensIn": 96372,
+   "tokensOut": 43,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot of a snowy mountain tower with intricate wood and stone craftsmanship."
+  },
+  "0295_detail2": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 3984,
+   "tokensIn": 5132,
+   "tokensOut": 41,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed detail shot highlighting the intricate wooden beam work and stone construction with good lighting."
+  },
+  "0295_detail2~c75": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 4578,
+   "tokensIn": 53646,
+   "tokensOut": 41,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and beautifully lit architectural detail showing a spiral stone staircase wrapping around a pillar."
+  },
+  "0295_detail2~lo12": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 2204,
+   "tokensIn": 6004,
+   "tokensOut": 40,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed detail shot showcasing intricate wooden support beam structures under a gabled roof."
+  },
+  "0295_detail2~lo12~c75": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 4531,
+   "tokensIn": 52080,
+   "tokensOut": 42,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A beautifully detailed and well-lit close-up of an intricate wooden structure with banners and lanterns."
+  },
+  "0295_detail2~lo12~lo12": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 6188,
+   "tokensIn": 48492,
+   "tokensOut": 54,
+   "tier": "ok",
+   "class": "ok-texel",
+   "reason": "The shot is well-composed, but the camera is close enough to the wooden beams that the low texture resolution and pixelation are clearly visible."
+  },
+  "0295_detail2~lo12~o45": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 4125,
+   "tokensIn": 7183,
+   "tokensOut": 42,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "An atmospheric and well-composed detail shot of a circular wooden window element highlighted by green backlighting."
+  },
+  "0295_detail2~o45": {
+   "ok": true,
+   "model": "gemini-3.5-flash",
+   "duration_ms": 4250,
+   "tokensIn": 4734,
+   "tokensOut": 41,
+   "tier": "GOOD",
+   "class": "GOOD",
+   "reason": "A well-composed and cleanly lit detail shot showcasing the intricate wooden support structures of the build."
+  }
+ },
+ "model": "gemini-3.5-flash",
+ "generatedAt": "2026-09-12T21:01:00Z",
+ "counts": {
+  "frames": 47,
+  "failed": 0
+ }
+}

@@ -1,0 +1,224 @@
+{
+ "schema": "steward-oracle-qualification/v1",
+ "oracle": "C:\\work\\valheim-capture\\oracle-qual-20260912\\oracle-r1-v2-flash.json",
+ "labels": "C:\\work\\baseline\\docs\\evidence\\2026-09-12-era11-refine-r1\\eye-labels.json",
+ "model": "gemini-3.5-flash",
+ "rubric": "v2",
+ "generatedAt": "2026-09-12T21:08:58Z",
+ "passBar": {
+  "goodBadAgreement": 0.9,
+  "badCalledGood": 0
+ },
+ "n": 44,
+ "matrix": {
+  "GOOD": {
+   "GOOD": 7,
+   "ok": 3,
+   "BAD": 3
+  },
+  "ok": {
+   "GOOD": 3,
+   "ok": 4,
+   "BAD": 1
+  },
+  "BAD": {
+   "GOOD": 14,
+   "ok": 4,
+   "BAD": 5
+  }
+ },
+ "goodBadAgreement": 0.3333,
+ "badCalledGood": [
+  "0020_detail2",
+  "0020_detail2~c75",
+  "0020_detail2~lo12",
+  "0042_detail2",
+  "0042_detail2~lo12",
+  "0042_detail2~o45",
+  "0117_detail1~c75",
+  "0117_detail1~o45",
+  "0128_detail3~c75",
+  "0128_detail3~lo12",
+  "0128_detail3~lo12~c75",
+  "0128_detail3~lo12~o45",
+  "0292_detail1~c75",
+  "0295_detail2"
+ ],
+ "goodCalledBad": [
+  "0292_detail1~o45",
+  "0292_detail1~o45~lo12",
+  "0295_detail2~c75"
+ ],
+ "exactClassMatch": 0.2045,
+ "disagreements": [
+  {
+   "frame": "0020_detail2",
+   "human": "BAD-ladder",
+   "oracle": "GOOD",
+   "reason": "A beautifully composed and well-lit detail shot of a classic Valheim architectural feature."
+  },
+  {
+   "frame": "0020_detail2~c75",
+   "human": "BAD-ladder",
+   "oracle": "GOOD",
+   "reason": "A well-composed and sharp detail shot showcasing intricate stone and wood architectural elements with banners."
+  },
+  {
+   "frame": "0020_detail2~lo12",
+   "human": "BAD-ladder",
+   "oracle": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot showcasing the texture and architectural design of the building."
+  },
+  {
+   "frame": "0042_detail2",
+   "human": "BAD-skyladder",
+   "oracle": "GOOD",
+   "reason": "A beautifully composed, well-lit detail shot of a decorative architectural element against the sky."
+  },
+  {
+   "frame": "0042_detail2~c75",
+   "human": "BAD-skyladder",
+   "oracle": "ok-texel",
+   "reason": "The shot captures a nice architectural detail, but the camera is close enough that texture pixelation is visible on the foreground wooden support."
+  },
+  {
+   "frame": "0042_detail2~lo12",
+   "human": "BAD-skyladder",
+   "oracle": "GOOD",
+   "reason": "A beautifully composed, sharp detail shot showing the clean intersection of stone masonry and wooden timber framing."
+  },
+  {
+   "frame": "0042_detail2~o45",
+   "human": "BAD-skyladder",
+   "oracle": "GOOD",
+   "reason": "A well-composed, sharp detail shot showcasing complex stone and darkwood architectural elements."
+  },
+  {
+   "frame": "0116_detail1",
+   "human": "ok-cropped",
+   "oracle": "GOOD",
+   "reason": "An excellently composed, atmospheric close-up showcasing detailed carpentry and roof architecture."
+  },
+  {
+   "frame": "0117_detail1",
+   "human": "BAD-aim-water",
+   "oracle": "ok-texel",
+   "reason": "The frame captures a nice architectural detail, but the camera is close enough that texture resolution is visible on the surfaces."
+  },
+  {
+   "frame": "0117_detail1~c75",
+   "human": "BAD-aim-water",
+   "oracle": "GOOD",
+   "reason": "An exceptionally atmospheric and well-composed detail shot featuring moody mystical lighting on ornate wood carvings."
+  },
+  {
+   "frame": "0117_detail1~o45",
+   "human": "BAD-aim-water",
+   "oracle": "GOOD",
+   "reason": "An excellently composed, atmospheric detail shot of a stone hearth."
+  },
+  {
+   "frame": "0128_detail3~c75",
+   "human": "BAD-mist",
+   "oracle": "GOOD",
+   "reason": "A well-composed, atmospheric detail shot of a castle walkway with no technical defects."
+  },
+  {
+   "frame": "0128_detail3~lo12",
+   "human": "BAD-mist",
+   "oracle": "GOOD",
+   "reason": "A well-composed and clean detail shot of the roof's ornamental carving."
+  },
+  {
+   "frame": "0128_detail3~lo12~c75",
+   "human": "BAD-mist",
+   "oracle": "GOOD",
+   "reason": "Dramatically lit, well-composed detail shot of the wooden architecture."
+  },
+  {
+   "frame": "0128_detail3~lo12~o45",
+   "human": "BAD-mist",
+   "oracle": "GOOD",
+   "reason": "A well-composed and detailed architectural shot showcasing the complex wooden stairways and tower structure."
+  },
+  {
+   "frame": "0128_detail3~o45",
+   "human": "BAD-mist",
+   "oracle": "ok-texel",
+   "reason": "The shot captures a nice architectural detail, but the camera is close enough to reveal the low-resolution wood texture."
+  },
+  {
+   "frame": "0129_detail1",
+   "human": "ok",
+   "oracle": "BAD-dark-texel",
+   "reason": "The shot is underexposed and so close to the wood column that the low texture resolution becomes pixelated."
+  },
+  {
+   "frame": "0129_detail1~c75",
+   "human": "ok",
+   "oracle": "GOOD",
+   "reason": "A beautifully lit, sharp, and well-composed detail shot showcasing complex building techniques."
+  },
+  {
+   "frame": "0129_detail1~c75~c75",
+   "human": "ok-texel",
+   "oracle": "GOOD",
+   "reason": "A well-composed and crisp architectural detail shot with clear background contrast."
+  },
+  {
+   "frame": "0129_detail1~c75~o45",
+   "human": "GOOD",
+   "oracle": "ok-texel",
+   "reason": "The shot captures a nice architectural detail, but the camera is close enough that texture resolution limits are visible on the stone and wood surfaces."
+  },
+  {
+   "frame": "0129_detail1~o45",
+   "human": "GOOD",
+   "oracle": "dark",
+   "reason": "The frame is heavily underexposed, obscuring the details of the stone structure."
+  },
+  {
+   "frame": "0292_detail1~c75",
+   "human": "BAD-dark-texel",
+   "oracle": "GOOD",
+   "reason": "A well-composed, atmospheric detail shot with striking green lighting against the night sky."
+  },
+  {
+   "frame": "0292_detail1~o45",
+   "human": "GOOD",
+   "oracle": "BAD-dark-texel",
+   "reason": "The shot is too dark and positioned too close to the surface, showing visible texture pixelation."
+  },
+  {
+   "frame": "0292_detail1~o45~lo12",
+   "human": "GOOD",
+   "oracle": "BAD-dark-texel",
+   "reason": "The image is very dark and the camera is too close, revealing low texture resolution on the wooden beams."
+  },
+  {
+   "frame": "0295_detail2",
+   "human": "BAD-roof",
+   "oracle": "GOOD",
+   "reason": "A well-composed architectural detail shot showcasing the intersection of stonework and carpentry."
+  },
+  {
+   "frame": "0295_detail2~c75",
+   "human": "GOOD",
+   "oracle": "BAD-roof",
+   "reason": "The camera is positioned inside the roof structure, looking up at the underside of beams with no horizon or ground visible."
+  },
+  {
+   "frame": "0295_detail2~lo12~c75",
+   "human": "GOOD",
+   "oracle": "ok-texel",
+   "reason": "The camera is close enough to the wooden structures that the texture resolution limits are visible."
+  },
+  {
+   "frame": "0295_detail2~o45",
+   "human": "BAD-roof",
+   "oracle": "ok-texel",
+   "reason": "The shot is a decent architectural detail, but the camera is close enough that the low resolution of the wood textures is visible."
+  }
+ ],
+ "qualified": false
+}

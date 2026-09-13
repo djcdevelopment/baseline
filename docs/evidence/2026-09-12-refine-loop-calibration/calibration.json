@@ -1,0 +1,112 @@
+{
+ "schema": "steward-refine-calibration/v1",
+ "generatedAt": "2026-09-12",
+ "source": {
+  "verdicts": "pair-verdicts.json",
+  "run": "../2026-09-12-era11-refine-full/"
+ },
+ "verdictCounts": {
+  "incumbent": 25,
+  "winner": 18,
+  "neither": 33,
+  "both": 1
+ },
+ "ranker": {
+  "decidedPairs": 43,
+  "keepPlannedPoseAlways": {
+   "hits": 25,
+   "rate": 0.581
+  },
+  "loopRuleHigherScore": {
+   "hits": 18,
+   "rate": 0.419,
+   "note": "the loop always takes the higher score, so this is its hit rate"
+  },
+  "eyePickHadMoreOf": {
+   "score": {
+    "n": 43,
+    "eyePickHadMore": 18,
+    "rate": 0.419
+   },
+   "liveTileShare": {
+    "n": 43,
+    "eyePickHadMore": 19,
+    "rate": 0.442
+   },
+   "centralLiveShare": {
+    "n": 43,
+    "eyePickHadMore": 17,
+    "rate": 0.395
+   },
+   "gradMean": {
+    "n": 43,
+    "eyePickHadMore": 18,
+    "rate": 0.419
+   },
+   "lumaMean": {
+    "n": 43,
+    "eyePickHadMore": 25,
+    "rate": 0.581
+   },
+   "lumaStd": {
+    "n": 43,
+    "eyePickHadMore": 22,
+    "rate": 0.512
+   },
+   "skyFraction": {
+    "n": 43,
+    "eyePickHadMore": 25,
+    "rate": 0.581
+   }
+  }
+ },
+ "climb": {
+  "decidedPairs": 37,
+  "climbWon": 15,
+  "climbLost": 22
+ },
+ "lostBuilds": {
+  "n": 33,
+  "of": 77,
+  "share": 0.429,
+  "medians": {
+   "lost": {
+    "p90r": 64.5,
+    "length": 156.3,
+    "height": 27.2,
+    "incCentralLiveShare": 0.55
+   },
+   "kept": {
+    "p90r": 49.5,
+    "length": 120.3,
+    "height": 36.5,
+    "incCentralLiveShare": 0.8
+   }
+  }
+ },
+ "fit": {
+  "method": "leave-one-out; feature subset selected inside each fold; ridge logistic",
+  "pairwiseRanker": {
+   "n": 43,
+   "baselineKeepPlanned": 0.58,
+   "looAccuracy": 0.65,
+   "modalSubset": [
+    "lumaMean",
+    "lumaStd"
+   ]
+  },
+  "lostBuildGate": {
+   "n": 77,
+   "baselineAllShootable": 0.57,
+   "looAccuracyPreShutterOnly": 0.65,
+   "modalSubset": [
+    "p90r",
+    "height"
+   ],
+   "bestSingleFeature": {
+    "incCentralLiveShare": 0.66
+   }
+  },
+  "verdict": "directionally consistent with the counts, statistically nothing at this n; no composition term ships on 43 decided pairs"
+ }
+}

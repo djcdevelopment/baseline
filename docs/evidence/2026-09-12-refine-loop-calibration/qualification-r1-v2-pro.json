@@ -1,0 +1,285 @@
+{
+ "schema": "steward-oracle-qualification/v1",
+ "oracle": "C:\\work\\valheim-capture\\oracle-qual-20260912\\oracle-r1-v2-pro.json",
+ "labels": "C:\\work\\baseline\\docs\\evidence\\2026-09-12-era11-refine-r1\\eye-labels.json",
+ "model": "gemini-3.1-pro-preview",
+ "rubric": "v2",
+ "generatedAt": "2026-09-12T21:16:26Z",
+ "passBar": {
+  "goodBadAgreement": 0.9,
+  "badCalledGood": 0
+ },
+ "n": 45,
+ "matrix": {
+  "GOOD": {
+   "GOOD": 1,
+   "ok": 4,
+   "BAD": 8
+  },
+  "ok": {
+   "GOOD": 1,
+   "ok": 2,
+   "BAD": 5
+  },
+  "BAD": {
+   "GOOD": 4,
+   "ok": 17,
+   "BAD": 3
+  }
+ },
+ "goodBadAgreement": 0.1081,
+ "badCalledGood": [
+  "0128_detail3~c75",
+  "0128_detail3~lo12",
+  "0128_detail3~lo12~c75",
+  "0295_detail2"
+ ],
+ "goodCalledBad": [
+  "0116_detail1~lo12",
+  "0116_detail1~o45",
+  "0129_detail1~o45",
+  "0292_detail1~o45",
+  "0292_detail1~o45~lo12",
+  "0295_detail2~c75",
+  "0295_detail2~lo12~c75",
+  "0295_detail2~lo12~lo12"
+ ],
+ "exactClassMatch": 0.0444,
+ "disagreements": [
+  {
+   "frame": "0020_detail2",
+   "human": "BAD-ladder",
+   "oracle": "ok",
+   "reason": "The frame captures interesting architectural details clearly, though the lighting and composition are somewhat flat."
+  },
+  {
+   "frame": "0020_detail2~c75",
+   "human": "BAD-ladder",
+   "oracle": "ok",
+   "reason": "The frame captures the building well, though the angle and heavy atmospheric fog make it less than ideal for a showcase."
+  },
+  {
+   "frame": "0020_detail2~lo12",
+   "human": "BAD-ladder",
+   "oracle": "ok-cropped",
+   "reason": "The view is usable but the top of the structure is cut off by the framing."
+  },
+  {
+   "frame": "0020_detail2~o45",
+   "human": "BAD-ladder",
+   "oracle": "ok",
+   "reason": "A usable detail shot of the timber framing, though the composition is slightly messy."
+  },
+  {
+   "frame": "0042_detail2",
+   "human": "BAD-skyladder",
+   "oracle": "ok-texel",
+   "reason": "The frame captures a usable architectural detail but the camera is close enough that texture pixels are visible on the wood."
+  },
+  {
+   "frame": "0042_detail2~c75",
+   "human": "BAD-skyladder",
+   "oracle": "ok",
+   "reason": "Usable view of the exterior stairs and lighting, though not a defining shot of the whole structure."
+  },
+  {
+   "frame": "0042_detail2~lo12",
+   "human": "BAD-skyladder",
+   "oracle": "ok",
+   "reason": "A perfectly usable architectural detail shot, though perhaps not a standout gallery cover."
+  },
+  {
+   "frame": "0042_detail2~o45",
+   "human": "BAD-skyladder",
+   "oracle": "ok-texel",
+   "reason": "the structure is visible but the camera is close enough that texture pixels are noticeable"
+  },
+  {
+   "frame": "0116_detail1",
+   "human": "ok-cropped",
+   "oracle": "BAD-mist",
+   "reason": "A thick fog volume washes out the frame and hides the building's details."
+  },
+  {
+   "frame": "0116_detail1~c75",
+   "human": "GOOD",
+   "oracle": "ok-texel",
+   "reason": "The camera is close enough to the wooden features that texture pixels are clearly visible."
+  },
+  {
+   "frame": "0116_detail1~lo12",
+   "human": "GOOD",
+   "oracle": "BAD-roof",
+   "reason": "The camera is inside a roof cavity looking up at beams from underneath."
+  },
+  {
+   "frame": "0116_detail1~lo12~lo12",
+   "human": "GOOD",
+   "oracle": "ok-cropped",
+   "reason": "The building is atmospheric and well-lit, but its top extends out of the frame."
+  },
+  {
+   "frame": "0116_detail1~lo12~o45",
+   "human": "GOOD",
+   "oracle": "ok-texel",
+   "reason": "The camera is close enough to the stone wall that individual texture pixels are clearly visible."
+  },
+  {
+   "frame": "0116_detail1~o45",
+   "human": "GOOD",
+   "oracle": "BAD-mist",
+   "reason": "A heavy fog volume washes out the frame and dissolves the distant geometry."
+  },
+  {
+   "frame": "0117_detail1",
+   "human": "BAD-aim-water",
+   "oracle": "ok-texel",
+   "reason": "The camera is pressed too close to the wooden stakes, making the texture resolution visible."
+  },
+  {
+   "frame": "0117_detail1~c75",
+   "human": "BAD-aim-water",
+   "oracle": "ok-texel",
+   "reason": "the camera is close enough to the stone surface that texture pixels are clearly visible"
+  },
+  {
+   "frame": "0117_detail1~lo12",
+   "human": "BAD-aim-water",
+   "oracle": "dark",
+   "reason": "The subject is in heavy shadow and detail is lost to darkness."
+  },
+  {
+   "frame": "0128_detail3",
+   "human": "BAD-mist",
+   "oracle": "ok",
+   "reason": "Valid interior perspective showing architectural arches, but lighting is slightly dim."
+  },
+  {
+   "frame": "0128_detail3~c75",
+   "human": "BAD-mist",
+   "oracle": "GOOD",
+   "reason": "Well-lit and nicely framed detail shot of the carved wooden features and entryway."
+  },
+  {
+   "frame": "0128_detail3~lo12",
+   "human": "BAD-mist",
+   "oracle": "GOOD",
+   "reason": "A well-composed and brightly lit detail shot of complex architectural framing."
+  },
+  {
+   "frame": "0128_detail3~lo12~c75",
+   "human": "BAD-mist",
+   "oracle": "GOOD",
+   "reason": "A well-composed and brightly lit detail shot that highlights the complex timber work while providing context with the boat in the background."
+  },
+  {
+   "frame": "0128_detail3~lo12~o45",
+   "human": "BAD-mist",
+   "oracle": "dark",
+   "reason": "The nighttime lighting leaves much of the subject in deep shadow, making it underexposed."
+  },
+  {
+   "frame": "0128_detail3~o45",
+   "human": "BAD-mist",
+   "oracle": "ok",
+   "reason": "A usable but somewhat chaotic detail shot of the roof construction."
+  },
+  {
+   "frame": "0129_detail1",
+   "human": "ok",
+   "oracle": "BAD-mist",
+   "reason": "A fog volume is washing out the frame and dissolving distant geometry."
+  },
+  {
+   "frame": "0129_detail1~c75",
+   "human": "ok",
+   "oracle": "GOOD",
+   "reason": "A well-composed and clear detail shot of an intricate wooden build."
+  },
+  {
+   "frame": "0129_detail1~c75~o45",
+   "human": "GOOD",
+   "oracle": "dark",
+   "reason": "The subject is heavily shadowed and much of its detail is lost to darkness."
+  },
+  {
+   "frame": "0129_detail1~o45",
+   "human": "GOOD",
+   "oracle": "BAD-mist",
+   "reason": "The frame is heavily washed out by a fog or mist volume"
+  },
+  {
+   "frame": "0292_detail1~c75",
+   "human": "BAD-dark-texel",
+   "oracle": "ok-cropped",
+   "reason": "Good view of the detailed architecture, but the highest roof peak is cut off by the top edge of the frame."
+  },
+  {
+   "frame": "0292_detail1~lo12",
+   "human": "ok",
+   "oracle": "BAD-mist",
+   "reason": "a thick fog volume washes out the frame and obscures the subject"
+  },
+  {
+   "frame": "0292_detail1~o45",
+   "human": "GOOD",
+   "oracle": "BAD-mist",
+   "reason": "A fog volume is washing out the frame, obscuring the structure and background."
+  },
+  {
+   "frame": "0292_detail1~o45~c75",
+   "human": "dark",
+   "oracle": "BAD-mist",
+   "reason": "A heavy fog volume washes out the frame and obscures the subject."
+  },
+  {
+   "frame": "0292_detail1~o45~lo12",
+   "human": "GOOD",
+   "oracle": "BAD-mist",
+   "reason": "A heavy fog volume washes out the frame, obscuring the distant geometry."
+  },
+  {
+   "frame": "0292_detail1~o45~o45",
+   "human": "ok",
+   "oracle": "BAD-mist",
+   "reason": "The scene is completely washed out by a heavy fog volume."
+  },
+  {
+   "frame": "0295_detail2",
+   "human": "BAD-roof",
+   "oracle": "GOOD",
+   "reason": "A well-framed, nicely lit detail shot of the roof's architectural ornaments."
+  },
+  {
+   "frame": "0295_detail2~c75",
+   "human": "GOOD",
+   "oracle": "BAD-mist",
+   "reason": "A fog volume is washing out the frame and obscuring the subject."
+  },
+  {
+   "frame": "0295_detail2~lo12",
+   "human": "BAD-roof",
+   "oracle": "ok",
+   "reason": "A clear and properly framed detail shot of a building corner, but lacks the striking composition for the top tier."
+  },
+  {
+   "frame": "0295_detail2~lo12~c75",
+   "human": "GOOD",
+   "oracle": "BAD-dark-texel",
+   "reason": "The camera is positioned too close to the surface in deep shadow, revealing the texture pixels in a dark frame."
+  },
+  {
+   "frame": "0295_detail2~lo12~lo12",
+   "human": "GOOD",
+   "oracle": "BAD-dark-texel",
+   "reason": "The camera is pressed too close to the structure, showing low-resolution texels in shadow."
+  },
+  {
+   "frame": "0295_detail2~o45",
+   "human": "BAD-roof",
+   "oracle": "ok-texel",
+   "reason": "The camera is too close, making the texture pixels clearly visible on the wood surfaces."
+  }
+ ],
+ "qualified": false
+}

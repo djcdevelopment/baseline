@@ -1,0 +1,270 @@
+{
+ "schema": "steward-oracle-qualification/v1",
+ "oracle": "C:\\work\\valheim-capture\\oracle-qual-20260912\\oracle-era11-refine-r1.json",
+ "labels": "C:\\work\\baseline\\docs\\evidence\\2026-09-12-era11-refine-r1\\eye-labels.json",
+ "model": "gemini-3.5-flash",
+ "generatedAt": "2026-09-12T21:01:11Z",
+ "passBar": {
+  "goodBadAgreement": 0.9,
+  "badCalledGood": 0
+ },
+ "n": 45,
+ "matrix": {
+  "GOOD": {
+   "GOOD": 10,
+   "ok": 3,
+   "BAD": 0
+  },
+  "ok": {
+   "GOOD": 8,
+   "ok": 0,
+   "BAD": 0
+  },
+  "BAD": {
+   "GOOD": 23,
+   "ok": 1,
+   "BAD": 0
+  }
+ },
+ "goodBadAgreement": 0.2703,
+ "badCalledGood": [
+  "0020_detail2",
+  "0020_detail2~c75",
+  "0020_detail2~lo12",
+  "0020_detail2~o45",
+  "0042_detail2",
+  "0042_detail2~c75",
+  "0042_detail2~lo12",
+  "0042_detail2~o45",
+  "0117_detail1~c75",
+  "0117_detail1~lo12",
+  "0117_detail1~o45",
+  "0128_detail3",
+  "0128_detail3~c75",
+  "0128_detail3~lo12",
+  "0128_detail3~lo12~c75",
+  "0128_detail3~lo12~lo12",
+  "0128_detail3~lo12~o45",
+  "0128_detail3~o45",
+  "0292_detail1~c75",
+  "0295_detail2",
+  "0295_detail2~lo12",
+  "0295_detail2~lo12~o45",
+  "0295_detail2~o45"
+ ],
+ "goodCalledBad": [],
+ "exactClassMatch": 0.2222,
+ "disagreements": [
+  {
+   "frame": "0020_detail2",
+   "human": "BAD-ladder",
+   "oracle": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot highlighting the intricate wooden roof structure and intersecting beams."
+  },
+  {
+   "frame": "0020_detail2~c75",
+   "human": "BAD-ladder",
+   "oracle": "GOOD",
+   "reason": "A clean and well-composed detail shot showcasing the geometric patterns of the wooden support structure against the sky."
+  },
+  {
+   "frame": "0020_detail2~lo12",
+   "human": "BAD-ladder",
+   "oracle": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot of a stone and wood turret against a clear sky."
+  },
+  {
+   "frame": "0020_detail2~o45",
+   "human": "BAD-ladder",
+   "oracle": "GOOD",
+   "reason": "A well-framed and beautifully lit detail shot showcasing wooden Norse roof ornamentation."
+  },
+  {
+   "frame": "0042_detail2",
+   "human": "BAD-skyladder",
+   "oracle": "GOOD",
+   "reason": "A well-composed detail shot showcasing intricate wooden beam layering and decorative banners with clear lighting."
+  },
+  {
+   "frame": "0042_detail2~c75",
+   "human": "BAD-skyladder",
+   "oracle": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot showcasing intricate wooden beam geometry over stone."
+  },
+  {
+   "frame": "0042_detail2~lo12",
+   "human": "BAD-skyladder",
+   "oracle": "GOOD",
+   "reason": "A beautifully composed night shot of a wooden tower featuring an atmospheric green glow against a starry sky."
+  },
+  {
+   "frame": "0042_detail2~o45",
+   "human": "BAD-skyladder",
+   "oracle": "GOOD",
+   "reason": "A highly detailed and well-lit shot of intricate wooden architecture featuring decorative shields and beam work."
+  },
+  {
+   "frame": "0116_detail1",
+   "human": "ok-cropped",
+   "oracle": "GOOD",
+   "reason": "An atmospheric and well-composed detail shot of an indoor harbor showing a docked boat under stone arches with vibrant lighting."
+  },
+  {
+   "frame": "0117_detail1",
+   "human": "BAD-aim-water",
+   "oracle": "ok",
+   "reason": "A decent detail shot of the stone arch structure, though the overcast lighting is somewhat flat."
+  },
+  {
+   "frame": "0117_detail1~c75",
+   "human": "BAD-aim-water",
+   "oracle": "GOOD",
+   "reason": "A well-lit and nicely composed detail shot showcasing the intricate wooden beams and stone carvings of the build."
+  },
+  {
+   "frame": "0117_detail1~lo12",
+   "human": "BAD-aim-water",
+   "oracle": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot of the timber framing and roof structure."
+  },
+  {
+   "frame": "0117_detail1~o45",
+   "human": "BAD-aim-water",
+   "oracle": "GOOD",
+   "reason": "The frame captures a highly detailed and beautifully lit wooden beam design on a stone wall, showcasing advanced building techniques."
+  },
+  {
+   "frame": "0128_detail3",
+   "human": "BAD-mist",
+   "oracle": "GOOD",
+   "reason": "A well-composed and detailed shot of a wooden spiral staircase wrapping around a circular stone tower."
+  },
+  {
+   "frame": "0128_detail3~c75",
+   "human": "BAD-mist",
+   "oracle": "GOOD",
+   "reason": "An excellently composed and beautifully lit detail shot of a stone and timber facade during golden hour."
+  },
+  {
+   "frame": "0128_detail3~lo12",
+   "human": "BAD-mist",
+   "oracle": "GOOD",
+   "reason": "A well-composed detail shot featuring banners, wooden supports, and stone walls with clean lighting."
+  },
+  {
+   "frame": "0128_detail3~lo12~c75",
+   "human": "BAD-mist",
+   "oracle": "GOOD",
+   "reason": "A well-composed and crisp detail shot of wooden roof ornamentation against a clear blue sky."
+  },
+  {
+   "frame": "0128_detail3~lo12~lo12",
+   "human": "BAD-mist",
+   "oracle": "GOOD",
+   "reason": "A well-composed and detailed architectural shot featuring complex woodwork, banners, and stone pillars with strong lighting."
+  },
+  {
+   "frame": "0128_detail3~lo12~o45",
+   "human": "BAD-mist",
+   "oracle": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot focusing on the intricate geometric patterns of the wooden support structures."
+  },
+  {
+   "frame": "0128_detail3~o45",
+   "human": "BAD-mist",
+   "oracle": "GOOD",
+   "reason": "A well-composed and brightly lit architectural detail showcasing intricate wooden beam work against the sky."
+  },
+  {
+   "frame": "0129_detail1",
+   "human": "ok",
+   "oracle": "GOOD",
+   "reason": "A well-composed detail shot showing intricate wooden framing and stone pillars in bright daylight."
+  },
+  {
+   "frame": "0129_detail1~c75",
+   "human": "ok",
+   "oracle": "GOOD",
+   "reason": "The frame captures a well-composed and beautifully lit architectural detail of the wooden structure."
+  },
+  {
+   "frame": "0129_detail1~c75~c75",
+   "human": "ok-texel",
+   "oracle": "GOOD",
+   "reason": "A well-composed architectural detail shot highlighting the intricate wooden beam and stair construction with warm, atmospheric lighting."
+  },
+  {
+   "frame": "0129_detail1~lo12",
+   "human": "GOOD",
+   "oracle": "dark",
+   "reason": "The close-up shot of the wooden carvings and structural supports is underexposed and dark."
+  },
+  {
+   "frame": "0292_detail1",
+   "human": "dull",
+   "oracle": "GOOD",
+   "reason": "A well-composed and moody detail shot of a stone structure with arches and a staircase."
+  },
+  {
+   "frame": "0292_detail1~c75",
+   "human": "BAD-dark-texel",
+   "oracle": "GOOD",
+   "reason": "A well-composed and beautifully lit architectural detail showing the intersection of stone arches and wooden supports."
+  },
+  {
+   "frame": "0292_detail1~lo12",
+   "human": "ok",
+   "oracle": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot showcasing intricate wooden beam ornamentation and structured stonework."
+  },
+  {
+   "frame": "0292_detail1~o45",
+   "human": "GOOD",
+   "oracle": "ok-texel",
+   "reason": "The close-up perspective on the carved stone and wooden column shows visible texture pixelation."
+  },
+  {
+   "frame": "0292_detail1~o45~c75",
+   "human": "dark",
+   "oracle": "GOOD",
+   "reason": "A well-lit, dynamically composed detail shot showcasing intricate wooden support structures and roof details against a clear sky."
+  },
+  {
+   "frame": "0292_detail1~o45~o45",
+   "human": "ok",
+   "oracle": "GOOD",
+   "reason": "A well-composed and beautifully lit detail shot of a snowy mountain tower with intricate wood and stone craftsmanship."
+  },
+  {
+   "frame": "0295_detail2",
+   "human": "BAD-roof",
+   "oracle": "GOOD",
+   "reason": "A well-composed detail shot highlighting the intricate wooden beam work and stone construction with good lighting."
+  },
+  {
+   "frame": "0295_detail2~lo12",
+   "human": "BAD-roof",
+   "oracle": "GOOD",
+   "reason": "A well-composed detail shot showcasing intricate wooden support beam structures under a gabled roof."
+  },
+  {
+   "frame": "0295_detail2~lo12~lo12",
+   "human": "GOOD",
+   "oracle": "ok-texel",
+   "reason": "The shot is well-composed, but the camera is close enough to the wooden beams that the low texture resolution and pixelation are clearly visible."
+  },
+  {
+   "frame": "0295_detail2~lo12~o45",
+   "human": "BAD-roof",
+   "oracle": "GOOD",
+   "reason": "An atmospheric and well-composed detail shot of a circular wooden window element highlighted by green backlighting."
+  },
+  {
+   "frame": "0295_detail2~o45",
+   "human": "BAD-roof",
+   "oracle": "GOOD",
+   "reason": "A well-composed and cleanly lit detail shot showcasing the intricate wooden support structures of the build."
+  }
+ ],
+ "qualified": false
+}

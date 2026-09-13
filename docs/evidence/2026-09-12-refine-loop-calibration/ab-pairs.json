@@ -1,0 +1,2421 @@
+{
+ "schema": "steward-ab-pairs/v1",
+ "era": "era11",
+ "sourceKey": "eed99a5bfe31ce37544dab5a4ddc4d5294524f61392da298727da6b72cc4e28f",
+ "counts": {
+  "pairs": 77,
+  "skipped": 7
+ },
+ "skipped": [
+  [
+   "68a72774",
+   "fan kept the planned pose"
+  ],
+  [
+   "636ba184",
+   "fan kept the planned pose"
+  ],
+  [
+   "d2b69966",
+   "fan kept the planned pose"
+  ],
+  [
+   "3d7bac9d",
+   "fan kept the planned pose"
+  ],
+  [
+   "1b806e2d",
+   "fan kept the planned pose"
+  ],
+  [
+   "cdab5440",
+   "fan kept the planned pose"
+  ],
+  [
+   "a3e3c1fa",
+   "fan kept the planned pose"
+  ]
+ ],
+ "pairs": [
+  {
+   "build": "002c20e6",
+   "buildKey": "002c20e689efb6b1e2ea424aee4eed8279f0fce4d0534837555ab5d8186e86fd",
+   "clusterId": 46,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-065150/0046_detail1.png",
+    "score": 0.0104049,
+    "live": 0.7083,
+    "sky": 0.05222,
+    "luma": 0.4753
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-065229/0046_detail1~up20~up20.png",
+    "score": 0.0137597,
+    "live": 0.7917,
+    "sky": 0.0,
+    "luma": 0.3809,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "032b5a3c",
+   "buildKey": "032b5a3c527ba0a36c6bea09dfc4f92268b8f1b914e4df5a2a4f46e24a74dca9",
+   "clusterId": 84,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-071349/0084_detail1.png",
+    "score": 0.013509,
+    "live": 0.7014,
+    "sky": 0.05893,
+    "luma": 0.5092
+   },
+   "winner": {
+    "name": "detail1~o45~up20",
+    "file": "images/20260912-071427/0084_detail1~o45~up20.png",
+    "score": 0.0229668,
+    "live": 0.9514,
+    "sky": 0.0,
+    "luma": 0.4705,
+    "elevationDeg": 49.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "03e1a319",
+   "buildKey": "03e1a3197f8c9fe883e5eb3346c3e1d52f34fb61aa1e146308d59df8ac42972f",
+   "clusterId": 145,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-074318/0145_detail1.png",
+    "score": 0.0130776,
+    "live": 0.8194,
+    "sky": 0.11446,
+    "luma": 0.3501
+   },
+   "winner": {
+    "name": "detail1~up20~o45",
+    "file": "images/20260912-074358/0145_detail1~up20~o45.png",
+    "score": 0.0160259,
+    "live": 0.8958,
+    "sky": 0.0,
+    "luma": 0.29,
+    "elevationDeg": 42.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "041fbe6f",
+   "buildKey": "041fbe6f8afb32e6599023828dca77dcd35b41ba3c6558a00192fc4a06e0e05d",
+   "clusterId": 179,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-074842/0179_detail1.png",
+    "score": 0.0085749,
+    "live": 0.6319,
+    "sky": 0.03544,
+    "luma": 0.5554
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-074921/0179_detail1~up20~up20.png",
+    "score": 0.0183656,
+    "live": 0.9375,
+    "sky": 0.0,
+    "luma": 0.5543,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "0cfc358c",
+   "buildKey": "0cfc358c74dc68edb2966d682e208116fa50c4608ad50abee56dc28541680a34",
+   "clusterId": 157,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-074635/0157_detail1.png",
+    "score": 0.0052109,
+    "live": 0.5069,
+    "sky": 0.28205,
+    "luma": 0.6086
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-074713/0157_detail1~up20~up20.png",
+    "score": 0.0164865,
+    "live": 0.8472,
+    "sky": 0.0,
+    "luma": 0.5131,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "100f5a66",
+   "buildKey": "100f5a66d1fcf8ebf6de6a950dd7b7aab4c5c98b41ddfe523d92ef0817d787f9",
+   "clusterId": 115,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-072051/0115_detail1.png",
+    "score": 0.0044837,
+    "live": 0.4167,
+    "sky": 0.00198,
+    "luma": 0.6172
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-072146/0115_detail1~up20~up20.png",
+    "score": 0.0211875,
+    "live": 0.75,
+    "sky": 0.18464,
+    "luma": 0.4796,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "13f58893",
+   "buildKey": "13f588938a8c6ad8cb0fc7b993286290cd2d6fecb16b3bdfa32b1970388e27b0",
+   "clusterId": 20,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-063710/0020_detail1.png",
+    "score": 0.0091138,
+    "live": 0.6667,
+    "sky": 0.31166,
+    "luma": 0.5126
+   },
+   "winner": {
+    "name": "detail1~o45~up20",
+    "file": "images/20260912-063751/0020_detail1~o45~up20.png",
+    "score": 0.0188899,
+    "live": 0.8403,
+    "sky": 0.00133,
+    "luma": 0.4724,
+    "elevationDeg": 49.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "14b1e589",
+   "buildKey": "14b1e58994ca2d5e1c63913a5362577ba03bbce96bffb5ad29f8a2ebb6a4b7a6",
+   "clusterId": 41,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-064704/0041_detail1.png",
+    "score": 0.0021996,
+    "live": 0.3542,
+    "sky": 0.28967,
+    "luma": 0.6747
+   },
+   "winner": {
+    "name": "detail1~o45~up20",
+    "file": "images/20260912-064758/0041_detail1~o45~up20.png",
+    "score": 0.0078063,
+    "live": 0.6042,
+    "sky": 0.27291,
+    "luma": 0.6008,
+    "elevationDeg": 49.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "17e1a93b",
+   "buildKey": "17e1a93be7d8809670e21d5ad299ffd602976d34850732df964a7087315c9072",
+   "clusterId": 118,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-072337/0118_detail1.png",
+    "score": 0.0014669,
+    "live": 0.2569,
+    "sky": 0.26639,
+    "luma": 0.5467
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-072433/0118_detail1~up20~up20.png",
+    "score": 0.0067372,
+    "live": 0.5139,
+    "sky": 0.0,
+    "luma": 0.3672,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "185cd57a",
+   "buildKey": "185cd57ab682bbf0aef733aa938cc280e6804b14f95623025a45535ac051bfe5",
+   "clusterId": 120,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-072611/0120_detail1.png",
+    "score": 0.0046635,
+    "live": 0.5069,
+    "sky": 0.18487,
+    "luma": 0.3818
+   },
+   "winner": {
+    "name": "detail1~up20~o45",
+    "file": "images/20260912-072654/0120_detail1~up20~o45.png",
+    "score": 0.0112623,
+    "live": 0.7361,
+    "sky": 0.07334,
+    "luma": 0.379,
+    "elevationDeg": 42.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "21102436",
+   "buildKey": "21102436654b037439b8ae9874bfe9e963764cb4647f043817e6c37fc8ce4de7",
+   "clusterId": 147,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-074425/0147_detail1.png",
+    "score": 0.0112929,
+    "live": 0.7569,
+    "sky": 0.01444,
+    "luma": 0.2547
+   },
+   "winner": {
+    "name": "detail1~o45~lo12",
+    "file": "images/20260912-074502/0147_detail1~o45~lo12.png",
+    "score": 0.0201399,
+    "live": 0.9167,
+    "sky": 0.03067,
+    "luma": 0.2631,
+    "elevationDeg": 17.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~lo12"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": false
+  },
+  {
+   "build": "267984d5",
+   "buildKey": "267984d5680c417146c5ded68c13a1f8b799e5431c30bb275028b80f7973e1c6",
+   "clusterId": 15,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-063318/0015_detail1.png",
+    "score": 0.0085143,
+    "live": 0.6736,
+    "sky": 0.07677,
+    "luma": 0.3015
+   },
+   "winner": {
+    "name": "detail1~o45",
+    "file": "images/20260912-063338/0015_detail1~o45.png",
+    "score": 0.0126076,
+    "live": 0.8056,
+    "sky": 0.14044,
+    "luma": 0.28,
+    "elevationDeg": 23.0
+   },
+   "path": [
+    "detail1",
+    "detail1~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": false
+  },
+  {
+   "build": "2adf8ac1",
+   "buildKey": "2adf8ac1d663673727ace2b4d6e42c4cbe599e90bee4542a10c1edff381826c5",
+   "clusterId": 31,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-064435/0031_detail1.png",
+    "score": 0.0056417,
+    "live": 0.4583,
+    "sky": 0.16799,
+    "luma": 0.5442
+   },
+   "winner": {
+    "name": "detail1~aim~o45",
+    "file": "images/20260912-064521/0031_detail1~aim~o45.png",
+    "score": 0.0169815,
+    "live": 0.8542,
+    "sky": 0.08933,
+    "luma": 0.5313,
+    "elevationDeg": 21.2
+   },
+   "path": [
+    "detail1",
+    "detail1~aim",
+    "detail1~aim~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": false
+  },
+  {
+   "build": "35f436df",
+   "buildKey": "35f436dff03a6eb5421e61f9cf6f40b46f8c1e7529c5eddc0f2c7fd91d4c2775",
+   "clusterId": 73,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-070701/0073_detail1.png",
+    "score": 0.0045832,
+    "live": 0.4653,
+    "sky": 0.10507,
+    "luma": 0.5316
+   },
+   "winner": {
+    "name": "detail1~up20~o45",
+    "file": "images/20260912-070747/0073_detail1~up20~o45.png",
+    "score": 0.0063,
+    "live": 0.5,
+    "sky": 0.00749,
+    "luma": 0.448,
+    "elevationDeg": 42.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "3a1ffe50",
+   "buildKey": "3a1ffe5055bac04896488724044e1d7d1428c4976d4f2a391826946aefe0ff06",
+   "clusterId": 131,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-073634/0131_detail1.png",
+    "score": 0.0051478,
+    "live": 0.4861,
+    "sky": 0.03229,
+    "luma": 0.5882
+   },
+   "winner": {
+    "name": "detail1~aim~up20",
+    "file": "images/20260912-073729/0131_detail1~aim~up20.png",
+    "score": 0.012487,
+    "live": 0.7708,
+    "sky": 0.0,
+    "luma": 0.4548,
+    "elevationDeg": 41.2
+   },
+   "path": [
+    "detail1",
+    "detail1~aim",
+    "detail1~aim~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "3c91f0f4",
+   "buildKey": "3c91f0f40cb66a6d9ece0792dfd3e7bcfbf6eaeb67780d531b314c0b530ae586",
+   "clusterId": 65,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-065758/0065_detail1.png",
+    "score": 0.0045134,
+    "live": 0.4653,
+    "sky": 0.13335,
+    "luma": 0.328
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-065845/0065_detail1~up20~up20.png",
+    "score": 0.0216644,
+    "live": 0.9306,
+    "sky": 0.0021,
+    "luma": 0.3457,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "3d20e62e",
+   "buildKey": "3d20e62ed650205da80146fd29c875aade1f4ed13907ea0f610681064a21ece7",
+   "clusterId": 293,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-075953/0293_detail1.png",
+    "score": 0.0021774,
+    "live": 0.3611,
+    "sky": 0.42546,
+    "luma": 0.5912
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-080056/0293_detail1~up20~up20.png",
+    "score": 0.0037463,
+    "live": 0.4444,
+    "sky": 0.24271,
+    "luma": 0.4397,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "3f0788fe",
+   "buildKey": "3f0788fe24df9e7d71e9338ab5f789fdbb12bae800e6f61e17b2b7965a295ae7",
+   "clusterId": 138,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-074018/0138_detail1.png",
+    "score": 0.0010163,
+    "live": 0.1875,
+    "sky": 0.30366,
+    "luma": 0.5131
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-074106/0138_detail1~up20~up20.png",
+    "score": 0.0139515,
+    "live": 0.7708,
+    "sky": 0.0,
+    "luma": 0.5392,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "3f338fc1",
+   "buildKey": "3f338fc1b3fa066a0c6b58f156c5ea48353df8d2b9d0145f76d63edcd4bdc07b",
+   "clusterId": 26,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-064115/0026_detail1.png",
+    "score": 0.0052424,
+    "live": 0.4792,
+    "sky": 0.50176,
+    "luma": 0.5961
+   },
+   "winner": {
+    "name": "detail1~o45~up20",
+    "file": "images/20260912-064204/0026_detail1~o45~up20.png",
+    "score": 0.0079451,
+    "live": 0.5556,
+    "sky": 0.37154,
+    "luma": 0.5929,
+    "elevationDeg": 49.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "4db9cf55",
+   "buildKey": "4db9cf55d57d9546816625ba6a3f3458b80fa53765fc6468ea73ce1055df6651",
+   "clusterId": 129,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-073400/0129_detail1.png",
+    "score": 0.0006313,
+    "live": 0.1458,
+    "sky": 0.19211,
+    "luma": 0.5189
+   },
+   "winner": {
+    "name": "detail1~o45~o45",
+    "file": "images/20260912-073455/0129_detail1~o45~o45.png",
+    "score": 0.0019469,
+    "live": 0.3125,
+    "sky": 0.19436,
+    "luma": 0.5024,
+    "elevationDeg": 29.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": false
+  },
+  {
+   "build": "539ddd8e",
+   "buildKey": "539ddd8e0a3e7cfb562d7f738a2cf65d5db9d1cb1e3e28560f61c2693038c6ce",
+   "clusterId": 289,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-075125/0289_detail1.png",
+    "score": 0.0012471,
+    "live": 0.2431,
+    "sky": 0.01448,
+    "luma": 0.8273
+   },
+   "winner": {
+    "name": "detail1~o45~lo12",
+    "file": "images/20260912-075232/0289_detail1~o45~lo12.png",
+    "score": 0.0053865,
+    "live": 0.5694,
+    "sky": 0.0057,
+    "luma": 0.3324,
+    "elevationDeg": 17.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~lo12"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": false
+  },
+  {
+   "build": "55acdcac",
+   "buildKey": "55acdcac382e2117a5c7eb025ab5a40f3fcb8360e752d00659c976ef4373a887",
+   "clusterId": 1,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-062610/0001_detail1.png",
+    "score": 0.0027225,
+    "live": 0.375,
+    "sky": 4e-05,
+    "luma": 0.5492
+   },
+   "winner": {
+    "name": "detail1~aim~up20",
+    "file": "images/20260912-062702/0001_detail1~aim~up20.png",
+    "score": 0.0147898,
+    "live": 0.7569,
+    "sky": 0.0636,
+    "luma": 0.3159,
+    "elevationDeg": 41.2
+   },
+   "path": [
+    "detail1",
+    "detail1~aim",
+    "detail1~aim~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "5a5dd985",
+   "buildKey": "5a5dd9850d9d006bb0087437f4d0e6dee9d0953d64adbc53634a1bd9aee7b2d5",
+   "clusterId": 45,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-065046/0045_detail1.png",
+    "score": 0.0064408,
+    "live": 0.5417,
+    "sky": 0.01691,
+    "luma": 0.4425
+   },
+   "winner": {
+    "name": "detail1~up20~lo12",
+    "file": "images/20260912-065125/0045_detail1~up20~lo12.png",
+    "score": 0.0118882,
+    "live": 0.7847,
+    "sky": 0.02712,
+    "luma": 0.3619,
+    "elevationDeg": 30.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~lo12"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "5a74ee4d",
+   "buildKey": "5a74ee4deeafcc7c659c506621265be42b98d610ca0c399996ab327a31907935",
+   "clusterId": 43,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-064934/0043_detail1.png",
+    "score": 0.0068633,
+    "live": 0.5417,
+    "sky": 0.27389,
+    "luma": 0.4267
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-065021/0043_detail1~up20~up20.png",
+    "score": 0.0137731,
+    "live": 0.7639,
+    "sky": 0.0429,
+    "luma": 0.265,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "5bbbea9e",
+   "buildKey": "5bbbea9ee252581c783baa0da9ea3a0073b922701502c168ed0403c9eac0edf5",
+   "clusterId": 29,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-064331/0029_detail1.png",
+    "score": 0.0095261,
+    "live": 0.6597,
+    "sky": 0.18087,
+    "luma": 0.5019
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-064410/0029_detail1~up20~up20.png",
+    "score": 0.0140413,
+    "live": 0.7153,
+    "sky": 0.05577,
+    "luma": 0.44,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "602940dd",
+   "buildKey": "602940dd28241df5e66606bc0e347434218898e7c18eb8989dd119380cf74c44",
+   "clusterId": 116,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-072210/0116_detail1.png",
+    "score": 0.0028527,
+    "live": 0.3611,
+    "sky": 0.28363,
+    "luma": 0.6645
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-072259/0116_detail1~up20~up20.png",
+    "score": 0.0050198,
+    "live": 0.4931,
+    "sky": 0.5295,
+    "luma": 0.5589,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "63ffb7cd",
+   "buildKey": "63ffb7cddb3f26a296b859d5ba0ab66ac5d36c4d004ab0ca4d88876f0b2596b4",
+   "clusterId": 42,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-064823/0042_detail1.png",
+    "score": 0.0021781,
+    "live": 0.3125,
+    "sky": 0.37843,
+    "luma": 0.6097
+   },
+   "winner": {
+    "name": "detail1~c75~up20",
+    "file": "images/20260912-064909/0042_detail1~c75~up20.png",
+    "score": 0.0036168,
+    "live": 0.3889,
+    "sky": 0.01759,
+    "luma": 0.4903,
+    "elevationDeg": 80.0
+   },
+   "path": [
+    "detail1",
+    "detail1~c75",
+    "detail1~c75~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "66599252",
+   "buildKey": "66599252f49f89a5ae163c613c39b5d2b7ec7ebc6c0391e338bf1aefb5866f14",
+   "clusterId": 88,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-071818/0088_detail1.png",
+    "score": 0.0022492,
+    "live": 0.3056,
+    "sky": 0.30851,
+    "luma": 0.6353
+   },
+   "winner": {
+    "name": "detail1~c75~up20",
+    "file": "images/20260912-071908/0088_detail1~c75~up20.png",
+    "score": 0.0044411,
+    "live": 0.4097,
+    "sky": 0.0,
+    "luma": 0.4685,
+    "elevationDeg": 80.0
+   },
+   "path": [
+    "detail1",
+    "detail1~c75",
+    "detail1~c75~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "684743a2",
+   "buildKey": "684743a28b97d26fbd98c10031ff86359dfe37b26078d6e12577cc9ec3ea656a",
+   "clusterId": 296,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-080506/0296_detail1.png",
+    "score": 0.0092221,
+    "live": 0.6806,
+    "sky": 0.00987,
+    "luma": 0.3815
+   },
+   "winner": {
+    "name": "detail1~up20~lo12",
+    "file": "images/20260912-080551/0296_detail1~up20~lo12.png",
+    "score": 0.0099519,
+    "live": 0.7222,
+    "sky": 0.01578,
+    "luma": 0.3678,
+    "elevationDeg": 30.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~lo12"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "6c63ea1b",
+   "buildKey": "6c63ea1b7215e8f142f198e6a059bab68b735bd0d5d384b2ae356426413b07ab",
+   "clusterId": 62,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-065646/0062_detail1.png",
+    "score": 0.0173461,
+    "live": 0.7917,
+    "sky": 0.28042,
+    "luma": 0.5502
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-065733/0062_detail1~up20~up20.png",
+    "score": 0.0196466,
+    "live": 0.8542,
+    "sky": 0.28577,
+    "luma": 0.4937,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "6e3aac10",
+   "buildKey": "6e3aac10ace3ab48780e4651edd09dc2de7a3bbb697e4c0ddbd96e433cb7ed07",
+   "clusterId": 12,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-063216/0012_detail1.png",
+    "score": 0.01666,
+    "live": 0.875,
+    "sky": 0.12921,
+    "luma": 0.4937
+   },
+   "winner": {
+    "name": "detail1~o45~up20",
+    "file": "images/20260912-063253/0012_detail1~o45~up20.png",
+    "score": 0.0247406,
+    "live": 0.9653,
+    "sky": 0.0,
+    "luma": 0.4627,
+    "elevationDeg": 49.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "6f00e332",
+   "buildKey": "6f00e332e215122fd438aa0e8a03812c1042f71215f502f51816924d157d806a",
+   "clusterId": 5,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-062843/0005_detail1.png",
+    "score": 0.0017567,
+    "live": 0.3194,
+    "sky": 0.42082,
+    "luma": 0.7598
+   },
+   "winner": {
+    "name": "detail1~up20~o45",
+    "file": "images/20260912-062939/0005_detail1~up20~o45.png",
+    "score": 0.0058332,
+    "live": 0.5764,
+    "sky": 0.24662,
+    "luma": 0.7122,
+    "elevationDeg": 42.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "728872c6",
+   "buildKey": "728872c655d447e7a9c4bea927a8f811d66ab705548db31935d9a0102c4cb585",
+   "clusterId": 87,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-071716/0087_detail1.png",
+    "score": 0.0083863,
+    "live": 0.6736,
+    "sky": 0.02591,
+    "luma": 0.3426
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-071753/0087_detail1~up20~up20.png",
+    "score": 0.0095134,
+    "live": 0.5972,
+    "sky": 0.0,
+    "luma": 0.2796,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "74073b73",
+   "buildKey": "74073b73fa1cd7652b6dcad1979a86eae9bd2c462284aebf67d319337ff247f7",
+   "clusterId": 133,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-073753/0133_detail1.png",
+    "score": 0.0097397,
+    "live": 0.6042,
+    "sky": 0.05311,
+    "luma": 0.4376
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-073845/0133_detail1~up20~up20.png",
+    "score": 0.0209686,
+    "live": 0.9097,
+    "sky": 0.00367,
+    "luma": 0.3361,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "76c98f1a",
+   "buildKey": "76c98f1a51f6fb16590a023bf095d15417a47ded7f963e63c2dd6fd3c51f4d02",
+   "clusterId": 69,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-070248/0069_detail1.png",
+    "score": 0.0024498,
+    "live": 0.3333,
+    "sky": 0.03036,
+    "luma": 0.3901
+   },
+   "winner": {
+    "name": "detail1~up20",
+    "file": "images/20260912-070309/0069_detail1~up20.png",
+    "score": 0.0116072,
+    "live": 0.6667,
+    "sky": 0.02055,
+    "luma": 0.4544,
+    "elevationDeg": 43.0
+   },
+   "path": [
+    "detail1",
+    "detail1~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "77729b7c",
+   "buildKey": "77729b7c7477e7ec7aef0290314b10dac91d111a17cff66e1e2d1ba5b31fd382",
+   "clusterId": 121,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-072718/0121_detail1.png",
+    "score": 0.0050386,
+    "live": 0.5069,
+    "sky": 0.3549,
+    "luma": 0.5367
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-072806/0121_detail1~up20~up20.png",
+    "score": 0.0100581,
+    "live": 0.6875,
+    "sky": 0.00217,
+    "luma": 0.3304,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "7a2c1a34",
+   "buildKey": "7a2c1a34deb323b7ff06d757d5037aa389120251b432e4605759dfe9d530bcbf",
+   "clusterId": 297,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-080621/0297_detail1.png",
+    "score": 0.0161246,
+    "live": 0.8889,
+    "sky": 0.09525,
+    "luma": 0.4197
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-080734/0297_detail1~up20~up20.png",
+    "score": 0.0193134,
+    "live": 0.9514,
+    "sky": 0.00115,
+    "luma": 0.3136,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "84106697",
+   "buildKey": "841066977c9b21111b16f649792e8acebf79324fef9c1f98f3dafa42ce0d2e0d",
+   "clusterId": 291,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-075429/0291_detail1.png",
+    "score": 0.002386,
+    "live": 0.3264,
+    "sky": 0.08149,
+    "luma": 0.5559
+   },
+   "winner": {
+    "name": "detail1~c75~up20",
+    "file": "images/20260912-075602/0291_detail1~c75~up20.png",
+    "score": 0.0069582,
+    "live": 0.5139,
+    "sky": 0.34064,
+    "luma": 0.4873,
+    "elevationDeg": 80.0
+   },
+   "path": [
+    "detail1",
+    "detail1~c75",
+    "detail1~c75~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "88895272",
+   "buildKey": "888952728e2f03ff820cf7da017fff107acaeddf0b7584f51937d905bd52f07d",
+   "clusterId": 66,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-065910/0066_detail1.png",
+    "score": 0.0190733,
+    "live": 0.8264,
+    "sky": 0.12298,
+    "luma": 0.432
+   },
+   "winner": {
+    "name": "detail1~o45~o45",
+    "file": "images/20260912-065949/0066_detail1~o45~o45.png",
+    "score": 0.02903,
+    "live": 1.0,
+    "sky": 0.01506,
+    "luma": 0.4641,
+    "elevationDeg": 29.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": false
+  },
+  {
+   "build": "88bd3d6c",
+   "buildKey": "88bd3d6c0570c41c57a57c946dec27855eb810ee88e86c6a458f10030c6f6a5d",
+   "clusterId": 85,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-071451/0085_detail1.png",
+    "score": 0.0041519,
+    "live": 0.4931,
+    "sky": 0.14042,
+    "luma": 0.5157
+   },
+   "winner": {
+    "name": "detail1~aim~up20",
+    "file": "images/20260912-071538/0085_detail1~aim~up20.png",
+    "score": 0.006477,
+    "live": 0.6042,
+    "sky": 0.02494,
+    "luma": 0.4559,
+    "elevationDeg": 41.2
+   },
+   "path": [
+    "detail1",
+    "detail1~aim",
+    "detail1~aim~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "8ec4ce54",
+   "buildKey": "8ec4ce54c0e2098c50122823c64d513545b37aee8f3430668dd71b3a9a7894cd",
+   "clusterId": 168,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-074737/0168_detail1.png",
+    "score": 0.0104088,
+    "live": 0.6875,
+    "sky": 0.17401,
+    "luma": 0.5365
+   },
+   "winner": {
+    "name": "detail1~up20~o45",
+    "file": "images/20260912-074817/0168_detail1~up20~o45.png",
+    "score": 0.0147759,
+    "live": 0.7847,
+    "sky": 0.0,
+    "luma": 0.4434,
+    "elevationDeg": 42.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "8eca5f0e",
+   "buildKey": "8eca5f0e3e37fb790ca51a8f0be029d2cbb17926c41d683dd960ec4d7392b72c",
+   "clusterId": 151,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-074528/0151_detail1.png",
+    "score": 0.0069821,
+    "live": 0.5833,
+    "sky": 0.03712,
+    "luma": 0.6703
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-074610/0151_detail1~up20~up20.png",
+    "score": 0.0081535,
+    "live": 0.6528,
+    "sky": 0.0,
+    "luma": 0.6818,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "920590f4",
+   "buildKey": "920590f43c44bb43368e469e946f34190376a2c83e0f94085eeaec174fa8c57d",
+   "clusterId": 3,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-062726/0003_detail1.png",
+    "score": 0.0033974,
+    "live": 0.4306,
+    "sky": 0.05223,
+    "luma": 0.4797
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-062816/0003_detail1~up20~up20.png",
+    "score": 0.0146064,
+    "live": 0.7153,
+    "sky": 0.08657,
+    "luma": 0.3602,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "9331bd62",
+   "buildKey": "9331bd624769ac481b74a30fbac3ebf430fd7ddc90958327d039da66ff4aa3a8",
+   "clusterId": 8,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-063003/0008_detail1.png",
+    "score": 0.0169152,
+    "live": 0.8403,
+    "sky": 0.00554,
+    "luma": 0.4712
+   },
+   "winner": {
+    "name": "detail1~o45~o45",
+    "file": "images/20260912-063041/0008_detail1~o45~o45.png",
+    "score": 0.0246677,
+    "live": 0.9444,
+    "sky": 0.02904,
+    "luma": 0.5128,
+    "elevationDeg": 29.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": false
+  },
+  {
+   "build": "9471cd1f",
+   "buildKey": "9471cd1f46227546764564819d57d15e37ae84e062a5359ef848a629f9af3906",
+   "clusterId": 95,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-071932/0095_detail1.png",
+    "score": 0.0006356,
+    "live": 0.1528,
+    "sky": 0.38804,
+    "luma": 0.8461
+   },
+   "winner": {
+    "name": "detail1~o45~o45",
+    "file": "images/20260912-072018/0095_detail1~o45~o45.png",
+    "score": 0.0018022,
+    "live": 0.2847,
+    "sky": 0.29577,
+    "luma": 0.8351,
+    "elevationDeg": 29.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": false
+  },
+  {
+   "build": "954a0a68",
+   "buildKey": "954a0a68a8b5a772ad094f0eddd2361aec35804b6b11dbe00aa5b751161ba66f",
+   "clusterId": 28,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-064228/0028_detail1.png",
+    "score": 0.0113801,
+    "live": 0.7361,
+    "sky": 0.00141,
+    "luma": 0.2937
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-064306/0028_detail1~up20~up20.png",
+    "score": 0.0136841,
+    "live": 0.7361,
+    "sky": 0.0,
+    "luma": 0.2509,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "977b9b11",
+   "buildKey": "977b9b112105541751ed38939248938d96300b8de16b87594c59eac19dc50209",
+   "clusterId": 127,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-073139/0127_detail1.png",
+    "score": 0.0071329,
+    "live": 0.5347,
+    "sky": 0.12806,
+    "luma": 0.4888
+   },
+   "winner": {
+    "name": "detail1~o45~up20",
+    "file": "images/20260912-073221/0127_detail1~o45~up20.png",
+    "score": 0.012183,
+    "live": 0.6319,
+    "sky": 0.00025,
+    "luma": 0.4546,
+    "elevationDeg": 49.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "a4bc221e",
+   "buildKey": "a4bc221e571f9cfbb6de94d2ebe29e87d5955a076e3f322812df8f24d9125eba",
+   "clusterId": 74,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-070811/0074_detail1.png",
+    "score": 0.0134328,
+    "live": 0.8333,
+    "sky": 0.03515,
+    "luma": 0.3299
+   },
+   "winner": {
+    "name": "detail1~up20",
+    "file": "images/20260912-070826/0074_detail1~up20.png",
+    "score": 0.020398,
+    "live": 0.9514,
+    "sky": 0.01203,
+    "luma": 0.266,
+    "elevationDeg": 43.0
+   },
+   "path": [
+    "detail1",
+    "detail1~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "a800f3b9",
+   "buildKey": "a800f3b9741c77b03deb0f536267ce3478cd5b01809bfcb884daeef2de83b4ea",
+   "clusterId": 76,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-071029/0076_detail1.png",
+    "score": 0.0100581,
+    "live": 0.6875,
+    "sky": 0.22556,
+    "luma": 0.4561
+   },
+   "winner": {
+    "name": "detail1~o45~o45",
+    "file": "images/20260912-071111/0076_detail1~o45~o45.png",
+    "score": 0.0194847,
+    "live": 0.8889,
+    "sky": 0.10323,
+    "luma": 0.492,
+    "elevationDeg": 29.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": false
+  },
+  {
+   "build": "a9f03498",
+   "buildKey": "a9f034988d82be17d10fb22a39b45a5e04ccc921e5de0e51427ba88e9d04d40d",
+   "clusterId": 123,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-072948/0123_detail1.png",
+    "score": 0.011678,
+    "live": 0.7222,
+    "sky": 0.01041,
+    "luma": 0.3632
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-073035/0123_detail1~up20~up20.png",
+    "score": 0.0142125,
+    "live": 0.75,
+    "sky": 0.02074,
+    "luma": 0.3587,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "abf3db6c",
+   "buildKey": "abf3db6c4675cad0330a9d0c67104bf24c6b82d3988dd56b19df4c06d1c70466",
+   "clusterId": 40,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-064546/0040_detail1.png",
+    "score": 0.0028593,
+    "live": 0.4236,
+    "sky": 0.33435,
+    "luma": 0.6536
+   },
+   "winner": {
+    "name": "detail1~aim~up20",
+    "file": "images/20260912-064639/0040_detail1~aim~up20.png",
+    "score": 0.0133089,
+    "live": 0.7431,
+    "sky": 0.28384,
+    "luma": 0.4842,
+    "elevationDeg": 41.2
+   },
+   "path": [
+    "detail1",
+    "detail1~aim",
+    "detail1~aim~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "af332a15",
+   "buildKey": "af332a158bdc68f9c64f56154ae341a990e16044c6b24b880636acb572cace6c",
+   "clusterId": 71,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-070512/0071_detail1.png",
+    "score": 0.0140131,
+    "live": 0.7917,
+    "sky": 0.20602,
+    "luma": 0.4628
+   },
+   "winner": {
+    "name": "detail1~up20~o45",
+    "file": "images/20260912-070551/0071_detail1~up20~o45.png",
+    "score": 0.0235166,
+    "live": 0.9931,
+    "sky": 7e-05,
+    "luma": 0.4326,
+    "elevationDeg": 42.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "b1ba777f",
+   "buildKey": "b1ba777f2fa1a90f3e75402d2d0e55263479fc1766e00c6c0d414efbdec314e1",
+   "clusterId": 134,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-073910/0134_detail1.png",
+    "score": 0.0066409,
+    "live": 0.5903,
+    "sky": 0.17546,
+    "luma": 0.4135
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-073952/0134_detail1~up20~up20.png",
+    "score": 0.0217125,
+    "live": 0.9375,
+    "sky": 0.00051,
+    "luma": 0.343,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "b2077dff",
+   "buildKey": "b2077dffe03b55ad0adbae0a346a52f9ced5612871bed9ce34459cd467dc17aa",
+   "clusterId": 290,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-075316/0290_detail1.png",
+    "score": 0.0027237,
+    "live": 0.4236,
+    "sky": 0.09583,
+    "luma": 0.5852
+   },
+   "winner": {
+    "name": "detail1~o45~o45",
+    "file": "images/20260912-075404/0290_detail1~o45~o45.png",
+    "score": 0.00514,
+    "live": 0.5,
+    "sky": 0.39769,
+    "luma": 0.4933,
+    "elevationDeg": 29.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": false
+  },
+  {
+   "build": "b2b56518",
+   "buildKey": "b2b56518eac0fbb5b3508efa3b0315567e5f050524993e3103cafe5e8eda5c1f",
+   "clusterId": 68,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-070137/0068_detail1.png",
+    "score": 0.0151505,
+    "live": 0.7083,
+    "sky": 0.29282,
+    "luma": 0.4793
+   },
+   "winner": {
+    "name": "detail1~o45~up20",
+    "file": "images/20260912-070224/0068_detail1~o45~up20.png",
+    "score": 0.0220915,
+    "live": 0.8403,
+    "sky": 0.00025,
+    "luma": 0.403,
+    "elevationDeg": 49.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "b54900c2",
+   "buildKey": "b54900c23ab8690367ed6dabe36179ea1cc3f92cd8ecfe0310c754ff2c397e14",
+   "clusterId": 196,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-074946/0196_detail1.png",
+    "score": 0.0067812,
+    "live": 0.625,
+    "sky": 0.02038,
+    "luma": 0.2752
+   },
+   "winner": {
+    "name": "detail1~o45",
+    "file": "images/20260912-074958/0196_detail1~o45.png",
+    "score": 0.01005,
+    "live": 0.75,
+    "sky": 0.00747,
+    "luma": 0.3105,
+    "elevationDeg": 23.0
+   },
+   "path": [
+    "detail1",
+    "detail1~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": false
+  },
+  {
+   "build": "b87d9c97",
+   "buildKey": "b87d9c97121edc21494e14ec8d13d5ac4d0d6a47d389258e38fd27b9e707092a",
+   "clusterId": 140,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-074216/0140_detail1.png",
+    "score": 0.004931,
+    "live": 0.4792,
+    "sky": 0.29704,
+    "luma": 0.5874
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-074254/0140_detail1~up20~up20.png",
+    "score": 0.0099005,
+    "live": 0.6667,
+    "sky": 0.01364,
+    "luma": 0.4498,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "c231e10f",
+   "buildKey": "c231e10f448e4e1681e923c5c74bde09492e7d5a9b21a05d57a267f8ca3a9871",
+   "clusterId": 82,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-071247/0082_detail1.png",
+    "score": 0.0131085,
+    "live": 0.7639,
+    "sky": 0.24596,
+    "luma": 0.4782
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-071325/0082_detail1~up20~up20.png",
+    "score": 0.022108,
+    "live": 0.9583,
+    "sky": 0.0,
+    "luma": 0.3321,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "c6a0d5c4",
+   "buildKey": "c6a0d5c4b0c5e102a99e382bccdedc63b8c71bed1c62fb2c3ac4c60454b63eb4",
+   "clusterId": 24,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-063918/0024_detail1.png",
+    "score": 0.0007986,
+    "live": 0.1736,
+    "sky": 0.19907,
+    "luma": 0.5429
+   },
+   "winner": {
+    "name": "detail1~o45",
+    "file": "images/20260912-063932/0024_detail1~o45.png",
+    "score": 0.0010271,
+    "live": 0.2014,
+    "sky": 0.19251,
+    "luma": 0.5355,
+    "elevationDeg": 23.0
+   },
+   "path": [
+    "detail1",
+    "detail1~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": false
+  },
+  {
+   "build": "ce24e31b",
+   "buildKey": "ce24e31bc10e0aef40690a5832973f02d7efc5def782a3ada15f60123ad3d8b3",
+   "clusterId": 292,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-075727/0292_detail1.png",
+    "score": 0.0005822,
+    "live": 0.1111,
+    "sky": 0.05412,
+    "luma": 0.277
+   },
+   "winner": {
+    "name": "detail1~o45~o45",
+    "file": "images/20260912-075925/0292_detail1~o45~o45.png",
+    "score": 0.0132446,
+    "live": 0.8889,
+    "sky": 0.06865,
+    "luma": 0.3254,
+    "elevationDeg": 29.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": false
+  },
+  {
+   "build": "cf2c2b4a",
+   "buildKey": "cf2c2b4a159eee0f1bedc6049ec2cd4f0958a07b4e5a26286ef5c4a60c7f6d89",
+   "clusterId": 21,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-063817/0021_detail1.png",
+    "score": 0.0084668,
+    "live": 0.6528,
+    "sky": 0.2721,
+    "luma": 0.4787
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-063853/0021_detail1~up20~up20.png",
+    "score": 0.0144871,
+    "live": 0.8472,
+    "sky": 0.0,
+    "luma": 0.3452,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "d14f55bc",
+   "buildKey": "d14f55bcbd8cf5f3ba1b2f3d5ae853a69fdada711038516ab2c7c7482bbeb063",
+   "clusterId": 77,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-071138/0077_detail1.png",
+    "score": 0.0065035,
+    "live": 0.5972,
+    "sky": 0.07065,
+    "luma": 0.3149
+   },
+   "winner": {
+    "name": "detail1~o45~up20",
+    "file": "images/20260912-071220/0077_detail1~o45~up20.png",
+    "score": 0.0104731,
+    "live": 0.8125,
+    "sky": 0.0,
+    "luma": 0.2621,
+    "elevationDeg": 49.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "d78cf0dc",
+   "buildKey": "d78cf0dcead4ac98e23558705a460dd7c55d703f35b2b48cb85bd9bba57fdce3",
+   "clusterId": 128,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-073246/0128_detail1.png",
+    "score": null,
+    "live": 0.1875,
+    "sky": 0.0,
+    "luma": 0.148
+   },
+   "winner": {
+    "name": "detail1~up20~lo12",
+    "file": "images/20260912-073336/0128_detail1~up20~lo12.png",
+    "score": 0.0142108,
+    "live": 0.8056,
+    "sky": 0.02919,
+    "luma": 0.3087,
+    "elevationDeg": 30.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~lo12"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "d9e4a425",
+   "buildKey": "d9e4a4253f53e956c08e4636f5806468776fab934acd9fea2eae25205bae7e0e",
+   "clusterId": 19,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-063553/0019_detail1.png",
+    "score": 0.0027828,
+    "live": 0.3681,
+    "sky": 0.0,
+    "luma": 0.3267
+   },
+   "winner": {
+    "name": "detail1~o45~o45",
+    "file": "images/20260912-063646/0019_detail1~o45~o45.png",
+    "score": 0.0117391,
+    "live": 0.7847,
+    "sky": 0.08972,
+    "luma": 0.4155,
+    "elevationDeg": 29.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": false
+  },
+  {
+   "build": "da67241a",
+   "buildKey": "da67241a03f51829a5db55d282a266236586fde87349dd98143b308e5932ca4d",
+   "clusterId": 70,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-070407/0070_detail1.png",
+    "score": 0.00515,
+    "live": 0.5,
+    "sky": 0.09501,
+    "luma": 0.2713
+   },
+   "winner": {
+    "name": "detail1~up20",
+    "file": "images/20260912-070422/0070_detail1~up20.png",
+    "score": 0.0164731,
+    "live": 0.9167,
+    "sky": 0.00884,
+    "luma": 0.3897,
+    "elevationDeg": 43.0
+   },
+   "path": [
+    "detail1",
+    "detail1~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "dea1d8d2",
+   "buildKey": "dea1d8d2ca4aa3d481031e14d32518223ea862c9ed8daf5ec97ccb4542f04a35",
+   "clusterId": 47,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-065253/0047_detail1.png",
+    "score": 0.0082145,
+    "live": 0.6181,
+    "sky": 0.14011,
+    "luma": 0.52
+   },
+   "winner": {
+    "name": "detail1~aim~up20",
+    "file": "images/20260912-065349/0047_detail1~aim~up20.png",
+    "score": 0.0134064,
+    "live": 0.7639,
+    "sky": 0.0,
+    "luma": 0.3503,
+    "elevationDeg": 41.2
+   },
+   "path": [
+    "detail1",
+    "detail1~aim",
+    "detail1~aim~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "e0d7e01d",
+   "buildKey": "e0d7e01db74565957507d6ca603af3afc0083b1397b872a33b0a649188d3fb0e",
+   "clusterId": 50,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-065414/0050_detail1.png",
+    "score": 0.0046666,
+    "live": 0.4861,
+    "sky": 0.20918,
+    "luma": 0.5286
+   },
+   "winner": {
+    "name": "detail1~aim~aim",
+    "file": "images/20260912-065502/0050_detail1~aim~aim.png",
+    "score": 0.0119923,
+    "live": 0.6944,
+    "sky": 0.12684,
+    "luma": 0.4858,
+    "elevationDeg": null
+   },
+   "path": [
+    "detail1",
+    "detail1~aim",
+    "detail1~aim~aim"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": false
+  },
+  {
+   "build": "e25280c0",
+   "buildKey": "e25280c0d9cf1e95121fe6307e23fc9e1d9d62581a2d2177d23812cde449be83",
+   "clusterId": 51,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-065536/0051_detail1.png",
+    "score": 0.0037579,
+    "live": 0.3819,
+    "sky": 0.16877,
+    "luma": 0.5622
+   },
+   "winner": {
+    "name": "detail1~aim~up20",
+    "file": "images/20260912-065621/0051_detail1~aim~up20.png",
+    "score": 0.0105288,
+    "live": 0.6597,
+    "sky": 0.00417,
+    "luma": 0.4519,
+    "elevationDeg": 41.2
+   },
+   "path": [
+    "detail1",
+    "detail1~aim",
+    "detail1~aim~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "e4b1d3f4",
+   "buildKey": "e4b1d3f49d2ab1cb61531d5518abdd16373ece6b03cba9bf41e4cf3dad49a92e",
+   "clusterId": 122,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-072831/0122_detail1.png",
+    "score": 0.0029868,
+    "live": 0.3889,
+    "sky": 0.12601,
+    "luma": 0.2486
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-072921/0122_detail1~up20~up20.png",
+    "score": 0.0157724,
+    "live": 0.7986,
+    "sky": 0.0,
+    "luma": 0.4349,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "e738e96f",
+   "buildKey": "e738e96f0c38a467b7bbb4e1c5858d65e2b16ed10e3fe91e60cafef7bec3f6cf",
+   "clusterId": 17,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-063428/0017_detail1.png",
+    "score": 0.000743,
+    "live": 0.1736,
+    "sky": 0.00018,
+    "luma": 0.1613
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-063526/0017_detail1~up20~up20.png",
+    "score": 0.0120713,
+    "live": 0.8889,
+    "sky": 0.02369,
+    "luma": 0.2941,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "ea41e496",
+   "buildKey": "ea41e49600e73d9808ce623a86a371f5b6198a741073a02859a98b2e7c62cefe",
+   "clusterId": 67,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-070015/0067_detail1.png",
+    "score": 0.0009687,
+    "live": 0.2014,
+    "sky": 0.01,
+    "luma": 0.175
+   },
+   "winner": {
+    "name": "detail1~o45~o45",
+    "file": "images/20260912-070109/0067_detail1~o45~o45.png",
+    "score": 0.0105492,
+    "live": 0.6528,
+    "sky": 0.15484,
+    "luma": 0.4861,
+    "elevationDeg": 29.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": false
+  },
+  {
+   "build": "f2e077d2",
+   "buildKey": "f2e077d2e55af00c9ef178837721b534c3f13c7861a8b6599a823439b93491fe",
+   "clusterId": 75,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-070919/0075_detail1.png",
+    "score": 0.0086538,
+    "live": 0.5903,
+    "sky": 0.36734,
+    "luma": 0.5927
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-071005/0075_detail1~up20~up20.png",
+    "score": 0.0112062,
+    "live": 0.6875,
+    "sky": 0.02326,
+    "luma": 0.3896,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "f4f75ee1",
+   "buildKey": "f4f75ee12ce21cfc4317941cc09ade6b4babff64f9d706df1a6036cb0fe585dd",
+   "clusterId": 119,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-072458/0119_detail1.png",
+    "score": 0.0021031,
+    "live": 0.3403,
+    "sky": 0.10391,
+    "luma": 0.6888
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-072542/0119_detail1~up20~up20.png",
+    "score": 0.0053896,
+    "live": 0.4931,
+    "sky": 0.0,
+    "luma": 0.5779,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "f6924293",
+   "buildKey": "f6924293ee676c9348b48171a542a80851bdb6f60389896ac7934373ee48780a",
+   "clusterId": 9,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-063107/0009_detail1.png",
+    "score": 0.0075107,
+    "live": 0.7153,
+    "sky": 0.05336,
+    "luma": 0.28
+   },
+   "winner": {
+    "name": "detail1~lo12",
+    "file": "images/20260912-063122/0009_detail1~lo12.png",
+    "score": 0.0087314,
+    "live": 0.7431,
+    "sky": 0.07396,
+    "luma": 0.3139,
+    "elevationDeg": 11.0
+   },
+   "path": [
+    "detail1",
+    "detail1~lo12"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": false
+  },
+  {
+   "build": "f8e26360",
+   "buildKey": "f8e263608eb157db41548267dc3468dd091752cdeef59bda075439a8093d5e39",
+   "clusterId": 294,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-080202/0294_detail1.png",
+    "score": 0.0052392,
+    "live": 0.5208,
+    "sky": 0.31217,
+    "luma": 0.4628
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-080354/0294_detail1~up20~up20.png",
+    "score": 0.0118954,
+    "live": 0.7361,
+    "sky": 0.01694,
+    "luma": 0.3213,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "winner",
+   "climbed": true
+  },
+  {
+   "build": "fb1c3e2f",
+   "buildKey": "fb1c3e2f242953192a0919be5141b3c8f918dd6f3c7791c50e5093a1bb9d39b2",
+   "clusterId": 130,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-073528/0130_detail1.png",
+    "score": 0.0099672,
+    "live": 0.6667,
+    "sky": 0.02753,
+    "luma": 0.5472
+   },
+   "winner": {
+    "name": "detail1~up20~up20",
+    "file": "images/20260912-073610/0130_detail1~up20~up20.png",
+    "score": 0.0160225,
+    "live": 0.8125,
+    "sky": 0.0,
+    "luma": 0.4204,
+    "elevationDeg": 62.8
+   },
+   "path": [
+    "detail1",
+    "detail1~up20",
+    "detail1~up20~up20"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": true
+  },
+  {
+   "build": "fc5eaf01",
+   "buildKey": "fc5eaf016a4d42518304eb08eaa9b088ab0801392d5550b0dbe5ff1207faaf8a",
+   "clusterId": 86,
+   "incumbent": {
+    "name": "detail1",
+    "file": "images/20260912-071611/0086_detail1.png",
+    "score": 0.019915,
+    "live": 0.875,
+    "sky": 0.0,
+    "luma": 0.4145
+   },
+   "winner": {
+    "name": "detail1~o45~o45",
+    "file": "images/20260912-071651/0086_detail1~o45~o45.png",
+    "score": 0.0243012,
+    "live": 0.9931,
+    "sky": 0.00577,
+    "luma": 0.4831,
+    "elevationDeg": 29.7
+   },
+   "path": [
+    "detail1",
+    "detail1~o45",
+    "detail1~o45~o45"
+   ],
+   "rounds": 2,
+   "needs": null,
+   "left": "incumbent",
+   "climbed": false
+  }
+ ]
+}
