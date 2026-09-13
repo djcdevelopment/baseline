@@ -1179,7 +1179,11 @@ class SubjectGateTests(unittest.TestCase):
                     "d1": (self.gate.features([(i * 40.0, 0.0, i * 30.0, "wood_wall") for i in range(25)]), False)}
         result = self.gate.calibrate(labelled)
         self.assertEqual([], result["keptRejected"]); self.assertEqual(["d1", "f1"], result["caught"])
-        self.assertEqual({"bare-floor": {"neitherCaught": 1, "keptRejected": 0}, "debris": {"neitherCaught": 1, "keptRejected": 0}}, result["perRule"])
+        self.assertEqual({"bare-floor": {"neitherCaught": 1, "keptRejected": 0}, "debris": {"neitherCaught": 1, "keptRejected": 0},
+                          "outland": {"neitherCaught": 0, "keptRejected": 0}}, result["perRule"])
+        # Beyond the world edge the client streams the void for minutes; that is a subject to skip.
+        far = self.gate.features([(12000.0 + x, 2.0, 500.0 + z, "wood_wall") for x in range(0, 20, 2) for z in range(0, 20, 2)])
+        self.assertTrue(self.gate.verdict(far)[0].startswith("outland"))
         self.assertIn("height", result["distributions"])
         # A thresholds file may override a limit; the rule shape stays.
         strict = {"rules": {"bare-floor": [["height", "max", 7.0], ["floorShare", "min", 0.1]]}}

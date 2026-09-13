@@ -14,6 +14,7 @@ Features (pure functions over (x, y, z, prefab_name) rows):
   density           pieces per square metre of the xz footprint
   floorShare        share of pieces whose prefab is a floor, path or terrain operation
   sprawl            mass_radii P100 / P90
+  radius            distance of the horizontal centroid from the world origin, metres
 
 Rules are the two failure modes the judge named, each a conjunction with thresholds that
 mean something in metres and pieces -- NOT extremes fitted to a sample. The first attempt
@@ -23,6 +24,8 @@ Valheim wall is 2 m, a roofed hut is 4-6 m, and that sample had simply never see
 
   bare-floor   height < 3 m  AND floorShare > 0.5     a floor, a path, a fence line; nothing stands on it
   debris       density < 0.02 /m2 AND largestMassShare < 0.35    thin scatter with no coherent mass
+  outland      radius > 10500 m     beyond the world edge; the client streams the void for minutes
+               (era 13, 2026-09-13: one such build took 210 s for a pose and wedged the next)
 
 `calibrate` REPORTS how the declared rules behave on labelled builds (kept must be 0 lost;
 neither caught is whatever it is) and the per-feature distributions, so a threshold is
@@ -55,6 +58,7 @@ FLOOR = re.compile(r"floor|paved|path|cultivat|raise|level|dirt|ground", re.IGNO
 DEFAULT_RULES = {
     "bare-floor": [["height", "max", 3.0], ["floorShare", "min", 0.5]],
     "debris": [["density", "max", 0.02], ["largestMassShare", "max", 0.35]],
+    "outland": [["radius", "min", 10500.0]],
 }
 
 
@@ -77,10 +81,10 @@ def features(rows):
     components = scan_build_features.subclusters(points)
     sizes = sorted((c["pieces"] for c in components), reverse=True) or [n]
     floors = sum(1 for r in rows if r[3] and FLOOR.search(r[3]))
-    _, _, _, p90, p100 = frame_forecast.mass_radii(points)
+    (cx, cz), _, _, p90, p100 = frame_forecast.mass_radii(points)
     return {"pieces": n, "largestMassShare": round(sizes[0] / n, 4), "masses": len(sizes),
             "height": round(height, 2), "density": round(n / footprint, 4), "floorShare": round(floors / n, 4),
-            "sprawl": round(p100 / p90, 3) if p90 > 0 else 1.0}
+            "sprawl": round(p100 / p90, 3) if p90 > 0 else 1.0, "radius": round(math.hypot(cx, cz), 1)}
 
 
 def rules_from(thresholds):
@@ -124,7 +128,7 @@ def calibrate(labelled, thresholds=None):
         per_rule[name] = {"neitherCaught": sum(1 for b in lost if any(r.startswith(name + ":") for r in rejected[b])),
                           "keptRejected": sum(1 for b in kept if any(r.startswith(name + ":") for r in rejected[b]))}
     distributions = {}
-    for key in ("pieces", "largestMassShare", "masses", "height", "density", "floorShare", "sprawl"):
+    for key in ("pieces", "largestMassShare", "masses", "height", "density", "floorShare", "sprawl", "radius"):
         def q(values):
             values = sorted(v for v in values if v is not None)
             return {"min": values[0], "median": values[len(values) // 2], "max": values[-1]} if values else None

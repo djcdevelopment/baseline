@@ -1,6 +1,6 @@
 {
  "schema": "steward-subject-gate-thresholds/v1",
- "note": "the two failure modes the judge named on 2026-09-12; limits in metres, pieces/m2 and shares, not fitted extremes",
+ "note": "the two failure modes the judge named on 2026-09-12; limits in metres, pieces/m2 and shares, not fitted extremes; outland added 2026-09-13 after an 18 km build wedged the era-13 client",
  "rules": {
   "bare-floor": [
    [
@@ -24,6 +24,13 @@
     "largestMassShare",
     "max",
     0.35
+   ]
+  ],
+  "outland": [
+   [
+    "radius",
+    "min",
+    10500.0
    ]
   ]
  }
