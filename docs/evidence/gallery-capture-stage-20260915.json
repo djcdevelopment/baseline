@@ -1,0 +1,257 @@
+{
+  "schema": "gallery-capture-stage-evidence/v1",
+  "recordedUtc": "2026-09-15T22:51:06.035662+00:00",
+  "status": "VERIFIED_LOCAL_STAGE",
+  "publicDeploymentChanged": false,
+  "sourceRevisions": {
+    "steward": "2a9197d5bd45124aa4a91982a859669ac8cd0bd3",
+    "selfieStick": "7bf5ae7752c1a49540c6438d36fd8f50448229aa",
+    "quest": "dd3685b357e87d295215790fad93b65ccd044ad8"
+  },
+  "versions": {
+    "composer": "1.0.0-preview.3",
+    "runner": "0.3.1",
+    "studio": "0.9.14-gallery.3",
+    "contract": "selfiestick-capture/v1"
+  },
+  "artifacts": {
+    "composer": {
+      "path": "C:\\work\\gallery-stage-steward-20260915\\artifacts\\capture-composer-pushed-2a9197d.zip",
+      "bytes": 15566,
+      "sha256": "c7ea6bbe0e2346b50c5ee2da2bc65a161c59d39420a31a7c42acb5dde96ffe24"
+    },
+    "server": {
+      "path": "C:\\work\\gallery-stage-steward-20260915\\artifacts\\gallery-stage-pushed-20260915-2a9197d\\steward-spatial-lab-capture.jar",
+      "bytes": 94090520,
+      "sha256": "22aa015f695b2200b1b0a7a95f18c856cc25df14509e1cf12cf644e8b3c47106"
+    },
+    "galleryEntry": {
+      "path": "C:\\work\\gallery-stage-steward-20260915\\artifacts\\gallery-stage-pushed-20260915-2a9197d\\gallery\\index.html",
+      "bytes": 62280,
+      "sha256": "4ac50da76680212dbd4bfb684112abf4e42359008a92bf0cf02a54b71f5f4327"
+    },
+    "galleryIndex": {
+      "path": "C:\\work\\gallery-stage-steward-20260915\\artifacts\\gallery-stage-pushed-20260915-2a9197d\\gallery\\index.json",
+      "bytes": 70230,
+      "sha256": "ed7bbf9b4129bdfeca36aa591a4d83b8e85943e9bbb5e48ea065780c701e37c0"
+    },
+    "catalog": {
+      "path": "C:\\work\\gallery-stage-steward-20260915\\artifacts\\gallery-stage-pushed-20260915-2a9197d\\capture-catalog.json",
+      "bytes": 233912,
+      "sha256": "9bb32f3397b90c90bf3b9068e9082e1fd8ba80fff835ce2d11318ba9c6c2bee1"
+    },
+    "captureDeployment": {
+      "path": "C:\\work\\gallery-stage-steward-20260915\\artifacts\\gallery-stage-pushed-20260915-2a9197d\\capture-data\\deployment-manifest.json",
+      "bytes": 25359,
+      "sha256": "daa3f8a4ba5bfb066da1707e4ad9505a044bc578ae4ea7da11cfdb748a29186b"
+    },
+    "era11SceneCache": {
+      "path": "C:\\work\\gallery-stage-steward-20260915\\artifacts\\gallery-stage-pushed-20260915-2a9197d\\era11-public.duckdb",
+      "bytes": 193474560,
+      "sha256": "858c456fe9422117ca4c56d413fc61d3bee3b87536189773416449bf2a17ba76"
+    },
+    "integrationReceipt": {
+      "path": "C:\\work\\gallery-stage-steward-20260915\\artifacts\\gallery-stage-pushed-20260915-2a9197d\\capture-integration\\receipt.json",
+      "bytes": 1150,
+      "sha256": "59fcec97e2b4f72fc5d1969ce0d4a63fccb81b482596fbe55d322f1ad524d766"
+    },
+    "galleryExport": {
+      "path": "C:\\work\\gallery-stage-steward-20260915\\artifacts\\gallery-stage-pushed-20260915-2a9197d\\capture-integration\\gallery-capture.zip",
+      "bytes": 109900,
+      "sha256": "e94e0145cf80c6ce757250e1812b66b2fa541a40a1c3a3d52d955fbce58ef7dc"
+    },
+    "studioExport": {
+      "path": "C:\\work\\gallery-stage-steward-20260915\\artifacts\\gallery-stage-pushed-20260915-2a9197d\\capture-integration\\studio-capture.zip",
+      "bytes": 109900,
+      "sha256": "e94e0145cf80c6ce757250e1812b66b2fa541a40a1c3a3d52d955fbce58ef7dc"
+    },
+    "studioPackage": {
+      "path": "C:\\work\\gallery-stage-quest-20260915\\artifacts\\gallery-stage-pushed-20260915-dd3685b\\Comfy.Quest.Studio.0.9.14-gallery.3.nupkg",
+      "bytes": 574311,
+      "sha256": "98dba27f4fcc0d0bbe5851220fb697f6cf318790b7aea5ba8b564b65d92c2049"
+    },
+    "runner": {
+      "path": "C:\\work\\SelfieStick\\artifacts\\gallery-stage-pushed-20260915-7bf5ae7\\selfiestick-runner-0.3.1.zip",
+      "bytes": 69516,
+      "sha256": "61b9c6ca58f16d374f462dd657b4ad566666a0dffd816b0f31e0da35204f810e"
+    },
+    "cameraPlugin": {
+      "path": "C:\\work\\SelfieStick\\artifacts\\gallery-stage-pushed-20260915-7bf5ae7\\runner\\mods\\CameraProof.dll",
+      "bytes": 108032,
+      "sha256": "cde249ac92d38fd2ee6257156c2844945fa4a393bad3525a4d74993d7219a0ba"
+    },
+    "omenProof": {
+      "path": "C:\\work\\SelfieStick\\artifacts\\proof-omen-pushed-20260915-7bf5ae7\\capture-proof.json",
+      "bytes": 5430,
+      "sha256": "78e9b12bd68c66aed454bae8cc048985fe21f509d224fed06b0be9ef3dea3c96"
+    },
+    "am4Proof": {
+      "path": "C:\\work\\SelfieStick\\artifacts\\proof-am4-pushed-20260915-7bf5ae7\\capture-proof.json",
+      "bytes": 5276,
+      "sha256": "3035b8ca1e0a5a77d599c8bc66b458002c5c409e2e1532f4874ca78426378a66"
+    },
+    "browserFixture": {
+      "path": "C:\\work\\gallery-stage-steward-20260915\\artifacts\\capture-browser-pushed-20260915-2a9197d\\receipt.json",
+      "bytes": 416,
+      "sha256": "aed9379441c273c8f5077359ec6b0ba66947b6316010c141d88ec0bfd3ce5876"
+    },
+    "studioRelease": {
+      "path": "C:\\work\\gallery-stage-quest-20260915\\artifacts\\gallery-stage-pushed-20260915-dd3685b\\release.json",
+      "bytes": 826,
+      "sha256": "56ef4ad51e1c56351e4d35e1e2ce83e7fdd171e40d3f97baee6f7c91426af61b"
+    }
+  },
+  "verification": {
+    "stewardMavenTests": {
+      "status": "VERIFIED",
+      "passed": 53
+    },
+    "stewardArchivePython": {
+      "status": "VERIFIED",
+      "passed": 182,
+      "skipped": 4
+    },
+    "sharedCameraJavaScript": {
+      "status": "VERIFIED",
+      "passed": 6
+    },
+    "stewardBrowserFixture": {
+      "status": "VERIFIED",
+      "receipt": {
+        "path": "C:\\work\\gallery-stage-steward-20260915\\artifacts\\capture-browser-pushed-20260915-2a9197d\\receipt.json",
+        "bytes": 416,
+        "sha256": "aed9379441c273c8f5077359ec6b0ba66947b6316010c141d88ec0bfd3ce5876"
+      }
+    },
+    "questLabXUnit": {
+      "status": "VERIFIED",
+      "passed": 385
+    },
+    "questStudioXUnit": {
+      "status": "VERIFIED",
+      "passed": 149
+    },
+    "questPython": {
+      "status": "VERIFIED",
+      "passed": 455,
+      "skipped": 1
+    },
+    "questGeneratorsIdentityBoundary": {
+      "status": "VERIFIED"
+    },
+    "questHistorySecretScan": {
+      "status": "VERIFIED",
+      "commitsScanned": 243,
+      "leaks": 0
+    },
+    "am4GamePluginBuilds": {
+      "status": "VERIFIED",
+      "labWarnings": 0,
+      "labErrors": 0,
+      "runtimeWarnings": 0,
+      "runtimeErrors": 0,
+      "gameAssemblies": "Valheim 1.0.12 Linux"
+    },
+    "studioPackageConsumer": {
+      "status": "VERIFIED",
+      "warnings": 0,
+      "errors": 0,
+      "unauthorizedCatalogStatus": 403,
+      "embeddedComposerHashMatched": true
+    },
+    "stewardProofGate": {
+      "status": "VERIFIED",
+      "catalogPhotos": 83,
+      "downloadsEnabled": true,
+      "firstSceneStatus": 200,
+      "firstSceneHeader": "SV3D"
+    },
+    "galleryStudioIntegration": {
+      "status": "VERIFIED",
+      "receipt": {
+        "path": "C:\\work\\gallery-stage-steward-20260915\\artifacts\\gallery-stage-pushed-20260915-2a9197d\\capture-integration\\receipt.json",
+        "bytes": 1150,
+        "sha256": "59fcec97e2b4f72fc5d1969ce0d4a63fccb81b482596fbe55d322f1ad524d766"
+      },
+      "export": {
+        "bytes": 109900,
+        "sha256": "e94e0145cf80c6ce757250e1812b66b2fa541a40a1c3a3d52d955fbce58ef7dc"
+      },
+      "byteIdentical": true
+    }
+  },
+  "captureProof": {
+    "OMEN": {
+      "status": "VERIFIED",
+      "exactCases": 12,
+      "legacyCases": 2,
+      "receipt": {
+        "path": "C:\\work\\SelfieStick\\artifacts\\proof-omen-pushed-20260915-7bf5ae7\\capture-proof.json",
+        "bytes": 5430,
+        "sha256": "78e9b12bd68c66aed454bae8cc048985fe21f509d224fed06b0be9ef3dea3c96"
+      },
+      "restoration": {
+        "pluginsAndControls": true,
+        "sourceSavesUnchanged": true,
+        "discoverySavesUnchanged": true,
+        "beforeSha256": "f04a2e769b2d2366655f39347611c706e9db1cc47718417b087949bff350f74c",
+        "afterSha256": "f04a2e769b2d2366655f39347611c706e9db1cc47718417b087949bff350f74c"
+      }
+    },
+    "AM4": {
+      "status": "VERIFIED",
+      "exactCases": 12,
+      "legacyCases": 2,
+      "receipt": {
+        "path": "C:\\work\\SelfieStick\\artifacts\\proof-am4-pushed-20260915-7bf5ae7\\capture-proof.json",
+        "bytes": 5276,
+        "sha256": "3035b8ca1e0a5a77d599c8bc66b458002c5c409e2e1532f4874ca78426378a66"
+      },
+      "restoration": {
+        "pluginsAndControls": true,
+        "sourceSavesUnchanged": true,
+        "discoverySavesUnchanged": true,
+        "beforeSha256": "652861da2e04e2bdb07474d868bff3c609b297071904321f5463c2b06df6e9c9",
+        "afterSha256": "652861da2e04e2bdb07474d868bff3c609b297071904321f5463c2b06df6e9c9"
+      }
+    },
+    "failedLaunchAttempts": {
+      "status": "RECOVERED",
+      "count": 2,
+      "host": "AM4",
+      "exitCode": -11,
+      "frames": 0,
+      "cause": "SSH proof invocation omitted DISPLAY=:0; corrected invocation used the existing monitor display",
+      "sourceSavesUnchanged": true,
+      "pluginsAndControlsRestored": true
+    }
+  },
+  "imageReview": {
+    "status": "VERIFIED",
+    "scope": "Representative OMEN and AM4 normal landscape, narrow landscape, and 3840 square images inspected; measured pose and dimensions passed every exact receipt.",
+    "pixelEqualityClaimed": false
+  },
+  "cleanup": {
+    "temporaryLoopbackServersStopped": true,
+    "OMENValheimRunning": false,
+    "OMENCaptureLockPresent": false,
+    "OMENTemporaryCameraPluginPresent": false,
+    "AM4ValheimRunning": false,
+    "AM4SteamRunning": false,
+    "AM4CaptureLockPresent": false,
+    "AM4OllamaActive": false,
+    "originalPluginStateRestored": true
+  },
+  "limitations": [
+    "Stage only: public gallery downloads were not enabled.",
+    "AM4 Lab and Runtime evidence is compile-only; the Quest plugins were not loaded into a live game.",
+    "The local 83-photo gallery index omits optional quality/depth inputs; the live gallery inventory was not overwritten."
+  ],
+  "accounting": {
+    "hearthReceipt": "br-20260915-220636-559779a0",
+    "modelSwaps": 0,
+    "hearthInferenceCalls": 0,
+    "dollarCost": "not available"
+  },
+  "delivery": "Pushed Quest implementation and staged exact artifacts for review; public deployment unchanged."
+}

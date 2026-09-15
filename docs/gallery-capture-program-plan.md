@@ -32,14 +32,14 @@ bytes carry an explicit version, size and SHA-256 pin.
 | Shared still composer | Implemented in Steward; both real browser entry points, camera fixtures, geometry aim, keyboard movement, reset, resize and independent observer passed. |
 | Archive catalog and export | 83 Era 11 photos projected; a valid local proof gate enables deterministic ZIP downloads and rejects false proof summaries, wrong archive or incompatible plugin. |
 | Portable exact capture | SelfieStick 0.3.1 captures the authored lens pose, vertical FOV and requested dimensions; legacy shot lists keep their prior placement behavior. |
-| Real local proof | OMEN and AM4 each passed nine lens/frame cases at 1920, three 3840 frame cases and two legacy cases; the extracted Windows launcher also passed. Final save fingerprints and restoration receipts match. |
-| Source landing | Pushed to `main` in SelfieStick `7bf5ae7`, Steward `2a9197d`, and comfy-quest `85cbb2a`; Baseline records this cut. Local candidate artifacts remain versioned and hash-pinned; clean-revision release promotion follows. |
-| Public rollout | Pending a release cut from pushed source with exact artifact pins and a proof-gated Steward deployment. Local candidate testing is historical evidence, not a claim that public downloads are live. |
+| Real local proof | The pushed SelfieStick runner was freshly proved on OMEN and AM4: each passed nine lens/frame cases at 1920, three 3840 cases and two legacy cases. Final save fingerprints and restoration receipts match. The earlier r4 proofs remain historical. |
+| Pushed-source stage | Steward composer/server and SelfieStick runner were rebuilt from pushed revisions; Quest `0.9.14-gallery.3` was packed from pushed revision `dd3685b`. The local Steward gate enabled downloads from the two new proofs, and the gallery and package-consuming Studio host exported identical ZIP bytes. The [stage evidence](evidence/gallery-capture-stage-20260915.json) pins every artifact. |
+| Public rollout | Pending promotion of the reviewed staged artifacts to the public deployment. Local proof-gate success does not change live downloads. |
 
-Quest Studio and Lab test gates pass in the clean landing checkout. The separate
-Quest game-plugin projects currently fail to build against local Valheim 1.0.12
-assemblies because `main` has older game APIs; compatibility edits in the primary
-Quest working tree belong to another task and are excluded from this capture landing.
+Quest Studio and Lab test gates pass. Minimal Valheim 1.0.12 API compatibility edits
+are now pushed in Quest `dd3685b`; AM4 builds Lab and Runtime with zero warnings and
+errors. This is compile evidence only. Broader unrelated edits in the original Quest
+working tree remain preserved.
 
 The [machine-readable index](evidence/gallery-capture-20260915.json) pins local
 candidate and PNG bytes. The initial OMEN 0.3.0 isolation failure remains historical:
@@ -49,20 +49,18 @@ capture-only; current post-run saves match preserved evidence and are retained. 
 older backup was installed. This disposition does not turn the invalid r1 runs into
 acceptance proof. The corrected 0.3.1 runner and final r4 proofs are the accepted path.
 
-## Next release cut
+## Staged release and public promotion
 
-1. Resolve the separate Quest plugin build compatibility gate before publishing its
-   next full package. Preserve the unrelated compatibility work until its owner lands it.
-2. Build Steward's shared composer and SelfieStick's runner from pushed, immutable
-   revisions. Record the new ZIP/DLL byte counts and SHA-256 in their release manifests.
-3. Import the published Steward artifact into Studio through its verified importer,
-   publish the exact Studio package, and check the gallery and Studio exports are
-   byte-equivalent for one camera specification.
-4. Re-run the real local capture matrix if runner or plugin bytes change. Stage the
-   archive catalog, hosted thumbnails, pinned runner and actual OMEN/AM4 receipts
-   through Steward's proof gate. Review the PNGs and restoration evidence again.
-5. Enable public downloads only from that staged, proof-validated release. Keep
-   incomplete photographs visible with their availability reason.
+The staged release completed source landing, clean-revision artifact pins, Studio's
+package import and byte-equivalent export, a fresh 14-shot matrix on both game hosts,
+and a local proof-gated Steward catalog with hosted thumbnails. The game harnesses
+restored both hosts, and the loopback stage servers were stopped. Quest Lab and Runtime
+also compile against AM4's Valheim 1.0.12 assemblies with zero warnings; live plugin
+load remains unproven.
+
+Public promotion is the remaining release action. Use only the exact artifacts and
+receipts in the stage evidence, verify the deployed proof gate before downloads are
+advertised, and keep incomplete photographs visible with their availability reason.
 
 This is a release sequence, not a request to redeploy on a documentation push.
 Moving-camera capture follows the still release: define a time-sampled camera path,
