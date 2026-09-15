@@ -24,6 +24,11 @@ Start with:
 - **Quest Studio → Runtime plan:**
   [`quest-studio-runtime-plan.md`](quest-studio-runtime-plan.md), with the product boundary,
   shared contract, milestones, diagrams, current implementation state, and native host/peer evidence.
+- **Archived-world photography:**
+  [`gallery-capture-program-plan.md`](gallery-capture-program-plan.md) states the user path,
+  owning repositories, current proof and release sequence. Its
+  [`2026-09-15 retrospective`](retrospectives/2026-09-15-gallery-capture-composer-retrospective.md)
+  records the save-isolation failure, corrected local proof and remaining rollout.
 - **MCP endpoint provenance:**
   [`audit/2026-08-01-mcp-endpoint-provenance-audit.md`](audit/2026-08-01-mcp-endpoint-provenance-audit.md),
   recording the retired `:8720` task collision, split ledgers, and the identity-first

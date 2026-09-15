@@ -1,0 +1,37 @@
+{
+  "schema": "gallery-capture-save-disposition/v1",
+  "recordedUtc": "2026-09-15T19:59:44.630216+00:00",
+  "userStatement": "Questy is capture-only",
+  "character": {
+    "identity": "Steam cloud Questy",
+    "status": "RESOLVED_CAPTURE_ONLY",
+    "postRunSaveRetained": true,
+    "postRunSaveMatchesPreservedCopy": true,
+    "postRunSaveSha256": "b54ba1edfff4e7e24801c36b77abb6a228b400ebf0ec08dfda87f2d963f6934c",
+    "exactPreRunBackupFound": false,
+    "originalWriteReversed": false,
+    "reason": "The owner confirmed that Questy is a disposable capture character; replacing it with the old 802-byte starter backup would discard the current capture-only state without recovering the exact pre-run save."
+  },
+  "world": {
+    "identity": "existing local ComfyEra11",
+    "status": "RESOLVED_CAPTURE_ONLY",
+    "postRunFilesMatchPreservedCopies": true,
+    "exactPreRunBackupFound": false,
+    "olderBackup": {
+      "path": "C:\\Users\\derek\\AppData\\LocalLow\\IronGate\\Valheim\\worlds_local\\ComfyEra11_backup_20260912-031441.db",
+      "bytes": 939354876,
+      "date": "2026-09-12"
+    },
+    "originalWriteReversed": false,
+    "reason": "The owner confirmed that ComfyEra11 is a disposable capture world. Its current post-run files match the preserved copies, so the converted save is retained. The older flat archive backup is not an exact pre-run copy and has not been installed.",
+    "postRunWorldRetained": true
+  },
+  "initialR1RestorationClaim": "INVALID",
+  "preservation": {
+    "path": "C:\\work\\SelfieStick\\artifacts\\incident-omen-20260915\\preservation.json",
+    "bytes": 3615,
+    "sha256": "2a0fd9ea42aca487133f0432ca8229c4e29e3e804c35ca70443cff6d3951f230"
+  },
+  "worldOwnerStatement": "Capture-only",
+  "worldDispositionRecordedUtc": "2026-09-15T20:13:00.159925+00:00"
+}

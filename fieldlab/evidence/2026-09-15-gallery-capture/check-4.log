@@ -1,0 +1,6 @@
+test_local_links_resolve (tests.test_entrypoint_links.EntrypointLinkTests.test_local_links_resolve) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.005s
+
+OK

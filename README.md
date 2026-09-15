@@ -16,6 +16,10 @@ and what evidence supports the project’s claims.
 - [Repository split decision](docs/decisions/pd-9-repository-split.md) — why Baseline
   became the hub and how code crosses repository boundaries.
 - [Port registry](docs/PORTS.md) — one runtime claim per local port.
+- [Gallery capture plan](docs/gallery-capture-program-plan.md) — the still-photo
+  workspace, local SelfieStick proof, release boundary, and next steps.
+- [Gallery capture retrospective](docs/retrospectives/2026-09-15-gallery-capture-composer-retrospective.md)
+  — what worked, what failed in save isolation, and the evidence behind the correction.
 
 ## The add-on fleet
 
@@ -24,6 +28,8 @@ and what evidence supports the project’s claims.
 | [`networksense`](https://github.com/djcdevelopment/networksense) | ComfyNetworkSense mod, HUD, telemetry tests, and mod release artifacts |
 | [`lumberjacks-platform`](https://github.com/djcdevelopment/lumberjacks-platform) | Gateway/services/Companion, live FieldLab harness, roadmap, Workbench, production compose, and P7 lanes |
 | [`comfy-quest`](https://github.com/djcdevelopment/comfy-quest) | Quest Lab, Runtime, Contracts, Studio, generators, and creator release artifacts |
+| [`ComfyStewardView`](https://github.com/djcdevelopment/ComfyStewardView) | Archived-world photo catalog, shared capture composer, read-only scene, and gallery export |
+| [`SelfieStick`](https://github.com/djcdevelopment/SelfieStick) | Local still-capture contract, portable Windows/Linux runner, and game-camera plugin |
 | [`sovereign-shards`](https://github.com/djcdevelopment/sovereign-shards) | Greenfield router, shard manager, sidecar, and bot architecture |
 | [`isolate`](https://github.com/djcdevelopment/isolate) | MCP kernel, API contracts, container manifests, and disposable lab runtime |
 

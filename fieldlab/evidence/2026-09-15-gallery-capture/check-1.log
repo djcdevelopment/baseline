@@ -1,0 +1,187 @@
+test_every_raw_byte_pin_checks_out_with_lf (test_byte_stable_checkout.ByteStableCheckoutTests.test_every_raw_byte_pin_checks_out_with_lf) ... ok
+test_local_links_resolve (test_entrypoint_links.EntrypointLinkTests.test_local_links_resolve) ... ok
+test_divergent_revision_is_not_reported_as_intentionally_behind (test_fleet_status.FleetStatusTests.test_divergent_revision_is_not_reported_as_intentionally_behind) ... ok
+test_frozen_fixture_render_is_byte_deterministic (test_fleet_status.FleetStatusTests.test_frozen_fixture_render_is_byte_deterministic) ... ok
+test_in_progress_current_run_is_running_without_false_failure (test_fleet_status.FleetStatusTests.test_in_progress_current_run_is_running_without_false_failure) ... ok
+test_intent_warns_after_thirty_days_not_at_thirty (test_fleet_status.FleetStatusTests.test_intent_warns_after_thirty_days_not_at_thirty) ... ok
+test_invalid_schema_duplicate_ids_and_future_dates_fail_closed (test_fleet_status.FleetStatusTests.test_invalid_schema_duplicate_ids_and_future_dates_fail_closed) ... ok
+test_malformed_remote_commit_renders_unknown_instead_of_crashing (test_fleet_status.FleetStatusTests.test_malformed_remote_commit_renders_unknown_instead_of_crashing) ... ok
+test_non_exact_package_constraint_turns_the_seam_red (test_fleet_status.FleetStatusTests.test_non_exact_package_constraint_turns_the_seam_red) ... ok
+test_non_exact_producer_version_turns_the_seam_red (test_fleet_status.FleetStatusTests.test_non_exact_producer_version_turns_the_seam_red) ... ok
+test_offline_projection_has_three_tables_and_current_head_ci (test_fleet_status.FleetStatusTests.test_offline_projection_has_three_tables_and_current_head_ci) ... ok
+test_old_green_run_cannot_make_current_head_green (test_fleet_status.FleetStatusTests.test_old_green_run_cannot_make_current_head_green) ... ok
+test_private_repository_metadata_never_enters_public_outputs (test_fleet_status.FleetStatusTests.test_private_repository_metadata_never_enters_public_outputs) ... ok
+test_public_text_is_escaped_and_private_shaped_values_are_rejected (test_fleet_status.FleetStatusTests.test_public_text_is_escaped_and_private_shaped_values_are_rejected) ... ok
+test_remote_failure_renders_unknown_instead_of_suppressing_page (test_fleet_status.FleetStatusTests.test_remote_failure_renders_unknown_instead_of_suppressing_page) ... ok
+test_committed_page_and_catalogs_match_the_pin (test_questpicker_pin.QuestPickerPinTests.test_committed_page_and_catalogs_match_the_pin) ... ok
+test_pin_names_a_generator_repository_and_revision (test_questpicker_pin.QuestPickerPinTests.test_pin_names_a_generator_repository_and_revision) ... ok
+test_verifier_fails_when_an_input_catalog_drifts (test_questpicker_pin.QuestPickerPinTests.test_verifier_fails_when_an_input_catalog_drifts) ... ok
+test_verifier_fails_when_the_page_drifts (test_questpicker_pin.QuestPickerPinTests.test_verifier_fails_when_the_page_drifts)
+A guard that cannot fail is decoration � prove this one bites. ... ok
+test_verifier_passes_on_the_committed_tree (test_questpicker_pin.QuestPickerPinTests.test_verifier_passes_on_the_committed_tree) ... ok
+test_area_fields_are_absent_for_an_unknown_cluster (test_selfie_stick.AreaAssignmentTests.test_area_fields_are_absent_for_an_unknown_cluster) ... ok
+test_ids_are_a_sequence_ordered_by_mass_not_a_grid_reference (test_selfie_stick.AreaAssignmentTests.test_ids_are_a_sequence_ordered_by_mass_not_a_grid_reference)
+The id must not encode the cell, because a cell is a coordinate. ... ok
+test_label_falls_back_to_the_area_number (test_selfie_stick.AreaAssignmentTests.test_label_falls_back_to_the_area_number) ... ok
+test_label_prefers_a_named_build_over_a_bigger_nameless_one (test_selfie_stick.AreaAssignmentTests.test_label_prefers_a_named_build_over_a_bigger_nameless_one)
+An area named after a build nobody photographed is worse than a number. ... ok
+test_negative_coordinates_land_in_their_own_cell (test_selfie_stick.AreaAssignmentTests.test_negative_coordinates_land_in_their_own_cell) ... ok
+test_neighbouring_cells_are_separate_areas (test_selfie_stick.AreaAssignmentTests.test_neighbouring_cells_are_separate_areas) ... ok
+test_same_cell_shares_an_area (test_selfie_stick.AreaAssignmentTests.test_same_cell_shares_an_area) ... ok
+test_keeping_the_planned_pose_beats_the_fan_on_the_decided_pairs (test_selfie_stick.BetweenPoseRuleTests.test_keeping_the_planned_pose_beats_the_fan_on_the_decided_pairs) ... C:\work\baseline\tests\test_selfie_stick.py:1128: ResourceWarning: unclosed file <_io.TextIOWrapper name='C:\\work\\baseline\\docs\\evidence\\2026-09-12-refine-loop-calibration\\pair-verdicts.json' mode='r' encoding='utf-8'>
+  self.verdicts = json.load(open(evidence, encoding="utf-8"))["verdicts"]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_undecided_pairs_do_not_count_either_way (test_selfie_stick.BetweenPoseRuleTests.test_undecided_pairs_do_not_count_either_way) ... ok
+test_a_chained_column_is_dropped_and_a_tall_build_is_kept (test_selfie_stick.BrokenClusterGuardTests.test_a_chained_column_is_dropped_and_a_tall_build_is_kept) ... ok
+test_fixed_elevation_overrides_the_tilt_by_shape_rule (test_selfie_stick.BrokenClusterGuardTests.test_fixed_elevation_overrides_the_tilt_by_shape_rule)
+A floating platform wants the camera aimed down; elevation_for levels ... ok
+test_include_ids_cannot_force_one_through (test_selfie_stick.BrokenClusterGuardTests.test_include_ids_cannot_force_one_through)
+Placed before the include step this guard passed --include-ids "2,68" ... ok
+test_time_of_day_moves_the_orbits_and_leaves_dawn_alone (test_selfie_stick.BrokenClusterGuardTests.test_time_of_day_moves_the_orbits_and_leaves_dawn_alone) ... ok
+test_both_bodies_rise_east_and_set_west (test_selfie_stick.CelestialArcTests.test_both_bodies_rise_east_and_set_west) ... ok
+test_neither_body_ever_gets_higher_than_45_degrees (test_selfie_stick.CelestialArcTests.test_neither_body_ever_gets_higher_than_45_degrees)
+Which is why the roofline constraint bites at all: a body that went ... ok
+test_night_is_the_moon_half_of_the_day (test_selfie_stick.CelestialArcTests.test_night_is_the_moon_half_of_the_day) ... ok
+test_the_arc_reproduces_the_dump (test_selfie_stick.CelestialArcTests.test_the_arc_reproduces_the_dump) ... ok
+test_the_sun_at_golden_hour_agrees_with_the_frames (test_selfie_stick.CelestialArcTests.test_the_sun_at_golden_hour_agrees_with_the_frames)
+Independent check: regressing sky-strip luminance on camera yaw over ... ok
+test_a_canopy_above_the_lens_is_refused_not_shot (test_selfie_stick.ChannelPlanTests.test_a_canopy_above_the_lens_is_refused_not_shot)
+The measurement that a gap distance cannot make. ... ok
+test_a_sixth_of_sky_tilts_further_down_than_a_third (test_selfie_stick.ChannelPlanTests.test_a_sixth_of_sky_tilts_further_down_than_a_third)
+More ground in frame means a lower axis, not a different subject. ... ok
+test_daylight_is_refused_rather_than_planned (test_selfie_stick.ChannelPlanTests.test_daylight_is_refused_rather_than_planned) ... ok
+test_every_frame_is_a_different_photograph (test_selfie_stick.ChannelPlanTests.test_every_frame_is_a_different_photograph)
+The index supersedes on (cluster, variant, environment, time). ... ok
+test_no_shot_ever_points_at_the_moon (test_selfie_stick.ChannelPlanTests.test_no_shot_ever_points_at_the_moon)
+The refusal that gives this planner its reason to exist. ... ok
+test_open_water_outranks_bare_distance (test_selfie_stick.ChannelPlanTests.test_open_water_outranks_bare_distance)
+Depth through variance is the objective; water is the strongest cue. ... ok
+test_the_aim_point_reproduces_the_planned_angles (test_selfie_stick.ChannelPlanTests.test_the_aim_point_reproduces_the_planned_angles)
+If FindClearView fires, LookAngles(lens, aim) must recover yaw/pitch. ... ok
+test_the_moon_is_never_behind_the_camera_either (test_selfie_stick.ChannelPlanTests.test_the_moon_is_never_behind_the_camera_either)
+Frontal moonlight is as flat as pointing at it. ... ok
+test_the_skyline_lands_where_the_sky_band_asks (test_selfie_stick.ChannelPlanTests.test_the_skyline_lands_where_the_sky_band_asks)
+v = tan(delta)/tan(fov_v/2); the skyline must sit at 1 - 2*band. ... ok
+test_a_weather_slot_at_a_different_sky_survives (test_selfie_stick.DuplicateFrameTests.test_a_weather_slot_at_a_different_sky_survives)
+Only identical frames go. The alt slot is still doing work when it ... ok
+test_every_frame_in_a_plan_is_a_different_photograph (test_selfie_stick.DuplicateFrameTests.test_every_frame_in_a_plan_is_a_different_photograph) ... ok
+test_shooting_at_dawn_drops_the_dawn_retake (test_selfie_stick.DuplicateFrameTests.test_shooting_at_dawn_drops_the_dawn_retake) ... ok
+test_the_default_plan_still_takes_six_frames_each (test_selfie_stick.DuplicateFrameTests.test_the_default_plan_still_takes_six_frames_each) ... ok
+test_the_drop_is_reported_and_says_what_it_matched (test_selfie_stick.DuplicateFrameTests.test_the_drop_is_reported_and_says_what_it_matched) ... ok
+test_exact_membership_joins_rotation_by_zdo_index (test_selfie_stick.ExactGeometryContractTests.test_exact_membership_joins_rotation_by_zdo_index) ... ok
+test_exact_membership_refuses_coordinate_drift (test_selfie_stick.ExactGeometryContractTests.test_exact_membership_refuses_coordinate_drift) ... ok
+test_point_artifact_rejects_crossed_world_metadata (test_selfie_stick.ExactGeometryContractTests.test_point_artifact_rejects_crossed_world_metadata) ... ok
+test_point_framing_consumes_camera_axis_depth (test_selfie_stick.ExactGeometryContractTests.test_point_framing_consumes_camera_axis_depth) ... ok
+test_ui_and_detail_crops_are_applied_before_resize (test_selfie_stick.GalleryImageTests.test_ui_and_detail_crops_are_applied_before_resize) ... ok
+test_ui_crop_cannot_remove_the_whole_image (test_selfie_stick.GalleryImageTests.test_ui_crop_cannot_remove_the_whole_image) ... ok
+test_a_reshoot_pairs_the_new_frame_against_the_earlier_planned_one (test_selfie_stick.LightTableTests.test_a_reshoot_pairs_the_new_frame_against_the_earlier_planned_one) ... C:\work\baseline\tests\test_selfie_stick.py:1275: ResourceWarning: unclosed file <_io.TextIOWrapper name='C:\\work\\baseline\\docs\\evidence\\2026-09-12-refine-loop-calibration\\ab-pairs.json' mode='r' encoding='utf-8'>
+  earlier = json.load(open(self.evidence / "ab-pairs.json", encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_cumulative_append_grows_one_run_across_parts_without_duplicates (test_selfie_stick.LightTableTests.test_cumulative_append_grows_one_run_across_parts_without_duplicates) ... ok
+test_each_part_has_a_stable_distinct_page_key (test_selfie_stick.LightTableTests.test_each_part_has_a_stable_distinct_page_key) ... ok
+test_harvest_reproduces_the_committed_verdicts (test_selfie_stick.LightTableTests.test_harvest_reproduces_the_committed_verdicts) ... C:\work\baseline\tests\test_selfie_stick.py:1288: ResourceWarning: unclosed file <_io.TextIOWrapper name='C:\\work\\baseline\\docs\\evidence\\2026-09-12-refine-loop-calibration\\pair-verdicts.json' mode='r' encoding='utf-8'>
+  committed = json.load(open(self.evidence / "pair-verdicts.json", encoding="utf-8"))["verdicts"]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_local_export_is_harvestable_and_complete_mode_is_strict (test_selfie_stick.LightTableTests.test_local_export_is_harvestable_and_complete_mode_is_strict) ... ok
+test_merge_receipts_requires_one_identity_and_disjoint_builds (test_selfie_stick.LightTableTests.test_merge_receipts_requires_one_identity_and_disjoint_builds) ... ok
+test_pairs_singles_and_skips_from_a_rank_receipt (test_selfie_stick.LightTableTests.test_pairs_singles_and_skips_from_a_rank_receipt) ... ok
+test_rendered_page_exports_and_imports_a_part_specific_local_file (test_selfie_stick.LightTableTests.test_rendered_page_exports_and_imports_a_part_specific_local_file) ... ok
+test_an_open_flame_outweighs_a_torch_which_outweighs_a_candle (test_selfie_stick.LightVocabularyTests.test_an_open_flame_outweighs_a_torch_which_outweighs_a_candle) ... ok
+test_creature_effects_and_crafting_glow_are_never_lights (test_selfie_stick.LightVocabularyTests.test_creature_effects_and_crafting_glow_are_never_lights)
+DvergerMageFire is a creature effect; a forge's glow is incidental and ... ok
+test_lights_are_excluded_from_the_pattern_sets (test_selfie_stick.LightVocabularyTests.test_lights_are_excluded_from_the_pattern_sets)
+piece_walltorch contains "wall" and is not a wall; the fixed set has ... ok
+test_the_feature_join_itself_reads_placed_pieces_only (test_selfie_stick.LightVocabularyTests.test_the_feature_join_itself_reads_placed_pieces_only)
+The pre-existing BUILDING assertion passed against the *count* ... C:\work\baseline\tests\test_selfie_stick.py:444: ResourceWarning: unclosed file <_io.TextIOWrapper name='C:\\work\\baseline\\tools\\selfie-stick\\scan_features.py' mode='r' encoding='utf-8'>
+  ).read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_the_most_placed_lights_are_in_the_vocabulary (test_selfie_stick.LightVocabularyTests.test_the_most_placed_lights_are_in_the_vocabulary) ... ok
+test_the_old_prefix_names_now_actually_emit_rows (test_selfie_stick.LightVocabularyTests.test_the_old_prefix_names_now_actually_emit_rows)
+The regression that motivated this: matched by a pattern, counted by ... ok
+test_unlit_variants_are_never_lights (test_selfie_stick.LightVocabularyTests.test_unlit_variants_are_never_lights)
+A sweep for "torch" matches these, and they emit nothing. ... ok
+test_a_roof_too_small_for_the_tilt_is_refused_not_shipped (test_selfie_stick.NightSkyPlanTests.test_a_roof_too_small_for_the_tilt_is_refused_not_shipped)
+At t=0.90 the moon is 34.9 degrees up, so the axis is steep, and a 4 m ... ok
+test_a_stance_under_its_own_masonry_is_refused (test_selfie_stick.NightSkyPlanTests.test_a_stance_under_its_own_masonry_is_refused)
+The failure the first capture run actually had. All 16 frames came ... ok
+test_a_tight_roof_is_stepped_back_from (test_selfie_stick.NightSkyPlanTests.test_a_tight_roof_is_stepped_back_from)
+The stance is the highest flat block, which on a big build is often a ... ok
+test_an_open_stance_on_the_same_build_is_still_taken (test_selfie_stick.NightSkyPlanTests.test_an_open_stance_on_the_same_build_is_still_taken)
+A build is only dropped when EVERY candidate stance is boxed in -- ... ok
+test_daylight_is_refused_rather_than_planned (test_selfie_stick.NightSkyPlanTests.test_daylight_is_refused_rather_than_planned)
+There is nothing to point at: the sun is the lit body from 0.25 to ... ok
+test_every_camera_looks_up (test_selfie_stick.NightSkyPlanTests.test_every_camera_looks_up)
+The one thing that separates this from every other planner here. ... ok
+test_repeats_are_distinct_variants (test_selfie_stick.NightSkyPlanTests.test_repeats_are_distinct_variants)
+Cloud position is a re-roll, so the plan shoots the same stance more ... ok
+test_the_aim_point_reproduces_the_planned_angles (test_selfie_stick.NightSkyPlanTests.test_the_aim_point_reproduces_the_planned_angles)
+The mod recomputes yaw/pitch from `aim` if occlusion recovery fires. ... ok
+test_the_gallery_gives_these_frames_their_own_perspective (test_selfie_stick.NightSkyPlanTests.test_the_gallery_gives_these_frames_their_own_perspective)
+The aesthetic head prefers a landscape to a room by 0.45 and marks ... ok
+test_the_mod_can_parse_every_row_as_a_rooftop_shot (test_selfie_stick.NightSkyPlanTests.test_the_mod_can_parse_every_row_as_a_rooftop_shot) ... ok
+test_the_roofline_stays_in_the_bottom_of_the_frame (test_selfie_stick.NightSkyPlanTests.test_the_roofline_stays_in_the_bottom_of_the_frame)
+elevation + atan(h_eye / reach) is where the parapet lands below the ... ok
+test_the_same_roof_works_once_the_moon_is_lower (test_selfie_stick.NightSkyPlanTests.test_the_same_roof_works_once_the_moon_is_lower)
+Which makes it a scheduling problem rather than a dead end. ... ok
+test_a_static_band_fails_and_is_located (test_selfie_stick.OverlayDetectionTests.test_a_static_band_fails_and_is_located) ... C:\work\baseline\tools\selfie-stick\check_overlay.py:117: ResourceWarning: unclosed file <_io.BufferedReader name='C:\\Users\\derek\\AppData\\Local\\Temp\\tmprws8vbfm\\run\\00.png'>
+  sd, mean, full = variance_map(paths)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_noise_alone_is_clean (test_selfie_stick.OverlayDetectionTests.test_noise_alone_is_clean) ... C:\work\baseline\tools\selfie-stick\check_overlay.py:117: ResourceWarning: unclosed file <_io.BufferedReader name='C:\\Users\\derek\\AppData\\Local\\Temp\\tmp54nwr59c\\run\\00.png'>
+  sd, mean, full = variance_map(paths)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_the_band_is_found_wherever_it_is_drawn (test_selfie_stick.OverlayDetectionTests.test_the_band_is_found_wherever_it_is_drawn)
+The bar sat at the top. Nothing about the method depends on that. ... C:\work\baseline\tools\selfie-stick\check_overlay.py:117: ResourceWarning: unclosed file <_io.BufferedReader name='C:\\Users\\derek\\AppData\\Local\\Temp\\tmp4bn0ylyb\\run\\00.png'>
+  sd, mean, full = variance_map(paths)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_tolerance_can_forgive_a_small_static_feature (test_selfie_stick.OverlayDetectionTests.test_tolerance_can_forgive_a_small_static_feature) ... C:\work\baseline\tools\selfie-stick\check_overlay.py:117: ResourceWarning: unclosed file <_io.BufferedReader name='C:\\Users\\derek\\AppData\\Local\\Temp\\tmprrwjr6j3\\run\\00.png'>
+  sd, mean, full = variance_map(paths)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_closer_ranks_higher_while_the_mass_stays_in_frame_and_air_ranks_nothing (test_selfie_stick.PoseForecastTests.test_closer_ranks_higher_while_the_mass_stays_in_frame_and_air_ranks_nothing) ... ok
+test_pca_finds_the_long_axis_in_the_receipt_convention (test_selfie_stick.PoseForecastTests.test_pca_finds_the_long_axis_in_the_receipt_convention) ... ok
+test_typology_matches_the_classifier_it_was_harvested_from (test_selfie_stick.PoseForecastTests.test_typology_matches_the_classifier_it_was_harvested_from) ... ok
+test_four_slopes_without_inside_corners_are_a_hip (test_selfie_stick.RoofSemanticTests.test_four_slopes_without_inside_corners_are_a_hip) ... ok
+test_half_step_rotations_quantize_without_bankers_rounding_drift (test_selfie_stick.RoofSemanticTests.test_half_step_rotations_quantize_without_bankers_rounding_drift) ... ok
+test_holdout_frames_are_independent_and_deterministic (test_selfie_stick.RoofSemanticTests.test_holdout_frames_are_independent_and_deterministic) ... ok
+test_inside_corners_turn_two_slope_pairs_into_cross_gables (test_selfie_stick.RoofSemanticTests.test_inside_corners_turn_two_slope_pairs_into_cross_gables) ... ok
+test_one_opposing_slope_pair_is_a_gable (test_selfie_stick.RoofSemanticTests.test_one_opposing_slope_pair_is_a_gable) ... ok
+test_a_throne_outranks_a_chair_which_outranks_a_stool (test_selfie_stick.SeatVocabularyTests.test_a_throne_outranks_a_chair_which_outranks_a_stool) ... ok
+test_every_throne_is_present (test_selfie_stick.SeatVocabularyTests.test_every_throne_is_present) ... ok
+test_prop_seats_are_in_the_vocabulary (test_selfie_stick.SeatVocabularyTests.test_prop_seats_are_in_the_vocabulary) ... ok
+test_the_scan_only_ever_reads_placed_pieces (test_selfie_stick.SeatVocabularyTests.test_the_scan_only_ever_reads_placed_pieces)
+The prop seats also exist in their thousands inside generated dungeons. ... C:\work\baseline\tests\test_selfie_stick.py:373: ResourceWarning: unclosed file <_io.TextIOWrapper name='C:\\work\\baseline\\tools\\selfie-stick\\scan_features.py' mode='r' encoding='utf-8'>
+  ).read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_legacy_single_snapshot_remains_supported (test_selfie_stick.SnapshotSelectionTests.test_legacy_single_snapshot_remains_supported) ... ok
+test_multi_snapshot_cache_requires_selection (test_selfie_stick.SnapshotSelectionTests.test_multi_snapshot_cache_requires_selection) ... ok
+test_snapshot_id_is_exact (test_selfie_stick.SnapshotSelectionTests.test_snapshot_id_is_exact) ... ok
+test_world_id_selects_newest_snapshot (test_selfie_stick.SnapshotSelectionTests.test_world_id_selects_newest_snapshot) ... ok
+test_a_single_storey_house_passes_and_a_bare_floor_and_debris_do_not (test_selfie_stick.SubjectGateTests.test_a_single_storey_house_passes_and_a_bare_floor_and_debris_do_not) ... ok
+test_calibration_reports_rule_behaviour_instead_of_fitting_to_the_sample (test_selfie_stick.SubjectGateTests.test_calibration_reports_rule_behaviour_instead_of_fitting_to_the_sample) ... ok
+test_a_different_sky_also_survives (test_selfie_stick.SupersedeTests.test_a_different_sky_also_survives) ... ok
+test_a_flash_lit_frame_is_a_different_photograph (test_selfie_stick.SupersedeTests.test_a_flash_lit_frame_is_a_different_photograph) ... ok
+test_a_retake_in_the_same_light_supersedes (test_selfie_stick.SupersedeTests.test_a_retake_in_the_same_light_supersedes) ... ok
+test_a_row_from_before_the_light_columns_still_keys (test_selfie_stick.SupersedeTests.test_a_row_from_before_the_light_columns_still_keys)
+Every receipt written before this existed has no fires field at all, ... ok
+test_different_builds_never_collide (test_selfie_stick.SupersedeTests.test_different_builds_never_collide) ... ok
+test_holding_the_fires_makes_a_different_photograph (test_selfie_stick.SupersedeTests.test_holding_the_fires_makes_a_different_photograph)
+The A/B depends on this. Re-shooting a plan with --fires reuses every ... ok
+test_the_key_carries_the_light (test_selfie_stick.SupersedeTests.test_the_key_carries_the_light) ... ok
+test_the_same_angle_in_different_light_is_a_different_photograph (test_selfie_stick.SupersedeTests.test_the_same_angle_in_different_light_is_a_different_photograph) ... ok
+test_cell_tier_reaches_a_2km_cell_with_no_photograph (test_selfie_stick.TargetSelectionTests.test_cell_tier_reaches_a_2km_cell_with_no_photograph) ... ok
+test_creator_tier_takes_one_build_each_and_skips_the_represented (test_selfie_stick.TargetSelectionTests.test_creator_tier_takes_one_build_each_and_skips_the_represented) ... ok
+test_never_returns_an_already_photographed_cluster (test_selfie_stick.TargetSelectionTests.test_never_returns_an_already_photographed_cluster) ... ok
+test_sky_and_chained_clusters_are_never_offered (test_selfie_stick.TargetSelectionTests.test_sky_and_chained_clusters_are_never_offered) ... ok
+
+----------------------------------------------------------------------
+Ran 119 tests in 2.005s
+
+OK
