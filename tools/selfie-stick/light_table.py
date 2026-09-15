@@ -349,13 +349,13 @@ body { margin:0; background:var(--ground); color:var(--ink); font-family:var(--m
 button { font:inherit; color:inherit; background:none; border:none; cursor:pointer; }
 :focus-visible { outline:2px solid var(--amber); outline-offset:2px; }
 .rail { flex:0 0 auto; display:flex; align-items:center; gap:18px; padding:0 16px; background:var(--panel); border-bottom:1px solid var(--line); }
-.rail.top { height:46px; } .rail.bottom { height:62px; border-bottom:none; border-top:1px solid var(--line); }
+.rail.top { height:46px; } .rail.bottom { position:fixed; z-index:10; inset:auto 0 0 0; height:62px; border-bottom:none; border-top:1px solid var(--line); }
 .mark { font-family:var(--display); font-size:15px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
 .mark b { color:var(--amber); font-weight:600; }
 .build { font-size:12px; letter-spacing:.08em; color:var(--muted); } .build strong { color:var(--ink); font-weight:500; }
 .spacer { flex:1 1 auto; } .count { font-variant-numeric:tabular-nums; color:var(--muted); white-space:nowrap; } .count b { color:var(--ink); font-weight:500; }
 .bar { width:180px; height:3px; background:var(--line); position:relative; } .bar i { position:absolute; inset:0 auto 0 0; background:var(--amber); width:0; transition:width .18s; }
-main { flex:1 1 auto; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:minmax(0,1fr); gap:2px; min-width:0; min-height:0; overflow:hidden; transition:opacity .12s; }
+main { flex:1 1 auto; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:minmax(0,1fr); gap:2px; min-width:0; min-height:0; margin-bottom:62px; overflow:hidden; transition:opacity .12s; }
 main.single { grid-template-columns:1fr; } main.fade { opacity:.25; }
 .frame { position:relative; background:var(--panel); min-height:0; overflow:hidden; display:flex; align-items:center; justify-content:center; border:2px solid transparent; transition:border-color .12s; }
 .frame img { width:100%; height:100%; min-width:0; min-height:0; object-fit:contain; display:block; }

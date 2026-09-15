@@ -1312,6 +1312,8 @@ class LightTableTests(unittest.TestCase):
         self.assertTrue(html.startswith("<!doctype html>"))
         self.assertIn('<meta charset="utf-8">', html)
         self.assertIn("grid-template-rows:minmax(0,1fr)", html)
+        self.assertIn("position:fixed; z-index:10; inset:auto 0 0 0", html)
+        self.assertIn("margin-bottom:62px", html)
         self.assertIn("width:100%; height:100%", html)
         self.assertIn("steward-light-table-local-verdicts/v1", html)
         self.assertIn('id="export"', html); self.assertIn('id="import"', html)
