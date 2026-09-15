@@ -1329,3 +1329,39 @@ class LightTableTests(unittest.TestCase):
         self.assertEqual("keep", receipt["verdicts"][0]["chose"])
         with self.assertRaises(SystemExit):
             self.lt.harvest(pairs, [], require_complete=True)
+
+    @staticmethod
+    def part_receipt(build_key, chose="a"):
+        return {"schema": "steward-pair-verdicts/v2", "era": "era1", "sourceKey": "source",
+                "run": "run", "roles": {"a": "first", "b": "second"}, "question": "which?",
+                "judgedBy": "Derek", "harvestedAt": "time", "counts": {chose: 1},
+                "verdicts": [{"build": build_key[:8], "buildKey": build_key, "chose": chose}]}
+
+    def test_cumulative_append_grows_one_run_across_parts_without_duplicates(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "all.json"
+            first = self.part_receipt("a" * 64)
+            second = self.part_receipt("b" * 64, "neither")
+            self.lt.append_cumulative(path, first)
+            total = self.lt.append_cumulative(path, second)
+            self.assertEqual((1, 2), (len(total["runs"]), len(total["verdicts"])))
+            self.assertEqual({"a": 1, "neither": 1}, total["runs"][0]["counts"])
+            again = self.lt.append_cumulative(path, first)
+            self.assertEqual(2, len(again["verdicts"]))
+            conflict = self.part_receipt("a" * 64, "b")
+            with self.assertRaisesRegex(SystemExit, "conflicts"):
+                self.lt.append_cumulative(path, conflict)
+
+    def test_merge_receipts_requires_one_identity_and_disjoint_builds(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            paths = [root / "part-01.json", root / "part-02.json"]
+            receipts = [self.part_receipt("a" * 64), self.part_receipt("b" * 64, "both")]
+            for path, receipt in zip(paths, receipts):
+                path.write_text(json.dumps(receipt), encoding="utf-8")
+            merged = self.lt.merge_receipts(paths)
+            self.assertEqual({"a": 1, "both": 1}, merged["counts"])
+            self.assertEqual(2, len(merged["verdicts"]))
+            self.assertEqual(2, len(merged["parts"]))
+            with self.assertRaisesRegex(SystemExit, "duplicate"):
+                self.lt.merge_receipts([paths[0], paths[0]])

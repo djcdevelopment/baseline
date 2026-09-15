@@ -8,6 +8,7 @@ So the page that did it is a tool, not a scratch file. Three steps, three receip
   build-pairs  rank-<era>.json (+ derivatives)      -> ab-pairs.json      steward-ab-pairs/v2
   page         ab-pairs.json  (+ derivatives)       -> light-table.html + pub/ + files.json
   harvest      ab-pairs.json  + verdict documents   -> pair-verdicts.json steward-pair-verdicts/v2
+  merge        part verdict receipts                -> pair-verdicts.json steward-pair-verdicts/v2
 
 A pair is two frames of one build shown blind, sides randomised by build key: the top two
 survivors of rank_frames.py, or for a reshoot the old planned frame against the new one
@@ -261,15 +262,71 @@ def read_verdict_docs(path):
 def append_cumulative(path, receipt):
     path = Path(path)
     total = read(path) if path.exists() else {"schema": "steward-pair-verdicts-cumulative/v1", "runs": [], "verdicts": []}
+    if total.get("schema") != "steward-pair-verdicts-cumulative/v1":
+        raise SystemExit(f"unsupported cumulative verdict schema: {total.get('schema')}")
     tag = f"{receipt['era']}:{receipt.get('run') or receipt['harvestedAt']}"
-    if tag in {r["tag"] for r in total["runs"]}:
-        return total
-    total["runs"].append({"tag": tag, "era": receipt["era"], "roles": receipt.get("roles"), "counts": receipt["counts"]})
-    total["verdicts"].extend({**v, "runTag": tag} for v in receipt["verdicts"])
+    run = next((row for row in total["runs"] if row["tag"] == tag), None)
+    if run is None:
+        run = {"tag": tag, "era": receipt["era"], "roles": receipt.get("roles"), "counts": {}}
+        total["runs"].append(run)
+    elif run.get("era") != receipt.get("era") or run.get("roles") != receipt.get("roles"):
+        raise SystemExit(f"cumulative run identity changed for {tag}")
+    existing = {}
+    for verdict in (row for row in total["verdicts"] if row.get("runTag") == tag):
+        key = verdict.get("buildKey")
+        if not key or key in existing:
+            raise SystemExit(f"cumulative run has duplicate or missing build key: {tag}")
+        existing[key] = verdict
+    incoming = set()
+    for verdict in receipt["verdicts"]:
+        key = verdict.get("buildKey")
+        if not key or key in incoming:
+            raise SystemExit(f"receipt has duplicate or missing build key: {tag}")
+        incoming.add(key)
+        prior = existing.get(key)
+        if prior is not None:
+            if {k: v for k, v in prior.items() if k != "runTag"} != verdict:
+                raise SystemExit(f"verdict conflicts with cumulative evidence: {tag} {key}")
+            continue
+        total["verdicts"].append({**verdict, "runTag": tag})
+    run_verdicts = [row for row in total["verdicts"] if row.get("runTag") == tag]
+    run["counts"] = dict(collections.Counter(row["chose"] for row in run_verdicts))
     decided = sum(1 for v in total["verdicts"] if v["chose"] in ("a", "b", "incumbent", "winner"))
     total["decidedPairs"] = decided
     write(path, total)
     return total
+
+
+def merge_receipts(paths):
+    """Join disjoint part receipts for one run, retaining hashes of every input."""
+    paths = [Path(path) for path in paths]
+    if not paths:
+        raise SystemExit("at least one part receipt is required")
+    documents = [read(path) for path in paths]
+    first = documents[0]
+    if first.get("schema") != "steward-pair-verdicts/v2":
+        raise SystemExit(f"unsupported part receipt schema: {first.get('schema')}")
+    identity_fields = ("era", "sourceKey", "run", "roles", "question", "judgedBy")
+    identity = {key: first.get(key) for key in identity_fields}
+    verdicts, seen, parts = [], set(), []
+    for path, document in zip(paths, documents):
+        if document.get("schema") != "steward-pair-verdicts/v2":
+            raise SystemExit(f"unsupported part receipt schema: {document.get('schema')}")
+        actual = {key: document.get(key) for key in identity_fields}
+        if actual != identity:
+            raise SystemExit(f"part receipt belongs to another run: {path}")
+        for verdict in document.get("verdicts", []):
+            key = verdict.get("buildKey")
+            if not key or key in seen:
+                raise SystemExit(f"duplicate or missing build key across part receipts: {key}")
+            seen.add(key); verdicts.append(verdict)
+        parts.append({"path": str(path.resolve()),
+                      "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                      "verdicts": len(document.get("verdicts", []))})
+    return {"schema": "steward-pair-verdicts/v2", **identity,
+            "harvestedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "counts": dict(collections.Counter(row["chose"] for row in verdicts)),
+            "parts": parts, "verdicts": sorted(verdicts, key=lambda row: row["buildKey"])}
 
 
 TEMPLATE = """<title>__TITLE__</title>
@@ -482,6 +539,9 @@ def main():
     h.add_argument("--judged-by", default=None)
     h.add_argument("--require-complete", action="store_true",
                    help="reject missing, duplicate, foreign, or malformed verdict rows")
+    m = sub.add_parser("merge", help="join disjoint part verdict receipts for one run")
+    m.add_argument("--receipts", type=Path, nargs="+", required=True)
+    m.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
     if args.command == "build-pairs":
         ranking = read(args.rank)
@@ -496,7 +556,7 @@ def main():
         document = load_pairs(args.pairs)
         pairs, files = render_page(document, args.derivatives, args.out)
         print(f"wrote {args.out / 'light-table.html'} for {pairs} pairs, {files} images; publish with files.json as the files map")
-    else:
+    elif args.command == "harvest":
         document = load_pairs(args.pairs)
         if args.require_complete and args.verdicts.is_file():
             envelope = read(args.verdicts)
@@ -513,6 +573,11 @@ def main():
         if args.append:
             total = append_cumulative(args.append, receipt)
             print(f"cumulative: {len(total['verdicts'])} verdicts, {total.get('decidedPairs')} decided pairs across {len(total['runs'])} run(s)")
+    else:
+        receipt = merge_receipts(args.receipts)
+        write(args.out, receipt)
+        print(f"merged {len(args.receipts)} part(s), {len(receipt['verdicts'])} verdicts: "
+              f"{receipt['counts']} -> {args.out}")
     return 0
 
 
