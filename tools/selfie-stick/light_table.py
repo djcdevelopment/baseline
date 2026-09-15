@@ -329,7 +329,12 @@ def merge_receipts(paths):
             "parts": parts, "verdicts": sorted(verdicts, key=lambda row: row["buildKey"])}
 
 
-TEMPLATE = """<title>__TITLE__</title>
+TEMPLATE = """<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>__TITLE__</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -350,10 +355,10 @@ button { font:inherit; color:inherit; background:none; border:none; cursor:point
 .build { font-size:12px; letter-spacing:.08em; color:var(--muted); } .build strong { color:var(--ink); font-weight:500; }
 .spacer { flex:1 1 auto; } .count { font-variant-numeric:tabular-nums; color:var(--muted); white-space:nowrap; } .count b { color:var(--ink); font-weight:500; }
 .bar { width:180px; height:3px; background:var(--line); position:relative; } .bar i { position:absolute; inset:0 auto 0 0; background:var(--amber); width:0; transition:width .18s; }
-main { flex:1 1 auto; display:grid; grid-template-columns:1fr 1fr; gap:2px; min-height:0; transition:opacity .12s; }
+main { flex:1 1 auto; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:minmax(0,1fr); gap:2px; min-width:0; min-height:0; overflow:hidden; transition:opacity .12s; }
 main.single { grid-template-columns:1fr; } main.fade { opacity:.25; }
 .frame { position:relative; background:var(--panel); min-height:0; overflow:hidden; display:flex; align-items:center; justify-content:center; border:2px solid transparent; transition:border-color .12s; }
-.frame img { max-width:100%; max-height:100%; object-fit:contain; display:block; }
+.frame img { width:100%; height:100%; min-width:0; min-height:0; object-fit:contain; display:block; }
 .frame:hover { border-color:var(--line-2); } .frame.pick { border-color:var(--amber); } .frame[hidden] { display:none; }
 .frame .tag { position:absolute; top:10px; left:12px; font-family:var(--display); font-size:26px; font-weight:600; line-height:1; letter-spacing:.06em; color:var(--ink); opacity:.55; text-shadow:0 1px 6px rgba(0,0,0,.8); pointer-events:none; }
 .frame .role { position:absolute; bottom:0; left:0; right:0; padding:7px 12px; background:rgba(20,22,26,.92); border-top:1px solid var(--line); font-size:11px; letter-spacing:.04em; display:none; gap:14px; flex-wrap:wrap; align-items:baseline; }
@@ -370,6 +375,8 @@ body.done main, body.done .rail.bottom { display:none; } body.done #tally { disp
 #tally table { border-collapse:collapse; margin:18px 0; } #tally td,#tally th { padding:6px 14px; border-bottom:1px solid var(--line); text-align:left; }
 #tally .note { color:var(--muted); }
 </style>
+</head>
+<body>
 <div class="rail top">
   <span class="mark"><b>light table</b> · __TITLE__</span>
   <span class="build">build <strong id="bid"></strong> <span id="mode"></span></span>
@@ -522,6 +529,8 @@ try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); if (v
 i = nextUnjudged(0); render();
 $("save").textContent = "saved locally";
 </script>
+</body>
+</html>
 """
 
 
