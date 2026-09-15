@@ -12,9 +12,9 @@ So the page that did it is a tool, not a scratch file. Three steps, three receip
 A pair is two frames of one build shown blind, sides randomised by build key: the top two
 survivors of rank_frames.py, or for a reshoot the old planned frame against the new one
 (--against). A build with a single survivor is shown alone and judged keep / reshoot. Every
-verdict is written as it is made -- localStorage and, when the page is published as an
-artifact with the `db` capability, the shared store as verdicts/<build> -- and harvest turns
-those documents into the receipt frame_judge.replay_pairs scores rules against. A
+  verdict is written to a part-specific localStorage key as it is made.  The page exports a
+  fingerprinted JSON document that it can import again, and harvest turns that document into
+  the receipt frame_judge.replay_pairs scores rules against. A
 cumulative file (--append) grows toward the ~150 decided pairs a fitted critic needs.
 
     python light_table.py build-pairs --rank R/rank-era1.json --derivatives R/derivatives --out R/ab-pairs.json
@@ -149,6 +149,14 @@ def locate_image(frame, derivatives):
     raise SystemExit(f"no image for {frame.get('id') or frame.get('file')} under {derivatives}")
 
 
+def page_key(document):
+    """A stable identity for one part, not merely its shared era title."""
+    identity = {"era": document["era"], "run": document.get("run"),
+                "buildKeys": [pair["buildKey"] for pair in document["pairs"]]}
+    raw = json.dumps(identity, sort_keys=True, separators=(",", ":")).encode()
+    return hashlib.sha256(raw).hexdigest()
+
+
 def render_page(document, derivatives, out):
     out = Path(out); pub = out / "pub"
     if pub.exists():
@@ -169,10 +177,13 @@ def render_page(document, derivatives, out):
                      "ctx": p.get("context")})
     files = sorted(f for r in rows for f in r["img"].values())
     write(out / "files.json", {f: "pub/" + f for f in files}, compact=True)
+    metadata = {"schema": "steward-light-table-local-verdicts/v1", "era": document["era"],
+                "run": document.get("run"), "pageKey": page_key(document)}
     html = (TEMPLATE.replace("__TITLE__", f"{document['era']} light table")
-                    .replace("__ROLES__", json.dumps(document.get("roles", {})))
-                    .replace("__QUESTION__", json.dumps(document.get("question", "")))
-                    .replace("__PAIRS__", json.dumps(rows, separators=(",", ":"))))
+                     .replace("__ROLES__", json.dumps(document.get("roles", {})))
+                     .replace("__QUESTION__", json.dumps(document.get("question", "")))
+                     .replace("__META__", json.dumps(metadata, separators=(",", ":")))
+                     .replace("__PAIRS__", json.dumps(rows, separators=(",", ":"))))
     (out / "light-table.html").write_text(html, encoding="utf-8")
     return len(rows), len(files)
 
@@ -186,13 +197,22 @@ def chose(pick, left):
     return "b" if left == "a" else "a"
 
 
-def harvest(document, verdict_docs, judged_by=None):
+def harvest(document, verdict_docs, judged_by=None, require_complete=False):
     by_build = {p["build"]: p for p in document["pairs"]}
+    if require_complete and len(by_build) != len(document["pairs"]):
+        raise SystemExit("pairs file contains duplicate short build identifiers")
     rows = []
+    seen, invalid = set(), []
     for row in sorted(verdict_docs, key=lambda v: v.get("build", "")):
         p = by_build.get(row.get("build"))
-        if p is None or row.get("pick") not in PICKS:
+        allowed = ("keep", "reshoot") if p and p["mode"] == "single" else ("left", "right", "both", "neither")
+        if (p is None or row.get("pick") not in allowed
+                or row.get("mode") not in (None, p["mode"])
+                or row.get("left") not in (None, p["left"])
+                or row.get("build") in seen):
+            invalid.append(row.get("build"))
             continue
+        seen.add(row["build"])
         verdict = chose(row["pick"], p["left"])
         record = {"build": p["build"], "buildKey": p["buildKey"], "mode": p["mode"], "chose": verdict, "pick": row["pick"],
                   "left": p["left"], "at": row.get("at"), "aFrame": p["a"], "bFrame": p.get("b"), "context": p.get("context")}
@@ -208,6 +228,11 @@ def harvest(document, verdict_docs, judged_by=None):
             record.update({"aMetrics": {k: p["a"].get(k) for k in ("score", "live", "sky", "luma")},
                            "bMetrics": {k: p["b"].get(k) for k in ("score", "live", "sky", "luma")} if p.get("b") else None})
         rows.append(record)
+    if require_complete:
+        missing = sorted(set(by_build) - seen)
+        if invalid or missing:
+            raise SystemExit(f"incomplete verdict set: {len(invalid)} invalid/duplicate, "
+                             f"{len(missing)} missing; first invalid={invalid[:1]}, missing={missing[:1]}")
     return {"schema": "steward-pair-verdicts/v2", "era": document["era"], "sourceKey": document.get("sourceKey"),
             "run": document.get("run"), "roles": document.get("roles"), "question": document.get("question"),
             "judgedBy": judged_by, "harvestedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -223,7 +248,11 @@ def read_verdict_docs(path):
     else:
         for file in sorted(path.rglob("*.json")):
             try:
-                docs.append(read(file))
+                loaded = read(file)
+                if isinstance(loaded, dict) and isinstance(loaded.get("verdicts"), dict):
+                    docs.extend(loaded["verdicts"].values())
+                else:
+                    docs.append(loaded)
             except ValueError:
                 continue
     return [d for d in docs if isinstance(d, dict) and d.get("build")]
@@ -287,6 +316,8 @@ body.done main, body.done .rail.bottom { display:none; } body.done #tally { disp
 <div class="rail top">
   <span class="mark"><b>light table</b> · __TITLE__</span>
   <span class="build">build <strong id="bid"></strong> <span id="mode"></span></span>
+  <div class="keys"><button id="export">export</button><button id="import">import</button></div>
+  <input id="importFile" type="file" accept="application/json,.json" hidden>
   <span class="spacer"></span>
   <span class="count"><b id="n">0</b> / <span id="tot">0</span></span>
   <span class="bar"><i id="fill"></i></span>
@@ -315,8 +346,14 @@ body.done main, body.done .rail.bottom { display:none; } body.done #tally { disp
 const PAIRS = __PAIRS__;
 const ROLES = __ROLES__;
 const QUESTION = __QUESTION__;
+const META = __META__;
+const STORAGE_KEY = `lt-verdicts:v1:${META.era}:${META.run || "none"}:${META.pageKey}`;
 const $ = (id) => document.getElementById(id);
-let i = 0, verdicts = {}, db = null, lastKey = null;
+let i = 0, verdicts = {}, lastKey = null;
+function saveLocal() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(verdicts)); $("save").textContent = "saved locally"; }
+  catch (e) { $("save").textContent = "local save failed"; $("save").className = "warn"; }
+}
 const num = (v, d = 3) => (v === null || v === undefined) ? "—" : Number(v).toFixed(d);
 function roleHtml(slot, m) {
   if (!m) return "";
@@ -350,12 +387,7 @@ async function record(pick) {
   if (!allowed.includes(pick)) return;
   const row = {build: p.b, pick, left: p.left, mode: p.mode, at: new Date().toISOString()};
   verdicts[p.b] = row; lastKey = p.b;
-  try { localStorage.setItem("lt-verdicts:" + document.title, JSON.stringify(verdicts)); } catch (e) {}
-  if (db) {
-    db.doc("verdicts/" + p.b).set(row)
-      .then(() => { $("save").textContent = ""; $("save").className = ""; })
-      .catch(() => { $("save").textContent = "not saved to the shared store"; $("save").className = "warn"; });
-  }
+  saveLocal();
   $("stage").classList.add("fade");
   setTimeout(() => { i = nextUnjudged(i + 1); $("stage").classList.remove("fade"); render(); }, 120);
 }
@@ -367,6 +399,8 @@ function nextUnjudged(from) {
 function finish() {
   document.body.classList.add("done");
   const rows = Object.values(verdicts);
+  $("n").textContent = rows.length; $("tot").textContent = PAIRS.length;
+  $("fill").style.width = (100 * rows.length / PAIRS.length) + "%";
   const count = (test) => rows.filter(test).length;
   const chose = (r) => (r.pick === "left" ? r.left : r.pick === "right" ? (r.left === "a" ? "b" : "a") : r.pick);
   $("tally").innerHTML = `<h1>${rows.length} verdicts in</h1><p>${QUESTION}</p>
@@ -378,9 +412,9 @@ function finish() {
       <tr><td>keep (single)</td><td>${count(r => r.pick === "keep")}</td></tr>
       <tr><td>reshoot (single)</td><td>${count(r => r.pick === "reshoot")}</td></tr>
     </tbody></table>
-    <p class="note">Every verdict is saved as it is made. The harvest step turns the shared store into the
-       receipt the rules are scored against; <em>neither</em> and <em>reshoot</em> rows name the builds the
-       planner has to answer for.</p>`;
+    <p class="note">Every verdict is saved locally as it is made. Export the JSON before closing this part;
+       the harvest step turns it into the receipt the rules are scored against. <em>Neither</em> and
+       <em>reshoot</em> rows name the builds the planner has to answer for.</p>`;
 }
 document.querySelectorAll("[data-pick]").forEach(b => b.addEventListener("click", () => record(b.dataset.pick)));
 $("fL").addEventListener("click", () => record(PAIRS[i] && PAIRS[i].mode === "single" ? "keep" : "left"));
@@ -388,8 +422,7 @@ $("fR").addEventListener("click", () => record("right"));
 $("reveal").addEventListener("click", () => document.body.classList.toggle("revealed"));
 $("undo").addEventListener("click", () => {
   if (!lastKey) return; const k = lastKey; delete verdicts[k]; lastKey = null;
-  try { localStorage.setItem("lt-verdicts:" + document.title, JSON.stringify(verdicts)); } catch (e) {}
-  if (db) db.doc("verdicts/" + k).delete().catch(() => {});
+  saveLocal();
   i = PAIRS.findIndex(p => p.b === k); document.body.classList.remove("done"); render();
 });
 addEventListener("keydown", (e) => {
@@ -402,18 +435,35 @@ addEventListener("keydown", (e) => {
   if (e.key === " ") { e.preventDefault(); document.body.classList.toggle("revealed"); }
   if (e.key === "u") { e.preventDefault(); $("undo").click(); }
 });
-try { const saved = JSON.parse(localStorage.getItem("lt-verdicts:" + document.title) || "{}"); if (saved && typeof saved === "object") verdicts = saved; } catch (e) {}
-i = nextUnjudged(0); render();
-if (window.claude && claude.use) claude.use("db").then(async (d) => {
-  if (!d) { $("save").textContent = "local only"; return; }
-  db = d;
+function validRows(rows) {
+  if (!rows || typeof rows !== "object" || Array.isArray(rows)) return false;
+  const pairs = Object.fromEntries(PAIRS.map(p => [p.b, p]));
+  return Object.entries(rows).every(([key, row]) => {
+    const p = pairs[key], allowed = p && (p.mode === "single" ? ["keep", "reshoot"] : ["left", "right", "both", "neither"]);
+    return p && row && row.build === key && row.mode === p.mode && row.left === p.left && allowed.includes(row.pick);
+  });
+}
+$("export").addEventListener("click", () => {
+  const payload = {...META, exportedAt: new Date().toISOString(), verdicts};
+  const blob = new Blob([JSON.stringify(payload, null, 2) + "\\n"], {type: "application/json"});
+  const link = document.createElement("a"); link.href = URL.createObjectURL(blob);
+  link.download = `verdicts-${META.era}-${META.run || "run"}-${META.pageKey.slice(0, 12)}.json`;
+  link.click(); URL.revokeObjectURL(link.href);
+});
+$("import").addEventListener("click", () => $("importFile").click());
+$("importFile").addEventListener("change", async (event) => {
+  const file = event.target.files[0]; if (!file) return;
   try {
-    const snap = await db.collection("verdicts").limit(1000).get();
-    snap.docs.forEach(s => { const v = s.data(); if (v && v.build) verdicts[v.build] = v; });
-    try { localStorage.setItem("lt-verdicts:" + document.title, JSON.stringify(verdicts)); } catch (e) {}
-    i = nextUnjudged(0); render();
-  } catch (e) { $("save").textContent = "shared store unreadable"; $("save").className = "warn"; }
-}); else $("save").textContent = "local only";
+    const payload = JSON.parse(await file.text());
+    if (payload.schema !== META.schema || payload.era !== META.era || payload.run !== META.run
+        || payload.pageKey !== META.pageKey || !validRows(payload.verdicts)) throw new Error("wrong page or invalid verdicts");
+    verdicts = payload.verdicts; lastKey = null; saveLocal(); i = nextUnjudged(0); render();
+  } catch (e) { $("save").textContent = "import refused: " + e.message; $("save").className = "warn"; }
+  event.target.value = "";
+});
+try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); if (validRows(saved)) verdicts = saved; } catch (e) {}
+i = nextUnjudged(0); render();
+$("save").textContent = "saved locally";
 </script>
 """
 
@@ -430,6 +480,8 @@ def main():
     h.add_argument("--pairs", type=Path, required=True); h.add_argument("--verdicts", type=Path, required=True)
     h.add_argument("--out", type=Path, required=True); h.add_argument("--append", type=Path, help="cumulative pair-verdicts file to grow")
     h.add_argument("--judged-by", default=None)
+    h.add_argument("--require-complete", action="store_true",
+                   help="reject missing, duplicate, foreign, or malformed verdict rows")
     args = parser.parse_args()
     if args.command == "build-pairs":
         ranking = read(args.rank)
@@ -446,7 +498,16 @@ def main():
         print(f"wrote {args.out / 'light-table.html'} for {pairs} pairs, {files} images; publish with files.json as the files map")
     else:
         document = load_pairs(args.pairs)
-        receipt = harvest(document, read_verdict_docs(args.verdicts), args.judged_by)
+        if args.require_complete and args.verdicts.is_file():
+            envelope = read(args.verdicts)
+            if envelope.get("schema") == "steward-light-table-local-verdicts/v1":
+                expected = {"era": document["era"], "run": document.get("run"),
+                            "pageKey": page_key(document)}
+                actual = {key: envelope.get(key) for key in expected}
+                if actual != expected:
+                    raise SystemExit(f"verdict export belongs to another page: {actual} != {expected}")
+        receipt = harvest(document, read_verdict_docs(args.verdicts), args.judged_by,
+                          require_complete=args.require_complete)
         write(args.out, receipt)
         print(f"{len(receipt['verdicts'])} verdicts: {receipt['counts']} -> {args.out}")
         if args.append:

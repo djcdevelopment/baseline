@@ -1291,3 +1291,41 @@ class LightTableTests(unittest.TestCase):
         self.assertEqual({v["build"]: v["chose"] for v in committed}, {v["build"]: v["chose"] for v in receipt["verdicts"]})
         self.assertEqual({"incumbent": 25, "winner": 18, "neither": 33, "both": 1}, receipt["counts"])
         self.assertTrue(all("incMetrics" in v and "fanMetrics" in v for v in receipt["verdicts"]))
+
+    def test_each_part_has_a_stable_distinct_page_key(self):
+        base = {"schema": "steward-ab-pairs/v2", "era": "era1", "run": "r", "pairs": [
+            {"build": "aaaaaaaa", "buildKey": "a" * 64, "mode": "single", "left": "a", "a": {"name": "x"}},
+            {"build": "bbbbbbbb", "buildKey": "b" * 64, "mode": "single", "left": "a", "a": {"name": "y"}}]}
+        self.assertEqual(self.lt.page_key(base), self.lt.page_key(json.loads(json.dumps(base))))
+        other = json.loads(json.dumps(base)); other["pairs"] = other["pairs"][1:]
+        self.assertNotEqual(self.lt.page_key(base), self.lt.page_key(other))
+
+    def test_rendered_page_exports_and_imports_a_part_specific_local_file(self):
+        doc = {"schema": "steward-ab-pairs/v2", "era": "era1", "run": "r", "roles": {},
+               "question": "keep?", "pairs": [{"build": "aaaaaaaa", "buildKey": "a" * 64,
+               "mode": "single", "left": "a", "a": {"name": "x", "file": "images/r/x.png"}}]}
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp); derivatives = root / "derivatives"; derivatives.mkdir()
+            Image.new("RGB", (8, 8), "red").save(derivatives / "x.webp")
+            out = root / "page"; self.lt.render_page(doc, derivatives, out)
+            html = (out / "light-table.html").read_text(encoding="utf-8")
+        self.assertIn("steward-light-table-local-verdicts/v1", html)
+        self.assertIn('id="export"', html); self.assertIn('id="import"', html)
+        self.assertIn(self.lt.page_key(doc), html)
+        self.assertNotIn('"lt-verdicts:" + document.title', html)
+
+    def test_local_export_is_harvestable_and_complete_mode_is_strict(self):
+        pairs = {"schema": "steward-ab-pairs/v2", "era": "era1", "run": "r", "roles": {},
+                 "question": "keep?", "pairs": [{"build": "aaaaaaaa", "buildKey": "a" * 64,
+                 "mode": "single", "left": "a", "a": {"name": "x"}}]}
+        row = {"build": "aaaaaaaa", "mode": "single", "left": "a", "pick": "keep", "at": "t"}
+        with tempfile.TemporaryDirectory() as tmp:
+            export = pathlib.Path(tmp) / "export.json"
+            export.write_text(json.dumps({"schema": "steward-light-table-local-verdicts/v1",
+                              "era": "era1", "run": "r", "pageKey": self.lt.page_key(pairs),
+                              "verdicts": {"aaaaaaaa": row}}), encoding="utf-8")
+            docs = self.lt.read_verdict_docs(export)
+        receipt = self.lt.harvest(pairs, docs, require_complete=True)
+        self.assertEqual("keep", receipt["verdicts"][0]["chose"])
+        with self.assertRaises(SystemExit):
+            self.lt.harvest(pairs, [], require_complete=True)
