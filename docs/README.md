@@ -28,7 +28,10 @@ Start with:
   [`gallery-capture-program-plan.md`](gallery-capture-program-plan.md) states the user path,
   owning repositories, current proof and release sequence. Its
   [`2026-09-15 retrospective`](retrospectives/2026-09-15-gallery-capture-composer-retrospective.md)
-  records the save-isolation failure, corrected local proof and remaining rollout.
+  records the save-isolation failure, corrected local proof, pushed-source stage, and
+  remaining public rollout. The machine-readable
+  [`stage evidence`](evidence/gallery-capture-stage-20260915.json) pins the reviewed
+  artifacts and restoration receipts.
 - **MCP endpoint provenance:**
   [`audit/2026-08-01-mcp-endpoint-provenance-audit.md`](audit/2026-08-01-mcp-endpoint-provenance-audit.md),
   recording the retired `:8720` task collision, split ledgers, and the identity-first

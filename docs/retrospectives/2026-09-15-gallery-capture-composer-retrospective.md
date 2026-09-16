@@ -106,13 +106,13 @@ Quest now fixes checkout EOL for that asset and the new composer assets in
 `.gitattributes`. A version pin must survive a fresh checkout, not only the
 developer's existing working tree.
 
-The clean landing checkout also separated Studio validation from Quest's existing
-game-plugin compatibility work. Studio built and its 149 tests passed, as did the
-Python and Lab test gates. The Lab and Runtime plugin projects fail to compile
-against the local Valheim 1.0.12 assemblies because main still uses older game APIs.
-The uncommitted compatibility edits in the primary Quest checkout were excluded
-from this capture landing. A full Quest package release needs that separate gate
-resolved and retested; the Studio capture proof does not certify those plugins.
+The clean landing checkout separated Studio validation from Quest's game-plugin
+compatibility work. Studio built and its 149 tests passed, as did the Python and Lab
+test gates. The compatibility edits were then applied in an isolated Quest checkout,
+pushed as `dd3685b`, and rebuilt against AM4's Valheim 1.0.12 Linux assemblies:
+Lab and Runtime both finished with zero warnings and errors. That is compile evidence
+only; the installed game plugins were left untouched and no live plugin-load claim is
+made.
 
 Work began at 09:05 UTC and the first evidence index was written at 10:45 UTC;
 no wall-clock or dollar cap had been specified. Existing resident tools, game installs
@@ -123,16 +123,41 @@ receipts are recorded, but frontier-model dollar cost is not available. The usef
 artifact was delivered inside roughly 100 minutes; the early save incident is still
 a serious process failure and is not offset by that timing.
 
+## Final staged release
+
+The release cut was completed from pushed source. Steward `2a9197d`, SelfieStick
+`7bf5ae7`, and Quest `dd3685b` were rebuilt into pinned composer, server, runner and
+Studio package artifacts. The package-consuming Studio host and the gallery exported
+the same 109,900-byte ZIP for the same archived composition. The local proof-gated
+Steward catalog exposed 83 photographs and accepted the exact runner and both fresh
+host receipts.
+
+OMEN and AM4 each passed 12 exact and two legacy captures with measured camera values,
+unchanged source saves, and restored plugin/control state. Two early AM4 attempts
+failed because the remote launch omitted `DISPLAY=:0`; they produced no frames and
+restored cleanly. The corrected run passed. This recovery is recorded as history,
+not hidden behind the successful receipt.
+
+The user-facing browser preview is the clearest first test: choose a photograph,
+adjust the lens, frame or size, inspect Outside view, and download. Creator/DM embeds
+the same composer, but its larger workbench made the intended test unclear. The next
+UI pass should make Capture's entry point and first action explicit instead of asking
+new users to infer them from a dense workspace.
+
+The stage was deliberately local. Both loopback servers were stopped after review,
+public downloads were not enabled, AM4 Ollama remained inactive, and the temporary
+CameraProof autorun hook was removed from OMEN and the AM4 session was stopped with
+its original plugin state restored. The exact pins, receipts, limitations and failed
+attempts are in the [stage evidence](../evidence/gallery-capture-stage-20260915.json).
+
 ## Source landing and what changes next
 
-The documentation and implementation were landed on `main` through selective commits:
-SelfieStick `7bf5ae7`, Steward `2a9197d`, and comfy-quest `85cbb2a`. Dirty, unrelated
-Quest Valheim compatibility changes and Baseline/Steward branch work were preserved.
-The next step is a release cut from those pushed revisions. The
-published Steward component must replace the candidate pin in Studio; the exact
-SelfieStick DLL and runner must be pinned in Steward's deployment manifest. Any
-change to game or runner bytes needs renewed real capture and restoration proof
-before a public download is enabled. The [program plan](../gallery-capture-program-plan.md)
+The documentation and implementation are landed on `main` through selective commits:
+SelfieStick `7bf5ae7`, Steward `2a9197d`, Quest `85cbb2a`, `dd3685b`, and `072e6d3`,
+and Baseline `97e77bc`. Dirty, unrelated Quest and Baseline worktrees were preserved.
+Public promotion is the remaining release action. It must use only the reviewed pins
+and receipts, recheck the deployed proof gate, and keep incomplete photographs visible
+with their availability reason. The [program plan](../gallery-capture-program-plan.md)
 defines that sequence. Moving-camera capture should wait for a time-sampled contract
 and game proof; an attractive browser control alone would not establish local video.
 
