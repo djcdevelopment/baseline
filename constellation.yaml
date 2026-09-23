@@ -1,0 +1,326 @@
+# CreatorOS Constellation Manifest
+#
+# Comfy Valheim creator suite, spatial narrative tools, and client modding platform.
+# Hub and discovery index rooted at baseline.
+
+schema_version: 1
+
+archetype: engineering-only
+topology: centered
+conformance: canonical
+
+intent: "Comfy Valheim creator suite, spatial narrative tools, and client modding platform"
+
+constellation:
+  name: creator-os
+  description: "Comfy Valheim creator suite, spatial narrative tools, and client modding platform"
+  root_path: C:\work\baseline
+  pm_workspace: docs/
+
+identity:
+  github_org: djcdevelopment
+
+repos:
+  - name: baseline
+    kind: git
+    role: "Hub of knowledge, evidence, decision records, and discovery index for the Comfy fleet"
+    producer_type: dev_tooling
+    github: djcdevelopment/baseline
+    visibility: private
+    local_path: C:\work\baseline
+    primary: true
+    lifecycle: active
+    surfaces:
+      - name: public-workbench
+        kind: web-app
+        deployment_url: "https://am4.tail8e749c.ts.net/workbench"
+        lifecycle: active
+
+  - name: comfy-quest
+    kind: git
+    role: "Core Quest Lab, Runtime, Contracts, Studio, and in-game creator tooling"
+    producer_type: engine
+    github: djcdevelopment/comfy-quest
+    visibility: private
+    local_path: C:\work\comfy-quest
+    primary: false
+    depends_on:
+      - baseline
+      - isolate
+    lifecycle: active
+    surfaces:
+      - name: quest-studio
+        kind: cli
+        lifecycle: active
+
+  - name: dmos
+    kind: git
+    role: "Dungeon Master OS narrative orchestration, world state engine, and chronicle generator"
+    producer_type: engine
+    github: djcdevelopment/DMos
+    visibility: private
+    local_path: E:\omen\DMos
+    primary: false
+    depends_on:
+      - comfy-quest
+      - SelfieStick
+    lifecycle: active
+
+  - name: ComfyStewardView
+    kind: git
+    role: "Spatial viewer, multi-perspective steward camera rig, and world snapshot analytics"
+    producer_type: operational_viewer
+    github: djcdevelopment/ComfyStewardView
+    visibility: private
+    local_path: C:\work\ComfyStewardView
+    primary: false
+    depends_on:
+      - baseline
+      - SelfieStick
+    lifecycle: active
+    surfaces:
+      - name: steward-gallery
+        kind: web-app
+        lifecycle: active
+
+  - name: SelfieStick
+    kind: git
+    role: "Automated 4K photographic camera engine for Valheim archives and chronicles (FX99)"
+    producer_type: engine
+    github: djcdevelopment/SelfieStick
+    visibility: private
+    local_path: C:\work\SelfieStick
+    primary: false
+    depends_on:
+      - baseline
+    lifecycle: active
+    surfaces:
+      - name: camera-runner
+        kind: cli
+        lifecycle: active
+
+  - name: Unfaded
+    kind: git
+    role: "Zero death blackout, 360-degree spectator drone scouting, and tactical camera mod on Thunderstore"
+    producer_type: engine
+    github: djcdevelopment/Unfaded
+    visibility: private
+    local_path: C:\work\Unfaded
+    primary: false
+    depends_on:
+      - baseline
+    lifecycle: active
+
+  - name: networksense
+    kind: git
+    role: "Standalone Valheim client observability add-on, packet inspection, and network telemetry"
+    producer_type: telemetry_ingest
+    github: djcdevelopment/networksense
+    visibility: private
+    local_path: C:\work\networksense
+    primary: false
+    depends_on:
+      - baseline
+    lifecycle: active
+
+  - name: isolate
+    kind: git
+    role: "Comfy Valheim container infrastructure, Python MCP gateway (:8720), and lab Compose stacks"
+    producer_type: substrate
+    github: djcdevelopment/isolate
+    visibility: private
+    local_path: C:\work\isolate
+    primary: false
+    depends_on:
+      - baseline
+    lifecycle: active
+    surfaces:
+      - name: comfy-gateway
+        kind: web-app
+        lifecycle: active
+
+  - name: sovereign-shards
+    kind: git
+    role: "On-demand shard manager daemon (:8730), portal router, and armory sidecar"
+    producer_type: runtime_execution
+    github: djcdevelopment/sovereign-shards
+    visibility: private
+    local_path: C:\work\sovereign-shards
+    primary: false
+    depends_on:
+      - isolate
+      - comfy-quest
+    lifecycle: active
+    surfaces:
+      - name: shard-manager
+        kind: bot-daemon
+        lifecycle: active
+
+  - name: valheim-profile-engine
+    kind: git
+    role: "Sub-50ms zero-copy BepInEx profile switching via NTFS directory junctions"
+    producer_type: dev_tooling
+    github: djcdevelopment/valheim-profile-engine
+    visibility: private
+    local_path: C:\work\valheim-profile-engine
+    primary: false
+    depends_on:
+      - baseline
+    lifecycle: active
+
+  - name: ismodded
+    kind: git
+    role: "Steam achievement progression decoupling and runtime verification suite for Valheim"
+    producer_type: dev_tooling
+    github: djcdevelopment/ismodded
+    visibility: private
+    local_path: C:\work\ismodded
+    primary: false
+    depends_on:
+      - baseline
+    lifecycle: active
+
+  - name: totemalert
+    kind: git
+    role: "TotemSentinel client-side tactical camp-check radar and wide treasure search"
+    producer_type: engine
+    github: djcdevelopment/TotemSentinel
+    visibility: private
+    local_path: C:\work\totemalert
+    primary: false
+    depends_on:
+      - baseline
+    lifecycle: active
+
+  - name: deepnorthtesting
+    kind: git
+    role: "Fleet compatibility evidence and verification suite for Valheim 1.0.15"
+    producer_type: research_harness
+    github: djcdevelopment/deepnorthtesting
+    visibility: private
+    local_path: C:\work\deepnorthtesting
+    primary: false
+    depends_on:
+      - baseline
+    lifecycle: active
+
+  - name: ComfyMods
+    kind: git
+    role: "Upstream Valheim mod collection (redseiko/ComfyMods)"
+    producer_type: substrate
+    github: redseiko/ComfyMods
+    visibility: public
+    local_path: C:\work\ComfyMods
+    primary: false
+    lifecycle: active
+
+  - name: deepagents-shot-director
+    kind: filesystem
+    role: "Autonomous multi-agent architecture for Valheim SelfieStick shot quality, positioning, and composition"
+    producer_type: engine
+    local_path: C:\work\deepagents-shot-director
+    primary: false
+    depends_on:
+      - SelfieStick
+      - dmos
+    lifecycle: active
+
+  - name: seer
+    kind: git
+    role: "Turn Valheim inventory and chest screenshots into structured item and quantity spreadsheets (chest-seer)"
+    producer_type: engine
+    github: djcdevelopment/chest-seer
+    visibility: private
+    local_path: E:\work\comfy\seer
+    primary: false
+    depends_on:
+      - baseline
+    lifecycle: active
+
+  - name: steward-spatial-lab
+    kind: filesystem
+    role: "Spatial camera test laboratory and experimental staging environment for ComfyStewardView"
+    producer_type: research_harness
+    local_path: C:\work\steward-spatial-lab
+    primary: false
+    depends_on:
+      - ComfyStewardView
+    lifecycle: active
+
+  - name: deepagents-poc
+    kind: filesystem
+    role: "Initial proof-of-concept for deep-agent camera orchestration and actor control"
+    producer_type: research_harness
+    local_path: C:\work\deepagents-poc
+    primary: false
+    depends_on:
+      - deepagents-shot-director
+    lifecycle: active
+
+  - name: sealcompanion
+    kind: git
+    role: "Valheim 1.0 seal taming, companion assist, blubber defense, and boat ride mod"
+    producer_type: engine
+    github: djcdevelopment/deepnorthtesting
+    visibility: private
+    local_path: C:\work\sealcompanion
+    primary: false
+    depends_on:
+      - baseline
+    lifecycle: active
+
+  - name: assessment
+    kind: filesystem
+    role: "Persona-awareness integrity assessment lane and grading benchmark for comfy-quest agent"
+    producer_type: research_harness
+    local_path: C:\work\assessment
+    primary: false
+    depends_on:
+      - comfy-quest
+    lifecycle: active
+
+contracts:
+  - name: comfy-quest-contracts
+    producer_repo: comfy-quest
+    consumer_repos:
+      - sovereign-shards
+      - baseline
+    contract_doc: network/mod/ComfyQuestContracts/README.md
+    stability: stable
+    scope: cross-repo
+
+  - name: selfiestick-capture-v1
+    producer_repo: SelfieStick
+    consumer_repos:
+      - ComfyStewardView
+      - dmos
+    contract_doc: docs/gallery-capture.md
+    stability: stable
+    scope: cross-repo
+
+  - name: comfy-mcp-gateway
+    producer_repo: isolate
+    consumer_repos:
+      - baseline
+      - sovereign-shards
+    contract_doc: network/mcp/README.md
+    stability: stable
+    scope: cross-repo
+
+  - name: networksense-telemetry
+    producer_repo: networksense
+    consumer_repos:
+      - baseline
+      - comfy-quest
+    contract_doc: network/mod/ComfyNetworkSense/README.md
+    stability: stable
+    scope: cross-repo
+
+  - name: valheim-profile-links
+    producer_repo: valheim-profile-engine
+    consumer_repos:
+      - comfy-quest
+      - SelfieStick
+    contract_doc: README.md
+    stability: stable
+    scope: cross-repo
