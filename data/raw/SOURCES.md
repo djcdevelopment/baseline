@@ -6,6 +6,7 @@ guild rules on it.
 
 ## slayer-guild-tracker.xlsx
 
+- Not in this repository: removed on 2026-11-04 because it holds player identity data.
 - Source: https://docs.google.com/spreadsheets/d/1Xij6i1JIUT8iAdVgMDuwy9JzZGvMaU0xv85pSJZmElM
 - Retrieved: 2026-07-01 (xlsx export, all 49 tabs)
 - What it is: the Slayer guild's live operational tracker, eras 2-17.
@@ -25,6 +26,7 @@ guild rules on it.
 
 ## ranger-guild-tracker.xlsx
 
+- Not in this repository: removed on 2026-11-04 because it holds player identity data.
 - Source: https://docs.google.com/spreadsheets/d/1iRH4C7ml1sJIiX_O175pBhP0m78sWjBM9-i37DWtCdc
 - Retrieved: 2026-07-01 (xlsx export, all 13 tabs)
 - What it is: the Ranger guild's live tracker (era 17).
